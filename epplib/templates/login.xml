@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<epp>
+  <command>
+    <login>
+      <clID/>
+      <pw/>
+      <newPW/>
+      <options>
+        <version>1.0</version>
+        <lang>en</lang>
+      </options>
+      <svcs>
+        <objURI/>
+        <svcExtension>
+          <extURI/>
+        </svcExtension>
+      </svcs>
+    </login>
+    <clTRID/>
+  </command>
+</epp>

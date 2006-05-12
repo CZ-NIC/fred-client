@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<epp>
+    <!-- Test na vyskyt nezname entity. -->
+    <hello>žluťoučký kůň úpěl ďábelské ódy.</hello>
+    <neznama_entita>Tady to je: &nbsp; A je to.</neznama_entita>
+</epp>

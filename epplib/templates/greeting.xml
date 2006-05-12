@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<epp>
+<greeting>
+    <svID/>
+    <svDate/>
+    <svcMenu>
+      <version>1.0</version>
+      <lang>en</lang>
+      <objURI/>
+      <svcExtension>
+        <extURI/>
+      </svcExtension>
+    </svcMenu>
+    <dcp>
+      <access><all/></access>
+      <statement>
+        <purpose><admin/><prov/></purpose>
+        <recipient><ours/><public/></recipient>
+        <retention><stated/></retention>
+      </statement>
+    </dcp>
+  </greeting>
+</epp>

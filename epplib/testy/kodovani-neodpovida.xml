@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf8" standalone="no"?>
+<epp>
+    <!-- Test na kodovani, ktere neodpovida zadani.
+    Prestoze je v hlavicce uvedeno utf8, 
+    tak je tento dokument kodovan v cp1250.
+     -->
+    <hello>¾luouèkı kùò úpìl ïábelské ódy.</hello>
+</epp>
