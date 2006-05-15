@@ -64,7 +64,7 @@ class Message:
             else:
                 # Kdyz chybi funkce PrettyPrint()
                 xml = self.dom.toprettyxml('  ','\n',self.encoding)
-        return xml
+        return re.sub('(<?xml .+?)\?>','\\1 standalone="no"?>',xml, re.I)
 
     def join_errors(self, errors):
         self.errors.extend(errors)

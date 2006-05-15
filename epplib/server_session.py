@@ -172,6 +172,14 @@ class Manager:
     #    Transfer functions
     #
     #==================================================
+    def get_dock(self):
+        'Return object of socket.'
+        return self._dock
+
+    def start_dock_receiving(self, noblocking=None):
+        if self._dock.start_receive_thread(self.receive_from_client) and not noblocking:
+            self._dock.join()
+        
     def listen(self, host, port):
         if self._dock: self.disconnect()
         self._dock = server_socket.Dock()
@@ -185,8 +193,11 @@ class Manager:
     def send_to_client(self, message):
         self._dock.send(message)
 
-    def receive_from_client(self):
-        return self._dock.receive()
+    def receive_from_client(self, command):
+        answer = self.answer(command)
+        self.send_to_client(answer)
+        print '-'*60,'\nCLIENT COMMAND:\n',command
+        print '-'*60,'\nSERVER ANSWER:\n',answer
 
     def get_transfer_errors(self):
         return self._dock.fetch_errors()
@@ -196,22 +207,28 @@ class Manager:
         
     #==================================================
 
-def test(host, port):
+def test(host, port, prompt):
     server = Manager()
-    if not server.listen(host, port):
-        return
-    while 1:
-        if not server.receive_from_client():
-            print server.get_transfer_errors()
-            break
-        command = server.get_received_command()
-        answer = server.answer(command)
-        server.send_to_client(command)
-        print '-'*60,'\nCLIENT COMMAND:\n',command
-        print '-'*60,'\nSERVER ANSWER:\n',answer
+    if server.listen(host, port):
+        print 'Run forever... (break ^C)'
+        server.start_dock_receiving(prompt)
+    if prompt:
+        dock = server.get_dock()
+        while dock.isAlive():
+            command = raw_input("> (?-help, q-quit): ")
+            if command in ('q','quit','exit','konec'): break
+            if not server.send_to_client(command):
+                print server.fetch_errors()
+                break
     server.disconnect()
     print "[END SERVER TEST]"
 
         
 if __name__ == '__main__':
-    test('', 700)
+    import sys
+    interactive = None
+    if len(sys.argv)>1:
+        if sys.argv[1]=='i':
+            interactive = 'yes' # zapnutí promptu
+    test('', 700, interactive)
+

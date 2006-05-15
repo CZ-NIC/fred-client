@@ -120,21 +120,35 @@ class Manager:
     #    Transfer functions
     #
     #==================================================
+    def get_lorry(self):
+        'Return object of socket.'
+        return self._lorry
+
+    def start_lorry_loading(self, noblocking=None):
+        'Start receiving loop.'
+        if self._lorry.start_receive_thread(self.receive_from_server) and not noblocking:
+            self._lorry.join()
+
     def connect(self, host, port):
+        'Connect transfer socket'
         if self._lorry: self.disconnect()
         self._lorry = client_socket.Lorry()
         return self._lorry.connect(host, port)
         
     def disconnect(self):
         if self._lorry:
-            self.close()
+            self._lorry.close()
             self._lorry = None
 
     def send_to_server(self, message):
         self._lorry.send(message)
 
-    def receive_from_server(self):
-        return self._lorry.receive()
+    def receive_from_server(self, message):
+        print "SERVER ANSWSER:\n",message
+        print "-"*60
+        result = self.process_answer(message)
+        print "SERVER RESULT:\n",result
+        print "-"*60
 
     def get_transfer_errors(self):
         return self._lorry.fetch_errors()

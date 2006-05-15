@@ -8,7 +8,11 @@
 import epplib.client_session
 
 def run_console(client):
-    while 1:
+    # zde se spustí naslouchací smyčka:
+    client.start_lorry_loading('interactive')
+    lorry = client.get_lorry()
+    # start command line:
+    while lorry.isAlive():
         command = raw_input("> (?-help, q-quit): ")
         if command in ('q','quit','exit','konec'): break
         notes, errors, epp_doc = client.get_TEST_result(command) # get_result
@@ -21,17 +25,10 @@ def run_console(client):
         if epp_doc:
             print "CLIENT COMMAND:\n",epp_doc
             print "-"*60
+            # odeslání dokumentu na server
             client.send_to_server(epp_doc)
-            if not client.receive_from_server():
-                print client.get_transfer_errors()
-                break
-            response = client.get_response()
-            print "SERVER ANSWSER:\n",response
-            print "-"*60
-            result = client.process_answer(response)
-            print "SERVER RESULT:\n",result
-            print "-"*60
-        print "="*60
+    client.disconnect()
+    print "[END CLIENT TEST]"
 
 
 if __name__ == '__main__':
