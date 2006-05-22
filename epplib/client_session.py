@@ -47,8 +47,17 @@ class Manager:
         return sep.join(self._errors)
 
     def fetch_errors(self, sep='\n'):
+        if self._lorry:
+            self._errors.extend(self._lorry._errors)
         msg = sep.join(self._errors)
         self._errors = []
+        return msg
+
+    def fetch_notes(self, sep='\n'):
+        if self._lorry:
+            self._notes.extend(self._lorry._notes)
+        msg = sep.join(self._notes)
+        self._notes = []
         return msg
 
     #==================================================
@@ -120,42 +129,35 @@ class Manager:
     #    Transfer functions
     #
     #==================================================
-    def get_lorry(self):
-        'Return object of socket.'
-        return self._lorry
+    def handler_message(self, msg):
+        'Handler of incomming message'
+        # funkce pro zpracování zprávy
+        print 'Session:',msg
+        print 'answer:',self.process_answer(msg)
+
+    def run_listen_loop(self):
+        self._lorry.run_listen_loop()
 
     def start_lorry_loading(self, noblocking=None):
         'Start receiving loop.'
-        if self._lorry.start_receive_thread(self.receive_from_server) and not noblocking:
+        if self._lorry.start_listen_loop(self.receive_from_server) and not noblocking:
             self._lorry.join()
 
-    def connect(self, host, port):
-        'Connect transfer socket'
+    def connect(self, data):
+        "Connect transfer socket. data=('host',port,'client-type')"
         if self._lorry: self.disconnect()
         self._lorry = client_socket.Lorry()
-        return self._lorry.connect(host, port)
+        self.handler_message = self._lorry.handler_message
+        return self._lorry.connect(data[0], data[1], data[2])
         
-    def disconnect(self):
+    def close(self):
         if self._lorry:
             self._lorry.close()
             self._lorry = None
 
-    def send_to_server(self, message):
-        self._lorry.send(message)
+    def send(self, message):
+        return self._lorry.send(message)
 
-    def receive_from_server(self, message):
-        print "SERVER ANSWSER:\n",message
-        print "-"*60
-        result = self.process_answer(message)
-        print "SERVER RESULT:\n",result
-        print "-"*60
-
-    def get_transfer_errors(self):
-        return self._lorry.fetch_errors()
-
-    def get_response(self):
-        return self._lorry.get_cargo()
-        
     #==================================================
         
     def process_answer(self, epp_server_answer):

@@ -191,7 +191,7 @@ class Manager:
             self._dock = None
 
     def send_to_client(self, message):
-        self._dock.send(message)
+        return self._dock.send(message)
 
     def receive_from_client(self, command):
         answer = self.answer(command)
@@ -218,7 +218,7 @@ def test(host, port, prompt):
             command = raw_input("> (?-help, q-quit): ")
             if command in ('q','quit','exit','konec'): break
             if not server.send_to_client(command):
-                print server.fetch_errors()
+                print dock.fetch_errors()
                 break
     server.disconnect()
     print "[END SERVER TEST]"

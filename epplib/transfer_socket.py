@@ -13,12 +13,14 @@ import socket
 import threading
 
 EOT = '\4'
+END = '\0\0\0\4' #!!!
 run = 0
+timeout = 3.0 # sec. doba čekání na příchozí paket
 lock = threading.Lock()
 listen_thread = None # naslouchací thread
 conn, conn_ssl = None,None # konexe soketů
 
-INIT=['','localhost',700]
+INIT=['','localhost',700,''] # type, host, port, i - interactive server
 
 def stop(val=0):
     global run, lock
@@ -31,6 +33,7 @@ set_run = lambda : stop(1)
 def close():
     global conn, conn_ssl
     if conn:
+##        conn.shutdown(socket.SHUT_RDWR)
         conn.close()
         conn,conn_ssl = None,None
         print '[conn CLOSE]'
@@ -42,22 +45,25 @@ def connect(verbose=None):
     if verbose: print '[create socket]'
     try:
         conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        conn.settimeout(3.0)
-    except socket.error, msg:
-        print msg
+        conn.settimeout(timeout)
+    except socket.error, (no,msg):
+        print 'CREATE socket.error: [%d] %s'%(no,msg)
         close()
         return 0
     if verbose: print "Try to connect to %s, port %d"%HP
     try:
         conn.connect(HP)
         if verbose: print "Connected to host %s, port %d"%HP
-    except socket.error, msg:
-        print msg
+    except socket.error, (no,msg):
+        print 'CONNECT socket.error: [%d] %s'%(no,msg)
         close()
         return 0
     if INIT[0]=='cli-ssl':
         if verbose: print 'Init SSL connection'
         conn_ssl = socket.ssl(conn)
+    if 1:
+        print 'getpeername()',conn.getpeername() # vzdálený ('host', port)
+        print 'getsockname()',conn.getsockname() # vlastní ('host', port)
     return conn
 
 def parse_white_chars(text):
@@ -75,7 +81,7 @@ def parse_from_client(msg):
     print 'client says:',msg
     send("jak myslíš, nechám to na tobě")
     if INIT[0] == 'servnot':
-        send(EOT) # klientovi se pošle zakončovací kód
+##        send(EOT) # klientovi se pošle zakončovací kód
         stop() # po každé odpovědi se spojení přeruší
     
 def listen_loop(verbose):
@@ -91,12 +97,15 @@ def listen_loop(verbose):
                 data = conn.recv(1024)
         except socket.timeout, msg:
             continue # nic se neděje, pustí se další naslouchání
+        except socket.sslerror, msg:
+            print 'socket.sslerror: %s'%msg
+            break
         except socket.error, (no, msg):
             print 'socket.error: [%d] %s'%(no, msg)
             break
         msg = data.strip()
         if msg=='':
-            # při násilném přesušení
+        # při neočekávaném přesušení
 ##            print "Empty:",parse_white_chars(data)
             break
         parse_incomming_message(msg)
@@ -118,7 +127,9 @@ def send(msg):
             conn.send(msg)
         ok=1
     except socket.timeout, msg:
-        print msg
+        print 'socket.timeout',msg
+    except socket.sslerror, msg:
+        print 'socket.sslerror: %s'%msg
     except socket.error, (no, msg):
         print 'socket.error: [%d] %s'%(no, msg)
     return ok
@@ -146,7 +157,9 @@ def main():
         # vkládací smyčka běží, dokud ji uživatel neukončí
         q = raw_input("> q (quit) ")
         if q.strip()=='': continue
-        if q in ('q','quit','exit','konec'): break
+        if q in ('q','quit','exit','konec'):
+##            send(END)
+            break
         print "you:",q
         msg = parse(q)
         if not send(msg): break
@@ -172,8 +185,8 @@ def main_server():
     try:
         server_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         server_sock.bind(('', INIT[2]))
-    except socket.error, msg:
-        print msg
+    except socket.error, (no,msg):
+        print 'SERVER BIND socket.error: [%d] %s'%(no,msg)
         return
     server_sock.listen(1)
     print "Listen at port %d..."%INIT[2]
@@ -183,16 +196,31 @@ def main_server():
         try:
             conn, addr = server_sock.accept()
             print "Connected from",addr
-            conn.settimeout(3.0)
-        except socket.error, msg:
-            print msg
+            conn.settimeout(timeout)
+        except socket.error, (no,msg):
+            print 'SERVER ACCEPT socket.error: [%d] %s'%(no,msg)
         except KeyboardInterrupt:
             print 'Shutdown by user'
             break
         if conn:
             run_listen_loop('display connection notes') # spustí se naslouchání
+            if INIT[3]=='i' and INIT[0] != 'servnot':
+                # interactive server
+                print '[SERVER RUN prompt loop]'
+                while 1:
+                    q = raw_input("> q (quit) ")
+                    if q.strip()=='': continue
+                    if q in ('q','quit','exit','konec','shut','shutdown'):
+                        break
+                    if not send(q): break
+                    run_listen_loop()
+                if q in ('shut','shutdown'):
+                    print '[SERVER SHUTDOWN]'
+                    stop()
+                    break
             listen_thread.join() # čeká se na ukončení naslouchání
             close()
+    listen_thread.join() # čeká se na ukončení naslouchání
     close()
     server_sock.close()
     print '[SERVER closed]'
@@ -203,17 +231,20 @@ if __name__ == '__main__':
     if len(sys.argv) > 1:
         if sys.argv[1] in ('cli','cli-ssl','serv','servnot'):
             INIT[0] = sys.argv[1]
-    print "INIT: type=%s; host='%s'; port=%d;"%tuple(INIT)
     if INIT[0]:
         if INIT[0] in ('cli','cli-ssl'):
             if len(sys.argv) > 2:
                 INIT[1] = sys.argv[2]
             if len(sys.argv) > 3:
                 INIT[2] = int(sys.argv[3])
+            print "CLIENT INIT: type=%s; host='%s'; port=%d; interactive='%s';"%tuple(INIT)
             main_client()
         elif INIT[0] in ('serv','servnot'):
             if len(sys.argv) > 2:
-                INIT[2] = int(sys.argv[2])
+                INIT[2] = int(sys.argv[2]) # port
+            if len(sys.argv) > 3:
+                INIT[3] = sys.argv[3] # ineractive
+            print "SERVER INIT: type=%s; host='%s'; port=%d; interactive='%s';"%tuple(INIT)
             main_server()
         else:
             print "unknown type"
@@ -223,6 +254,6 @@ if __name__ == '__main__':
         print """usage:
 %s cli     [host [port]] # run as client
 %s cli-ssl [host [port]] # run as SSL client
-%s serv    [port]        # run as server keeping connection
-%s servnot [port]        # run as server NOT keeping connection
+%s serv    [port [i]]    # run as server keeping connection (interactive)
+%s servnot [port [i]]    # run as server NOT keeping connection (interactive)
 """%(n,n,n,n)

@@ -3,9 +3,6 @@
 #
 # $Id$
 #
-"""Přenos zpráv přes TCP/IP.
-Použití viz funkce test()
-"""
 import socket
 import threading
 import time
@@ -16,15 +13,72 @@ class Lorry:
     "Socket transfer."
     def __init__(self):
         self._conn = None
+        self._conn_ssl = None
         self._notes = [] # hlášení o stavu
         self._errors = [] # chybová hlášení
-        self._cargo = ''
-        self.run=0        # run receive thread
-        self._thr_receive = threading.Thread(target = self.run_receive)
-        self._thr_lock = threading.Lock()
-        self._timeout = 5 # pokus se do timeoutu nic nepřijme, tak se pošle PING
-        self._last_receive = None # čas posledního příjmu zprávy
-        self._fnc = None # funkce pro zpracování zprávy
+        self._thr_receive = threading.Thread(target = self.__listen_loop__) # thread pro příjem zpráv
+        self._thr_lock = threading.Lock() # zámek pro možnost zastavení threadu
+        self._run = 0                     # indikátor, že thread běží
+
+    def __connect__(self):
+        self._conn = None
+        try:
+            self._conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        except socket.error, (no,msg):
+            self._errors.append('Create socket.error [%d] %s'%(no,msg))
+##            self.__error__(er)
+            return 0
+##        self._notes.append(_T("Try to connect to %s, port %d")%(self._host, self._port))
+        try:
+            self._conn.connect((self._host, self._port))
+            self._notes.append(_T('Connected to host %s, port %d')%(self._host, self._port))
+            self._conn.settimeout(3.0)
+        except socket.error, (no,msg):
+            self._errors.append('Connection socket.error [%d] %s'%(no,msg))
+            return 0
+        if self._is_ssl:
+            self._notes.append(_T('Init SSL connection'))
+            try:
+                self._conn_ssl = socket.ssl(self._conn)
+            except socket.sslerror, msg:
+                self._errors.append(msg)
+                self._conn.close()
+                self._conn = None
+        return self._conn
+
+    def __close_socket__(self):
+        if self._conn:
+            self._conn.close()
+            self._conn = None
+
+    def __listen_loop__(self):
+        if not self._conn:
+            # když spojení neexistuje
+            if not self.__connect__():
+                # pokud se nepodařilo navázat
+                self.__stop_listening__()
+                return
+        while self._run:
+            try:
+                if self._conn_ssl:
+                    data = self._conn_ssl.read()
+                else:
+                    data = self._conn.recv(1024)
+            except socket.timeout, msg:
+                continue # nic se neděje, pustí se další naslouchání
+            except socket.sslerror, msg:
+                self._errors.append('READ socket.sslerror: %s'%msg)
+                break
+            except socket.error, (no, msg):
+                self._errors.append('READ socket.error: [%d] %s'%(no, msg))
+                break
+            msg = data.strip()
+            if msg=='':
+                # při neočekávaném přesušení
+                break
+            self.handler_message(msg)
+        self.__stop_listening__()
+        self.__close_socket__()
 
     def fetch_errors(self, sep='\n'):
         msg = sep.join(self._errors)
@@ -35,128 +89,87 @@ class Lorry:
         self._notes = []
         return msg
 
-    def get_cargo(self):
-        return self._cargo
-
-    def join(self):
-        if self._thr_receive.isAlive(): self._thr_receive.join()
+    def handler_message(self, msg):
+        'Handler of incomming message'
+        # funkce pro zpracování zprávy
+        print 'Client:',msg
         
-    def set_run(self,value):
+##    def isAlive(self):
+##        return self._thr_receive.isAlive()
+
+    def __stop_listening__(self,val=''):
         self._thr_lock.acquire()
-        self.run = value
+        self._run = val
         self._thr_lock.release()
 
+    def run_listen_loop(self):
+        'Run receiving thread again.'
+        if not self._thr_receive.isAlive():
+            self.__stop_listening__('RUN!') # Run listen thread
+            self._thr_receive = threading.Thread(target = self.__listen_loop__)
+            self._thr_receive.start()
+    
+    def __join__(self):
+        "Wait until listen process stops."
+        if self._thr_receive.isAlive():
+            # self._notes.append(_T('Wait to stop listen loop.'))
+            self._thr_receive.join()
+
+    def send(self,msg):
+        if not self._conn:
+            if not self.__connect__(): return 0
+        ok=0
+        try:
+            if self._conn_ssl:
+                self._conn_ssl.write(msg)
+            else:
+                self._conn.send(msg)
+            ok=1
+        except socket.timeout, msg:
+            self._errors.append('SEND socket.timeout: %s'%msg)
+        except socket.sslerror, msg:
+            self._errors.append('SEND socket.sslerror: %s'%msg)
+        except socket.error, (no, msg):
+            self._errors.append('SEND socket.error: [%d] %s'%(no, msg))
+        if not ok: self.__close_socket__()
+        return ok
+
     def close(self):
-        self.set_run(0) # Zastavit thread naslouchání
-        self.join() # počkat, až se ukončí naslouchání
-##        if self._thr_receive.isAlive(): self._thr_receive.join()
-        if self._conn:
-            self._conn.close()
-            self._conn = None
-            self._notes.append(_T('Disconnected.'))
+        self.__stop_listening__() # Zastavit thread naslouchání
+        self.__join__() # pokud běží, tak počkat až se ukončí
+        self.__close_socket__()
 
-    def connect(self, host, port):
-        self._conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        try:
-            self._conn.connect((host, port))
-            self._conn.settimeout(1.0)
-            self._notes.append(_T('Connected at server OK.'))
-        except socket.error, (errno,msg):
-            self._errors.append('socket.error: [%d] %s'%(errno,msg))
-            self._conn = None
-        return self._conn
+    def connect(self, host, port, is_ssl=None):
+        self._host = host
+        self._port = port
+        self._is_ssl = (0,1)[is_ssl=='ssl']
+        return self.__connect__()
 
-    def send(self, message):
-        try:
-            self._conn.send(message)
-        except socket.error, msg:
-            self.set_run(0)
-##            self._errors.append('socket.error: [%d] %s'%(errno,msg))
-            self._errors.append('socket.error: %s'%str(msg))
-        return self.run
-        
-    def receive(self):
-        self._cargo=''
-        valid=0
-        try:
-            self._cargo = self._conn.recv(1024)
-            valid=1
-            if(self._cargo.strip()):
-                # pokud něco přišlo, tak je spojení pořád živé
-                self._last_receive = time.time()
-        except socket.timeout:
-            valid=1 # přerušení příjmu, aby se mohl zastavit thread
-        except socket.error, (errno,msg):
-            self._errors.append('socket.error: [%d] %s'%(errno,msg))
-        except AttributeError:
-            pass # došlo ke zrušení objektu
-        return valid
 
-    def check_timeout(self):
-        "Control if timeout occurs"
-        if (time.time() - self._last_receive) > self._timeout:
-            # pokud byl překročen timeout, tak se spojení pingne
-            self.send('PING')
-
-    def get_clear_cargo(self):
-        "Return messages. (Ommit PING & PONG)"
-        cargo = self.get_cargo().strip()
-        if cargo:
-            if re.match('P(I|O)NG.*',cargo):
-                if re.match('PING.*',cargo): self.send('PONG')
-                cargo='' # PING, PONG nezobrazovat
-        return cargo
-            
-            
-    def run_receive(self):
-        "Run into own thread."
-        self._last_receive = time.time()
-        while self.run:
-            if not self.receive():
-                self.set_run(0)
-                print self.fetch_errors()
-                break
-            cargo = self.get_clear_cargo()
-            if cargo:
-                # pokud je nějaká zpráva přijata
-                if self._fnc:
-                    self._fnc(cargo) # funkce pro zpracování zprávy
-                else:
-                    print cargo # jen test
-            self.check_timeout()
-        print '[Receive process stopped]'
-            
-    def start_receive_thread(self, fnc=None):
-        "Start receiving thread."
-        self._fnc = fnc # funkce pro zpracování zprávy
-        self.set_run(1)
-        self._thr_receive.start()
-        return self._thr_receive.isAlive()
-
-    def isAlive(self):
-        ret = None
-        if self._thr_receive:
-            ret = self._thr_receive.isAlive()
-        return ret
-        
-def test(host, port):
-    transport = Lorry()
-    if transport.connect(host, port):
-        print transport.fetch_notes()
-        # spustí se thread s příjmem
-        transport.start_receive_thread()
-    else:
-        print transport.fetch_errors()
-        return
-    while transport.isAlive():
-        command = raw_input("> (?-help, q-quit): ")
-        if command in ('q','quit','exit','konec'): break
-        if not transport.send(command):
-            print transport.fetch_errors()
-            break
-    transport.close()
-    print transport.fetch_notes()
-    print "[END TEST]"
 
 if __name__ == '__main__':
-    test('localhost',700)
+    import sys
+##TEST    host, port, type = ('localhost',700,'cli')
+    host, port, type = ('curlew',700,'ssl')
+    if len(sys.argv)>1:
+        host = sys.argv[1]
+    cli = Lorry()
+    if cli.connect(host,port,type):
+        cli.run_listen_loop()
+        print cli.fetch_notes()
+        print "[START LOOP prompt]"
+        while 1:
+            q = raw_input("> q (quit) ")
+            if q.strip()=='': continue
+            if q in ('q','quit','exit','konec'): break
+            if not cli.send(q): break
+            cli.run_listen_loop()
+        print "[STOP LOOP prompt]"
+        print cli.fetch_notes()
+        cli.close()
+        print cli.fetch_errors()
+        print cli.fetch_notes()
+    else:
+        print cli.fetch_errors()
+        print cli.fetch_notes()
+

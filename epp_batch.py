@@ -9,12 +9,13 @@ import epplib.client_session
 
 def run_console(client):
     # zde se spustí naslouchací smyčka:
-    client.start_lorry_loading('interactive')
-    lorry = client.get_lorry()
-    # start command line:
-    while lorry.isAlive():
+    client.run_listen_loop()
+    print client.fetch_notes()
+    print "[START LOOP prompt]"
+    while 1:
         command = raw_input("> (?-help, q-quit): ")
-        if command in ('q','quit','exit','konec'): break
+        if command in ('q','quit','exit','konec'):
+            break
         notes, errors, epp_doc = client.get_TEST_result(command) # get_result
         if notes:
             print 'NOTES:\n',notes
@@ -26,15 +27,22 @@ def run_console(client):
             print "CLIENT COMMAND:\n",epp_doc
             print "-"*60
             # odeslání dokumentu na server
-            client.send_to_server(epp_doc)
-    client.disconnect()
+            if not client.send(epp_doc): # send_to_server
+                break
+        client.run_listen_loop()
+    client.close()
+    print client.fetch_errors()
+    print client.fetch_notes()
     print "[END CLIENT TEST]"
 
 
 if __name__ == '__main__':
+##    DATA=('localhost',700,'cli')
+    DATA=('curlew',700,'ssl')
     client = epplib.client_session.Manager()
-    if client.connect('localhost',700):
+    if client.connect(DATA):
         run_console(client)
     else:
-        print client.get_transfer_errors()
+        print client.fetch_errors()
+        print client.fetch_notes()
 
