@@ -15,7 +15,7 @@ from gettext import gettext as _T
 import client_eppdoc
 import client_eppdoc_test
 import client_socket
-
+import pprint
 """Usage:
 
 import epplib
@@ -37,11 +37,14 @@ class Manager:
         self._session = [0, None, None] # session ID, user, password
         self._lang = 'en'
         self._epp_cmd = client_eppdoc.Message()
+        self._epp_response = client_eppdoc.Message()
         self._notes = [] # upozornění na chybné zadání
         self._errors = [] # chybová hlášení při přenosu, parsování
         self._sep = '\n' # oddělovač jednotlivých zpráv
         self._available_commands = self._epp_cmd.get_client_commands()
         self._lorry = None
+        self._buffer = [] # incomming EPP messages
+        self._end_anchor = '</epp>' # Indicator of the end EPP message
 
     def get_errors(self, sep='\n'):
         return sep.join(self._errors)
@@ -131,9 +134,18 @@ class Manager:
     #==================================================
     def handler_message(self, msg):
         'Handler of incomming message'
-        # funkce pro zpracování zprávy
-        print 'Session:',msg
-        print 'answer:',self.process_answer(msg)
+        # funkce pro přijetí zprávy
+        part = re.split(self._end_anchor,msg,re.I) # </epp>
+        self._buffer.append(part[0])
+        if len(part)>1:
+            # end of EPP document occured
+            self._buffer.append(self._end_anchor)
+            epp_message = '\n'.join(self._buffer)
+            self.process_answer(epp_message)
+            # reset new message
+            self._buffer=[]
+            if part[1].strip()!='':
+                self._buffer.append(part[1])
 
     def run_listen_loop(self):
         self._lorry.run_listen_loop()
@@ -147,7 +159,7 @@ class Manager:
         "Connect transfer socket. data=('host',port,'client-type')"
         if self._lorry: self.disconnect()
         self._lorry = client_socket.Lorry()
-        self.handler_message = self._lorry.handler_message
+        self._lorry.handler_message = self.handler_message
         return self._lorry.connect(data[0], data[1], data[2])
         
     def close(self):
@@ -159,9 +171,16 @@ class Manager:
         return self._lorry.send(message)
 
     #==================================================
-        
     def process_answer(self, epp_server_answer):
-        return "[TODO Result]"
+        'This funcion is called by listen socket.'
+        debug_label(u'zdrojový epp:') #!!!
+        # print epp_server_answer #!!!
+        # create XML DOM tree:
+        self._epp_response.reset()
+        self._epp_response.parse_xml(epp_server_answer)
+        print self._epp_response.get_xml()
+        debug_label(u'dict:') #!!!
+        pprint.pprint(self._epp_response.make_dict())
 
     def get_TEST_result(self, command):
         'Test client result answer.'
@@ -186,6 +205,12 @@ class Manager:
             self.epp_command(cmd)
         return self._sep.join(self._notes), self._epp_cmd.get_errors(self._sep), self._epp_cmd.get_xml()
 
+
+def debug_label(text):
+    print '\n'
+    print '-'*60
+    print '***',text.upper(),'***'
+    print '-'*60
 
 if __name__ == '__main__':
     client = Manager()

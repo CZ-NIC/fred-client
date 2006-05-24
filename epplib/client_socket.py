@@ -19,6 +19,7 @@ class Lorry:
         self._thr_receive = threading.Thread(target = self.__listen_loop__) # thread pro příjem zpráv
         self._thr_lock = threading.Lock() # zámek pro možnost zastavení threadu
         self._run = 0                     # indikátor, že thread běží
+        self._begin_listen = 0            # indikátor začátku přenosu
 
     def __connect__(self):
         self._conn = None
@@ -26,7 +27,6 @@ class Lorry:
             self._conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         except socket.error, (no,msg):
             self._errors.append('Create socket.error [%d] %s'%(no,msg))
-##            self.__error__(er)
             return 0
 ##        self._notes.append(_T("Try to connect to %s, port %d")%(self._host, self._port))
         try:
@@ -50,6 +50,15 @@ class Lorry:
         if self._conn:
             self._conn.close()
             self._conn = None
+
+    def __parse_transmit_header__(self, t):
+        if len(t)==4:
+            # 4 bytes of message length
+            # délka nás vpodstatě nezajímá
+            #size = ord(t[0])<<32 | ord(t[1])<<16 | ord(t[2])<<8 | ord(t[3])
+            #print "PART BEGINING: size=%d"%size #!!!
+            t=''
+        return t
 
     def __listen_loop__(self):
         if not self._conn:
@@ -76,7 +85,11 @@ class Lorry:
             if msg=='':
                 # při neočekávaném přesušení
                 break
-            self.handler_message(msg)
+            if self._begin_listen:
+                # při prvním přeneseném bloku:
+                msg = self.__parse_transmit_header__(msg)
+            self._begin_listen = 0 # první blok je za námi
+            if msg: self.handler_message(msg)
         self.__stop_listening__()
         self.__close_socket__()
 
@@ -94,9 +107,6 @@ class Lorry:
         # funkce pro zpracování zprávy
         print 'Client:',msg
         
-##    def isAlive(self):
-##        return self._thr_receive.isAlive()
-
     def __stop_listening__(self,val=''):
         self._thr_lock.acquire()
         self._run = val
@@ -106,6 +116,7 @@ class Lorry:
         'Run receiving thread again.'
         if not self._thr_receive.isAlive():
             self.__stop_listening__('RUN!') # Run listen thread
+            self._begin_listen = 1 # indikátor začátku přenosu
             self._thr_receive = threading.Thread(target = self.__listen_loop__)
             self._thr_receive.start()
     

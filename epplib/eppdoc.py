@@ -64,7 +64,9 @@ class Message:
             else:
                 # Kdyz chybi funkce PrettyPrint()
                 xml = self.dom.toprettyxml('  ','\n',self.encoding)
-        return re.sub('(<?xml .+?)\?>','\\1 standalone="no"?>',xml, re.I)
+        # zatím vypnuto...
+        # return re.sub('(<?xml .+?)\?>','\\1 standalone="no"?>',xml, re.I)
+        return xml
 
     def join_errors(self, errors):
         self.errors.extend(errors)
@@ -223,6 +225,29 @@ class Message:
                 break
         return ret
 
+    #====================================
+    # Parse to dict
+    #====================================
+    def __make_dict__(self,dt,el):
+        if el.nodeType == Node.ELEMENT_NODE:
+            dt[el.nodeName] = {}
+            attr=[]
+            for a in el.attributes.values():
+                attr.append((a.name, a.value)) # <xml.dom.minidom.Attr instance>
+            if len(attr): dt[el.nodeName]['attr'] = attr
+            for e in el.childNodes:
+                self.__make_dict__(dt[el.nodeName],e)
+        else:
+            if el.nodeValue:
+                v = el.nodeValue.strip()
+                if v:
+                    dt['data'] = dt.get('data','')+v
+
+    def make_dict(self):
+        "Create Python dict from XML.DOM data. => {'node-name':'node-value'}"
+        dt={}
+        self.__make_dict__(dt,self.dom.documentElement)
+        return dt
 
 #------------------------------------
 # Testování chybných XML
@@ -236,9 +261,8 @@ def test_template(name, path=''):
     if errors: print 'ERRORS:',errors
     if xml_epp: print 'XML_EPP:',xml_epp
     print '-'*60
-    
 
-if __name__ == '__main__':
+def test_templates():
     # Pokus o načtení neexistující šablony.
     test_template('soubor-neexistuje','epplib/testy')
     # Nesprávně formátované XML.
@@ -254,4 +278,19 @@ if __name__ == '__main__':
     # Správné načtení standardní šablony.
     test_template('hello')
 
+def test_dict(filename):
+    'Test function make_dict()'
+    import pprint
+    msg = open(filename).read()
+    print "test_dict: filename='%s'"%filename
+    print msg
+    print '-'*60
+    epp = Message()
+    epp.parse_xml(msg)
+    print epp.get_errors()
+    d = epp.make_dict()
+    pprint.pprint(d)
 
+if __name__ == '__main__':
+##    test_templates()
+    test_dict("test-epp-msg.xml")
