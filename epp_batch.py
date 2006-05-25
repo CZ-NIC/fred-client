@@ -6,6 +6,7 @@
 # Tento modul bude zpracovávat příkazy ze souboru,
 # nebo z příkazové řádky.
 import epplib.client_session
+from epplib.client_session import debug_label
 
 def run_console(client):
     # zde se spustí naslouchací smyčka:
@@ -18,18 +19,15 @@ def run_console(client):
             break
         notes, errors, epp_doc = client.get_TEST_result(command) # get_result
         if notes:
-            print 'NOTES:\n',notes
-            print "-"*60
+            debug_label('notes',notes)
         if errors:
-            print 'ERRORS:\n',errors
-            print "-"*60
+            debug_label('errors',errors)
         if epp_doc:
-            print "CLIENT COMMAND:\n",epp_doc
-            print "-"*60
+            debug_label('client command',epp_doc)
             # odeslání dokumentu na server
             if not client.send(epp_doc): # send_to_server
                 break
-        client.run_listen_loop()
+            client.run_listen_loop()
     client.close()
     print client.fetch_errors()
     print client.fetch_notes()

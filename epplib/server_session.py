@@ -35,10 +35,29 @@ class Manager:
         self._lang = 'en'
         self._epp_cmd = server_eppdoc.Message()
         self._epp_response = server_eppdoc.Message()
+        self._notes = [] # upozornění na chybné zadání
+        self._errors = [] # chybová hlášení při přenosu, parsování
         self._sep = '\n' # oddělovač jednotlivých zpráv
         self._available_commands = self.get_server_commands()
         self._dock = None # class of server socket
-    
+        self._buffer = [] # incomming EPP messages
+        self._end_anchor = '</epp>' # Indicator of the end EPP message
+        self._keep_connection = ''  # ''-no keep, 'keep-connection'
+
+    def fetch_errors(self, sep='\n'):
+        if self._dock:
+            self._errors.extend(self._dock._errors)
+        msg = sep.join(self._errors)
+        self._errors = []
+        return msg
+
+    def fetch_notes(self, sep='\n'):
+        if self._dock:
+            self._notes.extend(self._dock._notes)
+        msg = sep.join(self._notes)
+        self._notes = []
+        return msg
+
     def get_server_commands(self):
         'Return available server commands.'
         cmd = [name[8:] for name in dir(self.__class__) if name[:8]=='process_']
@@ -172,63 +191,79 @@ class Manager:
     #    Transfer functions
     #
     #==================================================
-    def get_dock(self):
-        'Return object of socket.'
-        return self._dock
+    def handler_message(self, msg):
+        'Handler of incomming message'
+        # funkce pro přijetí zprávy
+        part = re.split(self._end_anchor,msg,re.I) # </epp>
+        self._buffer.append(part[0])
+        if len(part)>1:
+            # end of EPP document occured
+            self._buffer.append(self._end_anchor)
+            epp_message = '\n'.join(self._buffer)
+            answer = self.answer(epp_message)
+            self.send(answer) # send to client
+            debug_label('CLIENT',epp_message)
+            debug_label('ANSWER',answer)
+            if not self._keep_connection:
+                self.stop_listen() # po každé odpovědi se spojení přeruší
+            # reset new message
+            self._buffer=[]
+            if part[1].strip()!='':
+                self._buffer.append(part[1])
 
-    def start_dock_receiving(self, noblocking=None):
-        if self._dock.start_receive_thread(self.receive_from_client) and not noblocking:
-            self._dock.join()
-        
-    def listen(self, host, port):
-        if self._dock: self.disconnect()
-        self._dock = server_socket.Dock()
-        return self._dock.listen(host, port)
-        
-    def disconnect(self):
+    def run_listen_loop(self):
+        self._dock.run_listen_loop()
+
+
+    def listen(self):
+        return self._dock.listen()
+
+    def close(self):
         if self._dock:
             self._dock.close()
             self._dock = None
 
-    def send_to_client(self, message):
+    def send(self, message):
         return self._dock.send(message)
 
-    def receive_from_client(self, command):
-        answer = self.answer(command)
-        self.send_to_client(answer)
-        print '-'*60,'\nCLIENT COMMAND:\n',command
-        print '-'*60,'\nSERVER ANSWER:\n',answer
+    def wait_to_listen(self):
+        self._dock.join()
 
-    def get_transfer_errors(self):
-        return self._dock.fetch_errors()
+    def stop_listen(self):
+        self._dock.stop_listening()
 
-    def get_received_command(self):
-        return self._dock.get_cargo()
-        
+    def bind(self, HP):
+        self._keep_connection = HP[2]
+        if self._dock:
+            self.disconnect()
+        self._dock = server_socket.Dock()
+        self._dock.handler_message = self.handler_message
+        return self._dock.bind(HP[0], HP[1])
+
     #==================================================
 
-def test(host, port, prompt):
-    server = Manager()
-    if server.listen(host, port):
-        print 'Run forever... (break ^C)'
-        server.start_dock_receiving(prompt)
-    if prompt:
-        dock = server.get_dock()
-        while dock.isAlive():
-            command = raw_input("> (?-help, q-quit): ")
-            if command in ('q','quit','exit','konec'): break
-            if not server.send_to_client(command):
-                print dock.fetch_errors()
-                break
-    server.disconnect()
-    print "[END SERVER TEST]"
+def debug_label(text,message=''):
+    print '\n'
+    print '-'*60
+    print '***',text.upper(),'***'
+    print '-'*60
+    if message: print message
 
-        
 if __name__ == '__main__':
-    import sys
-    interactive = None
-    if len(sys.argv)>1:
-        if sys.argv[1]=='i':
-            interactive = 'yes' # zapnutí promptu
-    test('', 700, interactive)
+    import client_session
+    server = Manager()
+    client = client_session.Manager()
+    while 1:
+        command = raw_input("CLIENT > (? help, q quit): ")
+        if command in ('q','quit','exit','konec'): break
+        notes, errors, epp_doc = client.get_TEST_result(command) # get_result
+        if notes:
+            debug_label('notes',notes)
+        if errors:
+            debug_label('errors',errors)
+        if epp_doc:
+            debug_label('client command',epp_doc)
+            answer = server.answer(epp_doc)
+            debug_label('server answer',answer)
+    print '[END]'
 

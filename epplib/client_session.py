@@ -98,7 +98,8 @@ class Manager:
         'Process EPP command inside session.'
         # Příkazy EPP
         # Pokud se příkaz našel, tak se provede pokračuje do stavu 2.
-        if self._session[0] or cmd in ('hello','login'):
+##        if self._session[0] or cmd in ('hello','login'):
+        if 1: # Tady se vypíná kontrola zalogování:
             # když je klient zalogován, tak se volá EPP příkaz
             # výjimky pro příkazy hello a login
             fnc_name = "create_%s"%cmd
@@ -206,11 +207,12 @@ class Manager:
         return self._sep.join(self._notes), self._epp_cmd.get_errors(self._sep), self._epp_cmd.get_xml()
 
 
-def debug_label(text):
+def debug_label(text,message=''):
     print '\n'
     print '-'*60
     print '***',text.upper(),'***'
     print '-'*60
+    if message: print message
 
 if __name__ == '__main__':
     client = Manager()

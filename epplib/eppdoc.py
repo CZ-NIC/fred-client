@@ -38,6 +38,7 @@ class Message:
         self.dom = None         # DOM object
         self.errors = []        # [(code, value, reason), ...]
         self.encoding = default_encoding
+        self._cr = '\n' # new line
         
     def reset(self):
         self.__reset_dom__()
@@ -49,7 +50,6 @@ class Message:
         #    print self.dom.toxml()
         #    self.dom.unlink()
         self.dom = None
-
 
     def get_xml(self):
         'Build XML form DOM.'
@@ -63,7 +63,7 @@ class Message:
                 xml = f.read()
             else:
                 # Kdyz chybi funkce PrettyPrint()
-                xml = self.dom.toprettyxml('  ','\n',self.encoding)
+                xml = self.dom.toprettyxml('  ', self._cr, self.encoding)
         # zatím vypnuto...
         # return re.sub('(<?xml .+?)\?>','\\1 standalone="no"?>',xml, re.I)
         return xml
@@ -71,12 +71,14 @@ class Message:
     def join_errors(self, errors):
         self.errors.extend(errors)
     
-    def get_errors(self, sep='\n'):
+    def get_errors(self, sep=None):
+        if sep==None: sep=self._cr
         errors=['[%d] (%s) %s'%(code,str(value),reason) for code,value,reason in self.errors]
         return sep.join(errors)
 
-    def get_results(self, sep='\n'):
+    def get_results(self, sep=None):
         #errors,xml_epp
+        if sep==None: sep=self._cr
         return self.get_errors(sep), self.get_xml()
 
     def append_attribNS(self, node, attribs, ns=''):
@@ -228,26 +230,113 @@ class Message:
     #====================================
     # Parse to dict
     #====================================
-    def __make_dict__(self,dt,el):
+    def __make_dict__(self, dt, el, nodes={}):
         if el.nodeType == Node.ELEMENT_NODE:
-            dt[el.nodeName] = {}
+            if nodes.get(el.nodeName,None) and nodes[el.nodeName][1]>1:
+                node_name = '%s#%d/%d'%(el.nodeName, nodes[el.nodeName][0],nodes[el.nodeName][1])
+                nodes[el.nodeName][0]+=1
+            else:
+                node_name = el.nodeName
+            dt[node_name] = {}
             attr=[]
             for a in el.attributes.values():
                 attr.append((a.name, a.value)) # <xml.dom.minidom.Attr instance>
-            if len(attr): dt[el.nodeName]['attr'] = attr
+            if len(attr):
+                if dt[node_name].get('attr',None):
+                    dt[node_name]['attr'].extend(attr)
+                else:
+                    dt[node_name]['attr'] = attr
+            # data
             for e in el.childNodes:
-                self.__make_dict__(dt[el.nodeName],e)
-        else:
-            if el.nodeValue:
-                v = el.nodeValue.strip()
-                if v:
-                    dt['data'] = dt.get('data','')+v
+                if e.nodeType != Node.ELEMENT_NODE:
+                    if e.nodeValue:
+                        val = e.nodeValue.strip()
+                        if val:
+                            dt[node_name]['data'] = dt[node_name].get('data','')+val
+            # uzly se shodnými jmény
+            enod={}
+            for e in el.childNodes:
+                if e.nodeType == Node.ELEMENT_NODE:
+                    dt[node_name]['nodes'] = {}
+                    if enod.get(e.nodeName,None):
+                        enod[e.nodeName][1]+=1
+                    else:
+                        enod[e.nodeName]=[1,1]
+            for e in el.childNodes:
+                if e.nodeType == Node.ELEMENT_NODE:
+                    self.__make_dict__(dt[node_name]['nodes'], e, enod)
 
     def make_dict(self):
-        "Create Python dict from XML.DOM data. => {'node-name':'node-value'}"
+        """Create Python dict from XML.DOM data. => 
+        {'node-name': {'attr':[('name','value',...)]
+                       'data':'values...' 
+                       'nodes': { ... }
+        }}
+        """
         dt={}
-        self.__make_dict__(dt,self.dom.documentElement)
+        if self.dom:
+            # Vše včetně kořenového elementu:
+            # self.__make_dict__(dt, self.dom.documentElement)
+            # Pokud má element jen jednoho potomka, nebudeme EPP jej zobrazovat.
+            for element in self.dom.documentElement.childNodes:
+                self.__make_dict__(dt, element)
         return dt
+
+    #====================================
+    # Parse to Data class
+    #====================================
+    def __make_data__(self, pdt, el, nodes={}):
+        if el.nodeType == Node.ELEMENT_NODE:
+            # TODO: musí se dodělat pole
+            node_name = el.nodeName.encode('ascii')
+##            if nodes.get(el.nodeName,None) and nodes[el.nodeName][1]>1:
+##                # bude pole
+##                pdt.__dict__[node_name] = [Data()]
+##                dtn = pdt.__dict__[node_name][0]
+##            else:
+##                # jen třída
+            pdt.__dict__[node_name] = Data()
+            dtn = pdt.__dict__[node_name]
+            attr=[]
+            for a in el.attributes.values():
+                attr.append((a.name, a.value)) # <xml.dom.minidom.Attr instance>
+            if len(attr):
+                dtn.attr = attr
+            # data
+            for e in el.childNodes:
+                if e.nodeType != Node.ELEMENT_NODE:
+                    if e.nodeValue:
+                        val = e.nodeValue.strip()
+                        if val:
+                            dtn.data += val
+            # uzly se shodnými jmény
+            enod={}
+            for e in el.childNodes:
+                if e.nodeType == Node.ELEMENT_NODE:
+                    dtn.__dict__[e.nodeName] = Data()
+                    if enod.get(e.nodeName,None):
+                        enod[e.nodeName][1]+=1
+                    else:
+                        enod[e.nodeName]=[1,1]
+            for e in el.childNodes:
+                if e.nodeType == Node.ELEMENT_NODE:
+                    self.__make_data__(dtn.__dict__[e.nodeName], e, enod)
+
+    def make_data(self):
+        "Create object representing DOM data"
+        dt = Data()
+        dt.__doc__ = "EPP document"
+        if self.dom:
+            for element in self.dom.documentElement.childNodes:
+                self.__make_data__(dt, element)
+        return dt
+
+class Data:
+    "Data object"
+    def __init__(self):
+        # POROR! Žádný uzel se nesmí jmenovat attr a data.
+        self.attr = []
+        self.data = ''
 
 #------------------------------------
 # Testování chybných XML
@@ -288,9 +377,18 @@ def test_dict(filename):
     epp = Message()
     epp.parse_xml(msg)
     print epp.get_errors()
+    print epp.get_xml()
     d = epp.make_dict()
     pprint.pprint(d)
+    print '-'*60
+    print u"Příklad přístupu k datům slovníku:"
+    print '-'*60
+    print "d['greeting']['nodes']['svcs']['nodes']['objURI#1/3']['data']:"
+    print d['greeting']['nodes']['svcs']['nodes']['objURI#1/3']['data']
+    print '-'*60
+    print 'Data class:'
+    return epp.make_data() # pro interaktivní režim
 
 if __name__ == '__main__':
 ##    test_templates()
-    test_dict("test-epp-msg.xml")
+    epp = test_dict("test-epp-msg.xml")

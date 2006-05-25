@@ -56,7 +56,7 @@ class Lorry:
             # 4 bytes of message length
             # délka nás vpodstatě nezajímá
             #size = ord(t[0])<<32 | ord(t[1])<<16 | ord(t[2])<<8 | ord(t[3])
-            #print "PART BEGINING: size=%d"%size #!!!
+            #print "PART BEGINING: size=%d"%size
             t=''
         return t
 
@@ -65,7 +65,7 @@ class Lorry:
             # když spojení neexistuje
             if not self.__connect__():
                 # pokud se nepodařilo navázat
-                self.__stop_listening__()
+                self.stop_listening()
                 return
         while self._run:
             try:
@@ -90,7 +90,7 @@ class Lorry:
                 msg = self.__parse_transmit_header__(msg)
             self._begin_listen = 0 # první blok je za námi
             if msg: self.handler_message(msg)
-        self.__stop_listening__()
+        self.stop_listening()
         self.__close_socket__()
 
     def fetch_errors(self, sep='\n'):
@@ -107,7 +107,7 @@ class Lorry:
         # funkce pro zpracování zprávy
         print 'Client:',msg
         
-    def __stop_listening__(self,val=''):
+    def stop_listening(self,val=''):
         self._thr_lock.acquire()
         self._run = val
         self._thr_lock.release()
@@ -115,12 +115,12 @@ class Lorry:
     def run_listen_loop(self):
         'Run receiving thread again.'
         if not self._thr_receive.isAlive():
-            self.__stop_listening__('RUN!') # Run listen thread
+            self.stop_listening('RUN!') # Run listen thread
             self._begin_listen = 1 # indikátor začátku přenosu
             self._thr_receive = threading.Thread(target = self.__listen_loop__)
             self._thr_receive.start()
     
-    def __join__(self):
+    def join(self):
         "Wait until listen process stops."
         if self._thr_receive.isAlive():
             # self._notes.append(_T('Wait to stop listen loop.'))
@@ -146,8 +146,8 @@ class Lorry:
         return ok
 
     def close(self):
-        self.__stop_listening__() # Zastavit thread naslouchání
-        self.__join__() # pokud běží, tak počkat až se ukončí
+        self.stop_listening() # Zastavit thread naslouchání
+        self.join() # pokud běží, tak počkat až se ukončí
         self.__close_socket__()
 
     def connect(self, host, port, is_ssl=None):

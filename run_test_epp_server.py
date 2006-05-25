@@ -5,11 +5,21 @@
 #
 import epplib.server_session
 
-if __name__ == '__main__':
-    import sys
-    interactive = None
-    if len(sys.argv)>1:
-        if sys.argv[1]=='i':
-            interactive = 'yes' # zapnutí promptu
-    epplib.server_session.test('', 700, interactive)
+def test(server):
+    # zde se spustí naslouchací smyčka:
+    while server.listen():
+        server.run_listen_loop()
+        server.wait_to_listen() # čeká se na ukončení naslouchání
+    server.close()
+    print server.fetch_errors()
+    print server.fetch_notes()
+    print "[END SERVER TEST]"
 
+if __name__ == '__main__':
+    DATA=('',700,'') # host, port, keep-connection
+    server = epplib.server_session.Manager()
+    if server.bind(DATA):
+        test(server)
+    else:
+        print server.fetch_errors()
+        print server.fetch_notes()
