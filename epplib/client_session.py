@@ -16,17 +16,29 @@ import client_eppdoc
 import client_eppdoc_test
 import client_socket
 import pprint
+import os, commands # jen pro testování. v ostré verzi to nebude
 """Usage:
 
 import epplib
 client = epplib.client_session.Manager()
-notes, errors, epp_doc = client.get_result("hello")
-print 'NOTES:',notes
-print 'ERRORS:',error
-print 'XMLEPP:',epp_doc
-if epp_doc:
-    client.send_to_server(epp_doc)
+xml_epp_doc = client.create_eppdoc("hello")
+print 'NOTES:',client.fetch_notes()
+print 'ERRORS:',client.fetch_errors()
+print 'XMLEPP:',xml_epp_doc
+if xml_epp_doc:
+    if client.connect():
+        client.send(xml_epp_doc)
+        answer = client.receive()
+        client.process_answer(answer)
+        client.close()
 """
+
+#------------------------------------
+# default connection to server
+#------------------------------------
+default_connecion = ('curlew',700)
+
+ID,USER,PASS = range(3)
 
 class Manager:
     """EPP client support.
@@ -43,8 +55,6 @@ class Manager:
         self._sep = '\n' # oddělovač jednotlivých zpráv
         self._available_commands = self._epp_cmd.get_client_commands()
         self._lorry = None
-        self._buffer = [] # incomming EPP messages
-        self._end_anchor = '</epp>' # Indicator of the end EPP message
 
     def get_errors(self, sep='\n'):
         return sep.join(self._errors)
@@ -52,6 +62,7 @@ class Manager:
     def fetch_errors(self, sep='\n'):
         if self._lorry:
             self._errors.extend(self._lorry._errors)
+            self._lorry._errors = []
         msg = sep.join(self._errors)
         self._errors = []
         return msg
@@ -59,6 +70,7 @@ class Manager:
     def fetch_notes(self, sep='\n'):
         if self._lorry:
             self._notes.extend(self._lorry._notes)
+            self._lorry._notes=[]
         msg = sep.join(self._notes)
         self._notes = []
         return msg
@@ -69,7 +81,7 @@ class Manager:
     #
     #==================================================
     def create_login(self, cmd):
-        if self._session[0]:
+        if self._session[ID]:
             # klient je už zalogován
             self._notes.append(_T('You are logged allready.'))
         else:
@@ -98,8 +110,8 @@ class Manager:
         'Process EPP command inside session.'
         # Příkazy EPP
         # Pokud se příkaz našel, tak se provede pokračuje do stavu 2.
-##        if self._session[0] or cmd in ('hello','login'):
-        if 1: # Tady se vypíná kontrola zalogování:
+        if self._session[ID] or cmd in ('hello','login'):
+##        if 1: # Tady se vypíná kontrola zalogování:
             # když je klient zalogován, tak se volá EPP příkaz
             # výjimky pro příkazy hello a login
             fnc_name = "create_%s"%cmd
@@ -111,11 +123,12 @@ class Manager:
                 # To, že daná funkce existuje je již ověřeno
                 # přes self._available_commands
                 getattr(self._epp_cmd, "assemble_%s"%cmd)(command)
+            errors = self._epp_cmd.get_errors()
+            if errors: self._errors.append(errors)
         else:
             self._notes.append(_T('You are not logged. You must login before working.\nPut command: login your_urename, your_password'))
 
-
-    def get_result(self, command):
+    def create_eppdoc(self, command):
         "Build EPP question form user query. IN: command; OUT: note, errors, epp_xml"
         self._notes = []
         self._epp_cmd.reset()
@@ -126,73 +139,89 @@ class Manager:
         else:
             # příkazy pro EPP
             self.epp_command(cmd)
-        return self._sep.join(self._notes), self._epp_cmd.get_errors(self._sep), self._epp_cmd.get_xml()
+        return self._epp_cmd.get_xml()
 
     #==================================================
     #
     #    Transfer functions
     #
     #==================================================
-    def handler_message(self, msg):
-        'Handler of incomming message'
-        # funkce pro přijetí zprávy
-        part = re.split(self._end_anchor,msg,re.I) # </epp>
-        self._buffer.append(part[0])
-        if len(part)>1:
-            # end of EPP document occured
-            self._buffer.append(self._end_anchor)
-            epp_message = '\n'.join(self._buffer)
-            self.process_answer(epp_message)
-            # reset new message
-            self._buffer=[]
-            if part[1].strip()!='':
-                self._buffer.append(part[1])
-
-    def run_listen_loop(self):
-        self._lorry.run_listen_loop()
-
-    def start_lorry_loading(self, noblocking=None):
-        'Start receiving loop.'
-        if self._lorry.start_listen_loop(self.receive_from_server) and not noblocking:
-            self._lorry.join()
-
-    def connect(self, data):
+    def connect(self, data=None):
         "Connect transfer socket. data=('host',port,'client-type')"
         if self._lorry: self.disconnect()
         self._lorry = client_socket.Lorry()
-        self._lorry.handler_message = self.handler_message
-        return self._lorry.connect(data[0], data[1], data[2])
+        self._lorry.handler_message = self.process_answer
+        if not data: data = default_connecion # default connection
+        if self._lorry.connect(data):
+            epp_greeting = self._lorry.receive() # receive greeting
+            if epp_greeting:
+                self.process_answer(epp_greeting)
+                return 1
+        return 0
         
     def close(self):
         if self._lorry:
             self._lorry.close()
             self._lorry = None
+        # když se spojení zrušilo, tak o zalogování nemůže být ani řeči
+        self._session[ID] = 0
 
     def send(self, message):
-        return self._lorry.send(message)
+        ret = self._lorry.send(message)
+        self._errors.extend(self._lorry._errors)
+        return ret
 
+    def send_logout(self):
+        'Send EPP logoff message.'
+        if not self._session[ID]: return # session zalogována nebyla
+        self._epp_cmd.assemble_logout()
+        xmlepp = self._epp_cmd.get_xml()
+        if xmlepp:
+            if self.send(xmlepp): self._session[ID] = 0 # odlogování se podařilo
+        else:
+            self._errors.append(self._epp_cmd.get_errors())
+        
+        
+    def receive(self):
+        answer = self._lorry.receive()
+        self._errors.extend(self._lorry._errors)
+##        if not answer:
+##            self._errors.append(_T("No response. EPP Server doesn't answer."))
+        return answer
+
+    def is_error(self):
+        return self._lorry.is_error()
+        
     #==================================================
     def process_answer(self, epp_server_answer):
         'This funcion is called by listen socket.'
-        debug_label(u'zdrojový epp:') #!!!
-        # print epp_server_answer #!!!
         # create XML DOM tree:
         self._epp_response.reset()
         self._epp_response.parse_xml(epp_server_answer)
-        print self._epp_response.get_xml()
-        debug_label(u'dict:') #!!!
-        pprint.pprint(self._epp_response.make_dict())
+        #TODO: dodělat ukládání dat
+        debug_label(u'dict:')
+        pprint.pprint(self._epp_response.create_data())
 
-    def get_TEST_result(self, command):
+    def create_eppdoc_TEST(self, command):
         'Test client result answer.'
+        xml_doc = ''
         self._notes = []
         self._epp_cmd.reset()
-        cmd = command.strip().lower()
+        cmd = command.strip() #.lower()
         if re.match('^(\?|h|help)$', cmd):
             # help
             self.help_command(cmd)
             # test help
             self._notes.append(_T("Available test commands: (\n\t%s\n).")%"\n\t".join(client_eppdoc_test.get_test_help()))
+        elif re.match('ex-',cmd):
+            # Poslání souboru z adresáře examples
+            m = re.match('ex-(.+)',command)
+            filename = m.group(1)
+            try:
+                xml_doc = open('epplib/examples/%s'%filename,'rb').read()
+            except IOError, (no, msg):
+                self._errors.append('IOError: [%d] %s'%(no, msg))
+            self._errors.append(self._epp_cmd.get_errors(self._sep))
         elif re.match('err-',cmd):
             # Testovací příkazy
             m = re.match('(\S+)',command)
@@ -200,12 +229,28 @@ class Manager:
             if not key:
                 key = re.match('err-(.+)',command).group(1)
             xml_doc = self._epp_cmd.load_xml_doc(key,'epplib/testy')
-            return 'ERROR TEST', self._epp_cmd.get_errors(self._sep), xml_doc
+            self._errors.append(self._epp_cmd.get_errors(self._sep))
         else:
             # příkazy pro EPP
             self.epp_command(cmd)
-        return self._sep.join(self._notes), self._epp_cmd.get_errors(self._sep), self._epp_cmd.get_xml()
+            xml_doc = self._epp_cmd.get_xml()
+        return xml_doc
 
+def is_epp_valid(message):
+    "Check XML EPP by xmllint."
+    tmpname='tmp.xml'
+    open(tmpname,'w').write(message)
+    # jen dočasný test
+    body = commands.getoutput('xmllint --schema ../mod_eppd/schemas/epp-1.0.xsd %s'%tmpname)
+    os.unlink(tmpname)
+    if body[-9:]=='validates':
+        valid=1
+    else:
+        valid=0
+        print "Internal: EPP DOC is not valid:"
+        print body
+        print '-'*60
+    return valid
 
 def debug_label(text,message=''):
     print '\n'
@@ -219,13 +264,13 @@ if __name__ == '__main__':
     while 1:
         command = raw_input("> (? help, q quit): ")
         if command in ('q','quit','exit','konec'): break
-        notes, errors, epp_doc = client.get_result(command)
-        if notes:
-            print 'NOTES:\n',notes
-        if errors:
-            print 'ERRORS:\n',errors
-        if epp_doc:
-            print 'EPP COMMAND:\n',epp_doc
-        print '-'*60
+        eppdoc = client.create_eppdoc_TEST(command)
+        print 'ERRORS:',client.fetch_errors()
+        print 'NOTES:',client.fetch_notes()
+        if eppdoc:
+            if is_epp_valid(eppdoc):
+                print 'EPP COMMAND:\n%s\n%s'%(eppdoc,'-'*60)
+            client.process_answer(eppdoc)
+        print '='*60
     print '[END]'
 

@@ -96,10 +96,10 @@ def test_command(command, label):
         getattr(epp, fnc_name)(cmd[1:])
     else:
         print "Error: Command not found."
-    errors,xml_epp = epp.get_results()
+    errors, xmlepp = epp.get_results()
     print '%s:'%label
-    if errors: print 'ERRORS:',errors
-    if xml_epp: print xml_epp
+    print 'XMLEPP:',xmlepp
+    print 'ERRORS:',errors
     print '-'*60
 
 if __name__ == '__main__':

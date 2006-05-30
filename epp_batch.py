@@ -6,41 +6,49 @@
 # Tento modul bude zpracovávat příkazy ze souboru,
 # nebo z příkazové řádky.
 import epplib.client_session
-from epplib.client_session import debug_label
 
-def run_console(client):
+def main():
+    client = epplib.client_session.Manager()
+    if not client.connect():
+        # když se spojení nepodařilo navázat
+        print 'NOTES:',client.fetch_notes()
+        print 'ERRORS:',client.fetch_errors()
+        return
     # zde se spustí naslouchací smyčka:
-    client.run_listen_loop()
     print client.fetch_notes()
     print "[START LOOP prompt]"
     while 1:
         command = raw_input("> (?-help, q-quit): ")
         if command in ('q','quit','exit','konec'):
+            client.send_logout()
             break
-        notes, errors, epp_doc = client.get_TEST_result(command) # get_result
-        if notes:
-            debug_label('notes',notes)
-        if errors:
-            debug_label('errors',errors)
-        if epp_doc:
-            debug_label('client command',epp_doc)
+        epp_doc = client.create_eppdoc_TEST(command)
+        if epp_doc and epplib.client_session.is_epp_valid(epp_doc):
+            epplib.client_session.debug_label('client command',epp_doc)
             # odeslání dokumentu na server
-            if not client.send(epp_doc): # send_to_server
-                break
-            client.run_listen_loop()
+            if not client.send(epp_doc):
+                print "když se odeslání nepodařilo..."#!!!
+                break # když se odeslání nepodařilo
+            # příjem odpovědi
+            answer = client.receive()
+            if not answer:
+                # odpověď od serveru nepřišla
+                print "No response. EPP Server doesn't answer."
+##                break
+            # zpracování odpovědi
+            client.process_answer(answer)
+        else:
+            print 'ERRORS:',client.fetch_errors()
+            print 'NOTES:',client.fetch_notes()
+        if client.is_error():
+            print "vyskytly se nějaké chyby...?"#!!!
+            break # vyskytly se nějaké chyby
+    print "[END LOOP prompt]"
+    print 'ERRORS:',client.fetch_errors()
+    print 'NOTES:',client.fetch_notes()
     client.close()
-    print client.fetch_errors()
-    print client.fetch_notes()
-    print "[END CLIENT TEST]"
+    print "[END CLIENT]"
 
 
 if __name__ == '__main__':
-##    DATA=('localhost',700,'cli')
-    DATA=('curlew',700,'ssl')
-    client = epplib.client_session.Manager()
-    if client.connect(DATA):
-        run_console(client)
-    else:
-        print client.fetch_errors()
-        print client.fetch_notes()
-
+    main()

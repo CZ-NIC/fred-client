@@ -22,5 +22,6 @@ test_cmd={
     ,'err-entity':  ('neznama-entita',     u'err-entity    V dokumentu se nachází neznámá entita.')
     ,'err-cmd':     ('multi_command',      u'err-cmd       Test na zpracování více příkazů.')
     ,'err-1250':    ('kodovani-cp1250',    u'err-1250      Test na jiný typ kódování.')
+    ,'ex-filename': ('odeslání souboru',    u'ex-[filename] Odeslání souboru z adresáře examples. Např: vzor-login.xml')
 }
 

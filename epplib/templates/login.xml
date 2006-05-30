@@ -10,12 +10,9 @@
         <lang>en</lang>
       </options>
       <svcs>
-        <objURI/>
-        <svcExtension>
-          <extURI/>
-        </svcExtension>
+        <objURI>urn:ietf:params:xml:ns:obj1</objURI>
       </svcs>
     </login>
-    <clTRID/>
+    <clTRID>sample1trid</clTRID>
   </command>
 </epp>
