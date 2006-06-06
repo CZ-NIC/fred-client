@@ -66,8 +66,56 @@ class Message(eppdoc.Message):
     #-------------------------------------------
     def assemble_check(self, params=None):
         self.load_EPP_template('check')
-    def assemble_info(self, params=None):
-        self.load_EPP_template('info')
+
+    def __assemble_info__(self, data):
+        'Support fo assemble_info_...() functions.'
+        self.create()
+        for v in data:
+            value, attr = None,None
+            parent_name, name = v[0:2]
+            if len(v)>2: value = v[2]
+            if len(v)>3: attr  = v[3]
+            self.new_node_by_name(parent_name, name, value, attr)
+        
+    def assemble_info_contact(self, params):
+        "params must have ('name','clTRID')"
+        self.__assemble_info__((
+            ('epp', 'command'),
+            ('command', 'info'),
+            ('info','contact:info',None,(
+            ('xmlns:contact','http://www.nic.cz/xml/epp/contact-1.0'),
+            ('xsi:schemaLocation','http://www.nic.cz/xml/epp/contact-1.0 contact-1.0.xsd')
+            )),
+            ('contact:info', 'contact:id', params[0]),
+            ('command', 'clTRID', params[1])
+        ))
+
+    def assemble_info_domain(self, params):
+        "params must have ('name','clTRID')"
+        self.__assemble_info__((
+            ('epp', 'command'),
+            ('command', 'info'),
+            ('info','domain:info',None,(
+            ('xmlns:domain','http://www.nic.cz/xml/epp/domain-1.0'),
+            ('xsi:schemaLocation','http://www.nic.cz/xml/epp/domain-1.0 domain-1.0.xsd')
+            )),
+            ('domain:info', 'domain:name', params[0]),
+            ('command', 'clTRID', params[1])
+        ))
+
+    def assemble_info_nsset(self, params):
+        "params must have ('name','clTRID')"
+        self.__assemble_info__((
+            ('epp', 'command'),
+            ('command', 'info'),
+            ('info','nsset:info',None,(
+            ('xmlns:nsset','http://www.nic.cz/xml/epp/nsset-1.0'),
+            ('xsi:schemaLocation','http://www.nic.cz/xml/epp/nsset-1.0 nsset-1.0.xsd')
+            )),
+            ('nsset:info', 'nsset:id', params[0]),
+            ('command', 'clTRID', params[1])
+        ))
+
     def assemble_poll(self, params=None):
         self.load_EPP_template('poll')
     def assemble_transfer(self, params=None):

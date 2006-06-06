@@ -137,12 +137,12 @@ class Message:
         if self.dom:
             self.join_top_attribs()
 
-    def create(self):
+    def create(self, top_name='epp'):
         'Create empty EPP DOM.'
         self.__reset_dom__()
         # Posledni parametr (0) urcuje DTD, a pokud je 0 tak dokument zadne DTD nema.
         # ("jmeny_prostor","korenovy-element",0)
-        self.dom = xml.dom.getDOMImplementation().createDocument('','epp',0)
+        self.dom = xml.dom.getDOMImplementation().createDocument('',top_name,0)
         self.join_top_attribs()
 
     def new_node_by_name(self, master_name, name, value=None, attribs=None):
@@ -226,6 +226,21 @@ class Message:
                 ret=n
                 break
         return ret
+
+    def get_node_values(self, node, path):
+        "Return values from last node in the names path."
+        vals=[]
+        if len(path):
+            nodes = node.getElementsByTagName(path[0])
+            nextp = path[1:]
+            for n in nodes:
+                vals.append(self.get_node_values(n,nextp))
+        else:
+            for e in node.childNodes:
+                if e.nodeType != Node.ELEMENT_NODE:
+                    if e.nodeValue:
+                        vals.append(e.nodeValue.strip())
+        return ''.join(vals)
 
     #====================================
     # Parse to Dict / Data class

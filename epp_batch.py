@@ -37,11 +37,13 @@ def main():
 ##                break
             # zpracování odpovědi
             client.process_answer(answer)
+            print 'ERRORS:',client.fetch_errors()
+            print 'NOTES:',client.fetch_notes()
         else:
             print 'ERRORS:',client.fetch_errors()
             print 'NOTES:',client.fetch_notes()
         if client.is_error():
-            print "vyskytly se nějaké chyby...?"#!!!
+            print "[epp_batch.py] vyskytly se nějaké chyby...?"#!!!
             break # vyskytly se nějaké chyby
     print "[END LOOP prompt]"
     print 'ERRORS:',client.fetch_errors()

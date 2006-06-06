@@ -44,9 +44,14 @@ class Lorry:
             return 0
 ##        if self._is_ssl:
         self._notes.append(_T('Init SSL connection'))
+##        print open(PUBLIC_KEY).read() #!!!
+##        print open(PRIVATE_KEY).read() #!!!
         try:
             self._conn_ssl = socket.ssl(self._conn)
+##            self._conn_ssl = socket.ssl(self._conn, PRIVATE_KEY, PUBLIC_KEY)
         except socket.sslerror, msg:
+            # SSL_CTX_use_certificate_chain_file error
+            if type(msg) is not str: msg = msg[0]
             self._errors.append(msg)
             self._conn.close()
             self._conn = None
@@ -224,6 +229,8 @@ class Lorry:
 
 if __name__ == '__main__':
     import sys
+    PRIVATE_KEY = 'certificate_private.pem'
+    PUBLIC_KEY = 'certificate_public.pem'
     DATA = ['curlew',700]
     if len(sys.argv)>1: DATA[0] = sys.argv[1]
     if len(sys.argv)>2: DATA[1] = int(sys.argv[2])
