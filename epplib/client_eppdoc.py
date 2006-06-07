@@ -9,7 +9,10 @@
 # Funkce s prefixem "assemble_" jsou jednotlivé EPP příkazy, které třída
 # Message() umí sestavit. Seznam dostupných příkazů vrací funkce get_client_commands().
 #
+import re
 import eppdoc
+
+ONLY_ONE_VALUE = 1 # definice pro funkci __asseble_command__()
 
 class Message(eppdoc.Message):
     "Client EPP commands."
@@ -58,8 +61,13 @@ class Message(eppdoc.Message):
         self.append_attribNS(obj_info, attr)
         self.put_value('obj:name', u'Pokusné jméno', 'obj:info') #!!!
 
-    def assemble_logout(self, params=None):
-        self.load_EPP_template('logout')
+    def assemble_logout(self, params):
+        "Assemble EPP command logount. params=('clTRID',)"
+        self.__assemble_cmd__((
+            ('epp', 'command'),
+            ('command', 'logout'),
+            ('command', 'clTRID', params[0])
+        ))
 
     #-------------------------------------------
     # Dotazovací (query)
@@ -67,8 +75,8 @@ class Message(eppdoc.Message):
     def assemble_check(self, params=None):
         self.load_EPP_template('check')
 
-    def __assemble_info__(self, data):
-        'Support fo assemble_info_...() functions.'
+    def __assemble_cmd__(self, data):
+        'Support for assemble_...() functions.'
         self.create()
         for v in data:
             value, attr = None,None
@@ -76,45 +84,50 @@ class Message(eppdoc.Message):
             if len(v)>2: value = v[2]
             if len(v)>3: attr  = v[3]
             self.new_node_by_name(parent_name, name, value, attr)
+
+    def __asseble_command__(self, cols, params, one_only=0):
+        """Internal fnc for assembly commands info, check. 
+        cols=('check','contact','id')
+        params must have ('clTRID',('name',['name','name',]))
+        """
+        data=[('epp', 'command'),
+            ('command', cols[0]),
+            (cols[0],'%s:%s'%(cols[1],cols[0]),None,(
+            ('xmlns:%s'%cols[1],'http://www.nic.cz/xml/epp/%s-1.0'%cols[1]),
+            ('xsi:schemaLocation','http://www.nic.cz/xml/epp/%s-1.0 %s-1.0.xsd'%(cols[1],cols[1]))
+            ))
+            ]
+        col1 = '%s:%s'%(cols[1],cols[0])
+        col2 = '%s:%s'%(cols[1],cols[2])
+        for value in params[1]:
+            data.append((col1, col2, value))
+            if one_only: break
+        data.append(('command', 'clTRID', params[0]))
+        self.__assemble_cmd__(data)
+            
+    def assemble_check_contact(self, params):
+        "params must have ('clTRID',('name',['name','name',]))"
+        self.__asseble_command__(('check','contact','id'), params)
         
+    def assemble_check_domain(self, params):
+        "params must have ('clTRID',('name',['name','name',]))"
+        self.__asseble_command__(('check','domain','name'), params)
+        
+    def assemble_check_nsset(self, params):
+        "params must have ('clTRID',('name',['name','name',]))"
+        self.__asseble_command__(('check','nsset','id'), params)
+
     def assemble_info_contact(self, params):
-        "params must have ('name','clTRID')"
-        self.__assemble_info__((
-            ('epp', 'command'),
-            ('command', 'info'),
-            ('info','contact:info',None,(
-            ('xmlns:contact','http://www.nic.cz/xml/epp/contact-1.0'),
-            ('xsi:schemaLocation','http://www.nic.cz/xml/epp/contact-1.0 contact-1.0.xsd')
-            )),
-            ('contact:info', 'contact:id', params[0]),
-            ('command', 'clTRID', params[1])
-        ))
+        "params must have ('clTRID',('name',))"
+        self.__asseble_command__(('info','contact','id'), params, ONLY_ONE_VALUE)
 
     def assemble_info_domain(self, params):
-        "params must have ('name','clTRID')"
-        self.__assemble_info__((
-            ('epp', 'command'),
-            ('command', 'info'),
-            ('info','domain:info',None,(
-            ('xmlns:domain','http://www.nic.cz/xml/epp/domain-1.0'),
-            ('xsi:schemaLocation','http://www.nic.cz/xml/epp/domain-1.0 domain-1.0.xsd')
-            )),
-            ('domain:info', 'domain:name', params[0]),
-            ('command', 'clTRID', params[1])
-        ))
+        "params must have ('clTRID',('name',))"
+        self.__asseble_command__(('info','domain','name'), params, ONLY_ONE_VALUE)
 
     def assemble_info_nsset(self, params):
-        "params must have ('name','clTRID')"
-        self.__assemble_info__((
-            ('epp', 'command'),
-            ('command', 'info'),
-            ('info','nsset:info',None,(
-            ('xmlns:nsset','http://www.nic.cz/xml/epp/nsset-1.0'),
-            ('xsi:schemaLocation','http://www.nic.cz/xml/epp/nsset-1.0 nsset-1.0.xsd')
-            )),
-            ('nsset:info', 'nsset:id', params[0]),
-            ('command', 'clTRID', params[1])
-        ))
+        "params must have ('clTRID',('name',))"
+        self.__asseble_command__(('info','nsset','id'), params, ONLY_ONE_VALUE)
 
     def assemble_poll(self, params=None):
         self.load_EPP_template('poll')

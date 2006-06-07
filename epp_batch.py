@@ -9,14 +9,19 @@ import epplib.client_session
 
 def main():
     client = epplib.client_session.Manager()
-    if not client.connect():
-        # když se spojení nepodařilo navázat
-        print 'NOTES:',client.fetch_notes()
-        print 'ERRORS:',client.fetch_errors()
-        return
-    # zde se spustí naslouchací smyčka:
-    print client.fetch_notes()
-    print "[START LOOP prompt]"
+    #---------------------------------------------------
+    if 1:
+        # automatické připojení k serveru
+        if not client.connect():
+            # když se spojení nepodařilo navázat
+            print '[batch] NOTES:\n',client.fetch_notes()
+            print '[batch] ERRORS:\n',client.fetch_errors()
+            return
+        print client.fetch_notes() # zobrazit poznámky
+    else:
+        print u"Pro spojení se serverem zadeje: connect"
+    #---------------------------------------------------
+    print "[BATCH: START LOOP prompt]"
     while 1:
         command = raw_input("> (?-help, q-quit): ")
         if command in ('q','quit','exit','konec'):
@@ -25,31 +30,17 @@ def main():
         epp_doc = client.create_eppdoc_TEST(command)
         if epp_doc and epplib.client_session.is_epp_valid(epp_doc):
             epplib.client_session.debug_label('client command',epp_doc)
-            # odeslání dokumentu na server
-            if not client.send(epp_doc):
-                print "když se odeslání nepodařilo..."#!!!
-                break # když se odeslání nepodařilo
-            # příjem odpovědi
-            answer = client.receive()
-            if not answer:
-                # odpověď od serveru nepřišla
-                print "No response. EPP Server doesn't answer."
-##                break
-            # zpracování odpovědi
-            client.process_answer(answer)
-            print 'ERRORS:',client.fetch_errors()
-            print 'NOTES:',client.fetch_notes()
-        else:
-            print 'ERRORS:',client.fetch_errors()
-            print 'NOTES:',client.fetch_notes()
-        if client.is_error():
-            print "[epp_batch.py] vyskytly se nějaké chyby...?"#!!!
-            break # vyskytly se nějaké chyby
-    print "[END LOOP prompt]"
-    print 'ERRORS:',client.fetch_errors()
-    print 'NOTES:',client.fetch_notes()
+            if client.is_connected():
+                client.send(epp_doc)          # odeslání dokumentu na server
+                answer = client.receive()     # příjem odpovědi
+                client.process_answer(answer) # zpracování odpovědi
+            else:
+                print "You are not connected! For connection type command: connect"
+        if client.is_note():  print '[batch] NOTES:\n',client.fetch_notes()
+        if client.is_error(): print '[batch] ERRORS:\n',client.fetch_errors()
+    print "[BATCH: END LOOP prompt]"
     client.close()
-    print "[END CLIENT]"
+    print "[END BATCH]"
 
 
 if __name__ == '__main__':
