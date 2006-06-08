@@ -70,7 +70,10 @@ class Message:
 
     def join_errors(self, errors):
         self.errors.extend(errors)
-    
+
+    def is_error(self):
+        return len(self.errors)
+
     def get_errors(self, sep=None):
         if sep==None: sep=self._cr
         errors=['[%d] (%s) %s'%(code,str(value),reason) for code,value,reason in self.errors]
@@ -241,6 +244,14 @@ class Message:
                     if e.nodeValue:
                         vals.append(e.nodeValue.strip())
         return ''.join(vals)
+
+    def get_top_node_names(self):
+        "Returns names of the top node elements."
+        if self.dom:
+            top = self.dom.documentElement
+            return [e.nodeName for e in top.childNodes if e.nodeType == Node.ELEMENT_NODE]
+        else:
+            return []
 
     #====================================
     # Parse to Dict / Data class
