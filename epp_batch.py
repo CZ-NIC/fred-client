@@ -8,8 +8,32 @@
 import re
 import pprint # TEST ONLY
 import epplib.client_session
+import readline
+
+class Completer:
+   def __init__(self, words):
+	self.words = words
+	self.prefix = None
+   def complete(self, prefix, index):
+	if prefix != self.prefix:
+            # we have a new prefix!
+            # find all words that start with this prefix
+            self.matching_words = [
+		w for w in self.words if w.startswith(prefix)
+		]
+            self.prefix = prefix
+        try:
+            return self.matching_words[index]
+        except IndexError:
+            return None
 
 def main():
+    # readline
+    words = "check_contact", "check_domain", "check_nsset", "create", "delete", "hello", "info_contact", "info_domain", "info_nsset", "login", "logout", "poll", "renew", "transfer", "update"
+    completer = Completer(words)
+    readline.parse_and_bind("tab: complete")
+    readline.set_completer(completer.complete)
+
     client = epplib.client_session.Manager()
     #---------------------------------------------------
     if 0:
