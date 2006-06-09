@@ -10,7 +10,7 @@
 # a ty pak zobrazí v nějakém vybraném formátu.
 # Zobrazuje help. Přepíná jazykovou verzi.
 #
-import re
+import re, time
 from gettext import gettext as _T
 import client_eppdoc
 import client_eppdoc_test
@@ -58,20 +58,20 @@ class Manager:
         self._sep = '\n' # oddělovač jednotlivých zpráv
         self._available_commands = self._epp_cmd.get_client_commands()
         self._lorry = None
-        # Typ očekávané odpovědi serveru. Zde si Manager pamatuje jaký příaz
-        # odeslal a podlat toho pak zařadí návratové hodnoty.
-        self._expected_answer_type = ''
+        # Typ očekávané odpovědi serveru. Zde si Manager pamatuje jaký příkazy
+        # odeslal a podle toho pak zařadí návratové hodnoty.
+        self._command_sent = ''
         self._validate = 1 # automatické zapnutí validace EPP XML dokumentů
         #-----------------------------------------
         # Session data:
         #-----------------------------------------
-        self._session = ['', 'en'] # hodnoty vytvořené při sestavení session (ID, lang,...)
+        self._session = [0, 'en'] # hodnoty vytvořené při sestavení session (ID, lang,...)
         # defaults
         self.defs = ['']*DEFS_LENGTH
         self.defs[VERSION] = '1.0'
         self.defs[LANGS] = ['en']
         self.defs[objURI] = 'urn:ietf:params:xml:ns:obj1'
-        self.defs[clTRID] = 'sample1trid'
+        self.defs[clTRID] = time.strftime('cli%Y-%m-%d_%H:%M:%S')
         
     def get_errors(self, sep='\n'):
         return sep.join(self._errors)
@@ -120,7 +120,7 @@ class Manager:
     def __logout_session__(self):
         "Set internal session variables in the ID session."
         if self._session[ID]:
-            self._session[ID] = '' # odlogování se podařilo
+            self._session[ID] = 0 # odlogování se podařilo
             self._notes.append(_T('You are loged out of the private area.'))
             self._lorry.close() # zrušení konexe, server se také automaticky odpojí.
 
@@ -131,6 +131,23 @@ class Manager:
             if self._session[ID]: self._notes.append('--- %s ---'%_T('Connection broken'))
             self.__logout_session__()
 
+            
+    def __command_sent__(self, message):
+        "Save EPP command type for recognize server answer."
+        # manager si zapamatuje jakého typu příkaz byl a podle toho 
+        # pak pracuje s hodnotami, které mu server vrátí
+        # Tady se typ musí vytáhnout přímo z XML, jiná možnost není. 
+        # Protože lze posílat i XML již vytvořené dříve nebo z jiného programu.
+        epp_xml = client_eppdoc.Message()
+        epp_xml.parse_xml(message)
+        self._command_sent = epp_xml.get_epp_command_name()
+
+    def __next_clTRID__(self):
+        "Generate next clTRID value."
+##        print "__next_clTRID__() ID=",ID,'defs[clTRID]=',self.defs[clTRID],'session[ID]=',self._session[ID],'type:',type(self._session[ID]) #!!!
+        self._session[ID]+=1
+        return ('%s#%s'%(self.defs[clTRID],str(self._session[ID])))
+        
     def __create_param__(self, command_name, cmd, parameter_names=(), data=()):
         """Supprot for create_...() functions with more than ONE parameter.
         command_name - name of EPP command
@@ -146,7 +163,7 @@ class Manager:
                 # kontrola na požadovaný počet zadaných parametrů
                 self._notes.append(_T('Function must have at least %d parametres.')%min_required)
             else:
-                getattr(self._epp_cmd,'assemble_%s'%command_name)(self._session[ID], params, data)
+                getattr(self._epp_cmd,'assemble_%s'%command_name)(self.__next_clTRID__(), params, data)
                 if self._epp_cmd.is_error(): self._errors.extend(self._epp_cmd.fetch_errors())
         else:
             self._notes.append(_T('Error: Parameter missing. Type: %s %s')%(command_name,', '.join(parameter_names)))
@@ -184,6 +201,7 @@ class Manager:
             self._notes.append(_T('You are logged allready.'))
         else:
             # klient se zaloguje
+            self.defs[clTRID] = time.strftime('cli%Y-%m-%d_%H:%M:%S')
             self.__create_param__('login', cmd
                 ,(_T('login-name'),_T('password'),_T('[new password]'))
                 ,(self.defs[VERSION],self.defs[objURI],self._session[LANG]))
@@ -218,7 +236,6 @@ class Manager:
             # když je klient zalogován, tak se volá EPP příkaz
             # výjimky pro příkazy hello a login
             fnc_name = "create_%s"%cmd
-            self._expected_answer_type = cmd
             if hasattr(self, fnc_name):
                 # Příprava vstupních dat pro příkaz
                 getattr(self, fnc_name)(command)
@@ -226,7 +243,7 @@ class Manager:
                 # Když příprava vstupních dat pro příkaz chybí
                 # To, že daná funkce existuje je již ověřeno
                 # přes self._available_commands
-                getattr(self._epp_cmd, "assemble_%s"%cmd)((self._session[ID],)) #(command)
+                getattr(self._epp_cmd, "assemble_%s"%cmd)((self.__next_clTRID__(),)) # self._session[ID](command)
             self.append_errors(self._epp_cmd.get_errors())
         else:
             self._notes.append(_T('You are not logged. You must login before working.\nType login'))
@@ -246,7 +263,6 @@ class Manager:
         self._lorry.handler_message = self.process_answer
         if not data: data = default_connecion # default connection
         if self._lorry.connect(data):
-            self._expected_answer_type = 'greeting'
             epp_greeting = self._lorry.receive() # receive greeting
             self.__check_is_connected__()
             if epp_greeting:
@@ -260,7 +276,7 @@ class Manager:
             self._lorry.close()
             self._lorry = None
         # když se spojení zrušilo, tak o zalogování nemůže být ani řeči
-        self._session[ID] = ''
+        self._session[ID] = 0
 
     def is_connected(self):
         "Check if the manager is connected."
@@ -271,6 +287,11 @@ class Manager:
         ret = 0
         if self._lorry:
             ret = self._lorry.send(message)
+            if ret:
+                # pokud se podařilo dokument odeslat, tak si manager zapamatuje
+                # jakého typu příkaz byl a podle toho pak pracuje s hodnotami,
+                # které mu server vrátí
+                self.__command_sent__(message)
             self.__check_is_connected__()
         else:
             self._errors.append(_T('You are not connected.'))
@@ -279,7 +300,7 @@ class Manager:
     def send_logout(self):
         'Send EPP logout message.'
         if not self._session[ID]: return # session zalogována nebyla
-        self._epp_cmd.assemble_logout((self._session[ID],))
+        self._epp_cmd.assemble_logout((self.__next_clTRID__(),)) # self._session[ID]
         epp_doc = self._epp_cmd.get_xml()
         if epp_doc and self.is_connected():
             self.send(epp_doc)          # odeslání dokumentu na server
@@ -307,21 +328,28 @@ class Manager:
     #==================================================
     def answer_greeting(self, node):
         "Part of process answer - parse greeting node."
-        print "answer_greeting((node)%s)"%node.nodeName #!!!
-        pass
+##        print "answer_greeting((node)%s)"%node.nodeName #!!!
+##        print "answer_greeting.self._command_sent=",self._command_sent #!!!
+        print u"Přišla GREETING" #!!!
 
     def answer_response_result(self, node, parent_node):
         "Part of process answer - parse response.result node."
-        print "answer_response_result((node)%s) self._expected_answer_type='%s'"%(node.nodeName,self._expected_answer_type) #!!!
-        if self._expected_answer_type == 'login':
+##        print "answer_response_result((node)%s) self._command_sent='%s'"%(node.nodeName,self._command_sent) #!!!
+##        print "self._command_sent=",self._command_sent #!!!
+        if self._command_sent == 'login':
             if node.getAttribute('code') == '1000':
                 # zalogování se podařilo
-                self._session[ID] = self._epp_response.get_node_values(parent_node,('trID','clTRID'))
-                if not self._session[ID]: self._session[ID] = self.defs[clTRID] # nesmí být nenulové
+##                self._session[ID] = self._epp_response.get_node_values(parent_node,('trID','clTRID'))
+                clTRID = self._epp_response.get_node_values(parent_node,('trID','clTRID'))
+                print "INCOMMING clTRID=",clTRID #!!!
+                if not self._session[ID]:
+##                    self._session[ID] = self.defs[clTRID] # nesmí být nenulové
+                    self.__next_clTRID__()
                 self._notes.append('*** %s ***'%_T('You are logged on!'))
             else:
                 self._notes.append('--- %s ---'%_T('Login failed'))
-        elif self._expected_answer_type == 'logout':
+            print "TEST: self._session[ID]=",self._session[ID] #!!!
+        elif self._command_sent == 'logout':
             self.__logout_session__()
         else:
             #TODO: ostatní příkazy
@@ -329,7 +357,7 @@ class Manager:
 
     def answer_response(self, node):
         "Part of process answer - parse response node."
-        print "answer_response((node)%s)"%node.nodeName #!!!
+##        print "answer_response((node)%s)"%node.nodeName #!!!
         for e in node.childNodes:
             if not self._epp_response.is_element_node(e): continue
             # pro všechny uzly
@@ -338,9 +366,10 @@ class Manager:
 
     def process_answer(self, epp_server_answer):
         'Main function. Process incomming EPP messages. This funcion is called by listen socket.'
+        print "process_answer._command_sent=",self._command_sent,'self._session[ID]=',self._session[ID] #!!!
         if not epp_server_answer:
             self._notes.append(_T("No response. EPP Server doesn't answer."))
-            if self._expected_answer_type == 'logout': self.__logout_session__()
+            if self._command_sent == 'logout': self.__logout_session__()
             return
         # create XML DOM tree:
         self._epp_response.reset()
@@ -351,11 +380,13 @@ class Manager:
             self.append_errors(self._epp_response.get_errors())
         else:
             # když přišla nějaká odpověd a podařilo se jí zparsovat:
-            for node_name in self._epp_response.get_top_node_names():
-                # pro všechny části odpovědi
-                print '\tnode_name',node_name #!!!
-                pass
-##            print 'EXPECTED_ANSWER_TYPE:',self._expected_answer_type #!!!
+##            for name in self._epp_response.walk_nodes():
+##                print "GENERATOR NAME",name #!!!
+##            for node_name in self._epp_response.get_top_node_names():
+##                # pro všechny části odpovědi
+##                print '\tnode_name',node_name #!!!
+##                pass
+##            print 'EXPECTED_ANSWER_TYPE:',self._command_sent #!!!
             top_node = self._epp_response.get_element_node(self._epp_response.dom.documentElement)
             fnc = getattr(self, 'answer_%s'%top_node.nodeName, None)
             if fnc:
@@ -366,7 +397,7 @@ class Manager:
         if 1: #!!! TEST !!!
             dict_answer = self._epp_response.create_data()
             if dict_answer:
-                debug_label('answer dict:')
+                debug_label('answer dict: type: %s'%self._command_sent)
                 pprint.pprint(dict_answer)
             else:
                 print '[client_session:process_answer] no data (answer)' #!!!
@@ -500,9 +531,9 @@ if __name__ == '__main__':
         if eppdoc:
             print 'EPP COMMAND:\n%s\n%s'%(eppdoc,'-'*60)
             if re.match('login',command):
-                client._session[ID] = '***login***' # testovací zalogování
+                client._session[ID] = 1 # '***login***' # testovací zalogování
             if re.match('logout',command):
-                client._session[ID] = '' # testovací odlogování
+                client._session[ID] = 0 # testovací odlogování
             # client.process_answer(eppdoc)
             dict_answer = client._epp_cmd.create_data()
             if dict_answer:

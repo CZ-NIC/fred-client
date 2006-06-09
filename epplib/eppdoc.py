@@ -245,13 +245,44 @@ class Message:
                         vals.append(e.nodeValue.strip())
         return ''.join(vals)
 
-    def get_top_node_names(self):
-        "Returns names of the top node elements."
+##    def get_top_node_names(self):
+##        "Returns names of the top node elements."
+##        if self.dom:
+##            top = self.dom.documentElement
+##            return [e.nodeName for e in top.childNodes if e.nodeType == Node.ELEMENT_NODE]
+##        else:
+##            return []
+
+##    def walk_nodes(self):
+##        "Generator throught top nodes."
+##        if self.dom:
+##            top = self.dom.documentElement
+##            for e in top.childNodes:
+##                if e.nodeType == Node.ELEMENT_NODE:
+##                    yield e.nodeName
+        
+
+    def get_epp_command_name(self):
+        """Returns top EPP command name. 
+        Level 1: epp.greeting
+        Level 1: epp.command 
+        Level 2:     info, check, create, ....
+        Level 3:        contact:create
+        """
+        name = ''
         if self.dom:
-            top = self.dom.documentElement
-            return [e.nodeName for e in top.childNodes if e.nodeType == Node.ELEMENT_NODE]
-        else:
-            return []
+            # Level 1.
+            node = self.get_element_node(self.dom.documentElement)
+            name = node.nodeName.lower()
+            if name == 'command':
+                # Level 2.
+                node = self.get_element_node(node)
+                name = node.nodeName.lower()
+                if name not in ('login','logout'):
+                    # Level 3.
+                    node = self.get_element_node(node)
+                    name = node.nodeName.lower()
+        return name
 
     #====================================
     # Parse to Dict / Data class
@@ -482,10 +513,25 @@ def test_class(filename):
     print 'epp.greeting.svcs.objURI[2].data:',epp.greeting.svcs.objURI[2].data
     return epp
 
+def test_epp_command_name(filename):
+    eppdoc = __test__(filename)
+    command_name = eppdoc.get_epp_command_name()
+    print 'EPP-TYPE: %s (%s)'%(command_name,filename)
+    return command_name
+    
 if __name__ == '__main__':
     "Testování zpracování XML dokumentu a mapování XML.DOM do python dict/class."
     test_templates()
     edoc = test_dict("test-epp-msg.xml")
     epp = test_class("test-epp-msg.xml")
     print epp
-
+    if 1:
+        print '-'*60
+        print u"Test výstupu EPP jména příkazu"
+        print '-'*60
+        test_epp_command_name('examples/hello.xml')
+        test_epp_command_name('examples/login.xml')
+        test_epp_command_name('examples/logout.xml')
+        test_epp_command_name('examples/info_contact.xml')
+        test_epp_command_name('examples/check_contact.xml')
+        test_epp_command_name('examples/create_contact1.xml')

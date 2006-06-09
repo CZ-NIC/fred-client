@@ -64,7 +64,7 @@ class Message(eppdoc.Message):
 
     def assemble_login(self, *params):
         """Client EPP command: login
-        *params: ('' # clTRID není ještě definováno
+        *params: ('clTRID'
                 ,['username', 'password'[,'new-pass']]
                 ,('version', 'objURI', 'language'))
         """
@@ -80,6 +80,7 @@ class Message(eppdoc.Message):
             ,('options', 'lang', params[2][2])
             ,('login', 'svcs')
             ,('svcs', 'objURI', params[2][1])
+            ,('command', 'clTRID', params[0])
         ])
         self.__assemble_cmd__(cols)
 
