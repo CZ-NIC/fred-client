@@ -13,6 +13,7 @@
 import re
 import time
 import random
+import sys
 from gettext import gettext as _T
 import client_eppdoc, eppdoc
 import client_eppdoc_test
@@ -464,7 +465,8 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]   ${CYAN}# display raw answer${NORMAL}
         if valid[-9:]=='validates':
             valid='' # '' = žádné chybové hlášení. Když se vrátí prázdný řetězec, tak je XML validní.
         else:
-            if re.search('command not found',valid):
+            if re.search('command not found',valid) \
+                or re.search(u'není názvem vnitřního ani vnějšího příkazu'.encode(sys.stdout.encoding),valid): # když příkaz chybní ve Windows XP
                 # sh: xmllint: command not found
                 self.append_note('%s: %s'%(_T('XML validator is not available'),valid))
                 self._validate = 0 # automatické vypnutí validace
@@ -505,7 +507,7 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]   ${CYAN}# display raw answer${NORMAL}
             m = re.match('raw[-_](\w+)(?:\s+(\w+))?',cmd)
             if m:
                 self.append_note(SEPARATOR)
-                if m.group(1)[0]=='c': # c cmd, command
+                if m.group(1)[0]=='c' and self._raw_cmd: # c cmd, command
                     # zobrazit EPP příkaz, který se poslal serveru
                     if m.group(2) and m.group(2)[0]=='d': # d dict
                         self.append_note(_T('Interpreted command'),('GREEN','BOLD'))
@@ -515,7 +517,7 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]   ${CYAN}# display raw answer${NORMAL}
                     else: # e epp
                         self.append_note(_T('Command source'),('GREEN','BOLD'))
                         self.__put_raw_into_note__(self._raw_cmd)
-                if m.group(1)[0]=='a': # a answer
+                if m.group(1)[0]=='a' and self._dict_answer: # a answer
                     # zobrazit odpověd serveru
                     if m.group(2) and m.group(2)[0]=='d': # d dict
                         self.append_note(_T('Interpreted answer'),('GREEN','BOLD'))
@@ -563,6 +565,7 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]   ${CYAN}# display raw answer${NORMAL}
                 self.append_error(_T('EPP document is not valid'),'BOLD')
                 self.append_error(invalid_epp)
                 xml_doc=''
+        if xml_doc: self._raw_cmd = xml_doc # aby byl k dispozici raw, když se neodešle
         return xml_doc
 
 def append_with_colors(list_of_messages, msg, color):

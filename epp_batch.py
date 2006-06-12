@@ -6,10 +6,26 @@
 # Tento modul bude zpracovávat příkazy ze souboru,
 # nebo z příkazové řádky.
 # getopt -- Parser for command line options
-import re
+import sys, re
 import pprint # TEST ONLY
 import epplib.client_session
-import readline
+
+# Kontrola na Unicode
+try:
+    u'žščřřťňě'.encode(sys.stdout.encoding)
+except UnicodeEncodeError, msg:
+    print msg
+    print 'Nelze pouzit Python teto verze, protoze nepodporuje Unicode znaky.'
+    print 'Unpossible use this Python version cause of not support Unicode chars.'
+    print '[END]'
+    sys.exit()
+# kontrola na readline
+try:
+    import readline
+except ImportError:
+    print u'readline modul chybí - historie příkazů je vypnuta'
+    print 'readline module missing - cmd history is diabled'
+    readline = None
 
 class Completer:
     def __init__(self, words):
@@ -29,9 +45,10 @@ class Completer:
 def main():
     # readline
     words = "check_contact", "check_domain", "check_nsset", "create", "delete", "hello", "info_contact", "info_domain", "info_nsset", "login", "logout", "poll", "renew", "transfer", "update"
-    completer = Completer(words)
-    readline.parse_and_bind("tab: complete")
-    readline.set_completer(completer.complete)
+    if readline:
+        completer = Completer(words)
+        readline.parse_and_bind("tab: complete")
+        readline.set_completer(completer.complete)
 
     client = epplib.client_session.Manager()
     #---------------------------------------------------

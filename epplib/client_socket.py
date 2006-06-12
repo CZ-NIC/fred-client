@@ -24,7 +24,7 @@ class Lorry:
         return len(self._errors)
 
     def is_connected(self):
-        return self._conn
+        return self._conn and self._conn_ssl
 
     def connect(self, DATA):
         self._conn = None
