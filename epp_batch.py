@@ -5,6 +5,7 @@
 #
 # Tento modul bude zpracovávat příkazy ze souboru,
 # nebo z příkazové řádky.
+# getopt -- Parser for command line options
 import re
 import pprint # TEST ONLY
 import epplib.client_session
@@ -51,14 +52,12 @@ def main():
         if command in ('q','quit','exit','konec'):
             client.send_logout()
             break
-        epp_doc = client.create_eppdoc_TEST(command)
+        epp_doc = client.create_eppdoc(command, epplib.client_session.TEST)
         if epp_doc:
-            epplib.client_session.debug_label('client command',epp_doc)
             if re.match('login ',command): client.connect() # automatické připojení, pokud nebylo navázáno
             if client.is_connected():
                 client.send(epp_doc)          # odeslání dokumentu na server
                 answer = client.receive()     # příjem odpovědi
-                epplib.client_session.debug_label('Server answer',pprint.pprint(answer)) # TEST ONLY
                 client.process_answer(answer) # zpracování odpovědi
             else:
                 print "You are not connected! For connection type command: connect and then login"

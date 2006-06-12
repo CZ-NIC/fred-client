@@ -437,6 +437,7 @@ class Data:
 
 
 def append_to_dict(d,key,val):
+    "Append or extend values along to insert type."
     if d.has_key(key):
         if type(d[key]) == str:
             d[key] += val
@@ -444,6 +445,35 @@ def append_to_dict(d,key,val):
             d[key].extend(val)
     else:
         d[key] = val
+
+def get_dict_data(dict, names, sep='\n', attr=0):
+    "Returns value of the key name in names list."
+    if type(names) not in (tuple,list):
+        names = (names,)
+    ret=[]
+    if len(names)>1:
+        for i in range(len(names)):
+            name = names[i]
+            if dict.get(name,None):
+                dict = dict[name]
+                inames = names[i+1:]
+                if type(dict) in (list,tuple):
+                    for item in dict:
+                        r = get_dict_data(item, inames, sep, attr)
+                        if r: ret.append(r)
+                else:
+                    r = get_dict_data(dict, inames, sep, attr)
+                    if r: ret.append(r)
+    else:
+        r = dict.get(('data','attr')[attr],'')
+        if r: ret.append(r)
+    return sep.join(ret)
+
+def get_dict_attr(dict, names, sep='\n'):
+    "Returns attribute value of the key name in names list."
+    if type(names) not in (tuple,list):
+        names = (names,)
+    return get_dict_data(dict, names, sep, 1) # 1 - attribut, 0 - data
         
 #------------------------------------
 # Testování chybných XML
