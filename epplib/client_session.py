@@ -13,7 +13,6 @@
 import re
 import time
 import random
-import sys
 from gettext import gettext as _T
 import client_eppdoc, eppdoc
 import client_eppdoc_test
@@ -466,7 +465,7 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]   ${CYAN}# display raw answer${NORMAL}
             valid='' # '' = žádné chybové hlášení. Když se vrátí prázdný řetězec, tak je XML validní.
         else:
             if re.search('command not found',valid) \
-                or re.search(u'není názvem vnitřního ani vnějšího příkazu'.encode(sys.stdout.encoding),valid): # když příkaz chybní ve Windows XP
+                or re.search(u'není názvem vnitřního ani vnějšího příkazu'.encode('cp852'),valid): # když příkaz chybí ve Windows XP
                 # sh: xmllint: command not found
                 self.append_note('%s: %s'%(_T('XML validator is not available'),valid))
                 self._validate = 0 # automatické vypnutí validace
