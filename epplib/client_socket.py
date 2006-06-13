@@ -3,6 +3,7 @@
 #
 # $Id$
 #
+import os
 import socket
 import threading
 import time
@@ -13,6 +14,7 @@ from gettext import gettext as _T
 class Lorry:
     "Socket transfer."
     def __init__(self):
+        "keys=('private.pem','public.pem')"
         self._conn = None
         self._conn_ssl = None
         self._notes = [] # hlášení o stavu
@@ -27,6 +29,7 @@ class Lorry:
         return self._conn and self._conn_ssl
 
     def connect(self, DATA):
+        "DATA = ('host', PORT, ('file.key','file.crt'))"
         self._conn = None
         try:
             self._conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -35,21 +38,27 @@ class Lorry:
             return 0
         try:
             self._conn.connect((DATA[0], DATA[1]))
-            self._notes.append('Connected to host %s, port %d'%tuple(DATA))
+            self._notes.append('Connected to host %s, port %d'%tuple(DATA[:2]))
             self._conn.settimeout(self._timeout)
         except socket.error, (no,msg):
             self._errors.append('Connection socket.error [%d] %s'%(no,msg))
             return 0
         self._notes.append(_T('Init SSL connection'))
-##        print open(PUBLIC_KEY).read() #!!!
-##        print open(PRIVATE_KEY).read() #!!!
+        if DATA[2]:
+            if not os.path.isfile(DATA[2][0]):
+                self._errors.append('%s %s'%(DATA[2][0],_T('Private key file not found.')))
+            if not os.path.isfile(DATA[2][1]):
+                self._errors.append('%s %s'%(DATA[2][1],_T('Certificate key file not found.')))
         try:
-            self._conn_ssl = socket.ssl(self._conn)
-##            self._conn_ssl = socket.ssl(self._conn, PRIVATE_KEY, PUBLIC_KEY)
+            if DATA[2]:
+                self._conn_ssl = socket.ssl(self._conn, DATA[2][0], DATA[2][1])
+            else:
+                self._conn_ssl = socket.ssl(self._conn)
         except socket.sslerror, msg:
-            # SSL_CTX_use_certificate_chain_file error
-            if type(msg) is not str: msg = msg[0]
-            self._errors.append(msg)
+            if type(msg) is not str:
+                self._errors.append(str(msg))
+            else:
+                self._errors.append(msg)
             self._conn.close()
             self._conn = None
         return self._conn
@@ -137,9 +146,7 @@ class Lorry:
 
 if __name__ == '__main__':
     import sys
-    PRIVATE_KEY = 'certificate_private.pem'
-    PUBLIC_KEY = 'certificate_public.pem'
-    DATA = ['curlew',700]
+    DATA = ['curlew',700, ('certificate_private.pem','certificate_public.pem')]
     if len(sys.argv)>1: DATA[0] = sys.argv[1]
     if len(sys.argv)>2: DATA[1] = int(sys.argv[2])
     client = Lorry()

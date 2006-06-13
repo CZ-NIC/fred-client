@@ -1,0 +1,66 @@
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number:
+            c1:03:b2:5c:d8:05:1d:60
+        Signature Algorithm: md5WithRSAEncryption
+        Issuer: C=cz, ST=czzech, L=prag, O=nic.cz, CN=epp server
+        Validity
+            Not Before: Jun  6 10:57:27 2006 GMT
+            Not After : Jun  6 10:57:27 2007 GMT
+        Subject: C=au, ST=Some-State, O=Internet Widgits Pty Ltd, CN=epp-client/emailAddress=client@client.au
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+            RSA Public Key: (1024 bit)
+                Modulus (1024 bit):
+                    00:aa:1e:d9:0a:34:d1:78:11:76:4b:59:8a:49:f5:
+                    e4:6d:0e:2f:bd:fb:4d:36:8d:71:9c:ed:7a:31:18:
+                    80:0e:63:c3:66:7a:bd:80:86:0b:7d:2f:2d:34:10:
+                    76:09:0f:36:4c:dc:0e:29:a2:b4:65:32:c1:bb:3c:
+                    99:30:b8:bd:76:db:90:22:5f:d0:cb:63:a4:55:0f:
+                    9d:4d:28:54:54:d0:78:eb:b3:a5:0e:e4:57:d8:96:
+                    e3:42:68:29:bb:e5:9d:e7:a6:2e:f3:ae:1c:e9:e0:
+                    13:81:db:b1:ba:34:65:8a:f8:92:54:8a:8d:45:bd:
+                    ff:af:7d:c6:7f:f5:7e:18:67
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Basic Constraints: 
+                CA:FALSE
+            Netscape Comment: 
+                OpenSSL Generated Certificate
+            X509v3 Subject Key Identifier: 
+                C3:47:68:3E:6F:76:72:D1:21:E7:4D:9C:6E:B1:C7:C1:CB:89:26:82
+            X509v3 Authority Key Identifier: 
+                keyid:E6:92:27:4A:E7:E4:1A:44:7B:C8:0C:A7:CF:05:95:82:43:5D:A8:EA
+                DirName:/C=cz/ST=czzech/L=prag/O=nic.cz/CN=epp server
+                serial:C1:03:B2:5C:D8:05:1D:5F
+
+    Signature Algorithm: md5WithRSAEncryption
+        38:53:3a:14:cb:19:05:ba:cd:f9:43:ec:bb:98:1f:b4:63:95:
+        06:35:7e:09:fe:2f:f7:2b:ea:b1:d3:0d:d8:84:25:e4:19:61:
+        61:8e:36:77:06:f5:b9:07:ad:54:9c:71:36:49:b0:3d:31:31:
+        1f:93:fb:b4:22:77:d6:2b:60:75:78:6c:48:69:c3:4a:c7:77:
+        71:a3:71:55:a2:0c:25:33:08:69:cb:e1:34:cc:7d:a0:53:69:
+        90:20:28:27:e7:0e:f0:48:58:9b:05:8a:db:93:54:b0:22:10:
+        97:61:e7:8f:d8:6d:0d:fc:41:23:ba:01:2b:77:48:51:ba:ec:
+        91:28
+-----BEGIN CERTIFICATE-----
+MIIDLjCCApegAwIBAgIJAMEDslzYBR1gMA0GCSqGSIb3DQEBBAUAMFMxCzAJBgNV
+BAYTAmN6MQ8wDQYDVQQIEwZjenplY2gxDTALBgNVBAcTBHByYWcxDzANBgNVBAoT
+Bm5pYy5jejETMBEGA1UEAxMKZXBwIHNlcnZlcjAeFw0wNjA2MDYxMDU3MjdaFw0w
+NzA2MDYxMDU3MjdaMHsxCzAJBgNVBAYTAmF1MRMwEQYDVQQIEwpTb21lLVN0YXRl
+MSEwHwYDVQQKExhJbnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQxEzARBgNVBAMTCmVw
+cC1jbGllbnQxHzAdBgkqhkiG9w0BCQEWEGNsaWVudEBjbGllbnQuYXUwgZ8wDQYJ
+KoZIhvcNAQEBBQADgY0AMIGJAoGBAKoe2Qo00XgRdktZikn15G0OL737TTaNcZzt
+ejEYgA5jw2Z6vYCGC30vLTQQdgkPNkzcDimitGUywbs8mTC4vXbbkCJf0MtjpFUP
+nU0oVFTQeOuzpQ7kV9iW40JoKbvlneemLvOuHOngE4Hbsbo0ZYr4klSKjUW9/699
+xn/1fhhnAgMBAAGjgeEwgd4wCQYDVR0TBAIwADAsBglghkgBhvhCAQ0EHxYdT3Bl
+blNTTCBHZW5lcmF0ZWQgQ2VydGlmaWNhdGUwHQYDVR0OBBYEFMNHaD5vdnLRIedN
+nG6xx8HLiSaCMIGDBgNVHSMEfDB6gBTmkidK5+QaRHvIDKfPBZWCQ12o6qFXpFUw
+UzELMAkGA1UEBhMCY3oxDzANBgNVBAgTBmN6emVjaDENMAsGA1UEBxMEcHJhZzEP
+MA0GA1UEChMGbmljLmN6MRMwEQYDVQQDEwplcHAgc2VydmVyggkAwQOyXNgFHV8w
+DQYJKoZIhvcNAQEEBQADgYEAOFM6FMsZBbrN+UPsu5gftGOVBjV+Cf4v9yvqsdMN
+2IQl5BlhYY42dwb1uQetVJxxNkmwPTExH5P7tCJ31itgdXhsSGnDSsd3caNxVaIM
+JTMIacvhNMx9oFNpkCAoJ+cO8EhYmwWK25NUsCIQl2Hnj9htDfxBI7oBK3dIUbrs
+kSg=
+-----END CERTIFICATE-----

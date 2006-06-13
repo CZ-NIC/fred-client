@@ -14,7 +14,8 @@ import re
 import time
 import random
 from gettext import gettext as _T
-import client_eppdoc, eppdoc
+import eppdoc
+import client_eppdoc
 import client_eppdoc_test
 import client_socket
 import pprint, cStringIO
@@ -40,7 +41,8 @@ if xml_epp_doc:
 #------------------------------------
 # default connection to server
 #------------------------------------
-default_connecion = ('curlew',700)
+# host, port, (private key, certificate (public) key)
+default_connecion = ('curlew',700,('client.key','client.crt'))
 
 # názvy sloupců pro data sestavené při spojení se serverem
 ID,LANG = range(2)
@@ -48,7 +50,7 @@ ID,LANG = range(2)
 DEFS_LENGTH = 4
 VERSION,LANGS,objURI,PREFIX = range(DEFS_LENGTH)
 SEPARATOR = '-'*60
-TEST = 1
+TEST, COLOR = 1,1
 
 # Colored output
 colored_output = terminal_controler.TerminalController()
@@ -95,13 +97,6 @@ class Manager:
     def append_note(self, msg, color=''):
         "Join messages if only they are not empty."
         if msg: append_with_colors(self._notes, msg, color)
-##        if msg:
-##            # color output support
-##            if type(color) in (list, tuple):
-##                c = ''.join(['${%s}'%c for c in color])
-##            else:
-##                c = '${%s}'%(color or 'YELLOW') # default
-##            self._notes.append('%s%s${NORMAL}'%(c,msg))
 
     def fetch_errors(self, sep='\n'):
         msg = sep.join(self._errors)
@@ -149,19 +144,20 @@ class Manager:
             self.append_note(_T('No data'),('RED','BOLD'))
         elif type(data) == dict:
             # Parsed data into dict
-            sio = cStringIO.StringIO()
-            pprint.pprint(data, sio)
-            sio.reset()
-            self.append_note(sio.read(),'GREEN')
+##            sio = cStringIO.StringIO()
+##            pprint.pprint(data, sio)
+##            sio.reset()
+##            self.append_note(sio.read(),'GREEN')
+            self.append_note(eppdoc.prepare_for_display(data,COLOR))
         else:
             # XML EPP doc
-            eppdoc = client_eppdoc.Message()
-            eppdoc.parse_xml(data)
+            edoc = client_eppdoc.Message()
+            edoc.parse_xml(data)
             if self._epp_response.is_error():
                 # při parsování se vyskytly chyby
-                self.append_note(eppdoc.get_errors(),'GREEN')
+                self.append_note(edoc.get_errors(),'GREEN')
             else:
-                self.append_note(eppdoc.get_xml(),'GREEN')
+                self.append_note(edoc.get_xml(),'GREEN')
         
     #---------------------------------
     # funkce pro nastavení session
@@ -390,25 +386,35 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]   ${CYAN}# display raw answer${NORMAL}
         self.append_note(SEPARATOR)
         self.append_note(_T('Greeting message incomming'),('GREEN','BOLD'))
         self.defs[LANGS] = eppdoc.get_dict_data(greeting, ('svcMenu','lang'))
+##        x = eppdoc.gdct(greeting, ('svcMenu','lang'))
+##        print "!!! GDCT: '%s'"%str(x)
         if type(self.defs[LANGS]) in (str,unicode):
             self.defs[LANGS] = (self.defs[LANGS],)
         self.append_note('%s: %s'%(_T('Available language versions'),', '.join(self.defs[LANGS])))
-        self.append_note('%s objURI:\n\t%s'%(_T('Available'),eppdoc.get_dict_data(greeting, ('svcs','objURI'),'\n\t')))
+        self.append_note('%s objURI:\n\t%s'%(_T('Available'),eppdoc.get_dict_data(greeting, ('svcMenu','objURI'),'\n\t')))
+##        self.append_note(eppdoc.prepare_for_display(dict_answer,COLOR))
+        #FIXME: Tady to generuje text dvojtě get_dict_data()
 
     def answer_response(self, dict_answer):
         "Part of process answer - parse response node."
         code, msg = ['']*2
         response = dict_answer.get('response',None)
-##        print 'ANSWER_RESPONSE:',response #!!!
+##        self.append_note(eppdoc.prepare_for_display(response,COLOR)) #!!!
         if response:
             result = response.get('result',None)
-            if result: code = eppdoc.get_dict_attr(response,'code')
-##            print "RESULT:",result #!!!
-##            print "CODE:",code #!!!
+            if result:
+                code = eppdoc.get_dict_attr(result,(),'code')
+##                print "!!! SESSION::RESULT:",result #!!!
+                msg = eppdoc.get_dict_data(result,'msg')
+##                print "!!! SESSION::MSG:",msg #!!!
+                self.append_note(msg)
+##            print "!!! RESULT:",result #!!!
+##            print "!!! SESSION::CODE:",code #!!!
             if self._command_sent == 'login':
                 if code == '1000':
                     self._session[ID] = 1 # první command byl login
                     self.append_note('*** %s ***'%_T('You are logged on!'),('GREEN','BOLD'))
+                    self.append_note('${BOLD}${GREEN}%s${NORMAL}\n%s'%(_T("Available EPP commands:"),", ".join(self._available_commands)))
                 else:
                     self._session[ID] = 0 # počet příkazů zrušen, tím se indikuje i to, že session není zalogována
                     self.append_note('--- %s ---'%_T('Login failed'),('RED','BOLD'))
@@ -432,6 +438,7 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]   ${CYAN}# display raw answer${NORMAL}
                 self.append_error(self._epp_response.get_errors())
             else:
                 # validace
+                #FIXME: Někde se to odlogovává, když neprojde validace :-(
                 invalid_epp = self.is_epp_valid(self._epp_response.get_xml())
                 if invalid_epp:
                     # když se odpověd serveru neplatná...
@@ -451,6 +458,7 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]   ${CYAN}# display raw answer${NORMAL}
             self.append_note(_T("No response. EPP Server doesn't answer."))
             self.__logout_session__()
         self.display() # zobrazení všech hlášení vygenerovaných během zpracování
+##        print "TEST session[ID]=",self._session[ID] #!!!
 
     #==================================================
     def is_epp_valid(self, message):
@@ -510,9 +518,9 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]   ${CYAN}# display raw answer${NORMAL}
                     # zobrazit EPP příkaz, který se poslal serveru
                     if m.group(2) and m.group(2)[0]=='d': # d dict
                         self.append_note(_T('Interpreted command'),('GREEN','BOLD'))
-                        eppdoc = client_eppdoc.Message()
-                        eppdoc.parse_xml(self._raw_cmd)
-                        self.__put_raw_into_note__(eppdoc.create_data())
+                        edoc = client_eppdoc.Message()
+                        edoc.parse_xml(self._raw_cmd)
+                        self.__put_raw_into_note__(edoc.create_data())
                     else: # e epp
                         self.append_note(_T('Command source'),('GREEN','BOLD'))
                         self.__put_raw_into_note__(self._raw_cmd)
@@ -597,15 +605,15 @@ if __name__ == '__main__':
     while 1:
         command = raw_input("> (? help, q quit): ")
         if command in ('q','quit','exit','konec'): break
-        eppdoc = client.create_eppdoc(command,TEST)
+        edoc = client.create_eppdoc(command,TEST)
         client.display()
-        if eppdoc:
-            print 'EPP COMMAND:\n%s\n%s'%(eppdoc,'-'*60)
+        if edoc:
+            print 'EPP COMMAND:\n%s\n%s'%(edoc,'-'*60)
             if re.match('login',command):
                 client._session[ID] = 1 # '***login***' # testovací zalogování
             if re.match('logout',command):
                 client._session[ID] = 0 # testovací odlogování
-            # client.process_answer(eppdoc)
+            # client.process_answer(edoc)
             dict_answer = client._epp_cmd.create_data()
             if dict_answer:
                 debug_label(u'dict:')

@@ -149,7 +149,7 @@ class Message:
         self.join_top_attribs()
 
     def new_node_by_name(self, master_name, name, value=None, attribs=None):
-        "Create new node by Tag Name and attach to the Master Node."
+        "Create new node by Tag Name and attach to the Master Node. attribs=((name,value), (name,value), ....)"
         master = self.dom.getElementsByTagName(master_name)
         if master:
             node=self.new_node(master, name, value, attribs)
@@ -161,7 +161,7 @@ class Message:
         return node
         
     def new_node(self, master, name, value=None, attribs=None):
-        "Create new node and attach to the master node."
+        "Create new node and attach to the master node. attribs=((name,value), (name,value), ....)"
         if not master:
             raise "ERROR: new_node(%s) Master missing!"%name # TODO ????
         node = self.dom.createElement(name)
@@ -446,35 +446,152 @@ def append_to_dict(d,key,val):
     else:
         d[key] = val
 
-def get_dict_data(dict, names, sep='\n', attr=0):
+def gdct(dict, names):
+    #TODO: nedokončeno!
+    ret=[]
+    print "gdct(dict, names)",names #!!!
+    print dict
+    if type(names) not in (tuple,list):
+        names = (names,)
+    if len(names):
+        for i in range(len(names)):
+            name = names[i]
+            print "!!!NAME:",name
+            if name in ('data','attr'): continue
+            if not dict.get(name,None): continue
+            inames = names[i+1:]
+            if type(dict[name]) in (list,tuple):
+                for item in dict[name]:
+                    vals = gdct(item, inames)
+                    if vals: ret.append(vals)
+            else:
+                vals = gdct(dict[name], inames)
+                if vals: ret.append(vals)
+    else:
+        vals = dict.get('data','')
+        if vals: ret.append(vals)
+    print "!!! RET:",ret
+    return '\n'.join(ret)
+        
+        
+def get_dict_data(dict, names, sep='\n', attr_name='',indent=0):
     "Returns value of the key name in names list."
+    #FIXME: Tady to generuje text dvojtě
+##    print '.'*60 #+++
+##    print "%sget_dict_data(%02d,(DICT)%s..., (NAMES)%s)"%(' '*(indent*2),indent,str(dict)[0:50],str(names)) #+++
     if type(names) not in (tuple,list):
         names = (names,)
     ret=[]
-    if len(names)>1:
+    if len(names):
         for i in range(len(names)):
             name = names[i]
-            if dict.get(name,None):
-                dict = dict[name]
-                inames = names[i+1:]
-                if type(dict) in (list,tuple):
-                    for item in dict:
-                        r = get_dict_data(item, inames, sep, attr)
-                        if r: ret.append(r)
-                else:
-                    r = get_dict_data(dict, inames, sep, attr)
+            if name in ('data','attr'): continue
+            if not dict.get(name,None): continue
+            dict = dict[name]
+##                print "%sSTEP%02d[%s]: ((DICT)%s..., (NAMES)%s)"%(' '*(indent*2),indent,name, str(dict)[0:50],str(names)) #+++
+            inames = names[i+1:]
+            if type(dict) in (list,tuple):
+                for item in dict:
+                    r = get_dict_data(item, inames, sep, attr_name,indent+1)
                     if r: ret.append(r)
+            else:
+                r = get_dict_data(dict, inames, sep, attr_name,indent+1)
+                if r: ret.append(r)
     else:
-        r = dict.get(('data','attr')[attr],'')
-        if r: ret.append(r)
+        r = dict.get(('attr','data')[len(attr_name)==0],'')
+        if r:
+##            print "%sFINAL%02d((DICT)%s..., (NAMES)%s)"%(' '*(indent*2),indent,str(dict)[0:50],str(names)) #+++
+            if attr_name: # attributy
+                for n,v in r:
+                    if n == attr_name:
+                        ret.append(v)
+                        break
+            else: # hodnoty
+                if r: ret.append(str(r))
+##    print "%sRETURN%02d((DICT)%s, (NAMES)%s) ret=%s"%(' '*(indent*2),indent,str(dict),str(names), str(ret)) #+++
     return sep.join(ret)
 
-def get_dict_attr(dict, names, sep='\n'):
+def get_dict_attr(dict, names, attr_name, sep='\n'):
     "Returns attribute value of the key name in names list."
     if type(names) not in (tuple,list):
         names = (names,)
-    return get_dict_data(dict, names, sep, 1) # 1 - attribut, 0 - data
-        
+    return get_dict_data(dict, names, sep, attr_name) # 1 - attribut, 0 - data
+
+def __pfd__(dict,color=0,indent=0):
+    "Prepare dictionary data for display."
+    if color:
+        patt=('${BOLD}%s:${NORMAL} %s','[${YELLOW}${BOLD}ATTR:${NORMAL} %s]','%s[${GREEN}${BOLD}%s${NORMAL}]:','%s[${GREEN}${BOLD}%s${NORMAL}]: %s')
+    else:
+        patt=('%s: %s','[ATTR: %s]','%s[%s]:','%s[%s]: %s')
+    body=[]
+    if type(dict) in (list,tuple):
+        for d in dict:
+            rows = __pfd__(d,color,indent)
+            if len(rows): body.extend(rows)
+    else:
+        if indent and dict.has_key('attr'):
+            # attributy, ale ne ty z rootu
+            attr=[]
+            for k,v in dict['attr']:
+                attr.append(patt[0]%(k,v))
+            body.append(patt[1]%'; '.join(attr))
+        # data
+        if dict.has_key('data'): body.append(dict['data'])
+        # other children nodes    
+        ind = ' '*indent
+        for key in dict.keys():
+            # podřízené uzly
+            if key in ('attr','data'): continue
+            rows = __pfd__(dict[key],color,indent+4)
+            if len(rows):
+                if len(rows)>1:
+                    # více řádků [klíč]: a na další řádky hodnoty
+                    body.append(patt[2]%(ind,key))
+                    for r in rows:
+                        body.append('%s%s'%(ind,r))
+                else:
+                    # jeden řádek - [klíč]: hodnota
+                    body.append(patt[3]%(ind,key,rows[0]))
+
+    return body
+
+def prepare_display(dict,color=0):
+    "Prepare dictionary data for display."
+    # Druhá verze prepare_for_dispaly(), která je kompaktnější a 
+    # kde jednořádkové hodnoty jsou na řádku s klíčem.
+    return '\n'.join(__pfd__(dict,color))
+
+def prepare_for_display(dict,color=0,indent=0):
+    "Prepare dictionary data for display."
+    body=[]
+    if type(dict) in (list,tuple):
+        for d in dict:
+            data = prepare_for_display(d,color,indent)
+            if data: body.append(data)
+    else:
+        if color:
+            patt = ('%s[${YELLOW}${BOLD}ATTR${NORMAL}: %s]','%s[${GREEN}${BOLD}%s${NORMAL}]:\n%s','${BOLD}%s:${NORMAL} %s')
+        else:
+            patt = ('%s[ATTR: %s]','%s[%s]:\n%s','%s: %s')
+        for key in dict.keys():
+            ind = ' '*indent
+            if key == 'attr':
+                if not indent: continue # attributy uzlu, ale ne ty z rootu
+                attr = []
+                for k,v in dict[key]:
+                    v = v.strip()
+                    if v: attr.append(patt[2]%(k,v))
+                body.append(patt[0]%(ind,', '.join(attr)))
+            elif key == 'data':
+                # data uzlu
+                v = dict[key].strip()
+                if v: body.append('%s%s'%(ind,v))
+            else:
+                # podřízené uzly
+                data = prepare_for_display(dict[key],color,indent+4)
+                if data: body.append(patt[1]%(ind,key,data))
+    return '\n'.join(body)
+    
 #------------------------------------
 # Testování chybných XML
 #------------------------------------
@@ -531,6 +648,9 @@ def test_dict(filename):
     print edoc['greeting']['svcMenu']['lang']['data']
     print "edoc['greeting']['svcs']['objURI'][2]['data']:",
     print edoc['greeting']['svcs']['objURI'][2]['data']
+    print "('greeting','svcMenu','lang')",get_dict_data(edoc, ('greeting','svcMenu','lang'))
+    print "('greeting','svcs','objURI')",get_dict_data(edoc, ('greeting','svcs','objURI'))
+    print "('greeting','svcs','objURI')",get_dict_attr(edoc, ('greeting','svcs','objURI'),'parametr')
     return edoc
 
 def test_class(filename):
@@ -548,14 +668,36 @@ def test_epp_command_name(filename):
     command_name = eppdoc.get_epp_command_name()
     print 'EPP-TYPE: %s (%s)'%(command_name,filename)
     return command_name
-    
+
+def test_display():
+    dict = {'attr': [(u'xmlns:xsi', u'http://www.w3.org/2001/XMLSchema-instance'),
+          ('xmlns', u'urn:ietf:params:xml:ns:epp-1.0'),
+          (u'xsi:schemaLocation',
+           u'urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd')],
+ 'greeting': {'dcp': {'access': {'all': {}},
+                      'statement': {'purpose': {'admin': {}, 'prov': {}},
+                                    'recipient': {'public': {}},
+                                    'retention': {'stated': {}}}},
+              'svDate': {'data': u'2006-05-13T07:44:37.0Z'},
+              'svID': {'data': u'EPP server of cz.nic' },
+              'svIDx': { 'attr':[('test','value'),('some','next value')], 'data': u'EPP server of cz.nic' },
+              'svcMenu': {'lang': [{'data': u'en'},{'data': u'cz'}],
+                          'version': {'data': u'1.0'}},
+              'svcs': {'objURI': [{'data': u'http://www.nic.cz/xml/epp/contact-1.0'},
+                                  {'data': u'http://www.nic.cz/xml/epp/domain-1.0'},
+                                  {'data': u'http://www.nic.cz/xml/epp/nsset-1.0'}]}}}
+    print prepare_for_display(dict)
+    print '='*60
+    print prepare_display(dict)
+
 if __name__ == '__main__':
     "Testování zpracování XML dokumentu a mapování XML.DOM do python dict/class."
-    test_templates()
-    edoc = test_dict("test-epp-msg.xml")
-    epp = test_class("test-epp-msg.xml")
-    print epp
     if 1:
+##        test_templates()
+        edoc = test_dict("test-epp-msg.xml")
+##        epp = test_class("test-epp-msg.xml")
+##        print epp
+    if 0:
         print '-'*60
         print u"Test výstupu EPP jména příkazu"
         print '-'*60
@@ -565,3 +707,5 @@ if __name__ == '__main__':
         test_epp_command_name('examples/info_contact.xml')
         test_epp_command_name('examples/check_contact.xml')
         test_epp_command_name('examples/create_contact1.xml')
+    if 0:
+        test_display()
