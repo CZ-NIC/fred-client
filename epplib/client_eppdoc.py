@@ -119,22 +119,22 @@ class Message(eppdoc.Message):
         "params must have ('clTRID',('name',))"
         self.__asseble_command__(('info','nsset','id'), params, ONLY_ONE_VALUE)
 
-    def assemble_poll(self, *params):
-        self.load_EPP_template('poll')
-    def assemble_transfer(self, *params):
-        self.load_EPP_template('transfer')
+##    def assemble_poll(self, *params):
+##        self.load_EPP_template('poll')
+##    def assemble_transfer(self, *params):
+##        self.load_EPP_template('transfer')
 
     #-------------------------------------------
     # Výkonné (transform)
     #-------------------------------------------
-    def assemble_create(self, *params):
-        self.load_EPP_template('create')
-    def assemble_delete(self, *params):
-        self.load_EPP_template('delete')
-    def assemble_renew(self, *params):
-        self.load_EPP_template('renew')
-    def assemble_update(self, *params):
-        self.load_EPP_template('update')
+##    def assemble_create(self, *params):
+##        self.load_EPP_template('create')
+##    def assemble_delete(self, *params):
+##        self.load_EPP_template('delete')
+##    def assemble_renew(self, *params):
+##        self.load_EPP_template('renew')
+##    def assemble_update(self, *params):
+##        self.load_EPP_template('update')
 
     #===========================================
 
