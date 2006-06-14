@@ -65,15 +65,17 @@ class Lorry:
 
     def receive(self):
         "Receive answer from EPP server."
-        if self.__receive_header__():
+        if self._conn_ssl and self.__receive_header__():
             return self.__receive__()
         return ''
 
     def __receive_header__(self):
         "Header part of receiving process."
         self._body_length = 0
+        ok = 0
         try:
             header = self._conn_ssl.read()
+            ok = 1
         except socket.timeout, msg:
             self._errors.append('READ HEADER socket.timeout: %s'%msg)
         except socket.sslerror, (no, msg):
@@ -86,26 +88,31 @@ class Lorry:
                 self._body_length = struct.unpack('!i',header)[0] - 4
             except struct.error, msg:
                 self._errors.append('Error HEADER: %s'%msg)
-        if len(self._errors): self.close()
+                ok = 0
+        if not ok: self.close()
         return self._body_length
         
     def __receive__(self):
         "Body part of receiving process."
         data = ''
+        ok = 1
         while self._body_length and len(data) < self._body_length:
             try:
                 part = self._conn_ssl.read()
             except socket.timeout, msg:
                 self._errors.append('READ socket.timeout: %s'%msg)
+                ok = 0
                 break
             except socket.sslerror, msg:
                 self._errors.append('READ socket.sslerror: %s'%msg)
+                ok = 0
                 break
             except socket.error, (no, msg):
                 self._errors.append('READ socket.error: [%d] %s'%(no, msg))
+                ok = 0
                 break
             data += part
-        if len(self._errors): self.close()
+        if not ok: self.close()
         return data.strip()
 
     def fetch_errors(self, sep='\n'):
@@ -136,10 +143,11 @@ class Lorry:
             self._errors.append('SEND socket.sslerror: [%d] %s'%(no, msg))
         except socket.error, (no, msg):
             self._errors.append('SEND socket.error: [%d] %s'%(no, msg))
-        if len(self._errors): self.close()
+        if not ok: self.close()
         return ok
 
     def close(self):
+        "Close connection."
         if self._conn:
             self._conn.close()
             self._conn = None

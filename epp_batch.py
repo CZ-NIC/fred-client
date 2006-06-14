@@ -51,6 +51,7 @@ def main():
         readline.set_completer(completer.complete)
 
     client = epplib.client_session.Manager()
+    print client.welcome()
     #---------------------------------------------------
     if 0:
         # automatické připojení k serveru

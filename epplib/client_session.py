@@ -45,12 +45,13 @@ if xml_epp_doc:
 default_connecion = ('curlew',700,('client.key','client.crt'))
 
 # názvy sloupců pro data sestavené při spojení se serverem
-ID,LANG = range(2)
+ONLINE,CMD_ID,LANG = range(3)
 # názvy sloupců pro defaultní hodnoty
 DEFS_LENGTH = 4
 VERSION,LANGS,objURI,PREFIX = range(DEFS_LENGTH)
 SEPARATOR = '-'*60
 TEST, COLOR = 1,1
+ANSW_RESPONSE, ANSW_RESULT, ANSW_CODE, ANSW_MSG = range(4)
 
 # Colored output
 colored_output = terminal_controler.TerminalController()
@@ -75,7 +76,7 @@ class Manager:
         #-----------------------------------------
         # Session data:
         #-----------------------------------------
-        self._session = [0, 'en'] # hodnoty vytvořené při sestavení session (ID, lang,...)
+        self._session = [0, 0, 'en'] # hodnoty vytvořené při sestavení session (ID, lang,...)
         # defaults
         self.defs = ['']*DEFS_LENGTH
         self.defs[VERSION] = '1.0'
@@ -164,16 +165,16 @@ class Manager:
     #---------------------------------
     def __logout_session__(self):
         "Set internal session variables in the ID session."
-        if self._session[ID]:
+        if self._session[ONLINE]:
             # odlogování
-            self._session[ID] = 0 # reset pořadí příkazů
+            self._session[ONLINE] = 0 # reset pořadí příkazů
             self._lorry.close() # zrušení konexe na server
 
     def __check_is_connected__(self):
         "Control if you are still connected."
         if self._lorry and not self._lorry.is_connected():
             # spojení spadlo
-            if self._session[ID]: self.append_note('--- %s ---'%_T('Connection broken'))
+            if self._session[ONLINE]: self.append_note('--- %s ---'%_T('Connection broken'))
             self.__logout_session__()
 
             
@@ -191,8 +192,8 @@ class Manager:
         """Generate next clTRID value.
         format: [4 random ASCII chars][3 digits of the commands order]#[date and time]
         """
-        self._session[ID]+=1 
-        return ('%s%03d#%s'%(self.defs[PREFIX],self._session[ID],time.strftime('%y-%m-%dat%H:%M:%S')))
+        self._session[CMD_ID]+=1 
+        return ('%s%03d#%s'%(self.defs[PREFIX],self._session[CMD_ID],time.strftime('%y-%m-%dat%H:%M:%S')))
         
     def __create_param__(self, command_name, cmd, parameter_names=(), data=()):
         """Supprot for create_...() functions with more than ONE parameter.
@@ -242,7 +243,7 @@ class Manager:
 
     def create_login(self, cmd):
         'Create EPP document login'
-        if self._session[ID]:
+        if self._session[ONLINE]:
             # klient je už zalogován
             self.append_note(_T('You are logged allready.'))
         else:
@@ -252,7 +253,6 @@ class Manager:
             self.__create_param__('login', cmd
                 ,(_T('login-name'),_T('password'),_T('[new password]'))
                 ,(self.defs[VERSION],self.defs[objURI],self._session[LANG]))
-            self._session[ID] = 0 # číslo 1 bude přiřazeno až po úspěšném zalogování
 
     #==================================================
     #
@@ -266,7 +266,7 @@ class Manager:
 ${BOLD}connect${NORMAL} (or directly login) ${CYAN}# connect to the server${NORMAL}
 ${BOLD}lang${NORMAL} cz ${CYAN}# set language${NORMAL}
 ${BOLD}validate${NORMAL} on/off (or validate for see actual value) ${CYAN}# set validation${NORMAL}
-${BOLD}traw-c${NORMAL}[ommand] e[pp]/[dict] ${CYAN}# display raw command${NORMAL}
+${BOLD}traw-c${NORMAL}[ommand] e[pp]/[dict] ${CYAN}# display raw command${NORMAL} instead of raw you can also type ${BOLD}src{NORMAL}
 ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]   ${CYAN}# display raw answer${NORMAL}
 """))
 
@@ -284,7 +284,7 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]   ${CYAN}# display raw answer${NORMAL}
         'Process EPP command inside session.'
         # Příkazy EPP
         # Pokud se příkaz našel, tak se provede pokračuje do stavu 2.
-        if self._session[ID] or cmd in ('hello','login'):
+        if self._session[ONLINE] or cmd in ('hello','login'):
 ##        if 1: # Tady se vypíná kontrola zalogování:
             # když je klient zalogován, tak se volá EPP příkaz
             # výjimky pro příkazy hello a login
@@ -329,7 +329,7 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]   ${CYAN}# display raw answer${NORMAL}
             self._lorry.close()
             self._lorry = None
         # když se spojení zrušilo, tak o zalogování nemůže být ani řeči
-        self._session[ID] = 0
+        self._session[ONLINE] = 0
 
     def is_connected(self):
         "Check if the manager is connected."
@@ -353,7 +353,7 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]   ${CYAN}# display raw answer${NORMAL}
 
     def send_logout(self):
         'Send EPP logout message.'
-        if not self._session[ID]: return # session zalogována nebyla
+        if not self._session[ONLINE]: return # session zalogována nebyla
         self._epp_cmd.assemble_logout((self.__next_clTRID__(),))
         epp_doc = self._epp_cmd.get_xml()
         if epp_doc and self.is_connected():
@@ -381,6 +381,33 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]   ${CYAN}# display raw answer${NORMAL}
     #                  -> answer_greeting()
     #
     #==================================================
+    def __append_note_from_dct__(self,dict,cols):
+        """Append columns values from dict to note stack.
+        cols = ('column-name','column-name','column-name attr-name attr-name','node')
+        """
+        for column_name in cols:
+            lcol = column_name.split(' ')
+            if len(lcol)>1:
+                value = eppdoc.get_dct_value(dict, lcol[0])
+                attr = []
+                for a in lcol[1:]:
+                    attr.append('\t${BOLD}%s${NORMAL}\t%s'%(a,eppdoc.get_dct_attr(dict, lcol[0], a)))
+                self.append_note('${BOLD}%s${NORMAL}\t%s\n%s'%(lcol[0],value,','.join(attr)))
+            else:
+                self.append_note('${BOLD}%s${NORMAL}\t%s'%(column_name,eppdoc.get_dct_value(dict, column_name)))
+
+    def __response_msg__(self, data, label):
+        "Shared for many answers. data=(response,result,code,msg)"
+        self.append_note('${BOLD}%s${NORMAL} ${%s}%s${NORMAL}'%(label, ('RED','GREEN')[data[ANSW_CODE] == '1000'], data[ANSW_MSG]))
+
+    def __code_isnot_1000__(self, data, label):
+        """Append standard message if answer code is not 1000.
+        Returns FALSE - code is 1000; TRUE - code is NOT 1000;
+        """
+        if data[ANSW_CODE] != '1000':
+            self.__response_msg__(data, label)
+        return data[ANSW_CODE] != '1000'
+        
     def answer_greeting(self, dict_answer):
         "Part of process answer - parse greeting node."
         greeting = dict_answer['greeting']
@@ -392,32 +419,101 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]   ${CYAN}# display raw answer${NORMAL}
         self.append_note('%s: %s'%(_T('Available language versions'),', '.join(self.defs[LANGS])))
         self.append_note('%s objURI:\n\t%s'%(_T('Available'),eppdoc.get_dct_value(greeting, ('svcMenu','objURI'),'\n\t')))
 
+    def answer_response_logout(self, data):
+        "data=(response,result,code,msg)"
+        self.append_note(data[ANSW_MSG])
+        self.append_note(_T('You are loged out of the private area.'))
+        self.__logout_session__()
+
+    def answer_response_login(self, data):
+        "data=(response,result,code,msg)"
+        self.append_note(data[ANSW_MSG])
+        if data[ANSW_CODE] == '1000':
+            self._session[ONLINE] = 1 # indikátor zalogování
+            self._session[CMD_ID] = 1 # reset - první command byl login
+            self.append_note('*** %s ***'%_T('You are logged on!'),('GREEN','BOLD'))
+            self.append_note('${BOLD}${GREEN}%s${NORMAL}\n%s'%(_T("Available EPP commands:"),", ".join(self._available_commands)))
+        else:
+            self.append_note('--- %s ---'%_T('Login failed'),('RED','BOLD'))
+
+    def answer_response_contact_info(self, data):
+        "data=(response,result,code,msg)"
+        if self.__code_isnot_1000__(data, 'info:contact'): return
+        try:
+            resData = data[ANSW_RESPONSE]['response']['resData']
+            contact_infData = resData['contact:infData']
+            contact_postalInfo = contact_infData['contact:postalInfo']
+            contact_disclose = contact_infData['contact:disclose']
+        except KeyError, msg:
+            self.append_error('answer_response_contact_info KeyError: %s'%msg)
+        else:
+            self.__append_note_from_dct__(contact_infData,
+                ('contact:id','contact:roid','contact:status s'))
+            self.append_note('${BOLD}contact:postalInfo${NORMAL} %s'%('-'*20))
+            self.__append_note_from_dct__(contact_postalInfo,('contact:name','contact:org'))
+            contact_addr = contact_postalInfo.get('contact:addr',None)
+            if contact_addr:
+                self.__append_note_from_dct__(contact_addr,('contact:street','contact:city','contact:cc'))
+            self.append_note('-'*40)
+            self.__append_note_from_dct__(contact_infData,('contact:email','contact:crID','contact:crDate','contact:upID','contact:upDate'))
+            contact_disclose = contact_infData.get('contact:disclose',None)
+            if contact_disclose:
+                self.__append_note_from_dct__(contact_disclose,('contact:name','contact:org','contact:addr','contact:voice','contact:fax','contact:email'))
+
+    def answer_response_domain_info(self, data):
+        "data=(response,result,code,msg)"
+        if self.__code_isnot_1000__(data, 'info:domain'): return
+        try:
+            resData = data[ANSW_RESPONSE]['response']['resData']
+            domain_infData = resData['domain:infData']
+        except KeyError, msg:
+            self.append_error('answer_response_domain_info KeyError: %s'%msg)
+        else:
+            self.__append_note_from_dct__(domain_infData,
+                ('domain:name','domain:roid','domain:status s','domain:registrant'
+                ,'domain:contact type','domain:nsset','domain:clID','domain:crID'
+                ,'domain:crDate','domain:exDate','domain:upID'))
+
+    def answer_response_nsset_info(self, data):
+        "data=(response,result,code,msg)"
+        if self.__code_isnot_1000__(data, 'info:nsset'): return
+        try:
+            resData = data[ANSW_RESPONSE]['response']['resData']
+            nsset_infData = resData['nsset:infData']
+            nsset_ns = nsset_infData['nsset:ns']
+        except KeyError, msg:
+            self.append_error('answer_response_nsset_info KeyError: %s'%msg)
+        else:
+            self.__append_note_from_dct__(nsset_infData,('nsset:id','nsset:roid','nsset:clID','nsset:crID'
+                ,'nsset:crDate','nsset:upID','nsset:trDate','nsset:authInfo'))
+            self.append_note('${BOLD}nsset:ns${NORMAL} %s'%('-'*20))
+            if type(nsset_ns) == list:
+                for item in nsset_ns:
+                    self.__append_note_from_dct__(item,('nsset:name','nsset:addr'))
+            else:
+                self.__append_note_from_dct__(nsset_ns,('nsset:name','nsset:addr'))
+
     def answer_response(self, dict_answer):
         "Part of process answer - parse response node."
-        code, msg = ['']*2
+        display_src = 1 # Má se odpověd zobrazit celá? 1-ano, 0-ne
         response = dict_answer.get('response',None)
-##        self.append_note(eppdoc.prepare_for_display(response,COLOR)) #!!!
         if response:
             result = response.get('result',None)
             if result:
-                code = eppdoc.get_dct_attr(result,(),'code')
-                msg = eppdoc.get_dct_value(result,'msg')
-                self.append_note(msg)
-            if self._command_sent == 'login':
-                if code == '1000':
-                    self._session[ID] = 1 # první command byl login
-                    self.append_note('*** %s ***'%_T('You are logged on!'),('GREEN','BOLD'))
-                    self.append_note('${BOLD}${GREEN}%s${NORMAL}\n%s'%(_T("Available EPP commands:"),", ".join(self._available_commands)))
+                fnc_name = 'answer_response_%s'%self._command_sent.replace(':','_')
+                if hasattr(self,fnc_name):
+                    getattr(self,fnc_name)((dict_answer, result, eppdoc.get_dct_attr(result,(),'code'), eppdoc.get_dct_value(result,'msg')))
+                    display_src = 0 # Odpověd byla odchycena, není potřeba ji zobrazovat celou.
                 else:
-                    self._session[ID] = 0 # počet příkazů zrušen, tím se indikuje i to, že session není zalogována
-                    self.append_note('--- %s ---'%_T('Login failed'),('RED','BOLD'))
-            elif self._command_sent == 'logout':
-                self.append_note(_T('You are loged out of the private area.'))
-                self.__logout_session__()
+                    # odpovědi na ostatní příkazy
+                    self.append_note('%s: %s'%(_T('Server response'),self._command_sent),('GREEN','BOLD'))
             else:
-                # odpovědi na ostatní příkazy
-                self.append_note(_T('server response:'),('GREEN','BOLD'))
-                self.__put_raw_into_note__(dict_answer) #!!!
+                self.append_note(_T('Missing result in the response message.'),('RED','BOLD'))
+        else:
+            self.append_note(_T('Unknown server response:'),('RED','BOLD'))
+        if display_src:
+            # Pokud odpověd neodchytila žádná funkce, tak se odpověd zobrazí celá.
+            self.__put_raw_into_note__(dict_answer)
 
     def process_answer(self, epp_server_answer):
         'Main function. Process incomming EPP messages. This funcion is called by listen socket.'
@@ -451,7 +547,6 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]   ${CYAN}# display raw answer${NORMAL}
             self.append_note(_T("No response. EPP Server doesn't answer."))
             self.__logout_session__()
         self.display() # zobrazení všech hlášení vygenerovaných během zpracování
-##        print "TEST session[ID]=",self._session[ID] #!!!
 
     #==================================================
     def is_epp_valid(self, message):
@@ -501,10 +596,10 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]   ${CYAN}# display raw answer${NORMAL}
                 self.append_note('%s: "${BOLD}%s${NORMAL}"'%(_T('Session language was set to'),lang))
             else:
                 self.append_error('%s: "${BOLD}%s${NORMAL}"'%(_T('Unknown language code'),lang))
-        elif re.match('raw[-_]',cmd):
+        elif re.match('(raw|src)[-_]',cmd):
             # Zobrazení 'surových' dat - zdrojová data
             # raw-cmd; raw-a[nswer] e[pp]; raw-answ [dict]
-            m = re.match('raw[-_](\w+)(?:\s+(\w+))?',cmd)
+            m = re.match('(?:raw|src)[-_](\w+)(?:\s+(\w+))?',cmd)
             if m:
                 self.append_note(SEPARATOR)
                 if m.group(1)[0]=='c' and self._raw_cmd: # c cmd, command
@@ -568,6 +663,15 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]   ${CYAN}# display raw answer${NORMAL}
         if xml_doc: self._raw_cmd = xml_doc # aby byl k dispozici raw, když se neodešle
         return xml_doc
 
+    def welcome(self):
+        msg = u"""
++----------------------------+
+|    Vítejte v EPP clientu   |
++----------------------------+
+Revision: $Id$
+"""
+        return msg
+        
 def append_with_colors(list_of_messages, msg, color):
     "Used by Manager::append_error() and Manager::append_note() functions"
     if type(color) in (list, tuple):
