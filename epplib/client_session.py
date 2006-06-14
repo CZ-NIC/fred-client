@@ -171,7 +171,7 @@ class Manager:
 
     def __check_is_connected__(self):
         "Control if you are still connected."
-        if self._lorry and self._lorry.is_error():
+        if self._lorry and not self._lorry.is_connected():
             # spojení spadlo
             if self._session[ID]: self.append_note('--- %s ---'%_T('Connection broken'))
             self.__logout_session__()
@@ -296,7 +296,7 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]   ${CYAN}# display raw answer${NORMAL}
                 # Když příprava vstupních dat pro příkaz chybí
                 # To, že daná funkce existuje je již ověřeno
                 # přes self._available_commands
-                getattr(self._epp_cmd, "assemble_%s"%cmd)((self.__next_clTRID__(),)) # self._session[ID](command)
+                getattr(self._epp_cmd, "assemble_%s"%cmd)((self.__next_clTRID__(),))
             self.append_error(self._epp_cmd.get_errors())
         else:
             self.append_note(_T('You are not logged. You must login before working.\nType login'))
@@ -354,9 +354,10 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]   ${CYAN}# display raw answer${NORMAL}
     def send_logout(self):
         'Send EPP logout message.'
         if not self._session[ID]: return # session zalogována nebyla
-        self._epp_cmd.assemble_logout((self.__next_clTRID__(),)) # self._session[ID]
+        self._epp_cmd.assemble_logout((self.__next_clTRID__(),))
         epp_doc = self._epp_cmd.get_xml()
         if epp_doc and self.is_connected():
+            self.append_note(_T('Send logout'))
             self.send(epp_doc)          # odeslání dokumentu na server
             answer = self.receive()     # příjem odpovědi
             self.process_answer(answer) # zpracování odpovědi
@@ -385,15 +386,11 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]   ${CYAN}# display raw answer${NORMAL}
         greeting = dict_answer['greeting']
         self.append_note(SEPARATOR)
         self.append_note(_T('Greeting message incomming'),('GREEN','BOLD'))
-        self.defs[LANGS] = eppdoc.get_dict_data(greeting, ('svcMenu','lang'))
-##        x = eppdoc.gdct(greeting, ('svcMenu','lang'))
-##        print "!!! GDCT: '%s'"%str(x)
+        self.defs[LANGS] = eppdoc.get_dct_value(greeting, ('svcMenu','lang'))
         if type(self.defs[LANGS]) in (str,unicode):
             self.defs[LANGS] = (self.defs[LANGS],)
         self.append_note('%s: %s'%(_T('Available language versions'),', '.join(self.defs[LANGS])))
-        self.append_note('%s objURI:\n\t%s'%(_T('Available'),eppdoc.get_dict_data(greeting, ('svcMenu','objURI'),'\n\t')))
-##        self.append_note(eppdoc.prepare_for_display(dict_answer,COLOR))
-        #FIXME: Tady to generuje text dvojtě get_dict_data()
+        self.append_note('%s objURI:\n\t%s'%(_T('Available'),eppdoc.get_dct_value(greeting, ('svcMenu','objURI'),'\n\t')))
 
     def answer_response(self, dict_answer):
         "Part of process answer - parse response node."
@@ -403,13 +400,9 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]   ${CYAN}# display raw answer${NORMAL}
         if response:
             result = response.get('result',None)
             if result:
-                code = eppdoc.get_dict_attr(result,(),'code')
-##                print "!!! SESSION::RESULT:",result #!!!
-                msg = eppdoc.get_dict_data(result,'msg')
-##                print "!!! SESSION::MSG:",msg #!!!
+                code = eppdoc.get_dct_attr(result,(),'code')
+                msg = eppdoc.get_dct_value(result,'msg')
                 self.append_note(msg)
-##            print "!!! RESULT:",result #!!!
-##            print "!!! SESSION::CODE:",code #!!!
             if self._command_sent == 'login':
                 if code == '1000':
                     self._session[ID] = 1 # první command byl login
@@ -442,8 +435,8 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]   ${CYAN}# display raw answer${NORMAL}
                 invalid_epp = self.is_epp_valid(self._epp_response.get_xml())
                 if invalid_epp:
                     # když se odpověd serveru neplatná...
-                    self.append_error(_T('Server answer is not valid!'),'BOLD')
-                    self.append_error(invalid_epp)
+                    self.append_note(_T('Server answer is not valid!'),('RED','BOLD'))
+                    self.append_note(invalid_epp)
             if not self._epp_response.is_error():
                 # když přišla nějaká odpověd a podařilo se jí zparsovat:
                 self._dict_answer = self._epp_response.create_data()

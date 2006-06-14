@@ -446,76 +446,40 @@ def append_to_dict(d,key,val):
     else:
         d[key] = val
 
-def gdct(dict, names):
-    #TODO: nedokončeno!
+def get_dct_attr(dict, names, attr_name, sep='\n'):
+    "Returns attribute value of the key name in names list."
+    return get_dct_value(dict, names, sep, attr_name)
+
+def get_dct_value(dict, names, sep='\n', attr_name=''):
+    "Returns value of the key name in names list."
     ret=[]
-    print "gdct(dict, names)",names #!!!
-    print dict
     if type(names) not in (tuple,list):
         names = (names,)
     if len(names):
         for i in range(len(names)):
             name = names[i]
-            print "!!!NAME:",name
             if name in ('data','attr'): continue
             if not dict.get(name,None): continue
             inames = names[i+1:]
             if type(dict[name]) in (list,tuple):
                 for item in dict[name]:
-                    vals = gdct(item, inames)
+                    vals = get_dct_value(item, inames, sep, attr_name)
                     if vals: ret.append(vals)
             else:
-                vals = gdct(dict[name], inames)
+                vals = get_dct_value(dict[name], inames, sep, attr_name)
                 if vals: ret.append(vals)
     else:
-        vals = dict.get('data','')
-        if vals: ret.append(vals)
-    print "!!! RET:",ret
-    return '\n'.join(ret)
-        
-        
-def get_dict_data(dict, names, sep='\n', attr_name='',indent=0):
-    "Returns value of the key name in names list."
-    #FIXME: Tady to generuje text dvojtě
-##    print '.'*60 #+++
-##    print "%sget_dict_data(%02d,(DICT)%s..., (NAMES)%s)"%(' '*(indent*2),indent,str(dict)[0:50],str(names)) #+++
-    if type(names) not in (tuple,list):
-        names = (names,)
-    ret=[]
-    if len(names):
-        for i in range(len(names)):
-            name = names[i]
-            if name in ('data','attr'): continue
-            if not dict.get(name,None): continue
-            dict = dict[name]
-##                print "%sSTEP%02d[%s]: ((DICT)%s..., (NAMES)%s)"%(' '*(indent*2),indent,name, str(dict)[0:50],str(names)) #+++
-            inames = names[i+1:]
-            if type(dict) in (list,tuple):
-                for item in dict:
-                    r = get_dict_data(item, inames, sep, attr_name,indent+1)
-                    if r: ret.append(r)
-            else:
-                r = get_dict_data(dict, inames, sep, attr_name,indent+1)
-                if r: ret.append(r)
-    else:
-        r = dict.get(('attr','data')[len(attr_name)==0],'')
-        if r:
-##            print "%sFINAL%02d((DICT)%s..., (NAMES)%s)"%(' '*(indent*2),indent,str(dict)[0:50],str(names)) #+++
-            if attr_name: # attributy
-                for n,v in r:
-                    if n == attr_name:
-                        ret.append(v)
+        if attr_name:
+            vals = dict.get('attr','')
+            if vals:
+                for k,v in vals:
+                    if k==attr_name:
+                        if v: ret.append(v)
                         break
-            else: # hodnoty
-                if r: ret.append(str(r))
-##    print "%sRETURN%02d((DICT)%s, (NAMES)%s) ret=%s"%(' '*(indent*2),indent,str(dict),str(names), str(ret)) #+++
+        else:
+            vals = dict.get('data','')
+            if vals: ret.append(vals)
     return sep.join(ret)
-
-def get_dict_attr(dict, names, attr_name, sep='\n'):
-    "Returns attribute value of the key name in names list."
-    if type(names) not in (tuple,list):
-        names = (names,)
-    return get_dict_data(dict, names, sep, attr_name) # 1 - attribut, 0 - data
 
 def __pfd__(dict,color=0,indent=0):
     "Prepare dictionary data for display."

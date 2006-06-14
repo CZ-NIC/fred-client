@@ -136,12 +136,14 @@ class Lorry:
             self._errors.append('SEND socket.sslerror: [%d] %s'%(no, msg))
         except socket.error, (no, msg):
             self._errors.append('SEND socket.error: [%d] %s'%(no, msg))
+        if len(self._errors): self.close()
         return ok
 
     def close(self):
         if self._conn:
             self._conn.close()
             self._conn = None
+            self._conn_ssl = None
             self._errors.append(_T('Connection closed'))
 
 if __name__ == '__main__':
