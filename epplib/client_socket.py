@@ -1,8 +1,5 @@
 # -*- coding: utf8 -*-
 #!/usr/bin/env python
-#
-# $Id$
-#
 import os
 import socket
 import threading
@@ -119,6 +116,7 @@ class Lorry:
         msg = sep.join(self._errors)
         self._errors = []
         return msg
+
     def fetch_notes(self, sep='\n'):
         msg = sep.join(self._notes)
         self._notes = []
