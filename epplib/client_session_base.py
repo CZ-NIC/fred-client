@@ -1,6 +1,6 @@
 # -*- coding: utf8 -*-
 #!/usr/bin/env python
-import re
+import re, time
 import os, commands
 from gettext import gettext as _T
 import terminal_controler
@@ -19,7 +19,7 @@ ONLINE,CMD_ID,LANG = range(3)
 DEFS_LENGTH = 4
 VERSION,LANGS,objURI,PREFIX = range(DEFS_LENGTH)
 
-class ManagerMessage:
+class ManagerBase:
     """This class hold buffers with error and note messages.
     Class collect messages and prepare them to outout.
     """
@@ -80,6 +80,13 @@ class ManagerMessage:
             print colored_output.render('${MAGENTA}')
             print colored_output.render(self.fetch_errors())
             print colored_output.render('${NORMAL}')
+
+    def __next_clTRID__(self):
+        """Generate next clTRID value.
+        format: [4 random ASCII chars][3 digits of the commands order]#[date and time]
+        """
+        self._session[CMD_ID]+=1 
+        return ('%s%03d#%s'%(self.defs[PREFIX],self._session[CMD_ID],time.strftime('%y-%m-%dat%H:%M:%S')))
 
     def set_validate(self, cmd):
         "Set feature of the manager - it will or not validate EPP documents. cmd='validate on/off'"

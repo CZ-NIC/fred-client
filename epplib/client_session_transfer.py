@@ -11,21 +11,20 @@ from client_session_base import *
 # host, port, (private key, certificate (public) key)
 default_connecion = ('curlew',700,('client.key','client.crt'))
 
-class ManagerTransfer(ManagerMessage):
+class ManagerTransfer(ManagerBase):
     """EPP client support.
     This class take care about sending and receiving messages from/to server.
     Function process_answer() must be implemented by derived class.
     """
     def __init__(self):
-        ManagerMessage.__init__(self)
+        ManagerBase.__init__(self)
         self._epp_cmd = client_eppdoc.Message()
         self._epp_response = client_eppdoc.Message()
         self._available_commands = self._epp_cmd.get_client_commands()
         self._lorry = None
-        # Typ očekávané odpovědi serveru. Zde si Manager pamatuje jaký příkazy
+        # Typ očekávané odpovědi serveru. Zde si Manager pamatuje jaký příkaz
         # odeslal a podle toho pak zařadí návratové hodnoty.
         self._command_sent = ''
-        # buffer
         self._raw_cmd = None # XML EPP příkaz odeslaný serveru
 
     #---------------------------------

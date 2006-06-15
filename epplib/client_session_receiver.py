@@ -1,5 +1,6 @@
 # -*- coding: utf8 -*-
 #!/usr/bin/env python
+import operator
 from gettext import gettext as _T
 import eppdoc
 import client_eppdoc
@@ -43,24 +44,21 @@ class ManagerReceiver(ManagerTransfer):
     #                  -> answer_greeting()
     #
     #==================================================
-    def __append_note_from_dct__(self,dict,cols):
+    def __append_note_from_dct__(self,dict_data,cols):
         """Append columns values from dict to note stack.
         cols = ('column-name','column-name','column-name attr-name attr-name','node')
         """
         for column_name in cols:
             lcol = column_name.split(' ')
             if len(lcol)>1:
-                value = eppdoc.get_dct_value(dict, lcol[0])
+                value = eppdoc.get_dct_value(dict_data, lcol[0])
                 attr = []
                 for a in lcol[1:]:
-                    attr.append('\t${BOLD}%s${NORMAL}\t%s'%(a,eppdoc.get_dct_attr(dict, lcol[0], a)))
-                self.append_note('${BOLD}%s${NORMAL}\t%s\n%s'%(lcol[0],value,','.join(attr)))
+                    attr.append('\t${BOLD}%s${NORMAL}\t%s'%(a,eppdoc.get_dct_attr(dict_data, lcol[0], a)))
+                if len(attr): self.append_note('${BOLD}%s${NORMAL}\t%s\n%s'%(lcol[0],value,','.join(attr)))
             else:
-                self.append_note('${BOLD}%s${NORMAL}\t%s'%(column_name,eppdoc.get_dct_value(dict, column_name)))
-
-##    def __response_msg__(self, data, label):
-##        "Shared for many answers. data=(response,result,code,msg)"
-##        self.append_note('${BOLD}%s${NORMAL} ${%s}%s${NORMAL}'%(label, ('RED','GREEN')[data[ANSW_CODE] == '1000'], data[ANSW_MSG]))
+                value = eppdoc.get_dct_value(dict_data, column_name)
+                if value: self.append_note('${BOLD}%s${NORMAL}\t%s'%(column_name,value))
 
     def __code_isnot_1000__(self, data, label):
         """Append standard message if answer code is not 1000.
@@ -69,7 +67,6 @@ class ManagerReceiver(ManagerTransfer):
         if data[ANSW_CODE] != '1000':
             # standardní výstup chybového hlášení
             self.append_note('${BOLD}%s${NORMAL} ${%s}%s${NORMAL}'%(label, ('RED','GREEN')[data[ANSW_CODE] == '1000'], data[ANSW_MSG]))
-##            self.__response_msg__(data, label)
         return data[ANSW_CODE] != '1000'
 
     def answer_response(self, dict_answer):
@@ -130,7 +127,8 @@ class ManagerReceiver(ManagerTransfer):
     #==================================================
     #
     # Zpracování jednotlivých příchozích zpráv
-    #
+    # funkce jsou ve tvaru [prefix]_[jméno příkazu]
+    # answer_response_[command]
     #==================================================
     def answer_greeting(self, dict_answer):
         "Part of process answer - parse greeting node."
@@ -160,6 +158,9 @@ class ManagerReceiver(ManagerTransfer):
         else:
             self.append_note('--- %s ---'%_T('Login failed'),('RED','BOLD'))
 
+    #-------------------------------------
+    # *** info ***
+    #-------------------------------------
     def answer_response_contact_info(self, data):
         "data=(response,result,code,msg)"
         if self.__code_isnot_1000__(data, 'info:contact'): return
@@ -217,4 +218,51 @@ class ManagerReceiver(ManagerTransfer):
             else:
                 self.__append_note_from_dct__(nsset_ns,('nsset:name','nsset:addr'))
 
+    #-------------------------------------
+    # *** check ***
+    #-------------------------------------
+    def __check_available__(self, dict_data, names, attr_name):
+        """Assign available names for check_...() functions.
+        names=('domain','name')
+        """
+        column_name = '%s:%s'%names
+        value = eppdoc.get_dct_value(dict_data, column_name)
+        code = eppdoc.get_dct_attr(dict_data, column_name, attr_name)
+        reason = eppdoc.get_dct_value(dict_data, '%s:reason'%names[0]) # nepovinný
+        if code in ('1','true'):
+            status = '${BOLD}${GREEN}%s${NORMAL}'%_T('OK! Available')
+        else:
+            status = '${BOLD}${RED}%s${NORMAL}' % _T('Not available')
+        if reason: reason = '\t(%s)'%reason # nepovinný
+        self.append_note('${BOLD}%s${NORMAL} %s %s%s'%(column_name,status,value,reason))
 
+    def __answer_response_check__(self, data, names):
+        """Process all check_[command]() functions. 
+        data=(response,result,code,msg)
+        names=('check-type','column-name')
+        """
+        if self.__code_isnot_1000__(data, '%s:check'%names[0]): return
+        try:
+            resData = data[ANSW_RESPONSE]['response']['resData']
+            chunk_chkData = resData['%s:chkData'%names[0]]
+            chunk_cd = chunk_chkData['%s:cd'%names[0]]
+        except KeyError, msg:
+            self.append_error('answer_response_%s_check KeyError: %s'%(names[0],msg))
+        else:
+            if operator.isSequenceType(chunk_cd):
+                for item in chunk_cd:
+                    self.__check_available__(item, names, 'avail')
+            else:
+                self.__check_available__(chunk_cd, names, 'avail')
+
+    def answer_response_contact_check(self, data):
+        "data=(response,result,code,msg)"
+        self.__answer_response_check__(data, ('contact','id'))
+
+    def answer_response_domain_check(self, data):
+        "data=(response,result,code,msg)"
+        self.__answer_response_check__(data, ('domain','name'))
+
+    def answer_response_nsset_check(self, data):
+        "data=(response,result,code,msg)"
+        self.__answer_response_check__(data, ('nsset','id'))

@@ -10,7 +10,7 @@
 # a ty pak zobrazí v nějakém vybraném formátu.
 # Zobrazuje help. Přepíná jazykovou verzi.
 #
-##from client_session_transfer import ManagerTransfer
+from client_session_base import *
 from client_session_command import ManagerCommand
 from client_session_receiver import ManagerReceiver
 
@@ -46,15 +46,9 @@ Revision: $Id$
 """
         return msg
         
-def debug_label(text,message=''):
-    print '\n'
-    print '-'*60
-    print '***',text.upper(),'***'
-    print '-'*60
-    if message: print message
-
 if __name__ == '__main__':
     client = Manager()
+##    client._session[ONLINE] = 1 #!!!
     while 1:
         command = raw_input("> (? help, q quit): ")
         if command in ('q','quit','exit','konec'): break
@@ -63,14 +57,10 @@ if __name__ == '__main__':
         if edoc:
             print 'EPP COMMAND:\n%s\n%s'%(edoc,'-'*60)
             if re.match('login',command):
-                client._session[ID] = 1 # '***login***' # testovací zalogování
+                client._session[ONLINE] = 1 # '***login***' # testovací zalogování
             if re.match('logout',command):
-                client._session[ID] = 0 # testovací odlogování
-            # client.process_answer(edoc)
-            dict_answer = client._epp_cmd.create_data()
-            if dict_answer:
-                debug_label(u'dict:')
-                pprint.pprint(dict_answer)
+                client._session[ONLINE] = 0 # testovací odlogování
+            client.process_answer(edoc)
         print '='*60
     print '[END]'
 

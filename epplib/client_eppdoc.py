@@ -119,8 +119,18 @@ class Message(eppdoc.Message):
         "params must have ('clTRID',('name',))"
         self.__asseble_command__(('info','nsset','id'), params, ONLY_ONE_VALUE)
 
-##    def assemble_poll(self, *params):
-##        self.load_EPP_template('poll')
+    def assemble_poll(self, *params):
+        """Počet zpráv ve frontě. Vrací první zprávu z fronty. ID zprávy a počet zpráv ve frontě.
+        params must have ('clTRID',['req'],())
+        """
+        key = params[1][0]
+        if key not in ('req','ack'): key = 'req' # automatické přiřazení defaultní hodnoty
+        self.__assemble_cmd__((
+            ('epp', 'command'),
+            ('command', 'poll', '', (('op',key),) ),
+            ('command', 'clTRID', params[0])
+        ))
+
 ##    def assemble_transfer(self, *params):
 ##        self.load_EPP_template('transfer')
 

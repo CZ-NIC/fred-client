@@ -1,7 +1,7 @@
 # -*- coding: utf8 -*-
 #!/usr/bin/env python
 import re
-import time
+##import time
 import random
 import dircache # jen pro testování. v ostré verzi to nebude
 from gettext import gettext as _T
@@ -11,17 +11,10 @@ import client_eppdoc_test
 
 SEPARATOR = '-'*60
 
-class ManagerCommand(ManagerMessage):
+class ManagerCommand(ManagerBase):
     """EPP client support.
     This class manage creations of the EPP documents.
     """
-
-    def __next_clTRID__(self):
-        """Generate next clTRID value.
-        format: [4 random ASCII chars][3 digits of the commands order]#[date and time]
-        """
-        self._session[CMD_ID]+=1 
-        return ('%s%03d#%s'%(self.defs[PREFIX],self._session[CMD_ID],time.strftime('%y-%m-%dat%H:%M:%S')))
         
     def __create_param__(self, command_name, cmd, parameter_names=(), data=()):
         """Supprot for create_...() functions with more than ONE parameter.
@@ -30,7 +23,7 @@ class ManagerCommand(ManagerMessage):
         parameter_names - names of parametres for help and number of required.
                           names in bracket are obligatory
         """
-        m = re.match(r'%s\s+(.+)'%command_name, cmd)
+        m = re.match(r'%s\s*(.*)'%command_name, cmd)
         if m:
             min_required, max_allowed = count_required_params(parameter_names)
             params = re.split('\s+',m.group(1)) # rozdělení parametrů příkazu
@@ -39,7 +32,7 @@ class ManagerCommand(ManagerMessage):
                 self.append_note(_T('Function must have at least %d parametres.')%min_required)
             else:
                 getattr(self._epp_cmd,'assemble_%s'%command_name)(self.__next_clTRID__(), params, data)
-                if self._epp_cmd.is_error(): self._errors.extend(self._epp_cmd.fetch_errors())
+                if self._epp_cmd.is_error(): self._errors.append(self._epp_cmd.fetch_errors())
         else:
             self.append_note(_T('Error: Parameter missing. Type: %s %s')%(command_name,', '.join(parameter_names)))
 
@@ -173,7 +166,7 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]  ${CYAN}# display raw answer${NORMAL}
         else:
             # příkazy pro EPP
             self.epp_command(cmd)
-            xml_doc = self._epp_cmd.get_xml()
+            self._raw_cmd = xml_doc = self._epp_cmd.get_xml()
             if xml_doc: invalid_epp = self.is_epp_valid(xml_doc)
             if xml_doc and invalid_epp:
                 # Pokud EPP dokument není validní, tak se výstup zruší
@@ -219,9 +212,16 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]  ${CYAN}# display raw answer${NORMAL}
             # prefix 4 ASCII znaků pro clTRID (pro každé sezení nový)
             self.defs[PREFIX] = ''.join([chr(random.randint(97,122)) for n in range(4)])
             self.__create_param__('login', cmd
-                ,(_T('login-name'),_T('password'),_T('[new password]'))
+                ,(_T('login-name'),_T('password'),'[%s]'%_T('new password'))
                 ,(self.defs[VERSION],self.defs[objURI],self._session[LANG]))
 
+    def create_poll(self, cmd):
+        'Create EPP document poll'
+        if not re.match('poll\s+(req|ack)\s*$',cmd):
+            self.append_note('%s: ${BOLD}%s${NORMAL}'%('poll: Set default op value','req'))
+            cmd = 'poll req' # default TODO: dodělat reveiver a automatický ack
+        self.__create_param__('poll',cmd,('[op]',))
+                
 def count_required_params(params):
     """Returns how many parameters from params list are required:
     IN: ('name','name','[name]','...')

@@ -74,6 +74,11 @@ class Message:
     def is_error(self):
         return len(self.errors)
 
+    def fetch_errors(self, sep=None):
+        ret = self.get_errors(sep)
+        self.errors=[]
+        return ret
+
     def get_errors(self, sep=None):
         if sep==None: sep=self._cr
         errors=['[%d] (%s) %s'%(code,str(value),reason) for code,value,reason in self.errors]
@@ -272,15 +277,19 @@ class Message:
         name = ''
         if self.dom:
             # Level 1.
+##            print "!!! self.dom",self.dom.toxml()
             node = self.get_element_node(self.dom.documentElement)
+            if not node: return name
             name = node.nodeName.lower()
             if name == 'command':
                 # Level 2.
                 node = self.get_element_node(node)
+                if not node: return name
                 name = node.nodeName.lower()
-                if name not in ('login','logout'):
+                if name not in ('login','logout','poll'):
                     # Level 3.
                     node = self.get_element_node(node)
+                    if not node: return name
                     name = node.nodeName.lower()
         return name
 
