@@ -16,6 +16,8 @@ ONLY_ONE_VALUE = 1 # definice pro funkci __asseble_command__()
 
 class Message(eppdoc.Message):
     "Client EPP commands."
+    
+    transfer_op = ('request','approve','cancel','query','reject')
 
     def get_client_commands(self):
         'Return available client commands.'
@@ -44,8 +46,8 @@ class Message(eppdoc.Message):
         data=[('epp', 'command'),
             ('command', cols[0]),
             (cols[0],'%s:%s'%(cols[1],cols[0]),None,(
-            ('xmlns:%s'%cols[1],'http://www.nic.cz/xml/epp/%s-1.0'%cols[1]),
-            ('xsi:schemaLocation','http://www.nic.cz/xml/epp/%s-1.0 %s-1.0.xsd'%(cols[1],cols[1]))
+            ('xmlns:%s'%cols[1],'%s%s-%s'%(eppdoc.nic_cz_xml_epp_path,cols[1],eppdoc.nic_cz_version)),
+            ('xsi:schemaLocation','%s%s-1.0 %s-%s.xsd'%(eppdoc.nic_cz_xml_epp_path,cols[1],cols[1],eppdoc.nic_cz_version))
             ))
             ]
         col1 = '%s:%s'%(cols[1],cols[0])
@@ -131,11 +133,33 @@ class Message(eppdoc.Message):
             ('command', 'clTRID', params[0])
         ))
 
-##    def assemble_transfer(self, *params):
-##        self.load_EPP_template('transfer')
+    def __assemble_transfer__(self, names, params):
+        "params must have ('clTRID',('name','op','heslo'))"
+        if params[1][1] not in Message.transfer_op:
+            params[1][1] = Message.transfer_op[0] # default value
+        ns = '%s%s-%s'%(eppdoc.nic_cz_xml_epp_path,names[0],eppdoc.nic_cz_version)
+        attr = (('xmlns:%s'%names[0],ns),
+                ('xsi:schemaLocation','%s %s%s.xsd'%(ns,names[0],eppdoc.nic_cz_version)))
+        self.__assemble_cmd__((
+            ('epp', 'command'),
+            ('command', 'transfer', '', (('op',params[1][1]),)),
+            ('transfer', '%s:transfer'%names[0], '', attr),
+            ('%s:transfer'%names[0], '%s:%s'%names, params[1][0]),
+            ('%s:transfer'%names[0], '%s:authInfo'%names[0]),
+            ('%s:authInfo'%names[0], '%s:pw'%names[0], params[1][2]),
+            ('command', 'clTRID', params[0])
+        ))
+
+    def assemble_transfer_domain(self, *params):
+        "params must have ('clTRID',('name','op','heslo'))"
+        self.__assemble_transfer__(('domain','name'),params)
+
+    def assemble_transfer_nsset(self, *params):
+        "params must have ('clTRID',('name','op','heslo'))"
+        self.__assemble_transfer__(('nsset','id'),params)
 
     #-------------------------------------------
-    # Výkonné (transform)
+    # Výkonné
     #-------------------------------------------
 ##    def assemble_create(self, *params):
 ##        self.load_EPP_template('create')
@@ -163,7 +187,19 @@ def test_command(command, label):
     print 'ERRORS:',errors
     print '-'*60
 
+def test():
+    import pprint
+    epp = Message()
+    epp.assemble_transfer_domain('llcc002#06-06-16at13:21:30', ['neco.cz', 'cosi', 'heslo'], ())
+    errors, xmlepp = epp.get_results()
+    print errors, xmlepp
+
+    epp.assemble_transfer_nsset('llcc002#06-06-16at13:21:30', ['neco.cz', 'cosi', 'heslo'], ())
+    errors, xmlepp = epp.get_results()
+    print errors, xmlepp
+    
 if __name__ == '__main__':
     # Test na jednotlivé příkazy
-    test_command('login moje-jmeno moje-heslo', 'TEST login')
-    test_command('info', 'TEST info')
+##    test_command('login moje-jmeno moje-heslo', 'TEST login')
+##    test_command('info', 'TEST info')
+    test()

@@ -29,7 +29,10 @@ xmlns="urn:ietf:params:xml:ns:epp-1.0"
 xmlns_xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi_schemaLocation="urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd"
 default_encoding = 'utf-8' # default document output encoding
+nic_cz_xml_epp_path = 'http://www.nic.cz/xml/epp/'
+nic_cz_version = '1.0'
 #========================================================
+DEBUG = 0
 
 class Message:
     'Struct maintaining DOM object and process errors.'
@@ -250,23 +253,6 @@ class Message:
                         vals.append(e.nodeValue.strip())
         return ''.join(vals)
 
-##    def get_top_node_names(self):
-##        "Returns names of the top node elements."
-##        if self.dom:
-##            top = self.dom.documentElement
-##            return [e.nodeName for e in top.childNodes if e.nodeType == Node.ELEMENT_NODE]
-##        else:
-##            return []
-
-##    def walk_nodes(self):
-##        "Generator throught top nodes."
-##        if self.dom:
-##            top = self.dom.documentElement
-##            for e in top.childNodes:
-##                if e.nodeType == Node.ELEMENT_NODE:
-##                    yield e.nodeName
-        
-
     def get_epp_command_name(self):
         """Returns top EPP command name. 
         Level 1: epp.greeting
@@ -277,7 +263,6 @@ class Message:
         name = ''
         if self.dom:
             # Level 1.
-##            print "!!! self.dom",self.dom.toxml()
             node = self.get_element_node(self.dom.documentElement)
             if not node: return name
             name = node.nodeName.lower()
@@ -402,7 +387,7 @@ class Data:
             # class members
             ret = self.__dict__['_%s'%key]
         # ........................................
-        # Zde se může zrušit vypenutí exception AttributeError 
+        # Zde se může zrušit vypnutí exception AttributeError 
         # a tím se vrátí normální chování.
 ##        else:
 ##            ret = super.__getattr__(key)

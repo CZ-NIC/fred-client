@@ -5,18 +5,19 @@ from gettext import gettext as _T
 import eppdoc
 import client_eppdoc
 from client_session_base import *
-from client_session_transfer import ManagerTransfer
+##from client_session_transfer import ManagerTransfer
+from client_session_command import ManagerCommand
 
 SEPARATOR = '-'*60
 COLOR = 1
 ANSW_RESPONSE, ANSW_RESULT, ANSW_CODE, ANSW_MSG = range(4)
 
-class ManagerReceiver(ManagerTransfer):
+class ManagerReceiver(ManagerCommand):
     """EPP client support.
     This class manage creations of the EPP documents.
     """
     def __init__(self):
-        ManagerTransfer.__init__(self)
+        ManagerCommand.__init__(self)
         self._raw_answer = None # XML EPP odpověd serveru
         self._dict_answer = None # dict - slovník vytvořený z XML EPP odpovědi
 
@@ -54,7 +55,8 @@ class ManagerReceiver(ManagerTransfer):
                 value = eppdoc.get_dct_value(dict_data, lcol[0])
                 attr = []
                 for a in lcol[1:]:
-                    attr.append('\t${BOLD}%s${NORMAL}\t%s'%(a,eppdoc.get_dct_attr(dict_data, lcol[0], a)))
+                    val = eppdoc.get_dct_attr(dict_data, lcol[0], a)
+                    if val: attr.append('\t${BOLD}%s${NORMAL}\t%s'%(a,val))
                 if len(attr): self.append_note('${BOLD}%s${NORMAL}\t%s\n%s'%(lcol[0],value,','.join(attr)))
             else:
                 value = eppdoc.get_dct_value(dict_data, column_name)
@@ -71,6 +73,8 @@ class ManagerReceiver(ManagerTransfer):
 
     def answer_response(self, dict_answer):
         "Part of process answer - parse response node."
+        # Zde se hledá, jestli na odpověd existuje funkce, ketrá ji zpracuje.
+        # Pokud, ne, tak se odpověd zobrací celá standardním způsobem.
         display_src = 1 # Má se odpověd zobrazit celá? 1-ano, 0-ne
         response = dict_answer.get('response',None)
         if response:
@@ -93,6 +97,8 @@ class ManagerReceiver(ManagerTransfer):
 
     def process_answer(self, epp_server_answer):
         'Main function. Process incomming EPP messages. This funcion is called by listen socket.'
+        # Hlavní funkce pro zpracování odpovědi. Rozparsuje XML, provede validaci a pak pokračuje
+        # funkcí answer_response().
         if epp_server_answer:
             self._raw_answer = epp_server_answer
             # create XML DOM tree:
@@ -266,3 +272,106 @@ class ManagerReceiver(ManagerTransfer):
     def answer_response_nsset_check(self, data):
         "data=(response,result,code,msg)"
         self.__answer_response_check__(data, ('nsset','id'))
+
+    def answer_response_poll(self, data):
+        "data=(response,result,code,msg)"
+        label='poll'
+        if data[ANSW_CODE] == '1000':
+            label+=' (%s)'%_T('Acknowledgement response')
+        self.append_note('%s: %s'%(label,data[ANSW_MSG]))
+        msgQ = None
+        response = data[ANSW_RESPONSE].get('response',None)
+        if response: msgQ = response.get('msgQ',None)
+        if msgQ:
+            self.__append_note_from_dct__(response,('msgQ count id',))
+            self.__append_note_from_dct__(msgQ,('qDate','msg'))
+        if data[ANSW_CODE] == '1301':
+            # automatická odpověd 'ack'
+            xml_doc = self.create_eppdoc('poll ack')
+            if xml_doc and self.is_connected():
+                self.append_note(_T('Sending command poll ack'))
+                self.send(xml_doc)
+
+    def answer_response_domain_transfer(self, data):
+        "data=(response,result,code,msg)"
+        self.append_note('domain:transfer: ${BOLD}[%s]${NORMAL} %s'%(data[ANSW_CODE],data[ANSW_MSG]))
+
+    def answer_response_nsset_transfer(self, data):
+        "data=(response,result,code,msg)"
+        self.append_note('nsset:transfer: ${BOLD}[%s]${NORMAL} %s'%(data[ANSW_CODE],data[ANSW_MSG]))
+
+def test(xml):
+    m = ManagerReceiver()
+    m._command_sent = 'transfer'
+    m.process_answer(xml)
+
+if __name__ == '__main__':
+    #!!! TODO: pak odstranit!
+    e1 = """<?xml version='1.0' encoding='utf-8' standalone="no"?>
+<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
+        <response>
+    <result code='1300'>
+      <msg>Command completed successfully; no messages</msg>
+    </result>
+    <msgQ count="5" id="12345">
+      <qDate>2000-06-08T22:00:00.0Z</qDate>
+      <msg>Transfer requested.</msg>
+    </msgQ>
+    <trID>
+      <clTRID>ulss002#06-06-16at09:42:19</clTRID>
+      <svTRID>ccReg-0000006514</svTRID>
+    </trID>
+  </response>
+</epp>"""
+    e3 = """<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+   <epp xmlns="urn:ietf:params:xml:ns:epp-1.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="urn:ietf:params:xml:ns:epp-1.0
+       epp-1.0.xsd">
+     <response>
+      <result code="1000">
+        <msg>Command completed successfully</msg>
+      </result>
+      <msgQ count="4" id="12346"/>
+      <trID>
+        <clTRID>ABC-12346</clTRID>
+        <svTRID>54322-XYZ</svTRID>
+       </trID>
+     </response>
+   </epp>"""
+    e4 = """<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+   <epp xmlns="urn:ietf:params:xml:ns:epp-1.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="urn:ietf:params:xml:ns:epp-1.0
+        epp-1.0.xsd">
+     <command>
+       <transfer op="query">
+         <obj:transfer xmlns:obj="urn:ietf:params:xml:ns:obj"
+          xsi:schemaLocation="urn:ietf:params:xml:ns:obj obj.xsd">
+           <!-- Object-specific elements. -->
+         </obj:transfer>
+       </transfer>
+       <clTRID>ABC-12346</clTRID>
+     </command>
+   </epp>"""
+    e5 = """<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<epp xmlns="urn:ietf:params:xml:ns:epp-1.0"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="urn:ietf:params:xml:ns:epp-1.0
+     epp-1.0.xsd">
+  <command>
+    <transfer op="request">
+      <domain:transfer
+       xmlns:domain="http://www.nic.cz/xml/epp/domain-1.0"
+       xsi:schemaLocation="http://www.nic.cz/xml/epp/domain-1.0
+       domain-1.0.xsd">
+        <domain:name>example.cz</domain:name>
+        <domain:authInfo>
+            <domain:pw>2fooBAR</domain:pw>
+        </domain:authInfo>
+      </domain:transfer>
+    </transfer>
+    <clTRID>ABC-12345</clTRID>
+  </command>
+</epp>"""
+    test(e4)

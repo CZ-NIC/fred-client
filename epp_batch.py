@@ -19,38 +19,10 @@ except UnicodeEncodeError, msg:
     print 'Unpossible use this Python version cause of not support Unicode chars.'
     print '[END]'
     sys.exit()
-# kontrola na readline
-try:
-    import readline
-except ImportError:
-    print u'readline modul chybí - historie příkazů je vypnuta'
-    print 'readline module missing - cmd history is diabled'
-    readline = None
-
-class Completer:
-    def __init__(self, words):
-        self.words = words
-        self.prefix = None
-    def complete(self, prefix, index):
-        if prefix != self.prefix:
-            # we have a new prefix!
-            # find all words that start with this prefix
-            self.matching_words = [w for w in self.words if w.startswith(prefix)]
-            self.prefix = prefix
-        try:
-            return self.matching_words[index]
-        except IndexError:
-            return None
 
 def main():
-    # readline
-    words = "check_contact", "check_domain", "check_nsset", "create", "delete", "hello", "info_contact", "info_domain", "info_nsset", "login", "logout", "poll", "renew", "transfer", "update"
-    if readline:
-        completer = Completer(words)
-        readline.parse_and_bind("tab: complete")
-        readline.set_completer(completer.complete)
-
     client = epplib.client_session.Manager()
+    epplib.client_session.set_history(client.get_command_names())
     print client.welcome()
     #---------------------------------------------------
     if 0:

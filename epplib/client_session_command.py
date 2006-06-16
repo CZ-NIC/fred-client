@@ -6,12 +6,13 @@ import random
 import dircache # jen pro testování. v ostré verzi to nebude
 from gettext import gettext as _T
 from client_session_base import *
+from client_session_transfer import ManagerTransfer
 import client_eppdoc
 import client_eppdoc_test
 
 SEPARATOR = '-'*60
 
-class ManagerCommand(ManagerBase):
+class ManagerCommand(ManagerTransfer):
     """EPP client support.
     This class manage creations of the EPP documents.
     """
@@ -172,6 +173,7 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]  ${CYAN}# display raw answer${NORMAL}
                 # Pokud EPP dokument není validní, tak se výstup zruší
                 self.append_error(_T('EPP document is not valid'),'BOLD')
                 self.append_error(invalid_epp)
+                self.append_error(self._raw_cmd,'CYAN')
                 xml_doc=''
         if xml_doc: self._raw_cmd = xml_doc # aby byl k dispozici raw, když se neodešle
         return xml_doc
@@ -221,7 +223,28 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]  ${CYAN}# display raw answer${NORMAL}
             self.append_note('%s: ${BOLD}%s${NORMAL}'%('poll: Set default op value','req'))
             cmd = 'poll req' # default TODO: dodělat reveiver a automatický ack
         self.__create_param__('poll',cmd,('[op]',))
-                
+
+    def __check_transfer_op__(self, cmd):
+        "Check if transfer op value is in range."
+        ret=1
+        m = re.match('\S+\s+\S+\s+(\w+)',cmd)
+        if m:
+            # kontrola, jen když je parametr zadán
+            if m.group(1) not in self._epp_cmd.transfer_op:
+                self.append_note('%s: %s'%(_T('Query type must be one from this list'),str(self._epp_cmd.transfer_op)))
+                ret=0
+        return ret
+        
+    def create_transfer_nsset(self, cmd):
+        'Create EPP document transfer:nsset'
+        if self.__check_transfer_op__(cmd):
+            self.__create_param__('transfer_nsset',cmd,(_T('nsset-name'),_T('query-type'),_T('password')))
+
+    def create_transfer_domain(self, cmd):
+        'Create EPP document transfer:domain'
+        if self.__check_transfer_op__(cmd):
+            self.__create_param__('transfer_domain',cmd,(_T('domain-name'),_T('query-type'),_T('password')))
+
 def count_required_params(params):
     """Returns how many parameters from params list are required:
     IN: ('name','name','[name]','...')

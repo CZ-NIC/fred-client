@@ -27,6 +27,9 @@ class ManagerTransfer(ManagerBase):
         self._command_sent = ''
         self._raw_cmd = None # XML EPP příkaz odeslaný serveru
 
+    def get_command_names(self):
+        return self._available_commands
+
     #---------------------------------
     # funkce pro nastavení session
     #---------------------------------
