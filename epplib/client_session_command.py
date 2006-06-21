@@ -9,6 +9,7 @@ from client_session_base import *
 from client_session_transfer import ManagerTransfer
 import client_eppdoc
 import client_eppdoc_test
+from eppdoc import nic_cz_version as eppdoc_nic_cz_version
 
 SEPARATOR = '-'*60
 
@@ -17,35 +18,42 @@ class ManagerCommand(ManagerTransfer):
     This class manage creations of the EPP documents.
     """
         
-    def __create_param__(self, command_name, cmd, parameter_names=(), data=()):
-        """Supprot for create_...() functions with more than ONE parameter.
-        command_name - name of EPP command
-        cmd - parametres of commad
-        parameter_names - names of parametres for help and number of required.
-                          names in bracket are obligatory
-        """
-        m = re.match(r'%s\s*(.*)'%command_name, cmd)
-        if m:
-            min_required, max_allowed = count_required_params(parameter_names)
-            params = re.split('\s+',m.group(1)) # rozdělení parametrů příkazu
-            if max_allowed and len(params) < min_required:
-                # kontrola na požadovaný počet zadaných parametrů
-                self.append_note(_T('Function must have at least %d parametres.')%min_required)
-            else:
-                getattr(self._epp_cmd,'assemble_%s'%command_name)(self.__next_clTRID__(), params, data)
-                if self._epp_cmd.is_error(): self._errors.append(self._epp_cmd.fetch_errors())
-        else:
-            self.append_note(_T('Error: Parameter missing. Type: %s %s')%(command_name,', '.join(parameter_names)))
+    def __check_EPP_command__(self, command_name, cmdline):
+        "Check if parameters are valid."
+        errors = self._epp_cmd.parse_cmd(command_name, cmdline)
+        if errors: self._errors.extend(errors)
+        return (len(errors) == 0)
 
     #==================================================
     #
     # main creation command functions
     #
     #==================================================
-    def help_command(self, command):
+    def make_help(self, command_name):
+        "Make help for chosen command."
+        m = re.match('(\S+)', command_name)
+        if m:command_name = m.group(1)
+        if command_name and command_name != 'command':
+            # s parametrem - zobrazí se help na vybraný příkaz
+            self.append_note('%s: ${BOLD}${GREEN}%s${NORMAL}'%(_T("Help for command"),command_name))
+            command_line,command_help,notice = self._epp_cmd.get_help(command_name)
+            if command_line: self.append_note('%s: %s\n'%(_T('Usage'),command_line))
+            if command_help: self.append_note(command_help)
+            if notice:       self.append_note('\n${WHITE}%s${NORMAL}'%notice)
+            command_name='.'
+        else:
+            # bez parametru - zobrazí se přehled helpu
+            if command_name == 'command':
+                self.append_note(_T('Instead "command" Select one from this list bellow:'))
+                command_name='.'
+            self.append_note('\n${BOLD}${GREEN}%s:${NORMAL}\n%s'%(_T("Available EPP commands"),", ".join(self._available_commands)))
+            self.append_note(_T('Type "help command" for mode details.'))
+        return command_name
+
+    def make_help_session(self, command_name):
         # Když je dotaz na help
-        self.append_note('${BOLD}${GREEN}%s${NORMAL}\n%s'%(_T("Available EPP commands:"),", ".join(self._available_commands)))
-        self.append_note(_T("""${BOLD}${GREEN}Session commands:${NORMAL}
+        if not command_name or command_name != '.':
+            self.append_note(_T("""\n${BOLD}${GREEN}Session commands:${NORMAL}
 ${BOLD}connect${NORMAL} (or directly login) ${CYAN}# connect to the server${NORMAL}
 ${BOLD}lang${NORMAL} cz ${CYAN}# set language${NORMAL}
 ${BOLD}validate${NORMAL} on/off (or validate for see actual value) ${CYAN}# set validation${NORMAL}
@@ -53,39 +61,42 @@ ${BOLD}raw-c${NORMAL}[ommand] e[pp]/[dict] ${CYAN}# display raw command${NORMAL}
 ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]  ${CYAN}# display raw answer${NORMAL}
 """))
 
-    def epp_command(self, command):
+    def epp_command(self, cmdline):
         'Find EPP command in input.'
         cmd=None
-        m=re.match('(\S+)',command)
+        m=re.match('(\S+)',cmdline)
         if m:
-            if m.group(1) in self._available_commands:
-                self.command_inside_session(m.group(1), command)
+            if m.group(1).replace('_','-') in self._available_commands:
+                self.command_inside_session(m.group(1), cmdline)
             else:
-                self.append_note(_T("Unknown EPP command: %s.")%command)
+                self.append_note(_T("Unknown EPP command: %s.")%cmdline)
+                self._epp_cmd.help_check_name(self._notes, cmdline)
 
-    def command_inside_session(self, cmd, command):
+    def command_inside_session(self, command_name, cmdline):
         'Process EPP command inside session.'
         # Příkazy EPP
         # Pokud se příkaz našel, tak se provede pokračuje do stavu 2.
-        if self._session[ONLINE] or cmd in ('hello','login'):
+        if self._session[ONLINE] or command_name in ('hello','login'):
 ##        if 1: # Tady se vypíná kontrola zalogování:
             # když je klient zalogován, tak se volá EPP příkaz
             # výjimky pro příkazy hello a login
-            fnc_name = "create_%s"%cmd
+            fnc_name = "create_%s"%command_name
             if hasattr(self, fnc_name):
-                # Příprava vstupních dat pro příkaz
-                getattr(self, fnc_name)(command)
+                # Speciální příprava vstupních dat pro příkaz
+                getattr(self, fnc_name)(cmdline)
             else:
-                # Když příprava vstupních dat pro příkaz chybí
-                # To, že daná funkce existuje je již ověřeno
-                # přes self._available_commands
-                getattr(self._epp_cmd, "assemble_%s"%cmd)((self.__next_clTRID__(),))
+                if self.__check_EPP_command__(command_name, cmdline):
+                    # pokud jsou parametry vpořádku, tak se může vygenerovat EPP command
+                    # funkce assemble_...() použije na sestavení dokumentu data uložená ve
+                    # slovníku self._epp_cmd._dct_params, kam je uložila funkce self._epp_cmd.parse_cmd()
+                    # volaná ve funkci self.__check_EPP_command__()
+                    getattr(self._epp_cmd, "assemble_%s"%command_name)(self.__next_clTRID__())
             self.append_error(self._epp_cmd.get_errors())
         else:
             self.append_note(_T('You are not logged. You must login before working.\nType login'))
 
     def create_eppdoc(self, command, is_test=0):
-        'Test client result answer.'
+        "Dispatch command line from user and set internal variables or create EPP document."
         xml_doc = ''
         self._notes = []
         self._epp_cmd.reset()
@@ -93,11 +104,11 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]  ${CYAN}# display raw answer${NORMAL}
         # Možnost zadání pomlčky místo podtržítka:
         m = re.match('(\S+)(.*)',cmd)
         if m: cmd = '%s%s'%(m.group(1).replace('-','_'), m.group(2))
-        if re.match('^(\?|h|help)$', cmd):
-            # help
-            self.help_command(cmd)
-            # test help
-            self.append_note(_T("Available test commands: (\n\t%s\n).")%"\n\t".join(client_eppdoc_test.get_test_help()),'WHITE')
+        # help
+        m = re.match('(?:\?|h(elp)?)(?:\s+(.+)|$)', cmd)
+        if m:
+            command_name = self.make_help(m.group(2))
+            self.make_help_session(command_name)
         elif re.match('lang(\s+\w+)?',cmd):
             # nastavení zazykové verze
             m = re.match('lang\s+(\w+)',cmd)
@@ -174,6 +185,7 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]  ${CYAN}# display raw answer${NORMAL}
                 self.append_error(_T('EPP document is not valid'),'BOLD')
                 self.append_error(invalid_epp)
                 self.append_error(self._raw_cmd,'CYAN')
+                self.append_error(_T('Command was NOT sent to EPP server.'),('RED','BOLD'))
                 xml_doc=''
         if xml_doc: self._raw_cmd = xml_doc # aby byl k dispozici raw, když se neodešle
         return xml_doc
@@ -181,77 +193,25 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]  ${CYAN}# display raw answer${NORMAL}
     #==================================================
     #
     #    EPP commands
-    #    funkce, které vytvářejí EPP dokumenty
     #
     #==================================================
-    def create_check_contact(self, cmd):
-        'Create EPP document check:contact'
-        self.__create_param__('check_contact',cmd,(_T('contact-name'),'...'))
-    def create_check_domain(self, cmd):
-        'Create EPP document check:domain'
-        self.__create_param__('check_domain',cmd,(_T('domain-name'),'...'))
-    def create_check_nsset(self, cmd):
-        'Create EPP document check:nsset'
-        self.__create_param__('check_nsset',cmd,(_T('nsset-name'),'...'))
-            
-    def create_info_contact(self, cmd):
-        'Create EPP document info:contact'
-        self.__create_param__('info_contact',cmd,(_T('contact-name'),))
-    def create_info_domain(self, cmd):
-        'Create EPP document info:domain'
-        self.__create_param__('info_domain',cmd,(_T('domain-name'),))
-    def create_info_nsset(self, cmd):
-        'Create EPP document info:nsset'
-        self.__create_param__('info_nsset',cmd,(_T('nsset-name'),))
-
-    def create_login(self, cmd):
+    def create_login(self, cmdline):
         'Create EPP document login'
         if self._session[ONLINE]:
             # klient je už zalogován
-            self.append_note(_T('You are logged allready.'))
+            self.append_note(_T('You are logged already.'))
         else:
             # klient se zaloguje
             # prefix 4 ASCII znaků pro clTRID (pro každé sezení nový)
             self.defs[PREFIX] = ''.join([chr(random.randint(97,122)) for n in range(4)])
-            self.__create_param__('login', cmd
-                ,(_T('login-name'),_T('password'),'[%s]'%_T('new password'))
-                ,(self.defs[VERSION],self.defs[objURI],self._session[LANG]))
+            if self.__check_EPP_command__('login', cmdline):
+                self._epp_cmd.assemble_login(self.__next_clTRID__(), (eppdoc_nic_cz_version, self.defs[objURI], self._session[LANG]))
 
-    def create_poll(self, cmd):
-        'Create EPP document poll'
-        if not re.match('poll\s+(req|ack)\s*$',cmd):
-            self.append_note('%s: ${BOLD}%s${NORMAL}'%('poll: Set default op value','req'))
-            cmd = 'poll req' # default TODO: dodělat reveiver a automatický ack
-        self.__create_param__('poll',cmd,('[op]',))
-
-    def __check_transfer_op__(self, cmd):
-        "Check if transfer op value is in range."
-        ret=1
-        m = re.match('\S+\s+\S+\s+(\w+)',cmd)
-        if m:
-            # kontrola, jen když je parametr zadán
-            if m.group(1) not in self._epp_cmd.transfer_op:
-                self.append_note('%s: %s'%(_T('Query type must be one from this list'),str(self._epp_cmd.transfer_op)))
-                ret=0
-        return ret
-        
-    def create_transfer_nsset(self, cmd):
-        'Create EPP document transfer:nsset'
-        if self.__check_transfer_op__(cmd):
-            self.__create_param__('transfer_nsset',cmd,(_T('nsset-name'),_T('query-type'),_T('password')))
-
-    def create_transfer_domain(self, cmd):
-        'Create EPP document transfer:domain'
-        if self.__check_transfer_op__(cmd):
-            self.__create_param__('transfer_domain',cmd,(_T('domain-name'),_T('query-type'),_T('password')))
-
-def count_required_params(params):
-    """Returns how many parameters from params list are required:
-    IN: ('name','name','[name]','...')
-    OUT: (minimum required, maximum allowed)
-    Names in bracket are not required.
-    If last name is '...', number of required is not known.
-    """
-    if params[-1]=='...': return (len(params)-1,None)
-    return (len([n for n in params if n[0]!='[']), len(params))
-
+if __name__ == '__main__':
+    # Test
+    m = ManagerCommand()
+    m._session[0]=1 # login simulation
+    xml = m.create_eppdoc('create-contact reg-id "John Doe" jon@mail.com "New York" US "Example Inc." ("Long beach" "On the Road") VA 20166-6503 +1.7035555555 +1.7035555556 0 d-name "d org." "Street No. City" +21321313 +734321 info@buzz.com vat-test ssn-test notify@here.net')
+    if not m.is_epp_valid(xml):
+        print xml
+    m.display()

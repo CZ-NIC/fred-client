@@ -160,7 +160,7 @@ class ManagerReceiver(ManagerCommand):
             self._session[ONLINE] = 1 # indikátor zalogování
             self._session[CMD_ID] = 1 # reset - první command byl login
             self.append_note('*** %s ***'%_T('You are logged on!'),('GREEN','BOLD'))
-            self.append_note('${BOLD}${GREEN}%s${NORMAL}\n%s'%(_T("Available EPP commands:"),", ".join(self._available_commands)))
+##            self.append_note('${BOLD}${GREEN}%s${NORMAL}\n%s'%(_T("Available EPP commands:"),", ".join(self._available_commands)))
         else:
             self.append_note('--- %s ---'%_T('Login failed'),('RED','BOLD'))
 

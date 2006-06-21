@@ -103,6 +103,7 @@ class ManagerTransfer(ManagerBase):
                 # jakého typu příkaz byl a podle toho pak pracuje s hodnotami,
                 # které mu server vrátí
                 self.__command_sent__(message)
+                self.append_note(_T('Command was sent to EPP server.'),('GREEN','BOLD'))
             self.__check_is_connected__()
         else:
             self.append_error(_T('You are not connected.'))
@@ -111,7 +112,7 @@ class ManagerTransfer(ManagerBase):
     def send_logout(self):
         'Send EPP logout message.'
         if not self._session[ONLINE]: return # session zalogována nebyla
-        self._epp_cmd.assemble_logout((self.__next_clTRID__(),))
+        self._epp_cmd.assemble_logout(self.__next_clTRID__())
         epp_doc = self._epp_cmd.get_xml()
         if epp_doc and self.is_connected():
             self.append_note(_T('Send logout'))

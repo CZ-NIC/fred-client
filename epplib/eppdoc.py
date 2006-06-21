@@ -42,6 +42,7 @@ class Message:
         self.errors = []        # [(code, value, reason), ...]
         self.encoding = default_encoding
         self._cr = '\n' # new line
+        self._dct = {}  # parsed parameters from command line
         
     def reset(self):
         self.__reset_dom__()

@@ -73,8 +73,8 @@ Revision: $Rev$
 if __name__ == '__main__':
     client = Manager()
     set_history(client.get_command_names())
-    print "TEST ONLY: Session set internal login (not on server)."
-    client._session[ONLINE] = 1 #!!!
+##    print "TEST ONLY: Session set internal login (not on server)."
+##    client._session[ONLINE] = 1
     while 1:
         command = raw_input("> (? help, q quit): ")
         if command in ('q','quit','exit','konec'): break

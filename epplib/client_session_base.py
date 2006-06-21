@@ -14,10 +14,10 @@ EPP_SCHEMA_PATH = '../mod_eppd/schemas/all-1.0.xsd'
 colored_output = terminal_controler.TerminalController()
 
 # názvy sloupců pro data sestavené při spojení se serverem
-ONLINE,CMD_ID,LANG = range(3)
+ONLINE,CMD_ID,LANG,POLL_AUTOACK = range(4)
 # názvy sloupců pro defaultní hodnoty
-DEFS_LENGTH = 4
-VERSION,LANGS,objURI,PREFIX = range(DEFS_LENGTH)
+DEFS_LENGTH = 3
+LANGS,objURI,PREFIX = range(DEFS_LENGTH)
 
 class ManagerBase:
     """This class hold buffers with error and note messages.
@@ -32,10 +32,14 @@ class ManagerBase:
         #-----------------------------------------
         # Session data:
         #-----------------------------------------
-        self._session = [0, 0, 'en'] # hodnoty vytvořené při sestavení session (ID, lang,...)
+        self._session = [
+                 0 # ONLINE
+                ,0 # CMD_ID
+                ,'en' # LANG
+                ,1 # POLL_AUTOACK
+                ]
         # defaults
         self.defs = ['']*DEFS_LENGTH
-        self.defs[VERSION] = '1.0'
         self.defs[LANGS] = ('en','cz') # seznam dostupných jazyků
         self.defs[objURI] = 'urn:ietf:params:xml:ns:obj1'
         self.defs[PREFIX] = '' # pro každé sezení nový prefix
