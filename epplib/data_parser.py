@@ -21,7 +21,10 @@ def fill_dict(dct, cols, text):
     -key = value ("more than one", "second value")
     """
     errors=[]
-    max_col_id = len(cols)
+    if cols:
+        max_col_id = len(cols)
+    else:
+        max_col_id = -1
     col_id = 0
     blank_pattern = re.compile('\s',re.S)
     key = sep = ''
@@ -30,7 +33,7 @@ def fill_dict(dct, cols, text):
     is_group=0
     tokens = re.split('(=|\'|"|,|\(|\)|\s+)', text)
     for pos in range(len(tokens)):
-        if col_id >= max_col_id: break
+        if max_col_id != -1 and col_id >= max_col_id: break
         token = tokens[pos]
         if token=='': continue
         if sep:
@@ -42,9 +45,12 @@ def fill_dict(dct, cols, text):
                     group.append(token)
                 else:
                     if not key:
-                        key = cols[col_id]
+                        if cols:
+                            key = cols[col_id]
+                        else:
+                            key = col_id
                         col_id+=1
-                    if key in cols:
+                    if cols == None or key in cols:
                         if type(dct.get(key,None)) == list:
                             dct[key].append(token)
                         else:
@@ -67,10 +73,13 @@ def fill_dict(dct, cols, text):
             elif token == ')':
                 is_group = 0
                 if not key:
-                    key = cols[col_id]
+                    if cols:
+                        key = cols[col_id]
+                    else:
+                        key = col_id
                     col_id+=1
                 if group:
-                    if key in cols:
+                    if cols == None or key in cols:
                         if type(dct.get(key,None)) == list:
                             dct[key].append(token)
                         else:
@@ -87,9 +96,12 @@ def fill_dict(dct, cols, text):
                     if(token): group.append(token)
                 else:
                     if not key:
-                        key = cols[col_id]
+                        if cols:
+                            key = cols[col_id]
+                        else:
+                            key = col_id
                         col_id+=1
-                    if key in cols:
+                    if cols == None or key in cols:
                         if type(dct.get(key,None)) == list:
                             dct[key].append(token)
                         else:
@@ -109,6 +121,10 @@ if __name__ == '__main__':
     --5 "this is outside too and it'll be palced in 5. item."
 """
     cols = ['%d'%c for c in range(1,12)]
+
+    cols = 'command nsset password ns addr'.split(' ')
+    text = 'create_nsset pokus heslo (ns1.bazmek.net (194.23.54.1 194.23.54.2) ns2.bazmek.net 194.23.54.1)'
+
     dct = {}
     for key in cols:
         dct[key]=''

@@ -69,6 +69,15 @@ class ManagerReceiver(ManagerCommand):
         if data[ANSW_CODE] != '1000':
             # standardní výstup chybového hlášení
             self.append_note('${BOLD}%s${NORMAL} ${%s}%s${NORMAL}'%(label, ('RED','GREEN')[data[ANSW_CODE] == '1000'], data[ANSW_MSG]))
+            # detailní rozepsání chyby:
+            if data[ANSW_RESULT].has_key('extValue'):
+                extValue = data[ANSW_RESULT]['extValue']
+                if type(extValue) not in (list,tuple): extValue = (extValue,)
+                for item in extValue:
+                    if item.has_key('value'):
+                        self.append_note('%s: %s'%(_T('cause'),item['value']['data']),('RED','BOLD'))
+                    if item.has_key('reason'):
+                        self.append_note('%s: %s'%(_T('reason'),item['reason']['data']),'RED')
         return data[ANSW_CODE] != '1000'
 
     def answer_response(self, dict_answer):
@@ -211,18 +220,19 @@ class ManagerReceiver(ManagerCommand):
         try:
             resData = data[ANSW_RESPONSE]['response']['resData']
             nsset_infData = resData['nsset:infData']
-            nsset_ns = nsset_infData['nsset:ns']
         except KeyError, msg:
             self.append_error('answer_response_nsset_info KeyError: %s'%msg)
         else:
             self.__append_note_from_dct__(nsset_infData,('nsset:id','nsset:roid','nsset:clID','nsset:crID'
                 ,'nsset:crDate','nsset:upID','nsset:trDate','nsset:authInfo'))
             self.append_note('${BOLD}nsset:ns${NORMAL} %s'%('-'*20))
-            if type(nsset_ns) == list:
-                for item in nsset_ns:
-                    self.__append_note_from_dct__(item,('nsset:name','nsset:addr'))
-            else:
-                self.__append_note_from_dct__(nsset_ns,('nsset:name','nsset:addr'))
+            if nsset_infData.has_key('nsset:ns'):
+                nsset_ns = nsset_infData['nsset:ns']
+                if type(nsset_ns) == list:
+                    for item in nsset_ns:
+                        self.__append_note_from_dct__(item,('nsset:name','nsset:addr'))
+                else:
+                    self.__append_note_from_dct__(nsset_ns,('nsset:name','nsset:addr'))
 
     #-------------------------------------
     # *** check ***

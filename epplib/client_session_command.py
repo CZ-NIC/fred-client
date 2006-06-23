@@ -31,8 +31,9 @@ class ManagerCommand(ManagerTransfer):
     #==================================================
     def make_help(self, command_name):
         "Make help for chosen command."
-        m = re.match('(\S+)', command_name)
-        if m:command_name = m.group(1)
+        if command_name:
+            m = re.match('(\S+)', command_name)
+            if m:command_name = m.group(1)
         if command_name and command_name != 'command':
             # s parametrem - zobrazí se help na vybraný příkaz
             self.append_note('%s: ${BOLD}${GREEN}%s${NORMAL}'%(_T("Help for command"),command_name))
@@ -55,7 +56,7 @@ class ManagerCommand(ManagerTransfer):
         if not command_name or command_name != '.':
             self.append_note(_T("""\n${BOLD}${GREEN}Session commands:${NORMAL}
 ${BOLD}connect${NORMAL} (or directly login) ${CYAN}# connect to the server${NORMAL}
-${BOLD}lang${NORMAL} cz ${CYAN}# set language${NORMAL}
+${BOLD}lang${NORMAL} cs ${CYAN}# set language${NORMAL}
 ${BOLD}validate${NORMAL} on/off (or validate for see actual value) ${CYAN}# set validation${NORMAL}
 ${BOLD}raw-c${NORMAL}[ommand] e[pp]/[dict] ${CYAN}# display raw command${NORMAL} (instead of raw you can also type ${BOLD}src${NORMAL})
 ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]  ${CYAN}# display raw answer${NORMAL}
@@ -70,6 +71,7 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]  ${CYAN}# display raw answer${NORMAL}
                 self.command_inside_session(m.group(1), cmdline)
             else:
                 self.append_note(_T("Unknown EPP command: %s.")%cmdline)
+                self.append_note('(%s: ${BOLD}help${NORMAL})'%_T('For more type'))
                 self._epp_cmd.help_check_name(self._notes, cmdline)
 
     def command_inside_session(self, command_name, cmdline):
@@ -105,9 +107,9 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]  ${CYAN}# display raw answer${NORMAL}
         m = re.match('(\S+)(.*)',cmd)
         if m: cmd = '%s%s'%(m.group(1).replace('-','_'), m.group(2))
         # help
-        m = re.match('(?:\?|h(elp)?)(?:\s+(.+)|$)', cmd)
+        m = re.match(r'(?:\?|h(?:elp)?)(?:\s+(.+)|$)', cmd)
         if m:
-            command_name = self.make_help(m.group(2))
+            command_name = self.make_help(m.group(1))
             self.make_help_session(command_name)
         elif re.match('lang(\s+\w+)?',cmd):
             # nastavení zazykové verze

@@ -40,7 +40,7 @@ class ManagerBase:
                 ]
         # defaults
         self.defs = ['']*DEFS_LENGTH
-        self.defs[LANGS] = ('en','cz') # seznam dostupných jazyků
+        self.defs[LANGS] = ('en','cs') # seznam dostupných jazyků
         self.defs[objURI] = 'urn:ietf:params:xml:ns:obj1'
         self.defs[PREFIX] = '' # pro každé sezení nový prefix
 

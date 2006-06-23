@@ -160,6 +160,9 @@ class Message:
     def new_node_by_name(self, master_name, name, value=None, attribs=None):
         "Create new node by Tag Name and attach to the Master Node. attribs=((name,value), (name,value), ....)"
         master = self.dom.getElementsByTagName(master_name)
+        if type(master) == xml.dom.minicompat.NodeList:
+            # Pokud je to pole, tak se bere vždy poslední uzel.
+            master = master[-1]
         if master:
             node=self.new_node(master, name, value, attribs)
         else:
