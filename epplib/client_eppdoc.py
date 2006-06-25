@@ -21,12 +21,9 @@ examples = {}
 cn=[]
 cmd = '\tcreate-nsset exampleNsset passw '
 for p in ('ns1.domain.net',
-     '"ns1.domain.net 194.23.54.1"',
-     '"ns1.domain.net ns2.domain.net"',
-     '"ns1.domain.net (194.23.54.1, 194.23.54.2)"',
-     '"ns1.domain.net (194.23.54.1, 194.23.54.2) ns2.domain.net 194.23.54.1"',
-     '"ns1.domain.net (194.23.54.1, 194.23.54.2) ns2.domain.net 194.23.54.1" regcontact',
-     '"ns1.domain.net (194.23.54.1, 194.23.54.2) ns2.domain.net 194.23.54.1" (regcontact, regcontact2)'):
+     'ns1.domain.net',
+     '(ns1.domain.net ns2.domain.net)',
+     '(ns1.domain.net 194.23.54.1 194.23.54.2 ns2.domain.net 196.23.54.1 196.23.54.2)',):
      cn.append('%s%s'%(cmd,p))
 examples['create-nsset'] = '\n'.join(cn)
 
@@ -57,13 +54,17 @@ notice = {'check':_T("""
    The EPP "create" command is used to create an instance of an object.
    An object can be created for an indefinite period of time, or an
    object can be created for a specific validity period.
-""")
+"""),
+   'delete':_T("""The EPP "delete" command is used to remove an instance of an existing object."""),
+   'renew':_T("""The EPP "delete" command is used to remove an instance of an existing object."""),
+   'update':_T("""The EPP "update" command is used to update an instance of an existing object.""")
 }
 
 class Message(eppdoc.Message):
     "Client EPP commands."
     # transfer op attribute allowed values:
     transfer_op = ('request','approve','cancel','query','reject')
+    update_status = ('clientDeleteProhibited', 'clientUpdateProhibited', 'linked', 'ok', 'serverDeleteProhibited', 'serverUpdateProhibited')
     # format:
     # command-name: (required, (param-name, parameter-help [,(param-list,max)[, param-values], dependence]), command-help )
     cmd_params = {
@@ -71,9 +72,9 @@ class Message(eppdoc.Message):
         'logout': (0,None, _T('The EPP "logout" command is used to end a session with an EPP server.')),
         #----------------------------------------------------
         'login': (2,(
-             ('username',_T('your login name'))
-            ,('password',_T('your password'))
-            ,('new-password',_T('new password'))
+            ('username',_T('your login name')),
+            ('password',_T('your password')),
+            ('new-password',_T('new password')),
         ),_T("""
    The "login" command establishes an ongoing server session that preserves client identity
    and authorization information during the duration of the session.""")),
@@ -103,60 +104,160 @@ class Message(eppdoc.Message):
         ),_T('The EPP "poll" command is used to discover and retrieve service messages queued by a server for individual clients.')),
         #----------------------------------------------------
         'transfer_domain': (3,(
-             ('name',_T('domain name'))
-            ,('op',_T('query type'),None,transfer_op)
-            ,('passw',_T('password'))
+            ('name',_T('domain name')),
+            ('op',_T('query type'),None,transfer_op),
+            ('passw',_T('password')),
         ),notice['transfer']),
         #----------------------------------------------------
         'transfer_nsset': (3,(
-             ('name',_T('nsset name'))
-            ,('op',_T('query type'),None,transfer_op)
-            ,('passw',_T('password'))
+            ('name',_T('nsset name')),
+            ('op',_T('query type'),None,transfer_op),
+            ('passw',_T('password')),
         ),notice['transfer']),
         #----------------------------------------------------
         'create_contact': (5,(
-             ('contact-id',_T('your contact ID'))
-            ,('name',_T('your name'))
-            ,('email',_T('your email'))
-            ,('city',_T('your city'))
-            ,('cc',_T('country code')) # required end
-            ,('org',_T('organisation name'))
-            ,('street',_T('street'),(LIST,3))
-            ,('sp',_T('sp'))
-            ,('pc',_T('postal code'))
-            ,('voice',_T('voice (phone number)'))
-            ,('fax',_T('fax number'))
-            ,('disclose',_T('disclose flag'),None,('0','1'))
-            ,('disclose-name',_T('disclose name'),None,None,'disclose')
-            ,('disclose-org',_T('disclose organisation name'),None,None,'disclose')
-            ,('disclose-addr',_T('disclose address'),None,None,'disclose')
-            ,('disclose-voice',_T('disclose voice (phone)'),None,None,'disclose')
-            ,('disclose-fax',_T('disclose fax'),None,None,'disclose')
-            ,('disclose-email',_T('disclose email'),None,None,'disclose')
-            ,('vat',_T('VAT'))
-            ,('ssn',_T('SSN'))
-            ,('notifyEmail',_T('notify email'))
+            ('contact-id',_T('your contact ID')),
+            ('name',_T('your name')), # odtud shoda s update contact
+            ('email',_T('your email')),
+            ('city',_T('your city')),
+            ('cc',_T('country code')), # required end
+            ('org',_T('organisation name')),
+            ('street',_T('street'),(LIST,3)),
+            ('sp',_T('sp')),
+            ('pc',_T('postal code')),
+            ('voice',_T('voice (phone number)')),
+            ('fax',_T('fax number')),
+            ('disclose',_T('disclose flag'),None,('0','1')),
+            ('disclose-name',_T('disclose name'),None,None,'disclose'),
+            ('disclose-org',_T('disclose organisation name'),None,None,'disclose'),
+            ('disclose-addr',_T('disclose address'),None,None,'disclose'),
+            ('disclose-voice',_T('disclose voice (phone)'),None,None,'disclose'),
+            ('disclose-fax',_T('disclose fax'),None,None,'disclose'),
+            ('disclose-email',_T('disclose email'),None,None,'disclose'),
+            ('vat',_T('VAT')),
+            ('ssn',_T('SSN')),
+            ('notifyEmail',_T('notify email')),
             ),notice['create']),
         #----------------------------------------------------
         'create_domain': (2,(
-             ('name',_T('domain name'))
-            ,('pw',_T('password'))
-            ,('period',_T('period'))
-            ,('period-unit',_T('period unit (y year(default), m month)'),None,('y','m'),'period')
-            ,('nsset',_T('nsset'))
-            ,('registrant',_T('registrant'))
-            ,('contact',_T('contact'),(LIST,0))
+            ('name',_T('domain name')),
+            ('pw',_T('password')),
+            ('period',_T('period')),
+            ('period-unit',_T('period unit (y year(default), m month)'),None,('y','m'),'period'),
+            ('nsset',_T('nsset')),
+            ('registrant',_T('registrant')),
+            ('contact',_T('contact'),(LIST,0)),
+            ),notice['create']),
+        #----------------------------------------------------
+        'create_domain_enum': (2,(
+            ('name',_T('domain name')),
+            ('pw',_T('password')),
+            ('period',_T('period')),
+            ('period-unit',_T('period unit (y year(default), m month)'),None,('y','m'),'period'),
+            ('nsset',_T('nsset')),
+            ('registrant',_T('registrant')),
+            ('contact',_T('contact'),(LIST,0)),
+            ('valExDate',_T('valExDate')),
             ),notice['create']),
         #----------------------------------------------------
         'create_nsset': (2,(
-             ('id',_T('nsset ID'))
-            ,('pw',_T('password'))
-            ,('name_and_addr',_T('nsset name and address inside quotes'),(LIST,9))
-            ,('tech',_T('etch contact'),(LIST,0))
-            ),'%s\n${BOLD}%s:${NORMAL}\n%s'%(notice['create'],_T('Examples'),examples['create-nsset']))
+            ('id',_T('nsset ID')),
+            ('pw',_T('password')),
+            ('name_and_addr',_T('nsset name and address inside quotes'),(LIST,9)),
+            ('tech',_T('etch contact'),(LIST,0)),
+            ),'%s\n${BOLD}%s:${NORMAL}\n%s'%(notice['create'],_T('Examples'),examples['create-nsset'])),
+        #----------------------------------------------------
+        'delete_contact': (1,(
+             ('id',_T('contact ID')),
+            ),notice['delete']),
+        #----------------------------------------------------
+        'delete_domain': (1,(
+            ('name',_T('domain name')),
+            ),notice['delete']),
+        #----------------------------------------------------
+        'delete_nsset': (1,(
+            ('id',_T('nsset ID')),
+            ),notice['delete']),
+        #----------------------------------------------------
+        'renew_domain': (2,(
+            ('name',_T('domain name')),
+            ('curExpDate',_T('current expiration date')),
+            ('period',_T('period')),
+            ('period-unit',_T('period unit (y year(default), m month)'),None,('y','m'),'period'),
+            ),notice['renew']),
+        #----------------------------------------------------
+        'renew_domain_enum': (2,(
+            ('name',_T('domain name')),
+            ('curExpDate',_T('current expiration date')),
+            ('period',_T('period')),
+            ('period-unit',_T('period unit (y year(default), m month)'),None,('y','m'),'period'),
+            ('valExDate',_T('valExDate')),
+            ),notice['renew']),
+        #----------------------------------------------------
+        'update_contact': (1,(
+            ('contact-id',_T('your contact ID')),
+            ('add',_T('add status'),(LIST,5),update_status),
+            ('rem',_T('remove status'),(LIST,5),update_status),
+            ('name',_T('your name')), # odtud shoda s create contact
+            ('email',_T('your email')),
+            ('city',_T('your city')),
+            ('cc',_T('country code')), # required end
+            ('org',_T('organisation name')),
+            ('street',_T('street'),(LIST,3)),
+            ('sp',_T('sp')),
+            ('pc',_T('postal code')),
+            ('voice',_T('voice (phone number)')),
+            ('fax',_T('fax number')),
+            ('disclose',_T('disclose flag'),None,('0','1')),
+            ('disclose-name',_T('disclose name'),None,None,'disclose'),
+            ('disclose-org',_T('disclose organisation name'),None,None,'disclose'),
+            ('disclose-addr',_T('disclose address'),None,None,'disclose'),
+            ('disclose-voice',_T('disclose voice (phone)'),None,None,'disclose'),
+            ('disclose-fax',_T('disclose fax'),None,None,'disclose'),
+            ('disclose-email',_T('disclose email'),None,None,'disclose'),
+            ('vat',_T('VAT')),
+            ('ssn',_T('SSN')),
+            ('notifyEmail',_T('notify email')),
+            ),notice['update']),
+        #----------------------------------------------------
+        'update_domain': (1,(
+            ('name',_T('domain name')),
+            ('add',_T('add status'),(LIST,5),update_status),
+            ('rem',_T('remove status'),(LIST,5),update_status),
+            ('nsset',_T('nsset')),
+            ('registrant',_T('registrant')),
+            ('pw',_T('password')),
+            ),notice['update']),
+        #----------------------------------------------------
+        'update_domain_enum': (1,(
+            ('name',_T('domain name')),
+            ('add',_T('add status'),(LIST,5),update_status),
+            ('rem',_T('remove status'),(LIST,5),update_status),
+            ('nsset',_T('nsset')),
+            ('registrant',_T('registrant')),
+            ('pw',_T('password')),
+            ('valExDate',_T('valExDate')),
+            ),notice['update']),
+        #----------------------------------------------------
+##        'update_nsset': (1,(
+##            ('id',_T('nsset ID')),
+##            ('add-ns',_T('add nsset name'),(LIST,9)),
+##            ('add-addr',_T('add nsset address'),(LIST,0)),
+##            ('add-tech',_T('add tech contact'),(LIST,0)),
+##            ('add-status',_T('add status'),(LIST,6)),
+##            ('rem-ns',_T('remove nsset name'),(LIST,9)),
+##            ('rem-tech',_T('remove name'),(LIST,0)),
+##            ('rem-status',_T('remove status'),(LIST,6)),
+##            ),notice['update']),
+        'update_nsset': (1,(
+            ('id',_T('nsset ID')),
+            ('add',_T('add nsset-name address tech status'),(LIST,0)),
+            ('rem',_T('remove nsset-name tech status'),(LIST,0)),
+            ('pw',_T('password')),
+            ),notice['update']),
 
     }
-
+    
     def __get_help_note__(self, help, params, pos):
         'Support for get_help().'
         sep=('\t','\t\t')[len(params[pos][0])<8]
@@ -177,16 +278,13 @@ class Message(eppdoc.Message):
         command_line = []
         help=[]
         notice=''
-        display_cmd = command_name
         # v příkazu zrušit spojovníky
         m = re.match('(\S+)(.*)',command_name)
-        if m:
-            display_cmd = m.group(1)
-            command_name = '%s%s'%(m.group(1).replace('-','_'), m.group(2))
+        if m: command_name = '%s%s'%(m.group(1).replace('-','_'), m.group(2))
         if Message.cmd_params.has_key(command_name):
             # příkaz existuje
             required,params,notice = Message.cmd_params[command_name]
-            command_line = ['${BOLD}%s${NORMAL}'%display_cmd]
+            command_line = ['${BOLD}%s${NORMAL}'%command_name.replace('_','-')]
             if required:
                 help.append('%s:'%_T('Required parameters'))
             if params:
@@ -238,7 +336,7 @@ class Message(eppdoc.Message):
         if len(dct) < vals[0]+1: # počet parametrů plus název příkazu
             error.append('%s %d.'%(_T('Missing values. Required minimum is'),vals[0]))
             error.append('%s: %s'%(_T('Type'),command_line))
-            error.append('(%s: ${BOLD}help %s${NORMAL})'%(_T('For more type'),command_name))
+            error.append('(%s: ${BOLD}help %s${NORMAL})'%(_T('For more type'),command_name.replace('_','-')))
         # check list and allowed values
         for key in dct.keys():
             if not check.get(key,None): continue # pokud se název nenachází v požadovaných jménech, tak se ignoruje.
@@ -282,6 +380,15 @@ class Message(eppdoc.Message):
     # Process commands
     #
     #===========================================
+    def __append_attr__(self, data, dct, key, parent_node_name, node_name, attr_name):
+        'Support function for assembel_create_... functions.'
+        if dct.has_key(key):
+            if type(dct[key]) == list:
+                for item in dct[key]:
+                    data.append((parent_node_name,node_name,'',((attr_name,item),)))
+            else:
+                data.append((parent_node_name,node_name,'',((attr_name,dct[key]),)))
+
     def __append_values__(self, data, dct, key, parent_node_name, node_name):
         'Support function for assembel_create_... functions.'
         if dct.has_key(key):
@@ -301,9 +408,10 @@ class Message(eppdoc.Message):
             if len(v)>3: attr  = v[3]
             self.new_node_by_name(parent_name, name, value, attr)
 
-    def __asseble_command__(self, cols, params):
+    def __asseble_command__(self, cols, key, params):
         """Internal fnc for assembly commands info, check. 
         cols=('check','contact','id')
+        key = name of key pointed to vlaue in parameters dictionary
         params must have ('clTRID',('name',['name','name',]))
         """
         data=[('epp', 'command'),
@@ -315,7 +423,7 @@ class Message(eppdoc.Message):
             ]
         col1 = '%s:%s'%(cols[1],cols[0])
         col2 = '%s:%s'%(cols[1],cols[2])
-        names = self._dct['name']
+        names = self._dct[key]
         if type(names) not in (list,tuple):
             names = (names,)
         for value in names:
@@ -363,22 +471,22 @@ class Message(eppdoc.Message):
     # Dotazovací (query)
     #-------------------------------------------
     def assemble_check_contact(self, *params):
-        self.__asseble_command__(('check','contact','id'), params)
+        self.__asseble_command__(('check','contact','id'), 'name', params)
         
     def assemble_check_domain(self, *params):
-        self.__asseble_command__(('check','domain','name'), params)
+        self.__asseble_command__(('check','domain','name'), 'name', params)
         
     def assemble_check_nsset(self, *params):
-        self.__asseble_command__(('check','nsset','id'), params)
+        self.__asseble_command__(('check','nsset','id'), 'name', params)
 
     def assemble_info_contact(self, *params):
-        self.__asseble_command__(('info','contact','id'), params)
+        self.__asseble_command__(('info','contact','id'), 'name', params)
 
     def assemble_info_domain(self, *params):
-        self.__asseble_command__(('info','domain','name'), params)
+        self.__asseble_command__(('info','domain','name'), 'name', params)
 
     def assemble_info_nsset(self, *params):
-        self.__asseble_command__(('info','nsset','id'), params)
+        self.__asseble_command__(('info','nsset','id'), 'name', params)
 
     def assemble_poll(self, *params):
         self.__assemble_cmd__((
@@ -387,11 +495,24 @@ class Message(eppdoc.Message):
             ('command', 'clTRID', params[0])
         ))
 
+    #-------------------------------------------
+    # Editační (query)
+    #-------------------------------------------
+    def assemble_delete_contact(self, *params):
+        self.__asseble_command__(('delete','contact','id'), 'id', params)
+
+    def assemble_delete_domain(self, *params):
+        self.__asseble_command__(('delete','domain','name'), 'name', params)
+
+    def assemble_delete_nsset(self, *params):
+        self.__asseble_command__(('delete','nsset','id'), 'id', params)
+
+
     def __assemble_transfer__(self, names, params):
         "params must have ('clTRID',('name','op','heslo'))"
         ns = '%s%s-%s'%(eppdoc.nic_cz_xml_epp_path,names[0],eppdoc.nic_cz_version)
         attr = (('xmlns:%s'%names[0],ns),
-                ('xsi:schemaLocation','%s %s%s.xsd'%(ns,names[0],eppdoc.nic_cz_version)))
+                ('xsi:schemaLocation','%s %s-%s.xsd'%(ns,names[0],eppdoc.nic_cz_version)))
         self.__assemble_cmd__((
             ('epp', 'command'),
             ('command', 'transfer', '', (('op',self._dct['op']),)),
@@ -411,13 +532,29 @@ class Message(eppdoc.Message):
     #-------------------------------------------
     # Výkonné
     #-------------------------------------------
+    def __enum_extensions__(self, type, data, params, tag_name=''):
+        'Enum extension for (creste|renew)-domain commands.'
+        if not self._dct.has_key('valExDate'): return
+        names = ('enumval',type)
+        ns = '%s%s-%s'%(eppdoc.nic_cz_xml_epp_path,names[0],eppdoc.nic_cz_version)
+        attr = (('xmlns:%s'%names[0],ns),
+            ('xsi:schemaLocation','%s %s-%s.xsd'%(ns,names[0],eppdoc.nic_cz_version)))
+        data.extend((
+            ('command','extension'),
+            ('extension','%s:%s'%names,'',attr)
+        ))
+        if tag_name:
+            data.append(('%s:%s'%names,'%s:%s'%(names[0],tag_name))) # mezitag
+            names = ('enumval',tag_name)
+        data.append(('%s:%s'%names,'%s:valExDate'%names[0], self._dct['valExDate']))
+
     def assemble_create_contact(self, *params):
         "Assemble XML EPP command."
         dct = self._dct
         names = ('contact',)
         ns = '%s%s-%s'%(eppdoc.nic_cz_xml_epp_path,names[0],eppdoc.nic_cz_version)
         attr = (('xmlns:%s'%names[0],ns),
-                ('xsi:schemaLocation','%s %s%s.xsd'%(ns,names[0],eppdoc.nic_cz_version)))
+                ('xsi:schemaLocation','%s %s-%s.xsd'%(ns,names[0],eppdoc.nic_cz_version)))
         data = [
             ('epp', 'command'),
             ('command', 'create'),
@@ -455,7 +592,7 @@ class Message(eppdoc.Message):
         names = ('domain',)
         ns = '%s%s-%s'%(eppdoc.nic_cz_xml_epp_path,names[0],eppdoc.nic_cz_version)
         attr = (('xmlns:%s'%names[0],ns),
-                ('xsi:schemaLocation','%s %s%s.xsd'%(ns,names[0],eppdoc.nic_cz_version)))
+                ('xsi:schemaLocation','%s %s-%s.xsd'%(ns,names[0],eppdoc.nic_cz_version)))
         data = [
             ('epp', 'command'),
             ('command', 'create'),
@@ -471,10 +608,28 @@ class Message(eppdoc.Message):
             ('domain:create','domain:authInfo'),
             ('domain:authInfo','domain:pw', dct['pw'])
         ))
-        # TODO: extension enumval,secdns
+        if len(params)>2 and params[2]=='extensions': self.__enum_extensions__('create',data, params)
         data.append(('command', 'clTRID', params[0]))
         self.__assemble_cmd__(data)
 
+    def assemble_create_domain_enum(self, *params):
+        'Extensions for enum.'
+        self.assemble_create_domain(params[0], params[1], 'extensions')
+
+    def __append_nsset__(self, data, ns):
+        """Supporting function for assemble_create_nsset().
+        param ns can be: ns / addr / [addr,addr,] / [ns [addr,addr,]]
+        """
+        if type(ns)==list:
+            for n in ns:
+                self.__append_nsset__(data, n)
+        else:
+            if re.search('[a-z]',ns, re.I):
+                data.append(('nsset:create', 'nsset:ns'))
+                data.append(('nsset:ns', 'nsset:name',ns))
+            else:
+                data.append(('nsset:ns', 'nsset:addr',ns))
+        
     def assemble_create_nsset(self, *params):
         "Assemble XML EPP command."
         errors = []
@@ -482,33 +637,23 @@ class Message(eppdoc.Message):
         names = ('nsset',)
         ns = '%s%s-%s'%(eppdoc.nic_cz_xml_epp_path,names[0],eppdoc.nic_cz_version)
         attr = (('xmlns:%s'%names[0],ns),
-                ('xsi:schemaLocation','%s %s%s.xsd'%(ns,names[0],eppdoc.nic_cz_version)))
+                ('xsi:schemaLocation','%s %s-%s.xsd'%(ns,names[0],eppdoc.nic_cz_version)))
         data = [
             ('epp', 'command'),
             ('command', 'create'),
             ('create', 'nsset:create', '', attr),
             ('nsset:create','nsset:id', dct['id'])]
+        # ns records
         if dct.has_key('name_and_addr'):
-            # ns je uloženo jako text, musí se rozparsovat
-            print dct['name_and_addr']
-            dct_ns={}
-            ns_sets={}
-            ns_name = ''
-            errors = data_parser.fill_dict(dct_ns, None, dct['name_and_addr'])
-            if not errors:
-                re_patt = re.compile('[a-z]')
-                for k in dct_ns.keys():
-                    if type(dct_ns[k]) == list:
-                        for item in dct_ns[k]:
-                            ns_name = __create_nsset_join_param__(ns_sets, errors, re_patt.search(item), ns_name, item)
+            if type(dct['name_and_addr']) == list:
+                for ns in dct['name_and_addr']:
+                    if type(ns) == list:
+                        for n in ns:
+                            self.__append_nsset__(data, n) # ns / addr / [addr,addr,] / [ns [addr,addr,]]
                     else:
-                        ns_name = __create_nsset_join_param__(ns_sets, errors, re_patt.search(dct_ns[k]), ns_name, dct_ns[k])
-            for ns_name in ns_sets.keys():
-                data.append(('nsset:create', 'nsset:ns'))
-                data.append(('nsset:ns', 'nsset:name',ns_name))
-                if type(ns_sets[ns_name]) != list: ns_sets[ns_name] = [ns_sets[ns_name]]
-                for addr in ns_sets[ns_name]:
-                    data.append(('nsset:ns', 'nsset:addr',addr))
+                        self.__append_nsset__(data, ns) # záznam ns ze seznamu
+            else:
+                self.__append_nsset__(data, dct['name_and_addr']) # jednoduchý ns záznam ns
         self.__append_values__(data, dct, 'tech', 'nsset:create', 'nsset:tech')
         data.extend((
             ('nsset:create','nsset:authInfo'),
@@ -520,12 +665,216 @@ class Message(eppdoc.Message):
         else:
             self.__assemble_cmd__(data)
 
-##    def assemble_delete(self, *params):
-##        self.load_EPP_template('delete')
-##    def assemble_renew(self, *params):
-##        self.load_EPP_template('renew')
-##    def assemble_update(self, *params):
-##        self.load_EPP_template('update')
+    def assemble_renew_domain(self, *params):
+        """Assemble XML EPP command. 
+        params = ('clTRID', ('version', 'objURI', 'LANG') [,'extensions'])
+        """
+        dct = self._dct
+        names = ('domain',)
+        ns = '%s%s-%s'%(eppdoc.nic_cz_xml_epp_path,names[0],eppdoc.nic_cz_version)
+        attr = (('xmlns:%s'%names[0],ns),
+                ('xsi:schemaLocation','%s %s-%s.xsd'%(ns,names[0],eppdoc.nic_cz_version)))
+        data = [
+            ('epp', 'command'),
+            ('command', 'renew'),
+            ('renew', 'domain:renew', '', attr),
+            ('domain:renew','domain:name', dct['name']),
+            ('domain:renew','domain:curExpDate', dct['curExpDate']),
+            ]
+        if dct.has_key('period'):
+            if not dct.has_key('period-unit'):dct['period-unit']='y'
+            data.append(('domain:renew','domain:period',dct['period'], (('unit',dct['period-unit']),)))
+        if len(params)>2 and params[2]=='extensions': self.__enum_extensions__('renew',data, params)
+        data.append(('command', 'clTRID', params[0]))
+        self.__assemble_cmd__(data)
+
+    def assemble_renew_domain_enum(self, *params):
+        "Assemble XML EPP command"
+        if len(params)<2: params = (params[0],None)
+        self.assemble_renew_domain(params[0], params[1], 'extensions')
+
+    def assemble_update_contact(self, *params):
+        """Assemble XML EPP command. 
+        params = ('clTRID', ...)
+        """
+        dct = self._dct
+        names = ('contact',)
+        ns = '%s%s-%s'%(eppdoc.nic_cz_xml_epp_path,names[0],eppdoc.nic_cz_version)
+        attr = (('xmlns:%s'%names[0],ns),
+                ('xsi:schemaLocation','%s %s-%s.xsd'%(ns,names[0],eppdoc.nic_cz_version)))
+        data = [
+            ('epp', 'command'),
+            ('command', 'update'),
+            ('update', 'contact:update', '', attr),
+            ('contact:update','contact:id', dct['contact-id']),
+            ]
+        if dct.has_key('add'):
+            data.append(('contact:update', 'contact:add'))
+            self.__append_attr__(data, dct, 'add', 'contact:add', 'contact:status','s')
+        if dct.has_key('rem'):
+            data.append(('contact:update', 'contact:rem'))
+            self.__append_attr__(data, dct, 'rem', 'contact:rem', 'contact:status','s')
+        # --- BEGIN chg ------ (nemůže to být uděláno přes if len(dct) > 4: protože  --key = vlaue)
+        for name in ('name','org','street','city','sp','pc','cc','voice','fax','email','disclose','vat','ssn','notifyEmail'):
+            if dct.has_key(name):
+                data.append(('contact:update','contact:chg'))
+                break
+        tag_postalInfo=0
+        if dct.has_key('name') or dct.has_key('org'):
+            tag_postalInfo=1
+            data.append(('contact:chg','contact:postalInfo'))
+            if dct.has_key('name'): data.append(('contact:postalInfo','contact:name', dct['name']))
+            if dct.has_key('org'): data.append(('contact:postalInfo','contact:org', dct['org']))
+        for name in ('street','city','sp','pc','cc'):
+            if dct.has_key(name):
+                if not tag_postalInfo: data.append(('contact:chg','contact:postalInfo'))
+                data.append(('contact:postalInfo','contact:addr'))
+                break
+        # --- BEGIN addr ------
+        self.__append_values__(data, dct, 'street', 'contact:addr', 'contact:street')
+        if dct.has_key('city'): data.append(('contact:addr','contact:city', dct['city']))
+        if dct.has_key('sp'): data.append(('contact:addr','contact:sp', dct['sp']))
+        if dct.has_key('pc'): data.append(('contact:addr','contact:pc', dct['pc']))
+        if dct.has_key('cc'): data.append(('contact:addr','contact:cc', dct['cc']))
+        # --- END addr ------
+        if dct.has_key('voice'): data.append(('contact:chg','contact:voice', dct['voice']))
+        if dct.has_key('fax'): data.append(('contact:chg','contact:fax', dct['fax']))
+        if dct.has_key('email'): data.append(('contact:chg','contact:email',dct['email']))
+        # --- BEGIN disclose ------
+        if dct.has_key('disclose'):
+            data.append(('contact:chg','contact:disclose','',(('flag',dct['disclose']),)))
+            for key in ('name','org','addr','voice','fax','email'):
+                if dct.has_key('disclose-%s'%key): data.append(('contact:disclose','contact:%s'%key,dct['disclose-%s'%key]))
+        # --- END disclose ------
+        if dct.has_key('vat'): data.append(('contact:chg','contact:vat', dct['vat']))
+        if dct.has_key('ssn'): data.append(('contact:chg','contact:ssn', dct['ssn']))
+        if dct.has_key('notifyEmail'): data.append(('contact:chg','contact:notifyEmail', dct['notifyEmail']))
+        data.append(('command', 'clTRID', params[0]))
+        self.__assemble_cmd__(data)
+
+    def assemble_update_domain(self, *params):
+        """Assemble XML EPP command. 
+        params = ('clTRID', ...)
+        """
+        dct = self._dct
+        names = ('domain',)
+        ns = '%s%s-%s'%(eppdoc.nic_cz_xml_epp_path,names[0],eppdoc.nic_cz_version)
+        attr = (('xmlns:%s'%names[0],ns),
+                ('xsi:schemaLocation','%s %s-%s.xsd'%(ns,names[0],eppdoc.nic_cz_version)))
+        data = [
+            ('epp', 'command'),
+            ('command', 'update'),
+            ('update', 'domain:update', '', attr),
+            ('domain:update','domain:name', dct['name']),
+            ]
+        if dct.has_key('add'):
+            data.append(('domain:update', 'domain:add'))
+            self.__append_attr__(data, dct, 'add', 'domain:add', 'domain:status','s')
+        if dct.has_key('rem'):
+            data.append(('domain:update', 'domain:rem'))
+            self.__append_attr__(data, dct, 'rem', 'domain:rem', 'domain:status','s')
+        # --- BEGIN chg ------ (nemůže to být uděláno přes if len(dct) > 4: protože  --key = vlaue)
+        for name in ('nsset','registrant','pw','ext'):
+            if dct.has_key(name):
+                data.append(('domain:update','domain:chg'))
+                break
+        if dct.has_key('nsset'): data.append(('domain:chg','domain:nsset', dct['nsset']))
+        if dct.has_key('registrant'): data.append(('domain:chg','domain:registrant', dct['registrant']))
+        if dct.has_key('pw'):
+            data.append(('domain:chg','domain:authInfo'))
+            data.append(('domain:authInfo','domain:pw', dct['pw']))
+        if len(params)>2 and params[2]=='extensions': self.__enum_extensions__('update',data, params,'chg')
+        data.append(('command', 'clTRID', params[0]))
+        self.__assemble_cmd__(data)
+
+    def assemble_update_domain_enum(self, *params):
+        "Assemble XML EPP command"
+        if len(params)<2: params = (params[0],None)
+        self.assemble_update_domain(params[0], params[1], 'extensions')
+
+    def __update_nsset__(self, data, nsset, tech=None, stat=None):
+        """Support of assemble_update_nsset()
+        nsset ((ns, addr), (ns, addr), ... )
+        nsset -> (ns-addr,ns-addr) => ns-addr=(ns, addr[,addr])
+        tech
+        stat
+        TODO: není hotovo
+        """
+        if type(nsset)==list:
+            # (name, name) nebo ((name, addr), (name, addr))
+            for ns_list in nsset:
+                if type(ns_list)==list:
+                    # (name, name) nebo ((name, addr), (name, addr))
+                    for ns_addr in ns_list:
+                        # name, addr
+                        if type(ns_addr)==list:
+                            pass
+                        else:
+                            pass
+                else:
+                    # name
+                    data.append(('nsset:add','nsset:ns'))
+                    data.append(('nsset:ns','nsset:name',ns_list))
+        else:
+            data.append(('nsset:add','nsset:ns'))
+            data.append(('nsset:ns','nsset:name',nsset))
+        if tech: self.__append_values__(data, {'tech':tech}, 'tech', 'nsset:add', 'nsset:tech')
+        if stat: self.__append_attr__(data, {'stat':stat}, 'stat', 'nsset:add', 'nsset:status','s')
+
+    def assemble_update_nsset(self, *params):
+        """Assemble XML EPP command. 
+        params = ('clTRID', ...)
+        """
+        dct = self._dct
+        names = ('nsset',)
+        ns = '%s%s-%s'%(eppdoc.nic_cz_xml_epp_path,names[0],eppdoc.nic_cz_version)
+        attr = (('xmlns:%s'%names[0],ns),
+                ('xsi:schemaLocation','%s %s-%s.xsd'%(ns,names[0],eppdoc.nic_cz_version)))
+        data = [
+            ('epp', 'command'),
+            ('command', 'update'),
+            ('update', 'nsset:update', '', attr),
+            ('nsset:update','nsset:id', dct['id']),
+            ]
+        if dct.has_key('add'):
+            # 1.ns, 2. nssets, 3. ns-addr
+            # (ns[, ns]) -> ns=(nssets[, tech, stat]) -> nssets -> (ns-addr,ns-addr) => ns-addr=(ns, addr[,addr])
+            # 1. 'update_nsset nic.cz ns-add1.nic.cz',
+            # 2. 'update_nsset nic.cz ((ns-add1.nic.cz) (ns-add2.nic.cz))',
+            # 3. 'update_nsset nic.cz ((ns-add1.nic.cz, 127.0.0.1), tech-add stat-add)',
+            # 4. 'update_nsset nic.cz (((ns-add1.nic.cz, 127.0.0.1), tech-add stat-add) ((ns-add2.nic.cz, 127.2.0.1), tech2-add stat2-add))',
+            data.append(('nsset:update','nsset:add'))
+            if type(dct['add'])==list:
+                # ns
+                # 2. 'update_nsset nic.cz (ns-add1.nic.cz ns-add2.nic.cz)',
+                # 3. 'update_nsset nic.cz ((ns-add1.nic.cz, 127.0.0.1), tech-add stat-add)',
+                # 4. 'update_nsset nic.cz (((ns-add1.nic.cz, 127.0.0.1), tech-add stat-add) ((ns-add2.nic.cz, 127.2.0.1), tech2-add stat2-add))',
+                for ns in dct['add']:
+                    if type(ns)==list:
+                        # 2. (nssets[, tech, stat])
+                        # (ns-addr[, tech, stat])
+                        # 3. 'update_nsset nic.cz ((ns-add1.nic.cz, 127.0.0.1), tech-add stat-add)',
+                        # 4. 'update_nsset nic.cz (((ns-add1.nic.cz, 127.0.0.1), tech-add stat-add) ((ns-add2.nic.cz, 127.2.0.1), tech2-add stat2-add))',
+                        tech = stat = None
+                        nssets = ns[0]
+                        if len(ns) > 1: tech = ns[1]
+                        if len(ns) > 2: stat = ns[2]
+                        self.__update_nsset__(data, nssets, tech, stat)
+                    else:
+                        # nsset name
+                        # 2. 'update_nsset nic.cz (ns-add1.nic.cz ns-add2.nic.cz)',
+                        self.__update_nsset__(data, ns)
+            else:
+                # simple nsset name
+                # 1. 'update_nsset nic.cz ns-add1.nic.cz'
+                self.__update_nsset__(data, dct['add'])
+        if dct.has_key('rem'):
+            data.append(('nsset:update','nsset:rem'))
+        # --- BEGIN chg ------ (nemůže to být uděláno přes if len(dct) > 4: protože  --key = vlaue)
+        # TODO: musí se to dodělat
+        if len(params)>2 and params[2]=='extensions': self.__enum_extensions__('update',data, params,'chg')
+        data.append(('command', 'clTRID', params[0]))
+        self.__assemble_cmd__(data)
 
     #===========================================
 def __create_nsset_join_param__(ns_sets, errors, is_name, ns_name, value):
@@ -581,25 +930,105 @@ def test(commands):
 
 if __name__ == '__main__':
     # Test na jednotlivé příkazy
-    commands = (
-     'create_contact reg-id "John Doe" jon@mail.com "New York" US "Example Inc." ("Yellow harbor" "Blueberry hill") VA 20166-6503 +1.7035555555 +1.7035555556 0 d-name "d org." "ulice číso město" +21321313 +734321 pepa@jojo.com vat-test ssn-test notify@semka.net',
-     'transfer_domain name-domain request password',
-     'transfer_nsset name-nsset request password',
-     'poll req',
+    commands1 = (
      'hello',
      'login john mypass "my new pass!"',
      'logout',
      'info_domain',
      'info_contact buzz-buzz "lorem ipsum"',
-     'check_domain',
+     'check_domain nic.cz cin.cz',
      'check_contact buzz-buzz "lorem ipsum"',
-     'create_domain pokus.cz heslo 3 m nsset registr ("Na potůčku","U příhody")',
-     'create_nsset exampleNsset passw ns1.domain.net',
-     'create_nsset exampleNsset passw "ns1.domain.net 194.23.54.1"',
-     'create_nsset exampleNsset passw "ns1.domain.net ns2.domain.net"',
-     'create_nsset exampleNsset passw "ns1.domain.net (194.23.54.1, 194.23.54.2)"',
-     'create_nsset exampleNsset passw "ns1.domain.net (194.23.54.1, 194.23.54.2) ns2.domain.net 194.23.54.1"',
-     'create_nsset exampleNsset passw "ns1.domain.net (194.23.54.1, 194.23.54.2) ns2.domain.net 194.23.54.1" regcontact',
-     'create_nsset exampleNsset passw "ns1.domain.net (194.23.54.1, 194.23.54.2) ns2.domain.net 194.23.54.1" (regcontact, regcontact2)',
+     'transfer_domain name-domain request password',
+     'transfer_nsset name-nsset request password',
+     'poll req',
     )
-    test(commands)
+    commands2 = (
+     'create_contact reg-id "John Doe" jon@mail.com "New York" US "Example Inc." ("Yellow harbor" "Blueberry hill") VA 20166-6503 +1.7035555555 +1.7035555556 0 d-name "d org." "ulice číso město" +21321313 +734321 pepa@jojo.com vat-test ssn-test notify@semka.net',
+     'create_domain pokus.cz heslo 3 m nsset registr ("Na potůčku","U příhody")',
+     'create_domain_enum pokus.cz heslo 3 m nsset registr ("Na potůčku","U příhody") 2006-06-08',
+     'create_nsset exampleNsset passw ns1.domain.net',
+##     'create_nsset exampleNsset passw "ns1.domain.net 194.23.54.1"',
+##     'create_nsset exampleNsset passw "ns1.domain.net ns2.domain.net"',
+##     'create_nsset exampleNsset passw "ns1.domain.net (194.23.54.1, 194.23.54.2)"',
+##     'create_nsset exampleNsset passw "ns1.domain.net (194.23.54.1, 194.23.54.2) ns2.domain.net 194.23.54.1"',
+##     'create_nsset exampleNsset passw "ns1.domain.net (194.23.54.1, 194.23.54.2) ns2.domain.net 194.23.54.1" regcontact',
+##     'create_nsset exampleNsset passw "ns1.domain.net (194.23.54.1, 194.23.54.2) ns2.domain.net 194.23.54.1" (regcontact, regcontact2)',
+     'create_nsset exampleNsset passw ns1.domain.net',
+     'create_nsset exampleNsset passw (ns1.domain.net 194.23.54.1)',
+     'create_nsset exampleNsset passw (ns1.domain.net ns2.domain.net)',
+     'create_nsset exampleNsset passw ((ns1.domain.net 194.23.54.1) ns2.domain.net)',
+     'create_nsset exampleNsset passw ((ns1.domain.net (194.23.54.1 194.23.54.2)) ns2.domain.net)',
+     'create_nsset exampleNsset passw ((ns1.domain.net (194.23.54.1 194.23.54.2)) (ns2.domain.net (196.23.54.1 196.23.54.2))) tech-contact',
+     'create_nsset exampleNsset passw (ns1.domain.net 194.23.54.1 194.23.54.2 ns2.domain.net 196.23.54.1 196.23.54.2) tech-contact',
+    )
+    commands3 = (
+     'delete_contact pokus',
+     'delete_domain pokus.cz',
+     'delete_nsset pokus',
+    )
+    commands4 = (
+     'renew_domain nic.cz 2023-06-02 6 y',
+     'renew_domain_enum nic.cz 2023-06-02 6 y 2006-08-09',
+    )
+    commands5 = (
+     'update_contact id-jouda clientDeleteProhibited',
+     'update_contact id-jouda linked ok "John Doe" jon@mail.com "New York" US "Example Inc." ("Yellow harbor" "Blueberry hill") VA 20166-6503 +1.7035555555 +1.7035555556 0 d-name "d org." "ulice číso město" +21321313 +734321 pepa@jojo.com vat-test ssn-test notify@semka.net',
+     'update_domain nic.cz',
+     'update_domain nic.cz ok ok nsset registrant password',
+     'update_domain_enum 1.1.1.1.1.arpa64.net () () nsset registrant password 2006-06-08',
+     'update_domain_enum nic.cz',
+)
+    commands6 = (
+
+    'update_nsset nic.cz ns-add1.nic.cz',
+    'update_nsset nic.cz (ns-add1.nic.cz ns-add2.nic.cz)',
+    'update_nsset nic.cz ((ns-add1.nic.cz) (ns-add2.nic.cz))',
+    'update_nsset nic.cz (((ns-add1.nic.cz, 127.0.0.1)), tech-add stat-add)',
+    'update_nsset nic.cz (((ns-add1.nic.cz, 127.0.0.1)))',
+    'update_nsset nic.cz (((ns-add1.nic.cz, 127.0.0.1)(ns-add2.nic.cz, 127.0.0.2)), tech-add stat-add)',
+    'update_nsset nic.cz (((ns-add1.nic.cz, 127.0.0.1), tech-add stat-add) ((ns-add2.nic.cz, 127.2.0.1), tech2-add stat2-add))',
+
+##    """update_nsset NICCZ
+##    (
+##    [(na0.nic.cz, (127.0.1.1, 127.0.1.2))
+##     (nb0.nic.cz, (127.0.2.1, 127.0.2.2))
+##     tech0 status0
+##    ] 
+##    [(na1.nic.cz, (127.1.1.1, 127.1.1.2))
+##     (nb1.nic.cz, (127.1.2.1, 127.1.2.2))
+##     tech1 status1
+##    ] 
+##    )
+##    ()
+##    heslo
+##    """
+    )
+##    test(commands1)
+##    test(commands2)
+##    test(commands3)
+##    test(commands4)
+    test(commands5)
+
+"""
+update-nsset id 
+    (add 0-1
+        (ns 0-9
+            name
+            (addr 0-9)
+        )
+        (tech 0-n)
+        (status 0-6)
+    )
+
+    (rem 0-1
+        (name 0-9)
+        (tech 0-n)
+        (status 0-6)
+    )
+
+    (chg 0-1
+        (pw 0-1)
+    )
+update-nsset id    ((ns-add1.ni.cz 127.0.0.1 technical-add1 ok),(pokus2 127.0.0.1 technical-add2 ok))    ((ns-rem1.nic.cz ns-rem2.nic.cz ) technical-rem ok)
+    --add-ns pokus 127.0.0.1
+"""

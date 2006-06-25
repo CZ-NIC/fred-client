@@ -30,8 +30,9 @@ def fill_dict(dct, cols, text):
     key = sep = ''
     quot=[]
     group=[]
+    prev_group = []
     is_group=0
-    tokens = re.split('(=|\'|"|,|\(|\)|\s+)', text)
+    tokens = re.split('(=|\'|"|,|\(|\)|\[|\]|\s+)', text)
     for pos in range(len(tokens)):
         if max_col_id != -1 and col_id >= max_col_id: break
         token = tokens[pos]
@@ -68,26 +69,37 @@ def fill_dict(dct, cols, text):
                 if m: key = m.group(1)
             elif token in '=,' and pos:
                 pass
-            elif token == '(':
-                is_group = 1
-            elif token == ')':
-                is_group = 0
-                if not key:
-                    if cols:
-                        key = cols[col_id]
-                    else:
-                        key = col_id
-                    col_id+=1
-                if group:
-                    if cols == None or key in cols:
-                        if type(dct.get(key,None)) == list:
-                            dct[key].append(token)
+            elif token in '([':
+                if is_group:
+                    prev_group.append(group)
+                    group.append([])
+                    group = group[-1]
+                is_group += 1
+            elif token in '])':
+                is_group -= 1
+                if is_group < 0:
+                    # kontrola na podtečení token underflow: )
+                    errors.append(_T('data-parser: token underflow: )'))
+                    is_group = 0
+                if len(prev_group): group = prev_group.pop()
+                if not is_group:
+                    # skupina se uloží
+                    if not key:
+                        if cols:
+                            key = cols[col_id]
                         else:
-                            dct[key] = group
-                    else:
-                        errors.append("%s: '%s'."%(_T('Unknown parameter name'),key))
-                key = ''
-                group=[]
+                            key = col_id
+                        col_id+=1
+                    if group:
+                        if cols == None or key in cols:
+                            if type(dct.get(key,None)) == list:
+                                dct[key].append(group)
+                            else:
+                                dct[key] = group
+                        else:
+                            errors.append("%s: '%s'."%(_T('Unknown parameter name'),key))
+                    key = ''
+                    group=[]
             elif blank_pattern.match(token):
                 pass
             else:
@@ -122,9 +134,12 @@ if __name__ == '__main__':
 """
     cols = ['%d'%c for c in range(1,12)]
 
-    cols = 'command nsset password ns addr'.split(' ')
-    text = 'create_nsset pokus heslo (ns1.bazmek.net (194.23.54.1 194.23.54.2) ns2.bazmek.net 194.23.54.1)'
-
+    cols = 'command nsset password ns_addr tech'.split(' ')
+##    cols = ('command','nsset','password',('ns','addr'),'tech')
+    text = 'create_nsset pokus heslo (ns1.bazmek.net ns2.bazmek.net) tech-contact'
+    text = 'create_nsset pokus heslo ((ns1.bazmek.net 194.23.54.1),(ns2.bazmek.net (194.23.54.1,194.23.54.2))) tech-contact'
+##    text = 'create_nsset pokus heslo (ns1.bazmek.net (194.23.54.1 194.23.54.2) ns2.bazmek.net 194.23.54.1) tech-contact'
+##    text = 'create_nsset pokus heslo (ns1.bazmek.net))'
     dct = {}
     for key in cols:
         dct[key]=''
