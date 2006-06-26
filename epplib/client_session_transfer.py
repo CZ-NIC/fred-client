@@ -5,12 +5,6 @@ import client_eppdoc
 import client_socket
 from client_session_base import *
 
-#------------------------------------
-# default connection to server
-#------------------------------------
-# host, port, (private key, certificate (public) key)
-default_connecion = ('curlew',700,('client.key','client.crt'))
-
 class ManagerTransfer(ManagerBase):
     """EPP client support.
     This class take care about sending and receiving messages from/to server.
@@ -71,7 +65,15 @@ class ManagerTransfer(ManagerBase):
         self._lorry._notes = self._notes
         self._lorry._errors = self._errors
         self._lorry.handler_message = self.process_answer
-        if not data: data = default_connecion # default connection
+        if not data:
+            section='conect'
+            data = (self.__get_config__(section,'host'),
+                    self.__get_config__(section,'port','int'),
+                    self.__get_config__(section,'ssl_key'),
+                    self.__get_config__(section,'ssl_cert'))
+            if None in data:
+                self.append_error('%s: %s'%(_T('Impossible create connection. Required config values missing'),str(data)))
+                return 0
         if self._lorry.connect(data):
             epp_greeting = self._lorry.receive() # receive greeting
             self.__check_is_connected__()

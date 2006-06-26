@@ -890,19 +890,6 @@ class Message(eppdoc.Message):
         self.__assemble_cmd__(data)
 
     #===========================================
-def __create_nsset_join_param__(ns_sets, errors, is_name, ns_name, value):
-    "Internal supporting of Message.assemble_create_nsset() function."
-    if is_name:
-        # ns name
-        ns_name = value
-        ns_sets[ns_name] = []
-    else:
-        # ns address
-        if ns_sets.has_key(ns_name):
-            ns_sets[ns_name].append(value)
-        else:
-            errors.append((0,value,_T('You MUST define name before address.')))
-    return ns_name
 
 def test_command(command, label):
     "Test if template si valid."

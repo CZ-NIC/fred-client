@@ -26,7 +26,7 @@ class Lorry:
         return self._conn and self._conn_ssl
 
     def connect(self, DATA):
-        "DATA = ('host', PORT, ('file.key','file.crt'))"
+        "DATA = ('host', PORT, 'file.key', 'file.crt')"
         self._conn = None
         try:
             self._conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -41,14 +41,15 @@ class Lorry:
             self._errors.append('Connection socket.error [%d] %s'%(no,msg))
             return 0
         self._notes.append(_T('Init SSL connection'))
-        if DATA[2]:
-            if not os.path.isfile(DATA[2][0]):
-                self._errors.append('%s %s'%(DATA[2][0],_T('Private key file not found.')))
-            if not os.path.isfile(DATA[2][1]):
-                self._errors.append('%s %s'%(DATA[2][1],_T('Certificate key file not found.')))
+        if len(DATA) < 4:
+            self._errors.append(_T('Certificate names not set.'))
+        if len(DATA) > 2 and not os.path.isfile(DATA[2]):
+            self._errors.append('%s %s'%(DATA[2][0],_T('Private key file not found.')))
+        if len(DATA) > 3 and not os.path.isfile(DATA[3]):
+            self._errors.append('%s %s'%(DATA[2][1],_T('Certificate key file not found.')))
         try:
-            if DATA[2]:
-                self._conn_ssl = socket.ssl(self._conn, DATA[2][0], DATA[2][1])
+            if len(DATA) > 3:
+                self._conn_ssl = socket.ssl(self._conn, DATA[2], DATA[3])
             else:
                 self._conn_ssl = socket.ssl(self._conn)
         except socket.sslerror, msg:
@@ -154,7 +155,7 @@ class Lorry:
 
 if __name__ == '__main__':
     import sys
-    DATA = ['curlew',700, ('certificate_private.pem','certificate_public.pem')]
+    DATA = ['curlew',700, 'client.key','client.crt']
     if len(sys.argv)>1: DATA[0] = sys.argv[1]
     if len(sys.argv)>2: DATA[1] = int(sys.argv[2])
     client = Lorry()

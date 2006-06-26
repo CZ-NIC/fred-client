@@ -8,6 +8,7 @@
 # getopt -- Parser for command line options
 import sys, re
 import pprint # TEST ONLY
+from gettext import gettext as _T
 import epplib.client_session
 
 # Kontrola na Unicode
@@ -24,6 +25,8 @@ def main():
     client = epplib.client_session.Manager()
     epplib.client_session.set_history(client.get_command_names())
     print client.welcome()
+    client.load_config()
+    client.display() # display errors or notes
     #---------------------------------------------------
     if 0:
         # automatické připojení k serveru
@@ -34,7 +37,7 @@ def main():
             return
         print client.fetch_notes() # zobrazit poznámky
     else:
-        print u"Pro spojení se serverem zadeje: connect nebo rovnou login"
+        print _T('For connection to the EPP server type "connect" or directly "login".')
     #---------------------------------------------------
     print "[BATCH: START LOOP prompt]"
     while 1:
@@ -50,7 +53,7 @@ def main():
                 answer = client.receive()     # příjem odpovědi
                 client.process_answer(answer) # zpracování odpovědi
             else:
-                print "You are not connected! For connection type command: connect and then login"
+                print _T("You are not connected! For connection type command: connect and then login")
         client.display() # display errors or notes
     print "[BATCH: END LOOP prompt]"
     client.close()

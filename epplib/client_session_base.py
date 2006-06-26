@@ -43,6 +43,7 @@ class ManagerBase:
         self.defs[LANGS] = ('en','cs') # seznam dostupných jazyků
         self.defs[objURI] = 'urn:ietf:params:xml:ns:obj1'
         self.defs[PREFIX] = '' # pro každé sezení nový prefix
+        self._conf = None # <ConfigParser object>
 
     def get_errors(self, sep='\n'):
         return sep.join(self._errors)
@@ -108,7 +109,9 @@ class ManagerBase:
         tmpname='tmp.xml'
         open(tmpname,'w').write(message)
         # kontrola validity XML
-        valid = commands.getoutput('xmllint --schema %s %s'%(self._validate_schema_path, tmpname))
+        schema_path = self.__get_config__('session','schema')
+        if not schema_path: return ''
+        valid = commands.getoutput('xmllint --schema %s %s'%(schema_path, tmpname))
         os.unlink(tmpname)
         if valid[-9:]=='validates':
             valid='' # '' = žádné chybové hlášení. Když se vrátí prázdný řetězec, tak je XML validní.

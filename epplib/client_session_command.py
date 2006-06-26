@@ -169,8 +169,15 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]  ${CYAN}# display raw answer${NORMAL}
             m = re.match('(\S+)',command)
             key = client_eppdoc_test.get_test_key(m.group(1))
             if not key:
-                key = re.match('err[-_](.+)',command).group(1)
-            xml_doc = self._epp_cmd.load_xml_doc(key,'epplib/testy')
+                m = re.match('err[-_](.+)',command)
+                if m:
+                    key = m.group(1)
+                    xml_doc = self._epp_cmd.load_xml_doc(key,'epplib/testy')
+                    # TODO: proč to neukládá zdroj?
+##                    self._command_sent = xml_doc
+                else:
+                    self.append_note('List of test:')
+                    self.append_note(dircache.listdir('epplib/testy/'))
             self.append_error(self._epp_cmd.get_errors())
         elif re.match('connect',cmd):
             self.connect() # připojení k serveru
