@@ -19,13 +19,24 @@ SINGLE,LIST = range(2) # typ parametru v příkazu
 # Text k helpu
 examples = {}
 cn=[]
-cmd = '\tcreate-nsset exampleNsset passw '
+cmd = '  create-nsset exampleNsset passw '
 for p in ('ns1.domain.net',
      'ns1.domain.net',
      '(ns1.domain.net ns2.domain.net)',
      '(ns1.domain.net 194.23.54.1 194.23.54.2 ns2.domain.net 196.23.54.1 196.23.54.2)',):
      cn.append('%s%s'%(cmd,p))
 examples['create-nsset'] = '\n'.join(cn)
+cn=[]
+cmd = '  update_nsset nic.cz '
+for p in ('update_nsset nic.cz (ns-add1.nic.cz ns-add2.nic.cz) ns-rem1.nic.cz password',
+    '((ns-add1.nic.cz ns-add2.nic.cz) tech-add ok) (ns-rem1.nic.cz ns-rem2.nic.cz) password',
+    '((ns-add1.nic.cz 127.0.0.1 ns-add2.nic.cz 127.0.2.1) tech-add ok) ((ns-rem1.nic.cz, ns-rem2.nic.cz) tech-rem clientDeleteProhibited) password',
+    '((ns-add1.nic.cz 127.0.0.1 127.0.0.2 ns-add2.nic.cz 127.0.2.1 127.0.2.2) tech-add ok) () password',
+    '(((ns-add1.nic.cz 127.0.0.1 127.0.0.2)(ns-add2.nic.cz 127.0.2.1 127.0.2.2)) tech-add ok) () password',
+    '(((ns-add1.nic.cz (127.0.0.1 127.0.0.2))(ns-add2.nic.cz (127.0.2.1 127.0.2.2))) ("first technical contact","second technical contact") ok) ((ns-rem1.nic.cz, ns-rem2.nic.cz) "remove technical contact" clientDeleteProhibited) password',):
+     cn.append('%s%s'%(cmd,p))
+examples['update-nsset'] = '\n'.join(cn)
+    
 
 notice = {'check':_T("""
    The EPP "check" command is used to determine if an object can be
@@ -239,23 +250,12 @@ class Message(eppdoc.Message):
             ('valExDate',_T('valExDate')),
             ),notice['update']),
         #----------------------------------------------------
-##        'update_nsset': (1,(
-##            ('id',_T('nsset ID')),
-##            ('add-ns',_T('add nsset name'),(LIST,9)),
-##            ('add-addr',_T('add nsset address'),(LIST,0)),
-##            ('add-tech',_T('add tech contact'),(LIST,0)),
-##            ('add-status',_T('add status'),(LIST,6)),
-##            ('rem-ns',_T('remove nsset name'),(LIST,9)),
-##            ('rem-tech',_T('remove name'),(LIST,0)),
-##            ('rem-status',_T('remove status'),(LIST,6)),
-##            ),notice['update']),
         'update_nsset': (1,(
             ('id',_T('nsset ID')),
-            ('add',_T('add nsset-name address tech status'),(LIST,0)),
+            ('add',_T('nsset-names address tech status'),(LIST,0)),
             ('rem',_T('remove nsset-name tech status'),(LIST,0)),
             ('pw',_T('password')),
-            ),notice['update']),
-
+            ),'%s\n${BOLD}%s:${NORMAL}\n%s'%(notice['update'],_T('Examples'),examples['update-nsset'])),
     }
     
     def __get_help_note__(self, help, params, pos):
@@ -616,16 +616,16 @@ class Message(eppdoc.Message):
         'Extensions for enum.'
         self.assemble_create_domain(params[0], params[1], 'extensions')
 
-    def __append_nsset__(self, data, ns):
+    def __append_nsset__(self, tag_name, data, ns):
         """Supporting function for assemble_create_nsset().
         param ns can be: ns / addr / [addr,addr,] / [ns [addr,addr,]]
         """
         if type(ns)==list:
             for n in ns:
-                self.__append_nsset__(data, n)
+                self.__append_nsset__(tag_name, data, n)
         else:
             if re.search('[a-z]',ns, re.I):
-                data.append(('nsset:create', 'nsset:ns'))
+                data.append(('nsset:%s'%tag_name, 'nsset:ns'))
                 data.append(('nsset:ns', 'nsset:name',ns))
             else:
                 data.append(('nsset:ns', 'nsset:addr',ns))
@@ -649,11 +649,11 @@ class Message(eppdoc.Message):
                 for ns in dct['name_and_addr']:
                     if type(ns) == list:
                         for n in ns:
-                            self.__append_nsset__(data, n) # ns / addr / [addr,addr,] / [ns [addr,addr,]]
+                            self.__append_nsset__('create', data, n) # ns / addr / [addr,addr,] / [ns [addr,addr,]]
                     else:
-                        self.__append_nsset__(data, ns) # záznam ns ze seznamu
+                        self.__append_nsset__('create', data, ns) # záznam ns ze seznamu
             else:
-                self.__append_nsset__(data, dct['name_and_addr']) # jednoduchý ns záznam ns
+                self.__append_nsset__('create', data, dct['name_and_addr']) # jednoduchý ns záznam ns
         self.__append_values__(data, dct, 'tech', 'nsset:create', 'nsset:tech')
         data.extend((
             ('nsset:create','nsset:authInfo'),
@@ -794,12 +794,14 @@ class Message(eppdoc.Message):
 
     def __update_nsset__(self, data, nsset, tech=None, stat=None):
         """Support of assemble_update_nsset()
-        nsset ((ns, addr), (ns, addr), ... )
-        nsset -> (ns-addr,ns-addr) => ns-addr=(ns, addr[,addr])
-        tech
-        stat
-        TODO: není hotovo
+
+        nsset value can acquired there value types:
+        1.nsset: name
+        2.nsset: (name, name)/(name addr)
+        3.nsset: ((name addr),(name addr))
+        4.nsset: ((name (addr)),(name (addr)))
         """
+        # nsset: ns (addr,...)
         if type(nsset)==list:
             # (name, name) nebo ((name, addr), (name, addr))
             for ns_list in nsset:
@@ -808,14 +810,15 @@ class Message(eppdoc.Message):
                     for ns_addr in ns_list:
                         # name, addr
                         if type(ns_addr)==list:
-                            pass
+                            for item in ns_addr:
+                                self.__append_nsset__('add', data, item) # 4.
                         else:
-                            pass
+                            self.__append_nsset__('add', data, ns_addr) # 3.
                 else:
-                    # name
-                    data.append(('nsset:add','nsset:ns'))
-                    data.append(('nsset:ns','nsset:name',ns_list))
+                    # 2. name or address
+                    self.__append_nsset__('add', data, ns_list)
         else:
+            # 1. simple name
             data.append(('nsset:add','nsset:ns'))
             data.append(('nsset:ns','nsset:name',nsset))
         if tech: self.__append_values__(data, {'tech':tech}, 'tech', 'nsset:add', 'nsset:tech')
@@ -824,7 +827,23 @@ class Message(eppdoc.Message):
     def assemble_update_nsset(self, *params):
         """Assemble XML EPP command. 
         params = ('clTRID', ...)
+        update-nsset id 
+            (add 0-1
+                (ns 0-9
+                    name
+                    (addr 0-9)
+                )
+                (tech 0-n)
+                (status 0-6)
+            )
+            (rem 0-1
+                (name 0-9)
+                (tech 0-n)
+                (status 0-6)
+            )
+            (chg 0-1 (pw 0-1))
         """
+        print "="*30
         dct = self._dct
         names = ('nsset',)
         ns = '%s%s-%s'%(eppdoc.nic_cz_xml_epp_path,names[0],eppdoc.nic_cz_version)
@@ -837,42 +856,36 @@ class Message(eppdoc.Message):
             ('nsset:update','nsset:id', dct['id']),
             ]
         if dct.has_key('add'):
-            # 1.ns, 2. nssets, 3. ns-addr
-            # (ns[, ns]) -> ns=(nssets[, tech, stat]) -> nssets -> (ns-addr,ns-addr) => ns-addr=(ns, addr[,addr])
-            # 1. 'update_nsset nic.cz ns-add1.nic.cz',
-            # 2. 'update_nsset nic.cz ((ns-add1.nic.cz) (ns-add2.nic.cz))',
-            # 3. 'update_nsset nic.cz ((ns-add1.nic.cz, 127.0.0.1), tech-add stat-add)',
-            # 4. 'update_nsset nic.cz (((ns-add1.nic.cz, 127.0.0.1), tech-add stat-add) ((ns-add2.nic.cz, 127.2.0.1), tech2-add stat2-add))',
+            # add: (nsset,...), tech, stat
+            # nsset: ns (addr,...)
             data.append(('nsset:update','nsset:add'))
             if type(dct['add'])==list:
-                # ns
-                # 2. 'update_nsset nic.cz (ns-add1.nic.cz ns-add2.nic.cz)',
-                # 3. 'update_nsset nic.cz ((ns-add1.nic.cz, 127.0.0.1), tech-add stat-add)',
-                # 4. 'update_nsset nic.cz (((ns-add1.nic.cz, 127.0.0.1), tech-add stat-add) ((ns-add2.nic.cz, 127.2.0.1), tech2-add stat2-add))',
-                for ns in dct['add']:
-                    if type(ns)==list:
-                        # 2. (nssets[, tech, stat])
-                        # (ns-addr[, tech, stat])
-                        # 3. 'update_nsset nic.cz ((ns-add1.nic.cz, 127.0.0.1), tech-add stat-add)',
-                        # 4. 'update_nsset nic.cz (((ns-add1.nic.cz, 127.0.0.1), tech-add stat-add) ((ns-add2.nic.cz, 127.2.0.1), tech2-add stat2-add))',
-                        tech = stat = None
-                        nssets = ns[0]
-                        if len(ns) > 1: tech = ns[1]
-                        if len(ns) > 2: stat = ns[2]
-                        self.__update_nsset__(data, nssets, tech, stat)
-                    else:
-                        # nsset name
-                        # 2. 'update_nsset nic.cz (ns-add1.nic.cz ns-add2.nic.cz)',
-                        self.__update_nsset__(data, ns)
+                # (nsset,...), tech, stat
+                nssets = dct['add'][0]
+                tech = stat = None
+                if len(dct['add'])>1: tech = dct['add'][1]
+                if len(dct['add'])>2: stat = dct['add'][2]
+                self.__update_nsset__(data, nssets, tech, stat)
             else:
                 # simple nsset name
-                # 1. 'update_nsset nic.cz ns-add1.nic.cz'
                 self.__update_nsset__(data, dct['add'])
         if dct.has_key('rem'):
             data.append(('nsset:update','nsset:rem'))
+            # name, tech, status
+            if type(dct['rem'])==list: # name
+                self.__append_values__(data, {'name':dct['rem'][0]}, 'name', 'nsset:rem', 'nsset:name')
+                if len(dct['rem'])>1: # tech
+                    self.__append_values__(data, {'tech':dct['rem'][1]}, 'tech', 'nsset:rem', 'nsset:tech')
+                if len(dct['rem'])>2: # status
+                    self.__append_attr__(data, {'stat':dct['rem'][2]}, 'stat', 'nsset:rem', 'nsset:status','s')
+            else:
+                # name only
+                data.append(('nsset:rem','nsset:name',dct['rem']))
         # --- BEGIN chg ------ (nemůže to být uděláno přes if len(dct) > 4: protože  --key = vlaue)
-        # TODO: musí se to dodělat
-        if len(params)>2 and params[2]=='extensions': self.__enum_extensions__('update',data, params,'chg')
+        if dct.has_key('pw'):
+            data.append(('nsset:update','nsset:chg'))
+            data.append(('nsset:chg','nsset:authInfo'))
+            data.append(('nsset:authInfo','nsset:pw', dct['pw']))
         data.append(('command', 'clTRID', params[0]))
         self.__assemble_cmd__(data)
 
@@ -911,6 +924,7 @@ def test(commands):
     import client_session_base
     manag = client_session_base.ManagerBase()
     epp = Message()
+    print "#"*60
     for cmd in commands:
         print "COMMAND:",cmd
         m = re.match('(\S+)',cmd)
@@ -926,7 +940,7 @@ def test(commands):
             print errors, xmlepp
             if xmlepp:
                 print manag.is_epp_valid(xmlepp)
-        print '-'*60
+        print '='*60
 
 if __name__ == '__main__':
     # Test na jednotlivé příkazy
@@ -947,12 +961,6 @@ if __name__ == '__main__':
      'create_domain pokus.cz heslo 3 m nsset registr ("Na potůčku","U příhody")',
      'create_domain_enum pokus.cz heslo 3 m nsset registr ("Na potůčku","U příhody") 2006-06-08',
      'create_nsset exampleNsset passw ns1.domain.net',
-##     'create_nsset exampleNsset passw "ns1.domain.net 194.23.54.1"',
-##     'create_nsset exampleNsset passw "ns1.domain.net ns2.domain.net"',
-##     'create_nsset exampleNsset passw "ns1.domain.net (194.23.54.1, 194.23.54.2)"',
-##     'create_nsset exampleNsset passw "ns1.domain.net (194.23.54.1, 194.23.54.2) ns2.domain.net 194.23.54.1"',
-##     'create_nsset exampleNsset passw "ns1.domain.net (194.23.54.1, 194.23.54.2) ns2.domain.net 194.23.54.1" regcontact',
-##     'create_nsset exampleNsset passw "ns1.domain.net (194.23.54.1, 194.23.54.2) ns2.domain.net 194.23.54.1" (regcontact, regcontact2)',
      'create_nsset exampleNsset passw ns1.domain.net',
      'create_nsset exampleNsset passw (ns1.domain.net 194.23.54.1)',
      'create_nsset exampleNsset passw (ns1.domain.net ns2.domain.net)',
@@ -979,56 +987,17 @@ if __name__ == '__main__':
      'update_domain_enum nic.cz',
 )
     commands6 = (
-
-    'update_nsset nic.cz ns-add1.nic.cz',
-    'update_nsset nic.cz (ns-add1.nic.cz ns-add2.nic.cz)',
-    'update_nsset nic.cz ((ns-add1.nic.cz) (ns-add2.nic.cz))',
-    'update_nsset nic.cz (((ns-add1.nic.cz, 127.0.0.1)), tech-add stat-add)',
-    'update_nsset nic.cz (((ns-add1.nic.cz, 127.0.0.1)))',
-    'update_nsset nic.cz (((ns-add1.nic.cz, 127.0.0.1)(ns-add2.nic.cz, 127.0.0.2)), tech-add stat-add)',
-    'update_nsset nic.cz (((ns-add1.nic.cz, 127.0.0.1), tech-add stat-add) ((ns-add2.nic.cz, 127.2.0.1), tech2-add stat2-add))',
-
-##    """update_nsset NICCZ
-##    (
-##    [(na0.nic.cz, (127.0.1.1, 127.0.1.2))
-##     (nb0.nic.cz, (127.0.2.1, 127.0.2.2))
-##     tech0 status0
-##    ] 
-##    [(na1.nic.cz, (127.1.1.1, 127.1.1.2))
-##     (nb1.nic.cz, (127.1.2.1, 127.1.2.2))
-##     tech1 status1
-##    ] 
-##    )
-##    ()
-##    heslo
-##    """
+    'update_nsset nic.cz ns1.nic.cz',
+    'update_nsset nic.cz (ns-add1.nic.cz ns-add2.nic.cz) ns-rem1.nic.cz password',
+    'update_nsset nic.cz ((ns-add1.nic.cz ns-add2.nic.cz) tech-add ok) (ns-rem1.nic.cz ns-rem2.nic.cz) password',
+    'update_nsset nic.cz ((ns-add1.nic.cz 127.0.0.1 ns-add2.nic.cz 127.0.2.1) tech-add ok) ((ns-rem1.nic.cz, ns-rem2.nic.cz) tech-rem clientDeleteProhibited) password',
+    'update_nsset nic.cz ((ns-add1.nic.cz 127.0.0.1 127.0.0.2 ns-add2.nic.cz 127.0.2.1 127.0.2.2) tech-add ok) () password',
+    'update_nsset nic.cz (((ns-add1.nic.cz 127.0.0.1 127.0.0.2)(ns-add2.nic.cz 127.0.2.1 127.0.2.2)) tech-add ok) () password',
+    'update_nsset nic.cz (((ns-add1.nic.cz (127.0.0.1 127.0.0.2))(ns-add2.nic.cz (127.0.2.1 127.0.2.2))) ("first tech cont","sec tech contact") ok) ((ns-rem1.nic.cz, ns-rem2.nic.cz) "rem tech contact" clientDeleteProhibited) password',
     )
 ##    test(commands1)
 ##    test(commands2)
 ##    test(commands3)
 ##    test(commands4)
-    test(commands5)
+    test(commands6)
 
-"""
-update-nsset id 
-    (add 0-1
-        (ns 0-9
-            name
-            (addr 0-9)
-        )
-        (tech 0-n)
-        (status 0-6)
-    )
-
-    (rem 0-1
-        (name 0-9)
-        (tech 0-n)
-        (status 0-6)
-    )
-
-    (chg 0-1
-        (pw 0-1)
-    )
-update-nsset id    ((ns-add1.ni.cz 127.0.0.1 technical-add1 ok),(pokus2 127.0.0.1 technical-add2 ok))    ((ns-rem1.nic.cz ns-rem2.nic.cz ) technical-rem ok)
-    --add-ns pokus 127.0.0.1
-"""
