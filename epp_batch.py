@@ -6,6 +6,8 @@
 # Tento modul bude zpracovávat příkazy ze souboru,
 # nebo z příkazové řádky.
 # getopt -- Parser for command line options
+# terminál musí podporovat zobrazování unicode:
+#    locale musí být nastaveno na LANG=cs_CZ.UTF-8 jinak tam čeština nebude moc fungovat
 import sys, re
 import pprint # TEST ONLY
 from gettext import gettext as _T
@@ -47,7 +49,7 @@ def main():
             break
         epp_doc = client.create_eppdoc(command, epplib.client_session.TEST)
         if epp_doc:
-            if re.match('login ',command): client.connect() # automatické připojení, pokud nebylo navázáno
+            if re.search('<login>',epp_doc): client.connect() # automatické připojení, pokud nebylo navázáno
             if client.is_connected():
                 client.send(epp_doc)          # odeslání dokumentu na server
                 answer = client.receive()     # příjem odpovědi

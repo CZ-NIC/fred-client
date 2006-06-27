@@ -20,7 +20,7 @@ class ManagerCommand(ManagerTransfer):
         
     def __check_EPP_command__(self, command_name, cmdline):
         "Check if parameters are valid."
-        errors = self._epp_cmd.parse_cmd(command_name, cmdline)
+        errors = self._epp_cmd.parse_cmd(command_name, cmdline, self._conf)
         if errors: self._errors.extend(errors)
         return (len(errors) == 0)
 
@@ -79,7 +79,6 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]  ${CYAN}# display raw answer${NORMAL}
         # Příkazy EPP
         # Pokud se příkaz našel, tak se provede pokračuje do stavu 2.
         if self._session[ONLINE] or command_name in ('hello','login'):
-##        if 1: # Tady se vypíná kontrola zalogování:
             # když je klient zalogován, tak se volá EPP příkaz
             # výjimky pro příkazy hello a login
             fnc_name = "create_%s"%command_name
@@ -153,8 +152,8 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]  ${CYAN}# display raw answer${NORMAL}
             filepath = ''
             m = re.match('send\s*(\S+)',command)
             if m: filepath = os.path.expanduser(m.group(1))
-            if not filepath: filepath = '~'
-            if filepath[0] not in '/~': filepath = '~/'+filepath
+            if not filepath: filepath = '~' # implicitně user-home
+            if filepath[0] not in './~': filepath = '~/'+filepath
             filepath = os.path.expanduser(filepath)
             if os.path.isfile(filepath):
                 self.append_note('%s: %s'%(_T('Load file'),filepath))

@@ -11,6 +11,7 @@
 #
 import re
 from gettext import gettext as _T
+import ConfigParser
 import eppdoc
 import data_parser
 
@@ -306,8 +307,22 @@ class Message(eppdoc.Message):
         'Join extended help if possible (for some commands).'
         if command_name in ('create','check','info','transfer'):
             help.append('%s: %s'%(_T('Try'),' '.join(['%s-%s'%(command_name,n) for n in ('contact','domain','nsset')])))
+
+    def __fillup_from_config__(self, config, dct, cols):
+        'Dopnění parametrů EPP přikazu z configu.'
+        if not config: return
+        section = 'epp_%s'%cols[0]
+        for option in cols[1:]: # první jméno je název příkazu
+            try:
+                value = config.get(section,option)
+            except ConfigParser.NoSectionError:
+                pass
+            except ConfigParser.NoOptionError:
+                pass
+            else:
+                dct[option] = value
     
-    def parse_cmd(self, command_name, cmd):
+    def parse_cmd(self, command_name, cmd, config):
         "Parse command line. Returns errors. Save parsed values to self._dct."
         self._dct = dct = {}
         error=[]
@@ -331,6 +346,8 @@ class Message(eppdoc.Message):
             if len(c)>2: check[name][0]=c[2] # (type,max)
             if len(c)>3: check[name][1]=c[3] # (allowed-val,)
             if len(c)>4: check[name][2]=c[4] # 'depends'
+        # nejdříve dojde k dopnění parametrů z configu
+        self.__fillup_from_config__(config, dct, cols)
         ers = data_parser.fill_dict(dct, cols, cmd)
         if ers: error.extend(ers)
         if len(dct) < vals[0]+1: # počet parametrů plus název příkazu
