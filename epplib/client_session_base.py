@@ -106,11 +106,19 @@ class ManagerBase:
     def is_epp_valid(self, message):
         "Check XML EPP by xmllint. OUT: '' - correct; '...' any error occurs."
         if not self._validate: return '' # validace je vypnutá
-        tmpname='tmp.xml'
-        open(tmpname,'w').write(message)
+        tmpname = os.path.expanduser('~/eppdoc_tmp_test_validity.xml')
+        try:
+            open(tmpname,'w').write(message)
+        except IOError, (no, msg):
+            self._validate = 0 # automatické vypnutí validace
+            self.append_note('%s: [%d] %s'%(_T('Temporary file for verify XML EPP validity cannot been created. Reason'),no,msg))
+            self.append_note('%s ${BOLD}validate on${NORMAL}.'%_T('Validator has been disabled. For enable type'))
+            return ''
         # kontrola validity XML
         schema_path = self.__get_config__('session','schema')
-        if not schema_path: return ''
+        if not schema_path:
+            os.unlink(tmpname)
+            return ''
         valid = commands.getoutput('xmllint --schema %s %s'%(schema_path, tmpname))
         os.unlink(tmpname)
         if valid[-9:]=='validates':

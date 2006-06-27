@@ -72,7 +72,7 @@ class Lorry:
         self._body_length = 0
         ok = 0
         try:
-            header = self._conn_ssl.read()
+            header = self._conn_ssl.read(4)
             ok = 1
         except socket.timeout, msg:
             self._errors.append('READ HEADER socket.timeout: %s'%msg)
@@ -93,24 +93,18 @@ class Lorry:
     def __receive__(self):
         "Body part of receiving process."
         data = ''
-        ok = 1
-        while self._body_length and len(data) < self._body_length:
+        if self._body_length:
+            ok = 0
             try:
-                part = self._conn_ssl.read()
+                data = self._conn_ssl.read(self._body_length)
+                ok = 1
             except socket.timeout, msg:
                 self._errors.append('READ socket.timeout: %s'%msg)
-                ok = 0
-                break
             except socket.sslerror, msg:
                 self._errors.append('READ socket.sslerror: %s'%msg)
-                ok = 0
-                break
             except socket.error, (no, msg):
                 self._errors.append('READ socket.error: [%d] %s'%(no, msg))
-                ok = 0
-                break
-            data += part
-        if not ok: self.close()
+            if not ok: self.close()
         return data.strip()
 
     def fetch_errors(self, sep='\n'):

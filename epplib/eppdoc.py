@@ -67,7 +67,7 @@ class Message:
                 xml = f.read()
             else:
                 # Kdyz chybi funkce PrettyPrint()
-                xml = self.dom.toprettyxml('  ', self._cr, self.encoding)
+                xml = self.dom.toprettyxml('', '', self.encoding)
         # hook parametru standalone
         return re.sub('(<?xml .+?)\?>','\\1 standalone="no"?>',xml, re.I)
         return xml

@@ -24,6 +24,8 @@ class ManagerCommand(ManagerTransfer):
         if errors: self._errors.extend(errors)
         return (len(errors) == 0)
 
+    def __get_config__(self,section,option,is_int=None):
+        pass
     #==================================================
     #
     # main creation command functions
