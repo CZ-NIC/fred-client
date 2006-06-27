@@ -3,6 +3,7 @@
 import re, time
 import os, commands
 from gettext import gettext as _T
+import ConfigParser
 import terminal_controler
 
 # Cesta ke schematům pro ověření validity EPP dokumentu
@@ -92,6 +93,62 @@ class ManagerBase:
         """
         self._session[CMD_ID]+=1 
         return ('%s%03d#%s'%(self.defs[PREFIX],self._session[CMD_ID],time.strftime('%y-%m-%dat%H:%M:%S')))
+
+    #---------------------------
+    # config
+    #---------------------------
+    def __get_config__(self,section,option,is_int=None):
+        'Get value from config and catch exceptions.'
+        value=None
+        if not self._conf: return value
+        try:
+            value = self._conf.get(section,option)
+        except ConfigParser.NoSectionError, msg:
+            self.append_error('ConfigError: %s'%msg)
+        except ConfigParser.NoOptionError, msg:
+            self.append_error('ConfigError: %s'%msg)
+        if is_int:
+            try:
+                value = int(value)
+            except ValueError, msg:
+                self.append_error('Config ${BOLD}%s:${NORMAL} %s.'%(option,msg))
+                value = 0
+        return value
+
+    def __save_conf__(self):
+        'Save conf file.'
+        try:
+            fp = open(os.path.expanduser('~/%s'%self._name_conf),'w')
+            self._conf.write(fp)
+            fp.close()
+            self.append_note(_T('Default config file saved. For more see help.'))
+        except IOError, (no, msg):
+            self.append_error('%s: [%d] %s'%(_T('Impossible saving conf file. Reason'),no,msg))
+
+    def load_config(self):
+        "Load config file and init internal variables."
+        self._name_conf = '.epp_client.conf'
+        self._conf = ConfigParser.SafeConfigParser()
+        # TODO: jiný název pro Windows
+        glob_conf = '/etc/%s'%self._name_conf
+        self._conf.read([glob_conf, os.path.expanduser('~/%s'%self._name_conf)])
+        if not self._conf.has_section('session'):
+            self.__create_default_conf__()
+            self.__save_conf__()
+        # set session variables
+        section = 'session'
+        lang = self.__get_config__(section,'lang')
+        if lang in self.defs[LANGS]:
+            self._session[LANG] = lang
+        else:
+            self.append_note('%s: ${BOLD}%s${NORMAL} %s'%(_T('This language code is not allowed'),lang,str(self.defs[LANGS])))
+##        #!!!
+##        for section in self._conf.sections():
+##            print "SECTION:",section
+##            for name in self._conf.options(section):
+##                print name,":",self.__get_config__(section,name)
+##        self.display() #!!!
+    #---------------------------
 
     def set_validate(self, cmd):
         "Set feature of the manager - it will or not validate EPP documents. cmd='validate on/off'"

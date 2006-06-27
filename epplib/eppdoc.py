@@ -111,14 +111,15 @@ class Message:
         names.extend(('epplib','templates'))
         return '/'.join(names)
 
-    def load_xml_doc(self, name, path=''):
+    def load_xml_doc(self, filepath):
         'Load XML file. Used for EPP templates.'
-        if path=='': path = self.make_template_path()
+##        if path=='': path = self.make_template_path()
         try:
-            xml_doc = open('%s/%s.xml'%(path,name)).read()
+##            xml_doc = open('%s/%s.xml'%(path,name)).read()
+            xml_doc = open(filepath).read()
         except IOError, (no,msg):
             # když šablona chybí
-            self.errors.append((2000, '%s.xml'%name, 'IOError: %d, %s'%(no,msg)))
+            self.errors.append((2000, filepath, 'IOError: %d, %s'%(no,msg)))
             xml_doc = None
         return xml_doc
 
@@ -143,7 +144,7 @@ class Message:
         self.append_attribNS(self.dom.documentElement, ns)
 
     def load_EPP_template(self, name, path=''):
-        xml_doc = self.load_xml_doc(name, path)
+        xml_doc = self.load_xml_doc('%s%s.xml'%(path,name))
         if xml_doc:
             self.parse_xml(xml_doc)
         if self.dom:
@@ -610,9 +611,9 @@ def test_dict(filename):
     print edoc['greeting']['svcMenu']['lang']['data']
     print "edoc['greeting']['svcs']['objURI'][2]['data']:",
     print edoc['greeting']['svcs']['objURI'][2]['data']
-    print "('greeting','svcMenu','lang')",get_dict_data(edoc, ('greeting','svcMenu','lang'))
-    print "('greeting','svcs','objURI')",get_dict_data(edoc, ('greeting','svcs','objURI'))
-    print "('greeting','svcs','objURI')",get_dict_attr(edoc, ('greeting','svcs','objURI'),'parametr')
+    print "('greeting','svcMenu','lang')",get_dct_value(edoc, ('greeting','svcMenu','lang'))
+    print "('greeting','svcs','objURI')",get_dct_value(edoc, ('greeting','svcs','objURI'))
+    print "('greeting','svcs','objURI')",get_dct_attr(edoc, ('greeting','svcs','objURI'),'parametr')
     return edoc
 
 def test_class(filename):

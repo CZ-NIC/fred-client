@@ -297,7 +297,7 @@ class ManagerReceiver(ManagerCommand):
         if msgQ:
             self.__append_note_from_dct__(response,('msgQ count id',))
             self.__append_note_from_dct__(msgQ,('qDate','msg'))
-        if data[ANSW_CODE] == '1301':
+        if data[ANSW_CODE] == '1301' and self.__get_config__('session','poll_ack') == 'on':
             # automatická odpověd 'ack'
             xml_doc = self.create_eppdoc('poll ack')
             if xml_doc and self.is_connected():

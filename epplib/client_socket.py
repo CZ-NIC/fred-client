@@ -53,10 +53,7 @@ class Lorry:
             else:
                 self._conn_ssl = socket.ssl(self._conn)
         except socket.sslerror, msg:
-            if type(msg) is not str:
-                self._errors.append(str(msg))
-            else:
-                self._errors.append(msg)
+            self._errors.append(str(msg))
             self._conn.close()
             self._conn = None
         return self._conn
@@ -76,8 +73,8 @@ class Lorry:
             ok = 1
         except socket.timeout, msg:
             self._errors.append('READ HEADER socket.timeout: %s'%msg)
-        except socket.sslerror, (no, msg):
-            self._errors.append('READ HEADER socket.sslerror: [%d] %s'%(no, msg))
+        except socket.sslerror, msg:
+            self._errors.append('READ HEADER socket.sslerror: %s'%str(msg))
         except socket.error, (no, msg):
             self._errors.append('READ HEADER socket.error: [%d] %s'%(no, msg))
         else:
@@ -101,7 +98,7 @@ class Lorry:
             except socket.timeout, msg:
                 self._errors.append('READ socket.timeout: %s'%msg)
             except socket.sslerror, msg:
-                self._errors.append('READ socket.sslerror: %s'%msg)
+                self._errors.append('READ socket.sslerror: %s'%str(msg))
             except socket.error, (no, msg):
                 self._errors.append('READ socket.error: [%d] %s'%(no, msg))
             if not ok: self.close()
@@ -132,8 +129,8 @@ class Lorry:
             ok=1
         except socket.timeout, msg:
             self._errors.append('SEND socket.timeout: %s'%msg)
-        except socket.sslerror, (no, msg):
-            self._errors.append('SEND socket.sslerror: [%d] %s'%(no, msg))
+        except socket.sslerror, msg:
+            self._errors.append('SEND socket.sslerror: %s'%str(msg))
         except socket.error, (no, msg):
             self._errors.append('SEND socket.error: [%d] %s'%(no, msg))
         if not ok: self.close()

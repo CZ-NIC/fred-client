@@ -24,8 +24,6 @@ class ManagerCommand(ManagerTransfer):
         if errors: self._errors.extend(errors)
         return (len(errors) == 0)
 
-    def __get_config__(self,section,option,is_int=None):
-        pass
     #==================================================
     #
     # main creation command functions
@@ -124,14 +122,14 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]  ${CYAN}# display raw answer${NORMAL}
                 else:
                     self.append_error('%s: "${BOLD}%s${NORMAL}"'%(_T('Unknown language code'),lang))
             else:
-                self.append_note('%s: "${BOLD}%s${NORMAL}"'%(_T('Session language is'),self._session[LANG]))
+                self.append_note('%s: "${BOLD}%s${NORMAL}". %s: %s'%(_T('Session language is'),self._session[LANG],_T('Available values'),str(self.defs[LANGS])))
         elif re.match('(raw|src)[-_]',cmd):
             # Zobrazení 'surových' dat - zdrojová data
             # raw-cmd; raw-a[nswer] e[pp]; raw-answ [dict]
             m = re.match('(?:raw|src)[-_](\w+)(?:\s+(\w+))?',cmd)
             if m:
                 self.append_note(SEPARATOR)
-                if m.group(1)[0]=='c' and self._raw_cmd: # c cmd, command
+                if m.group(1)[0]=='c' and self._raw_cmd:
                     # zobrazit EPP příkaz, který se poslal serveru
                     if m.group(2) and m.group(2)[0]=='d': # d dict
                         self.append_note(_T('Interpreted command'),('GREEN','BOLD'))
@@ -140,7 +138,7 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]  ${CYAN}# display raw answer${NORMAL}
                         self.__put_raw_into_note__(edoc.create_data())
                     else: # e epp
                         self.append_note(_T('Command source'),('GREEN','BOLD'))
-                        self.__put_raw_into_note__(self._raw_cmd)
+                        self.append_note(self._raw_cmd,'GREEN')
                 if m.group(1)[0]=='a' and self._dict_answer: # a answer
                     # zobrazit odpověd serveru
                     if m.group(2) and m.group(2)[0]=='d': # d dict
@@ -150,37 +148,27 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]  ${CYAN}# display raw answer${NORMAL}
                         self.append_note(_T('Answer source'),('GREEN','BOLD'))
                         self.__put_raw_into_note__(self._raw_answer)
                 self.display()
-        elif is_test and re.match('ex[-_]',cmd):
-            # TEST Poslání souboru z adresáře examples
-            m = re.match('ex[-_](.+)',command)
-            if m:
-                # odeslat zkušební soubor
-                filename = m.group(1)
-                try:
-                    xml_doc = open('epplib/examples/%s'%filename,'rb').read()
-                except IOError, (no, msg):
-                    self.append_error('IOError: [%d] %s'%(no, msg))
-                self.append_error(self._epp_cmd.get_errors())
+        elif re.match('send',cmd):
+            # Posílání již vytvořených souborů na server
+            filepath = ''
+            m = re.match('send\s*(\S+)',command)
+            if m: filepath = os.path.expanduser(m.group(1))
+            if not filepath: filepath = '~'
+            if filepath[0] not in '/~': filepath = '~/'+filepath
+            filepath = os.path.expanduser(filepath)
+            if os.path.isfile(filepath):
+                self.append_note('%s: %s'%(_T('Load file'),filepath))
+                xml_doc = self._epp_cmd.load_xml_doc(filepath)
+                errors = self._epp_cmd.fetch_errors()
+                if errors: self.append_note(errors)
             else:
-                # vypsat seznam dostupných souborů
-                self.append_note('List of examples:')
-                self.append_note(dircache.listdir('epplib/examples/'))
-                self.display()
-        elif is_test and re.match('err[-_]',cmd):
-            # TEST Testovací příkazy
-            m = re.match('(\S+)',command)
-            key = client_eppdoc_test.get_test_key(m.group(1))
-            if not key:
-                m = re.match('err[-_](.+)',command)
-                if m:
-                    key = m.group(1)
-                    xml_doc = self._epp_cmd.load_xml_doc(key,'epplib/testy')
-                    # TODO: proč to neukládá zdroj?
-##                    self._command_sent = xml_doc
-                else:
-                    self.append_note('List of test:')
-                    self.append_note(dircache.listdir('epplib/testy/'))
-            self.append_error(self._epp_cmd.get_errors())
+                # zobrazit adresář
+                self.append_note('%s: %s'%(_T('Dir list'),filepath))
+                try:
+                    stuff = dircache.listdir(filepath)
+                except OSError, (no, msg):
+                    stuff = 'OSError: [%d] %s'%(no, msg)
+                self.append_note(stuff)
         elif re.match('connect',cmd):
             self.connect() # připojení k serveru
             self.display()
@@ -198,7 +186,7 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]  ${CYAN}# display raw answer${NORMAL}
                 self.append_error(self._raw_cmd,'CYAN')
                 self.append_error(_T('Command was NOT sent to EPP server.'),('RED','BOLD'))
                 xml_doc=''
-        if xml_doc: self._raw_cmd = xml_doc # aby byl k dispozici raw, když se neodešle
+        if xml_doc: self._raw_cmd = xml_doc # zdroj k nahlédnutí
         return xml_doc
 
     #==================================================

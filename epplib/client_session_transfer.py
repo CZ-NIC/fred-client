@@ -18,7 +18,7 @@ class ManagerTransfer(ManagerBase):
         self._lorry = None
         # Typ očekávané odpovědi serveru. Zde si Manager pamatuje jaký příkaz
         # odeslal a podle toho pak zařadí návratové hodnoty.
-        self._command_sent = ''
+        self._command_sent = '' # jméno posledního odeslaného příkazu
         self._raw_cmd = None # XML EPP příkaz odeslaný serveru
 
     def get_command_names(self):

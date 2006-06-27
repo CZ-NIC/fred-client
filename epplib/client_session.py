@@ -24,7 +24,6 @@ import os
 from gettext import gettext as _T
 from client_session_base import *
 from client_session_receiver import ManagerReceiver
-import ConfigParser
 # kontrola na readline
 try:
     import readline
@@ -75,6 +74,7 @@ class Manager(ManagerReceiver):
 lang     cs
 validate on
 schema   ../mod_eppd/schemas/all-1.0.xsd
+poll_ack off
 
 [conect]
 host     curlew
@@ -99,57 +99,6 @@ password 123456789
             m = patt.match(raw)
             if not m: continue
             self._conf.set(section, m.group(1), m.group(2))
-
-    def __save_conf__(self):
-        'Save conf file.'
-        try:
-            fp = open(os.path.expanduser('~/%s'%self._name_conf),'w')
-            self._conf.write(fp)
-            fp.close()
-            self.append_note(_T('Default config file saved. For more see help.'))
-        except IOError, (no, msg):
-            self.append_error('%s: [%d] %s'%(_T('Impossible saving conf file. Reason'),no,msg))
-
-    def __get_config__(self,section,option,is_int=None):
-        'Get value from config and catch exceptions.'
-        value=None
-        try:
-            value = self._conf.get(section,option)
-        except ConfigParser.NoSectionError, msg:
-            self.append_error('ConfigError: %s'%msg)
-        except ConfigParser.NoOptionError, msg:
-            self.append_error('ConfigError: %s'%msg)
-        if is_int:
-            try:
-                value = int(value)
-            except ValueError, msg:
-                self.append_error('Config ${BOLD}%s:${NORMAL} %s.'%(option,msg))
-                value = 0
-        return value
-
-    def load_config(self):
-        "Load config file and init internal variables."
-        self._name_conf = '.epp_client.conf'
-        self._conf = ConfigParser.SafeConfigParser()
-        glob_conf = '/etc/%s'%self._name_conf
-        self._conf.read([glob_conf, os.path.expanduser('~/%s'%self._name_conf)])
-        if not self._conf.has_section('session'):
-            self.__create_default_conf__()
-            self.__save_conf__()
-        # set session variables
-        section = 'session'
-        lang = self.__get_config__(section,'lang')
-        if lang in self.defs[LANGS]:
-            self._session[LANG] = lang
-        else:
-            self.append_note('%s: ${BOLD}%s${NORMAL} %s'%(_T('This language code is not allowed'),lang,str(self.defs[LANGS])))
-##        #!!!
-##        for section in self._conf.sections():
-##            print "SECTION:",section
-##            for name in self._conf.options(section):
-##                print name,":",self.__get_config__(section,name)
-##        self.display() #!!!
-            
         
 if __name__ == '__main__':
     client = Manager()
