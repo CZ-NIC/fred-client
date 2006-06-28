@@ -21,8 +21,8 @@ DEFS_LENGTH = 3
 LANGS,objURI,PREFIX = range(DEFS_LENGTH)
 
 class ManagerBase:
-    """This class hold buffers with error and note messages.
-    Class collect messages and prepare them to outout.
+    """This class holds buffers with error and note messages.
+    Class collects messages and prepares them for output.
     """
     def __init__(self):
         self._notes = [] # upozornění na chybné zadání

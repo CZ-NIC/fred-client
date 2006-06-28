@@ -68,7 +68,7 @@ notice = {'check':_T("""
    object can be created for a specific validity period.
 """),
    'delete':_T("""The EPP "delete" command is used to remove an instance of an existing object."""),
-   'renew':_T("""The EPP "delete" command is used to remove an instance of an existing object."""),
+   'renew':_T("""The EPP "renew" command is used to extend validity of an existing object."""),
    'update':_T("""The EPP "update" command is used to update an instance of an existing object.""")
 }
 

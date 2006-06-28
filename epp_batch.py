@@ -19,9 +19,9 @@ try:
 except UnicodeEncodeError, msg:
     print msg
     print 'Nelze pouzit Python teto verze, protoze nepodporuje Unicode znaky.'
-    print 'Unpossible use this Python version cause of not support Unicode chars.'
+    print 'It is not possible to use this Python version because it does not support Unicode.'
     print '[END]'
-    sys.exit()
+    sys.exit(1)
 
 def main():
     client = epplib.client_session.Manager()

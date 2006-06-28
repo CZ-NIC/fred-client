@@ -57,8 +57,8 @@ def set_history(words):
 
 class Manager(ManagerReceiver):
     """EPP client support.
-    Hold client ID, login, clTRID and other session variables.
-    Parse command line and call EPP builder.
+    Holds client ID, login, clTRID and other session variables.
+    Parses command line and calls EPP builder.
     """
 
     def welcome(self):
