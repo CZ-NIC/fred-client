@@ -199,11 +199,13 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]  ${CYAN}# display raw answer${NORMAL}
             # klient je už zalogován
             self.append_note(_T('You are logged already.'))
         else:
+            if not self.is_connected():
+                if not self.connect(): return # automatické připojení, pokud nebylo navázáno
             # klient se zaloguje
             # prefix 4 ASCII znaků pro clTRID (pro každé sezení nový)
             self.defs[PREFIX] = ''.join([chr(random.randint(97,122)) for n in range(4)])
             if self.__check_EPP_command__('login', cmdline):
-                self._epp_cmd.assemble_login(self.__next_clTRID__(), (eppdoc_nic_cz_version, self.defs[objURI], self._session[LANG]))
+                self._epp_cmd.assemble_login(self.__next_clTRID__(), (eppdoc_nic_cz_version, self.defs[objURI], self.defs[extURI], self._session[LANG]))
 
 if __name__ == '__main__':
     # Test

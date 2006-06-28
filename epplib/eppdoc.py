@@ -449,8 +449,7 @@ def get_dct_attr(dict, names, attr_name, sep='\n'):
     "Returns attribute value of the key name in names list."
     return get_dct_value(dict, names, sep, attr_name)
 
-def get_dct_value(dict, names, sep='\n', attr_name=''):
-    "Returns value of the key name in names list."
+def get_dct_values(dict, names, attr_name=''):
     ret=[]
     if type(names) not in (tuple,list):
         names = (names,)
@@ -462,11 +461,11 @@ def get_dct_value(dict, names, sep='\n', attr_name=''):
             inames = names[i+1:]
             if type(dict[name]) in (list,tuple):
                 for item in dict[name]:
-                    vals = get_dct_value(item, inames, sep, attr_name)
-                    if vals: ret.append(vals)
+                    vals = get_dct_values(item, inames, attr_name)
+                    if vals: ret.extend(vals)
             else:
-                vals = get_dct_value(dict[name], inames, sep, attr_name)
-                if vals: ret.append(vals)
+                vals = get_dct_values(dict[name], inames, attr_name)
+                if vals: ret.extend(vals)
     else:
         if attr_name:
             vals = dict.get('attr','')
@@ -478,7 +477,11 @@ def get_dct_value(dict, names, sep='\n', attr_name=''):
         else:
             vals = dict.get('data','')
             if vals: ret.append(vals)
-    return sep.join(ret)
+    return ret
+
+def get_dct_value(dict, names, sep='\n', attr_name=''):
+    "Returns value of the key name in names list."
+    return sep.join(get_dct_values(dict, names, attr_name))
 
 def __pfd__(dict,color=0,indent=0):
     "Prepare dictionary data for display."

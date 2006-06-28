@@ -17,8 +17,8 @@ colored_output = terminal_controler.TerminalController()
 # názvy sloupců pro data sestavené při spojení se serverem
 ONLINE,CMD_ID,LANG,POLL_AUTOACK = range(4)
 # názvy sloupců pro defaultní hodnoty
-DEFS_LENGTH = 3
-LANGS,objURI,PREFIX = range(DEFS_LENGTH)
+DEFS_LENGTH = 4
+LANGS,objURI,extURI,PREFIX = range(DEFS_LENGTH)
 
 class ManagerBase:
     """This class holds buffers with error and note messages.
@@ -42,7 +42,8 @@ class ManagerBase:
         # defaults
         self.defs = ['']*DEFS_LENGTH
         self.defs[LANGS] = ('en','cs') # seznam dostupných jazyků
-        self.defs[objURI] = 'urn:ietf:params:xml:ns:obj1'
+        self.defs[objURI] = []
+        self.defs[extURI] = []
         self.defs[PREFIX] = '' # pro každé sezení nový prefix
         self._conf = None # <ConfigParser object>
 

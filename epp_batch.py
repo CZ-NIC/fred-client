@@ -9,7 +9,6 @@
 # terminál musí podporovat zobrazování unicode:
 #    locale musí být nastaveno na LANG=cs_CZ.UTF-8 jinak tam čeština nebude moc fungovat
 import sys, re
-import pprint # TEST ONLY
 from gettext import gettext as _T
 import epplib.client_session
 
@@ -18,8 +17,7 @@ try:
     u'žščřřťňě'.encode(sys.stdout.encoding)
 except UnicodeEncodeError, msg:
     print msg
-    print 'Nelze pouzit Python teto verze, protoze nepodporuje Unicode znaky.'
-    print 'It is not possible to use this Python version because it does not support Unicode.'
+    print _T('Your terminal does not support UTF-8 encoding. Set locale to LANG=cs_CZ.UTF-8.')
     print '[END]'
     sys.exit(1)
 
@@ -34,10 +32,9 @@ def main():
         # automatické připojení k serveru
         if not client.connect():
             # když se spojení nepodařilo navázat
-            print '[batch] NOTES:\n',client.fetch_notes()
-            print '[batch] ERRORS:\n',client.fetch_errors()
+            client.display() # display errors or notes
             return
-        print client.fetch_notes() # zobrazit poznámky
+        client.display() # display errors or notes
     else:
         print _T('For connection to the EPP server type "connect" or directly "login".')
     #---------------------------------------------------
@@ -49,7 +46,6 @@ def main():
             break
         epp_doc = client.create_eppdoc(command, epplib.client_session.TEST)
         if epp_doc:
-            if re.search('<login>',epp_doc): client.connect() # automatické připojení, pokud nebylo navázáno
             if client.is_connected():
                 client.send(epp_doc)          # odeslání dokumentu na server
                 answer = client.receive()     # příjem odpovědi

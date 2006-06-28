@@ -458,7 +458,7 @@ class Message(eppdoc.Message):
         """Client EPP command: login
         *params: ('clTRID'
                 ,['username', 'password'[,'new-pass']]
-                ,('version', 'objURI', 'language'))
+                ,('version', ['objURI'] or None,['extURI'] or None, 'language'))
         """
         cols = [('epp', 'command')
             ,('command', 'login')
@@ -469,11 +469,17 @@ class Message(eppdoc.Message):
         cols.extend([
              ('login', 'options')
             ,('options', 'version', params[1][0])
-            ,('options', 'lang', params[1][2])
+            ,('options', 'lang', params[1][3])
             ,('login', 'svcs')
-            ,('svcs', 'objURI', params[1][1])
-            ,('command', 'clTRID', params[0])
         ])
+        if params[1][1]:
+            for uri in params[1][1]:
+                cols.append(('svcs', 'objURI', uri))
+        if params[1][2]:
+            cols.append(('svcs', 'svcExtension'))
+            for uri in params[1][2]:
+                cols.append(('svcExtension', 'extURI', uri))
+        cols.append(('command', 'clTRID', params[0]))
         self.__assemble_cmd__(cols)
 
     def assemble_logout(self, *params):

@@ -154,9 +154,10 @@ class ManagerReceiver(ManagerCommand):
         if type(self.defs[LANGS]) in (str,unicode):
             self.defs[LANGS] = (self.defs[LANGS],)
         self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('Available language versions'),', '.join(self.defs[LANGS])))
-        self.append_note('%s objURI:\n\t%s'%(_T('Available'),eppdoc.get_dct_value(greeting, ('svcMenu','objURI'),'\n\t')))
-        extURI = eppdoc.get_dct_value(greeting, ('svcMenu','svcExtension','extURI'),'\n\t')
-        if extURI: self.append_note('${BOLD}extURI${NORMAL}: %s'%extURI)
+        self.defs[objURI] = eppdoc.get_dct_values(greeting, ('svcMenu','objURI'))
+        self.defs[extURI] = eppdoc.get_dct_values(greeting, ('svcMenu','svcExtension','extURI'))
+        if self.defs[objURI]: self.append_note('%s objURI:\n\t%s'%(_T('Available'),'\n\t'.join(self.defs[objURI])))
+        if self.defs[extURI]: self.append_note('${BOLD}extURI${NORMAL}: %s'%'\n\t'.join(self.defs[extURI]))
 
     def answer_response_logout(self, data):
         "data=(response,result,code,msg)"
