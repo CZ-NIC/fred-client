@@ -163,7 +163,7 @@ class Message:
         master = self.dom.getElementsByTagName(master_name)
         if type(master) == xml.dom.minicompat.NodeList:
             # Pokud je to pole, tak se bere vždy poslední uzel.
-            master = master[-1]
+            if len(master): master = master[-1]
         if master:
             node=self.new_node(master, name, value, attribs)
         else:

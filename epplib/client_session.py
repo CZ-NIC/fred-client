@@ -63,48 +63,18 @@ class Manager(ManagerReceiver):
 
     def welcome(self):
         "Welcome message"
-        welcome = '|   %s   |'%_T('Welcome to the EPP client')
-        sep = '+%s+'%('-'*(len(welcome)-2))
-        return '%s\n%s\n%s\n%s'%(sep,welcome,sep,_T('For help type "help" (or "h", "?")'))
+        welcome = '║   %s   ║'%_T('Welcome to the EPP client')
+        sp = '║   %s   ║'%(' '*(len(welcome)-2 - 10))
+        sep = '═'*(len(welcome)-2 - 4)
+        return '╔%s╗\n%s\n%s\n%s\n╚%s╝\n%s'%(sep,sp,welcome,sp,sep,_T('For help type "help" (or "h", "?")'))
 
-    def __create_default_conf__(self):
-        'Create default config file.'
-        conf = """
-[session]
-lang     cs
-validate on
-schema   ../mod_eppd/schemas/all-1.0.xsd
-poll_ack off
-
-[conect]
-host     curlew
-port     700
-ssl_key  client.key
-ssl_cert client.crt
-
-[epp_login]
-username REG-LRR
-password 123456789
-        """
-        patt = re.compile('(\w+)\s*=?\s*(.*)')
-        patt_sec = re.compile('\[(\w+)\]')
-        section=''
-        for raw in conf.split('\n'):
-            m = patt_sec.match(raw)
-            if m:
-                section = m.group(1)
-                self._conf.add_section(section)
-                continue
-            if not section: continue
-            m = patt.match(raw)
-            if not m: continue
-            self._conf.set(section, m.group(1), m.group(2))
+    # TODO: tady bude API a přesune se to do __init__
         
 if __name__ == '__main__':
     client = Manager()
     set_history(client.get_command_names())
-##    print "TEST ONLY: Session set internal login (not on server)."
-##    client._session[ONLINE] = 1
+    print "TEST only COMMANDS: No communications with server!"
+    client._session[ONLINE] = 1
     while 1:
         command = raw_input("> (? help, q quit): ")
         if command in ('q','quit','exit','konec'): break

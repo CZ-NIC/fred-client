@@ -46,6 +46,10 @@ class ManagerBase:
         self.defs[extURI] = []
         self.defs[PREFIX] = '' # pro každé sezení nový prefix
         self._conf = None # <ConfigParser object>
+        self._host = None
+
+    def set_host(self,host):
+        self._host = host
 
     def get_errors(self, sep='\n'):
         return sep.join(self._errors)
@@ -98,6 +102,19 @@ class ManagerBase:
     #---------------------------
     # config
     #---------------------------
+    def __create_default_conf__(self):
+        'Create default config file.'
+        # aktuální adresář? filepath
+        ok = 0
+        filepath = '%s/%s'%(os.path.dirname(__file__),'default-config.txt')
+        try:
+            self._conf.read(filepath)
+            ok = 1
+        except ConfigParser.ParsingError, msg:
+            self.append_error(msg)
+        if ok: ok = self._conf.has_section('session')
+        return ok
+
     def __get_config__(self,section,option,is_int=None):
         'Get value from config and catch exceptions.'
         value=None
@@ -127,14 +144,17 @@ class ManagerBase:
             self.append_error('%s: [%d] %s'%(_T('Impossible saving conf file. Reason'),no,msg))
 
     def load_config(self):
-        "Load config file and init internal variables."
+        "Load config file and init internal variables. Returns 0 if fatal error occured."
         self._name_conf = '.epp_client.conf'
         self._conf = ConfigParser.SafeConfigParser()
         # TODO: jiný název pro Windows
         glob_conf = '/etc/%s'%self._name_conf
         self._conf.read([glob_conf, os.path.expanduser('~/%s'%self._name_conf)])
         if not self._conf.has_section('session'):
-            self.__create_default_conf__()
+            if not self.__create_default_conf__():
+                self.append_error(_T('Fatal error: Create default config failed.'))
+                self.display() # display errors or notes
+                return 0 # fatal error
             self.__save_conf__()
         # set session variables
         section = 'session'
@@ -143,6 +163,7 @@ class ManagerBase:
             self._session[LANG] = lang
         else:
             self.append_note('%s: ${BOLD}%s${NORMAL} %s'%(_T('This language code is not allowed'),lang,str(self.defs[LANGS])))
+        return 1 # OK
 ##        #!!!
 ##        for section in self._conf.sections():
 ##            print "SECTION:",section

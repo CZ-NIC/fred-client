@@ -21,12 +21,13 @@ except UnicodeEncodeError, msg:
     print '[END]'
     sys.exit(1)
 
-def main():
+def main(host):
     client = epplib.client_session.Manager()
     epplib.client_session.set_history(client.get_command_names())
     print client.welcome()
-    client.load_config()
+    if not client.load_config(): return
     client.display() # display errors or notes
+    if host: client.set_host(host)
     #---------------------------------------------------
     if 0:
         # automatické připojení k serveru
@@ -59,4 +60,6 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    host = None
+    if len(sys.argv) > 1: host = sys.argv[1]
+    main(host)

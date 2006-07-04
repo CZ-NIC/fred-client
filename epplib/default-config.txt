@@ -1,0 +1,15 @@
+[conect]
+host = epp-test.ccreg.nic.cz
+port = 700
+ssl_key = client.key
+ssl_cert = client.crt
+
+[session]
+lang = cs
+validate = on
+schema = ../mod_eppd/schemas/all-1.0.xsd
+poll_ack = off
+
+[epp_login]
+username = REG-LRR
+password = 123456789
