@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+  <schema targetNamespace="http://www.nic.cz/xml/epp/nsset-1.0"
+          xmlns:nsset="http://www.nic.cz/xml/epp/nsset-1.0"
+          xmlns:epp="urn:ietf:params:xml:ns:epp-1.0"
+          xmlns:eppcom="urn:ietf:params:xml:ns:eppcom-1.0"
+          xmlns="http://www.w3.org/2001/XMLSchema"
+          elementFormDefault="qualified">
+
+  <!--
+  Import common element types.
+  -->
+    <import namespace="urn:ietf:params:xml:ns:eppcom-1.0"
+            schemaLocation="eppcom-1.0.xsd"/>
+    <import namespace="urn:ietf:params:xml:ns:epp-1.0"
+            schemaLocation="epp-1.0.xsd"/>
+
+  <annotation>
+    <documentation>
+      Extensible Provisioning Protocol v1.0
+      nsset provisioning schema.
+    </documentation>
+  </annotation>
+
+  <!--
+  Child elements found in EPP commands.
+  -->
+    <element name="check" type="nsset:mNameType"/>
+    <element name="create" type="nsset:crType"/>
+    <element name="delete" type="nsset:sIDType"/>
+    <element name="info" type="nsset:sIDType"/>
+    <element name="update" type="nsset:updateType"/>
+    <element name="transfer" type="nsset:transferType"/>
+
+  <!--
+  Child elements of the <transfer> command.
+  -->
+    <complexType name="transferType">
+      <sequence>
+        <element name="id" type="eppcom:labelType"/>
+        <element name="authInfo" type="nsset:authInfoType"
+         minOccurs="0"/>
+      </sequence>
+    </complexType>
+
+  <!--
+  Child elements of the <update> command.
+  -->
+    <complexType name="updateType">
+      <sequence>
+        <element name="id" type="nsset:nssT"/>
+        <element name="add" type="nsset:addType"
+         minOccurs="0"/>
+        <element name="rem" type="nsset:remType"
+         minOccurs="0"/>
+        <element name="chg" type="nsset:chgType"
+         minOccurs="0"/>
+      </sequence>
+    </complexType>
+
+    <complexType name="addType">
+      <sequence>
+        <element name="ns" type="nsset:nsT"
+		minOccurs="0" maxOccurs="9"/>
+        <element name="tech" type="eppcom:clIDType"
+         minOccurs="0" maxOccurs="unbounded"/>
+        <element name="status" type="nsset:statusType"
+         minOccurs="0" maxOccurs="6"/>
+      </sequence>
+    </complexType>
+
+    <complexType name="remType">
+      <sequence>
+        <element name="name" type="eppcom:labelType"
+		minOccurs="0" maxOccurs="9"/>
+        <element name="tech" type="eppcom:clIDType"
+         minOccurs="0" maxOccurs="unbounded"/>
+        <element name="status" type="nsset:statusType"
+         minOccurs="0" maxOccurs="6"/>
+      </sequence>
+    </complexType>
+
+    <complexType name="chgType">
+      <sequence>
+        <element name="authInfo" type="nsset:authInfoChgType"
+         minOccurs="0"/>
+      </sequence>
+    </complexType>
+
+  <!--
+  Allow the authInfo value to be nullified by including an
+  empty element within the choice.
+  -->
+    <complexType name="authInfoChgType">
+      <choice>
+        <element name="pw" type="eppcom:pwAuthInfoType"/>
+        <element name="ext" type="eppcom:extAuthInfoType"/>
+        <element name="null"/>
+      </choice>
+    </complexType>
+
+  <!--
+  Child elements of the <create> command.
+  -->
+    <complexType name="crType">
+      <sequence>
+        <element name="id" type="nsset:nssT"/>
+        <element name="ns" type="nsset:nsT"
+	minOccurs="0" maxOccurs="9"/>
+        <element name="tech" type="eppcom:clIDType"
+         minOccurs="0" maxOccurs="unbounded"/>
+        <element name="authInfo" type="nsset:authInfoType"
+         minOccurs="0"/>
+      </sequence>
+    </complexType>
+
+    <simpleType name="nssT">
+      <restriction base="normalizedString">
+        <minLength value="1"/>
+        <maxLength value="100"/>
+      </restriction>
+    </simpleType>
+
+    <complexType name="nsT">
+      <sequence>
+        <element name="name" type="eppcom:labelType"/>
+        <element name="addr" type="nsset:addrStringType"
+         minOccurs="0" maxOccurs="unbounded"/>
+      </sequence>
+    </complexType>
+
+    <simpleType name="addrStringType">
+      <restriction base="token">
+        <minLength value="3"/>
+        <maxLength value="45"/>
+      </restriction>
+    </simpleType>
+
+  <!--
+  Status is a combination of attributes and an optional human-readable
+  message that may be expressed in languages other than English.
+  -->
+    <complexType name="statusType">
+      <simpleContent>
+        <extension base="normalizedString">
+          <attribute name="s" type="nsset:statusValueType"
+           use="required"/>
+          <attribute name="lang" type="language"
+           default="en"/>
+        </extension>
+      </simpleContent>
+    </complexType>
+
+    <simpleType name="statusValueType">
+      <restriction base="token">
+        <enumeration value="clientDeleteProhibited"/>
+        <enumeration value="clientTransferProhibited"/>
+        <enumeration value="clientUpdateProhibited"/>
+        <enumeration value="ok"/>
+	<!--
+        <enumeration value="inactive"/>
+        <enumeration value="clientHold"/>
+        <enumeration value="pendingCreate"/>
+        <enumeration value="pendingDelete"/>
+        <enumeration value="pendingTransfer"/>
+        <enumeration value="pendingUpdate"/>
+        <enumeration value="serverHold"/>
+	-->
+        <enumeration value="serverDeleteProhibited"/>
+        <enumeration value="serverTransferProhibited"/>
+        <enumeration value="serverUpdateProhibited"/>
+      </restriction>
+    </simpleType>
+
+  <!--
+  Child elements of commands that require only an identifier.
+  -->
+    <complexType name="sIDType">
+      <sequence>
+        <element name="id" type="nsset:nssT"/>
+      </sequence>
+    </complexType>
+
+  <!--
+  Child elements of <check> command.
+  -->
+    <complexType name="mNameType">
+      <sequence>
+        <element name="id" type="nsset:nssT"
+         maxOccurs="unbounded"/>
+      </sequence>
+    </complexType>
+
+  <!--
+  Child response elements.
+  -->
+    <element name="chkData" type="nsset:chkDataType"/>
+    <element name="creData" type="nsset:creDataType"/>
+    <element name="infData" type="nsset:infDataType"/>
+
+  <!--
+  <check> response elements.
+  -->
+    <complexType name="chkDataType">
+      <sequence>
+        <element name="cd" type="nsset:checkType"
+         maxOccurs="unbounded"/>
+      </sequence>
+    </complexType>
+
+    <complexType name="checkType">
+      <sequence>
+        <element name="id" type="nsset:checkNameType"/>
+        <element name="reason" type="eppcom:reasonType"
+         minOccurs="0"/>
+      </sequence>
+    </complexType>
+
+    <complexType name="checkNameType">
+      <simpleContent>
+        <extension base="nsset:nssT">
+          <attribute name="avail" type="boolean" use="required"/>
+        </extension>
+      </simpleContent>
+    </complexType>
+
+  <!--
+  <create> response elements.
+  -->
+    <complexType name="creDataType">
+      <sequence>
+        <element name="id" type="nsset:nssT"/>
+        <element name="crDate" type="dateTime"/>
+      </sequence>
+    </complexType>
+
+    <complexType name="infDataType">
+      <sequence>
+        <element name="id" type="nsset:nssT"/>
+        <element name="roid" type="eppcom:roidType"/>
+        <element name="status" type="nsset:statusType"
+         minOccurs="0" maxOccurs="7"/>
+        <element name="clID" type="eppcom:clIDType"/>
+        <element name="crID" type="eppcom:clIDType"
+         minOccurs="0"/>
+        <element name="crDate" type="dateTime"
+         minOccurs="0"/>
+        <element name="upID" type="eppcom:clIDType"
+         minOccurs="0"/>
+        <element name="upDate" type="dateTime"
+         minOccurs="0"/>
+        <element name="trDate" type="dateTime"
+         minOccurs="0"/>
+        <element name="authInfo" type="nsset:authInfoType"
+         minOccurs="0"/>
+        <element name="ns" type="nsset:nsT" minOccurs="0" maxOccurs="9"/>
+        <element name="tech" type="eppcom:clIDType"
+         minOccurs="0" maxOccurs="unbounded"/>
+      </sequence>
+    </complexType>
+
+    <complexType name="authInfoType">
+      <choice>
+        <element name="pw" type="eppcom:pwAuthInfoType"/>
+        <element name="ext" type="eppcom:extAuthInfoType"/>
+      </choice>
+    </complexType>
+
+  <!--
+  End of schema.
+  -->
+  </schema>
+

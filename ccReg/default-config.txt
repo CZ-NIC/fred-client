@@ -1,0 +1,11 @@
+[conect]
+host = epp-test.ccreg.nic.cz
+port = 700
+ssl_key = client.key
+ssl_cert = client.crt
+
+[session]
+lang = cs
+validate = on
+schema = all-1.0.xsd
+poll_ack = off

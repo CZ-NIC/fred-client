@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<schema targetNamespace="http://www.nic.cz/xml/epp/enumval-1.0"
+        xmlns:enumval="http://www.nic.cz/xml/epp/enumval-1.0"
+        xmlns="http://www.w3.org/2001/XMLSchema"
+        elementFormDefault="qualified">
+
+  <annotation>
+    <documentation>
+      Extensible Provisioning Protocol v1.0
+      domain name extension schema for provisioning
+      enum number validation schema.
+    </documentation>
+  </annotation>
+
+<!--
+Child elements found in EPP commands.
+-->
+  <element name="create" type="enumval:exValType"/>
+  <element name="update" type="enumval:updateType"/>
+  <element name="renew" type="enumval:exValType"/>
+
+<!--
+Child elements of the <create> command.
+-->
+  <complexType name="exValType">
+    <sequence>
+      <element name="valExDate" type="date"/>
+    </sequence>
+  </complexType>
+
+<!--
+Child elements of the <update> command.
+-->
+  <complexType name="updateType">
+    <sequence>
+      <element name="chg" type="enumval:exValType"/>
+    </sequence>
+  </complexType>
+
+<!--
+Child response elements.
+-->
+  <element name="infData" type="enumval:exValType"/>
+
+<!--
+End of schema.
+-->
+</schema>

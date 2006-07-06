@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+  <schema targetNamespace="http://www.nic.cz/xml/epp/all-1.0"
+          xmlns:all="http://www.nic.cz/xml/epp/all-1.0"
+          xmlns="http://www.w3.org/2001/XMLSchema"
+          elementFormDefault="qualified">
+
+  <!--
+  Import all.
+  -->
+    <import namespace="urn:ietf:params:xml:ns:eppcom-1.0"
+	    schemaLocation="eppcom-1.0.xsd"/>
+    <import namespace="urn:ietf:params:xml:ns:epp-1.0"
+	    schemaLocation="epp-1.0.xsd"/>
+    <import namespace="http://www.nic.cz/xml/epp/contact-1.0"
+	    schemaLocation="contact-1.0.xsd"/>
+    <import namespace="http://www.nic.cz/xml/epp/domain-1.0"
+	    schemaLocation="domain-1.0.xsd"/>
+    <import namespace="http://www.nic.cz/xml/epp/nsset-1.0"
+	    schemaLocation="nsset-1.0.xsd"/>
+    <!--
+    EPP extensions
+    -->
+    <import namespace="urn:ietf:params:xml:ns:secDNS-1.0"
+	    schemaLocation="secDNS-1.0.xsd"/>
+    <import namespace="http://www.nic.cz/xml/epp/enumval-1.0"
+	    schemaLocation="enumval-1.0.xsd"/>
+
+    <annotation>
+      <documentation>
+        Extensible Provisioning Protocol v1.0
+        all schema's grouped together
+      </documentation>
+    </annotation>
+
+
+  </schema>
+
