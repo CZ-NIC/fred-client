@@ -24,24 +24,23 @@ class ManagerTransfer(ManagerBase):
     def get_command_names(self):
         return self._available_commands
 
+    def reset_round(self):
+        'Prepare for next round. Reset internal dict with communication values.'
+        self._errors = []
+        self._notes = []
+        self._epp_cmd.reset()
+        self._epp_response.reset()
+
     #---------------------------------
     # funkce pro nastavení session
     #---------------------------------
-    def __logout_session__(self):
-        "Set internal session variables in the ID session."
-        if self._session[ONLINE]:
-            # odlogování
-            self._session[ONLINE] = 0 # reset pořadí příkazů
-            self._lorry.close() # zrušení konexe na server
-
     def __check_is_connected__(self):
         "Control if you are still connected."
         if self._lorry and not self._lorry.is_connected():
             # spojení spadlo
             if self._session[ONLINE]: self.append_note('--- %s ---'%_T('Connection broken'))
-            self.__logout_session__()
+            self.close()
 
-            
     def __command_sent__(self, message):
         "Save EPP command type for recognize server answer."
         # manager si zapamatuje jakého typu příkaz byl a podle toho 

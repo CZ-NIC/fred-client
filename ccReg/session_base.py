@@ -6,11 +6,6 @@ from gettext import gettext as _T
 import ConfigParser
 import terminal_controler
 
-# Cesta ke schematům pro ověření validity EPP dokumentu
-# vzažena relativně k rootu, tedy adresáři, ve kterém je umístěn
-# adresář epplib
-EPP_SCHEMA_PATH = 'schemas/all-1.0.xsd'
-
 # Colored output
 colored_output = terminal_controler.TerminalController()
 
@@ -29,7 +24,6 @@ class ManagerBase:
         self._errors = [] # chybová hlášení při přenosu, parsování
         self._sep = '\n' # oddělovač jednotlivých zpráv
         self._validate = 1 # automatické zapnutí validace EPP XML dokumentů
-        self._validate_schema_path = EPP_SCHEMA_PATH
         #-----------------------------------------
         # Session data:
         #-----------------------------------------
@@ -207,8 +201,10 @@ class ManagerBase:
         else:
             self.append_note('%s: ${BOLD}%s${NORMAL} %s'%(_T('This language code is not allowed'),lang,str(self.defs[LANGS])))
         return 1 # OK
-    #---------------------------
 
+    #---------------------------
+    # validation
+    #---------------------------
     def set_validate(self, cmd):
         "Set feature of the manager - it will or not validate EPP documents. cmd='validate on/off'"
         if re.match('validate$',cmd):
@@ -219,7 +215,23 @@ class ManagerBase:
             self._validate = (1,0)[re.match('validate\s+on',cmd, re.I)==None]
             self.append_note('%s ${BOLD}%s${NORMAL}'%(_T('Validation is set'),('OFF','ON')[self._validate]))
 
-    # TODO: přidat funkci check_validator()
+    def check_validator(self):
+        'Check if exists external validator (xmllint).'
+        ok = 0
+        try:
+            pipes = os.popen3('xmllint')
+        except IOError, msg:
+            self.append_note(str(msg),('RED','BOLD'))
+        standr = pipes[1].read()
+        errors = pipes[2].read()
+        map(lambda f: f.close(), pipes)
+        if len(standr) and not len(errors):
+            ok = 1 # OK, support is enabled.
+        else:
+            self.append_note(errors.encode(sys.stdout.encoding))
+            self._validate = 0 # validator is automaticly switched off
+            self.append_note('%s ${BOLD}validate on${NORMAL}.'%_T('Validator has been disabled. For enable type'))
+        return ok
     
     def is_epp_valid(self, message):
         "Check XML EPP by xmllint. OUT: '' - correct; '...' any error occurs."
@@ -245,32 +257,17 @@ class ManagerBase:
             pipes = os.popen3('xmllint --schema "%s" "%s"'%(schema_path, tmpname))
         except IOError, msg:
             self.append_note(str(msg),('RED','BOLD'))
-        #xmldoc = pipes[1].read() # unfortunately this doesnt work: ('...'-OK, ''-invalid)
+        xmldoc = pipes[1].read() # unfortunately this doesnt work: ('...'-OK, ''-invalid)
         errors = pipes[2].read()
-        for p in pipes:
-            p.close()
+        map(lambda f: f.close(), pipes)
         os.unlink(tmpname)
-        if re.search(' validates$', errors):
-            errors = ''
+        if re.search(' validates$', errors) or xmldoc == '':
+            errors = '' # it seems be OK...
         else:
-            # když příkaz chybí na linuxu
-            # když příkaz chybí ve Windows XP
-            # Když nebyla nalezena schemata
-            if re.search('command not found',errors) \
-                or re.search(u'není názvem vnitřního ani vnějšího příkazu'.encode('cp852'),errors) \
-                or re.search('Schemas parser error',errors):
-                # sh: xmllint: command not found
-                # warning: failed to load external entity "../mod_eppd/schemas/all-1.0.xsd"
-                # Schemas parser error : Failed to locate the main schema resource at '../mod_eppd/schemas/all-1.0.xsd'.
-                failed = re.search('warning: failed to load external entity "([^"]+)"',errors)
-                if failed:
-                    self.append_note('%s ${BOLD}%s${NORMAL}'%(_T('Error: Failed to load EPP schema'),failed.group(1)))
-                else:
-                    self.append_note('%s: %s'%(_T('XML validator is not available'),errors))
-                self._validate = 0 # automatické vypnutí validace
+            if re.search('Schemas parser error',errors):
+                # schema missing!
                 self.append_note('%s ${BOLD}validate on${NORMAL}.'%_T('Validator has been disabled. For enable type'))
-                # pokud není validátor k dispozici, tak se to nepovažuje za chybu, 
-                # na serveru se data stejně ověřují
+                self._validate = 0 # automatické vypnutí validace
                 errors=''
         return errors
 

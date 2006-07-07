@@ -6,19 +6,24 @@ import ccReg
 try:
     epp = new ccReg.Client()
     epp.login("reg-lrr","123456789")
-    response = epp.check_contact(["handle1","handle2"])
-    if response['handle1']:
+    ret = epp.check_contact(["handle1","handle2"])
+    #ret = {"handle1":"0","handle2":"1"}
+    #if ret.get("handle1",0): ...
+    #o = epp.get_ro()
+    #if o.response.result.attr[0][1]: ...
+    if ret['response']['resData']['contact:chkData']['contact:cd'][0]['contact:id']['attr'][0][1]:
         epp.create_contact("handle1", "My Name", "email@email.net", "City", "CZ")
     else:
         response = epp.info_contact("handle1")
         epp.show(response)
     epp.logout()
-except error:
-    print error.msg
+except ccRegError, msg:
+    print msg
 """
 
 import cmd_history
 from session_receiver import ManagerReceiver
+from session_receiver import ccRegError
 
 class Client:
     """EPP client API. Process whole EPP communication with server.
@@ -48,6 +53,13 @@ class Client:
     def __init__(self):
         self._epp = ManagerReceiver()
 
+    def connect(self):
+        'Connect to the server.'
+        self._epp.connect()
+    def close(self):
+        'Close connection with server.'
+        self._epp.close()
+        
     def check_contact(self, name):
         """Usage: check-contact name
     
@@ -500,6 +512,21 @@ class Client:
         self._epp.__put_raw_into_note__(dct_response)
         self._epp.display()
 
+    def display(self):
+        'Display interal results.'
+        self._epp.display()
+
+    def src(self):
+        'Display EPP sources of the command and answer.'
+        return '%s:\n%s\n%s\n%s:\n%s'%('Command',self._epp._raw_cmd,'-'*60,'Answer',self._epp._raw_answer)
+
+    def set_validate(self, mode):
+        'Set process validate ON/OFF. mode: 0/1.'
+        self._epp._validate = mode
+
+    def get_ro(self):
+        'Returns Server Response parsed into Object (class) with values.'
+        return self._epp.get_ro()
 
 class ClientSession(ManagerReceiver):
     "Use for console or batch applications."

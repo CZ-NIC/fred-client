@@ -18,6 +18,11 @@ class ManagerReceiver(ManagerCommand):
         self._raw_answer = None # XML EPP odpověd serveru
         self._dict_answer = None # dict - slovník vytvořený z XML EPP odpovědi
 
+    def __reset_src__(self):
+        'Reset buffers of sources.'
+        self._raw_answer = None # XML EPP odpověd serveru
+        self._dict_answer = None # dict - slovník vytvořený z XML EPP odpovědi
+
     #==================================================
     #
     # funkce pro uložení hodnot z odpovědi od serveru
@@ -91,11 +96,12 @@ class ManagerReceiver(ManagerCommand):
         'Main function. Process incomming EPP messages. This funcion is called by listen socket.'
         # Hlavní funkce pro zpracování odpovědi. Rozparsuje XML, provede validaci a pak pokračuje
         # funkcí answer_response().
+        self.__reset_src__()
         if epp_server_answer:
             self._raw_answer = epp_server_answer
             # create XML DOM tree:
             self._epp_response.reset()
-            self._epp_response.parse_xml(epp_server_answer)
+            self._epp_response.parse_xml(eppdoc.correct_unbound_prefix(epp_server_answer))
             if self._epp_response.is_error():
                 # při parsování se vyskytly chyby
                 self.append_error(self._epp_response.get_errors())
@@ -119,9 +125,12 @@ class ManagerReceiver(ManagerCommand):
                     self.__put_raw_into_note__(self._dict_answer)
         else:
             self.append_note(_T("No response. EPP Server doesn't answer."))
-            # self.__logout_session__() tady to asi nemusí nutně znamenat, že to spadlo
         self.display() # zobrazení všech hlášení vygenerovaných během zpracování
 
+    def get_ro(self):
+        'Returns Response Object (class with values).'
+        return self._epp_response.create_data(True)
+        
     #==================================================
     #
     # Zpracování jednotlivých příchozích zpráv
@@ -146,7 +155,7 @@ class ManagerReceiver(ManagerCommand):
         "data=(response,result,code,msg)"
         self.append_note(data[ANSW_MSG])
         self.append_note(_T('You are loged out of the private area.'))
-        self.__logout_session__()
+        self.close()
 
     def answer_response_login(self, data):
         "data=(response,result,code,msg)"
@@ -306,26 +315,35 @@ class ManagerReceiver(ManagerCommand):
         """Process command from API. Main API function.
         Create EPP command - send to server - receive answer - parse answer to dict - returns dict.
         """
-        # TODO: API exception
+        self.reset_round()
         dct_data = adjust_dict(dct_raw)
         self.create_command_with_params(command_name, dct_data)
+        if len(self._errors): raise ccRegError(self.fetch_errors())
         epp_doc = self._epp_cmd.get_xml()
         if epp_doc:
-            # TODO: check valid (xmllint)
+            errors = self.is_epp_valid(epp_doc)
+            if len(errors): raise ccRegError(errors)
             if self.is_connected():
                 self.send(epp_doc)                 # send to server
+                if len(self._errors): raise ccRegError(self.fetch_errors())
                 answer = self.receive()           # receive answer
                 self.process_answer(answer) # process answer
+                if len(self._errors): raise ccRegError(self.fetch_errors())
             else:
-                print _T("You are not connected! For connection type command: connect and then login")
-        self.display() # display errors or notes
+                raise ccRegError(_T("You are not connected! For connection type command: connect and then login"))
+        else:
+            raise ccRegError(_T("XML EPP document wasnot created."))
         return self._dict_answer
 
+class ccRegError(StandardError):
+    'ccReg EPP errors.'
+        
 def adjust_dict(dct_data):
+    'Remove None and put items into list.'
     dct={}
     if type(dct_data) == dict:
         for k in dct_data:
-            if dct_data[k] == None: continue
+            if dct_data[k] is None: continue
             if type(dct_data[k]) in (str,unicode):
                 dct[k] = [dct_data[k]]
             elif type(dct_data[k]) == dict:

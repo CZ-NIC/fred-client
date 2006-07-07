@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 #
-# $Id$
-#
 # Tento modul obsahuje funkce a data, která jsou potřebná
 # na sestavení EPP dokumentu.
 # Funkce i data jsou společná jak pro klienta, tak pro server:
@@ -479,7 +477,7 @@ def prepare_for_display(dict_values,color=0,indent=0):
     return '\n'.join(body)
     
 def test_display():
-    dict_data = {'attr': [(u'xmlns:xsi', u'http://www.w3.org/2001/XMLSchema-instance'),
+    exampe1 = {'attr': [(u'xmlns:xsi', u'http://www.w3.org/2001/XMLSchema-instance'),
           ('xmlns', u'urn:ietf:params:xml:ns:epp-1.0'),
           (u'xsi:schemaLocation',
            u'urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd')],
@@ -495,10 +493,46 @@ def test_display():
               'svcs': {'objURI': [{'data': u'http://www.nic.cz/xml/epp/contact-1.0'},
                                   {'data': u'http://www.nic.cz/xml/epp/domain-1.0'},
                                   {'data': u'http://www.nic.cz/xml/epp/nsset-1.0'}]}}}
-    print prepare_for_display(dict_data)
-    print '='*60
-    print prepare_display(dict_data)
 
+    exampe2 = {'attr': [(u'xmlns:xsi', u'http://www.w3.org/2001/XMLSchema-instance'), 
+        ('xmlns', u'urn:ietf:params:xml:ns:epp-1.0'), 
+        (u'xsi:schemaLocation', u'urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd')], 
+    'response': {'trID': 
+    {'clTRID': {'data': u'jzqq002#06-07-07at14:08:37'}, 
+     'svTRID': {'data': u'ccReg-0000010021'}}, 
+    'result': {'msg': {'data': u'P\u0159\xedkaz \xfasp\u011b\u0161n\u011b proveden', 
+        'attr': [(u'lang', u'cs')]}, 
+        'attr': [(u'code', u'1000')]
+        }, 
+        'resData': {'contact:chkData': 
+            {'attr': [(u'xmlns:contact', u'http://www.nic.cz/xml/epp/contact-1.0'), 
+            (u'xsi:schemaLocation', 
+                u'http://www.nic.cz/xml/epp/contact-1.0 contact-1.0.xsd')],
+        'contact:cd': [
+            {'contact:id': {'data': u'handle2', 'attr': [(u'avail', u'1')]}}, 
+            {'contact:id': {'data': u'handle1', 'attr': [(u'avail', u'0')]}}]}}}}
+            
+    print prepare_for_display(exampe2)
+    print '='*60
+    print prepare_display(exampe2)
+
+def correct_unbound_prefix(xml):
+    'Input missing prefix definitions.'
+    names = []
+    for token in re.findall('<([\w-]+):',xml):
+        if token not in names: names.append(token)
+    if len(names):
+        return re.sub(r'<([^\?][^>]+)>', '<\\1 %s>'%' '.join(['xmlns:%s="urn:ietf:params:xml:ns:epp-1.0"'%n for n in names]), xml, 1)
+    else:
+        return xml
+
+def test_parse():
+    m = Message()
+    m.parse_xml(xml)
+    print m.fetch_errors()
+    print m.get_xml()
+    
 if __name__ == '__main__':
     "Testování zpracování XML dokumentu a mapování XML.DOM do python dict/class."
-    test_display()
+##    test_display()
+    test_parse()

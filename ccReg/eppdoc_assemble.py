@@ -31,7 +31,7 @@ class Message(eppdoc.Message):
             else:
                 required = '${WHITE}(%s)${NORMAL}'%_T('optional')
             text = '%s%s %s'%(indent,name,required)
-            if max == None:
+            if max is None:
                 max_size = _T('unbounded list')
             elif max > 1:
                 max_size = _T('list with max %d items.')%max

@@ -21,20 +21,19 @@ class ManagerCommand(ManagerTransfer):
     This class manage creations of the EPP documents.
     """
 
-    def __put_raw_into_note__(self,data):
+    def __put_raw_into_note__(self, data):
         "Use pprint for displaying structured data (dict, XML-EPP)."
-        if data == None:
+        if data is None:
             self.append_note(_T('No data'),('RED','BOLD'))
         elif type(data) == dict:
             # Parsed data into dict
-            self.append_note(eppdoc.prepare_for_display(data,COLOR))
+            self.append_note(eppdoc.prepare_display(data,COLOR))
         else:
-            # XML EPP doc
+            # XML EPP doc. only for better display
             edoc = eppdoc_client.Message()
             edoc.parse_xml(data)
-            if self._epp_response.is_error():
-                # při parsování se vyskytly chyby
-                self.append_note(edoc.get_errors(),'GREEN')
+            if edoc.is_error():
+                self.append_note(data,'GREEN') # při parsování se vyskytly chyby
             else:
                 self.append_note(edoc.get_xml(),'GREEN')
 
@@ -115,8 +114,7 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]  ${CYAN}# display raw answer${NORMAL}
     def create_eppdoc(self, command):
         "Dispatch command line from user and set internal variables or create EPP document."
         xml_doc = ''
-        self._notes = []
-        self._epp_cmd.reset()
+        self.reset_round()
         cmd = command.strip()
         # Možnost zadání pomlčky místo podtržítka:
         m = re.match('(\S+)(.*)',cmd)
@@ -154,7 +152,7 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]  ${CYAN}# display raw answer${NORMAL}
                     else: # e epp
                         self.append_note(_T('Command source'),('GREEN','BOLD'))
                         self.append_note(self._raw_cmd,'GREEN')
-                if m.group(1)[0]=='a' and self._dict_answer: # a answer
+                if m.group(1)[0]=='a' and (self._dict_answer or self._raw_answer): # a answer
                     # zobrazit odpověd serveru
                     if m.group(2) and m.group(2)[0]=='d': # d dict
                         self.append_note(_T('Interpreted answer'),('GREEN','BOLD'))
@@ -224,6 +222,7 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]  ${CYAN}# display raw answer${NORMAL}
                 if not self.connect():
                     self.display()
                     return # automatické připojení, pokud nebylo navázáno
+            self.check_validator() # set validator OFF, if not supported.
             # klient se zaloguje
             # prefix 4 ASCII znaků pro clTRID (pro každé sezení nový)
             self.defs[PREFIX] = ''.join([chr(random.randint(97,122)) for n in range(4)])

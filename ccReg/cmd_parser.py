@@ -73,7 +73,7 @@ def __get_name_pos__(errors,key,name,cols):
         if row[0] == name:
             children = row[4] # children
             break
-    if children == None:
+    if children is None:
         errors.append("%s: '%s' (%s)."%(_T('Unknown parameter name'),key,name))
         name = ''
     return name,pos,children

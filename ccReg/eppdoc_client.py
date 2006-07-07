@@ -119,7 +119,7 @@ class Message(eppdoc_assemble.Message):
             ('vat',(0,1),(),_T('VAT'),()),
             ('ssn',(0,1),(),_T('SSN'),()),
             ('notify_email',(0,1),(),_T('notify email'),()),
-            ),notice['create'],('create_contact reg-id "John Doe" jon@mail.com "New York" US "Example Inc." ("Yellow harbor" "Blueberry hill") VA 20166-6503 +1.7035555555 +1.7035555556 (0 d-name "d org." "ulice číso město" +21321313 +734321 pepa@jojo.com) vat-test ssn-test notify@semka.net',)),
+            ),notice['create'],('create-contact reg-id "John Doe" jon@mail.com "New York" US "Example Inc." ("Yellow harbor" "Blueberry hill") VA 20166-6503 +1.7035555555 +1.7035555556 (0 d-name "d org." "Street number City" +21321313 +734321 my@mail.com) vat-test ssn-test notify@here.net',)),
         #----------------------------------------------------
         'create_domain': (2,(
             ('name',(1,1),(),_T('domain name'),()),
@@ -131,7 +131,7 @@ class Message(eppdoc_assemble.Message):
             ('nsset',(0,1),(),_T('nsset'),()),
             ('registrant',(0,1),(),_T('registrant'),()),
             ('contact',(0,UNBOUNDED),(),_T('contact'),()),
-            ),notice['create'],('create_domain domain.cz password (3 m) nsset.name.cz registr-name ("My address","My next contact")',)),
+            ),notice['create'],('create-domain domain.cz password (3 m) nsset.name.cz registr-name ("My address","My next contact")',)),
         #----------------------------------------------------
         'create_domain_enum': (2,(
             ('name',(1,1),(),_T('domain name'),()),
@@ -144,7 +144,7 @@ class Message(eppdoc_assemble.Message):
             ('registrant',(0,1),(),_T('registrant'),()),
             ('contact',(0,UNBOUNDED),(),_T('contact'),()),
             ('val_ex_date',(0,1),(),_T('valExDate'),()),
-            ),notice['create'],('create_domain_enum domain.cz password (3 m) nsset.name.cz registr-name ("My address","My next contact") 2006-06-08',)),
+            ),notice['create'],('create-domain-enum domain.cz password (3 m) nsset.name.cz registr-name ("My address","My next contact") 2006-06-08',)),
         #----------------------------------------------------
         'create_nsset': (2,(
             ('id',(1,1),(),_T('nsset ID'),()),
@@ -216,9 +216,9 @@ class Message(eppdoc_assemble.Message):
                 ('vat',(0,1),(),_T('VAT'),()),
                 ('ssn',(0,1),(),_T('SSN'),()),
                 ('notify_email',(0,1),(),_T('notify email'),(
-                    'update_contact id-contact clientDeleteProhibited',
-                    'update_contact id-contact (clientDeleteProhibited linked ok)',
-                    'update_contact id-contact (linked ok) (clientDeleteProhibited clientUpdateProhibited) (("John Doe" "Doe Company" "Down street, New York") +00123456789 +00123456456 john@doe.com (1 John John-Comp "Street and City" +01231321 +01234654 john@john.com) my-vat my-ssn notify@here.net',
+                    'update-contact id-contact clientDeleteProhibited',
+                    'update-contact id-contact (clientDeleteProhibited linked ok)',
+                    'update-contact id-contact (linked ok) (clientDeleteProhibited clientUpdateProhibited) (("John Doe" "Doe Company" "Down street, New York") +00123456789 +00123456456 john@doe.com (1 John John-Comp "Street and City" +01231321 +01234654 john@john.com) my-vat my-ssn notify@here.net',
                 )),
             )),
             ),notice['update'],()),
@@ -242,8 +242,8 @@ class Message(eppdoc_assemble.Message):
                 )),
             )),
             ),notice['update'],(
-                'update_domain nic.cz',
-                'update_domain nic.cz (linked add-contact) ((ok linked) rem-contact) (nsset registrant (password extensions))',
+                'update-domain nic.cz',
+                'update-domain nic.cz (linked add-contact) ((ok linked) rem-contact) (nsset registrant (password extensions))',
             )),
         #----------------------------------------------------
         'update_domain_enum': (1,(
@@ -265,7 +265,7 @@ class Message(eppdoc_assemble.Message):
                 )),
             )),
             ('val_ex_date',(0,1),(),_T('valExDate'),()),
-            ),notice['update'],('update_domain_enum 1.1.1.1.1.arpa64.net (linked add-contact) ((ok linked) rem-contact) (nsset registrant (password extensions)) 2006-06-08',)),
+            ),notice['update'],('update-domain-enum 1.1.1.1.1.arpa64.net (linked add-contact) ((ok linked) rem-contact) (nsset registrant (password extensions)) 2006-06-08',)),
         #----------------------------------------------------
         'update_nsset': (1,(
             ('id',(1,1),(),_T('nsset ID'),()),

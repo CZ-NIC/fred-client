@@ -12,7 +12,7 @@ import ccReg
 
 # Kontrola na Unicode
 try:
-    u'žščřřťňě'.encode(sys.stdout.encoding)
+    u'žščřťňě'.encode(sys.stdout.encoding)
 except UnicodeEncodeError, msg:
     from ccReg.terminal_controler import TerminalController
     term = TerminalController()
@@ -29,9 +29,7 @@ def main(host):
     while 1:
         try:
             command = raw_input("> (?-help, q-quit): ")
-        except KeyboardInterrupt:
-            break
-        except EOFError:
+        except (KeyboardInterrupt, EOFError):
             break
         if command in ('q','quit','exit','konec'):
             epp.send_logout()

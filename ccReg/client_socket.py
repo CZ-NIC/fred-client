@@ -39,9 +39,7 @@ class Lorry:
             if self._timeout: self._conn.settimeout(self._timeout)
         except socket.error, (no,msg):
             self._errors.append('Connection socket.error [%d] %s'%(no,msg))
-        except KeyboardInterrupt:
-            self._errors.append(_T('Interrupt from user'))
-        except EOFError:
+        except (KeyboardInterrupt,EOFError):
             self._errors.append(_T('Interrupt from user'))
         if not ok: return ok
         self._notes.append(_T('Init SSL connection'))
@@ -63,9 +61,7 @@ class Lorry:
             ssl_ok = 1
         except socket.sslerror, msg:
             self._errors.append(str(msg))
-        except KeyboardInterrupt:
-            self._errors.append(_T('Interrupt from user'))
-        except EOFError:
+        except (KeyboardInterrupt,EOFError):
             self._errors.append(_T('Interrupt from user'))
         if not ssl_ok:
             self._conn.close()
@@ -92,9 +88,7 @@ class Lorry:
             self._errors.append('READ HEADER socket.sslerror: %s'%str(msg))
         except socket.error, (no, msg):
             self._errors.append('READ HEADER socket.error: [%d] %s'%(no, msg))
-        except KeyboardInterrupt:
-            self._errors.append(_T('Interrupt from user'))
-        except EOFError:
+        except (KeyboardInterrupt,EOFError):
             self._errors.append(_T('Interrupt from user'))
         else:
             # hlavička zprávy
@@ -120,9 +114,7 @@ class Lorry:
                 self._errors.append('READ socket.sslerror: %s'%str(msg))
             except socket.error, (no, msg):
                 self._errors.append('READ socket.error: [%d] %s'%(no, msg))
-            except KeyboardInterrupt:
-                self._errors.append(_T('Interrupt from user'))
-            except EOFError:
+            except (KeyboardInterrupt,EOFError):
                 self._errors.append(_T('Interrupt from user'))
             if not ok: self.close()
         return data.strip()
@@ -156,9 +148,7 @@ class Lorry:
             self._errors.append('SEND socket.sslerror: %s'%str(msg))
         except socket.error, (no, msg):
             self._errors.append('SEND socket.error: [%d] %s'%(no, msg))
-        except KeyboardInterrupt:
-            self._errors.append(_T('Interrupt from user'))
-        except EOFError:
+        except (KeyboardInterrupt,EOFError):
             self._errors.append(_T('Interrupt from user'))
         if not ok: self.close()
         return ok
@@ -170,9 +160,7 @@ class Lorry:
                 self._conn.close()
                 self._conn = None
                 self._conn_ssl = None
-            except KeyboardInterrupt:
-                self._errors.append(_T('Interrupt from user'))
-            except EOFError:
+            except (KeyboardInterrupt,EOFError):
                 self._errors.append(_T('Interrupt from user'))
             self._errors.append(_T('Connection closed'))
 
