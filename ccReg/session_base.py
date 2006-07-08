@@ -28,10 +28,10 @@ class ManagerBase:
         # Session data:
         #-----------------------------------------
         self._session = [
-                 0 # ONLINE
-                ,0 # CMD_ID
+                 0      # ONLINE
+                ,0      # CMD_ID
                 ,'en' # LANG
-                ,1 # POLL_AUTOACK
+                ,1      # POLL_AUTOACK
                 ]
         # defaults
         self.defs = ['']*DEFS_LENGTH
@@ -43,6 +43,10 @@ class ManagerBase:
         self._name_conf = '.ccReg.conf' # name of config file
         self._host = None # explicit defined host
 
+    def is_logon(self):
+        'Returns 0-offline,1-online.'
+        return self._session[ONLINE]
+        
     def set_host(self,host):
         self._host = host
 
@@ -103,10 +107,12 @@ class ManagerBase:
             for c in (u'\u2550',u'\u2551',u'\u2554',u'\u2557',u'\u255a',u'\u255d'):
                 frm.append(c.encode('utf-8'))
             corr=(10,4)
-        welcome = '%s   %s   %s'%(frm[1],_T('Welcome to the EPP client'),frm[1])
+        welcome = '%s   %s   %s'%(frm[1],_T('Welcome to the ccReg console'),frm[1])
         sp = '%s   %s   %s'%(frm[1],' '*(len(welcome)-2-corr[0]),frm[1])
         sep = frm[0]*(len(welcome)-2-corr[1])
-        return '%s%s%s\n%s\n%s\n%s\n%s%s%s\n%s'%(frm[2],sep,frm[3],sp,welcome,sp,frm[4],sep,frm[5],_T('For help type "help" (or "h", "?")'))
+        return '%s%s%s\n%s\n%s\n%s\n%s%s%s\n%s\n%s'%(frm[2],sep,frm[3],sp,welcome,sp,frm[4],sep,frm[5],
+            'Version 1.0. Beta release.',
+            _T('For help type "help" (or "h", "?")'))
 
 
     def __next_clTRID__(self):
@@ -276,7 +282,7 @@ def append_with_colors(list_of_messages, msg, color):
     if type(color) in (list, tuple):
         c = ''.join(['${%s}'%c for c in color])
     else:
-        c = '${%s}'%(color or 'YELLOW') # default
+        c = '${%s}'%(color or 'WHITE') # default color
     list_of_messages.append('%s%s${NORMAL}'%(c,msg))
 
 def join_unicode(u_list, sep='\n'):

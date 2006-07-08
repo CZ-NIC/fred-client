@@ -364,6 +364,21 @@ def get_dct_attr(dict_data, names, attr_name, sep='\n'):
     "Returns attribute value of the key name in names list."
     return get_dct_value(dict_data, names, sep, attr_name)
 
+def getd(dct, names):
+    """Returns safetly value form dict (treat missing keys).
+        Parametr names can by str or list ro tuple.
+    """
+    scope = dct
+    name = names
+    if type(names) in (list, tuple) and len(names)>1:
+        for name in names[:-1]:
+            if scope.get(name,None):
+                scope = scope[name]
+            else:
+                return None
+        name = names[-1]
+    return scope.get(name,None)
+    
 def get_dct_values(dict_data, names, attr_name=''):
     ret=[]
     if type(names) not in (tuple,list):
@@ -382,16 +397,19 @@ def get_dct_values(dict_data, names, attr_name=''):
                 vals = get_dct_values(dict_data[name], inames, attr_name)
                 if vals: ret.extend(vals)
     else:
-        if attr_name:
-            vals = dict_data.get('attr','')
-            if vals:
-                for k,v in vals:
-                    if k==attr_name:
-                        if v: ret.append(v)
-                        break
+        if type(dict_data) == dict:
+            if attr_name:
+                vals = dict_data.get('attr','')
+                if vals:
+                    for k,v in vals:
+                        if k==attr_name:
+                            if v: ret.append(v)
+                            break
+            else:
+                vals = dict_data.get('data','')
+                if vals: ret.append(vals)
         else:
-            vals = dict_data.get('data','')
-            if vals: ret.append(vals)
+            ret.append(dict_data)
     return ret
 
 def get_dct_value(dict_data, names, sep='\n', attr_name=''):
@@ -518,6 +536,7 @@ def test_display():
 
 def correct_unbound_prefix(xml):
     'Input missing prefix definitions.'
+    # TODO: Tohle zanikne...
     names = []
     for token in re.findall('<([\w-]+):',xml):
         if token not in names: names.append(token)
@@ -534,5 +553,7 @@ def test_parse():
     
 if __name__ == '__main__':
     "Testování zpracování XML dokumentu a mapování XML.DOM do python dict/class."
-##    test_display()
+    test_display()
     test_parse()
+##    ret = {'reason': u'Authentication error; server closing connection', 'code': 2501, 'data': {"h1":"ano"}, 'errors': []}
+##    print getd(ret, ('data','xh1'))

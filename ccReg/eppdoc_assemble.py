@@ -30,7 +30,7 @@ class Message(eppdoc.Message):
                 required = '${%s}${BOLD}(%s)${NORMAL}'%(color,_T('required'))
             else:
                 required = '${WHITE}(%s)${NORMAL}'%_T('optional')
-            text = '%s%s %s'%(indent,name,required)
+            text = '%s${BOLD}%s${NORMAL} %s'%(indent,name,required)
             if max is None:
                 max_size = _T('unbounded list')
             elif max > 1:
@@ -42,7 +42,7 @@ class Message(eppdoc.Message):
             if len(allowed):
                 txt = ','.join(allowed)
                 if len(txt)>37: txt = txt[:37]+'...' # shorter too long text
-                text = '%s ${WHITE}%s: ${YELLOW}(%s)${NORMAL}'%(text,_T('accept only values'),txt)
+                text = '%s ${WHITE}%s: ${CYAN}(%s)${NORMAL}'%(text,_T('accept only values'),txt)
             msg.append(text)
             if len(children):
                 msg.extend(self.__get_help_scope__(children, deep+1))
@@ -61,8 +61,6 @@ class Message(eppdoc.Message):
             # příkaz existuje
             required,params,notice,examples = self._command_params[command_name]
             command_line = ['${BOLD}%s${NORMAL}'%command_name.replace('_','-')]
-            if required:
-                help.append('%s:'%_T('Required parameters'))
             if params:
                 for pos in range(required):
                     command_line.append(params[pos][0])
@@ -389,13 +387,13 @@ class Message(eppdoc.Message):
             ('domain:create','domain:authInfo'),
             ('domain:authInfo','domain:pw', dct['pw'][0])
         ))
-        if len(params)>2 and params[2]=='extensions': self.__enum_extensions__('create',data, params)
+        if len(params)>1 and params[1]=='extensions': self.__enum_extensions__('create',data, params)
         data.append(('command', 'clTRID', params[0]))
         self.__assemble_cmd__(data)
 
     def assemble_create_domain_enum(self, *params):
         'Extensions for enum.'
-        self.assemble_create_domain(params[0], params[1], 'extensions')
+        self.assemble_create_domain(params[0], 'extensions')
 
     def __append_nsset__(self, tag_name, data, dct_ns):
         "ns:  {'name': ['ns3.domain.net'], 'addr': ['127.3.0.1', '127.3.0.2']}"
@@ -431,7 +429,6 @@ class Message(eppdoc.Message):
 
     def assemble_renew_domain(self, *params):
         """Assemble XML EPP command. 
-        params = ('clTRID', ('version', 'objURI', 'LANG') [,'extensions'])
         """
         dct = self._dct
         names = ('domain',)
@@ -449,14 +446,13 @@ class Message(eppdoc.Message):
             period = dct['period'][0]
             if not __has_key__(period,'unit'): period['unit']=('y',)
             data.append(('domain:renew','domain:period',period['num'][0], (('unit',period['unit'][0]),)))
-        if len(params)>2 and params[2]=='extensions': self.__enum_extensions__('renew',data, params)
+        if len(params)>1 and params[1]=='extensions': self.__enum_extensions__('renew',data, params)
         data.append(('command', 'clTRID', params[0]))
         self.__assemble_cmd__(data)
 
     def assemble_renew_domain_enum(self, *params):
         "Assemble XML EPP command"
-        if len(params)<2: params = (params[0],None)
-        self.assemble_renew_domain(params[0], params[1], 'extensions')
+        self.assemble_renew_domain(params[0], 'extensions')
 
     def assemble_update_contact(self, *params):
         """Assemble XML EPP command. 
@@ -534,14 +530,13 @@ class Message(eppdoc.Message):
                 authInfo = chg['auth_info'][0]
                 if __has_key__(authInfo,'pw'): data.append(('domain:authInfo','domain:pw', authInfo['pw'][0]))
                 if __has_key__(authInfo,'ext'): data.append(('domain:authInfo','domain:ext', authInfo['ext'][0]))
-        if len(params)>2 and params[2]=='extensions': self.__enum_extensions__('update',data, params,'chg')
+        if len(params)>1 and params[1]=='extensions': self.__enum_extensions__('update',data, params,'chg')
         data.append(('command', 'clTRID', params[0]))
         self.__assemble_cmd__(data)
 
     def assemble_update_domain_enum(self, *params):
         "Assemble XML EPP command"
-        if len(params)<2: params = (params[0],None)
-        self.assemble_update_domain(params[0], params[1], 'extensions')
+        self.assemble_update_domain(params[0], 'extensions')
 
     def assemble_update_nsset(self, *params):
         """Assemble XML EPP command. 

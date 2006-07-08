@@ -5,18 +5,15 @@ import ccReg
 
 try:
     epp = new ccReg.Client()
-    epp.login("reg-lrr","123456789")
-    ret = epp.check_contact(["handle1","handle2"])
-    #ret = {"handle1":"0","handle2":"1"}
-    #if ret.get("handle1",0): ...
-    #o = epp.get_ro()
-    #if o.response.result.attr[0][1]: ...
-    if ret['response']['resData']['contact:chkData']['contact:cd'][0]['contact:id']['attr'][0][1]:
-        epp.create_contact("handle1", "My Name", "email@email.net", "City", "CZ")
-    else:
-        response = epp.info_contact("handle1")
-        epp.show(response)
-    epp.logout()
+    ret = epp.login("reg-lrr","123456789")
+    if epp.getd(ret,'code') == 1000:  # also possible: if ret['code'] == 1000:
+        ret = epp.check_contact(("handle1","handle2"))
+        if epp.getd(ret,('data','handle1')): # ret['data']['handle1']
+            epp.create_contact("handle1", "My Name", "email@email.net", "City", "CZ")
+        else:
+            response = epp.info_contact("handle1")
+            epp.show(response)
+        epp.logout()
 except ccRegError, msg:
     print msg
 """
@@ -39,6 +36,11 @@ class Client:
         - receive EPP server ansver
         - compile answer to the dictionary
         - returns dict whith values from server
+            dict has this format:
+                code:     (int) number of answer code
+                reason:  (str) message witt reason
+                errors:   (list) errors
+                data:     (dict) individual values - see doc or help in functions
         
     Functions accept parameters in this formats:
                        (for example)
@@ -63,8 +65,11 @@ class Client:
     def check_contact(self, name):
         """Usage: check-contact name
     
+    PARAMS:
+
     name (required)     unbounded list
 
+    RETURN data: {name: int}   0/1
 
    The EPP "check" command is used to determine if an object can be
    provisioned within a repository.  It provides a hint that allows a
@@ -77,8 +82,11 @@ class Client:
     def check_domain(self, name):
         """Usage: check-domain name
 
+    PARAMS:
+
     name (required)     unbounded list
 
+    RETURN data: {name: int} 0/1
 
    The EPP "check" command is used to determine if an object can be
    provisioned within a repository.  It provides a hint that allows a
@@ -91,8 +99,11 @@ class Client:
     def check_nsset(self, name):
         """Usage: check-nsset name
 
+    PARAMS:
+
     name (required)     unbounded list
 
+    RETURN data: {name: int} 0/1
 
    The EPP "check" command is used to determine if an object can be
    provisioned within a repository.  It provides a hint that allows a
@@ -106,6 +117,8 @@ class Client:
             street=None, sp=None, pc=None, voice=None, fax=None, disclose=None,
             vat=None, ssn=None, notify_email=None):
         """Usage: create-contact contact-id name email city cc
+
+    PARAMS:
 
     contact-id (required)
     name (required)
@@ -130,6 +143,7 @@ class Client:
     ssn (optional)
     notify_email (optional)
 
+    RETURN data: {}
 
    The EPP "create" command is used to create an instance of an object.
    An object can be created for an indefinite period of time, or an
@@ -144,6 +158,8 @@ class Client:
     def create_domain(self, name, pw, period=None, nsset=None, registrant=None, contact=None):
         """Usage: create-domain name pw
 
+    PARAMS:
+
     name (required)
     pw (required)
     period (optional)
@@ -153,6 +169,7 @@ class Client:
     registrant (optional)
     contact (optional)          unbounded list
 
+    RETURN data: {}
 
    The EPP "create" command is used to create an instance of an object.
    An object can be created for an indefinite period of time, or an
@@ -165,6 +182,8 @@ class Client:
          contact=None, val_ex_date=None):
         """Usage: create-domain-enum name pw
 
+    PARAMS:
+
     name (required)
     pw (required)
     period (optional)
@@ -175,6 +194,7 @@ class Client:
     contact (optional)          unbounded list
     val_ex_date (optional)
 
+    RETURN data: {}
 
    The EPP "create" command is used to create an instance of an object.
    An object can be created for an indefinite period of time, or an
@@ -188,6 +208,8 @@ class Client:
     def create_nsset(self, nsset_id, pw, ns=None, tech=None):
         """Usage: create-nsset id pw
 
+    PARAMS:
+
     id (required)
     pw (required)
     ns (optional)               list with max 9 items.
@@ -195,6 +217,7 @@ class Client:
         addr (optional)         unbounded list
     tech (optional)             unbounded list
 
+    RETURN data: {}
 
    The EPP "create" command is used to create an instance of an object.
    An object can be created for an indefinite period of time, or an
@@ -211,7 +234,11 @@ class Client:
     def delete_contact(self, nsset_id):
         """Usage: delete-contact id
 
+    PARAMS:
+
     id (required)
+
+    RETURN data: {}
 
     The EPP "delete" command is used to remove an instance of an existing object.
 
@@ -222,10 +249,13 @@ class Client:
     def delete_domain(self, name):
         """Usage: delete-domain name
 
+    PARAMS:
+
     name (required)
 
-    The EPP "delete" command is used to remove an instance of an existing object.
+    RETURN data: {}
 
+    The EPP "delete" command is used to remove an instance of an existing object.
         """
         return self._epp.api_command('delete_domain',{'name':name})
 
@@ -233,10 +263,13 @@ class Client:
     def delete_nsset(self, nsset_id):
         """Usage: delete-nsset id
 
+    PARAMS:
+
     id (required)
 
-    The EPP "delete" command is used to remove an instance of an existing object.
+    RETURN data: {}
 
+    The EPP "delete" command is used to remove an instance of an existing object.
         """
         return self._epp.api_command('delete_nsset',{'id':nsset_id})
 
@@ -244,8 +277,15 @@ class Client:
     def hello(self):
         """Usage: hello
 
-    The EPP "hello" request a "greeting" response message from an EPP server at any time.
+    PARAMS:
 
+    RETURN data: {
+            lang:    tuple
+            objURI: tuple
+            extURI: tuple
+        }
+
+    The EPP "hello" request a "greeting" response message from an EPP server at any time.
         """
         return self._epp.api_command('hello')
 
@@ -253,15 +293,17 @@ class Client:
     def info_contact(self, name):
         """Usage: info-contact name
 
+    PARAMS:
+
     name (required)
 
+    RETURN data: {}
 
    The EPP "info" command is used to retrieve information associated
    with an existing object. The elements needed to identify an object
    and the type of information associated with an object are both
    object-specific, so the child elements of the <info> command are
    specified using the EPP extension framework.
-
         """
         return self._epp.api_command('info_contact',{'name':name})
 
@@ -269,15 +311,17 @@ class Client:
     def info_domain(self, name):
         """Usage: info-domain name
 
+    PARAMS:
+
     name (required)
 
+    RETURN data: {}
 
    The EPP "info" command is used to retrieve information associated
    with an existing object. The elements needed to identify an object
    and the type of information associated with an object are both
    object-specific, so the child elements of the <info> command are
    specified using the EPP extension framework.
-
         """
         return self._epp.api_command('info_domain',{'name':name})
 
@@ -285,15 +329,17 @@ class Client:
     def info_nsset(self, name):
         """Usage: info-nsset name
 
+    PARAMS:
+
     name (required)
 
+    RETURN data: {}
 
    The EPP "info" command is used to retrieve information associated
    with an existing object. The elements needed to identify an object
    and the type of information associated with an object are both
    object-specific, so the child elements of the <info> command are
    specified using the EPP extension framework.
-
         """
         return self._epp.api_command('info_nsset',{'name':name})
 
@@ -301,14 +347,16 @@ class Client:
     def login(self, username, password, new_password=None):
         """Usage: login username password
 
+    PARAMS:
+
     username (required)
     password (required)
     new-password (optional)
 
+    RETURN data: {}
 
    The "login" command establishes an ongoing server session that preserves client identity
    and authorization information during the duration of the session.
-
         """
         return self._epp.api_command('login',{'username':username, 
             'password':password, 'new-password':new_password})
@@ -317,8 +365,11 @@ class Client:
     def logout(self):
         """Usage: logout
 
-    The EPP "logout" command is used to end a session with an EPP server.
+    PARAMS:
 
+    RETURN data: {}
+
+    The EPP "logout" command is used to end a session with an EPP server.
         """
         return self._epp.api_command('logout')
 
@@ -326,7 +377,11 @@ class Client:
     def poll(self, op):
         """Usage: poll op
 
+    PARAMS:
+
     op (required) accept only values: (req,ack)
+
+    RETURN data: {}
 
     The EPP "poll" command is used to discover and retrieve service messages queued by a server for individual clients.
 
@@ -337,11 +392,15 @@ class Client:
     def renew_domain(self, name, cur_exp_date, period=None):
         """Usage: renew-domain name cur_exp_date
 
+    PARAMS:
+
     name (required)
     cur_exp_date (required)
     period (optional)
         num (required)
         unit (required) accept only values: (y,m)
+
+    RETURN data: {}
 
     The EPP "renew" command is used to extend validity of an existing object.
         """
@@ -351,6 +410,8 @@ class Client:
     def renew_domain_enum(self, name, cur_exp_date, period=None, valExDate=None):
         """Usage: renew-domain-enum name cur_exp_date
 
+    PARAMS:
+
     name (required)
     cur_exp_date (required)
     period (optional)
@@ -358,8 +419,9 @@ class Client:
         unit (required) accept only values: (y,m)
     val_ex_date (optional)
 
-    The EPP "renew" command is used to extend validity of an existing object.
+    RETURN data: {}
 
+    The EPP "renew" command is used to extend validity of an existing object.
         """
         return self._epp.api_command('renew_domain_enum',{'name':name, 
             'cur_exp_date':cur_exp_date, 'period':period, 'val_ex_date':val_ex_date})
@@ -368,10 +430,13 @@ class Client:
     def transfer_domain(self, name, op, passw):
         """Usage: transfer-domain name op passw
 
+    PARAMS:
+
     name (required)
     op (required) accept only values: (request,approve,cancel,query,reject)
     passw (required)
 
+    RETURN data: {}
 
    The EPP "transfer" command provides a query operation that allows a
    client to determine real-time status of pending and completed
@@ -387,10 +452,13 @@ class Client:
     def transfer_nsset(self, name, op, passw):
         """Usage: transfer-nsset name op passw
 
+    PARAMS:
+
     name (required)
     op (required) accept only values: (request,approve,cancel,query,reject)
     passw (required)
 
+    RETURN data: {}
 
    The EPP "transfer" command provides a query operation that allows a
    client to determine real-time status of pending and completed
@@ -399,13 +467,14 @@ class Client:
    sponsorship of an existing object.  Clients can initiate a transfer
    request, cancel a transfer request, approve a transfer request, and
    reject a transfer request using the "op" command attribute.
-
         """
         return self._epp.api_command('transfer_nsset',{'name':name, 'op':op, 'passw':passw})
 
 
     def update_contact(self, contact_id, add=None, rem=None, chg=None):
         """Usage: update-contact contact-id
+
+    PARAMS:
 
     contact-id (required)
     add (optional)              list with max 5 items.
@@ -430,6 +499,8 @@ class Client:
         ssn (optional)
         notifyEmail (optional)
 
+    RETURN data: {}
+
     The EPP "update" command is used to update an instance of an existing object.
         """
         return self._epp.api_command('update_contact',{'contact-id':contact_id, 'add':add, 'rem':rem, 'chg':chg})
@@ -437,6 +508,8 @@ class Client:
 
     def update_domain(self, name, add=None, rem=None, chg=None):
         """Usage: update-domain name
+
+    PARAMS:
 
     name (required)
     add (optional)
@@ -452,6 +525,8 @@ class Client:
             pw (optional)
             ext (optional)
 
+    RETURN data: {}
+
     The EPP "update" command is used to update an instance of an existing object.
         """
         return self._epp.api_command('update_domain',{'name':name, 'add':add, 'rem':rem, 'chg':chg})
@@ -459,6 +534,8 @@ class Client:
 
     def update_domain_enum(self, name, add=None, rem=None, chg=None, val_ex_date=None):
         """Usage: update-domain-enum name
+
+    PARAMS:
 
     name (required)
     add (optional)
@@ -475,6 +552,8 @@ class Client:
             ext (optional)
     val_ex_date (optional)
 
+    RETURN data: {}
+
     The EPP "update" command is used to update an instance of an existing object.
         """
         return self._epp.api_command('update_domain_enum',{'name':name, 
@@ -483,6 +562,8 @@ class Client:
 
     def update_nsset(self, nsset_id, add=None, rem=None, chg=None):
         """Usage: update-nsset id
+
+    PARAMS:
 
     id (required)
     add (optional)
@@ -499,6 +580,8 @@ class Client:
         pw (optional)
         ext (optional)
 
+    RETURN data: {}
+
     The EPP "update" command is used to update an instance of an existing object.
 
     Examples:
@@ -507,12 +590,11 @@ class Client:
         """
         return self._epp.api_command('update_nsset',{'id':nsset_id, 'add':add, 'rem':rem, 'chg':chg})
     
-    def show(self, dct_response):
+    def print_answer(self, dct=None):
         "Show dict object."
-        self._epp.__put_raw_into_note__(dct_response)
-        self._epp.display()
+        self._epp.print_answer(dct)
 
-    def display(self):
+    def print_errors(self):
         'Display interal results.'
         self._epp.display()
 
@@ -524,9 +606,11 @@ class Client:
         'Set process validate ON/OFF. mode: 0/1.'
         self._epp._validate = mode
 
-    def get_ro(self):
-        'Returns Server Response parsed into Object (class) with values.'
-        return self._epp.get_ro()
+    def getd(self, dct, names):
+        """Returns safetly value form dict (treat missing keys).
+        Parametr names can by str or list ro tuple.
+        """
+        return self._epp.getd(dct, names)
 
 class ClientSession(ManagerReceiver):
     "Use for console or batch applications."

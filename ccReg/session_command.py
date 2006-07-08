@@ -79,13 +79,13 @@ class ManagerCommand(ManagerTransfer):
 ${BOLD}connect${NORMAL} (or directly login) ${CYAN}# connect to the server${NORMAL}
 ${BOLD}lang${NORMAL} cs ${CYAN}# set language${NORMAL}
 ${BOLD}validate${NORMAL} on/off (or validate for see actual value) ${CYAN}# set validation${NORMAL}
-${BOLD}raw-c${NORMAL}[ommand] e[pp]/[dict] ${CYAN}# display raw command${NORMAL} (instead of raw you can also type ${BOLD}src${NORMAL})
-${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]  ${CYAN}# display raw answer${NORMAL}
+${BOLD}raw-c${NORMAL}[ommand] [xml]/${BOLD}d${NORMAL}[ict] ${CYAN}# display raw command${NORMAL} (instead of raw you can also type ${BOLD}src${NORMAL})
+${BOLD}raw-a${NORMAL}[nswer] [xml]/${BOLD}d${NORMAL}[ict]  ${CYAN}# display raw answer${NORMAL}
 """))
 
     def epp_command(self, cmdline):
         'Find EPP command in input and check if is known.'
-        cmd=None
+        command_name = cmdline
         m=re.match('(\S+)',cmdline)
         if m:
             if m.group(1).replace('_','-') in self._available_commands:
@@ -98,22 +98,25 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]  ${CYAN}# display raw answer${NORMAL}
                 self.append_note(_T("Unknown EPP command: %s.")%cmdline)
                 self.append_note('(%s: ${BOLD}help${NORMAL})'%_T('For more type'))
                 self._epp_cmd.help_check_name(self._notes, cmdline)
+        return command_name
 
+    def is_online(self, command_name):
+        'Check if session is online.'
+        return self._session[ONLINE] or command_name in ('hello','login')
+        
     def create_command_with_params(self, command_name, dct_params):
         "Create EPP command. Check if session is loggend or not."
-        if self._session[ONLINE] or command_name in ('hello','login'):
-            self._epp_cmd.set_params(dct_params) # set params from API (or one's own)
-            if command_name == 'login':
-                self.create_login()
-            else:
-                # if attr exists had been check in epp_command() or in API module.
-                getattr(self._epp_cmd, "assemble_%s"%command_name)(self.__next_clTRID__())
+        self._epp_cmd.set_params(dct_params) # set params from API (or one's own)
+        self._raw_cmd = ''
+        if command_name in ('login','hello'):
+            getattr(self,'create_%s'%command_name)()
         else:
-            self.append_note(_T('You are not logged. You must login before working.\nType login'))
+            # if attr exists had been check in epp_command() or in API module.
+            getattr(self._epp_cmd, "assemble_%s"%command_name)(self.__next_clTRID__())
 
     def create_eppdoc(self, command):
         "Dispatch command line from user and set internal variables or create EPP document."
-        xml_doc = ''
+        command_name = ''
         self.reset_round()
         cmd = command.strip()
         # Možnost zadání pomlčky místo podtržítka:
@@ -122,8 +125,7 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]  ${CYAN}# display raw answer${NORMAL}
         # help
         m = re.match(r'(?:\?|h(?:elp)?)(?:\s+(.+)|$)', cmd)
         if m:
-            command_name = self.make_help(m.group(1))
-            self.make_help_session(command_name)
+            self.make_help_session(self.make_help(m.group(1)))
         elif re.match('lang(\s+\w+)?',cmd):
             # nastavení zazykové verze
             m = re.match('lang\s+(\w+)',cmd)
@@ -160,8 +162,8 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]  ${CYAN}# display raw answer${NORMAL}
                     else: # e epp
                         self.append_note(_T('Answer source'),('GREEN','BOLD'))
                         self.__put_raw_into_note__(self._raw_answer)
-                self.display()
         elif re.match('send',cmd):
+            self._raw_cmd = ''
             # Posílání již vytvořených souborů na server
             filepath = ''
             m = re.match('send\s*(\S+)',command)
@@ -171,9 +173,10 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]  ${CYAN}# display raw answer${NORMAL}
             filepath = os.path.expanduser(filepath)
             if os.path.isfile(filepath):
                 self.append_note('%s: %s'%(_T('Load file'),filepath))
-                xml_doc = self._epp_cmd.load_xml_doc(filepath)
+                self._raw_cmd = self._epp_cmd.load_xml_doc(filepath)
                 errors = self._epp_cmd.fetch_errors()
                 if errors: self.append_note(errors)
+                command_name = self.grab_command_name_from_xml(self._raw_cmd)
             else:
                 # zobrazit adresář
                 self.append_note('%s: %s'%(_T('Dir list'),filepath))
@@ -184,32 +187,25 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]  ${CYAN}# display raw answer${NORMAL}
                 self.append_note(stuff)
         elif re.match('connect',cmd):
             self.connect() # připojení k serveru
-            self.display()
         elif re.match('validate',cmd):
             self.set_validate(cmd) # set validation of created EPP document
         else:
             # příkazy pro EPP
-            self.epp_command(cmd)
-            self._raw_cmd = xml_doc = self._epp_cmd.get_xml()
-            if xml_doc:
-                invalid_epp = self.is_epp_valid(xml_doc)
-            else:
-                invalid_epp = 'invalid'
-            if xml_doc and invalid_epp:
-                # Pokud EPP dokument není validní, tak se výstup zruší
-                self.append_error(_T('EPP document is not valid'),'BOLD')
-                self.append_error(invalid_epp)
-                #self.append_error(self._raw_cmd,'CYAN')
-                self.append_error(_T('Command was NOT sent to EPP server.'),('RED','BOLD'))
-                xml_doc=''
-        if xml_doc: self._raw_cmd = xml_doc # zdroj k nahlédnutí
-        return xml_doc
+            command_name = self.epp_command(cmd)
+            self._raw_cmd = self._epp_cmd.get_xml()
+        return command_name, self._raw_cmd
 
     #==================================================
     #
     #    EPP commands
     #
     #==================================================
+    def create_hello(self):
+        'Create EPP document hello'
+        if not self.is_connected():
+            if not self.connect(): return # connect fails
+        self._epp_cmd.assemble_hello()
+
     def create_login(self):
         'Create EPP document login'
         if self._session[ONLINE]:
@@ -219,14 +215,19 @@ ${BOLD}raw-a${NORMAL}[nswer] e[pp]/[dict]  ${CYAN}# display raw answer${NORMAL}
             if not self.is_connected():
                 # commection MUST be created BEFOR assembling login because of tags
                 # <objURI> and <extURI>
-                if not self.connect():
-                    self.display()
-                    return # automatické připojení, pokud nebylo navázáno
+                if not self.connect(): return # connect fails
             self.check_validator() # set validator OFF, if not supported.
-            # klient se zaloguje
             # prefix 4 ASCII znaků pro clTRID (pro každé sezení nový)
+            self._session[CMD_ID] = 0
             self.defs[PREFIX] = ''.join([chr(random.randint(97,122)) for n in range(4)])
             self._epp_cmd.assemble_login(self.__next_clTRID__(), (eppdoc_nic_cz_version, self.defs[objURI], self.defs[extURI], self._session[LANG]))
+
+    def getd(self, dct, names):
+        """Returns safetly value form dict (treat missing keys).
+        Parametr names can by str or list ro tuple.
+        """
+        return eppdoc.getd(dct, names)
+
 
 if __name__ == '__main__':
     # Test

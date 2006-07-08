@@ -9,6 +9,7 @@ import sys, re
 from gettext import gettext as _T
 #import cmd_history
 import ccReg
+from ccReg.session_base import colored_output
 
 # Kontrola na Unicode
 try:
@@ -26,24 +27,35 @@ def main(host):
     epp.display() # display errors or notes
     if host: epp.set_host(host)
     print _T('For connection to the EPP server type "connect" or directly "login".')
+    status = ('${BOLD}${YELLOW}OFF${NORMAL}','${BOLD}${GREEN}ON${NORMAL}')
+    online = status[0]
     while 1:
         try:
-            command = raw_input("> (?-help, q-quit): ")
+            command = raw_input(colored_output.render("> (?-help, q-quit) %s: "%online))
         except (KeyboardInterrupt, EOFError):
             break
         if command in ('q','quit','exit','konec'):
             epp.send_logout()
             break
-        epp_doc = epp.create_eppdoc(command)
-        if epp_doc:
-            if epp.is_connected():
-                epp.send(epp_doc)          # send to server
-                answer = epp.receive()     # receive answer
-                epp.process_answer(answer) # process answer
-            else:
-                print _T("You are not connected! For connection type command: connect and then login")
+        command_name, epp_doc = epp.create_eppdoc(command)
+        invalid_epp = epp.is_epp_valid(epp_doc)
+        if invalid_epp:
+            epp.append_error(_T('EPP document is not valid'),'BOLD')
+            epp.append_error(invalid_epp)
+        else:
+            if command_name and epp_doc: # if only command is EPP command
+                if epp.is_online(command_name) and epp.is_connected(): # only if we are online
+                    epp.send(epp_doc)          # send to server
+                    xml_answer = epp.receive()     # receive answer
+                    epp.process_answer(xml_answer) # process answer
+                    epp.display() # display errors or notes
+                    epp.print_answer()
+                else:
+                    epp.append_note(_T('You are not connected! Type login before working on the server.'),('BOLD','RED'))
         epp.display() # display errors or notes
+        online = status[epp.is_logon()]
     epp.close()
+    epp.display() # display logout messages
     print "[END]"
 
 

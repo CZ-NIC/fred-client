@@ -215,13 +215,13 @@ class Message(eppdoc_assemble.Message):
                 )),
                 ('vat',(0,1),(),_T('VAT'),()),
                 ('ssn',(0,1),(),_T('SSN'),()),
-                ('notify_email',(0,1),(),_T('notify email'),(
+                ('notify_email',(0,1),(),_T('notify email'),()),
+            )),
+            ),notice['update'],(
                     'update-contact id-contact clientDeleteProhibited',
                     'update-contact id-contact (clientDeleteProhibited linked ok)',
                     'update-contact id-contact (linked ok) (clientDeleteProhibited clientUpdateProhibited) (("John Doe" "Doe Company" "Down street, New York") +00123456789 +00123456456 john@doe.com (1 John John-Comp "Street and City" +01231321 +01234654 john@john.com) my-vat my-ssn notify@here.net',
-                )),
             )),
-            ),notice['update'],()),
         #----------------------------------------------------
         'update_domain': (1,(
             ('name',(1,1),(),_T('domain name'),()),
@@ -326,10 +326,12 @@ def test_help(command_names):
     colored_output = terminal_controler.TerminalController()
     epp = Message()
     for command_name in command_names:
-        command_line,command_help,notice = epp.get_help(command_name)
+        command_line,command_help,notice, examples = epp.get_help(command_name)
         print colored_output.render(command_line)
         print colored_output.render(command_help)
         print colored_output.render(notice)
+        print '\nExamples:'
+        print '\n'.join(examples)
         print '\n\n'
 
 if __name__ == '__main__':

@@ -19,10 +19,19 @@ class ManagerTransfer(ManagerBase):
         # Typ očekávané odpovědi serveru. Zde si Manager pamatuje jaký příkaz
         # odeslal a podle toho pak zařadí návratové hodnoty.
         self._command_sent = '' # jméno posledního odeslaného příkazu
-        self._raw_cmd = None # XML EPP příkaz odeslaný serveru
+        self._raw_cmd = '' # XML EPP příkaz odeslaný serveru
+        self._raw_answer = '' # XML EPP odpověd serveru
+        self._dct_answer = {} # API response
+        self.__reset_src__()
 
     def get_command_names(self):
         return self._available_commands
+
+    def __reset_src__(self):
+        'Reset buffers of sources.'
+        self._raw_answer = '' # XML EPP odpověd serveru
+        self._dict_answer = '' #!!! dict - slovník vytvořený z XML EPP odpovědi
+        self._dct_answer = {'code':0, 'reason':'', 'errors':[], 'data':{}} # API response
 
     def reset_round(self):
         'Prepare for next round. Reset internal dict with communication values.'
@@ -30,6 +39,7 @@ class ManagerTransfer(ManagerBase):
         self._notes = []
         self._epp_cmd.reset()
         self._epp_response.reset()
+        self._command_sent = '' # jméno posledního odeslaného příkazu
 
     #---------------------------------
     # funkce pro nastavení session
@@ -41,7 +51,7 @@ class ManagerTransfer(ManagerBase):
             if self._session[ONLINE]: self.append_note('--- %s ---'%_T('Connection broken'))
             self.close()
 
-    def __command_sent__(self, message):
+    def grab_command_name_from_xml(self, message):
         "Save EPP command type for recognize server answer."
         # manager si zapamatuje jakého typu příkaz byl a podle toho 
         # pak pracuje s hodnotami, které mu server vrátí
@@ -49,7 +59,7 @@ class ManagerTransfer(ManagerBase):
         # Protože lze posílat i XML již vytvořené dříve nebo z jiného programu.
         epp_xml = eppdoc_client.Message()
         epp_xml.parse_xml(message)
-        self._command_sent = epp_xml.get_epp_command_name()
+        return epp_xml.get_epp_command_name()
 
     #==================================================
     #
@@ -80,6 +90,7 @@ class ManagerTransfer(ManagerBase):
             self.__check_is_connected__()
             if epp_greeting:
                 self.process_answer(epp_greeting)
+                self.print_answer() # 1. departure from the rule to print answers
                 return 1
         return 0
         
@@ -102,10 +113,9 @@ class ManagerTransfer(ManagerBase):
         if self._lorry:
             ret = self._lorry.send(message)
             if ret:
-                # pokud se podařilo dokument odeslat, tak si manager zapamatuje
-                # jakého typu příkaz byl a podle toho pak pracuje s hodnotami,
-                # které mu server vrátí
-                self.__command_sent__(message)
+                # If XML doc has been sent, manager saves the name of this command.
+                # This is essensial for resolve how type the server answer is.
+                self._command_sent = self.grab_command_name_from_xml(message)
                 self.append_note(_T('Command was sent to EPP server.'),('GREEN','BOLD'))
             self.__check_is_connected__()
         else:
@@ -122,6 +132,7 @@ class ManagerTransfer(ManagerBase):
             self.send(epp_doc)          # odeslání dokumentu na server
             answer = self.receive()     # příjem odpovědi
             self.process_answer(answer) # zpracování odpovědi
+            self.print_answer() # 2. departure from the rule to print answers
         else:
             self.append_error(self._epp_cmd.get_errors())
             
@@ -138,3 +149,27 @@ class ManagerTransfer(ManagerBase):
     def process_answer(self, epp_server_answer):
         "This function MUST override derived class."
         self.append_error('Internal Error: Function process_answer() must be overriden!')
+
+    def print_answer(self, dct=None):
+        'Show values parsed from the server answer.'
+        if not dct: dct = self._dct_answer
+        code = dct['code']
+        print '-'*60
+        print colored_output.render('${BOLD}code:${NORMAL} %d'%code)
+        print colored_output.render('${BOLD}reason:${NORMAL} ${BOLD}${%s}%s${NORMAL}'%(('YELLOW','GREEN')[code==1000],dct['reason']))
+        print colored_output.render('${BOLD}errors:${NORMAL}')
+        if len(dct['errors']):
+            print colored_output.render('${BOLD}${RED}')
+            for error in dct['errors']:
+                print '  ',error
+            print colored_output.render('${NORMAL}')
+        print colored_output.render('${BOLD}data:${NORMAL}')
+        for k,v in dct['data'].items():
+            if type(v) in (list,tuple):
+                if len(v):
+                    print colored_output.render('\t${BOLD}%s:${NORMAL} %s'%(k,v[0]))
+                    for text in v[1:]:
+                        print '\t\t%s'%text
+            else:
+                print colored_output.render('\t${BOLD}%s:${NORMAL} %s'%(k,v))
+        print '-'*60

@@ -7,21 +7,12 @@ from session_base import *
 from session_command import ManagerCommand
 
 SEPARATOR = '-'*60
-ANSW_RESPONSE, ANSW_RESULT, ANSW_CODE, ANSW_MSG = range(4)
+ANSW_RESULT, ANSW_CODE, ANSW_MSG = range(3)
 
 class ManagerReceiver(ManagerCommand):
     """EPP client support.
     This class manage creations of the EPP documents.
     """
-    def __init__(self):
-        ManagerCommand.__init__(self)
-        self._raw_answer = None # XML EPP odpověd serveru
-        self._dict_answer = None # dict - slovník vytvořený z XML EPP odpovědi
-
-    def __reset_src__(self):
-        'Reset buffers of sources.'
-        self._raw_answer = None # XML EPP odpověd serveru
-        self._dict_answer = None # dict - slovník vytvořený z XML EPP odpovědi
 
     #==================================================
     #
@@ -33,64 +24,68 @@ class ManagerReceiver(ManagerCommand):
     def __append_note_from_dct__(self,dict_data,cols):
         """Append columns values from dict to note stack.
         cols = ('column-name','column-name','column-name attr-name attr-name','node')
+        TODO: prijde zrusit
         """
+        dct = self._dct_answer['data']
         for column_name in cols:
             lcol = column_name.split(' ')
             if len(lcol)>1:
                 value = eppdoc.get_dct_value(dict_data, lcol[0])
-                attr = []
                 for a in lcol[1:]:
                     val = eppdoc.get_dct_attr(dict_data, lcol[0], a)
-                    if val: attr.append('\t${BOLD}%s${NORMAL}\t%s'%(a,val))
-                if len(attr): self.append_note('${BOLD}%s${NORMAL}\t%s\n%s'%(lcol[0],value,','.join(attr)))
+                    if val: append_dct(dct,a,val)
             else:
                 value = eppdoc.get_dct_value(dict_data, column_name)
-                if value: self.append_note('${BOLD}%s${NORMAL}\t%s'%(column_name,value))
+                if value: append_dct(dct,column_name,value)
 
     def __code_isnot_1000__(self, data, label):
         """Append standard message if answer code is not 1000.
         Returns FALSE - code is 1000; TRUE - code is NOT 1000;
         """
-        if data[ANSW_CODE] != '1000':
+        if data[ANSW_CODE] != 1000:
             # standardní výstup chybového hlášení
-            self.append_note('${BOLD}%s${NORMAL} ${%s}%s${NORMAL}'%(label, ('RED','GREEN')[data[ANSW_CODE] == '1000'], data[ANSW_MSG]))
             # detailní rozepsání chyby:
             if data[ANSW_RESULT].has_key('extValue'):
                 extValue = data[ANSW_RESULT]['extValue']
                 if type(extValue) not in (list,tuple): extValue = (extValue,)
                 for item in extValue:
+                    msg = []
                     if item.has_key('value'):
                         for key in item['value'].keys():
-                            value = item['value'][key].get('data',item['value'][key])
-                            self.append_note('${BOLD}%s:${NORMAL} %s = %s'%(_T('value'),key,value),'RED')
+                            msg.append('%s:'%item['value'][key].get('data',item['value'][key]))
                     if item.has_key('reason'):
-                        value = item['reason'].get('data',item['reason'])
-                        self.append_note('${BOLD}%s:${NORMAL} %s'%(_T('reason'),value),'RED')
-        return data[ANSW_CODE] != '1000'
+                        msg.append(item['reason'].get('data',item['reason']))
+                    self._dct_answer['errors'].append(' '.join(msg))
+        return data[ANSW_CODE] != 1000
 
-    def answer_response(self, dict_answer):
+    def answer_response(self):
         "Part of process answer - parse response node."
         # Zde se hledá, jestli na odpověd existuje funkce, ketrá ji zpracuje.
         # Pokud, ne, tak se odpověd zobrací celá standardním způsobem.
         display_src = 1 # Má se odpověd zobrazit celá? 1-ano, 0-ne
-        response = dict_answer.get('response',None)
+        response = self._dict_answer.get('response',None)
         if response:
             result = response.get('result',None)
             if result:
+                try:
+                    code = int(eppdoc.get_dct_attr(result,(),'code'))
+                except ValueError, msg:
+                    self._dct_answer['code'].append('%s: %s'%(_T('Invalid response code'),msg))
+                    code = 0
+                reason = eppdoc.get_dct_value(result,'msg')
+                self._dct_answer['code'] = code
+                self._dct_answer['reason'] = reason
                 fnc_name = 'answer_response_%s'%self._command_sent.replace(':','_')
                 if hasattr(self,fnc_name):
-                    getattr(self,fnc_name)((dict_answer, result, eppdoc.get_dct_attr(result,(),'code'), eppdoc.get_dct_value(result,'msg')))
+                    getattr(self,fnc_name)((result, code, reason))
                     display_src = 0 # Odpověd byla odchycena, není potřeba ji zobrazovat celou.
-                else:
-                    # odpovědi na ostatní příkazy
-                    self.append_note('%s: %s'%(_T('Server response'),self._command_sent),('GREEN','BOLD'))
             else:
-                self.append_note(_T('Missing result in the response message.'),('RED','BOLD'))
+                self._dct_answer['errors'].append(_T('Missing result in the response message.'))
         else:
-            self.append_note(_T('Unknown server response:'),('RED','BOLD'))
+            self._dct_answer['errors'].append(_T('Unknown server response'))
         if display_src:
             # Pokud odpověd neodchytila žádná funkce, tak se odpověd zobrazí celá.
-            self.__put_raw_into_note__(dict_answer)
+            self.__put_raw_into_note__(self._dict_answer)
 
     def process_answer(self, epp_server_answer):
         'Main function. Process incomming EPP messages. This funcion is called by listen socket.'
@@ -110,63 +105,59 @@ class ManagerReceiver(ManagerCommand):
                 invalid_epp = self.is_epp_valid(self._epp_response.get_xml())
                 if invalid_epp:
                     # když se odpověd serveru neplatná...
-                    self.append_note(_T('Server answer is not valid!'),('RED','BOLD'))
+                    msg = _T('Server answer is not valid!')
+                    self.append_note(msg,('RED','BOLD'))
                     self.append_note(invalid_epp)
                     self.append_note('%s ${BOLD}validate off${NORMAL}.'%_T('For disable validator type'))
             if not self._epp_response.is_error():
                 # když přišla nějaká odpověd a podařilo se jí zparsovat:
                 self._dict_answer = self._epp_response.create_data()
                 if self._dict_answer.get('greeting',None):
-                    self.answer_greeting(self._dict_answer)
+                    self.answer_greeting()
                 elif self._dict_answer.get('response',None):
-                    self.answer_response(self._dict_answer)
+                    self.answer_response()
                 else:
-                    self.append_note(_T('Unknown response type:'),('RED','BOLD'))
+                    self.append_note(_T('Unknown response type'),('RED','BOLD'))
                     self.__put_raw_into_note__(self._dict_answer)
         else:
             self.append_note(_T("No response. EPP Server doesn't answer."))
-        self.display() # zobrazení všech hlášení vygenerovaných během zpracování
 
-    def get_ro(self):
-        'Returns Response Object (class with values).'
-        return self._epp_response.create_data(True)
-        
     #==================================================
     #
     # Zpracování jednotlivých příchozích zpráv
     # funkce jsou ve tvaru [prefix]_[jméno příkazu]
     # answer_response_[command]
     #==================================================
-    def answer_greeting(self, dict_answer):
+    def answer_greeting(self):
         "Part of process answer - parse greeting node."
-        greeting = dict_answer['greeting']
-        self.append_note(SEPARATOR)
-        self.append_note(_T('Greeting message incomming'),('GREEN','BOLD'))
-        self.defs[LANGS] = eppdoc.get_dct_value(greeting, ('svcMenu','lang'))
+        dct = self._dct_answer['data']
+        greeting = self._dict_answer['greeting']
+        if not self._dct_answer['reason']: self._dct_answer['reason'] = _T('Greeting message incomming')
+        self.defs[LANGS] = eppdoc.get_dct_value(greeting, ('svcMenu','lang')).split('\n')
         if type(self.defs[LANGS]) in (str,unicode):
             self.defs[LANGS] = (self.defs[LANGS],)
-        self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('Available language versions'),', '.join(self.defs[LANGS])))
+        dct['lang'] = self.defs[LANGS]
         self.defs[objURI] = eppdoc.get_dct_values(greeting, ('svcMenu','objURI'))
         self.defs[extURI] = eppdoc.get_dct_values(greeting, ('svcMenu','svcExtension','extURI'))
-        if self.defs[objURI]: self.append_note('%s objURI:\n\t%s'%(_T('Available'),'\n\t'.join(self.defs[objURI])))
-        if self.defs[extURI]: self.append_note('${BOLD}extURI${NORMAL}: %s'%'\n\t'.join(self.defs[extURI]))
+        if self.defs[objURI]:
+            dct['objURI'] = self.defs[objURI]
+        if self.defs[extURI]:
+            dct['extURI'] = self.defs[extURI]
+        adjust_dct_keys(dct,('lang','objURI','extURI'))
 
     def answer_response_logout(self, data):
         "data=(response,result,code,msg)"
-        self.append_note(data[ANSW_MSG])
-        self.append_note(_T('You are loged out of the private area.'))
         self.close()
 
     def answer_response_login(self, data):
         "data=(response,result,code,msg)"
         self.append_note(data[ANSW_MSG])
-        if data[ANSW_CODE] == '1000':
+        if data[ANSW_CODE] == 1000:
             self._session[ONLINE] = 1 # indikátor zalogování
             self._session[CMD_ID] = 1 # reset - první command byl login
-            self.append_note('*** %s ***'%_T('You are logged on!'),('GREEN','BOLD'))
-##            self.append_note('${BOLD}${GREEN}%s${NORMAL}\n%s'%(_T("Available EPP commands:"),", ".join(self._available_commands)))
+            self._dct_answer['data']['session'] = '*** %s ***'%_T('Start session!')
         else:
-            self.append_note('--- %s ---'%_T('Login failed'),('RED','BOLD'))
+            self._dct_answer['data']['session'] = '--- %s ---'%_T('Login failed')
             self.__code_isnot_1000__(data, 'login')
 
     #-------------------------------------
@@ -175,8 +166,9 @@ class ManagerReceiver(ManagerCommand):
     def answer_response_contact_info(self, data):
         "data=(response,result,code,msg)"
         if self.__code_isnot_1000__(data, 'info:contact'): return
+        dct = self._dct_answer['data']
         try:
-            resData = data[ANSW_RESPONSE]['response']['resData']
+            resData = self._dict_answer['response']['resData']
             contact_infData = resData['contact:infData']
             contact_postalInfo = contact_infData['contact:postalInfo']
             contact_disclose = contact_infData['contact:disclose']
@@ -185,12 +177,10 @@ class ManagerReceiver(ManagerCommand):
         else:
             self.__append_note_from_dct__(contact_infData,
                 ('contact:id','contact:roid','contact:status s'))
-            self.append_note('${BOLD}contact:postalInfo${NORMAL} %s'%('-'*20))
             self.__append_note_from_dct__(contact_postalInfo,('contact:name','contact:org'))
             contact_addr = contact_postalInfo.get('contact:addr',None)
             if contact_addr:
                 self.__append_note_from_dct__(contact_addr,('contact:street','contact:city','contact:cc'))
-            self.append_note('-'*40)
             self.__append_note_from_dct__(contact_infData,('contact:email','contact:crID','contact:crDate','contact:upID','contact:upDate'))
             contact_disclose = contact_infData.get('contact:disclose',None)
             if contact_disclose:
@@ -200,7 +190,7 @@ class ManagerReceiver(ManagerCommand):
         "data=(response,result,code,msg)"
         if self.__code_isnot_1000__(data, 'info:domain'): return
         try:
-            resData = data[ANSW_RESPONSE]['response']['resData']
+            resData = self._dict_answer['response']['resData']
             domain_infData = resData['domain:infData']
         except KeyError, msg:
             self.append_error('answer_response_domain_info KeyError: %s'%msg)
@@ -214,14 +204,13 @@ class ManagerReceiver(ManagerCommand):
         "data=(response,result,code,msg)"
         if self.__code_isnot_1000__(data, 'info:nsset'): return
         try:
-            resData = data[ANSW_RESPONSE]['response']['resData']
+            resData = self._dict_answer['response']['resData']
             nsset_infData = resData['nsset:infData']
         except KeyError, msg:
             self.append_error('answer_response_nsset_info KeyError: %s'%msg)
         else:
             self.__append_note_from_dct__(nsset_infData,('nsset:id','nsset:roid','nsset:clID','nsset:crID'
                 ,'nsset:crDate','nsset:upID','nsset:trDate','nsset:authInfo'))
-            self.append_note('${BOLD}nsset:ns${NORMAL} %s'%('-'*20))
             if nsset_infData.has_key('nsset:ns'):
                 nsset_ns = nsset_infData['nsset:ns']
                 if type(nsset_ns) == list:
@@ -233,20 +222,18 @@ class ManagerReceiver(ManagerCommand):
     #-------------------------------------
     # *** check ***
     #-------------------------------------
-    def __check_available__(self, dict_data, names, attr_name):
+    def __check_available__(self, dct_answer, dict_data, names, attr_name):
         """Assign available names for check_...() functions.
         names=('domain','name')
         """
         column_name = '%s:%s'%names
         value = eppdoc.get_dct_value(dict_data, column_name)
         code = eppdoc.get_dct_attr(dict_data, column_name, attr_name)
-        reason = eppdoc.get_dct_value(dict_data, '%s:reason'%names[0]) # nepovinný
+        #reason = eppdoc.get_dct_value(dict_data, '%s:reason'%names[0]) # nepovinný
         if code in ('1','true'):
-            status = '${BOLD}${GREEN}%s${NORMAL}'%_T('OK! Available')
+            dct_answer['data'][value] = 1
         else:
-            status = '${BOLD}${RED}%s${NORMAL}' % _T('Not available')
-        if reason: reason = '\t(%s)'%reason # nepovinný
-        self.append_note('${BOLD}%s${NORMAL} %s %s%s'%(column_name,status,value,reason))
+            dct_answer['data'][value] = 0
 
     def __answer_response_check__(self, data, names):
         """Process all check_[command]() functions. 
@@ -255,17 +242,19 @@ class ManagerReceiver(ManagerCommand):
         """
         if self.__code_isnot_1000__(data, '%s:check'%names[0]): return
         try:
-            resData = data[ANSW_RESPONSE]['response']['resData']
+            resData = self._dict_answer['response']['resData']
             chunk_chkData = resData['%s:chkData'%names[0]]
             chunk_cd = chunk_chkData['%s:cd'%names[0]]
         except KeyError, msg:
-            self.append_error('answer_response_%s_check KeyError: %s'%(names[0],msg))
+            errmsg = 'answer_response_%s_check KeyError: %s'%(names[0],msg)
+            self.append_error(errmsg)
+            self._dct_answer['errors'].append(errmsg)
         else:
             if operator.isSequenceType(chunk_cd):
                 for item in chunk_cd:
-                    self.__check_available__(item, names, 'avail')
+                    self.__check_available__(self._dct_answer, item, names, 'avail')
             else:
-                self.__check_available__(chunk_cd, names, 'avail')
+                self.__check_available__(self._dct_answer, chunk_cd, names, 'avail')
 
     def answer_response_contact_check(self, data):
         "data=(response,result,code,msg)"
@@ -282,21 +271,18 @@ class ManagerReceiver(ManagerCommand):
     def answer_response_poll(self, data):
         "data=(response,result,code,msg)"
         label='poll'
-        if data[ANSW_CODE] == '1000':
-            label+=' (%s)'%_T('Acknowledgement response')
-        self.append_note('%s: %s'%(label,data[ANSW_MSG]))
         msgQ = None
-        response = data[ANSW_RESPONSE].get('response',None)
+        response = self._dict_answer.get('response',None)
         if response: msgQ = response.get('msgQ',None)
         if msgQ:
             self.__append_note_from_dct__(response,('msgQ count id',))
             self.__append_note_from_dct__(msgQ,('qDate','msg'))
-        if data[ANSW_CODE] == '1301' and self.__get_config__('session','poll_ack') == 'on':
-            # automatická odpověd 'ack'
-            xml_doc = self.create_eppdoc('poll ack')
-            if xml_doc and self.is_connected():
-                self.append_note(_T('Sending command poll ack'))
-                self.send(xml_doc)
+        #if data[ANSW_CODE] == '1301' and self.__get_config__('session','poll_ack') == 'on':
+        #    # automatická odpověd 'ack'
+        #    xml_doc = self.create_eppdoc('poll ack')
+        #    if xml_doc and self.is_connected():
+        #        self.append_note(_T('Sending command poll ack'))
+        #        self.send(xml_doc)
 
     def answer_response_domain_transfer(self, data):
         "data=(response,result,code,msg)"
@@ -311,33 +297,48 @@ class ManagerReceiver(ManagerCommand):
     # Main API function
     #
     #-------------------------------------------------
-    def api_command(self, command_name, dct_raw=None):
+    def api_command(self, command_name, params=None):
         """Process command from API. Main API function.
         Create EPP command - send to server - receive answer - parse answer to dict - returns dict.
         """
         self.reset_round()
-        dct_data = adjust_dict(dct_raw)
-        self.create_command_with_params(command_name, dct_data)
+        dct_params = adjust_dict(params)                                                   # turn params into expecterd format
+        self.create_command_with_params(command_name, dct_params) # create EPP command
+        self._raw_cmd = self._epp_cmd.get_xml()                                        # get EPP in XML (string)
         if len(self._errors): raise ccRegError(self.fetch_errors())
-        epp_doc = self._epp_cmd.get_xml()
-        if epp_doc:
-            errors = self.is_epp_valid(epp_doc)
+        if self.is_online(command_name):                                                    # go only if session is online.
+            errors = self.is_epp_valid(self._raw_cmd)                                    # check doc for EPP validation
             if len(errors): raise ccRegError(errors)
-            if self.is_connected():
-                self.send(epp_doc)                 # send to server
+            if self.is_connected(): # if we are connect, lets communicate with the server
+                self.send(self._raw_cmd)                                                         # send to server
                 if len(self._errors): raise ccRegError(self.fetch_errors())
-                answer = self.receive()           # receive answer
-                self.process_answer(answer) # process answer
+                xml_answer = self.receive()                                                     # receive answer
+                self.process_answer(xml_answer)                                           # process answer
                 if len(self._errors): raise ccRegError(self.fetch_errors())
             else:
-                raise ccRegError(_T("You are not connected! For connection type command: connect and then login"))
+                raise ccRegError(_T("You are not connected! For connection type: connect or login"))
         else:
-            raise ccRegError(_T("XML EPP document wasnot created."))
-        return self._dict_answer
+            self._dct_answer['errors'].append(_T('You are not logged. You must call login() before working on the server.')) # _T("XML EPP document was not created.")
+        if len(self._errors): raise ccRegError(self.fetch_errors())
+        return self._dct_answer
+
+
 
 class ccRegError(StandardError):
     'ccReg EPP errors.'
-        
+
+    
+def append_dct(dct,key,value):
+    'Appends value at the dict key.'
+    if dct.has_key(key):
+        if type(dct[key]) == list:
+            dct[key].append(value)
+        else:
+            dct[key] = [dct[key], vlalue]
+    else:
+        dct[key] = value
+
+    
 def adjust_dict(dct_data):
     'Remove None and put items into list.'
     dct={}
@@ -359,7 +360,15 @@ def adjust_dict(dct_data):
                         if item != None: dct[k].append(item)
     return dct
 
-
+def adjust_dct_keys(dct, names):
+    'Keys must exists and values must be list or tuple.'
+    for name in names:
+        if dct.has_key(name):
+            if type(dct[name]) not in (list,tuple):
+                dct[name] = (dct[name],)
+        else:
+            dct[name] = ()
+    
 def test(xml):
     m = ManagerReceiver()
     m._command_sent = 'transfer'
