@@ -4,7 +4,7 @@ import re
 from gettext import gettext as _T
 import eppdoc_assemble
 
-UNBOUNDED = None
+UNBOUNDED = eppdoc_assemble.UNBOUNDED
 
 # Help
 notice = {'check':_T("""
@@ -284,7 +284,7 @@ class Message(eppdoc_assemble.Message):
             )),
             ('chg',(0,1),(),_T('change part'),(
                 ('pw',(0,1),(),_T('password'),()),
-                ('ext',(0,1),(),_T('ext'),()),
+                #('ext',(0,1),(),_T('ext'),()),
             )),
             ),notice['update'],(
                 'update-nsset nic.cz',

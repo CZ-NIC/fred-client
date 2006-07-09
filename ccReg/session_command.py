@@ -37,10 +37,9 @@ class ManagerCommand(ManagerTransfer):
             else:
                 self.append_note(edoc.get_xml(),'GREEN')
 
-    
-    def __check_EPP_command__(self, command_name, cmdline):
+    def __parse_command_params__(self, command_name, cmdline, interactive):
         "Check if parameters are valid. Params save into dict for use to assembling EPP document."
-        errors = self._epp_cmd.parse_cmd(command_name, cmdline, self._conf)
+        errors = self._epp_cmd.parse_cmd(command_name, cmdline, self._conf, interactive)
         if errors: self._errors.extend(errors)
         return (len(errors) == 0)
 
@@ -69,7 +68,9 @@ class ManagerCommand(ManagerTransfer):
                 self.append_note(_T('Instead "command" Select one from this list bellow:'))
                 command_name='.'
             self.append_note('\n${BOLD}${GREEN}%s:${NORMAL}\n%s'%(_T("Available EPP commands"),", ".join(self._available_commands)))
-            self.append_note(_T('Type "help command" for mode details.'))
+            self.append_note(_T('Type "?command" (or "h(elp) command") for mode details about parameters.'))
+            self.append_note(_T('To switch interactive input of the command params type: ${BOLD}!command${NORMAL}'))
+            self.append_note(_T('For jumb out from interactive input type ! again (or more "!" for leave sub-scope)'))
         return command_name
 
     def make_help_session(self, command_name):
@@ -81,16 +82,19 @@ ${BOLD}lang${NORMAL} cs ${CYAN}# set language${NORMAL}
 ${BOLD}validate${NORMAL} on/off (or validate for see actual value) ${CYAN}# set validation${NORMAL}
 ${BOLD}raw-c${NORMAL}[ommand] [xml]/${BOLD}d${NORMAL}[ict] ${CYAN}# display raw command${NORMAL} (instead of raw you can also type ${BOLD}src${NORMAL})
 ${BOLD}raw-a${NORMAL}[nswer] [xml]/${BOLD}d${NORMAL}[ict]  ${CYAN}# display raw answer${NORMAL}
+${BOLD}confirm${NORMAL} ${BOLD}on${NORMAL}/[off]  ${CYAN}# confirm editable commands befor sending to the server${NORMAL}
+${BOLD}config${NORMAL} ${CYAN}# display actual config${NORMAL}
+${BOLD}config${NORMAL} ${BOLD}create${NORMAL} ${CYAN}# create default config file in user home folder.${NORMAL}
 """))
 
     def epp_command(self, cmdline):
         'Find EPP command in input and check if is known.'
         command_name = cmdline
-        m=re.match('(\S+)',cmdline)
+        m=re.match('(!)?\s*(\S+)',cmdline)
         if m:
-            if m.group(1).replace('_','-') in self._available_commands:
-                command_name = m.group(1)
-                if self.__check_EPP_command__(command_name, cmdline):
+            if m.group(2).replace('_','-') in self._available_commands:
+                command_name = m.group(2)
+                if self.__parse_command_params__(command_name, cmdline, m.group(1)):
                     self.create_command_with_params(command_name, self._epp_cmd.get_params())
                 else:
                     self.append_error(self._epp_cmd.get_errors()) # any problems on the command line occurrs
@@ -123,9 +127,15 @@ ${BOLD}raw-a${NORMAL}[nswer] [xml]/${BOLD}d${NORMAL}[ict]  ${CYAN}# display raw 
         m = re.match('(\S+)(.*)',cmd)
         if m: cmd = '%s%s'%(m.group(1).replace('-','_'), m.group(2))
         # help
-        m = re.match(r'(?:\?|h(?:elp)?)(?:\s+(.+)|$)', cmd)
+        help, help_item = None,None
+        m = re.match('(h(?:elp)?)(?:$|\s+(\S+))',cmd)
         if m:
-            self.make_help_session(self.make_help(m.group(1)))
+            help, help_item = m.groups()
+        else:
+            m = re.match('(\?)(?:$|\s*(\S+))',cmd)
+            if m: help, help_item = m.groups()
+        if help:
+            self.make_help_session(self.make_help(help_item))
         elif re.match('lang(\s+\w+)?',cmd):
             # nastavení zazykové verze
             m = re.match('lang\s+(\w+)',cmd)
@@ -165,19 +175,13 @@ ${BOLD}raw-a${NORMAL}[nswer] [xml]/${BOLD}d${NORMAL}[ict]  ${CYAN}# display raw 
         elif re.match('send',cmd):
             self._raw_cmd = ''
             # Posílání již vytvořených souborů na server
-            filepath = ''
+            filepath = '.'
             m = re.match('send\s*(\S+)',command)
-            if m: filepath = os.path.expanduser(m.group(1))
-            if not filepath: filepath = '~' # implicitně user-home
-            if filepath[0] not in './~': filepath = '~/'+filepath
-            filepath = os.path.expanduser(filepath)
-            if os.path.isfile(filepath):
-                self.append_note('%s: %s'%(_T('Load file'),filepath))
-                self._raw_cmd = self._epp_cmd.load_xml_doc(filepath)
-                errors = self._epp_cmd.fetch_errors()
-                if errors: self.append_note(errors)
-                command_name = self.grab_command_name_from_xml(self._raw_cmd)
-            else:
+            if m:
+                modul_path = os.path.dirname(__file__)
+                if modul_path: modul_path+= '/'
+                filepath = os.path.normpath(modul_path+os.path.expanduser(m.group(1)))
+            if os.path.isdir(filepath):
                 # zobrazit adresář
                 self.append_note('%s: %s'%(_T('Dir list'),filepath))
                 try:
@@ -185,8 +189,24 @@ ${BOLD}raw-a${NORMAL}[nswer] [xml]/${BOLD}d${NORMAL}[ict]  ${CYAN}# display raw 
                 except OSError, (no, msg):
                     stuff = 'OSError: [%d] %s'%(no, msg)
                 self.append_note(stuff)
+            elif os.path.isfile(filepath):
+                self.append_note('%s: %s'%(_T('Load file'),filepath))
+                self._raw_cmd = self._epp_cmd.load_xml_doc(filepath)
+                errors = self._epp_cmd.fetch_errors()
+                if errors: self.append_note(errors)
+                command_name = self.grab_command_name_from_xml(self._raw_cmd)
+            else:
+                self.append_note('%s: %s'%(_T('Not found'),filepath))
         elif re.match('connect',cmd):
             self.connect() # připojení k serveru
+        elif re.match('confirm',cmd):
+            m = re.match('confirm\s+(\S+)',cmd)
+            if m:
+                self.set_confirm(m.group(1))
+            else:
+                self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('Confirm is'),('OFF','ON')[self._session[CONFIRM_SEND_COMMAND]]))
+        elif re.match('config\s*(.*)',cmd):
+            self.manage_config(re.match('config\s*(.*)',cmd).groups())
         elif re.match('validate',cmd):
             self.set_validate(cmd) # set validation of created EPP document
         else:
@@ -222,10 +242,11 @@ ${BOLD}raw-a${NORMAL}[nswer] [xml]/${BOLD}d${NORMAL}[ict]  ${CYAN}# display raw 
             self.defs[PREFIX] = ''.join([chr(random.randint(97,122)) for n in range(4)])
             self._epp_cmd.assemble_login(self.__next_clTRID__(), (eppdoc_nic_cz_version, self.defs[objURI], self.defs[extURI], self._session[LANG]))
 
-    def getd(self, dct, names):
+    def getd(self, names, dct = None):
         """Returns safetly value form dict (treat missing keys).
         Parametr names can by str or list ro tuple.
         """
+        if dct is None: dct = self._dct_answer
         return eppdoc.getd(dct, names)
 
 

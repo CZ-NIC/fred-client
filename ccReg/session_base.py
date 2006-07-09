@@ -10,7 +10,7 @@ import terminal_controler
 colored_output = terminal_controler.TerminalController()
 
 # názvy sloupců pro data sestavené při spojení se serverem
-ONLINE,CMD_ID,LANG,POLL_AUTOACK = range(4)
+ONLINE, CMD_ID, LANG, POLL_AUTOACK, CONFIRM_SEND_COMMAND = range(5)
 # názvy sloupců pro defaultní hodnoty
 DEFS_LENGTH = 4
 LANGS,objURI,extURI,PREFIX = range(DEFS_LENGTH)
@@ -28,10 +28,11 @@ class ManagerBase:
         # Session data:
         #-----------------------------------------
         self._session = [
-                 0      # ONLINE
-                ,0      # CMD_ID
-                ,'en' # LANG
-                ,1      # POLL_AUTOACK
+                0,      # ONLINE
+                0,      # CMD_ID
+                'en', # LANG
+                1,       # POLL_AUTOACK
+                1        # CONFIRM_SEND_COMMAND
                 ]
         # defaults
         self.defs = ['']*DEFS_LENGTH
@@ -46,7 +47,16 @@ class ManagerBase:
     def is_logon(self):
         'Returns 0-offline,1-online.'
         return self._session[ONLINE]
-        
+
+    def is_confirm_cmd_name(self, command_name):
+        'Returns 0-not conrifmation,1-need conrifmation.'
+        return self._session[CONFIRM_SEND_COMMAND] and re.match('(create|update|delete|transfer|renew)',command_name)
+
+    def set_confirm(self, type):
+        'Set switch confirm_commands_before_send'
+        self._session[CONFIRM_SEND_COMMAND] = (0,1)[type in ('on','ON')]
+        self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('Confirm has been set to'),('OFF','ON')[self._session[CONFIRM_SEND_COMMAND]]))
+
     def set_host(self,host):
         self._host = host
 
@@ -86,7 +96,6 @@ class ManagerBase:
             # hlášení, poznámka, hodnoty
             for text in self._notes:
                 print_unicode(colored_output.render(text))
-                
             self._notes = []
         if self.is_error():
             # chybová hlášení
@@ -125,6 +134,23 @@ class ManagerBase:
     #---------------------------
     # config
     #---------------------------
+    def manage_config(self, param):
+        'Display config values or save config.'
+        if param[0] == 'create':
+            if self.__create_default_conf__():
+                self.save_confing()
+            else:
+                self.append_error(_T('Create default config failed.'))
+        else:
+            print_unicode('%s:'%_T("Actual config is"))
+            if not self._conf:
+                print_unicode(_T('No config'))
+                return
+            for section in self._conf.sections():
+                print colored_output.render('${BOLD}[%s]${NORMAL}'%section)
+                for option in self._conf.options(section):
+                    print_unicode(colored_output.render('\t${BOLD}%s${NORMAL} = %s'%(option,self._conf.get(section,option))))
+    
     def __create_default_conf__(self):
         'Create default config file.'
         # aktuální adresář? filepath
@@ -174,13 +200,15 @@ class ManagerBase:
                 value = 0
         return value
 
-    def __save_conf__(self):
+    def save_confing(self):
         'Save conf file.'
+        filepath = os.path.expanduser('~/%s'%self._name_conf)
         try:
-            fp = open(os.path.expanduser('~/%s'%self._name_conf),'w')
+            fp = open(filepath,'w')
             self._conf.write(fp)
             fp.close()
             self.append_note(_T('Default config file saved. For more see help.'))
+            self.append_note(filepath,('BOLD','GREEN'))
         except IOError, (no, msg):
             self.append_error('%s: [%d] %s'%(_T('Impossible saving conf file. Reason'),no,msg))
 
@@ -198,7 +226,7 @@ class ManagerBase:
                 self.append_error(_T('Fatal error: Create default config failed.'))
                 self.display() # display errors or notes
                 return 0 # fatal error
-            # self.__save_conf__() automatické uložení configu (vypnuto)
+            # self.save_confing() automatické uložení configu (vypnuto)
         # set session variables
         section = 'session'
         lang = self.__get_config__(section,'lang')
@@ -206,6 +234,7 @@ class ManagerBase:
             self._session[LANG] = lang
         else:
             self.append_note('%s: ${BOLD}%s${NORMAL} %s'%(_T('This language code is not allowed'),lang,str(self.defs[LANGS])))
+        self._session[CONFIRM_SEND_COMMAND] = (0,1)[self.__get_config__(section,'confirm_send_commands') == 'on']
         return 1 # OK
 
     #---------------------------
@@ -234,7 +263,11 @@ class ManagerBase:
         if len(standr) and not len(errors):
             ok = 1 # OK, support is enabled.
         else:
-            self.append_note(errors.encode(sys.stdout.encoding))
+            try:
+                uerr = errors.decode(sys.stdout.encoding)
+            except UnicodeDecodeError:
+                uerr = repr(errors)
+            self.append_note(uerr)
             self._validate = 0 # validator is automaticly switched off
             self.append_note('%s ${BOLD}validate on${NORMAL}.'%_T('Validator has been disabled. For enable type'))
         return ok
@@ -299,10 +332,14 @@ def join_unicode(u_list, sep='\n'):
 
 def print_unicode(text):
     'Print text and catch problems with unicode.'
-    try:
-        print text
-    except UnicodeEncodeError, msg:
-        print colored_output.render('${RED}${BOLD}%s:${NORMAL} %s'%(_T('No unicode. Display raw'),repr(re.sub('\x1b[^m]*m','',text))))
+    if type(text) == unicode:
+        print colored_output.render(text)
+    else:
+        try:
+            print colored_output.render(text)
+        except UnicodeEncodeError, msg:
+            # print colored_output.render('${RED}${BOLD}%s:${NORMAL} %s'%(_T('No unicode. Display raw'),repr(re.sub('\x1b[^m]*m','',text))))
+            print repr(re.sub('\x1b[^m]*m','',text))
 
 def get_unicode(text):
     'Convert to unicode and catch problems with conversion.'

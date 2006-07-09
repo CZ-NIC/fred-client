@@ -4,18 +4,39 @@
 import ccReg
 
 try:
-    epp = new ccReg.Client()
+    epp = ccReg.Client()
     ret = epp.login("reg-lrr","123456789")
-    if epp.getd(ret,'code') == 1000:  # also possible: if ret['code'] == 1000:
+    if ret['code'] == 1000:
         ret = epp.check_contact(("handle1","handle2"))
-        if epp.getd(ret,('data','handle1')): # ret['data']['handle1']
-            epp.create_contact("handle1", "My Name", "email@email.net", "City", "CZ")
-        else:
-            response = epp.info_contact("handle1")
-            epp.show(response)
+        if ret['data']['handle1']:
+            # handle is available
+            ret = epp.create_contact("handle1", "My Name", "email@email.net", "City", "CZ")
+            epp.print_answer(ret)
+        ret = epp.info_contact("handle1")
+        epp.print_answer(ret)
         epp.logout()
 except ccRegError, msg:
     print msg
+
+# or you can use function getd() what returns value without KeyError:
+# You dont keep return values. The object holds them and functions getd() and print_answer()  use them too.
+# Next possibility previous example:
+    
+try:
+    epp = ccReg.Client()
+    epp.login("reg-lrr","123456789")
+    if epp.getd() == 1000:
+        epp.check_contact(("handle1","handle2"))
+        if epp.getd(('data','handle1')):
+            epp.create_contact("handle1", "My Name", "email@email.net", "City", "CZ")
+        else:
+            epp.info_contact("handle1")
+            epp.print_answer()
+        epp.logout()
+except ccRegError, msg:
+    print msg
+
+
 """
 
 import cmd_history
@@ -606,11 +627,11 @@ class Client:
         'Set process validate ON/OFF. mode: 0/1.'
         self._epp._validate = mode
 
-    def getd(self, dct, names):
+    def getd(self, names = 'code', dct=None):
         """Returns safetly value form dict (treat missing keys).
         Parametr names can by str or list ro tuple.
         """
-        return self._epp.getd(dct, names)
+        return self._epp.getd(names,dct)
 
 class ClientSession(ManagerReceiver):
     "Use for console or batch applications."

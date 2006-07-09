@@ -105,6 +105,16 @@ class Message:
         for n,v in attribs:
             node.setAttributeNS(ns,n,v)
 
+    def load_xml_doc(self, filepath):
+        'Load XML file. Used for EPP templates.'
+        try:
+            xml_doc = open(filepath).read()
+        except IOError, (no,msg):
+            # když šablona chybí
+            self.errors.append((2000, filepath, 'IOError: %d, %s'%(no,msg)))
+            xml_doc = None
+        return xml_doc
+
     def parse_xml(self, xml_doc):
         'Parse XML into DOM object.'
         self.__reset_dom__()

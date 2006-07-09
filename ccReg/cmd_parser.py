@@ -96,7 +96,7 @@ def __get_on_pos__(dct,name,pos):
         dct[name].append({})
     return dct[name][-1]
 
-def __insert_on_key__(errors, dct_root, cols, key, value, empty_only=0):
+def insert_on_key(errors, dct_root, cols, key, value, empty_only=0):
     """Insert value into dict parsing key into dict scopes.
     errors (OUT) out error messages unknown parameter name
     dct (OUT) dict where value is put
@@ -149,7 +149,7 @@ def parse(dct_root, cols_root, text_line):
                 quot=[]
                 if explicit_key:
                     # uložení na pozici klíče
-                    __insert_on_key__(errors,dct,cols_root,explicit_key,token)
+                    insert_on_key(errors,dct,cols_root,explicit_key,token)
                 else:
                     __append_token__(dct,cols,current,mode,token)
                     explicit_key = ''
@@ -217,7 +217,7 @@ def parse(dct_root, cols_root, text_line):
                 if token[-1]==',': token = token[:-1]
                 if explicit_key:
                     # save value into position
-                    __insert_on_key__(errors,dct,cols_root,explicit_key,token)
+                    insert_on_key(errors,dct,cols_root,explicit_key,token)
                 else:
                     __append_token__(dct,cols,current,mode,token)
                 explicit_key = ''

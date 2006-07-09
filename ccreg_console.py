@@ -45,6 +45,9 @@ def main(host):
         else:
             if command_name and epp_doc: # if only command is EPP command
                 if epp.is_online(command_name) and epp.is_connected(): # only if we are online
+                    if epp.is_confirm_cmd_name(command_name):
+                        confirmation = raw_input('%s (y/n): '%_T('Do you want send this command to the server?'))
+                        if confirmation not in ('y','Y'): continue
                     epp.send(epp_doc)          # send to server
                     xml_answer = epp.receive()     # receive answer
                     epp.process_answer(xml_answer) # process answer

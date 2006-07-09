@@ -9,11 +9,14 @@
 # Funkce s prefixem "assemble_" jsou jednotlivé EPP příkazy, které třída
 # Message() umí sestavit. Seznam dostupných příkazů vrací funkce get_client_commands().
 #
-import re
+import re, sys
 from gettext import gettext as _T
 import ConfigParser
 import eppdoc
 import cmd_parser
+import session_base
+
+UNBOUNDED = None
 
 class Message(eppdoc.Message):
     "Client EPP commands."
@@ -31,7 +34,7 @@ class Message(eppdoc.Message):
             else:
                 required = '${WHITE}(%s)${NORMAL}'%_T('optional')
             text = '%s${BOLD}%s${NORMAL} %s'%(indent,name,required)
-            if max is None:
+            if max is UNBOUNDED:
                 max_size = _T('unbounded list')
             elif max > 1:
                 max_size = _T('list with max %d items.')%max
@@ -83,7 +86,7 @@ class Message(eppdoc.Message):
         if not config or not config.has_section(section): return errors
         for key,value in config.items(section):
             # go throught dict and create keys if missing:
-            cmd_parser.__insert_on_key__(errors, dct, columns, key, value, 1)
+            cmd_parser.insert_on_key(errors, dct, columns, key, value, 1)
         return errors
         
         
@@ -97,7 +100,7 @@ class Message(eppdoc.Message):
             scopes.append(name)
             scope_name = '.'.join(scopes)
             if dct_values.has_key(name):
-                if min_max[1] != None and len(dct_values[name]) > min_max[1]:
+                if min_max[1] != UNBOUNDED and len(dct_values[name]) > min_max[1]:
                     errors.append('%s: %s %d. %s'%(scope_name,_T('list of values overflow. Maximum is'),min_max[1],str(dct_values[name])))
                 if allowed:
                     # check allowed values
@@ -114,7 +117,60 @@ class Message(eppdoc.Message):
             scopes.pop()
         return errors
 
-    def parse_cmd(self, command_name, cmd, config):
+    def __interactive_params__(self, command_name, columns, dct, parents=[]):
+        'Runs LOOP of interactive input of the command params.'
+        errors = []
+        param = ''
+        is_child = len(parents)>0
+        min = 0
+        for row in columns:
+            if len(param) and param[0] == '!': break
+            if is_child and param == '' and min:
+                break
+            name,min_max,allowed,msg_help,children = row
+            min,max = min_max
+            parents.append([name,0,max])
+            if len(children):
+                print_info_listmax(max) # (Value can be a list of max %d values.)
+                dct[name] = []
+                idc=0
+                while max is UNBOUNDED or idc < max:
+                    dct[name].append({})
+                    parents[-1][1] = idc
+                    err, param = self.__interactive_params__(command_name, children, dct[name][-1], parents)
+                    if err: errors.extend(err)
+                    if len(param) and param[0] == '!':
+                        if max is None or max > 1: 
+                            param = param[1:]
+                        break
+                    idc+=1
+                parents.pop()
+                continue
+            if name =='':
+                parents.pop()
+                continue
+            is_child = len(parents)>1
+            color = ('GREEN','YELLOW')[is_child]
+            req = (_T('optional'),'${BOLD}${%s}%s${NORMAL}'%(color,_T('required')))[min]
+            print_info_listmax(max) # (Value can be a list of max %d values.)
+            if len(allowed):
+                session_base.print_unicode('%s: (${BOLD}%s${NORMAL})'%(_T('Param MUST be a value from this list'),', '.join(allowed)))
+            cr = 0
+            while max is UNBOUNDED or cr < max:
+                parents[-1][1] = cr
+                prompt = '${BOLD}${GREEN}!${NORMAL}%s:${BOLD}%s${NORMAL} (%s) > '%(command_name,__scope_to_string__(parents),req)
+                param = raw_input(session_base.colored_output.render(prompt)).strip()
+                if param == '': break
+                if param[0] == '!': break
+                if re.search('\s',param) and not re.search(r'[\(\)]',param): param = '"%s"'%param
+                err = cmd_parser.parse(dct, ((name,min_max,allowed,'',()),), param)
+                if err: errors.extend(err)
+                cr+=1
+            parents.pop()
+        if len(param) and param[0] == '!': param = param[1:]
+        return errors,param
+
+    def parse_cmd(self, command_name, cmd, config, interactive):
         "Parse command line. Returns errors. Save parsed values to self._dct."
         self._dct = dct = {}
         error=[]
@@ -130,7 +186,12 @@ class Message(eppdoc.Message):
         if not vals[1]: return error # bez parametrů
         columns = [(command_name,(1,1),(),'',())]
         columns.extend(self._command_params[command_name][1])
-        errors = cmd_parser.parse(dct, columns, cmd)
+        if interactive:
+            session_base.print_unicode(_T('${BOLD}${YELLOW}Start interactive input of params. To break type: ${NORMAL}${BOLD}!${NORMAL}[!!...] (one ${BOLD}!${NORMAL} for scope)'))
+            self._dct[command_name] = [command_name]
+            errors,param = self.__interactive_params__(command_name, vals[1], self._dct)
+        else:
+            errors = cmd_parser.parse(dct, columns, cmd)
         if errors: error.extend(errors)
         self.__fill_empy_from_config__(config, dct, columns) # fill missing values from config
         errors = self.__check_required__(columns, dct) # check list and allowed values
@@ -420,6 +481,8 @@ class Message(eppdoc.Message):
         if __has_key__(dct,'ns'):
             for ns in dct['ns']:
                 self.__append_nsset__('create', data, ns)
+        if __has_key__(dct,'tech'):
+            self.__append_values__(data, dct, 'tech', 'nsset:create', 'nsset:tech')
         data.extend((
             ('nsset:create','nsset:authInfo'),
             ('nsset:authInfo','nsset:pw', dct['pw'][0])
@@ -591,3 +654,22 @@ def __has_key_dict__(dct, key):
     'Check if key exists and if any value is set. (dct MUST be in format: dct[key] = [{...}, ...])'
     return dct.has_key(key) and len(dct[key]) and len(dct[key][0])
 
+def __scope_to_string__(scopes):
+    'Assemble names into string. Scopes is in format: ((name, cr, max), ...)'
+    tokens=[]
+    for name,cr,max in scopes:
+        if max is UNBOUNDED or max > 1:
+            if max is UNBOUNDED:
+                str_max = 'oo'
+            else:
+                str_max = str(max)
+            tokens.append('%s[%d/%s]'%(name,cr+1,str_max))
+        else:
+            tokens.append(name)
+    return '.'.join(tokens)
+
+def print_info_listmax(max):
+    if max > 1:
+        session_base.print_unicode(_T('(Value can be a list of max %d values.)')%max)
+    elif max is UNBOUNDED:
+        session_base.print_unicode(_T('(Value can be an unbouded list of values.)'))

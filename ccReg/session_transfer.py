@@ -156,20 +156,22 @@ class ManagerTransfer(ManagerBase):
         code = dct['code']
         print '-'*60
         print colored_output.render('${BOLD}code:${NORMAL} %d'%code)
-        print colored_output.render('${BOLD}reason:${NORMAL} ${BOLD}${%s}%s${NORMAL}'%(('YELLOW','GREEN')[code==1000],dct['reason']))
+        print colored_output.render('${BOLD}reason:${NORMAL}'),
+        print_unicode(colored_output.render('${BOLD}${%s}%s${NORMAL}'%(('YELLOW','GREEN')[code==1000],dct['reason'])))
         print colored_output.render('${BOLD}errors:${NORMAL}')
         if len(dct['errors']):
             print colored_output.render('${BOLD}${RED}')
             for error in dct['errors']:
-                print '  ',error
+                print_unicode('  %s'%error)
             print colored_output.render('${NORMAL}')
         print colored_output.render('${BOLD}data:${NORMAL}')
         for k,v in dct['data'].items():
             if type(v) in (list,tuple):
                 if len(v):
-                    print colored_output.render('\t${BOLD}%s:${NORMAL} %s'%(k,v[0]))
+                    print_unicode(colored_output.render('\t${BOLD}%s:${NORMAL} %s'%(k,v[0])))
                     for text in v[1:]:
-                        print '\t\t%s'%text
+                        print_unicode('\t\t%s'%text)
             else:
-                print colored_output.render('\t${BOLD}%s:${NORMAL} %s'%(k,v))
+                print_unicode(colored_output.render('\t${BOLD}%s:${NORMAL} %s'%(k,v)))
         print '-'*60
+
