@@ -36,6 +36,26 @@ try:
 except ccRegError, msg:
     print msg
 
+#
+# Example to delete created contacts:
+#
+import ccReg
+epp = ccReg.Client()
+epp.login("REG-LRR","123456789")
+if epp.getd() == 1000:
+    ret = epp.check_contact(("handle1","handle2"))
+    if not epp.getd(('data','handle1'), ret):
+        print "Delete handle1"
+        epp.delete_contact("handle1")
+        epp.print_answer()
+    if not epp.getd(('data','handle2'), ret):
+        print "Delete handle2"
+        epp.delete_contact("handle2")
+        epp.print_answer()
+    print "Check if is deleted:"
+    epp.check_contact(("handle1","handle2"))
+    epp.print_answer()
+    epp.logout()
 
 """
 
