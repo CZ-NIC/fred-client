@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="nezname" standalone="no"?>
-<epp>
-    <!-- Test na neznamy typ kodovani. (je to v cp1250) -->
-    <hello>¾luouèkı kùò úpìl ïábelské ódy.</hello>
-</epp>
