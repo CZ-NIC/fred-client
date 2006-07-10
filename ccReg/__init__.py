@@ -18,16 +18,16 @@ try:
 except ccRegError, msg:
     print msg
 
-# or you can use function getd() what returns value without KeyError:
-# You dont keep return values. The object holds them and functions getd() and print_answer()  use them too.
+# or you can use function is_val() what returns value without KeyError:
+# You dont keep return values. The object holds them and functions is_val() and print_answer()  use them too.
 # Next possibility previous example:
     
 try:
     epp = ccReg.Client()
     epp.login("reg-lrr","123456789")
-    if epp.getd() == 1000:
+    if epp.is_val() == 1000:
         epp.check_contact(("handle1","handle2"))
-        if epp.getd(('data','handle1')):
+        if epp.is_val(('data','handle1')):
             epp.create_contact("handle1", "My Name", "email@email.net", "City", "CZ")
         else:
             epp.info_contact("handle1")
@@ -42,13 +42,13 @@ except ccRegError, msg:
 import ccReg
 epp = ccReg.Client()
 epp.login("REG-LRR","123456789")
-if epp.getd() == 1000:
+if epp.is_val() == 1000:
     ret = epp.check_contact(("handle1","handle2"))
-    if not epp.getd(('data','handle1'), ret):
+    if not epp.is_val(('data','handle1'), ret):
         print "Delete handle1"
         epp.delete_contact("handle1")
         epp.print_answer()
-    if not epp.getd(('data','handle2'), ret):
+    if not epp.is_val(('data','handle2'), ret):
         print "Delete handle2"
         epp.delete_contact("handle2")
         epp.print_answer()
@@ -631,7 +631,13 @@ class Client:
     update-nsset nsset-ID (((nsset1.name.cz 127.0.0.1),(nsset2.name.cz (127.0.2.1 127.0.2.2)),) tech-add-contact ok) ("My Name",("Tech contact 1","Tech contact 2"),(clientDeleteProhibited ok)) (password extension)
         """
         return self._epp.api_command('update_nsset',{'id':nsset_id, 'add':add, 'rem':rem, 'chg':chg})
-    
+
+    def get_answer(self):
+        """Returns dict object answer. Same as every function returns.
+        You can use this if you dont catch retvals from functions.
+        """
+        return self._epp._dct_answer
+
     def print_answer(self, dct=None):
         "Show dict object."
         self._epp.print_answer(dct)
@@ -648,11 +654,11 @@ class Client:
         'Set process validate ON/OFF. mode: 0/1.'
         self._epp._validate = mode
 
-    def getd(self, names = 'code', dct=None):
+    def is_val(self, names = 'code', dct=None):
         """Returns safetly value form dict (treat missing keys).
         Parametr names can by str or list ro tuple.
         """
-        return self._epp.getd(names,dct)
+        return self._epp.get_value_from_dict(names,dct)
 
 class ClientSession(ManagerReceiver):
     "Use for console or batch applications."

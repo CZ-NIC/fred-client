@@ -111,17 +111,15 @@ class ManagerBase:
         # frame:  - | |- -| |_ _|
         if sys.stdout.encoding == 'cp852':
             frm=('\xcd','\xba','\xc9','\xbb','\xc8','\xbc')
-            corr=(6,0)
         else:
             frm=[]
             for c in (u'\u2550',u'\u2551',u'\u2554',u'\u2557',u'\u255a',u'\u255d'):
-                frm.append(c.encode('utf-8'))
-            corr=(10,4)
-        welcome = '%s   %s   %s'%(frm[1],_T('Welcome to the ccReg console'),frm[1])
-        sp = '%s   %s   %s'%(frm[1],' '*(len(welcome)-2-corr[0]),frm[1])
-        sep = frm[0]*(len(welcome)-2-corr[1])
-        return '%s%s%s\n%s\n%s\n%s\n%s%s%s\n%s\n%s'%(frm[2],sep,frm[3],sp,welcome,sp,frm[4],sep,frm[5],
-            'Version 1.0. Beta release.',
+                frm.append(c)
+        welcome = u'%s   %s   %s'%(frm[1],_T('Welcome to the ccReg console'),frm[1])
+        empty_row = u'%s%s%s'%(frm[1],' '*(len(welcome)-2),frm[1])
+        horizontal_line = frm[0]*(len(welcome)-2)
+        return u'%s%s%s\n%s\n%s\n%s\n%s%s%s\n%s\n%s'%(frm[2],horizontal_line,frm[3],empty_row,welcome,empty_row,frm[4],horizontal_line,frm[5],
+            u'Version 1.0. Beta release.',
             _T('For help type "help" (or "h", "?")'))
 
 

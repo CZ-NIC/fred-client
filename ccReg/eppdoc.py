@@ -375,7 +375,7 @@ def get_dct_attr(dict_data, names, attr_name, sep='\n'):
     "Returns attribute value of the key name in names list."
     return get_dct_value(dict_data, names, sep, attr_name)
 
-def getd(dct, names):
+def get_value_from_dict(dct, names):
     """Returns safetly value form dict (treat missing keys).
         Parametr names can by str or list ro tuple.
     """
@@ -556,7 +556,7 @@ def correct_unbound_prefix(xml):
     else:
         return xml
 
-def test_parse():
+def test_parse(xml):
     m = Message()
     m.parse_xml(xml)
     print m.fetch_errors()
@@ -564,7 +564,7 @@ def test_parse():
     
 if __name__ == '__main__':
     "Testování zpracování XML dokumentu a mapování XML.DOM do python dict/class."
-    test_display()
-    test_parse()
+##    test_display()
+    test_parse('~/test.xml')
 ##    ret = {'reason': u'Authentication error; server closing connection', 'code': 2501, 'data': {"h1":"ano"}, 'errors': []}
-##    print getd(ret, ('data','xh1'))
+##    print get_value_from_dict(ret, ('data','h1'))

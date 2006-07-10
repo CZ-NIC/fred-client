@@ -118,7 +118,7 @@ class Message(eppdoc_assemble.Message):
                 ('email',(0,1),(),_T('disclose email'),()),
             )),
             ('vat',(0,1),(),_T('VAT'),()),
-            ('ssn',(0,1),(),_T('SSN'),()),
+            ('ssn',(0,1),(),_T('SSN'),()), # Security social number
             ('notify_email',(0,1),(),_T('notify email'),()),
             ),notice['create'],('create-contact reg-id "John Doe" jon@mail.com "New York" US "Example Inc." ("Yellow harbor" "Blueberry hill") VA 20166-6503 +1.7035555555 +1.7035555556 (0 d-name "d org." "Street number City" +21321313 +734321 my@mail.com) vat-test ssn-test notify@here.net',)),
         #----------------------------------------------------

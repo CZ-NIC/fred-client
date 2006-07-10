@@ -84,9 +84,6 @@ class ManagerReceiver(ManagerCommand):
                 self._dct_answer['errors'].append(_T('Missing result in the response message.'))
         else:
             self._dct_answer['errors'].append(_T('Unknown server response'))
-        if display_src:
-            # Pokud odpověd neodchytila žádná funkce, tak se odpověd zobrazí celá.
-            self.__put_raw_into_note__(self._dict_answer)
 
     def process_answer(self, epp_server_answer):
         'Main function. Process incomming EPP messages. This funcion is called by listen socket.'

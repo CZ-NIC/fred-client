@@ -244,12 +244,12 @@ ${BOLD}config${NORMAL} ${BOLD}create${NORMAL} ${CYAN}# create default config fil
             self.defs[PREFIX] = ''.join([chr(random.randint(97,122)) for n in range(4)])
             self._epp_cmd.assemble_login(self.__next_clTRID__(), (eppdoc_nic_cz_version, self.defs[objURI], self.defs[extURI], self._session[LANG]))
 
-    def getd(self, names, dct = None):
+    def get_value_from_dict(self, names, dct = None):
         """Returns safetly value form dict (treat missing keys).
         Parametr names can by str or list ro tuple.
         """
         if dct is None: dct = self._dct_answer
-        return eppdoc.getd(dct, names)
+        return eppdoc.get_value_from_dict(dct, names)
 
 
 if __name__ == '__main__':
