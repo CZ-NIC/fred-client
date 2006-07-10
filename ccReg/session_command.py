@@ -3,7 +3,6 @@
 import re
 import random
 import dircache # jen pro testování. v ostré verzi to nebude
-from gettext import gettext as _T
 
 import eppdoc
 import eppdoc_client
@@ -12,6 +11,9 @@ from session_base import *
 from session_transfer import ManagerTransfer
 
 from eppdoc import nic_cz_version as eppdoc_nic_cz_version
+
+import translate
+_T = translate._T
 
 COLOR = 1
 SEPARATOR = '-'*60
@@ -69,8 +71,8 @@ class ManagerCommand(ManagerTransfer):
                 command_name='.'
             self.append_note('\n${BOLD}${GREEN}%s:${NORMAL}\n%s'%(_T("Available EPP commands"),", ".join(self._available_commands)))
             self.append_note(_T('Type "?command" (or "h(elp) command") for mode details about parameters.'))
-            self.append_note(_T('To switch interactive input of the command params type: ${BOLD}!command${NORMAL}'))
-            self.append_note(_T('For jumb out from interactive input type ! again (or more "!" for leave sub-scope)'))
+            self.append_note(_T('To start the interactive mode of input the command params type: ${BOLD}!command${NORMAL}'))
+            self.append_note(_T('For stop interactive input type ! instead of value (or more "!" for leave sub-scope)'))
         return command_name
 
     def make_help_session(self, command_name):

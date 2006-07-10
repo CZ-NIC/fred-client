@@ -10,11 +10,12 @@
 # Message() umí sestavit. Seznam dostupných příkazů vrací funkce get_client_commands().
 #
 import re, sys
-from gettext import gettext as _T
 import ConfigParser
 import eppdoc
 import cmd_parser
 import session_base
+import translate
+_T = translate._T
 
 UNBOUNDED = None
 

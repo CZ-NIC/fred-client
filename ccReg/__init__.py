@@ -60,6 +60,7 @@ if epp.getd() == 1000:
 """
 
 import cmd_history
+from session_base import _T
 from session_receiver import ManagerReceiver
 from session_receiver import ccRegError
 

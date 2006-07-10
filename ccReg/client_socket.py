@@ -6,7 +6,8 @@ import threading
 import time
 import re
 import struct
-from gettext import gettext as _T
+import translate
+_T = translate._T
 
 class Lorry:
     "Socket transfer."

@@ -1,10 +1,11 @@
 # -*- coding: utf8 -*-
 #!/usr/bin/env python
 import operator
-from gettext import gettext as _T
 import eppdoc
 from session_base import *
 from session_command import ManagerCommand
+import translate
+_T = translate._T
 
 SEPARATOR = '-'*60
 ANSW_RESULT, ANSW_CODE, ANSW_MSG = range(3)

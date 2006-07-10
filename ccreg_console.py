@@ -6,10 +6,10 @@
 # Your terminal should support unicode. Check locale to LANG=cs_CZ.UTF-8
 #
 import sys, re
-from gettext import gettext as _T
 #import cmd_history
 import ccReg
 from ccReg.session_base import colored_output
+_T = ccReg._T
 
 # Kontrola na Unicode
 try:
@@ -54,7 +54,7 @@ def main(host):
                     epp.display() # display errors or notes
                     epp.print_answer()
                 else:
-                    epp.append_note(_T('You are not connected! Type login before working on the server.'),('BOLD','RED'))
+                    epp.append_note(_T('You are not connected! Type login for connection to the server.'),('BOLD','RED'))
         epp.display() # display errors or notes
         online = status[epp.is_logon()]
     epp.close()

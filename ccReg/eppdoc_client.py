@@ -1,8 +1,9 @@
 # -*- coding: utf8 -*-
 #!/usr/bin/env python
 import re
-from gettext import gettext as _T
 import eppdoc_assemble
+import translate
+_T = translate._T
 
 UNBOUNDED = eppdoc_assemble.UNBOUNDED
 

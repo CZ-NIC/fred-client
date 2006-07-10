@@ -3,7 +3,8 @@
 #
 """Support of command line history.
 """
-from gettext import gettext as _T
+import translate
+_T = translate._T
 
 class Completer:
     'Class holds history of commands.'

@@ -1,9 +1,10 @@
 # -*- coding: utf8 -*-
 #!/usr/bin/env python
-from gettext import gettext as _T
 import eppdoc_client
 import client_socket
 from session_base import *
+import translate
+_T = translate._T
 
 class ManagerTransfer(ManagerBase):
     """EPP client support.

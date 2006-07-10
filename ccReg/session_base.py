@@ -2,9 +2,10 @@
 #!/usr/bin/env python
 import re, time
 import sys, os, commands
-from gettext import gettext as _T
 import ConfigParser
 import terminal_controler
+import translate
+_T = translate._T
 
 # Colored output
 colored_output = terminal_controler.TerminalController()
@@ -155,11 +156,9 @@ class ManagerBase:
         'Create default config file.'
         # aktuální adresář? filepath
         ok = 0
-        modul_path = os.path.dirname(__file__)
-        if modul_path: modul_path+= '/'
-        root_path = os.path.normpath(modul_path+'../')
-        if root_path: root_path += '/'
-        filepath = '%sdefault-config.txt'%modul_path
+        modul_path,fn = os.path.split(__file__)
+        root_path = os.path.normpath(os.path.join(modul_path,'..'))
+        filepath = os.path.join(modul_path, 'default-config.txt')
         try:
             self._conf.read(filepath)
             ok = 1
@@ -169,17 +168,16 @@ class ManagerBase:
         if ok: ok = self._conf.has_section(section)
         if ok:
             # adjust pathnames
-            #root_path = os.path.split(modul_path)[0]
             option = 'ssl_cert'
             name = self.__get_config__(section, option)
-            self._conf.set(section, option, '%s%s'%(root_path,name))
+            self._conf.set(section, option, os.path.join(root_path,name))
             option = 'ssl_key'
             name = self.__get_config__(section,option)
-            self._conf.set(section, option, '%s%s'%(root_path,name))
+            self._conf.set(section, option, os.path.join(root_path,name))
             # schema = all-1.0.xsd
             seop = ('session','schema')
             name = self.__get_config__(seop[0], seop[1])
-            self._conf.set(seop[0], seop[1], '%sschemas/%s'%(modul_path,name))
+            self._conf.set(seop[0], seop[1], os.path.join(modul_path,'schemas',name))
         return ok
 
     def __get_config__(self,section,option,is_int=None):
@@ -202,7 +200,7 @@ class ManagerBase:
 
     def save_confing(self):
         'Save conf file.'
-        filepath = os.path.expanduser('~/%s'%self._name_conf)
+        filepath = os.path.join(os.path.expanduser('~'),self._name_conf)
         try:
             fp = open(filepath,'w')
             self._conf.write(fp)
@@ -219,8 +217,8 @@ class ManagerBase:
             glob_conf = '/etc/%s'%self._name_conf
         else:
             # ALLUSERSPROFILE =	C:\Documents and Settings\All Users
-            glob_conf = os.path.expandvars('$ALLUSERSPROFILE/%s'%self._name_conf)
-        self._conf.read([glob_conf, os.path.expanduser('~/%s'%self._name_conf)])
+            glob_conf = os.path.join(os.path.expandvars('$ALLUSERSPROFILE'),self._name_conf)
+        self._conf.read([glob_conf, os.path.join(os.path.expanduser('~'),self._name_conf)])
         if not self._conf.has_section('session'):
             if not self.__create_default_conf__():
                 self.append_error(_T('Fatal error: Create default config failed.'))
