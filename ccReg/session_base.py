@@ -116,7 +116,14 @@ class ManagerBase:
             for c in (u'\u2550',u'\u2551',u'\u2554',u'\u2557',u'\u255a',u'\u255d'):
                 frm.append(c.encode('utf-8'))
         msg = _T('Welcome to the ccReg console')
-        msglen = len(unicode(msg,'utf-8'))+6
+        try:
+            msglen = len(unicode(_T('Welcome to the ccReg console'), sys.stdout.encoding))+6
+        except UnicodeDecodeError:
+            print "(Problem with terminal encoding)"
+            try:
+                msglen = len(unicode(_T('Welcome to the ccReg console'), 'utf-8'))+6
+            except UnicodeDecodeError:
+                msglen = len(msg)+6
         welcome = '   %s   '%msg
         empty_row = '%s%s%s'%(frm[1],' '*msglen,frm[1])
         horizontal_line = frm[0]*msglen
@@ -330,11 +337,21 @@ def join_unicode(u_list, sep='\n'):
 
 def print_unicode(text):
     'Print text and catch problems with unicode.'
-    try:
+    if type(text) == str:
         print colored_output.render(text)
-    except UnicodeEncodeError, msg:
-        # print colored_output.render('${RED}${BOLD}%s:${NORMAL} %s'%(_T('No unicode. Display raw'),repr(re.sub('\x1b[^m]*m','',text))))
-        print repr(re.sub('\x1b[^m]*m','',text))
+    else:
+        ok=0
+        for charset in (sys.stdout.encoding, 'utf-8', 'cp852'):
+            try:
+                ltext = text.encode(charset)
+            except UnicodeEncodeError, msg:
+                pass
+            else:
+                print colored_output.render(ltext)
+                ok=1
+                break
+        if not ok: print repr(re.sub('\x1b[^m]*m','',text))
+        
 
 def get_unicode(text):
     'Convert to unicode and catch problems with conversion.'
