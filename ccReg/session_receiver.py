@@ -43,6 +43,7 @@ class ManagerReceiver(ManagerCommand):
         """Append standard message if answer code is not 1000.
         Returns FALSE - code is 1000; TRUE - code is NOT 1000;
         """
+        # TODO: pridat extValue (create-domain ...)
         if data[ANSW_CODE] != 1000:
             # standardní výstup chybového hlášení
             # detailní rozepsání chyby:
