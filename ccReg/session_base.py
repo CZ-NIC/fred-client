@@ -117,14 +117,15 @@ class ManagerBase:
                 frm.append(c.encode('utf-8'))
         msg = _T('Welcome to the ccReg console')
         try:
-            msglen = len(unicode(_T('Welcome to the ccReg console'), sys.stdout.encoding))+6
+            msglen = len(unicode(msg, sys.stdout.encoding))
         except UnicodeDecodeError:
             print "(Problem with terminal encoding)"
             try:
-                msglen = len(unicode(_T('Welcome to the ccReg console'), 'utf-8'))+6
+                msglen = len(unicode(msg, 'utf-8'))
             except UnicodeDecodeError:
-                msglen = len(msg)+6
+                msglen = len(msg)
         welcome = '   %s   '%msg
+        msglen+=6
         empty_row = '%s%s%s'%(frm[1],' '*msglen,frm[1])
         horizontal_line = frm[0]*msglen
         return '%s%s%s\n%s\n%s%s%s\n%s\n%s%s%s\n%s\n%s'%(frm[2],horizontal_line,frm[3],empty_row,frm[1],welcome,frm[1],empty_row,frm[4],horizontal_line,frm[5],
