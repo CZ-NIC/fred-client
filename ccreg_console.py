@@ -9,7 +9,7 @@ import sys, re
 #import cmd_history
 import ccReg
 from ccReg.session_base import colored_output
-_T = ccReg._T
+from ccReg.translate import _T
 
 # Kontrola na Unicode
 try:
@@ -22,8 +22,8 @@ except UnicodeEncodeError, msg:
 def main(host):
     epp = ccReg.ClientSession()
     ccReg.cmd_history.set_history(epp.get_command_names())
-    print epp.welcome()
     if not epp.load_config(): return
+    print epp.welcome()
     epp.display() # display errors or notes
     if host: epp.set_host(host)
     print _T('For connection to the EPP server type "connect" or directly "login".')

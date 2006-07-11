@@ -114,12 +114,14 @@ class ManagerBase:
         else:
             frm=[]
             for c in (u'\u2550',u'\u2551',u'\u2554',u'\u2557',u'\u255a',u'\u255d'):
-                frm.append(c)
-        welcome = u'%s   %s   %s'%(frm[1],_T('Welcome to the ccReg console'),frm[1])
-        empty_row = u'%s%s%s'%(frm[1],' '*(len(welcome)-2),frm[1])
-        horizontal_line = frm[0]*(len(welcome)-2)
-        return u'%s%s%s\n%s\n%s\n%s\n%s%s%s\n%s\n%s'%(frm[2],horizontal_line,frm[3],empty_row,welcome,empty_row,frm[4],horizontal_line,frm[5],
-            u'Version 1.0. Beta release.',
+                frm.append(c.encode('utf-8'))
+        msg = _T('Welcome to the ccReg console')
+        msglen = len(unicode(msg,'utf-8'))+6
+        welcome = '   %s   '%msg
+        empty_row = '%s%s%s'%(frm[1],' '*msglen,frm[1])
+        horizontal_line = frm[0]*msglen
+        return '%s%s%s\n%s\n%s%s%s\n%s\n%s%s%s\n%s\n%s'%(frm[2],horizontal_line,frm[3],empty_row,frm[1],welcome,frm[1],empty_row,frm[4],horizontal_line,frm[5],
+             'Version 1.0. Beta release.',
             _T('For help type "help" (or "h", "?")'))
 
 
@@ -328,14 +330,11 @@ def join_unicode(u_list, sep='\n'):
 
 def print_unicode(text):
     'Print text and catch problems with unicode.'
-    if type(text) == unicode:
+    try:
         print colored_output.render(text)
-    else:
-        try:
-            print colored_output.render(text)
-        except UnicodeEncodeError, msg:
-            # print colored_output.render('${RED}${BOLD}%s:${NORMAL} %s'%(_T('No unicode. Display raw'),repr(re.sub('\x1b[^m]*m','',text))))
-            print repr(re.sub('\x1b[^m]*m','',text))
+    except UnicodeEncodeError, msg:
+        # print colored_output.render('${RED}${BOLD}%s:${NORMAL} %s'%(_T('No unicode. Display raw'),repr(re.sub('\x1b[^m]*m','',text))))
+        print repr(re.sub('\x1b[^m]*m','',text))
 
 def get_unicode(text):
     'Convert to unicode and catch problems with conversion.'
