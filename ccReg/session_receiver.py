@@ -4,8 +4,7 @@ import operator
 import eppdoc
 from session_base import *
 from session_command import ManagerCommand
-import translate
-_T = translate._T
+from translate import _T
 
 SEPARATOR = '-'*60
 ANSW_RESULT, ANSW_CODE, ANSW_MSG = range(3)
@@ -106,8 +105,7 @@ class ManagerReceiver(ManagerCommand):
                 invalid_epp = self.is_epp_valid(self._epp_response.get_xml())
                 if invalid_epp:
                     # když se odpověd serveru neplatná...
-                    msg = _T('Server answer is not valid!')
-                    self.append_note(msg,('RED','BOLD'))
+                    self.append_note(_T('Server answer is not valid!'),('RED','BOLD'))
                     self.append_note(invalid_epp)
                     self.append_note('%s ${BOLD}validate off${NORMAL}.'%_T('For disable validator type'))
             if not self._epp_response.is_error():
@@ -156,7 +154,6 @@ class ManagerReceiver(ManagerCommand):
 
     def answer_response_login(self, data):
         "data=(response,result,code,msg)"
-        self.append_note(data[ANSW_MSG])
         if data[ANSW_CODE] == 1000:
             self._session[ONLINE] = 1 # indikátor zalogování
             self._session[CMD_ID] = 1 # reset - první command byl login
@@ -289,13 +286,13 @@ class ManagerReceiver(ManagerCommand):
         #        self.append_note(_T('Sending command poll ack'))
         #        self.send(xml_doc)
 
-    def answer_response_domain_transfer(self, data):
-        "data=(response,result,code,msg)"
-        self.append_note('domain:transfer: ${BOLD}[%s]${NORMAL} %s'%(data[ANSW_CODE],data[ANSW_MSG]))
-
-    def answer_response_nsset_transfer(self, data):
-        "data=(response,result,code,msg)"
-        self.append_note('nsset:transfer: ${BOLD}[%s]${NORMAL} %s'%(data[ANSW_CODE],data[ANSW_MSG]))
+##    def answer_response_domain_transfer(self, data):
+##        "data=(response,result,code,msg)"
+##        self.append_note('domain:transfer: ${BOLD}[%s]${NORMAL} %s'%(data[ANSW_CODE],data[ANSW_MSG]))
+##
+##    def answer_response_nsset_transfer(self, data):
+##        "data=(response,result,code,msg)"
+##        self.append_note('nsset:transfer: ${BOLD}[%s]${NORMAL} %s'%(data[ANSW_CODE],data[ANSW_MSG]))
 
     #-------------------------------------------------
     #

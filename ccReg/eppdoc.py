@@ -17,8 +17,7 @@ except ImportError:
     PrettyPrint = None
 from xml.dom import Node
 import StringIO
-import translate
-_T = translate._T
+from translate import _T
 
 #========================================================
 # Jmenné prostory EPP
@@ -564,7 +563,7 @@ def test_parse(xml):
     
 if __name__ == '__main__':
     "Testování zpracování XML dokumentu a mapování XML.DOM do python dict/class."
-##    test_display()
-    test_parse('~/test.xml')
+    test_display()
+##    test_parse('~/test.xml')
 ##    ret = {'reason': u'Authentication error; server closing connection', 'code': 2501, 'data': {"h1":"ano"}, 'errors': []}
 ##    print get_value_from_dict(ret, ('data','h1'))

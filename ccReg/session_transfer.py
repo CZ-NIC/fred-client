@@ -3,8 +3,7 @@
 import eppdoc_client
 import client_socket
 from session_base import *
-import translate
-_T = translate._T
+from translate import _T
 
 class ManagerTransfer(ManagerBase):
     """EPP client support.
@@ -158,7 +157,7 @@ class ManagerTransfer(ManagerBase):
         print '-'*60
         print colored_output.render('${BOLD}code:${NORMAL} %d'%code)
         print colored_output.render('${BOLD}reason:${NORMAL}'),
-        print_unicode(colored_output.render('${BOLD}${%s}%s${NORMAL}'%(('YELLOW','GREEN')[code==1000],dct['reason'])))
+        print_unicode(colored_output.render('${BOLD}${%s}%s${NORMAL}'%({False:'YELLOW',True:'GREEN'}[code==1000],dct['reason'])))
         print colored_output.render('${BOLD}errors:${NORMAL}')
         if len(dct['errors']):
             print colored_output.render('${BOLD}${RED}')

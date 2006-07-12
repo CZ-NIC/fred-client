@@ -44,10 +44,12 @@ pak odešle na EPP server. Po té čeká na odpověď serveru. Odpověď serveru
 Tuto odpověď aplikace zpracuje a na výstup zobrazí jen podstatné hodnoty odpovědi. Konzole tedy 
 funguje jako odstínění uživatele od EPP formátu. Konzole se spustí příkazem:
 
-    python ccreg_console.py [host]
+    python ccreg_console.py [host] [lang]
 
 Pokud parametr "host" není zadán, použije se defaultní hodnota nebo se údaje přečtou 
-z config souboru (pokud existuje).
+z config souboru (pokud existuje). Pokud není zadán "lang", použuje se default "cs".
+Možné hodnoty jsou jen "cs" a "en". Paramery mohou být zadány v libovolném pořadí, konzole
+pozná, že cs/en není jméno serveru.
 Po spuštění se konzole zastaví na promptu, kde uživatel zadává jednotlivé příkazy.
 Konzole se ukončuje příkazem "quit" nebo jen krátce "q".
 

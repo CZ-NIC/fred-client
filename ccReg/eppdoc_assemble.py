@@ -14,8 +14,7 @@ import ConfigParser
 import eppdoc
 import cmd_parser
 import session_base
-import translate
-_T = translate._T
+from translate import _T
 
 UNBOUNDED = None
 
@@ -30,7 +29,7 @@ class Message(eppdoc.Message):
             name,min_max,allowed,help,children = row
             min,max = min_max
             if min > 0:
-                color = ('YELLOW','GREEN')[deep==1]
+                color = {False:'YELLOW',True:'GREEN'}[deep==1]
                 required = '${%s}${BOLD}(%s)${NORMAL}'%(color,_T('required'))
             else:
                 required = '${WHITE}(%s)${NORMAL}'%_T('optional')

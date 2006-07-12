@@ -2,8 +2,7 @@
 #!/usr/bin/env python
 import re
 import eppdoc_assemble
-import translate
-_T = translate._T
+from translate import _T
 
 UNBOUNDED = eppdoc_assemble.UNBOUNDED
 

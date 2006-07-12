@@ -1,8 +1,7 @@
 # -*- coding: utf8 -*-
 #!/usr/bin/env python
 import re
-import translate
-_T = translate._T
+from translate import _T
 
 UNFINITE = None
 MOD_NORMAL, MOD_LIST, MOD_LIST_AGAIN, MOD_CHILD, MOD_CHILD_LIST, MOD_INSIDE_LIST = range(6)

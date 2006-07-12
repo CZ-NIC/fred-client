@@ -4,8 +4,7 @@ import re, time
 import sys, os, commands
 import ConfigParser
 import terminal_controler
-import translate
-_T = translate._T
+from translate import _T, encoding
 
 # Colored output
 colored_output = terminal_controler.TerminalController()
@@ -240,7 +239,7 @@ class ManagerBase:
             self._session[LANG] = lang
         else:
             self.append_note('%s: ${BOLD}%s${NORMAL} %s'%(_T('This language code is not allowed'),lang,str(self.defs[LANGS])))
-        self._session[CONFIRM_SEND_COMMAND] = (0,1)[self.__get_config__(section,'confirm_send_commands') == 'on']
+        self._session[CONFIRM_SEND_COMMAND] = {False:0,True:1}[self.__get_config__(section,'confirm_send_commands') == 'on']
         return 1 # OK
 
     #---------------------------
@@ -253,7 +252,7 @@ class ManagerBase:
             self.append_note('%s ${BOLD}%s${NORMAL}'%(_T('Status: Validation is'),('OFF','ON')[self._validate]))
         else:
             # změna stavu
-            self._validate = (1,0)[re.match('validate\s+on',cmd, re.I)==None]
+            self._validate = {False:0,True:1}[re.match('validate\s+on',cmd, re.I) is not None]
             self.append_note('%s ${BOLD}%s${NORMAL}'%(_T('Validation is set'),('OFF','ON')[self._validate]))
 
     def check_validator(self):
@@ -281,7 +280,7 @@ class ManagerBase:
     def is_epp_valid(self, message):
         "Check XML EPP by xmllint. OUT: '' - correct; '...' any error occurs."
         if not self._validate: return '' # validace je vypnutá
-        tmpname = os.path.expanduser('~/eppdoc_tmp_test_validity.xml')
+        tmpname = os.path.join(os.path.expanduser('~'),'eppdoc_tmp_test_validity.xml')
         try:
             open(tmpname,'w').write(message)
         except IOError, (no, msg):
@@ -341,17 +340,12 @@ def print_unicode(text):
     if type(text) == str:
         print colored_output.render(text)
     else:
-        ok=0
-        for charset in (sys.stdout.encoding, 'utf-8', 'cp852'):
-            try:
-                ltext = text.encode(charset)
-            except UnicodeEncodeError, msg:
-                pass
-            else:
-                print colored_output.render(ltext)
-                ok=1
-                break
-        if not ok: print repr(re.sub('\x1b[^m]*m','',text))
+        try:
+            ltext = text.encode(encoding)
+        except UnicodeEncodeError, msg:
+            repr(re.sub('\x1b[^m]*m','',text))
+        else:
+            print colored_output.render(ltext)
         
 
 def get_unicode(text):

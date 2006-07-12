@@ -9,15 +9,7 @@ import sys, re
 #import cmd_history
 import ccReg
 from ccReg.session_base import colored_output
-from ccReg.translate import _T
-
-# Kontrola na Unicode
-try:
-    u'žščřťňě'.encode(sys.stdout.encoding)
-except UnicodeEncodeError, msg:
-    from ccReg.terminal_controler import TerminalController
-    term = TerminalController()
-    print term.BOLD+term.RED+_T('WARNING! Your terminal does not support UTF-8 encoding. Set locale to LANG=cs_CZ.UTF-8.')+term.NORMAL
+from ccReg import _T
 
 def main(host):
     epp = ccReg.ClientSession()
@@ -64,5 +56,9 @@ def main(host):
 
 if __name__ == '__main__':
     host = None
-    if len(sys.argv) > 1: host = sys.argv[1]
+    if len(sys.argv) > 1:
+        for arg in sys.argv[1:]:
+            if arg in ('en','cs'): continue
+            host = arg
+            break
     main(host)

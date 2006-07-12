@@ -6,14 +6,13 @@ import dircache # jen pro testování. v ostré verzi to nebude
 
 import eppdoc
 import eppdoc_client
+from translate import _T
 
 from session_base import *
 from session_transfer import ManagerTransfer
 
 from eppdoc import nic_cz_version as eppdoc_nic_cz_version
 
-import translate
-_T = translate._T
 
 COLOR = 1
 SEPARATOR = '-'*60
@@ -256,7 +255,7 @@ if __name__ == '__main__':
     # Test
     m = ManagerCommand()
     m._session[0]=1 # login simulation
-    xml = m.create_eppdoc('create_contact reg-id "John Doe" jon@mail.com "New York" US "Example Inc." ("Yellow harbor" "Blueberry hill") VA 20166-6503 +1.7035555555 +1.7035555556 (0 d-name "d org." "street number city" +21321313 +734321 info@buzz.com) vat-test ssn-test notify@here.net')
+    command_name, xml = m.create_eppdoc('create_contact reg-id "John Doe" jon@mail.com "New York" US "Example Inc." ("Yellow harbor" "Blueberry hill") VA 20166-6503 +1.7035555555 +1.7035555556 (0 d-name "d org." "street number city" +21321313 +734321 info@buzz.com) vat-test ssn-test notify@here.net')
     print m.is_epp_valid(xml)
     print xml
     m.display()
