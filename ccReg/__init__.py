@@ -325,7 +325,10 @@ class Client:
             lang:    tuple
             objURI: tuple
             extURI: tuple
-        }
+            version: str
+            svID: str
+            svDate: str
+            }
 
     The EPP "hello" request a "greeting" response message from an EPP server at any time.
         """

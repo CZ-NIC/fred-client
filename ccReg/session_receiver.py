@@ -43,7 +43,6 @@ class ManagerReceiver(ManagerCommand):
         """Append standard message if answer code is not 1000.
         Returns FALSE - code is 1000; TRUE - code is NOT 1000;
         """
-        # TODO: pridat extValue (create-domain ...)
         if data[ANSW_CODE] != 1000:
             # standardní výstup chybového hlášení
             # detailní rozepsání chyby:
@@ -54,7 +53,8 @@ class ManagerReceiver(ManagerCommand):
                     msg = []
                     if item.has_key('value'):
                         for key in item['value'].keys():
-                            msg.append('%s:'%item['value'][key].get('data',item['value'][key]))
+                            if item['value'][key].get('data',None):
+                                msg.append('%s:'%item['value'][key].get('data',item['value'][key]))
                     if item.has_key('reason'):
                         msg.append(item['reason'].get('data',item['reason']))
                     self._dct_answer['errors'].append(' '.join(msg))
@@ -81,6 +81,8 @@ class ManagerReceiver(ManagerCommand):
                 if hasattr(self,fnc_name):
                     getattr(self,fnc_name)((result, code, reason))
                     display_src = 0 # Odpověd byla odchycena, není potřeba ji zobrazovat celou.
+                else:
+                    self.__code_isnot_1000__((result, code, reason), self._command_sent) # 'info:contact'
             else:
                 self._dct_answer['errors'].append(_T('Missing result in the response message.'))
         else:
@@ -132,12 +134,16 @@ class ManagerReceiver(ManagerCommand):
         dct = self._dct_answer['data']
         greeting = self._dict_answer['greeting']
         if not self._dct_answer['reason']: self._dct_answer['reason'] = _T('Greeting message incomming')
-        self.defs[LANGS] = eppdoc.get_dct_value(greeting, ('svcMenu','lang')).split('\n')
+        for key in ('svID','svDate'):
+            dct[key] = eppdoc.get_dct_value(greeting, key)
+        svcMenu = greeting.get('svcMenu',{})
+        for key in ('lang','version','objURI'):
+            dct[key] = eppdoc.get_dct_value(svcMenu, key)
+        self.defs[LANGS] = dct['lang'] = dct['lang'].split('\n')
         if type(self.defs[LANGS]) in (str,unicode):
             self.defs[LANGS] = (self.defs[LANGS],)
-        dct['lang'] = self.defs[LANGS]
-        self.defs[objURI] = eppdoc.get_dct_values(greeting, ('svcMenu','objURI'))
-        self.defs[extURI] = eppdoc.get_dct_values(greeting, ('svcMenu','svcExtension','extURI'))
+        self.defs[objURI] = dct['objURI'] = dct.get('objURI','').split('\n')
+        self.defs[extURI] = eppdoc.get_dct_values(svcMenu, ('svcExtension','extURI'))
         if self.defs[objURI]:
             dct['objURI'] = self.defs[objURI]
         if self.defs[extURI]:
@@ -368,13 +374,55 @@ def adjust_dct_keys(dct, names):
         else:
             dct[name] = ()
     
-def test(xml):
+def test(name_amd_xml):
     m = ManagerReceiver()
-    m._command_sent = 'transfer'
-    m.process_answer(xml)
+    m._command_sent = name_amd_xml[0]
+    m.process_answer(name_amd_xml[1])
+    m.display()
+    m.print_answer()
+    m.__put_raw_into_note__(m._dict_answer)
+    # m.__put_raw_into_note__(m._raw_answer)
+    m.display()
 
 if __name__ == '__main__':
-    test("""<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+    data = (
+        ('greeting',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
+<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
+  <greeting>
+    <svID>EPP server of cz.nic</svID>
+    <svDate>2006-07-12T08:52:01.0Z</svDate>
+    <svcMenu>
+      <version>1.0</version>
+      <lang>en</lang>
+      <lang>cs</lang>
+      <objURI>http://www.nic.cz/xml/epp/contact-1.0</objURI>
+      <objURI>http://www.nic.cz/xml/epp/domain-1.0</objURI>
+      <objURI>http://www.nic.cz/xml/epp/nsset-1.0</objURI>
+      <svcExtension>
+        <extURI>http://www.nic.cz/xml/epp/enumval-1.0</extURI>
+      </svcExtension>
+    </svcMenu>
+    <dcp>
+      <access>
+        <all/>
+      </access>
+      <statement>
+        <purpose>
+          <admin/>
+          <prov/>
+        </purpose>
+        <recipient>
+          <public/>
+        </recipient>
+        <retention>
+          <stated/>
+        </retention>
+      </statement>
+    </dcp>
+  </greeting>
+</epp>
+        """),
+        ('transfer',"""<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <epp xmlns="urn:ietf:params:xml:ns:epp-1.0"
      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
      xsi:schemaLocation="urn:ietf:params:xml:ns:epp-1.0
@@ -393,4 +441,31 @@ if __name__ == '__main__':
     </transfer>
     <clTRID>ABC-12345</clTRID>
   </command>
-</epp>""")
+</epp>"""),
+    ('create-domain',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
+<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
+  <response>
+    <result code='2005'>
+      <msg lang='cs'>Chybná syntaxe hodnoty parametru</msg>
+      <extValue>
+        <value>
+          <registrant>pepa</registrant>
+        </value>
+        <reason>unknow Registrant</reason>
+      </extValue>
+      <extValue>
+        <value>
+          <nsset/>
+        </value>
+        <reason>unknow nsset</reason>
+      </extValue>
+    </result>
+    <trID>
+      <clTRID>dnlq003#06-07-12at11:41:05</clTRID>
+      <svTRID>ccReg-0000010019</svTRID>
+    </trID>
+  </response>
+</epp>
+    """)
+    )
+    test(data[2])

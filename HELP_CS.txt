@@ -21,7 +21,7 @@
 
 =============================
 
-Knihovna ccReg a ní postavená "ccReg Client konzole" je napsána v jazyce Python. 
+Knihovna ccReg a na ní postavená "ccReg Client konzole" je napsána v jazyce Python. 
 Pro svůj běh potřebuje mít v systému nainstalováno běhové prostředí Python. 
 Pokud se ve vašem systému Python nenachází, tak si jej nainstalujte. 
 Instalační soubory jsou v obvyklých repozitářích nebo na www.python.org.
@@ -330,6 +330,13 @@ Klíč "code" (int) je číslo, které definuje typ chyby. Číslo 1000 znamená
 Klíč "errors" (list) je seznam chyb, které server nalezl.
 Klíč "data" (dict) je slovník s hodnotami individuálními pro každý jednotlivý příkaz.
 
+Jaké klíče jsou v části "data" pro danou funkci (EPP příkaz) se dozvíte z dokumentace u každé funkce:
+
+    >>> print epp.login.__doc__
+    ...
+    RETURN data: {...}
+    ...
+
 Návratovou hodnotu "retval" není nutné odchytávat, ukládá se do interní proměnné a lze ji kdykoliv
 zobrazit funkcí print_answer():
 
@@ -371,7 +378,7 @@ výjimka ccRegError.
 
 Tento help sepsal: 
 
-Zdeněk Böhm, <zdenek.bohm@nic.zc>
+Zdeněk Böhm, <zdenek.bohm@nic.cz>
 11.7.2006
 
 

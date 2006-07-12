@@ -169,7 +169,8 @@ class ManagerTransfer(ManagerBase):
         for k,v in dct['data'].items():
             if type(v) in (list,tuple):
                 if len(v):
-                    print_unicode(colored_output.render('\t${BOLD}%s:${NORMAL} %s'%(k,v[0])))
+                    space = ' '*(8 - len('%s: '%k)) # indent justify text to the tabs on next lines
+                    print_unicode(colored_output.render('\t${BOLD}%s:${NORMAL} %s%s'%(k,space,v[0])))
                     for text in v[1:]:
                         print_unicode('\t\t%s'%text)
             else:
