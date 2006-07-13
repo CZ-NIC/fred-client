@@ -1,66 +1,83 @@
 # -*- coding: utf8 -*-
+Tento dokument je uložen v kódování UTF-8
 
-    ======================
-    Struktura EPP klienta, Zdeněk Böhm, 11.5.2006
-    ======================
 
-    Veřejná část                                       .         Interní část
-    ------------                                       .         ------------
-    Jednotlivé typy klientů:                           .
-    Klienti zobrazují data stanoveným způsobem.        .
-    Data předávají/získávají od objektu Manager()      .
-    v modulu client_session z knihovny epplib          .
-                                                       .
-    +---------------------+                            .   +------------------------+
- +--| epp_batch.py        | zpracovává dávkový soubor  .   | run_test_epp_server.py |
- |  +---------------------+                            .   +------------------------+
- |                                                     .     Testování serveru
- |  +---------------------+                            .
- +--| epp_console.py      | interaktivní konzole       .
- |  +---------------------+                            .
- |                                                     .
- |  +---------------------+                            .
- +--| epp_windows.py      | GUI okna na Tkinteru       .                  CORBA
- |  +---------------------+                            .                    ^
- |                                                     .                    |
-====[ knihovna epplib ]=================================================================
- |                                                     .                    |
- |   +--------------------+ stará se o session         .          +--------------------+
- +-->| client_session.py  | řídí EPP dokumenty         .          | server_session.py  |
-     | class Manager()    | udržuje spojení            .          | class Manager()    |
-	 +--------------------+ vlastní help               .          +--------------------+
-         |     |                                       .                    |
-         |     |   +--------------------+              .          +--------------------+
-         |     +-->| client_socket.py   | <---------------------->| server_socket.py   |
-         |         +--------------------+              .          +--------------------+
-         |         provádí SSL spojení se servrem      .                    |
-         |                                             .                    |
-         |   +--------------------+                    .          +--------------------+
-         +-->| client_eppdoc.py   | sestavuje EPP      .          | server_eppdoc.py   |
-             | class Message()    | dokumenty          .          | class Message()    |
-             +--------------------+                    .          +--------------------+
-                       |                               .                    |
-                       |     funkce pro tvorbu XML EPP .                    |
-                       |        +--------------------+ .                    |
-                       +------->| eppdoc.py          |<---------------------+
-                                | class Message()    | .
-                                +--------------------+ .
-                                         |             .
-                                +--------------------+ .
-                 chybové hlášky | responses.py       | .
-                                +--------------------+ .
-                                         |             .
-                                +--------------------+ .
-                                | templates/         | .
-                                +--------------------+ .
-                                šablony EPP dokumentů  .
-                                                       .
-=========================================================================================
-Způsob použití knihovny epplib:                   client.send(epp_doc)
-                                                  epp_server_answer = client.receive()
-import epplib                                     print client.digest(epp_server_answer)
-client = epplib.client_session.Manager()               
-notes, errors, epp_doc = client.get_result("hello")    
-print 'NOTES:',notes                                
-print 'ERRORS:',error                               
-print 'XMLEPP:',epp_doc                             
+#################################################
+
+    Popis knihovny ccReg
+
+    Zdeněk Böhm
+    13.7.2006
+
+#################################################
+
+    +----------------------------------+
+ +--|  ccreg_console.py                |
+ |  |----------------------------------|
+ |  | interaktivní konzole EPP klienta |
+ |  +----------------------------------+
+ |
+ |
+====[ knihovna ccReg ]==================================================================
+ |
+ |                                                   +---------------------------------+
+ |-------------------------------------------------->| cmd_history.py                  |
+ |                                                   |---------------------------------|
+ |                                                   | ovládá historii příkazového     |
+ |                                                   | řádku konzole                   |
+ |                                                   +---------------------------------+
+ |
+ |   +======================================+        +=================================+
+ |   | Client Session Manager               |<-------| __init__   * API * rozhraní pro |
+ +-->|======================================|        |práci s knihovnou ccReg v pythonu|
+     | ovládá všechny objekty tvorby EPP    |        +=================================+
+     | dokumentů a komunikace se serverem   |
+     |                                      |        +=================================+
+     | je rozdělen do modulů:               |    +---| EPP document                    |
+     |--------------------------------------|    |   |=================================|
+     | session_receiver.py                  |<---+   | sestavuje XML dokument podle EPP|
+     |                                      |    |   | schemat                         |
+     | tato část má na starosti přijímání   |    |   |---------------------------------|
+     | EPP zpráv od serveru, jejich         |    |   | eppdoc_client.py                |
+     | interpretaci a zobrazení             |    |   |                                 |
+     |                                      |    |   | zde jsou definice parametrů     |
+     |--------------------------------------|    |   | jednotlivých EPP příkazů        |
+     | session_command.py                   |<---+   |---------------------------------|
+     |                                      |        | eppdoc_assemble.py              |
+     | v této části se generují EPP příkazy |<---+   |                                 |
+     | podle zadání z příkazové řádky nebo  |    |   | zde jsou funkce, které sestavují|
+     | z funkcí API.                        |    |   | EPP dokumenty                   |
+     |                                      |    |   |---------------------------------|
+     |--------------------------------------|    |   | eppdoc.py                       |
+     | session_transfer.py                  |<-+ |   |                                 |
+     |                                      |  | |   | zde jsou obecné funkce pro      |
+     | tato část komunikuje se sockety      |  | |   | podporu tvorby XML              |
+     |                                      |  | |   +=================================+
+     |--------------------------------------|  | |
+     | session_base.py                      |  | |   +=================================+
+     |                                      |  | +---| cmd_parser.py                   |
+     | tato část se stará o chybová hlášení,|  |     |---------------------------------|
+     | o validaci dokumnetů a o config      |  |     | parsuje příkazovou řádku do dict|
+     |                                      |  |     +=================================+
+     +======================================+  |
+              |       |      |      |          |     +=================================+
+              |       |      |      |          +-----| client_socket.py                |
+              |       |      |      |                |---------------------------------|
+              |       |      |      |                | ovládá sockety komunikace       |
+              |       |      |      |                +=================================+
+              |       |      |      |
+              |       |      |      |                +=================================+
+              |       |      |      +--------------->| translate.py                    |
+              |       |      |                       |---------------------------------|
+              |       |      |                       | lokalizace - výběr předkladu    |
+              |       |      |                       +=================================+
+              |       |      +---------------------------------------------+
+              |       +------------------------+                           |
+              V                                V                           V
+     +======================+     +=======================+     +======================+
+     | default-config.txt   |     | terminal_controler.py |     | schemas              |
+     |----------------------|     |-----------------------|     |----------------------|
+     | hodnoty nastavení    |     | zobrazení barev       |     | adresář s xsd EPP    |
+     | session (managera)   |     | na konzoli            |     | schematy pro validaci|
+     +======================+     +=======================+     +======================+
+
