@@ -80,7 +80,8 @@ class ManagerCommand(ManagerTransfer):
             self.append_note(_T("""\n${BOLD}${GREEN}Session commands:${NORMAL}
 ${BOLD}connect${NORMAL} (or directly login) ${CYAN}# connect to the server (for test only)${NORMAL}
 ${BOLD}lang${NORMAL} cs ${CYAN}# set language of the incomming server messages. It MUST be set BEFORE send login! Later has no effect.${NORMAL}
-${BOLD}validate${NORMAL} on/off (or validate for see actual value) ${CYAN}# set validation${NORMAL}
+${BOLD}validate${NORMAL} [on/off] ${CYAN}# set validation or display actual setting${NORMAL}
+${BOLD}poll-ack${NORMAL} [on/off] ${CYAN}# send "poll ack" straight away after "poll req"${NORMAL}
 ${BOLD}raw-c${NORMAL}[ommand] [xml]/${BOLD}d${NORMAL}[ict] ${CYAN}# display raw command${NORMAL} (instead of raw you can also type ${BOLD}src${NORMAL})
 ${BOLD}raw-a${NORMAL}[nswer] [xml]/${BOLD}d${NORMAL}[ict]  ${CYAN}# display raw answer${NORMAL}
 ${BOLD}confirm${NORMAL} ${BOLD}on${NORMAL}/[off]  ${CYAN}# confirm editable commands befor sending to the server${NORMAL}
@@ -205,12 +206,16 @@ ${BOLD}send${NORMAL} [filename] ${CYAN}# send selected file to the server (for t
             m = re.match('confirm\s+(\S+)',cmd)
             if m:
                 self.set_confirm(m.group(1))
-            else:
-                self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('Confirm is'),('OFF','ON')[self._session[CONFIRM_SEND_COMMAND]]))
+            self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('Confirm is'),{False:'OFF',True:'ON'}[self._session[CONFIRM_SEND_COMMAND]]))
         elif re.match('config\s*(.*)',cmd):
             self.manage_config(re.match('config\s*(.*)',cmd).groups())
         elif re.match('validate',cmd):
             self.set_validate(cmd) # set validation of created EPP document
+        elif re.match('poll[-_]ack',cmd):
+            m = re.match('poll[-_]ack\s+(\S+)',cmd)
+            if m:
+                self._session[POLL_AUTOACK] = {False:0,True:1}[m.group(1) in ('on','ON')]
+            self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('poll ack is'),{False:'OFF',True:'ON'}[self._session[POLL_AUTOACK]]))
         else:
             # příkazy pro EPP
             command_name = self.epp_command(cmd)

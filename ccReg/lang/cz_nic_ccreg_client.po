@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-07-13 13:26+0200\n"
+"POT-Creation-Date: 2006-07-13 14:24+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Zdeněk Böhm <zdenek.bohm@nic.cz>\n"
 "Language-Team: CS <info@nic.cz>\n"
@@ -125,7 +125,7 @@ msgid "Unknown command"
 msgstr "Neznámý příkaz"
 
 #: ccReg/eppdoc_assemble.py:184 ccReg/eppdoc_assemble.py:203
-#: ccReg/session_command.py:105
+#: ccReg/session_command.py:106
 msgid "For more type"
 msgstr "Pro více informací zadejte"
 
@@ -654,8 +654,10 @@ msgid ""
 "(for test only)${NORMAL}\n"
 "${BOLD}lang${NORMAL} cs ${CYAN}# set language of the incomming server "
 "messages. It MUST be set BEFORE send login! Later has no effect.${NORMAL}\n"
-"${BOLD}validate${NORMAL} on/off (or validate for see actual value) ${CYAN}# "
-"set validation${NORMAL}\n"
+"${BOLD}validate${NORMAL} [on/off] ${CYAN}# set validation or display actual "
+"setting${NORMAL}\n"
+"${BOLD}poll-ack${NORMAL} [on/off] ${CYAN}# send \"poll ack\" straight away "
+"after \"poll req\"${NORMAL}\n"
 "${BOLD}raw-c${NORMAL}[ommand] [xml]/${BOLD}d${NORMAL}[ict] ${CYAN}# display "
 "raw command${NORMAL} (instead of raw you can also type ${BOLD}src${NORMAL})\n"
 "${BOLD}raw-a${NORMAL}[nswer] [xml]/${BOLD}d${NORMAL}[ict]  ${CYAN}# display "
@@ -678,6 +680,8 @@ msgstr ""
 "${NORMAL}\n"
 "${BOLD}validate${NORMAL} [on/off] ${CYAN}# nastavení validace nebo zjištění "
 "aktuálního stavu${NORMAL}\n"
+"${BOLD}poll-ack${NORMAL} [on/off] ${CYAN}# pošle \"poll ack\" hned za "
+"příkazem \"poll req\"${NORMAL}\n"
 "${BOLD}raw-c${NORMAL}[ommand] [xml]/${BOLD}d${NORMAL}[ict] ${CYAN}# zobrazit "
 "zdrojový tvar příkazu${NORMAL} (místo raw můžete zadat také ${BOLD}src"
 "${NORMAL})\n"
@@ -693,60 +697,60 @@ msgstr ""
 "(jen testování). Pokud jméno není platný soubor, tak příkaz zobrazuje "
 "adresář.${NORMAL}\n"
 
-#: ccReg/session_command.py:104
+#: ccReg/session_command.py:105
 #, python-format
 msgid "Unknown EPP command: %s."
 msgstr "Neznámý EPP příkaz: %s."
 
-#: ccReg/session_command.py:148
+#: ccReg/session_command.py:149
 msgid "Session language was set to"
 msgstr "Jazyk relace byl nastaven na"
 
-#: ccReg/session_command.py:150
+#: ccReg/session_command.py:151
 msgid "Unknown language code"
 msgstr "Neznámý kód jazyka"
 
-#: ccReg/session_command.py:152
+#: ccReg/session_command.py:153
 msgid "Session language is"
 msgstr "Nastavený jazyk relace je"
 
-#: ccReg/session_command.py:152
+#: ccReg/session_command.py:153
 msgid "Available values"
 msgstr "Povolené hodnoty"
 
-#: ccReg/session_command.py:162
+#: ccReg/session_command.py:163
 msgid "Interpreted command"
 msgstr "Přeložený příkaz"
 
-#: ccReg/session_command.py:167
+#: ccReg/session_command.py:168
 msgid "Command source"
 msgstr "Zdrojový příkaz"
 
-#: ccReg/session_command.py:172
+#: ccReg/session_command.py:173
 msgid "Interpreted answer"
 msgstr "Přeložená odpověď"
 
-#: ccReg/session_command.py:175
+#: ccReg/session_command.py:176
 msgid "Answer source"
 msgstr "Zdrojová odpověď"
 
-#: ccReg/session_command.py:188
+#: ccReg/session_command.py:189
 msgid "Dir list"
 msgstr "Výpis adresáře"
 
-#: ccReg/session_command.py:195
+#: ccReg/session_command.py:196
 msgid "Load file"
 msgstr "Načíst soubor"
 
-#: ccReg/session_command.py:201
+#: ccReg/session_command.py:202
 msgid "Not found"
 msgstr "Nenalezen"
 
-#: ccReg/session_command.py:209
+#: ccReg/session_command.py:210
 msgid "Confirm is"
 msgstr "Potvrzení je nastaveno na"
 
-#: ccReg/session_command.py:235
+#: ccReg/session_command.py:236
 msgid "You are logged already."
 msgstr "Jste již zalogován"
 
@@ -790,11 +794,16 @@ msgstr "Relace zahájena!"
 msgid "Login failed"
 msgstr "Login se nezdařil"
 
-#: ccReg/session_receiver.py:330
+#: ccReg/session_receiver.py:299
+#, fuzzy, python-format
+msgid "Sending command %s"
+msgstr "Neznámý EPP příkaz: %s."
+
+#: ccReg/session_receiver.py:334
 msgid "You are not connected! For connection type: connect or login"
 msgstr "Nejste připojeni! Po připojení zadejte: connect nebo login"
 
-#: ccReg/session_receiver.py:332
+#: ccReg/session_receiver.py:336
 msgid "You are not logged. You must call login() before working on the server."
 msgstr ""
 "Nejste zalogováni. Před samotnou prací na serveru musíte volat funkci login()"

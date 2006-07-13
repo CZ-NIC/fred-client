@@ -419,19 +419,19 @@ class Client:
         return self._epp.api_command('logout')
 
 
-    def poll(self, op):
-        """Usage: poll op
+    def poll(self, op, msg_id=None):
+        """Usage: poll op [msg_id]
 
     PARAMS:
 
     op (required) accept only values: (req,ack)
 
-    RETURN data: {}
+    RETURN data: {count id msg}
 
     The EPP "poll" command is used to discover and retrieve service messages queued by a server for individual clients.
 
         """
-        return self._epp.api_command('poll',{'op':op})
+        return self._epp.api_command('poll',{'op':op,'msg_id':msg_id})
 
 
     def renew_domain(self, name, cur_exp_date, period=None):

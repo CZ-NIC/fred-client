@@ -31,7 +31,7 @@ class ManagerBase:
                 0,      # ONLINE
                 0,      # CMD_ID
                 'en', # LANG
-                1,       # POLL_AUTOACK
+                0,       # POLL_AUTOACK
                 1        # CONFIRM_SEND_COMMAND
                 ]
         # defaults
@@ -185,6 +185,7 @@ class ManagerBase:
             seop = ('session','schema')
             name = self.__get_config__(seop[0], seop[1])
             self._conf.set(seop[0], seop[1], os.path.join(modul_path,'schemas',name))
+            self._session[POLL_AUTOACK] = {False:0,True:1}[self.__get_config__(seop[0], 'poll_ack') in ('on','ON')]
         return ok
 
     def __get_config__(self,section,option,is_int=None):

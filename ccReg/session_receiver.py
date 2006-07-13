@@ -281,19 +281,28 @@ class ManagerReceiver(ManagerCommand):
     def answer_response_poll(self, data):
         "data=(response,result,code,msg)"
         label='poll'
-        if self.__code_isnot_1000__(data, label): return
+        if self.__code_isnot_1000__(data, label) and data[ANSW_CODE] != 1301: return
         msgQ = None
         response = self._dict_answer.get('response',None)
         if response: msgQ = response.get('msgQ',None)
         if msgQ:
             self.__append_note_from_dct__(response,('msgQ count id',))
             self.__append_note_from_dct__(msgQ,('qDate','msg'))
-        #if data[ANSW_CODE] == '1301' and self.__get_config__('session','poll_ack') == 'on':
-        #    # automatická odpověd 'ack'
-        #    xml_doc = self.create_eppdoc('poll ack')
-        #    if xml_doc and self.is_connected():
-        #        self.append_note(_T('Sending command poll ack'))
-        #        self.send(xml_doc)
+        if data[ANSW_CODE] == 1301 and self._session[POLL_AUTOACK]:
+            # automaticly answer 'poll ack' and remove message from server
+            msg_id = self.get_value_from_dict(('data','id'))
+            if msg_id: # if only ID exists
+                dct = self._dct_answer # keep message from "req"
+                self.api_command('poll',{'op':'ack','msg_id':msg_id})
+                # Copy previous "req" answer to new from "ack" command.
+                dct['code'] = self._dct_answer['code']
+                dct['reason'] = 'req: %s\n        ack: %s'%(dct['reason'],self._dct_answer['reason'])
+                data = dct['data']
+                data['count'] = self.get_value_from_dict(('data','count'),self._dct_answer)
+                if self.get_value_from_dict(('data','msg'),self._dct_answer):
+                    data['msg'] = '\n'.join((data['msg'], self._dct_answer['data']['msg']))
+                if len(self._dct_answer['errors']): dct['errors'].extend(self._dct_answer['errors'])
+                self._dct_answer = dct
 
 ##    def answer_response_domain_transfer(self, data):
 ##        "data=(response,result,code,msg)"
@@ -491,6 +500,23 @@ if __name__ == '__main__':
     </trID>
   </response>
 </epp>
-    """)
+    """),
+    ('poll',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
+<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
+  <response>
+    <result code='1301'>
+      <msg lang='cs'>Příkaz úspěšně proveden; potvrď za účelem vyřazení z fronty</msg>
+    </result>
+    <msgQ count='1' id='4'>
+      <qDate>2006-07-13T10:31:00.0Z</qDate>
+      <msg>Je tady nejaka hlaska...</msg>
+    </msgQ>
+    <trID>
+      <clTRID>mubd002#06-07-13at13:49:00</clTRID>
+      <svTRID>ccReg-0000010147</svTRID>
+    </trID>
+  </response>
+</epp>
+    """),
     )
-    test(data[3])
+    test(data[4])
