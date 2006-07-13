@@ -81,7 +81,8 @@ class Message(eppdoc_assemble.Message):
         #----------------------------------------------------
         'poll': (1,(
             ('op',(1,1),('req','ack'),_T('query type'),()),
-        ),_T('The EPP "poll" command is used to discover and retrieve service messages queued by a server for individual clients.'),('poll req','poll ack',)),
+            ('msg_id',(0,1),(),_T('index of message, required with op=ack!'),()),
+        ),_T('The EPP "poll" command is used to discover and retrieve service messages queued by a server for individual clients.'),('poll req','poll ack 4',)),
         #----------------------------------------------------
         'transfer_domain': (3,(
             ('name',(1,1),(),_T('domain name'),()),

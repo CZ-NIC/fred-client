@@ -46,7 +46,7 @@ class Message(eppdoc.Message):
                 txt = ','.join(allowed)
                 if len(txt)>37: txt = txt[:37]+'...' # shorter too long text
                 text = '%s ${WHITE}%s: ${CYAN}(%s)${NORMAL}'%(text,_T('accept only values'),txt)
-            msg.append(text)
+            msg.append('%s %s'%(text,help))
             if len(children):
                 msg.extend(self.__get_help_scope__(children, deep+1))
         return msg
@@ -327,9 +327,12 @@ class Message(eppdoc.Message):
         self.__asseble_command__(('info','nsset','id'), 'name', params)
 
     def assemble_poll(self, *params):
+        attr = [('op',self._dct['op'][0])]
+        if self._dct.get('msg_id',None): attr.append(('msgID',self._dct['msg_id'][0]))
+        ('op',self._dct['op'][0])
         self.__assemble_cmd__((
             ('epp', 'command'),
-            ('command', 'poll', '', (('op',self._dct['op'][0]),) ),
+            ('command', 'poll', '', attr),
             ('command', 'clTRID', params[0])
         ))
 

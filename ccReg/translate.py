@@ -16,7 +16,8 @@ def find_valid_encoding():
             valid_charset = charset
             break
     if not valid_charset:
-        print 'WARNING! Your terminal does not support UTF-8 encoding. Set locale to LANG=cs_CZ.UTF-8.'
+        print 'WARNING! Your terminal does not support UTF-8 encoding. Unicode will be shown on the raw format.'
+        # On the POSIX systems set locale to LANG=cs_CZ.UTF-8.
         valid_charset = sys.stdout.encoding
     return valid_charset
 
@@ -25,11 +26,19 @@ def find_valid_encoding():
 #
 lang = 'cs'
 if len(sys.argv) > 1:
+    # set language from command line
     for arg in sys.argv[1:]:
         if arg in ('en','cs'):
             lang = arg
             break
+else:
+    # set language from environ
+    code = os.environ.get('LANG') # 'cs_CZ.UTF-8'
+    if len(code)>1:
+        arg = code[:2]
+        if arg in ('en','cs'): lang = arg
 
+        
 encoding = find_valid_encoding()
 if lang == 'en':
     _T = gettext.gettext

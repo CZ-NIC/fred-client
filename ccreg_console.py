@@ -61,4 +61,6 @@ if __name__ == '__main__':
             if arg in ('en','cs'): continue
             host = arg
             break
+    else:
+        print _T("Usage: python ccreg_console.py [host] [lang] # (lang is only cs/en and it can be also set befor host)")
     main(host)

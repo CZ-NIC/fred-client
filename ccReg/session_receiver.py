@@ -49,13 +49,21 @@ class ManagerReceiver(ManagerCommand):
                 extValue = data[ANSW_RESULT]['extValue']
                 if type(extValue) not in (list,tuple): extValue = (extValue,)
                 for item in extValue:
-                    msg = []
+                    msg = [] # for values of nodes
+                    msg_attr = [] # for attributes of values
                     if item.has_key('value'):
+                        # if exists any nodes
                         for key in item['value'].keys():
                             if item['value'][key].get('data',None):
+                                # join node value
                                 msg.append('%s:'%item['value'][key].get('data',item['value'][key]))
+                            if item['value'][key].get('attr',None):
+                                # join node attributes
+                                for attr in item['value'][key]['attr']:
+                                    msg_attr.append("%s='%s'"%attr)
                     if item.has_key('reason'):
                         msg.append(item['reason'].get('data',item['reason']))
+                    if len(msg_attr): msg.append('(%s)'%', '.join(msg_attr))
                     self._dct_answer['errors'].append(' '.join(msg))
         return data[ANSW_CODE] != 1000
 
@@ -273,6 +281,7 @@ class ManagerReceiver(ManagerCommand):
     def answer_response_poll(self, data):
         "data=(response,result,code,msg)"
         label='poll'
+        if self.__code_isnot_1000__(data, label): return
         msgQ = None
         response = self._dict_answer.get('response',None)
         if response: msgQ = response.get('msgQ',None)
@@ -463,6 +472,25 @@ if __name__ == '__main__':
     </trID>
   </response>
 </epp>
+    """),
+    ('poll',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
+<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
+  <response>
+    <result code='2400'>
+      <msg lang='cs'>Příkaz selhal</msg>
+      <extValue>
+        <value>
+          <poll msgID='2' op='ack'/>
+        </value>
+        <reason>unknow msgID 2</reason>
+      </extValue>
+    </result>
+    <trID>
+      <clTRID>blig004#06-07-13at10:49:35</clTRID>
+      <svTRID>ccReg-0000010109</svTRID>
+    </trID>
+  </response>
+</epp>
     """)
     )
-    test(data[2])
+    test(data[3])

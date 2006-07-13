@@ -78,14 +78,15 @@ class ManagerCommand(ManagerTransfer):
         # Když je dotaz na help
         if not command_name or command_name != '.':
             self.append_note(_T("""\n${BOLD}${GREEN}Session commands:${NORMAL}
-${BOLD}connect${NORMAL} (or directly login) ${CYAN}# connect to the server${NORMAL}
-${BOLD}lang${NORMAL} cs ${CYAN}# set language${NORMAL}
+${BOLD}connect${NORMAL} (or directly login) ${CYAN}# connect to the server (for test only)${NORMAL}
+${BOLD}lang${NORMAL} cs ${CYAN}# set language of the incomming server messages. It MUST be set BEFORE send login! Later has no effect.${NORMAL}
 ${BOLD}validate${NORMAL} on/off (or validate for see actual value) ${CYAN}# set validation${NORMAL}
 ${BOLD}raw-c${NORMAL}[ommand] [xml]/${BOLD}d${NORMAL}[ict] ${CYAN}# display raw command${NORMAL} (instead of raw you can also type ${BOLD}src${NORMAL})
 ${BOLD}raw-a${NORMAL}[nswer] [xml]/${BOLD}d${NORMAL}[ict]  ${CYAN}# display raw answer${NORMAL}
 ${BOLD}confirm${NORMAL} ${BOLD}on${NORMAL}/[off]  ${CYAN}# confirm editable commands befor sending to the server${NORMAL}
 ${BOLD}config${NORMAL} ${CYAN}# display actual config${NORMAL}
 ${BOLD}config${NORMAL} ${BOLD}create${NORMAL} ${CYAN}# create default config file in user home folder.${NORMAL}
+${BOLD}send${NORMAL} [filename] ${CYAN}# send selected file to the server (for test only). If param is not valid file the command shows folder.${NORMAL}
 """))
 
     def epp_command(self, cmdline):
