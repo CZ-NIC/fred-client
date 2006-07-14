@@ -84,6 +84,7 @@ class ManagerReceiver(ManagerCommand):
                 reason = eppdoc.get_dct_value(result,'msg')
                 self._dct_answer['code'] = code
                 self._dct_answer['reason'] = reason
+                self._dct_answer['command'] = self._command_sent
                 fnc_name = 'answer_response_%s'%self._command_sent.replace(':','_')
                 if hasattr(self,fnc_name):
                     getattr(self,fnc_name)((result, code, reason))
@@ -209,6 +210,8 @@ class ManagerReceiver(ManagerCommand):
                 ('domain:name','domain:roid','domain:status s','domain:registrant'
                 ,'domain:contact type','domain:nsset','domain:clID','domain:crID'
                 ,'domain:crDate','domain:exDate','domain:upID'))
+            m = re.match('\d{4}-\d{2}-\d{2}', self.get_value_from_dict(('data','domain:exDate')))
+            if m: self._dct_answer['data']['domain:renew'] = m.group(0) # value for renew-domain
 
     def answer_response_nsset_info(self, data):
         "data=(response,result,code,msg)"
@@ -304,13 +307,29 @@ class ManagerReceiver(ManagerCommand):
                 if len(self._dct_answer['errors']): dct['errors'].extend(self._dct_answer['errors'])
                 self._dct_answer = dct
 
-##    def answer_response_domain_transfer(self, data):
-##        "data=(response,result,code,msg)"
-##        self.append_note('domain:transfer: ${BOLD}[%s]${NORMAL} %s'%(data[ANSW_CODE],data[ANSW_MSG]))
-##
-##    def answer_response_nsset_transfer(self, data):
-##        "data=(response,result,code,msg)"
-##        self.append_note('nsset:transfer: ${BOLD}[%s]${NORMAL} %s'%(data[ANSW_CODE],data[ANSW_MSG]))
+    def __response_create__(self, data, columns, keys):
+        """data=(response,result,code,msg) 
+        columns=('domain','renew','renData')
+        keys=('name','exDate')"""
+        if self.__code_isnot_1000__(data, '%s:%s'%columns[:2]): return
+        objData = self.get_value_from_dict(('response','resData','%s:%s'%(columns[0],columns[2])),self._dict_answer)
+        if objData:
+            for key in keys:
+                scope = '%s:%s'%(columns[0],key)
+                self._dct_answer['data'][scope] = eppdoc.get_dct_value(objData, scope)
+
+    def answer_response_contact_create(self, data):
+        self.__response_create__(data, ('contact','create','creData'), ('id','crDate'))
+
+    def answer_response_domain_create(self, data):
+        self.__response_create__(data, ('domain','create','creData'), ('name','crDate','exDate'))
+
+    def answer_response_nsset_create(self, data):
+        self.__response_create__(data, ('nsset','create','creData'), ('id','crDate'))
+
+    def answer_response_domain_renew(self, data):
+        self.__response_create__(data, ('domain','renew','renData'), ('name','exDate'))
+
 
     #-------------------------------------------------
     #
@@ -322,18 +341,18 @@ class ManagerReceiver(ManagerCommand):
         Create EPP command - send to server - receive answer - parse answer to dict - returns dict.
         """
         self.reset_round()
-        dct_params = adjust_dict(params)                                                   # turn params into expecterd format
-        self.create_command_with_params(command_name, dct_params) # create EPP command
-        self._raw_cmd = self._epp_cmd.get_xml()                                        # get EPP in XML (string)
+        dct_params = adjust_dict(params)                                      # turn params into expecterd format
+        self.create_command_with_params(command_name, dct_params)             # create EPP command
+        self._raw_cmd = self._epp_cmd.get_xml()                               # get EPP in XML (string)
         if len(self._errors): raise ccRegError(self.fetch_errors())
-        if self.is_online(command_name):                                                    # go only if session is online.
-            errors = self.is_epp_valid(self._raw_cmd)                                    # check doc for EPP validation
+        if self.is_online(command_name):                                      # go only if session is online.
+            errors = self.is_epp_valid(self._raw_cmd)                         # check doc for EPP validation
             if len(errors): raise ccRegError(errors)
             if self.is_connected(): # if we are connect, lets communicate with the server
-                self.send(self._raw_cmd)                                                         # send to server
+                self.send(self._raw_cmd)                                      # send to server
                 if len(self._errors): raise ccRegError(self.fetch_errors())
-                xml_answer = self.receive()                                                     # receive answer
-                self.process_answer(xml_answer)                                           # process answer
+                xml_answer = self.receive()                                   # receive answer
+                self.process_answer(xml_answer)                               # process answer
                 if len(self._errors): raise ccRegError(self.fetch_errors())
             else:
                 raise ccRegError(_T("You are not connected! For connection type: connect or login"))
@@ -354,7 +373,7 @@ def append_dct(dct,key,value):
         if type(dct[key]) == list:
             dct[key].append(value)
         else:
-            dct[key] = [dct[key], vlalue]
+            dct[key] = [dct[key], value]
     else:
         dct[key] = value
 
@@ -457,7 +476,7 @@ if __name__ == '__main__':
     <clTRID>ABC-12345</clTRID>
   </command>
 </epp>"""),
-    ('create-domain',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
+    ('create:domain',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
 <epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
   <response>
     <result code='2005'>
@@ -518,5 +537,62 @@ if __name__ == '__main__':
   </response>
 </epp>
     """),
+    ('contact:create',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
+<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:contact='http://www.nic.cz/xml/epp/contact-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
+  <response>
+    <result code='1000'>
+      <msg lang='cs'>Příkaz úspěšně proveden</msg>
+    </result>
+    <resData>
+      <contact:creData xsi:schemaLocation='http://www.nic.cz/xml/epp/contact-1.0 contact-1.0.xsd'>
+        <contact:id>lubosid</contact:id>
+        <contact:crDate>2006-07-14T09:02:59.0Z</contact:crDate>
+      </contact:creData>
+    </resData>
+    <trID>
+      <clTRID>ebvg003#06-07-14at11:02:58</clTRID>
+      <svTRID>ccReg-0000010885</svTRID>
+    </trID>
+  </response>
+</epp>"""),
+    ('domain:create',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
+<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:domain='http://www.nic.cz/xml/epp/domain-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
+  <response>
+    <result code='1000'>
+      <msg lang='cs'>Příkaz úspěšně proveden</msg>
+    </result>
+    <resData>
+      <domain:creData xsi:schemaLocation='http://www.nic.cz/xml/epp/domain-1.0 domain-1.0.xsd'>
+        <domain:name>lusk.cz</domain:name>
+        <domain:crDate>2006-07-14T11:25:55.0Z</domain:crDate>
+        <domain:exDate>2006-07-14T00:00:00.0Z</domain:exDate>
+      </domain:creData>
+    </resData>
+    <trID>
+      <clTRID>ausc002#06-07-14at13:25:54</clTRID>
+      <svTRID>ccReg-0000011001</svTRID>
+    </trID>
+  </response>
+</epp>
+"""),
+    ('domain:renew',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
+<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:domain='http://www.nic.cz/xml/epp/domain-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
+  <response>
+    <result code='1000'>
+      <msg lang='cs'>Příkaz úspěšně proveden</msg>
+    </result>
+    <resData>
+      <domain:renData xsi:schemaLocation='http://www.nic.cz/xml/epp/domain-1.0 domain-1.0.xsd'>
+        <domain:name>LUSK.CZ</domain:name>
+        <domain:exDate>2008-07-14T00:00:00.0Z</domain:exDate>
+      </domain:renData>
+    </resData>
+    <trID>
+      <clTRID>koix009#06-07-14at13:40:10</clTRID>
+      <svTRID>ccReg-0000011024</svTRID>
+    </trID>
+  </response>
+</epp>
+""")
     )
-    test(data[4])
+    test(data[7])

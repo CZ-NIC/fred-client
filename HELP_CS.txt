@@ -241,6 +241,12 @@ Nevalidní dokument vznikne například tím, že zadáte hodnotu, která neodpo
 Například příliš krátké heslo. Konzole v této verzi obsah hodnot nijak neověřuje, pouze zjišťuje
 jestli byly zadány nebo ne.
 
+> poll-ack [on/off]
+Pokud je tento přepínač ON, tak se po odeslání příkazu "poll req" automaticky odesílá i "poll ack".
+Tuhle funkci asi nejvíce oceníte, když budete mít na serveru hodně zpráv. Příkaz "poll req" zprávu
+ze serveru pouze zobrazí, ale pak se zpráva musí ze serveru odstranint příkazem "poll ack ID-zprávy".
+Při automatickém poll-ack se bude odstraňování provádět automaticky.
+
 > raw-command [dict]
 > raw-answer [dict]
 Tyto příkazy nejsou přepínače interních proměnných, ale vypisují zdrojové tvary posledního příkazu
@@ -322,13 +328,15 @@ Pak již můžete navázat spojení funkcí login:
 Každá funkce (EPP příkazu) vrací tuto "retval" hodnotu, která je typu dict a ve tvaru:
 
     {'reason': u'Text of answer reason', 
-     'code': 1000, 
+     'code': 1000,
+     'command': 'command-name',  
      'errors': []
      'data': {'key': 'value' [,'next-key':'next-value']}, 
     }
 
 Klíč "reason" (str) je vyrozumění serveru o stavu odpovědi.
 Klíč "code" (int) je číslo, které definuje typ chyby. Číslo 1000 znamená OK - vše vpořádku.
+Klíč "command" (str) je název příkazu, na který se odpověď vztahuje (který odpověď vyvolal).
 Klíč "errors" (list) je seznam chyb, které server nalezl.
 Klíč "data" (dict) je slovník s hodnotami individuálními pro každý jednotlivý příkaz.
 

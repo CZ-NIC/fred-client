@@ -31,7 +31,7 @@ class ManagerTransfer(ManagerBase):
         'Reset buffers of sources.'
         self._raw_answer = '' # XML EPP odpověd serveru
         self._dict_answer = '' #!!! dict - slovník vytvořený z XML EPP odpovědi
-        self._dct_answer = {'code':0, 'reason':'', 'errors':[], 'data':{}} # API response
+        self._dct_answer = {'code':0,'command':'',  'reason':'', 'errors':[], 'data':{}} # API response
 
     def reset_round(self):
         'Prepare for next round. Reset internal dict with communication values.'
@@ -152,10 +152,12 @@ class ManagerTransfer(ManagerBase):
 
     def print_answer(self, dct=None):
         'Show values parsed from the server answer.'
+        patt_type = re.compile("<type '(\w+)'>")
         if not dct: dct = self._dct_answer
         code = dct['code']
         print '-'*60
         print colored_output.render('${BOLD}code:${NORMAL} %d'%code)
+        print colored_output.render('${BOLD}command:${NORMAL} %s'%dct['command'])
         print colored_output.render('${BOLD}reason:${NORMAL}'),
         print_unicode(colored_output.render('${BOLD}${%s}%s${NORMAL}'%({False:'YELLOW',True:'GREEN'}[code==1000],dct['reason'])))
         print colored_output.render('${BOLD}errors:${NORMAL}')
@@ -169,10 +171,10 @@ class ManagerTransfer(ManagerBase):
             if type(v) in (list,tuple):
                 if len(v):
                     space = ' '*(8 - len('%s: '%k)) # indent justify text to the tabs on next lines
-                    print_unicode(colored_output.render('\t${BOLD}%s:${NORMAL} %s%s'%(k,space,v[0])))
+                    print_unicode(colored_output.render('\t${BOLD}%s:${NORMAL} (list) %s%s'%(k,space,v[0])))
                     for text in v[1:]:
                         print_unicode('\t\t%s'%text)
             else:
-                print_unicode(colored_output.render('\t${BOLD}%s:${NORMAL} %s'%(k,v)))
+                print_unicode(colored_output.render('\t${BOLD}%s:${NORMAL} (%s) %s'%(k, patt_type.match(str(type(v))).group(1), v)))
         print '-'*60
 

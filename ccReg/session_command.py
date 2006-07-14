@@ -181,9 +181,7 @@ ${BOLD}send${NORMAL} [filename] ${CYAN}# send selected file to the server (for t
             filepath = '.'
             m = re.match('send\s*(\S+)',command)
             if m:
-                modul_path = os.path.dirname(__file__)
-                if modul_path: modul_path+= '/'
-                filepath = os.path.normpath(modul_path+os.path.expanduser(m.group(1)))
+                filepath = m.group(1)
             if os.path.isdir(filepath):
                 # zobrazit adresář
                 self.append_note('%s: %s'%(_T('Dir list'),filepath))

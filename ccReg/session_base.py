@@ -108,7 +108,7 @@ class ManagerBase:
     def welcome(self):
         "Welcome message for console modul."
         # frame:  - | |- -| |_ _|
-        if sys.stdout.encoding == 'cp852':
+        if encoding == 'cp852':
             frm=('\xcd','\xba','\xc9','\xbb','\xc8','\xbc')
         else:
             frm=[]
@@ -116,7 +116,7 @@ class ManagerBase:
                 frm.append(c.encode('utf-8'))
         msg = _T('Welcome to the ccReg console')
         try:
-            msglen = len(unicode(msg, sys.stdout.encoding))
+            msglen = len(unicode(msg, encoding))
         except UnicodeDecodeError:
             print "(Problem with terminal encoding)"
             try:
@@ -270,7 +270,7 @@ class ManagerBase:
             ok = 1 # OK, support is enabled.
         else:
             try:
-                uerr = errors.decode(sys.stdout.encoding)
+                uerr = errors.decode(encoding)
             except UnicodeDecodeError:
                 uerr = repr(errors)
             self.append_note(uerr)
@@ -286,7 +286,7 @@ class ManagerBase:
             open(tmpname,'w').write(message)
         except IOError, (no, msg):
             try:
-                msg = msg.decode(sys.stdout.encoding)
+                msg = msg.decode(encoding)
             except UnicodeDecodeError, error:
                 msg = '(UnicodeDecodeError) '+repr(msg)
             self._validate = 0 # automatické vypnutí validace
@@ -330,7 +330,7 @@ def join_unicode(u_list, sep='\n'):
     for row in u_list:
         if type(row) == str:
             try:
-                row = row.decode(sys.stdout.encoding)
+                row = row.decode(encoding)
             except UnicodeDecodeError, error:
                 row = '(UnicodeDecodeError) '+repr(row)
         out.append(row)
@@ -353,7 +353,7 @@ def get_unicode(text):
     'Convert to unicode and catch problems with conversion.'
     if type(text) == str:
         try:
-            text = text.decode(sys.stdout.encoding)
+            text = text.decode(encoding)
         except UnicodeDecodeError:
             text = repr(re.sub('\$\{[A-Z]+\}','',text)) # remove color tags
     return text

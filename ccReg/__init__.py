@@ -105,13 +105,14 @@ class Client:
         self._epp.close()
         
     def check_contact(self, name):
-        """Usage: check-contact name
+        """Usage: check-contact name [,name2]
     
     PARAMS:
 
     name (required)     unbounded list
 
-    RETURN data: {name: int}   0/1
+    RETURN data: {name: int [,name2: int]}
+    NOTE: int is 0/1 (0-engaged name, 1-available name)
 
    The EPP "check" command is used to determine if an object can be
    provisioned within a repository.  It provides a hint that allows a
@@ -122,13 +123,14 @@ class Client:
         return self._epp.api_command('check_contact',{'name':name})
 
     def check_domain(self, name):
-        """Usage: check-domain name
+        """Usage: check-domain name [,name2]
 
     PARAMS:
 
     name (required)     unbounded list
 
-    RETURN data: {name: int} 0/1
+    RETURN data: {name: int [,name2: int]}
+    NOTE: int is 0/1 (0-engaged name, 1-available name)
 
    The EPP "check" command is used to determine if an object can be
    provisioned within a repository.  It provides a hint that allows a
@@ -139,13 +141,14 @@ class Client:
         return self._epp.api_command('check_domain',{'name':name})
 
     def check_nsset(self, name):
-        """Usage: check-nsset name
+        """Usage: check-nsset name [,name2]
 
     PARAMS:
 
     name (required)     unbounded list
 
-    RETURN data: {name: int} 0/1
+    RETURN data: {name: int [,name2: int]}
+    NOTE: int is 0/1 (0-engaged name, 1-available name)
 
    The EPP "check" command is used to determine if an object can be
    provisioned within a repository.  It provides a hint that allows a
@@ -185,7 +188,10 @@ class Client:
     ssn (optional)
     notify_email (optional)
 
-    RETURN data: {}
+    RETURN data: {
+        contact:id     str
+        contact:crDate str
+    }
 
    The EPP "create" command is used to create an instance of an object.
    An object can be created for an indefinite period of time, or an
@@ -197,8 +203,8 @@ class Client:
             'org':org, 'street':street, 'sp':sp, 'pc':pc, 'voice':voice, 'fax':fax,
             'disclose':disclose, 'vat':vat, 'ssn':ssn, 'notify_email':notify_email})
 
-    def create_domain(self, name, pw, period=None, nsset=None, registrant=None, contact=None):
-        """Usage: create-domain name pw
+    def create_domain(self, name, pw, nsset, registrant, period=None, contact=None):
+        """Usage: create-domain name pw nsset registrant
 
     PARAMS:
 
@@ -211,7 +217,7 @@ class Client:
     registrant (optional)
     contact (optional)          unbounded list
 
-    RETURN data: {}
+    RETURN data: {domain:name, domain:crDate, domain:exDate}
 
    The EPP "create" command is used to create an instance of an object.
    An object can be created for an indefinite period of time, or an
@@ -220,9 +226,9 @@ class Client:
         return self._epp.api_command('create_domain',{'name':name,'pw':pw,
             'period':period,'nsset':nsset,'registrant':registrant,'contact':contact})
 
-    def create_domain_enum(self, name, pw, period=None, nsset=None, registrant=None,
+    def create_domain_enum(self, name, pw, nsset, registrant, period=None,
          contact=None, val_ex_date=None):
-        """Usage: create-domain-enum name pw
+        """Usage: create-domain-enum name pw nsset registrant
 
     PARAMS:
 
@@ -247,19 +253,19 @@ class Client:
             'pw':pw, 'period':period, 'nsset':nsset, 'registrant':registrant, 
             'contact':contact, 'val_ex_date':val_ex_date})
 
-    def create_nsset(self, nsset_id, pw, ns=None, tech=None):
+    def create_nsset(self, nsset_id, pw, dns=None, tech=None):
         """Usage: create-nsset id pw
 
     PARAMS:
 
     id (required)
     pw (required)
-    ns (optional)               list with max 9 items.
+    dns (optional)               list with max 9 items.
         name (required)
         addr (optional)         unbounded list
     tech (optional)             unbounded list
 
-    RETURN data: {}
+    RETURN data: {nsset:id, nsset:crDate}
 
    The EPP "create" command is used to create an instance of an object.
    An object can be created for an indefinite period of time, or an
@@ -270,7 +276,7 @@ class Client:
     create-nsset exampleNsset passw ((ns1.domain.net (127.1.0.1 127.1.0.2)),(ns2.domain.net (127.2.0.1 127.2.0.2)),(ns3.domain.net (127.3.0.1 127.3.0.2))) tech-contact
 
         """
-        return self._epp.api_command('create_nsset',{'id':nsset_id, 'pw':pw, 'ns':ns, 'tech':tech})
+        return self._epp.api_command('create_nsset',{'id':nsset_id, 'pw':pw, 'dns':dns, 'tech':tech})
 
 
     def delete_contact(self, nsset_id):
@@ -322,12 +328,12 @@ class Client:
     PARAMS:
 
     RETURN data: {
-            lang:    tuple
-            objURI: tuple
-            extURI: tuple
+            lang:    list
+            objURI:  list
+            extURI:  list
             version: str
-            svID: str
-            svDate: str
+            svID:    str
+            svDate:  str
             }
 
     The EPP "hello" request a "greeting" response message from an EPP server at any time.
@@ -342,7 +348,12 @@ class Client:
 
     name (required)
 
-    RETURN data: {}
+    RETURN data: {
+            contact:org, contact:roid, contact:email, contact:city, 
+            s, contact:crDate, contact:street, contact:crID, 
+            contact:upDate, contact:cc, contact:id, contact:upID, 
+            contact:name
+        }
 
    The EPP "info" command is used to retrieve information associated
    with an existing object. The elements needed to identify an object
@@ -360,7 +371,12 @@ class Client:
 
     name (required)
 
-    RETURN data: {}
+    RETURN data: {
+            domain:crDate, domain:crID, domain:clID, domain:name, 
+            domain:renew, domain:exDate, domain:nsset, domain:upID, 
+            s, domain:roid, domain:registrant
+        }
+    NOTE: domain:renew (you can use for renew-domain command)
 
    The EPP "info" command is used to retrieve information associated
    with an existing object. The elements needed to identify an object
@@ -445,7 +461,7 @@ class Client:
         num (required)
         unit (required) accept only values: (y,m)
 
-    RETURN data: {}
+    RETURN data: {domain:name, domain:exDate}
 
     The EPP "renew" command is used to extend validity of an existing object.
         """
@@ -612,7 +628,7 @@ class Client:
 
     id (required)
     add (optional)
-        ns (optional)           list with max 9 items.
+        dns (optional)           list with max 9 items.
             name (required)
             addr (optional)     unbounded list
         tech (optional)         unbounded list

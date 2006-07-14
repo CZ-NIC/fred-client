@@ -503,7 +503,22 @@ def prepare_for_display(dict_values,color=0,indent=0):
                 else:
                     body.append(patt[1]%(ind,key,dict_values[key]))
     return '\n'.join(body)
-    
+
+def correct_unbound_prefix(xml):
+    'Input missing prefix definitions.'
+    names = []
+    for token in re.findall('<([\w-]+):',xml):
+        if token not in names:
+            if not re.search('%s-%s.xsd'%(token,nic_cz_version),xml):
+                # if namespace is not defined...
+                names.append(token)
+    patt = re.compile(r'<([^\?][^>]+)>',re.DOTALL)
+    if len(names):
+        return re.sub(r'<([^\?][^>]+)>', '<\\1 %s>'%' '.join(['xmlns:%s="urn:ietf:params:xml:ns:epp-1.0"'%n for n in names]), xml, 1)
+    else:
+        return xml
+
+
 def test_display():
     exampe1 = {'attr': [(u'xmlns:xsi', u'http://www.w3.org/2001/XMLSchema-instance'),
           ('xmlns', u'urn:ietf:params:xml:ns:epp-1.0'),
@@ -543,17 +558,6 @@ def test_display():
     print prepare_for_display(exampe2)
     print '='*60
     print prepare_display(exampe2)
-
-def correct_unbound_prefix(xml):
-    'Input missing prefix definitions.'
-    # TODO: Tohle zanikne...
-    names = []
-    for token in re.findall('<([\w-]+):',xml):
-        if token not in names: names.append(token)
-    if len(names):
-        return re.sub(r'<([^\?][^>]+)>', '<\\1 %s>'%' '.join(['xmlns:%s="urn:ietf:params:xml:ns:epp-1.0"'%n for n in names]), xml, 1)
-    else:
-        return xml
 
 def test_parse(xml):
     m = Message()

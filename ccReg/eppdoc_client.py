@@ -125,32 +125,32 @@ class Message(eppdoc_assemble.Message):
         'create_domain': (2,(
             ('name',(1,1),(),_T('domain name'),()),
             ('pw',(1,1),(),_T('password'),()),
+            ('nsset',(1,1),(),_T('nsset'),()),
+            ('registrant',(1,1),(),_T('registrant'),()),
             ('period',(0,1),(),_T('period'),(
                 ('num',(1,1),(),_T('number of months or years'),()),
                 ('unit',(1,1),('y','m'),_T('period unit (y year(default), m month)'),()),
             )),
-            ('nsset',(0,1),(),_T('nsset'),()),
-            ('registrant',(0,1),(),_T('registrant'),()),
             ('contact',(0,UNBOUNDED),(),_T('contact'),()),
-            ),notice['create'],('create-domain domain.cz password (3 m) nsset.name.cz registr-name ("My address","My next contact")',)),
+            ),notice['create'],('create-domain domain.cz password nsset registrant (3 m) ("My address","My next contact")',)),
         #----------------------------------------------------
         'create_domain_enum': (2,(
             ('name',(1,1),(),_T('domain name'),()),
             ('pw',(1,1),(),_T('password'),()),
+            ('nsset',(1,1),(),_T('nsset'),()),
+            ('registrant',(1,1),(),_T('registrant'),()),
             ('period',(0,1),(),_T('period'),(
                 ('num',(1,1),(),_T('number of months or years'),()),
                 ('unit',(1,1),('y','m'),_T('period unit (y year(default), m month)'),()),
             )),
-            ('nsset',(0,1),(),_T('nsset'),()),
-            ('registrant',(0,1),(),_T('registrant'),()),
             ('contact',(0,UNBOUNDED),(),_T('contact'),()),
             ('val_ex_date',(0,1),(),_T('valExDate'),()),
-            ),notice['create'],('create-domain-enum domain.cz password (3 m) nsset.name.cz registr-name ("My address","My next contact") 2006-06-08',)),
+            ),notice['create'],('create-domain-enum domain.cz password nsset registrant (3 m) ("My address","My next contact") 2006-06-08',)),
         #----------------------------------------------------
         'create_nsset': (2,(
             ('id',(1,1),(),_T('nsset ID'),()),
             ('pw',(1,1),(),_T('password'),()),
-            ('ns',(0,9),(),_T('LIST of nssets'),(
+            ('dns',(0,9),(),_T('LIST of DNS'),(
                 ('name',(1,1),(),_T('nsset name'),()),
                 ('addr',(0,UNBOUNDED),(),_T('nsset address'),()),
             )),
@@ -271,7 +271,7 @@ class Message(eppdoc_assemble.Message):
         'update_nsset': (1,(
             ('id',(1,1),(),_T('nsset ID'),()),
             ('add',(0,1),(),_T('add part'),(
-                ('ns',(0,9),(),_T('list of nssets'),(
+                ('dns',(0,9),(),_T('list of DNS'),(
                     ('name',(1,1),(),_T('nsset name'),()),
                     ('addr',(0,UNBOUNDED),(),_T('IP address'),()),
                 )),

@@ -35,7 +35,7 @@ class Lorry:
             self._errors.append('Create socket.error [%d] %s'%(no,msg))
         try:
             self._conn.connect((DATA[0], DATA[1]))
-            self._notes.append('Connected to host %s, port %d'%tuple(DATA[:2]))
+            self._notes.append(_T('Connected to host ${GREEN}${BOLD}%s${NORMAL}, port %d')%tuple(DATA[:2]))
             if self._timeout: self._conn.settimeout(self._timeout)
         except socket.error, (no,msg):
             self._errors.append('Connection socket.error [%d] %s'%(no,msg))

@@ -481,9 +481,9 @@ class Message(eppdoc.Message):
             ('create', 'nsset:create', '', attr),
             ('nsset:create','nsset:id', dct['id'][0])]
         # ns records
-        if __has_key__(dct,'ns'):
-            for ns in dct['ns']:
-                self.__append_nsset__('create', data, ns)
+        if __has_key__(dct,'dns'):
+            for dns in dct['dns']:
+                self.__append_nsset__('create', data, dns)
         if __has_key__(dct,'tech'):
             self.__append_values__(data, dct, 'tech', 'nsset:create', 'nsset:tech')
         data.extend((
@@ -622,12 +622,12 @@ class Message(eppdoc.Message):
         if __has_key_dict__(dct,'add'):
             data.append(('nsset:update','nsset:add'))
             dct_add = dct['add'][0]
-            if __has_key_dict__(dct_add,'ns'):
-                for dct_ns in dct_add['ns']:
-                    if not __has_key__(dct_ns, 'name'): continue
+            if __has_key_dict__(dct_add,'dns'):
+                for dct_dns in dct_add['dns']:
+                    if not __has_key__(dct_dns, 'name'): continue
                     data.append(('nsset:add','nsset:ns'))
-                    data.append(('nsset:ns','nsset:name',dct_ns['name'][0]))
-                    self.__append_values__(data, dct_ns, 'addr', 'nsset:ns', 'nsset:addr')
+                    data.append(('nsset:ns','nsset:name',dct_dns['name'][0]))
+                    self.__append_values__(data, dct_dns, 'addr', 'nsset:ns', 'nsset:addr')
                 self.__append_values__(data, dct_add, 'tech', 'nsset:add', 'nsset:tech')
                 self.__append_attr__(data, dct_add, 'status', 'nsset:add', 'nsset:status','s')
 
