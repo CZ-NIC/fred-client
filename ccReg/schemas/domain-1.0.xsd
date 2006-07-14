@@ -41,10 +41,8 @@
         <element name="name" type="eppcom:labelType"/>
         <element name="period" type="domain:periodType"
          minOccurs="0"/>
-        <element name="nsset" type="eppcom:labelType"
-         minOccurs="0"/>
-        <element name="registrant" type="eppcom:clIDType"
-         minOccurs="0"/>
+        <element name="nsset" type="eppcom:labelType"/>
+        <element name="registrant" type="eppcom:clIDType"/>
         <element name="contact" type="domain:contactType"
          minOccurs="0" maxOccurs="unbounded"/>
         <element name="authInfo" type="domain:authInfoType"/>
@@ -290,12 +288,10 @@
         <element name="roid" type="eppcom:roidType"/>
         <element name="status" type="domain:statusType"
          minOccurs="0" maxOccurs="8"/>
-        <element name="registrant" type="eppcom:clIDType"
-         minOccurs="0"/>
+        <element name="registrant" type="eppcom:clIDType"/>
         <element name="contact" type="domain:contactType"
          minOccurs="0" maxOccurs="unbounded"/>
-        <element name="nsset" type="eppcom:labelType"
-         minOccurs="0"/>
+        <element name="nsset" type="eppcom:labelType"/>
         <element name="clID" type="eppcom:clIDType"/>
         <element name="crID" type="eppcom:clIDType"
          minOccurs="0"/>
