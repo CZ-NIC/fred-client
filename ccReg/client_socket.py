@@ -16,7 +16,7 @@ class Lorry:
         self._notes = [] # hlášení o stavu
         self._errors = [] # chybová hlášení
         self._body_length = 0 # velikost EPP zprávy, která se má přijmout
-        self._timeout = 0 # Windows bug! MUST be zero.
+        self._timeout = 0.0 # Windows bug! MUST be zero.
 
     def is_error(self):
         return len(self._errors)
@@ -24,10 +24,19 @@ class Lorry:
     def is_connected(self):
         return self._conn and self._conn_ssl
 
+    def set_timeout(self, sec):
+        self._timeout = sec
+    def get_timeout(self):
+        return self._timeout
+
     def connect(self, DATA):
-        "DATA = ('host', PORT, 'file.key', 'file.crt')"
+        "DATA = ('host', PORT, 'file.key', 'file.crt', timeout)"
         ok = 0
         self._conn = None
+        try:
+            self._timeout = float(DATA[4])
+        except ValueError:
+            pass
         try:
             self._conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             ok = 1
@@ -36,7 +45,9 @@ class Lorry:
         try:
             self._conn.connect((DATA[0], DATA[1]))
             self._notes.append(_T('Connected to host ${GREEN}${BOLD}%s${NORMAL}, port %d')%tuple(DATA[:2]))
-            if self._timeout: self._conn.settimeout(self._timeout)
+            if self._timeout:
+                self._notes.append('Socket timeout: ${BOLD}%.1f${NORMAL} sec.'%self._timeout)
+                self._conn.settimeout(self._timeout)
         except socket.error, (no,msg):
             self._errors.append('Connection socket.error [%d] %s'%(no,msg))
         except (KeyboardInterrupt,EOFError):
@@ -60,7 +71,17 @@ class Lorry:
                 self._conn_ssl = socket.ssl(self._conn)
             ssl_ok = 1
         except socket.sslerror, msg:
-            self._errors.append(str(msg))
+            self._errors.append('socket.sslerror: %s'%str(msg))
+            if type(msg) not in (str,unicode):
+                err_note = {
+                    1:_T('Used certificat is not signed by verified certificate authority.'),
+                    2:_T('The server configuration is not valid. Contact the server administrator.'),
+                }
+                try:
+                    text = err_note.get(msg[0],None)
+                    if text: self._errors.append(text)
+                except (TypeError, IndexError):
+                    pass
         except (KeyboardInterrupt,EOFError):
             self._errors.append(_T('Interrupt from user'))
         if not ssl_ok:

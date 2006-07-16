@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-07-14 16:48+0200\n"
+"POT-Creation-Date: 2006-07-16 13:59+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Zdeněk Böhm <zdenek.bohm@nic.cz>\n"
 "Language-Team: CS <info@nic.cz>\n"
@@ -15,38 +15,47 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ccReg/client_socket.py:38
+#: ccReg/client_socket.py:47
 #, python-format
 msgid "Connected to host ${GREEN}${BOLD}%s${NORMAL}, port %d"
 msgstr "Připojen na host ${GREEN}${BOLD}%s${NORMAL}, port %d"
 
-#: ccReg/client_socket.py:43 ccReg/client_socket.py:65
-#: ccReg/client_socket.py:92 ccReg/client_socket.py:118
-#: ccReg/client_socket.py:152 ccReg/client_socket.py:164
+#: ccReg/client_socket.py:54 ccReg/client_socket.py:86
+#: ccReg/client_socket.py:113 ccReg/client_socket.py:139
+#: ccReg/client_socket.py:173 ccReg/client_socket.py:185
 msgid "Interrupt from user"
 msgstr "Přerušeno uživatelem"
 
-#: ccReg/client_socket.py:45
+#: ccReg/client_socket.py:56
 msgid "Init SSL connection"
 msgstr "Aktivováno SSL spojení"
 
-#: ccReg/client_socket.py:47
+#: ccReg/client_socket.py:58
 msgid "Certificate names not set."
 msgstr "Jména certifikátů nejsou zadána "
 
-#: ccReg/client_socket.py:49
+#: ccReg/client_socket.py:60
 msgid "Private key file not found."
 msgstr "Privátní klíč nebyl nalezen"
 
-#: ccReg/client_socket.py:52
+#: ccReg/client_socket.py:63
 msgid "Certificate key file not found."
 msgstr "Soubor s certifikátem nebyl nalezen"
 
-#: ccReg/client_socket.py:59
+#: ccReg/client_socket.py:70
 msgid "Certificates missing. Try connect without SSL!"
 msgstr "Certifikát chybí. Zkouším spojení bez SSL!"
 
-#: ccReg/client_socket.py:165
+#: ccReg/client_socket.py:77
+msgid "Used certificat is not signed by verified certificate authority."
+msgstr "Použitý certifikát není podepsán uznávanou certifikační autoritou."
+
+#: ccReg/client_socket.py:78
+msgid ""
+"The server configuration is not valid. Contact the server administrator."
+msgstr "Server není správně nakonfigurován. Obraťte se na správce serveru."
+
+#: ccReg/client_socket.py:186
 msgid "Connection closed"
 msgstr "Spojení uzavřeno"
 
@@ -550,56 +559,56 @@ msgstr "Interní chyba: Nadřazený uzel '%s' neexistuje."
 msgid "Confirm has been set to"
 msgstr "Potvrzení bylo nastaveno na"
 
-#: ccReg/session_base.py:117 test.py:48 test.py:53 test.py:57
+#: ccReg/session_base.py:117
 msgid "Welcome to the ccReg console"
 msgstr "Vítejte v ccReg konzoli"
 
-#: ccReg/session_base.py:132
+#: ccReg/session_base.py:128
 msgid "For help type \"help\" (or \"h\", \"?\")"
 msgstr "Pro více informací zadejte \"help\" (nebo \"h\", \"?\")"
 
-#: ccReg/session_base.py:151
+#: ccReg/session_base.py:147
 msgid "Create default config failed."
 msgstr "Vytvoření defaultního config souboru selhalo."
 
-#: ccReg/session_base.py:153
+#: ccReg/session_base.py:149
 msgid "Actual config is"
 msgstr "Aktuální config je"
 
-#: ccReg/session_base.py:155
+#: ccReg/session_base.py:151
 msgid "No config"
 msgstr "Žádný config"
 
-#: ccReg/session_base.py:216
+#: ccReg/session_base.py:212
 msgid "Default config file saved. For more see help."
 msgstr "Defaultní config soubor byl uložen. Další informace naleznete v helpu."
 
-#: ccReg/session_base.py:219
+#: ccReg/session_base.py:215
 msgid "Impossible saving conf file. Reason"
 msgstr "Není možné uložit config soubor. Důvod"
 
-#: ccReg/session_base.py:232
+#: ccReg/session_base.py:221
 msgid "Fatal error: Create default config failed."
 msgstr "Fatální chyba: Vytvoření defaultních config hodnot selhalo."
 
-#: ccReg/session_base.py:242
+#: ccReg/session_base.py:236
 msgid "This language code is not allowed"
 msgstr "Tento kód jazyka není povolen"
 
-#: ccReg/session_base.py:253
+#: ccReg/session_base.py:247
 msgid "Status: Validation is"
 msgstr "Aktuální nastavení validace je"
 
-#: ccReg/session_base.py:257
+#: ccReg/session_base.py:251
 msgid "Validation is set"
 msgstr "Validace byla nastavena na"
 
-#: ccReg/session_base.py:278 ccReg/session_base.py:294
-#: ccReg/session_base.py:314
+#: ccReg/session_base.py:272 ccReg/session_base.py:288
+#: ccReg/session_base.py:308
 msgid "Validator has been disabled. For enable type"
 msgstr "Validátor byl deaktivován. Opětná aktivace se provede zadáním"
 
-#: ccReg/session_base.py:293
+#: ccReg/session_base.py:287
 msgid "Temporary file for verify XML EPP validity cannot been created. Reason"
 msgstr ""
 "Dočasný soubor pro ověření XML EPP validity se nepodařilo vytvořit. Důvod"
@@ -816,19 +825,19 @@ msgstr ""
 msgid "Connection broken"
 msgstr "Spojení přerušeno"
 
-#: ccReg/session_transfer.py:86
+#: ccReg/session_transfer.py:88
 msgid "Impossible create connection. Required config values missing"
 msgstr "Není možné vytvořit spojení. Požadované hodnoty z config chybí"
 
-#: ccReg/session_transfer.py:119
+#: ccReg/session_transfer.py:121
 msgid "Command was sent to EPP server."
 msgstr "Příkaz byl odeslán na EPP server."
 
-#: ccReg/session_transfer.py:122 ccReg/session_transfer.py:146
+#: ccReg/session_transfer.py:124 ccReg/session_transfer.py:148
 msgid "You are not connected."
 msgstr "Nejste připojeni."
 
-#: ccReg/session_transfer.py:131
+#: ccReg/session_transfer.py:133
 msgid "Send logout"
 msgstr "Odeslán logout"
 
@@ -856,4 +865,3 @@ msgid ""
 msgstr ""
 "Použití: python ccreg_console.py [host] [lang] # (lang může být pouze cs/en "
 "a může být zadán před host)"
-

@@ -80,7 +80,9 @@ class ManagerTransfer(ManagerBase):
             data = [self.__get_config__(section,'host'),
                     self.__get_config__(section,'port','int'),
                     self.__get_config__(section,'ssl_key'),
-                    self.__get_config__(section,'ssl_cert')]
+                    self.__get_config__(section,'ssl_cert'),
+                    self.__get_config__(section,'timeout'),
+                    ]
             if self._host: data[0] = self._host
             if None in data:
                 self.append_error('%s: %s'%(_T('Impossible create connection. Required config values missing'),str(data)))

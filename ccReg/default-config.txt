@@ -3,6 +3,7 @@ host = epp-test.ccreg.nic.cz
 port = 700
 ssl_key = client.key
 ssl_cert = client.crt
+timeout = 0.0
 
 [session]
 lang = cs

@@ -118,11 +118,7 @@ class ManagerBase:
         try:
             msglen = len(unicode(msg, encoding))
         except UnicodeDecodeError:
-            print "(Problem with terminal encoding)"
-            try:
-                msglen = len(unicode(msg, 'utf-8'))
-            except UnicodeDecodeError:
-                msglen = len(msg)
+            msglen = len(msg) # (Problem with terminal encoding)
         welcome = '   %s   '%msg
         msglen+=6
         empty_row = '%s%s%s'%(frm[1],' '*msglen,frm[1])
@@ -221,18 +217,16 @@ class ManagerBase:
     def load_config(self):
         "Load config file and init internal variables. Returns 0 if fatal error occured."
         self._conf = ConfigParser.SafeConfigParser()
+        if not self.__create_default_conf__():
+            self.append_error(_T('Fatal error: Create default config failed.'))
+            self.display() # display errors or notes
+            return 0 # fatal error
         if os.name == 'posix':
             glob_conf = '/etc/%s'%self._name_conf
         else:
             # ALLUSERSPROFILE =	C:\Documents and Settings\All Users
             glob_conf = os.path.join(os.path.expandvars('$ALLUSERSPROFILE'),self._name_conf)
         self._conf.read([glob_conf, os.path.join(os.path.expanduser('~'),self._name_conf)])
-        if not self._conf.has_section('session'):
-            if not self.__create_default_conf__():
-                self.append_error(_T('Fatal error: Create default config failed.'))
-                self.display() # display errors or notes
-                return 0 # fatal error
-            # self.save_confing() automatické uložení configu (vypnuto)
         # set session variables
         section = 'session'
         lang = self.__get_config__(section,'lang')
