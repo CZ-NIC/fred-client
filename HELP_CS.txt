@@ -1,13 +1,13 @@
 # -*- coding: utf8 -*-
 # Tento dokument je ulozen v kodovani UTF-8.
 
-    ================================================
+================================================
 
-    Manuál pro ccReg Client konzoli a knihovnu ccReg
+Manuál pro ccReg Client konzoli a knihovnu ccReg
     
-    Verze 1.0, Beta release
+Verze 1.0, Beta release
 
-    ================================================
+================================================
 
     1. Instalace
     2. Práce s Client konzolí
@@ -21,14 +21,15 @@
 
 =============================
 
-Knihovna ccReg a na ní postavená "ccReg Client konzole" je napsána v jazyce Python. 
-Pro svůj běh potřebuje mít v systému nainstalováno běhové prostředí Python. 
-Pokud se ve vašem systému Python nenachází, tak si jej nainstalujte. 
-Instalační soubory jsou v obvyklých repozitářích nebo na www.python.org.
+Knihovna ccReg a na ní postavená "ccReg Client konzole" je napsána v ja-
+zyce Python. Pro svůj běh potřebuje mít v systému  nainstalováno  běhové 
+prostředí Python. Pokud se ve vašem systému Python nenachází, tak si jej
+nainstalujte.  Instalační soubory jsou v obvyklých repozitářích  nebo na 
+www.python.org.
 
-Dále knihovna používá "xmllint" pro validaci XML. Tento program
-ale není nutnou podmínkou funkčnosti klienta. Pokud se v systému nenachází, tak se 
-ověřování automaticky vypne.
+Dále knihovna používá "xmllint" pro validaci XML. Tento program ale není
+nutnou podmínkou funkčnosti klienta. Pokud se v systému nenachází, tak 
+se ověřování automaticky vypne.
 
 
 

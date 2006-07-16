@@ -5,8 +5,10 @@ import os, sys
 import gettext
 
 def find_valid_encoding():
-    'Find valid encoding in system, where sys.stdout.encodig doesnt be right value.'
-    valid_charset = None
+    """Find valid encoding in system, where sys.stdout.encodig doesnt be right value.
+    Returns valid-charset and warning.
+    """
+    valid_charset,warning = None,None
     for charset in (sys.stdout.encoding, 'utf-8', 'cp852'):
         try:
             ltext = u'žščřďťňě'.encode(charset)
@@ -16,11 +18,11 @@ def find_valid_encoding():
             valid_charset = charset
             break
     if not valid_charset:
-        print 'WARNING! Your terminal does not support UTF-8 encoding. Unicode will be shown on the raw format.'
-        # On the POSIX systems set locale to LANG=cs_CZ.UTF-8.
+        warning = 'WARNING! Your terminal does not support UTF-8 encoding. Unicode will be shown on the raw format.'
+        #On the POSIX systems set locale to LANG=cs_CZ.UTF-8.
         valid_charset = sys.stdout.encoding
-    print 'Actual unicode encoding is %s.'%valid_charset
-    return valid_charset
+    #print 'Actual unicode encoding is %s.'%valid_charset
+    return valid_charset,warning
 
 #
 # INIT language versions:
@@ -40,7 +42,7 @@ else:
         if arg in ('en','cs'): lang = arg
 
         
-encoding = find_valid_encoding()
+encoding, warning = find_valid_encoding()
 if lang == 'en':
     _T = gettext.gettext
 else:
@@ -49,4 +51,3 @@ else:
     except IOError, (no,msg):
         print 'Translate IOError',no,msg
         _T = gettext.gettext
-
