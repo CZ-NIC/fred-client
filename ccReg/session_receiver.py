@@ -248,11 +248,7 @@ class ManagerReceiver(ManagerCommand):
         column_name = '%s:%s'%names
         value = eppdoc.get_dct_value(dict_data, column_name)
         code = eppdoc.get_dct_attr(dict_data, column_name, attr_name)
-        #reason = eppdoc.get_dct_value(dict_data, '%s:reason'%names[0]) # nepovinný
-        if code in ('1','true'):
-            dct_answer['data'][value] = 1
-        else:
-            dct_answer['data'][value] = 0
+        dct_answer['data'][value] = {False:0,True:1}[code in ('1','true')]
 
     def __answer_response_check__(self, data, names):
         """Process all check_[command]() functions. 
@@ -383,11 +379,8 @@ def append_dct(dct,key,multiline):
     value = multiline.split('\n')
     if len(value) == 1: value = value[0]
     if dct.has_key(key):
-        if type(dct[key]) == list:
-            getattr(dct[key],{False:'append',True:'extend'}[type(value) is list])(value)
-        else:
-            dct[key] = [dct[key]]
-            getattr(dct[key],{False:'append',True:'extend'}[type(value) is list])(value)
+        if type(dct[key]) is not list: dct[key] = [dct[key]]
+        getattr(dct[key],{False:'append',True:'extend'}[type(value) is list])(value)
     else:
         dct[key] = value
 

@@ -14,10 +14,10 @@ from ccReg import _T
 def main(host):
     epp = ccReg.ClientSession()
     ccReg.cmd_history.set_history(epp.get_command_names())
+    if host: epp.set_host(host)
     if not epp.load_config(): return
     print epp.welcome()
     epp.display() # display errors or notes
-    if host: epp.set_host(host)
     print _T('For connection to the EPP server type "connect" or directly "login".')
     status = ('${BOLD}${YELLOW}OFF${NORMAL}','${BOLD}${GREEN}ON${NORMAL}')
     online = status[0]

@@ -154,10 +154,43 @@ class ManagerBase:
                 print colored_output.render('${BOLD}[%s]${NORMAL}'%section)
                 for option in self._conf.options(section):
                     print_unicode(colored_output.render('\t${BOLD}%s${NORMAL} = %s'%(option,self._conf.get(section,option))))
+
+    def __config_conect_host__(self, host):
+        'Overwrite default host values'
+        ok = 0
+        section = section_host = 'conect'
+        if host:
+            section_host = 'conect_%s'%host
+            if not self._conf.has_section(section_host):
+                section_host = 'conect' # if explicit section doesnt exist, use default
+        if self._conf.has_section(section_host):
+            # adjust pathnames
+            modul_path,fn = os.path.split(__file__)
+            root_path = os.path.normpath(os.path.join(modul_path,'..'))
+            for option in ('ssl_cert','ssl_key'):
+                name = self.get_config_value(section_host, option)
+                self._conf.set(section, option, os.path.join(root_path,name))
+            if section != section_host:
+                for option in ('host','port','username','password'):
+                    name = self.get_config_value(section_host, option, 1)
+                    if name: self._conf.set(section, option, name)
+            ok = 1
+        return ok
+
+    def copy_default_options(self, section, section_default, option):
+        'Copy default options where they missing.'
+##        print "!!! copy_default_options:",section, section_default, option
+        value = self.get_config_value(section, option, 1)
+##        print "??? value=",value,section, option
+        if not value:
+            value = self.get_config_value(section_default, option, 1)
+##            print "!!!! value=",value,section_default, option
+            if value:
+                if not self._conf.has_section(section): self._conf.add_section(section)
+                self._conf.set(section, option, value)
     
     def __create_default_conf__(self):
         'Create default config file.'
-        # aktuální adresář? filepath
         ok = 0
         modul_path,fn = os.path.split(__file__)
         root_path = os.path.normpath(os.path.join(modul_path,'..'))
@@ -167,33 +200,23 @@ class ManagerBase:
             ok = 1
         except ConfigParser.ParsingError, msg:
             self.append_error(msg)
-        section = 'conect'
-        if ok: ok = self._conf.has_section(section)
-        if ok:
-            # adjust pathnames
-            option = 'ssl_cert'
-            name = self.__get_config__(section, option)
-            self._conf.set(section, option, os.path.join(root_path,name))
-            option = 'ssl_key'
-            name = self.__get_config__(section,option)
-            self._conf.set(section, option, os.path.join(root_path,name))
+        else:
             # schema = all-1.0.xsd
             seop = ('session','schema')
-            name = self.__get_config__(seop[0], seop[1])
+            name = self.get_config_value(seop[0], seop[1])
             self._conf.set(seop[0], seop[1], os.path.join(modul_path,'schemas',name))
-            self._session[POLL_AUTOACK] = {False:0,True:1}[self.__get_config__(seop[0], 'poll_ack') in ('on','ON')]
-        return ok
+            self._session[POLL_AUTOACK] = {False:0,True:1}[self.get_config_value(seop[0], 'poll_ack') in ('on','ON')]
+            ok = self.__config_conect_host__(self._host)
+        return ok 
 
-    def __get_config__(self,section,option,is_int=None):
+    def get_config_value(self, section, option, omit_errors=0, is_int=None):
         'Get value from config and catch exceptions.'
         value=None
         if not self._conf: return value
         try:
             value = self._conf.get(section,option)
-        except ConfigParser.NoSectionError, msg:
-            self.append_error('ConfigError: %s'%msg)
-        except ConfigParser.NoOptionError, msg:
-            self.append_error('ConfigError: %s'%msg)
+        except (ConfigParser.NoSectionError, ConfigParser.NoOptionError), msg:
+            if not omit_errors: self.append_error('ConfigError: %s'%msg)
         if is_int:
             try:
                 value = int(value)
@@ -229,13 +252,18 @@ class ManagerBase:
         self._conf.read([glob_conf, os.path.join(os.path.expanduser('~'),self._name_conf)])
         # set session variables
         section = 'session'
-        lang = self.__get_config__(section,'lang')
+        lang = self.get_config_value(section,'lang')
         if lang in self.defs[LANGS]:
             self._session[LANG] = lang
         else:
             self.append_note('%s: ${BOLD}%s${NORMAL} %s'%(_T('This language code is not allowed'),lang,str(self.defs[LANGS])))
-        self._session[CONFIRM_SEND_COMMAND] = {False:0,True:1}[self.__get_config__(section,'confirm_send_commands') == 'on']
+        self._session[CONFIRM_SEND_COMMAND] = {False:0,True:1}[self.get_config_value(section,'confirm_send_commands') == 'on']
+        if self._host: self.__config_conect_host__(self._host)
+        # default values from config section "conect"
+        self.copy_default_options('epp_login', 'conect', 'username')
+        self.copy_default_options('epp_login', 'conect', 'password')
         return 1 # OK
+
 
     #---------------------------
     # validation
@@ -288,7 +316,7 @@ class ManagerBase:
             self.append_note('%s ${BOLD}validate on${NORMAL}.'%_T('Validator has been disabled. For enable type'))
             return '' # impossible save xml file needed for validation
         # kontrola validity XML
-        schema_path = self.__get_config__('session','schema')
+        schema_path = self.get_config_value('session','schema')
         if not schema_path:
             os.unlink(tmpname)
             return '' # schema path is not set
