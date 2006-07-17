@@ -361,7 +361,8 @@ class ManagerReceiver(ManagerCommand):
                 self.process_answer(xml_answer)                               # process answer
                 if len(self._errors): raise ccRegError(self.fetch_errors())
             else:
-                raise ccRegError(_T("You are not connected! For connection type: connect or login"))
+                errors = _T("You are not connected! For connection type: connect or login")
+                raise ccRegError(errors)
         else:
             self._dct_answer['errors'].append(_T('You are not logged. You must call login() before working on the server.')) # _T("XML EPP document was not created.")
         if len(self._errors): raise ccRegError(self.fetch_errors())
@@ -371,6 +372,10 @@ class ManagerReceiver(ManagerCommand):
 
 class ccRegError(StandardError):
     'ccReg EPP errors.'
+    def __init__(self, message):
+        StandardError.__init__(self, message)
+        # Encode unicode message into the local encoding. session_base.get_unicode()
+        self.args = (get_ltext(message),)
 
     
 def append_dct(dct,key,multiline):

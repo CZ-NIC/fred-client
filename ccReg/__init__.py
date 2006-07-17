@@ -15,7 +15,7 @@ try:
         ret = epp.info_contact("handle1")
         epp.print_answer(ret)
         epp.logout()
-except ccRegError, msg:
+except ccReg.ccRegError, msg:
     print msg
 
 # or you can use function is_val() what returns value without KeyError:
@@ -33,7 +33,7 @@ try:
             epp.info_contact("handle1")
             epp.print_answer()
         epp.logout()
-except ccRegError, msg:
+except ccReg.ccRegError, msg:
     print msg
 
 #

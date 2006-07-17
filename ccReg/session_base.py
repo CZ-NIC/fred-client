@@ -330,17 +330,22 @@ def join_unicode(u_list, sep='\n'):
         out.append(row)
     return sep.join(out)
 
-def print_unicode(text):
-    'Print text and catch problems with unicode.'
+def get_ltext(text):
+    'Encode unicode to string in the local encoding.'
     if type(text) == str:
-        print colored_output.render(text)
+        ltext = colored_output.render(text)
     else:
         try:
             ltext = text.encode(encoding)
         except UnicodeEncodeError, msg:
-            repr(re.sub('\x1b[^m]*m','',text))
+            ltext = repr(re.sub('\x1b[^m]*m','',text))
         else:
-            print colored_output.render(ltext)
+            ltext = colored_output.render(ltext)
+    return ltext
+
+def print_unicode(text):
+    'Print text and catch encoding problems with unicode.'
+    print get_ltext(text)
         
 
 def get_unicode(text):
