@@ -39,59 +39,68 @@ se ověřování automaticky vypne.
 
 =============================
 
-"ccReg Client konsole" je určena ke komunikaci s EPP serverem. Konzole přijímá na příkazové řádce 
-příkazy od uživatele. Z příkazu sestaví podle EPP schematu XML dokument. Tento dokument
-pak odešle na EPP server. Po té čeká na odpověď serveru. Odpověď serveru přije ve formátu XML EPP.
-Tuto odpověď aplikace zpracuje a na výstup zobrazí jen podstatné hodnoty odpovědi. Konzole tedy 
-funguje jako odstínění uživatele od EPP formátu. Konzole se spustí příkazem:
+"ccReg Client konsole" je určena ke komunikaci s EPP serverem. Konzole
+přijímá na příkazové řádce příkazy od uživatele. Z příkazu sestaví podle
+EPP schematu XML dokument. Tento dokument pak odešle na EPP server. 
+Po té čeká na odpověď serveru. Odpověď serveru přije ve formátu XML EPP.
+Tuto odpověď aplikace zpracuje a na výstup zobrazí jen podstatné hodnoty
+odpovědi. Konzole tedy funguje jako odstínění uživatele od EPP formátu. 
+Konzole se spustí příkazem:
 
     python ccreg_console.py [host] [lang]
 
-Pokud parametr "host" není zadán, použije se defaultní hodnota nebo se údaje přečtou 
-z config souboru (pokud existuje). Pokud není zadán "lang", použuje se default "cs".
-Možné hodnoty jsou jen "cs" a "en". Paramery mohou být zadány v libovolném pořadí, konzole
-pozná, že cs/en není jméno serveru.
-Po spuštění se konzole zastaví na promptu, kde uživatel zadává jednotlivé příkazy.
-Konzole se ukončuje příkazem "quit" nebo jen krátce "q".
+Pokud parametr "host" není zadán, použije se defaultní hodnota nebo se
+údaje přečtou z config souboru (pokud existuje). Pokud není zadán 
+"lang", použuje se default "cs". Možné hodnoty jsou jen "cs" a "en". 
+Paramery mohou být zadány v libovolném pořadí, konzole pozná, že cs/en
+není jméno serveru.
+Po spuštění se konzole zastaví na promptu,kde uživatel zadává jednotlivé
+příkazy. Konzole se ukončuje příkazem "quit" nebo jen krátce "q".
 
 
 
 2.1 Zobrazení helpu
 
-Jaké příkazy máte k dispozici zjistíte zadáním příkazu "help" nebo jen krátce "h" nebo "?".
+Jaké příkazy máte k dispozici zjistíte zadáním příkazu "help" nebo jen
+krátce "h" nebo "?".
 Help vypíše dvě části nápovědy:
 
     1) Dostupné EPP příkazy
-    2) Příkazy relace (session) pro nastavení vnitřních proměnných konzole
+    2) Příkazy relace (session) pro nastavení vnitřních proměnných 
+       konzole
 
 
 
 2.2 EPP příkazy
 
-EPP příkaz zadáváte společně s jeho parametry. Jaké parametry příkaz požaduje
-zjistíte, když zadáte "help příkaz" nebo zkráceně "h příkaz" nebo také "? příkaz".
+EPP příkaz zadáváte společně s jeho parametry. Jaké parametry příkaz
+požaduje zjistíte, když zadáte "help příkaz" nebo zkráceně "h příkaz"
+nebo také "? příkaz".
 Například:
 
     ?login
 
-Vypíšou se podrobnosti o jednotlivých parametrech daného příkazu. Příkaz zadáte tak,
-že napíšete název příkazu a za ním jeho parametry. Například:
+Vypíšou se podrobnosti o jednotlivých parametrech daného příkazu. Příkaz
+zadáte tak,že napíšete název příkazu a za ním jeho parametry. Například:
 
     login moje-ID moje-heslo
 
-Po stisknutí entru se příkaz převede na EPP XML dokument. Ten se ihned odešle na server. Pak čeká
-na odpověď. Když server vrátí odpověď, tak ji zpracuje a na konzoli vypíše hodnoty odpovědi.
+Po stisknutí entru se příkaz převede na EPP XML dokument. Ten se ihned
+odešle na server. Pak čeká na odpověď. Když server vrátí odpověď, tak ji
+zpracuje a na konzoli vypíše hodnoty odpovědi.
 
 
 
 2.2.1 Typy paramerů příkazu:
 
 
-Pokud hodnota parametru obsahuje mezeru, tak ji napište do uvozovek. Například:
+Pokud hodnota parametru obsahuje mezeru, tak ji napište do uvozovek. 
+Například:
 
     login moje-ID "moje heslo s mezerami"
 
-Některé parametry můžou obsahovat seznam hodnot. Například parametr "street" v příkazu create-contact.
+Některé parametry můžou obsahovat seznam hodnot. Například parametr 
+"street" v příkazu create-contact.
 Výpis části helpu:
 
     ?create-contact
@@ -101,83 +110,106 @@ Výpis části helpu:
 
 Seznam zadáte tak, že hodnoty uzavřete do závorek:
 
-    create-contact my-ID my-name mail city cc org (Vodičkova, "Na příkopě", "U přívozu") voice
+    create-contact my-ID my-name mail city cc org (Vodičkova, \
+            "Na příkopě", "U přívozu") voice
 
-Pokud zadáváte jen jednu hodnotu ze seznamu, tak závorky zadávat nemusíte:
+Pokud zadáváte jen jednu hodnotu ze seznamu, tak závorky zadávat
+nemusíte:
 
     create-contact my-ID my-name mail city cc org Vodičkova voice
 
-Parametry musíte zadávat v pořadí, v jakém jsou v helpu vypsány. Povinné jsou vždy na začátku
-a nepovinné tak není nutné zadávat. Pro případ, že chcete kromě povinných hodnot
-zadat ještě nějakou nepovinnou, která ale NENÍ v pořadí, tak máte možnost ji zadat MIMO pořadí
-zadáním jména parametru - klíče. To řeší situaci, kdy by se kvůli jednomu parametru na konci řady
-musely zadávat všechny parametry před ním.
+Parametry musíte zadávat v pořadí, v jakém jsou v helpu vypsány. Povinné
+jsou vždy na začátku a nepovinné tak není nutné zadávat. Pro případ, že
+chcete kromě povinných hodnot zadat ještě nějakou nepovinnou, která ale
+NENÍ v pořadí, tak máte možnost ji zadat MIMO pořadí zadáním jména 
+parametru - klíče. To řeší situaci, kdy by se kvůli jednomu parametru
+na konci řady musely zadávat všechny parametry před ním.
 
-Klíč (jméno parametru) se definuje pomocí jednoho nebo dvou spojovníků. Například chcete v příkazu
-create-contact zadat kromě povinných údajů už jen hodnotu "notify email", která se nachází právě
-na úplném konci seznamu parametrů. Pak tuto hodnotu zadáte takto:
+Klíč (jméno parametru) se definuje pomocí jednoho nebo dvou spojovníků.
+Například chcete v příkazu create-contact zadat kromě povinných údajů už
+jen hodnotu "notify email", která se nachází právě na úplném konci
+seznamu parametrů. Pak tuto hodnotu zadáte takto:
 
-    create-contact my-ID my-name mail city cc --notify_email = muj@mail.cz
+  create-contact my-ID my-name mail city cc --notify_email = muj@mail.cz
 
-Jaký má být klíč (název parametru) zjistíte z helpu daného příkazu. Parametr s klíčem pak již nemusí 
-být na "své" pozici, ale může být kdekoliv v řadě mezi ostatními parametry. Takový parametr stojí 
-"mimo" pořadí a nenarušuje pozice ostatních parametrů bez klíče. Zde jsou do řady parametrů vloženy 
-hodnoty s klíči "vat" a "notify_email":
+Jaký má být klíč (název parametru) zjistíte z helpu daného příkazu.
+Parametr s klíčem pak již nemusí být na "své" pozici, ale může být
+kdekoliv v řadě mezi ostatními parametry. Takový parametr stojí "mimo"
+pořadí a nenarušuje pozice ostatních parametrů bez klíče. Zde jsou 
+do řady parametrů vloženy hodnoty s klíči "vat" a "notify_email":
 
-    create-contact my-ID my-name mail --vat = 12346 --notify_email = muj@mail.cz city cc
+    create-contact my-ID my-name mail --vat = 12346 \
+        --notify_email = muj@mail.cz city cc
 
-Některé příkazy mají parametry vnořené do dalších parametrů. Ty vytvářejí jmenné prostory. 
-Například v příkazu "create-contact" je parametr "disclose". Ten obsahuje další parametry 
-"flag", "name", atd. Samotný název "disclose" není v tomto případě název klíče, ale název 
-jmenného prostoru, ve kterém se nacházejí klíče "flag", "name" atd. Jmenné prostory se definují 
-stejně jako seznamy pomocí závorek:
+Některé příkazy mají parametry vnořené do dalších parametrů.Ty vytvářejí
+jmenné prostory. Například v příkazu "create-contact" je parametr 
+"disclose". Ten obsahuje další parametry "flag", "name", atd. Samotný
+název "disclose" není v tomto případě název klíče, ale název jmenného
+prostoru, ve kterém se nacházejí klíče "flag", "name" atd. Jmenné
+prostory se definují stejně jako seznamy pomocí závorek:
 
-    create-contact my-ID my-name mail city cc org street sp pc voice fax (flag name org addr voice fax email) vat ssn
+  create-contact my-ID my-name mail city cc org street sp pc voice fax \
+       (flag name org addr voice fax email) vat ssn
 
-Pokud jmenný prostor nechcete zadávat, napište prostě jen prázdné závorky. To platí i pro seznamy:
+Pokud jmenný prostor nechcete zadávat, napište prostě jen prázdné
+závorky. To platí i pro seznamy:
 
-    create-contact my-ID my-name mail city cc org street sp pc voice fax () vat ssn notify@email
+    create-contact my-ID my-name mail city cc org street sp pc voice \
+        fax () vat ssn notify@email
 
-Některé příkazy mají v parametrech seznamy jmenných prostorů. V takovém případě pak závorky 
-mají své významy podle toho, jak jsou hodnoty strukturované. Například příkaz "update-nsset" má jeden 
+Některé příkazy mají v parametrech seznamy jmenných prostorů. V takovém
+případě pak závorky mají své významy podle toho, jak jsou hodnoty
+strukturované. Například příkaz "update-nsset" má jeden 
 nepovinný parametr "add". Pokud jej nechcete zadávat, tak napíšete:
 
     update-nsset id () ...    - parametr add je nyní prázdný
 
-Pokud ale "add" zadat chcete, tak "add" (jak vidíte v helpu) obsahuje seznam devíti jmenných
-prostorů "ns"! Každý "ns" prostor pak dále obsahuje parametr "name", seznam "addr", seznam "tech"
-a nakonec seznam "status". Pokud chete všechny tyto hodnoty zadat, tak musíte zapsat všechny
-závorky, které jsou nutné: První závorka pro definování jmenného prostoru "add". Druhá závorka
-pro začátek seznamu jmenných prostorů "ns". Třetí závorka pro samotný jmenný prostor "ns". Teprve pak 
-následuje hodnota parametru "name". Za ním pak následuje závorka seznamu "addr":
+Pokud ale "add" zadat chcete, tak "add" (jak vidíte v helpu) obsahuje
+seznam devíti jmenných prostorů "ns"! Každý "ns" prostor pak dále
+obsahuje parametr "name", seznam "addr", seznam "tech" a nakonec seznam
+"status". Pokud chete všechny tyto hodnoty zadat, tak musíte zapsat
+všechny závorky, které jsou nutné: První závorka pro definování jmenného
+prostoru "add".Druhá závorka pro začátek seznamu jmenných prostorů "ns".
+Třetí závorka pro samotný jmenný prostor "ns". Teprve pak následuje
+hodnota parametru "name". Za ním pak následuje závorka seznamu "addr":
 
-    update-nsset nsset-ID (((nsset1 (127.0.0.1, 127.0.0.2)),(nsset2 (127.1.0.1, 127.1.0.2))) (tech1 tech2) (status1 status2)) ...
+    update-nsset nsset-ID (((nsset1 (127.0.0.1, 127.0.0.2)), \
+       (nsset2 (127.1.0.1, 127.1.0.2))) (tech1 tech2) (status1 status2))
+        ...
 
-Pokud "addr" není seznam, ale jen jedna hodnota, tak se závorky pro "addr" zadávat nemusí:
+Pokud "addr" není seznam, ale jen jedna hodnota, tak se závorky pro
+"addr" zadávat nemusí:
 (To je pravidlo již zmíněné v předchozím textu.)
 
-    update-nsset nsset-ID (((nsset1 127.0.0.1),(nsset2 127.0.2.1)) tech status) ...
+    update-nsset nsset-ID (((nsset1 127.0.0.1),(nsset2 127.0.2.1)) \
+        tech status) ...
 
-Takto složité zadávání naštěstí existuje jen v malém množství příkazů a tento uvedený příklad zadání 
-je vůbec nejsložitější ze všech. Kromě toho máte možnost zadávat parametry příkazu v interaktivním
-módu - hezky jeden za druhým. Navíc je vždy na konci helpu každého příkazu uveden příklad 
-zadání všech parametrů. 
+Takto složité zadávání naštěstí existuje jen v malém množství příkazů a
+tento uvedený příklad zadání je vůbec nejsložitější ze všech. Kromě
+toho máte možnost zadávat parametry příkazu v interaktivním módu - hezky
+jeden za druhým. Navíc je vždy na konci helpu každého příkazu uveden
+příklad zadání všech parametrů. 
 
-Pokud chcete parametry přikazu zadávat interaktivně, napište před příkaz vykřičník:
-
-    !update-nsset
-
-Tím spustíte režim interaktivního vkládání parametrů. Konzole vždy vypíše jméno parametru a čeká na
-zadání hodnoty. Pokud hodnotu nechcete zadat, tak prostě stisknete enter a hodnota se přeskočí.
-Interaktivní režim můžete kdykoliv ukončit zadáním vykřičníku. Tím se ukončí aktuální
-jmenný prostor. Nacházíte-li se tedy v hlavním jmenném prostoru, tak se interaktivní režim
-ukončí. Pokud je prompt zanořen do nějakého jmenného prostoru, tak se ukončí pouze ten
-a interaktivní vkládání pokračuje nadřazeným prostorem. Chcete-li vyskočit z vícenásobně vnořeného
-prostoru nebo ukončit režim celý, tak zadejte více vykřičníků najednou. Jeden vykčiřník na
-jeden jmenný prostor. Nevadí bude-li jich více, než požadovaný počet:
+Pokud chcete parametry přikazu zadávat interaktivně, napište před příkaz
+vykřičník:
 
     !update-nsset
-    Start interaktivního zadávání parametrů. Pro ukončení zadejte: ![!!...] (jeden ! pro každou podskupinu)
+
+Tím spustíte režim interaktivního vkládání parametrů. Konzole vždy
+vypíše jméno parametru a čeká na zadání hodnoty. Pokud hodnotu nechcete
+zadat, tak prostě stisknete enter a hodnota se přeskočí. Interaktivní
+režim můžete kdykoliv ukončit zadáním vykřičníku. Tím se ukončí aktuální
+jmenný prostor. Nacházíte-li se tedy v hlavním jmenném prostoru, tak se
+interaktivní režim ukončí. Pokud je prompt zanořen do nějakého jmenného
+prostoru, tak se ukončí pouze ten a interaktivní vkládání pokračuje
+nadřazeným prostorem. Chcete-li vyskočit z vícenásobně vnořeného 
+prostoru nebo ukončit režim celý, tak zadejte více vykřičníků najednou.
+Jeden vykčiřník na jeden jmenný prostor. Nevadí bude-li jich více, než
+požadovaný počet:
+
+    !update-nsset
+    Start interaktivního zadávání parametrů. Pro ukončení zadejte: \
+        ![!!...] (jeden ! pro každou podskupinu)
     !update_nsset:id (povinný) > moje-id
     (Hodnota může být seznam o max. velikosti 9 položek.)
     !update_nsset:add.ns[1/9].name (povinný) > ns1
@@ -189,7 +221,8 @@ jeden jmenný prostor. Nevadí bude-li jich více, než požadovaný počet:
     (Hodnota může být libovolně velký seznam.)
     !update_nsset:add.ns[2/9].addr[1/oo] (nepovinný) > !!!!
 
-Ještě jednou zpět k zadávání pomocí klíče: Klíč se zadává ve tvaru -[název parametru] [hodnota].
+Ještě jednou zpět k zadávání pomocí klíče: Klíč se zadává ve tvaru 
+-[název parametru] [hodnota].
 Například:
 
      -heslo "toto je moje heslo"
@@ -198,27 +231,32 @@ Toto zadání lze napsat i takto se stejným účinkem:
 
      --heslo = "toto je moje heslo"
 
-Záleží na vás, který zápis se vám bude zdát čitelnější. Jak ale zadat honodotu, která je součástí 
-jmenného prostoru? Jednoduše pomocí tečkové koncence:
+Záleží na vás, který zápis se vám bude zdát čitelnější. Jak ale zadat
+honodotu, která je součástí jmenného prostoru? Jednoduše pomocí tečkové
+koncence:
 
     --add.ns.name = nsset_name
 
-Takto jste definovali hodnotu nsset_name do jmenného porostoru "add", do první položky seznamu "ns",
-do parametru "name". Chcete-li uložit hodnotu například do třetí položky seznamu "ns", tak zadejte:
+Takto jste definovali hodnotu nsset_name do jmenného porostoru "add", 
+do první položky seznamu "ns", do parametru "name". Chcete-li uložit
+hodnotu například do třetí položky seznamu "ns", tak zadejte:
 
     --add.ns[2].name = nsset_name
 
-Dvojka je index seznamu v tomto případě o max. devíti položkách (indexy 0 - 8).
+Dvojka je index seznamu v tomto případě o max. devíti položkách
+(indexy 0 - 8).
 
 
 Shrnutí zadávání parametrů:
 
     - parametry zadávejte v pořadí, v jakém jsou vypsané v helpu
     - hodnoty s mezerami dejte do uvozovek
-    - seznamy hodnot uzavřete do závorek, položky seznamu můžou (ale nemusí) být odděleny čárkami
+    - seznamy hodnot uzavřete do závorek, položky seznamu můžou 
+      (ale nemusí) být odděleny čárkami
     - pokud je v seznamu jen jedna položka, nemusí se závorky zadávat
     - jmenné prostory pište do závorek
-    - chcete-li seznam nebo jmenný porostor vynechat, zadejte jen prázdné závorky
+    - chcete-li seznam nebo jmenný porostor vynechat, zadejte jen 
+      prázdné závorky
     - hodnoty mimo pořadí zadávejte pomocí klíče
 
 
@@ -226,12 +264,13 @@ Shrnutí zadávání parametrů:
 
 2.2 Příkazy relace (session)
 
-Konzole má svá vnitřní nastavení, která můžete nastavit. Pokud zadáte příkaz bez parametrů, tak
-se pouze vypíše aktuální stav.
+Konzole má svá vnitřní nastavení, která můžete nastavit. Pokud zadáte
+příkaz bez parametrů, tak se pouze vypíše aktuální stav.
 
 > lang cs/en
-Přikazem "lang" nastavíte proměnnou typu jazyka, kterým chcete, aby vám EPP server odpovídal.
-Proměnnou tedy musíte nastavit PŘED odesláním příkazu login. Pak už nastavení nebude mít žádný vliv.
+Přikazem "lang" nastavíte proměnnou typu jazyka, kterým chcete, aby 
+vám EPP server odpovídal. Proměnnou tedy musíte nastavit PŘED odesláním
+příkazu login. Pak už nastavení nebude mít žádný vliv.
 
 > validate on/off
 Tímto přepínačem zapnete nebo vypnete proces validace XML dokumentu. Validace je v této verzi
@@ -347,6 +386,31 @@ Jaké klíče jsou v části "data" pro danou funkci (EPP příkaz) se dozvíte 
     ...
     RETURN data: {...}
     ...
+
+POZOR! V této verzi (1.0 beta release) má slovník tu vlastnost, že pokud
+hodnota chybí, tak se klíč ve slovníku vůbec nevyskytuje. Dále, pokud je
+v seznamu hodnot jen jedna položka, tak je typu string/unicode. Tyto
+odlišnosti byste měli testovat.Ve finální verzi bude slovník pevně daný:
+Klíč bude ve slovníku i když bude hodnota prázdná a seznam zůstane,
+i když bude mít jen jednu položku.
+
+Příklad: Když jsou vstupní data: 
+    name = 'jmeno'
+    addr = (1,2,3)
+    tech = ('ok',)
+    stat = ''
+
+...tak se vytvoří takovýto slovník 'data':
+    {'name': 'jmeno',
+     'addr':['1','2','3']
+     'tech':'ok'           # tady je type str a stat chybí
+    }
+...ale ve finální verzi by to mělo být takto:
+    {'name': 'jmeno',
+     'addr':['1','2','3']
+     'tech':['ok',]
+     'stat':''
+    }
 
 Návratovou hodnotu "retval" není nutné odchytávat, ukládá se do interní proměnné a lze ji kdykoliv
 zobrazit funkcí print_answer():
