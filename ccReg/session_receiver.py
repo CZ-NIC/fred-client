@@ -230,30 +230,13 @@ class ManagerReceiver(ManagerCommand):
                 'nsset:status s'))
             if nsset_infData.has_key('nsset:ns'):
                 nsset_ns = nsset_infData['nsset:ns']
-##                print "!!! nsset_ns:",nsset_ns
                 dns = []
                 if not type(nsset_ns) == list: nsset_ns = (nsset_ns,)
                 for ns in nsset_ns:
-##                    print "DNS:",ns #!!!
                     name = eppdoc.get_dct_value(ns, 'nsset:name')
                     addr = eppdoc.get_dct_value(ns, 'nsset:addr').split('\n')
-##                    print "name:",name #!!!
-##                    print "addr:",addr #!!!
-##                    if not self._dct_answer['data'].has_key('dns'):
-##                    dns = self._dct_answer['data'].get('dns',[])
                     dns.append([name,addr])
-##                    print "!!! self._dct_answer['data']:",self._dct_answer['data']
                 self._dct_answer['data']['nsset:ns'] = dns
-##                print "!!! self._dct_answer['data']:",self._dct_answer['data']
-##                    self._dct_answer['data']
-##                    append_dct(self._dct_answer['data'],'dns',[name,addr])
-                    
-##                if type(nsset_ns) == list:
-##                    for item in nsset_ns:
-##                        self.__append_note_from_dct__(item,('nsset:name','nsset:addr'))
-##                else:
-##                    self.__append_note_from_dct__(nsset_ns,('nsset:name','nsset:addr'))
-##                    self._dct_answer['data']
 
     #-------------------------------------
     # *** check ***
