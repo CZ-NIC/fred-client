@@ -179,12 +179,9 @@ class ManagerBase:
 
     def copy_default_options(self, section, section_default, option):
         'Copy default options where they missing.'
-##        print "!!! copy_default_options:",section, section_default, option
         value = self.get_config_value(section, option, 1)
-##        print "??? value=",value,section, option
         if not value:
             value = self.get_config_value(section_default, option, 1)
-##            print "!!!! value=",value,section_default, option
             if value:
                 if not self._conf.has_section(section): self._conf.add_section(section)
                 self._conf.set(section, option, value)

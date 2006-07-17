@@ -94,7 +94,7 @@ class Message(eppdoc.Message):
         'Check parsed values for required and allowed values.'
         errors = []
         if len(scopes) and not len(dct_values): return errors # if descendant is empty - not check
-        if type(dct_values) != dict: return (_T('Invalid input format.'),)
+        if type(dct_values) != dict: return ('%s (%s)'%(_T('Invalid input format.'),[c[0] for c in columns]),)
         for row in columns:
             name,min_max,allowed,msg_help,children = row
             scopes.append(name)
@@ -193,6 +193,7 @@ class Message(eppdoc.Message):
         else:
             errors = cmd_parser.parse(dct, columns, cmd)
         if errors: error.extend(errors)
+        # TODO: display command line
         self.__fill_empy_from_config__(config, dct, columns) # fill missing values from config
         errors = self.__check_required__(columns, dct) # check list and allowed values
         if errors: error.extend(errors)
@@ -547,16 +548,21 @@ class Message(eppdoc.Message):
             if __has_key_dict__(chg,'postal_info'):
                 poin = chg['postal_info'][0]
                 data.append(('contact:chg','contact:postalInfo'))
-                for key in ('name','org','addr'):
+                for key in ('name','org'):
                     if __has_key__(poin,key): data.append(('contact:postalInfo','contact:%s'%key, poin[key][0]))
-            for key in ('voice','fax','email'):
-                if __has_key__(chg,key): data.append(('contact:chg','contact:%s'%key, chg[key][0]))
-            if __has_key_dict__(chg,'disclose'):
-                # --- BEGIN disclose ------
-                disclose = chg['disclose'][0]
-                data.append(('contact:update','contact:disclose','',(('flag',disclose['flag'][0]),)))
-                for key in ('name','org','addr','voice','fax','email'):
-                    if __has_key__(disclose,key): data.append(('contact:disclose','contact:%s'%key,disclose[key][0]))
+                if __has_key_dict__(poin,'addr'):
+                    addr = poin['addr'][0]
+                    data.append(('contact:postalInfo','contact:addr'))
+                    for key in ('street','city','sp','pc','cc'):
+                        if __has_key__(addr,key): data.append(('contact:addr','contact:%s'%key, addr[key][0]))
+                for key in ('voice','fax','email'):
+                    if __has_key__(chg,key): data.append(('contact:chg','contact:%s'%key, chg[key][0]))
+                if __has_key_dict__(chg,'disclose'):
+                    # --- BEGIN disclose ------
+                    disclose = chg['disclose'][0]
+                    data.append(('contact:chg','contact:disclose','',(('flag',disclose['flag'][0]),)))
+                    for key in ('name','org','addr','voice','fax','email'):
+                        if __has_key__(disclose,key): data.append(('contact:disclose','contact:%s'%key,disclose[key][0]))
                 # --- END disclose ------
         for key in ('vat','ssn'):
             if __has_key__(dct,key): data.append(('contact:chg','contact:%s'%key, dct[key][0]))

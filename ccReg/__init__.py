@@ -253,14 +253,14 @@ class Client:
             'pw':pw, 'period':period, 'nsset':nsset, 'registrant':registrant, 
             'contact':contact, 'val_ex_date':val_ex_date})
 
-    def create_nsset(self, nsset_id, pw, dns=None, tech=None):
+    def create_nsset(self, nsset_id, pw, dns, tech=None):
         """Usage: create-nsset id pw
 
     PARAMS:
 
     id (required)
     pw (required)
-    dns (optional)               list with max 9 items.
+    dns (required)               list with max 9 items.
         name (required)
         addr (optional)         unbounded list
     tech (optional)             unbounded list
@@ -273,7 +273,7 @@ class Client:
 
     Examples:
     create-nsset exampleNsset passw
-    create-nsset exampleNsset passw ((ns1.domain.net (127.1.0.1 127.1.0.2)),(ns2.domain.net (127.2.0.1 127.2.0.2)),(ns3.domain.net (127.3.0.1 127.3.0.2))) tech-contact
+    create-nsset example1 passw ((ns1.domain.net (217.31.207.130 217.31.207.129)),(ns2.domain.net (217.31.206.130 217.31.206.129)),(ns3.domain.net (217.31.205.130 217.31.205.129))) reg-id
 
         """
         return self._epp.api_command('create_nsset',{'id':nsset_id, 'pw':pw, 'dns':dns, 'tech':tech})
@@ -566,6 +566,11 @@ class Client:
             name (optional)
             org (optional)
             addr (optional)
+                street (optional)  list with max 3 items.
+                city (required)
+                sp (optional)
+                pc (optional)
+                cc (required)
         voice (optional)
         fax (optional)
         email (optional)

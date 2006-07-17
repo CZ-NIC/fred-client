@@ -132,7 +132,7 @@ class Message(eppdoc_assemble.Message):
                 ('unit',(1,1),('y','m'),_T('period unit (y year(default), m month)'),()),
             )),
             ('contact',(0,UNBOUNDED),(),_T('contact'),()),
-            ),notice['create'],('create-domain domain.cz password nsset registrant (3 m) ("My address","My next contact")',)),
+            ),notice['create'],('create-domain domain.cz password nsset1 reg-id (3 y) (handle1,handle2)',)),
         #----------------------------------------------------
         'create_domain_enum': (2,(
             ('name',(1,1),(),_T('domain name'),()),
@@ -145,20 +145,20 @@ class Message(eppdoc_assemble.Message):
             )),
             ('contact',(0,UNBOUNDED),(),_T('contact'),()),
             ('val_ex_date',(0,1),(),_T('valExDate'),()),
-            ),notice['create'],('create-domain-enum domain.cz password nsset registrant (3 m) ("My address","My next contact") 2006-06-08',)),
+            ),notice['create'],('create-domain-enum 1.1.1.1.1.1.1.1.1.0.2.4.e164.arpa password nsset1 reg-id (3 y) (handle1,handle2) 2006-06-08',)),
         #----------------------------------------------------
         'create_nsset': (2,(
             ('id',(1,1),(),_T('nsset ID'),()),
             ('pw',(1,1),(),_T('password'),()),
-            ('dns',(0,9),(),_T('LIST of DNS'),(
+            ('dns',(1,9),(),_T('LIST of DNS'),(
                 ('name',(1,1),(),_T('nsset name'),()),
                 ('addr',(0,UNBOUNDED),(),_T('nsset address'),()),
             )),
             ('tech',(0,UNBOUNDED),(),_T('tech contact'),()),
 
             ),notice['create'],(
-                'create-nsset exampleNsset passw',
-                'create-nsset exampleNsset passw ((ns1.domain.net (127.1.0.1 127.1.0.2)),(ns2.domain.net (127.2.0.1 127.2.0.2)),(ns3.domain.net (127.3.0.1 127.3.0.2))) tech-contact',
+                'create-nsset example passw',
+                'create-nsset nsset1 passw ((ns1.domain.net (217.31.207.130 217.31.207.129)),(ns2.domain.net (217.31.206.130 217.31.206.129)),(ns3.domain.net (217.31.205.130 217.31.205.129))) reg-id'
             )),
         #----------------------------------------------------
         'delete_contact': (1,(
@@ -200,7 +200,13 @@ class Message(eppdoc_assemble.Message):
                 ('postal_info',(0,1),(),_T('postal informations'),(
                     ('name',(0,1),(),_T('name'),()),
                     ('org',(0,1),(),_T('organisation name'),()),
-                    ('addr',(0,1),(),_T('address'),()),
+                    ('addr',(0,1),(),_T('address'),(
+                        ('street',(0,3),(),_T('street'),()),
+                        ('city',(1,1),(),_T('city'),()),
+                        ('sp',(0,1),(),_T('sp'),()),
+                        ('pc',(0,1),(),_T('pc'),()),
+                        ('cc',(1,1),(),_T('cc'),()),
+                    )),
                 )),
                 ('voice',(0,1),(),_T('voice (phone number)'),()),
                 ('fax',(0,1),(),_T('fax number'),()),
@@ -311,15 +317,19 @@ def test(commands):
         if not m: continue
         cmd_name = m.group(1)
         epp.reset()
-        errors = epp.parse_cmd(cmd_name, cmd, manag._conf)
+        errors = epp.parse_cmd(cmd_name, cmd, manag._conf, 0)
         if errors:
-            print errors
+            print "Errors:"
+            for e in errors: print e
         else:
             getattr(epp,'assemble_%s'%cmd_name)('llcc002#06-06-16at13:21:30',('1.0', ('objURI',), ('extURI',), 'LANG'))
             errors, xmlepp = epp.get_results()
-            print errors, xmlepp
+            print xmlepp
+            if errors:
+                print "Errors:"
+                for e in errors: print e
             if xmlepp:
-                print manag.is_epp_valid(xmlepp)
+                print 'VALID?',manag.is_epp_valid(xmlepp)
         print '='*60
 
 def test_help(command_names):
@@ -368,6 +378,9 @@ if __name__ == '__main__':
      'update_contact id-contact clientDeleteProhibited',
      'update_contact id-contact (clientDeleteProhibited linked ok)',
      'update_contact id-contact (linked ok) (clientDeleteProhibited clientUpdateProhibited) (("John Doe" "Doe Company" "Down street, New York") +00123456789 +00123456456 john@doe.com (1 John John-Comp "Street and City" +01231321 +01234654 john@john.com) my-vat my-ssn notify@here.net',
+     #!!!
+     'update_contact reg-id (linked ok) (clientDeleteProhibited clientUpdateProhibited) (jedna dve)',
+     'update_contact reg-id (linked ok) (clientDeleteProhibited clientUpdateProhibited) ("Johnny Doey" "Doe Company" (("Downing street","Yellow line"), "New York", VA 20166-6503 US)) +001.23456789 +001.23456456 john@doe.com (1 John John-Comp "Street and City" +012.0031321 +012.31234654 john@john.com) my-vat my-ssn notify@here.net',
      'update_domain nic.cz',
      'update_domain nic.cz (linked add-contact) ((ok linked) rem-contact) (nsset registrant (password extensions))',
      'update_domain_enum 1.1.1.1.1.arpa64.net (linked add-contact) ((ok linked) rem-contact) (nsset registrant (password extensions)) 2006-06-08',
@@ -377,9 +390,10 @@ if __name__ == '__main__':
     'update_nsset nsset-ID (((nsset1.name.cz 127.0.0.1),(nsset2.name.cz (127.0.2.1 127.0.2.2)),) tech-add-contact ok) ("My Name",("Tech contact 1","Tech contact 2"),(linked ok)) (password extension)',
     )
 ##    test(('update_contact id-contact',))
-    test(commands1)
-    test(commands2)
-    test(commands3)
-    test(commands4)
-    test(commands6)
-    test_help(('login','update_nsset',))
+##    test(commands1)
+##    test(commands2)
+##    test(commands3)
+##    test(commands4)
+##    test(commands6)
+##    test_help(('login','update_nsset',))
+    test((commands5[3],))
