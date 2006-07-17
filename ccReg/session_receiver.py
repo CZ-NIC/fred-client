@@ -28,12 +28,13 @@ class ManagerReceiver(ManagerCommand):
         """
         dct = self._dct_answer['data']
         for column_name in cols:
-            lcol = column_name.split(' ')
+            lcol = column_name.split(' ') # node_name, atributess
             if len(lcol)>1:
                 value = eppdoc.get_dct_value(dict_data, lcol[0])
+                node_name = lcol[0]
                 for a in lcol[1:]:
                     val = eppdoc.get_dct_attr(dict_data, lcol[0], a)
-                    if val: append_dct(dct,a,val)
+                    if val: append_dct(dct,'%s.%s'%(node_name,a),val) # attributes
             else:
                 value = eppdoc.get_dct_value(dict_data, column_name)
                 if value: append_dct(dct,column_name,value)
@@ -187,7 +188,7 @@ class ManagerReceiver(ManagerCommand):
             self.append_error('answer_response_contact_info KeyError: %s'%msg)
         else:
             self.__append_note_from_dct__(contact_infData,
-                ('contact:id','contact:roid','contact:status s'))
+                ('contact:id','contact:roid','contact:status s','contact:disclose flag'))
             self.__append_note_from_dct__(contact_postalInfo,('contact:name','contact:org'))
             contact_addr = contact_postalInfo.get('contact:addr',None)
             if contact_addr:
@@ -208,8 +209,10 @@ class ManagerReceiver(ManagerCommand):
         else:
             self.__append_note_from_dct__(domain_infData,
                 ('domain:name','domain:roid','domain:status s','domain:registrant'
-                ,'domain:contact type','domain:nsset','domain:clID','domain:crID'
-                ,'domain:crDate','domain:exDate','domain:upID'))
+                ,'domain:contact','domain:contact type','domain:nsset','domain:clID','domain:crID'
+                ,'domain:crDate','domain:upDate','domain:exDate','domain:upID'))
+            authInfo = domain_infData.get('domain:authInfo',None)
+            if authInfo: self.__append_note_from_dct__(authInfo,('domain:pw',))
             m = re.match('\d{4}-\d{2}-\d{2}', self.get_value_from_dict(('data','domain:exDate')))
             if m: self._dct_answer['data']['domain:renew'] = m.group(0) # value for renew-domain
 
@@ -223,14 +226,34 @@ class ManagerReceiver(ManagerCommand):
             self.append_error('answer_response_nsset_info KeyError: %s'%msg)
         else:
             self.__append_note_from_dct__(nsset_infData,('nsset:id','nsset:roid','nsset:clID','nsset:crID'
-                ,'nsset:crDate','nsset:upID','nsset:trDate','nsset:authInfo'))
+                ,'nsset:crDate','nsset:upID','nsset:trDate','nsset:authInfo','nsset:tech',
+                'nsset:status s'))
             if nsset_infData.has_key('nsset:ns'):
                 nsset_ns = nsset_infData['nsset:ns']
-                if type(nsset_ns) == list:
-                    for item in nsset_ns:
-                        self.__append_note_from_dct__(item,('nsset:name','nsset:addr'))
-                else:
-                    self.__append_note_from_dct__(nsset_ns,('nsset:name','nsset:addr'))
+##                print "!!! nsset_ns:",nsset_ns
+                dns = []
+                if not type(nsset_ns) == list: nsset_ns = (nsset_ns,)
+                for ns in nsset_ns:
+##                    print "DNS:",ns #!!!
+                    name = eppdoc.get_dct_value(ns, 'nsset:name')
+                    addr = eppdoc.get_dct_value(ns, 'nsset:addr').split('\n')
+##                    print "name:",name #!!!
+##                    print "addr:",addr #!!!
+##                    if not self._dct_answer['data'].has_key('dns'):
+##                    dns = self._dct_answer['data'].get('dns',[])
+                    dns.append([name,addr])
+##                    print "!!! self._dct_answer['data']:",self._dct_answer['data']
+                self._dct_answer['data']['nsset:ns'] = dns
+##                print "!!! self._dct_answer['data']:",self._dct_answer['data']
+##                    self._dct_answer['data']
+##                    append_dct(self._dct_answer['data'],'dns',[name,addr])
+                    
+##                if type(nsset_ns) == list:
+##                    for item in nsset_ns:
+##                        self.__append_note_from_dct__(item,('nsset:name','nsset:addr'))
+##                else:
+##                    self.__append_note_from_dct__(nsset_ns,('nsset:name','nsset:addr'))
+##                    self._dct_answer['data']
 
     #-------------------------------------
     # *** check ***
@@ -367,13 +390,16 @@ class ccRegError(StandardError):
     'ccReg EPP errors.'
 
     
-def append_dct(dct,key,value):
+def append_dct(dct,key,multiline):
     'Appends value at the dict key.'
+    value = multiline.split('\n')
+    if len(value) == 1: value = value[0]
     if dct.has_key(key):
         if type(dct[key]) == list:
-            dct[key].append(value)
+            getattr(dct[key],{False:'append',True:'extend'}[type(value) is list])(value)
         else:
-            dct[key] = [dct[key], value]
+            dct[key] = [dct[key]]
+            getattr(dct[key],{False:'append',True:'extend'}[type(value) is list])(value)
     else:
         dct[key] = value
 
@@ -419,180 +445,12 @@ def test(name_amd_xml):
     m.display()
 
 if __name__ == '__main__':
-    data = (
-        ('greeting',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
-<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
-  <greeting>
-    <svID>EPP server of cz.nic</svID>
-    <svDate>2006-07-12T08:52:01.0Z</svDate>
-    <svcMenu>
-      <version>1.0</version>
-      <lang>en</lang>
-      <lang>cs</lang>
-      <objURI>http://www.nic.cz/xml/epp/contact-1.0</objURI>
-      <objURI>http://www.nic.cz/xml/epp/domain-1.0</objURI>
-      <objURI>http://www.nic.cz/xml/epp/nsset-1.0</objURI>
-      <svcExtension>
-        <extURI>http://www.nic.cz/xml/epp/enumval-1.0</extURI>
-      </svcExtension>
-    </svcMenu>
-    <dcp>
-      <access>
-        <all/>
-      </access>
-      <statement>
-        <purpose>
-          <admin/>
-          <prov/>
-        </purpose>
-        <recipient>
-          <public/>
-        </recipient>
-        <retention>
-          <stated/>
-        </retention>
-      </statement>
-    </dcp>
-  </greeting>
-</epp>
-        """),
-        ('transfer',"""<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<epp xmlns="urn:ietf:params:xml:ns:epp-1.0"
-     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-     xsi:schemaLocation="urn:ietf:params:xml:ns:epp-1.0
-     epp-1.0.xsd">
-  <command>
-    <transfer op="request">
-      <domain:transfer
-       xmlns:domain="http://www.nic.cz/xml/epp/domain-1.0"
-       xsi:schemaLocation="http://www.nic.cz/xml/epp/domain-1.0
-       domain-1.0.xsd">
-        <domain:name>example.cz</domain:name>
-        <domain:authInfo>
-            <domain:pw>2fooBAR</domain:pw>
-        </domain:authInfo>
-      </domain:transfer>
-    </transfer>
-    <clTRID>ABC-12345</clTRID>
-  </command>
-</epp>"""),
-    ('create:domain',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
-<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
-  <response>
-    <result code='2005'>
-      <msg lang='cs'>Chybná syntaxe hodnoty parametru</msg>
-      <extValue>
-        <value>
-          <registrant>pepa</registrant>
-        </value>
-        <reason>unknow Registrant</reason>
-      </extValue>
-      <extValue>
-        <value>
-          <nsset/>
-        </value>
-        <reason>unknow nsset</reason>
-      </extValue>
-    </result>
-    <trID>
-      <clTRID>dnlq003#06-07-12at11:41:05</clTRID>
-      <svTRID>ccReg-0000010019</svTRID>
-    </trID>
-  </response>
-</epp>
-    """),
-    ('poll',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
-<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
-  <response>
-    <result code='2400'>
-      <msg lang='cs'>Příkaz selhal</msg>
-      <extValue>
-        <value>
-          <poll msgID='2' op='ack'/>
-        </value>
-        <reason>unknow msgID 2</reason>
-      </extValue>
-    </result>
-    <trID>
-      <clTRID>blig004#06-07-13at10:49:35</clTRID>
-      <svTRID>ccReg-0000010109</svTRID>
-    </trID>
-  </response>
-</epp>
-    """),
-    ('poll',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
-<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
-  <response>
-    <result code='1301'>
-      <msg lang='cs'>Příkaz úspěšně proveden; potvrď za účelem vyřazení z fronty</msg>
-    </result>
-    <msgQ count='1' id='4'>
-      <qDate>2006-07-13T10:31:00.0Z</qDate>
-      <msg>Je tady nejaka hlaska...</msg>
-    </msgQ>
-    <trID>
-      <clTRID>mubd002#06-07-13at13:49:00</clTRID>
-      <svTRID>ccReg-0000010147</svTRID>
-    </trID>
-  </response>
-</epp>
-    """),
-    ('contact:create',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
-<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:contact='http://www.nic.cz/xml/epp/contact-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
-  <response>
-    <result code='1000'>
-      <msg lang='cs'>Příkaz úspěšně proveden</msg>
-    </result>
-    <resData>
-      <contact:creData xsi:schemaLocation='http://www.nic.cz/xml/epp/contact-1.0 contact-1.0.xsd'>
-        <contact:id>lubosid</contact:id>
-        <contact:crDate>2006-07-14T09:02:59.0Z</contact:crDate>
-      </contact:creData>
-    </resData>
-    <trID>
-      <clTRID>ebvg003#06-07-14at11:02:58</clTRID>
-      <svTRID>ccReg-0000010885</svTRID>
-    </trID>
-  </response>
-</epp>"""),
-    ('domain:create',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
-<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:domain='http://www.nic.cz/xml/epp/domain-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
-  <response>
-    <result code='1000'>
-      <msg lang='cs'>Příkaz úspěšně proveden</msg>
-    </result>
-    <resData>
-      <domain:creData xsi:schemaLocation='http://www.nic.cz/xml/epp/domain-1.0 domain-1.0.xsd'>
-        <domain:name>lusk.cz</domain:name>
-        <domain:crDate>2006-07-14T11:25:55.0Z</domain:crDate>
-        <domain:exDate>2006-07-14T00:00:00.0Z</domain:exDate>
-      </domain:creData>
-    </resData>
-    <trID>
-      <clTRID>ausc002#06-07-14at13:25:54</clTRID>
-      <svTRID>ccReg-0000011001</svTRID>
-    </trID>
-  </response>
-</epp>
-"""),
-    ('domain:renew',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
-<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:domain='http://www.nic.cz/xml/epp/domain-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
-  <response>
-    <result code='1000'>
-      <msg lang='cs'>Příkaz úspěšně proveden</msg>
-    </result>
-    <resData>
-      <domain:renData xsi:schemaLocation='http://www.nic.cz/xml/epp/domain-1.0 domain-1.0.xsd'>
-        <domain:name>LUSK.CZ</domain:name>
-        <domain:exDate>2008-07-14T00:00:00.0Z</domain:exDate>
-      </domain:renData>
-    </resData>
-    <trID>
-      <clTRID>koix009#06-07-14at13:40:10</clTRID>
-      <svTRID>ccReg-0000011024</svTRID>
-    </trID>
-  </response>
-</epp>
-""")
-    )
-    test(data[7])
+    try:
+        import test_incomming_messages
+    except ImportError:
+        print "Testing modul 'test_incomming_messages.py' is not included."
+    else:
+        # TEST selected document:
+        # Data item has format: ('command:name',"""<?xml ...XML document... >""")
+        # For example: ('nsset:info',"""<?xml ...<epp ...><response> ... </epp>""")
+        test(test_incomming_messages.data[8])

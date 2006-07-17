@@ -173,10 +173,20 @@ class ManagerTransfer(ManagerBase):
             if type(v) in (list,tuple):
                 if len(v):
                     space = ' '*(8 - len('%s: '%k)) # indent justify text to the tabs on next lines
-                    print_unicode(colored_output.render('\t${BOLD}%s:${NORMAL} (list) %s%s'%(k,space,v[0])))
+                    print_unicode(colored_output.render('\t${BOLD}%s:${NORMAL} (list) %s%s'%(k,space,str_lists(v[0]))))
                     for text in v[1:]:
-                        print_unicode('\t\t%s'%text)
+                        print_unicode('\t\t%s'%str_lists(text))
             else:
                 print_unicode(colored_output.render('\t${BOLD}%s:${NORMAL} (%s) %s'%(k, patt_type.match(str(type(v))).group(1), v)))
         print '-'*60
 
+def str_lists(text):
+    """Prepare list or tuples for display. Same as str() but ommit u'...' symbols
+    and put all values into brackets.
+    """
+    if type(text) in (list,tuple):
+        body = []
+        for item in text:
+            body.append(str_lists(item))
+        text = '(%s)'%', '.join(body)
+    return text

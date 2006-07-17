@@ -422,7 +422,7 @@ msgstr ""
 #: ccReg/eppdoc_client.py:129 ccReg/eppdoc_client.py:141
 #: ccReg/eppdoc_client.py:239 ccReg/eppdoc_client.py:262
 msgid "registrant"
-msgstr "registrátor"
+msgstr "vlastník domény"
 
 #: ccReg/eppdoc_client.py:130 ccReg/eppdoc_client.py:142
 #: ccReg/eppdoc_client.py:179 ccReg/eppdoc_client.py:188

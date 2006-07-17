@@ -372,11 +372,23 @@ class Client:
     name (required)
 
     RETURN data: {
-            domain:crDate, domain:crID, domain:clID, domain:name, 
-            domain:renew, domain:exDate, domain:nsset, domain:upID, 
-            s, domain:roid, domain:registrant
+        domain:contact: (list)
+        domain:crID: (unicode)
+        domain:clID: (unicode)
+        domain:upDate: (unicode)
+        domain:name: (unicode)
+        domain:status.s: (unicode)
+        domain:exDate: (unicode)
+        domain:nsset: (unicode)
+        domain:upID: (unicode)
+        domain:pw: (unicode)
+        domain:crDate: (unicode)
+        domain:roid: (unicode)
+        domain:registrant: (unicode)
+        domain:renew: (unicode)
+        domain:contact.type: (list)
         }
-    NOTE: domain:renew (you can use for renew-domain command)
+        NOTE: domain:renew (you can use for renew-domain command)
 
    The EPP "info" command is used to retrieve information associated
    with an existing object. The elements needed to identify an object
@@ -414,7 +426,16 @@ class Client:
     password (required)
     new-password (optional)
 
-    RETURN data: {}
+    RETURN data: {
+        nsset:upID: (str)
+        nsset:status.s: (str)
+        nsset:id: (str)
+        nsset:crDate: (str)
+        nsset:ns: (list) ((nsset, (addr,addr,...)), (nsset, (addr,addr,...)), ...)
+        nsset:clID: (str)
+        nsset:roid: (str)
+        nsset:tech: (str)
+        }
 
    The "login" command establishes an ongoing server session that preserves client identity
    and authorization information during the duration of the session.
