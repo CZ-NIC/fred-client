@@ -246,7 +246,12 @@ class ManagerBase:
         else:
             # ALLUSERSPROFILE =	C:\Documents and Settings\All Users
             glob_conf = os.path.join(os.path.expandvars('$ALLUSERSPROFILE'),self._name_conf)
-        self._conf.read([glob_conf, os.path.join(os.path.expanduser('~'),self._name_conf)])
+        try:
+            self._conf.read([glob_conf, os.path.join(os.path.expanduser('~'),self._name_conf)])
+        except ConfigParser.MissingSectionHeaderError, msg:
+            self.append_error('ConfigParser.MissingSectionHeaderError: %s'%str(msg))
+            self.display() # display errors or notes
+            return 0 # fatal error
         # set session variables
         section = 'session'
         lang = self.get_config_value(section,'lang')

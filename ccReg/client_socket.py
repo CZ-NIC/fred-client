@@ -75,7 +75,8 @@ class Lorry:
             if type(msg) not in (str,unicode):
                 err_note = {
                     1:_T('Used certificat is not signed by verified certificate authority.'),
-                    2:_T('The server configuration is not valid. Contact the server administrator.'),
+                    2:'%s\n%s'%(_T('The server configuration is not valid. Contact the server administrator.'),
+                      _T('If this script runs under MS Windows and timeout is not zero, it is probably SLL bug! Set timeout back to zero.')),
                 }
                 try:
                     text = err_note.get(msg[0],None)
