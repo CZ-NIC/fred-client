@@ -156,24 +156,37 @@ class Message(eppdoc.Message):
             if len(allowed):
                 session_base.print_unicode('%s: (${BOLD}%s${NORMAL})'%(_T('Param MUST be a value from this list'),', '.join(allowed)))
             cr = 0
+            stop=0
             while max is UNBOUNDED or cr < max:
                 parents[-1][1] = cr
                 prompt = '${BOLD}${GREEN}!${NORMAL}%s:${BOLD}%s${NORMAL} (%s) > '%(command_name,__scope_to_string__(parents),req)
-                param = raw_input(session_base.colored_output.render(prompt)).strip()
-                if param == '': break
-                if param[0] == '!': break
-                if re.search('\s',param) and not re.search(r'[\(\)]',param): param = '"%s"'%param
-                err = cmd_parser.parse(dct, ((name,min_max,allowed,'',()),), param)
-                if err: errors.extend(err)
+                try:
+                    param = raw_input(session_base.colored_output.render(prompt)).strip()
+                except (KeyboardInterrupt, EOFError):
+                    stop=1
+                    break
+                if param == '':
+                    if cr > 0: break # one item MUST be set at minimum
+                    if dct.has_key(name):
+                        dct[name].append('')
+                    else:
+                        dct[name] = ['']
+                else:
+                    if param[0] == '!': break
+                    if param[0] != '(': param = append_quotes(param)
+                    err = cmd_parser.parse(dct, ((name,min_max,allowed,'',()),), param)
+                    if err: errors.extend(err)
                 cr+=1
             parents.pop()
+            if stop: break
         if len(param) and param[0] == '!': param = param[1:]
         return errors,param
 
     def parse_cmd(self, command_name, cmd, config, interactive):
         "Parse command line. Returns errors. Save parsed values to self._dct."
-        self._dct = dct = {}
+        dct = {}
         error=[]
+        example = ''
         m = re.match('check_(\w+)\s+(.+)',cmd)
         if m:
             # úprava pro příkazy check_..., kde se jména seskupí do jednoho parametru name
@@ -188,12 +201,14 @@ class Message(eppdoc.Message):
         columns.extend(self._command_params[command_name][1])
         if interactive:
             session_base.print_unicode(_T('${BOLD}${YELLOW}Start interactive input of params. To break type: ${NORMAL}${BOLD}!${NORMAL}[!!...] (one ${BOLD}!${NORMAL} for scope)'))
-            self._dct[command_name] = [command_name]
-            errors,param = self.__interactive_params__(command_name, vals[1], self._dct)
+            dct[command_name] = [command_name]
+            errors, param = self.__interactive_params__(command_name, vals[1], dct)
+            if not errors:
+                example = __build_command_example__(columns, dct)
         else:
             errors = cmd_parser.parse(dct, columns, cmd)
         if errors: error.extend(errors)
-        # TODO: display command line
+        dct = remove_empty_keys(dct) # remove empty for better recognition of missing values
         self.__fill_empy_from_config__(config, dct, columns) # fill missing values from config
         errors = self.__check_required__(columns, dct) # check list and allowed values
         if errors: error.extend(errors)
@@ -202,7 +217,8 @@ class Message(eppdoc.Message):
             error.append('%s %d.'%(_T('Missing values. Required minimum is'),vals[0]))
             error.append('%s: %s'%(_T('Type'),self.get_help(command_name)[0]))
             error.append('(%s: ${BOLD}help %s${NORMAL})'%(_T('For more type'),command_name.replace('_','-')))
-        return error
+        self._dct = dct
+        return error, example
 
     def get_client_commands(self):
         'Return available client commands.'
@@ -677,8 +693,99 @@ def __scope_to_string__(scopes):
             tokens.append(name)
     return '.'.join(tokens)
 
+def escape(text):
+    'Escape quotes in text.'
+    ret=[]
+    for n in range(len(text)):
+        c = text[n]
+        if c in '\'"':
+            num_of_backslash = 0
+            o=n-1
+            while o > 0 and text[o] == '\\':
+                o-=1
+                num_of_backslash+=1
+            if not num_of_backslash%2:
+                ret.append('\\')
+        ret.append(c)
+    return ''.join(ret)
+
+def append_quotes(text):
+    'Function append quotes if in text is any space and text is not in quotes.'
+    if len(text) and text[0] not in '\'"' and re.search('\s',text):
+        text = "'%s'"%escape(text)
+    return text
+
+def __build_command_example__(columns, dct_data):
+    'Build command line from data (what was put in interactive mode).'
+    body = []
+    for row in columns:
+        name,min_max,allowed,help,children = row
+        min,max = min_max
+        if len(children):
+            text=''
+            if dct_data.has_key(name):
+                if max is UNBOUNDED or max > 1:
+                    scopes = []
+                    for dct_item in dct_data[name]:
+                        text = __build_command_example__(children, dct_item)
+                        if len(text): scopes.append('(%s)'%text)
+                    text = ', '.join(scopes)
+                else:
+                    if len(dct_data[name]):
+                        text = __build_command_example__(children, dct_data[name][0])
+            body.append('(%s)'%text) # required bracket    
+        else:
+            values = dct_data.get(name,[])
+            if len(values):
+                if max is UNBOUNDED or max > 1:
+                    # list
+                    if len(values)>1:
+                        vals = []
+                        for value in values:
+                            if value=='':
+                                vals.append("''")
+                            else:
+                                vals.append(append_quotes(value))
+                        body.append('(%s)'%', '.join(vals))
+                    else:
+                        # list, but only one item, bracket dont needed
+                        value=values[0]
+                        if value=='':
+                            body.append("''")
+                        else:
+                            body.append(append_quotes(value))
+                else:
+                    # single value
+                    value=values[0]
+                    if value=='':
+                        body.append("''")
+                    else:
+                        body.append(append_quotes(value))
+            else:
+                text = {False:"''",True:"()"}[max is UNBOUNDED or max > 1]
+                body.append(text)
+    while len(body) and body[-1] in ("''",'()'): body.pop()
+    return ' '.join(body)
+    
 def print_info_listmax(max):
     if max > 1:
         session_base.print_unicode(_T('(Value can be a list of max %d values.)')%max)
     elif max is UNBOUNDED:
         session_base.print_unicode(_T('(Value can be an unbouded list of values.)'))
+
+def remove_empty_keys(dct):
+    'Remove empty keys. dct is in format {key: [str, {key: [str, str]} ,str]}'
+    retd = {}
+    for key in dct.keys():
+        value = dct[key]
+        if not (len(value)==1 and value[0]==''):
+            scope = []
+            for item in value:
+                if type(item) is dict:
+                    dcit = remove_empty_keys(item)
+                    if len(dcit): scope.append(dcit)
+                else:
+                    scope.append(item)
+            if len(scope): retd[key] = scope
+    return retd
+

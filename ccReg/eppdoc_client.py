@@ -194,8 +194,8 @@ class Message(eppdoc_assemble.Message):
         #----------------------------------------------------
         'update_contact': (1,(
             ('contact-id',(1,1),(),_T('your contact ID'),()),
-            ('add',(0,5),(),_T('add status'),()),
-            ('rem',(0,5),(),_T('remove status'),()),
+            ('add',(0,5),update_status,_T('add status'),()),
+            ('rem',(0,5),update_status,_T('remove status'),()),
             ('chg',(0,1),(),_T('change status'),(
                 ('postal_info',(0,1),(),_T('postal informations'),(
                     ('name',(0,1),(),_T('name'),()),
@@ -225,9 +225,11 @@ class Message(eppdoc_assemble.Message):
                 ('notify_email',(0,1),(),_T('notify email'),()),
             )),
             ),notice['update'],(
-                    'update-contact id-contact clientDeleteProhibited',
-                    'update-contact id-contact (clientDeleteProhibited linked ok)',
-                    'update-contact id-contact (linked ok) (clientDeleteProhibited clientUpdateProhibited) (("John Doe" "Doe Company" "Down street, New York") +00123456789 +00123456456 john@doe.com (1 John John-Comp "Street and City" +01231321 +01234654 john@john.com) my-vat my-ssn notify@here.net',
+                    'update-contact reg-id clientDeleteProhibited',
+                    'update-contact reg-id (clientDeleteProhibited linked ok)',
+                    "update_contact reg-id (linked ok) clientDeleteProhibited (('John Doe' 'Doe Company' (('Yellow line', 'Downing street') 'New York' VA 123456 US)) +123.45674654 +123.1264897 mail@mycom.cz (0 'My Name' 'My org' address +213.5467897 +123.547894654 my.mail@co.cz) 1234564 1245678 not@mail.cz)",
+                    "update-contact reg-id '' '' (('' '' ('' 'New York' '' '' US)) '' '' '' () '' '' notify@mail.cz)",
+                    "update-contact reg-id '' '' (('' '' ('' 'New York' '' '' US)))",
             )),
         #----------------------------------------------------
         'update_domain': (1,(
@@ -295,7 +297,8 @@ class Message(eppdoc_assemble.Message):
             )),
             ),notice['update'],(
                 'update-nsset nic.cz',
-                'update-nsset nsset-ID (((nsset1.name.cz 127.0.0.1),(nsset2.name.cz (127.0.2.1 127.0.2.2)),) tech-add-contact ok) ("My Name",("Tech contact 1","Tech contact 2"),(clientDeleteProhibited ok)) (password extension)',
+                'update-nsset nsset-ID (((nsset1.name.cz 127.0.0.1),(nsset2.name.cz (127.0.2.1 127.0.2.2)),) tech-add-contact ok) ("My Name",("Tech contact 1","Tech contact 2"),(clientDeleteProhibited ok)) (password)',
+                "update-nsset nsset1 (((ns1.dns.cz (230.45.46.8, 230.45.46.9, 230.45.46.10)), (ns2.dns.cz (240.11.0.1, 240.11.0.2, 240.11.0.3))) (tech1, tech2, tech3) (ok, clientTransferProhibited)) (((rem1.dns.cz, rem2.dns.cz) (tech-rem01, tech-rem02) serverUpdateProhibited)) (heslo)",
             )),
     }
 
@@ -317,17 +320,15 @@ def test(commands):
         if not m: continue
         cmd_name = m.group(1)
         epp.reset()
-        errors = epp.parse_cmd(cmd_name, cmd, manag._conf, 0)
+        errors, example = epp.parse_cmd(cmd_name, cmd, manag._conf, 0)
         if errors:
-            print "Errors:"
-            for e in errors: print e
+            print "Errors:",errors
         else:
             getattr(epp,'assemble_%s'%cmd_name)('llcc002#06-06-16at13:21:30',('1.0', ('objURI',), ('extURI',), 'LANG'))
             errors, xmlepp = epp.get_results()
             print xmlepp
             if errors:
-                print "Errors:"
-                for e in errors: print e
+                print "Errors:",errors
             if xmlepp:
                 print 'VALID?',manag.is_epp_valid(xmlepp)
         print '='*60
@@ -347,53 +348,4 @@ def test_help(command_names):
 
 if __name__ == '__main__':
     # Test na jednotlivé příkazy
-    commands1 = (
-     'hello',
-     'login john mypass "my new pass!"',
-     'logout',
-     'info_domain my-domain.cz',
-     'info_contact my-contact',
-     'check_domain nic.cz cin.cz',
-     'check_contact my-contact1 my-contact2',
-     'transfer_domain name-domain request password',
-     'transfer_nsset name-nsset request password',
-     'poll req',
-    )
-    commands2 = (
-     'create_contact reg-id "John Doe" jon@mail.com "New York" US "Example Inc." ("Yellow harbor" "Blueberry hill") VA 20166-6503 +1.7035555555 +1.7035555556 (0 d-name "d org." "ulice číso město" +21321313 +734321 pepa@jojo.com) vat-test ssn-test notify@semka.net',
-     'create_domain domain.cz password (3 m) nsset.name.cz registr-name ("My address","My next contact")',
-     'create_domain_enum domain.cz password (3 m) nsset.name.cz registr-name ("My address","My next contact") 2006-06-08',
-     'create_nsset exampleNsset passw ((ns1.domain.net (127.1.0.1 127.1.0.2)),(ns2.domain.net (127.2.0.1 127.2.0.2)),(ns3.domain.net (127.3.0.1 127.3.0.2))) tech-contact',
-    )
-    commands3 = (
-     'delete_contact contact-id',
-     'delete_domain domain.cz',
-     'delete_nsset nsset-id',
-    )
-    commands4 = (
-     'renew_domain nic.cz 2023-06-02 (6 y)',
-     'renew_domain_enum nic.cz 2023-06-02 () 2006-08-09',
-    )
-    commands5 = (
-     'update_contact id-contact clientDeleteProhibited',
-     'update_contact id-contact (clientDeleteProhibited linked ok)',
-     'update_contact id-contact (linked ok) (clientDeleteProhibited clientUpdateProhibited) (("John Doe" "Doe Company" "Down street, New York") +00123456789 +00123456456 john@doe.com (1 John John-Comp "Street and City" +01231321 +01234654 john@john.com) my-vat my-ssn notify@here.net',
-     #!!!
-     'update_contact reg-id (linked ok) (clientDeleteProhibited clientUpdateProhibited) (jedna dve)',
-     'update_contact reg-id (linked ok) (clientDeleteProhibited clientUpdateProhibited) ("Johnny Doey" "Doe Company" (("Downing street","Yellow line"), "New York", VA 20166-6503 US)) +001.23456789 +001.23456456 john@doe.com (1 John John-Comp "Street and City" +012.0031321 +012.31234654 john@john.com) my-vat my-ssn notify@here.net',
-     'update_domain nic.cz',
-     'update_domain nic.cz (linked add-contact) ((ok linked) rem-contact) (nsset registrant (password extensions))',
-     'update_domain_enum 1.1.1.1.1.arpa64.net (linked add-contact) ((ok linked) rem-contact) (nsset registrant (password extensions)) 2006-06-08',
-    )
-    commands6 = (
-    'update_nsset nic.cz',
-    'update_nsset nsset-ID (((nsset1.name.cz 127.0.0.1),(nsset2.name.cz (127.0.2.1 127.0.2.2)),) tech-add-contact ok) ("My Name",("Tech contact 1","Tech contact 2"),(linked ok)) (password extension)',
-    )
-##    test(('update_contact id-contact',))
-##    test(commands1)
-##    test(commands2)
-##    test(commands3)
-##    test(commands4)
-##    test(commands6)
-##    test_help(('login','update_nsset',))
-    test((commands5[3],))
+    test(('update_contact',"update_contact reg-id () () (('' '' ('' Město '' '' CZ)) '' '' '' (0) '' '' notify@mail.cz)"))

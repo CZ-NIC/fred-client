@@ -363,7 +363,7 @@ class Data:
 def append_to_dict(d,key,val):
     "Append or extend values along to insert type."
     if d.has_key(key):
-        if type(d[key]) == str:
+        if type(d[key]) in (str,unicode):
             d[key] += val
         else:
             d[key].extend(val)
