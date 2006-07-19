@@ -17,7 +17,7 @@ if __name__ == '__main__':
         else:
             print epp_doc
     else:
-        print """*** ccReg Create ***
+        print """!!! ccReg Create !!!
 
 Create EPP XML document from command line parameters.
 If any error occurs, script returns error in format:
