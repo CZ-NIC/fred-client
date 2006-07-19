@@ -235,19 +235,19 @@ class Message(eppdoc_assemble.Message):
         'update_domain': (1,(
             ('name',(1,1),(),_T('domain name'),()),
             ('add',(0,1),(),_T('add status'),(
-                ('status',(0,8),update_status,_T('status'),()),
                 ('contact',(0,UNBOUNDED),(),_T('contact'),()),
+                ('status',(0,8),update_status,_T('status'),()),
             )),
             ('rem',(0,1),(),_T('remove status'),(
-                ('status',(0,8),update_status,_T('status'),()),
                 ('contact',(0,UNBOUNDED),(),_T('contact'),()),
+                ('status',(0,8),update_status,_T('status'),()),
             )),
             ('chg',(0,1),(),_T('change status'),(
                 ('nsset',(0,1),(),_T('nsset'),()),
                 ('registrant',(0,1),(),_T('registrant'),()),
-                ('authInfo',(0,1),(),_T('authInfo'),(
+                ('auth_info',(0,1),(),_T('authInfo'),(
                     ('pw',(0,1),(),_T('password'),()),
-                    ('ext',(0,1),(),_T('ext'),()),
+                    #('ext',(0,1),(),_T('ext'),()),
                 )),
             )),
             ),notice['update'],(
@@ -258,19 +258,19 @@ class Message(eppdoc_assemble.Message):
         'update_domain_enum': (1,(
             ('name',(1,1),(),_T('domain name'),()),
             ('add',(0,1),(),_T('add status'),(
-                ('status',(0,8),update_status,_T('status'),()),
                 ('contact',(0,UNBOUNDED),(),_T('contact'),()),
+                ('status',(0,8),update_status,_T('status'),()),
             )),
             ('rem',(0,1),(),_T('remove status'),(
-                ('status',(0,8),update_status,_T('status'),()),
                 ('contact',(0,UNBOUNDED),(),_T('contact'),()),
+                ('status',(0,8),update_status,_T('status'),()),
             )),
             ('chg',(0,1),(),_T('change status'),(
                 ('nsset',(0,1),(),_T('nsset'),()),
                 ('registrant',(0,1),(),_T('registrant'),()),
                 ('auth_info',(0,1),(),_T('authInfo'),(
                     ('pw',(0,1),(),_T('password'),()),
-                    ('ext',(0,1),(),_T('ext'),()),
+                    #('ext',(0,1),(),_T('ext'),()),
                 )),
             )),
             ('val_ex_date',(0,1),(),_T('valExDate'),()),
@@ -348,4 +348,4 @@ def test_help(command_names):
 
 if __name__ == '__main__':
     # Test na jednotlivé příkazy
-    test(('update_contact',"update_contact reg-id () () (('' '' ('' Město '' '' CZ)) '' '' '' (0) '' '' notify@mail.cz)"))
+    test(("update_contact reg-id () () (('' '' ('' Město '' '' CZ)) '' '' '' (0) '' '' notify@mail.cz)",))

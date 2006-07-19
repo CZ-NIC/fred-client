@@ -166,11 +166,13 @@ class Message(eppdoc.Message):
                     stop=1
                     break
                 if param == '':
-                    if cr > 0: break # one item MUST be set at minimum
-                    if dct.has_key(name):
-                        dct[name].append('')
-                    else:
-                        dct[name] = ['']
+                    if cr == 0:
+                        # one item MUST be set at minimum
+                        if dct.has_key(name):
+                            dct[name].append('')
+                        else:
+                            dct[name] = ['']
+                    break
                 else:
                     if param[0] == '!': break
                     if param[0] != '(': param = append_quotes(param)
@@ -605,9 +607,9 @@ class Message(eppdoc.Message):
             if __has_key_dict__(dct,key):
                 data.append(('domain:update', 'domain:%s'%key))
                 dct_key = dct[key][0]
-                for name in ('status','contact'):
-                    if __has_key__(dct_key,name):
-                        self.__append_values__(data, dct_key, name, 'domain:%s'%key, 'domain:%s'%name)
+                if __has_key__(dct_key,'contact'):
+                    self.__append_values__(data, dct_key, 'contact', 'domain:%s'%key, 'domain:contact')
+                self.__append_attr__(data, dct_key, 'status', 'domain:%s'%key, 'domain:status','s')
         if __has_key_dict__(dct,'chg'):
             chg = dct['chg'][0]
             data.append(('domain:update', 'domain:chg'))
@@ -617,7 +619,7 @@ class Message(eppdoc.Message):
                 data.append(('domain:chg','domain:authInfo'))
                 authInfo = chg['auth_info'][0]
                 if __has_key__(authInfo,'pw'): data.append(('domain:authInfo','domain:pw', authInfo['pw'][0]))
-                if __has_key__(authInfo,'ext'): data.append(('domain:authInfo','domain:ext', authInfo['ext'][0]))
+                #if __has_key__(authInfo,'ext'): data.append(('domain:authInfo','domain:ext', authInfo['ext'][0]))
         if len(params)>1 and params[1]=='extensions': self.__enum_extensions__('update',data, params,'chg')
         data.append(('command', 'clTRID', params[0]))
         self.__assemble_cmd__(data)
@@ -665,7 +667,7 @@ class Message(eppdoc.Message):
             data.append(('nsset:chg','nsset:authInfo'))
             dct_chg = dct['chg'][0]
             if __has_key__(dct_chg, 'pw'): data.append(('nsset:authInfo','nsset:pw',dct_chg['pw'][0]))
-            if __has_key__(dct_chg, 'ext'): data.append(('nsset:authInfo','nsset:ext',dct_chg['ext'][0]))
+            #if __has_key__(dct_chg, 'ext'): data.append(('nsset:authInfo','nsset:ext',dct_chg['ext'][0]))
         data.append(('command', 'clTRID', params[0]))
         self.__assemble_cmd__(data)
 

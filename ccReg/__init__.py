@@ -600,17 +600,16 @@ class Client:
 
     name (required)
     add (optional)
-        status (optional)       list with max 8 items. accept only values: (clientDeleteProhibited,clientTransferProhibited,clientUpdateProhibited,linked,ok,serverDeleteProhibited,serverTransferProhibited,serverUpdateProhibited)
         contact (optional)      unbounded list
+        status (optional)       list with max 8 items. accept only values: (clientDeleteProhibited,clientTransferProhibited,clientUpdateProhibited,linked,ok,serverDeleteProhibited,serverTransferProhibited,serverUpdateProhibited)
     rem (optional)
-        status (optional)       list with max 8 items. accept only values: (clientDeleteProhibited,clientTransferProhibited,clientUpdateProhibited,linked,ok,serverDeleteProhibited,serverTransferProhibited,serverUpdateProhibited)
         contact (optional)      unbounded list
+        status (optional)       list with max 8 items. accept only values: (clientDeleteProhibited,clientTransferProhibited,clientUpdateProhibited,linked,ok,serverDeleteProhibited,serverTransferProhibited,serverUpdateProhibited)
     chg (optional)
         nsset (optional)
         registrant (optional)
-        authInfo (optional)
+        auth_info (optional)
             pw (optional)
-            ext (optional)
 
     RETURN data: {}
 
@@ -626,17 +625,16 @@ class Client:
 
     name (required)
     add (optional)
-        status (optional)       list with max 8 items. accept only values: (clientDeleteProhibited,clientTransferProhibited,clientUpdateProhibited,linked,ok,serverDeleteProhibited,serverTransferProhibited,serverUpdateProhibited)
         contact (optional)      unbounded list
+        status (optional)       list with max 8 items. accept only values: (clientDeleteProhibited,clientTransferProhibited,clientUpdateProhibited,linked,ok,serverDeleteProhibited,serverTransferProhibited,serverUpdateProhibited)
     rem (optional)
-        status (optional)       list with max 8 items. accept only values: (clientDeleteProhibited,clientTransferProhibited,clientUpdateProhibited,linked,ok,serverDeleteProhibited,serverTransferProhibited,serverUpdateProhibited)
         contact (optional)      unbounded list
+        status (optional)       list with max 8 items. accept only values: (clientDeleteProhibited,clientTransferProhibited,clientUpdateProhibited,linked,ok,serverDeleteProhibited,serverTransferProhibited,serverUpdateProhibited)
     chg (optional)
         nsset (optional)
         registrant (optional)
-        authInfo (optional)
+        auth_info (optional)
             pw (optional)
-            ext (optional)
     val_ex_date (optional)
 
     RETURN data: {}
@@ -665,7 +663,6 @@ class Client:
         status (optional)       list with max 6 items. accept only values: (clientDeleteProhibited,clientTransferProhibited,clientUpdateProhibited,linked,ok,serverDeleteProhibited,serverTransferProhibited,serverUpdateProhibited)
     chg (optional)
         pw (optional)
-        ext (optional)
 
     RETURN data: {}
 
