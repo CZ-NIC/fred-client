@@ -12,7 +12,7 @@ def find_valid_encoding():
     for charset in (sys.stdout.encoding, 'utf-8', 'cp852'):
         try:
             ltext = u'žščřďťňě'.encode(charset)
-        except UnicodeEncodeError, msg:
+        except (UnicodeEncodeError, TypeError), msg:
             pass
         else:
             valid_charset = charset

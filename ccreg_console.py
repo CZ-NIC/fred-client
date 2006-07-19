@@ -6,7 +6,6 @@
 # Your terminal should support unicode. Check locale to LANG=cs_CZ.UTF-8
 #
 import sys, re
-#import cmd_history
 import ccReg
 from ccReg.session_base import colored_output
 from ccReg import _T
@@ -19,8 +18,9 @@ def main(host):
     print epp.welcome()
     epp.display() # display errors or notes
     print _T('For connection to the EPP server type "connect" or directly "login".')
+    is_online = 0
     status = ('${BOLD}${YELLOW}OFF${NORMAL}','${BOLD}${GREEN}ON${NORMAL}')
-    online = status[0]
+    online = status[is_online]
     while 1:
         try:
             command = raw_input(colored_output.render("> (?-help, q-quit) %s: "%online))
@@ -48,7 +48,9 @@ def main(host):
                 else:
                     epp.append_note(_T('You are not connected! Type login for connection to the server.'),('BOLD','RED'))
         epp.display() # display errors or notes
-        online = status[epp.is_logon()]
+        if not is_online and epp.is_logon():
+            is_online = 1
+            online = '${BOLD}${GREEN}%s${WHITE}@${GREEN}%s${NORMAL}'%epp.get_username_and_host()
     epp.close()
     epp.display() # display logout messages
     print "[END]"

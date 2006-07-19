@@ -10,7 +10,7 @@ from translate import _T, encoding
 colored_output = terminal_controler.TerminalController()
 
 # názvy sloupců pro data sestavené při spojení se serverem
-ONLINE, CMD_ID, LANG, POLL_AUTOACK, CONFIRM_SEND_COMMAND = range(5)
+ONLINE, CMD_ID, LANG, POLL_AUTOACK, CONFIRM_SEND_COMMAND, USERNAME, HOST = range(7)
 # názvy sloupců pro defaultní hodnoty
 DEFS_LENGTH = 4
 LANGS,objURI,extURI,PREFIX = range(DEFS_LENGTH)
@@ -30,9 +30,11 @@ class ManagerBase:
         self._session = [
                 0,      # ONLINE
                 0,      # CMD_ID
-                'en', # LANG
-                0,       # POLL_AUTOACK
-                1        # CONFIRM_SEND_COMMAND
+                'en',   # LANG
+                0,      # POLL_AUTOACK
+                1,      # CONFIRM_SEND_COMMAND
+                '',     # USERNAME (for prompt info)
+                '',     # HOST (for prompt info)
                 ]
         # defaults
         self.defs = ['']*DEFS_LENGTH
@@ -43,11 +45,30 @@ class ManagerBase:
         self._conf = None # <ConfigParser object>
         self._name_conf = '.ccReg.conf' # name of config file
         self._host = None # explicit defined host
+        self._auto_connect = 1 # auto connection during login or hello
+        
+    def set_auto_connect(self, switch):
+        'Set auto connection ON/OFF. switch = 0/1.'
+        self._auto_connect = {False:0,True:1}[switch==1]
+        if not self._auto_connect and len(self.defs[objURI]) == 0:
+            self.defs[objURI] = ['http://www.nic.cz/xml/epp/contact-1.0',
+                'http://www.nic.cz/xml/epp/domain-1.0',
+                'http://www.nic.cz/xml/epp/nsset-1.0']
+            self.defs[extURI] = ['http://www.nic.cz/xml/epp/enumval-1.0']
 
     def is_logon(self):
         'Returns 0-offline,1-online.'
         return self._session[ONLINE]
 
+    def get_username_and_host(self):
+        'Returns username and host.'
+        return self._session[USERNAME], self._session[HOST]
+##        if len(self._session[USERNAME]):
+##            info = '%s@%s'%(self._session[USERNAME],self._session[HOST])
+##        else:
+##            info = 'OFF'
+##        return info
+        
     def is_confirm_cmd_name(self, command_name):
         'Returns 0-not conrifmation,1-need conrifmation.'
         return self._session[CONFIRM_SEND_COMMAND] and re.match('(create|update|delete|transfer|renew)',command_name)
@@ -91,20 +112,41 @@ class ManagerBase:
 
     def display(self):
         "Output all messages to stdout or log file."
+        print self.get_messages()
+##        if self.is_note():
+##            # hlášení, poznámka, hodnoty
+##            for text in self._notes:
+##                print_unicode(colored_output.render(text))
+##            self._notes = []
+##        if self.is_error():
+##            # chybová hlášení
+##            print colored_output.render('${RED}${BOLD}')
+##            for text in self._errors:
+##                print_unicode(colored_output.render(text))
+##            self._errors = []
+##            print colored_output.render('${NORMAL}')
+
+    def get_messages(self, sep='\n'):
+        'Same as display but returns as local string.'
         #TODO: log file
+        msg = []
         if self.is_note():
             # hlášení, poznámka, hodnoty
             for text in self._notes:
-                print_unicode(colored_output.render(text))
+##                print_unicode(colored_output.render(text))
+                msg.append(get_ltext(colored_output.render(text)))
             self._notes = []
         if self.is_error():
             # chybová hlášení
-            print colored_output.render('${RED}${BOLD}')
+            msg.append(colored_output.render('${RED}${BOLD}'))
+##            msg.append(get_ltext(
             for text in self._errors:
-                print_unicode(colored_output.render(text))
+##                print_unicode(colored_output.render(text))
+                msg.append(get_ltext(colored_output.render(text)))
             self._errors = []
-            print colored_output.render('${NORMAL}')
-
+            msg.append(colored_output.render('${NORMAL}'))
+        return sep.join(msg)
+    
     def welcome(self):
         "Welcome message for console modul."
         # frame:  - | |- -| |_ _|

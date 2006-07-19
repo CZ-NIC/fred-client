@@ -293,17 +293,25 @@ class ManagerReceiver(ManagerCommand):
         if msgQ:
             self.__append_note_from_dct__(response,('msgQ count id',))
             self.__append_note_from_dct__(msgQ,('qDate','msg'))
+        # convert str to int:
+        for key in ('id','count'):
+            sval = self.get_value_from_dict(('data','msgQ.%s'%key))
+            if sval:
+                try:
+                    self._dct_answer['data']['msgQ.%s'%key] = int(sval)
+                except ValueError, msg:
+                    self._dct_answer.append(msg)
         if data[ANSW_CODE] == 1301 and self._session[POLL_AUTOACK]:
             # automaticly answer 'poll ack' and remove message from server
-            msg_id = self.get_value_from_dict(('data','id'))
+            msg_id = self.get_value_from_dict(('data','msgQ.id'))
             if msg_id: # if only ID exists
                 dct = self._dct_answer # keep message from "req"
-                self.api_command('poll',{'op':'ack','msg_id':msg_id})
+                self.api_command('poll',{'op':'ack','msg_id':str(msg_id)})
                 # Copy previous "req" answer to new from "ack" command.
                 dct['code'] = self._dct_answer['code']
                 dct['reason'] = 'req: %s\n        ack: %s'%(dct['reason'],self._dct_answer['reason'])
                 data = dct['data']
-                data['count'] = self.get_value_from_dict(('data','count'),self._dct_answer)
+                data['msgQ.count'] = self.get_value_from_dict(('data','msgQ.count'),self._dct_answer)
                 if self.get_value_from_dict(('data','msg'),self._dct_answer):
                     data['msg'] = '\n'.join((data['msg'], self._dct_answer['data']['msg']))
                 if len(self._dct_answer['errors']): dct['errors'].extend(self._dct_answer['errors'])

@@ -83,12 +83,19 @@ class Message(eppdoc.Message):
         'Fill missing values from config.'
         errors = []
         section = 'epp_%s'%columns[0][0]
-        if not config or not config.has_section(section): return errors
+        if not config or not config.has_section(section): return errors # silent, no errors
         for key,value in config.items(section):
             # go throught dict and create keys if missing:
             cmd_parser.insert_on_key(errors, dct, columns, key, value, 1)
         return errors
-        
+
+    def get_default_params_from_config(self, config, command_name):
+        'Returns dict with default parameters from config.'
+        dct = {}
+        columns = [(command_name,(1,1),(),'',())]
+        columns.extend(self._command_params[command_name][1])
+        self.__fill_empy_from_config__(config, dct, columns)
+        return dct
         
     def __check_required__(self, columns, dct_values, scopes=[]):
         'Check parsed values for required and allowed values.'
@@ -294,6 +301,11 @@ class Message(eppdoc.Message):
                 ,['username', 'password'[,'new-pass']]
                 ,('version', ['objURI'] or None,['extURI'] or None, 'language'))
         """
+        # protect to missing login values:
+        for key in ('username','password'):
+            if not (self._dct.has_key(key) and len(self._dct[key])):
+                self.errors.append((0, key, 'missing'))
+        if len(self.errors): return
         cols = [('epp', 'command'),
             ('command', 'login'),
             ('login', 'clID', self._dct['username'][0]),

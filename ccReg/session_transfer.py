@@ -84,6 +84,7 @@ class ManagerTransfer(ManagerBase):
                     self.get_config_value(section,'timeout'),
                     ]
             if self._host: data[0] = self._host
+            self._session[HOST] = data[0] # for prompt info
             if None in data:
                 self.append_error('%s: %s'%(_T('Impossible create connection. Required config values missing'),str(data)))
                 return 0
@@ -103,6 +104,8 @@ class ManagerTransfer(ManagerBase):
             self._lorry = None
         # když se spojení zrušilo, tak o zalogování nemůže být ani řeči
         self._session[ONLINE] = 0
+        self._session[USERNAME] = '' # for prompt info
+        self._session[HOST] = '' # for prompt info
 
     def is_connected(self):
         "Check if the manager is connected."

@@ -463,7 +463,11 @@ class Client:
 
     op (required) accept only values: (req,ack)
 
-    RETURN data: {count id msg}
+    RETURN data: {
+        count: int
+        id:    int
+        msg:   str
+        }
 
     The EPP "poll" command is used to discover and retrieve service messages queued by a server for individual clients.
 

@@ -45,6 +45,10 @@ class ManagerCommand(ManagerTransfer):
         if example: self.append_note('${BOLD}%s:${NORMAL}\n%s'%(_T('Example of input'),example))
         return (len(errors) == 0)
 
+    def get_default_params_from_config(self, command_name):
+        'Returns dict with default parameters from config.'
+        return self._epp_cmd.get_default_params_from_config(self._conf, command_name)
+    
     #==================================================
     #
     # main creation command functions
@@ -191,14 +195,8 @@ ${BOLD}send${NORMAL} [filename] ${CYAN}# send selected file to the server (for t
                 except OSError, (no, msg):
                     stuff = 'OSError: [%d] %s'%(no, msg)
                 self.append_note(stuff)
-            elif os.path.isfile(filepath):
-                self.append_note('%s: %s'%(_T('Load file'),filepath))
-                self._raw_cmd = self._epp_cmd.load_xml_doc(filepath)
-                errors = self._epp_cmd.fetch_errors()
-                if errors: self.append_note(errors)
-                command_name = self.grab_command_name_from_xml(self._raw_cmd)
             else:
-                self.append_note('%s: %s'%(_T('Not found'),filepath))
+                command_name, xmldoc = self.load_filename(filepath)
         elif re.match('connect',cmd):
             self.connect() # připojení k serveru
         elif re.match('confirm',cmd):
@@ -221,6 +219,19 @@ ${BOLD}send${NORMAL} [filename] ${CYAN}# send selected file to the server (for t
             self._raw_cmd = self._epp_cmd.get_xml()
         return command_name, self._raw_cmd
 
+    def load_filename(self, filepath):
+        'Load file and returs name of EPP command.'
+        if os.path.isfile(filepath):
+            self.append_note('%s: %s'%(_T('Load file'),filepath))
+            self._raw_cmd = self._epp_cmd.load_xml_doc(filepath)
+            errors = self._epp_cmd.fetch_errors()
+            if errors: self.append_note(errors)
+            command_name = self.grab_command_name_from_xml(self._raw_cmd)
+        else:
+            self.append_note('%s: %s'%(_T('Not found'),filepath))
+            command_name = ''
+        return command_name, self._raw_cmd
+
     #==================================================
     #
     #    EPP commands
@@ -228,7 +239,7 @@ ${BOLD}send${NORMAL} [filename] ${CYAN}# send selected file to the server (for t
     #==================================================
     def create_hello(self):
         'Create EPP document hello'
-        if not self.is_connected():
+        if self._auto_connect and not self.is_connected():
             if not self.connect(): return # connect fails
         self._epp_cmd.assemble_hello()
 
@@ -238,7 +249,7 @@ ${BOLD}send${NORMAL} [filename] ${CYAN}# send selected file to the server (for t
             # klient je už zalogován
             self.append_note(_T('You are logged already.'))
         else:
-            if not self.is_connected():
+            if self._auto_connect and not self.is_connected():
                 # commection MUST be created BEFOR assembling login because of tags
                 # <objURI> and <extURI>
                 if not self.connect(): return # connect fails
@@ -247,6 +258,9 @@ ${BOLD}send${NORMAL} [filename] ${CYAN}# send selected file to the server (for t
             self._session[CMD_ID] = 0
             self.defs[PREFIX] = ''.join([chr(random.randint(97,122)) for n in range(4)])
             self._epp_cmd.assemble_login(self.__next_clTRID__(), (eppdoc_nic_cz_version, self.defs[objURI], self.defs[extURI], self._session[LANG]))
+            if self._epp_cmd._dct.has_key('username'):
+                self._session[USERNAME] = self._epp_cmd._dct['username'][0] # for prompt info
+
 
     def get_value_from_dict(self, names, dct = None):
         """Returns safetly value form dict (treat missing keys).
