@@ -564,7 +564,7 @@ class Client:
     add (optional)              list with max 5 items.
     rem (optional)              list with max 5 items.
     chg (optional)
-        postalInfo (optional)
+        postal_info (optional)
             name (optional)
             org (optional)
             addr (optional)

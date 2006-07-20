@@ -13,16 +13,13 @@ if __name__ == '__main__':
         command_name, epp_doc = epp.create_eppdoc(' '.join(sys.argv[1:]))
         errors = epp.get_messages()
         if errors:
-            print '!!! %s:'%command_name,errors
+            print '!!!{%s: %s}!!! '%(command_name,errors)
         else:
             print epp_doc
     else:
-        print """!!! ccReg Create !!!
+        print """!!!{ *** ccReg Create ***
 
 Create EPP XML document from command line parameters.
-If any error occurs, script returns error in format:
-
-!!! command_name: error messages
 
 Usage:
 python ccreg_create.py command params
@@ -30,4 +27,7 @@ python ccreg_create.py command params
 Example:
 python ccreg_create.py info-domain nic.cz
 python ccreg_create.py info-contact reg-id
+
+If any error occurs, script returns error in format:
+three exclamations{command_name: error messages}!!!
 """

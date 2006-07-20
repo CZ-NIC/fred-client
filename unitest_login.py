@@ -9,37 +9,10 @@
 1.6 Zmena hesla tam a zpatky s kontrolnim zalogovanim
 """
 import unittest
-import ccReg
+import unitest_ccReg
 
-class Test(unittest.TestCase):
-    
-    def setUp(self):
-        self.epc = ccReg.Client()
-        self.epc._epp.load_config()
+class Test(unitest_ccReg.BaseTest):
 
-    def tearDown(self):
-        if self.epc.is_logon():
-            self.epc.logout()
-
-    def __login__(self, dct):
-        'Login and logout.'
-        code = 0
-        error = ''
-        for key in ('username','password'):
-            if not dct.has_key(key): error += 'Chybi parametr: %s. '%key
-        if not error:
-            try:
-                if dct.has_key('new_password'):
-                    self.epc.login(dct['username'], dct['password'], dct['new_password'])
-                else:
-                    self.epc.login(dct['username'], dct['password'])
-                code = self.epc.is_val()
-            except ccReg.ccRegError, msg:
-                error = 'ccRegError: %s'%msg
-            else:
-                self.epc.logout()
-        return code, error
-    
     def test_login_neexistujici_username(self):
         '1.1 Zalogovani s neexistujicim username'
         code, error = self.__login__({'username':'neexistuje', 'password':'123456789'})
