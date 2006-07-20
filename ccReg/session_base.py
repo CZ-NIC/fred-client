@@ -63,11 +63,6 @@ class ManagerBase:
     def get_username_and_host(self):
         'Returns username and host.'
         return self._session[USERNAME], self._session[HOST]
-##        if len(self._session[USERNAME]):
-##            info = '%s@%s'%(self._session[USERNAME],self._session[HOST])
-##        else:
-##            info = 'OFF'
-##        return info
         
     def is_confirm_cmd_name(self, command_name):
         'Returns 0-not conrifmation,1-need conrifmation.'
@@ -113,18 +108,6 @@ class ManagerBase:
     def display(self):
         "Output all messages to stdout or log file."
         print self.get_messages()
-##        if self.is_note():
-##            # hlášení, poznámka, hodnoty
-##            for text in self._notes:
-##                print_unicode(colored_output.render(text))
-##            self._notes = []
-##        if self.is_error():
-##            # chybová hlášení
-##            print colored_output.render('${RED}${BOLD}')
-##            for text in self._errors:
-##                print_unicode(colored_output.render(text))
-##            self._errors = []
-##            print colored_output.render('${NORMAL}')
 
     def get_messages(self, sep='\n'):
         'Same as display but returns as local string.'
@@ -133,15 +116,12 @@ class ManagerBase:
         if self.is_note():
             # hlášení, poznámka, hodnoty
             for text in self._notes:
-##                print_unicode(colored_output.render(text))
                 msg.append(get_ltext(colored_output.render(text)))
             self._notes = []
         if self.is_error():
             # chybová hlášení
             msg.append(colored_output.render('${RED}${BOLD}'))
-##            msg.append(get_ltext(
             for text in self._errors:
-##                print_unicode(colored_output.render(text))
                 msg.append(get_ltext(colored_output.render(text)))
             self._errors = []
             msg.append(colored_output.render('${NORMAL}'))

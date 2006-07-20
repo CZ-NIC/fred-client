@@ -704,6 +704,10 @@ class Client:
         """
         return self._epp.get_value_from_dict(names,dct)
 
+    def is_logon(self):
+        'Check if client is login on the server.'
+        return self._epp.is_logon()
+
 class ClientSession(ManagerReceiver):
     "Use for console or batch applications."
 

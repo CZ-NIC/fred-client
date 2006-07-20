@@ -93,7 +93,7 @@ class ManagerTransfer(ManagerBase):
             self.__check_is_connected__()
             if epp_greeting:
                 self.process_answer(epp_greeting)
-                self.print_answer() # 1. departure from the rule to print answers
+                # self.print_answer() # 1. departure from the rule to print answers
                 return 1
         return 0
         
