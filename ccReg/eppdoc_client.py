@@ -43,7 +43,7 @@ notice = {'check':_T("""
 class Message(eppdoc_assemble.Message):
     "Client EPP commands."
     # transfer op attribute allowed values:
-    transfer_op = ('request','approve','cancel','query','reject')
+    # transfer_op = ('request','approve','cancel','query','reject')
     update_status = ('clientDeleteProhibited', 'clientTransferProhibited', 'clientUpdateProhibited', 'linked', 'ok', 'serverDeleteProhibited', 'serverTransferProhibited', 'serverUpdateProhibited')
     # format:
     # command-name: (param-name, (min,max), (list of required), 'help', (list of children)
@@ -84,15 +84,15 @@ class Message(eppdoc_assemble.Message):
             ('msg_id',(0,1),(),_T('index of message, required with op=ack!'),()),
         ),_T('The EPP "poll" command is used to discover and retrieve service messages queued by a server for individual clients.'),('poll req','poll ack 4',)),
         #----------------------------------------------------
-        'transfer_domain': (3,(
+        'transfer_domain': (2,(
             ('name',(1,1),(),_T('domain name'),()),
-            ('op',(1,1),transfer_op,_T('query type'),()),
+            #('op',(1,1),transfer_op,_T('query type'),()),
             ('passw',(1,1),(),_T('password'),()),
         ),notice['transfer'],('transfer-domain name-domain request password',)),
         #----------------------------------------------------
-        'transfer_nsset': (3,(
+        'transfer_nsset': (2,(
             ('name',(1,1),(),_T('nsset name'),()),
-            ('op',(1,1),transfer_op,_T('query type'),()),
+            #('op',(1,1),transfer_op,_T('query type'),()),
             ('passw',(1,1),(),_T('password'),()),
         ),notice['transfer'],('transfer-nsset name-nsset request password',)),
         #----------------------------------------------------

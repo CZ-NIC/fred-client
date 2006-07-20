@@ -513,13 +513,12 @@ class Client:
             'cur_exp_date':cur_exp_date, 'period':period, 'val_ex_date':val_ex_date})
 
 
-    def transfer_domain(self, name, op, passw):
-        """Usage: transfer-domain name op passw
+    def transfer_domain(self, name, passw):
+        """Usage: transfer-domain name passw
 
     PARAMS:
 
     name (required)
-    op (required) accept only values: (request,approve,cancel,query,reject)
     passw (required)
 
     RETURN data: {}
@@ -532,16 +531,15 @@ class Client:
    request, cancel a transfer request, approve a transfer request, and
    reject a transfer request using the "op" command attribute.
         """
-        return self._epp.api_command('transfer_domain',{'name':name, 'op':op, 'passw':passw})
+        return self._epp.api_command('transfer_domain',{'name':name, 'passw':passw})
 
 
-    def transfer_nsset(self, name, op, passw):
-        """Usage: transfer-nsset name op passw
+    def transfer_nsset(self, name, passw):
+        """Usage: transfer-nsset name passw
 
     PARAMS:
 
     name (required)
-    op (required) accept only values: (request,approve,cancel,query,reject)
     passw (required)
 
     RETURN data: {}
@@ -554,7 +552,7 @@ class Client:
    request, cancel a transfer request, approve a transfer request, and
    reject a transfer request using the "op" command attribute.
         """
-        return self._epp.api_command('transfer_nsset',{'name':name, 'op':op, 'passw':passw})
+        return self._epp.api_command('transfer_nsset',{'name':name, 'passw':passw})
 
 
     def update_contact(self, contact_id, add=None, rem=None, chg=None):

@@ -387,7 +387,7 @@ class Message(eppdoc.Message):
                 ('xsi:schemaLocation','%s %s-%s.xsd'%(ns,names[0],eppdoc.nic_cz_version)))
         self.__assemble_cmd__((
             ('epp', 'command'),
-            ('command', 'transfer', '', (('op',self._dct['op'][0]),)),
+            ('command', 'transfer', '', (('op','request'),)), # self._dct['op'][0]
             ('transfer', '%s:transfer'%names[0], '', attr),
             ('%s:transfer'%names[0], '%s:%s'%names, self._dct['name'][0]),
             ('%s:transfer'%names[0], '%s:authInfo'%names[0]),

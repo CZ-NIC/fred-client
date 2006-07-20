@@ -48,9 +48,16 @@ def main(host):
                 else:
                     epp.append_note(_T('You are not connected! Type login for connection to the server.'),('BOLD','RED'))
         epp.display() # display errors or notes
-        if not is_online and epp.is_logon():
-            is_online = 1
-            online = '${BOLD}${GREEN}%s${WHITE}@${GREEN}%s${NORMAL}'%epp.get_username_and_host()
+        # change prompt status:
+        if is_online:
+            if not epp.is_logon():
+                is_online = 0
+                online = status[is_online]
+        else:
+            online = status[0]
+            if epp.is_logon():
+                is_online = 1
+                online = '${BOLD}${GREEN}%s${WHITE}@${GREEN}%s${NORMAL}'%epp.get_username_and_host()
     epp.close()
     epp.display() # display logout messages
     print "[END]"
