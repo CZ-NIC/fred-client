@@ -664,8 +664,8 @@ class Message(eppdoc.Message):
                     data.append(('nsset:add','nsset:ns'))
                     data.append(('nsset:ns','nsset:name',dct_dns['name'][0]))
                     self.__append_values__(data, dct_dns, 'addr', 'nsset:ns', 'nsset:addr')
-                self.__append_values__(data, dct_add, 'tech', 'nsset:add', 'nsset:tech')
-                self.__append_attr__(data, dct_add, 'status', 'nsset:add', 'nsset:status','s')
+            self.__append_values__(data, dct_add, 'tech', 'nsset:add', 'nsset:tech')
+            self.__append_attr__(data, dct_add, 'status', 'nsset:add', 'nsset:status','s')
 
         if __has_key_dict__(dct,'rem'):
             data.append(('nsset:update','nsset:rem'))

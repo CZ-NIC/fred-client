@@ -19,11 +19,11 @@ def main(host):
     epp.display() # display errors or notes
     print _T('For connection to the EPP server type "connect" or directly "login".')
     is_online = 0
-    status = ('${BOLD}${YELLOW}OFF${NORMAL}','${BOLD}${GREEN}ON${NORMAL}')
+    status = ('OFF','ON')
     online = status[is_online]
     while 1:
         try:
-            command = raw_input(colored_output.render("> (?-help, q-quit) %s:\n"%online))
+            command = raw_input("> (?-help, q-quit) %s: "%online)
         except (KeyboardInterrupt, EOFError):
             break
         if command in ('q','quit','exit','konec'):
@@ -57,7 +57,7 @@ def main(host):
             online = status[0]
             if epp.is_logon():
                 is_online = 1
-                online = '${BOLD}${GREEN}%s${WHITE}@${GREEN}%s${NORMAL}'%epp.get_username_and_host()
+                online = '%s@%s'%epp.get_username_and_host()
     epp.close()
     epp.display() # display logout messages
     print "[END]"

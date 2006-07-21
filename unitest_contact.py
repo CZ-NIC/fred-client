@@ -169,7 +169,7 @@ def __find_available_handle__(epp_cli, type_object, prefix):
     'Find first available object.'
     available_handle = ''
     handles = []
-    for n in range(10):
+    for n in range(30):
         handles.append('%s%02d'%(prefix,n))
     getattr(epp_cli,'check_%s'%type_object)(handles)
     for name in handles:
