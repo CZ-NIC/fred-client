@@ -23,7 +23,7 @@ def main(host):
     online = status[is_online]
     while 1:
         try:
-            command = raw_input(colored_output.render("> (?-help, q-quit) %s: "%online))
+            command = raw_input(colored_output.render("> (?-help, q-quit) %s:\n"%online))
         except (KeyboardInterrupt, EOFError):
             break
         if command in ('q','quit','exit','konec'):

@@ -44,7 +44,9 @@ class Message(eppdoc_assemble.Message):
     "Client EPP commands."
     # transfer op attribute allowed values:
     # transfer_op = ('request','approve','cancel','query','reject')
-    update_status = ('clientDeleteProhibited', 'clientTransferProhibited', 'clientUpdateProhibited', 'linked', 'ok', 'serverDeleteProhibited', 'serverTransferProhibited', 'serverUpdateProhibited')
+    update_status = ('clientDeleteProhibited', 'clientTransferProhibited', 'clientUpdateProhibited', 
+        'linked', 'ok', )
+        #'serverDeleteProhibited', 'serverTransferProhibited', 'serverUpdateProhibited')
     # format:
     # command-name: (param-name, (min,max), (list of required), 'help', (list of children)
     command_params = {

@@ -18,94 +18,67 @@
 2.15 Check na smazany kontakt
 """
 import unittest
-import unitest_ccReg
+import ccReg
 
-class Test(unitest_ccReg.BaseTest):
+class Test(unittest.TestCase):
+
+    def test_2_00(self):
+        '2.0 Inicializace spojeni a definovani testovacich handlu'
+        global epp_cli, handle_contact, handle_nsset
+        epp_cli = ccReg.Client()
+        epp_cli._epp.load_config()
+        # login
+        dct = epp_cli._epp.get_default_params_from_config('login')
+        epp_cli.login(dct['username'], dct['password'])
+        # Tady se da nalezt prazdny handle (misto pevne definovaneho):
+        # handle_contact = __find_available_handle__(epp_cli, 'contact','nexcon')
+        # handle_nsset = __find_available_handle__(epp_cli, 'nsset','nexns')
+        # Natvrdo definovany handle:
+        handle_contact = 'neexist01'
+        handle_nsset = 'neexist01'
+        # kontrola:
+        self.assert_(epp_cli.is_logon(), 'Nepodarilo se zalogovat.')
+        self.assert_(len(handle_contact), 'Nepodarilo se nalezt volny handle contact.')
+        self.assert_(len(handle_nsset), 'Nepodarilo se nalezt volny handle nsset.')
     
-    def setUp(self):
-        try:
-            type(self._lock)
-        except AttributeError:
-            unitest_ccReg.BaseTest.setUp(self)
-            self.handle_contact = self.__find_available_handle__('contact','nexcon')
-            self.handle_nsset = self.__find_available_handle__('nsset','nexns')
-            self.assert_(len(self.handle_contact), 'Nepodarilo se nalezt volny contact')
-            self.assert_(len(self.handle_nsset), 'Nepodarilo se nalezt volny nsset')
-    ##        if len(self.handle_contact) and len(self.handle_nsset):
-            if 0:
-                code, error = self.__login__(self.epc._epp.get_default_params_from_config('login'))
-                self.assert_(len(error), error)
-                self.assertNotEqual(code, 1000)
-        self._lock = 1
-
-    def test_2_1(self):
+    def test_2_01(self):
         '2.1 Check na seznam dvou neexistujicich kontaktu'
-        handles = (self.handle_contact,'neexist02')
-        self.epc.check_contact(handles)
+        handles = (handle_contact,'neexist002')
+        epp_cli.check_contact(handles)
         for name in handles:
-            self.assertEqual(self.epc.is_val(('data',name)), 1, 'Kontakt existuje: %s'%name)
+            self.assertEqual(epp_cli.is_val(('data',name)), 1, 'Kontakt existuje: %s'%name)
 
-    def test_2_2(self):
+    def test_2_02(self):
         '2.2 Pokus o Info na neexistujici kontakt'
-        self.epc.info_contact(self.handle_contact)
-        self.assertNotEqual(self.epc.is_val(), 1000)
+        epp_cli.info_contact(handle_contact)
+        self.assertNotEqual(epp_cli.is_val(), 1000)
 
-    def test_2_3(self):
+    def test_2_03(self):
         '2.3 Zalozeni neexistujiciho noveho kontaktu'
         # contact_id, name, email, city, cc
-        self.epc.create_contact(self.handle_contact,'Pepa Zdepa','pepa@zdepa.cz','Praha','CZ')
-        self.assertEqual(self.epc.is_val(), 1000)
+        epp_cli.create_contact(handle_contact,'Pepa Zdepa','pepa@zdepa.cz','Praha','CZ')
+        self.assertEqual(epp_cli.is_val(), 1000)
 
-    def test_2_4(self):
+    def test_2_04(self):
         '2.4 Pokus o zalozeni existujiciho kontaktu'
         # contact_id, name, email, city, cc
-        self.epc.create_contact(self.handle_contact,'Pepa Zdepa','pepa@zdepa.cz','Praha','CZ')
-        self.assertNotEqual(self.epc.is_val(), 1000)
+        epp_cli.create_contact(handle_contact,'Pepa Zdepa','pepa@zdepa.cz','Praha','CZ')
+        self.assertNotEqual(epp_cli.is_val(), 1000)
 
-    def test_2_5(self):
+    def test_2_05(self):
         '2.5 Check na seznam existujiciho a neexistujicich kontaktu'
-        handles = (self.handle_contact,'neexist02')
-        self.epc.check_contact(handles)
-        self.assertEqual(self.epc.is_val(('data',self.handle_contact)), 1)
-        self.assertEqual(self.epc.is_val(('data','neexist02')), 0)
+        handles = (handle_contact,'neexist002')
+        epp_cli.check_contact(handles)
+        self.assertEqual(epp_cli.is_val(('data',handle_contact)), 0)
+        self.assertEqual(epp_cli.is_val(('data','neexist002')), 1)
 
-    def test_2_6(self):
+    def test_2_06(self):
         '2.6 Info na existujici kontakt'
-        self.epc.info_contact(self.handle_contact)
-        self.assertEqual(self.epc.is_val(), 1000)
+        epp_cli.info_contact(handle_contact)
+        self.assertEqual(epp_cli.is_val(), 1000)
 
-    def test_2_7(self):
+    def test_2_07(self):
         '2.7 Update vsech parametru krome stavu'
-##    contact-id (required)
-##    add (optional)              list with max 5 items.
-##    rem (optional)              list with max 5 items.
-##    chg (optional)
-##        postalInfo (optional)
-##            name (optional)
-##            org (optional)
-##            addr (optional)
-##                street (optional)  list with max 3 items.
-##                city (required)
-##                sp (optional)
-##                pc (optional)
-##                cc (required)
-##        voice (optional)
-##        fax (optional)
-##        email (optional)
-##        disclose (optional)
-##            flag (required) accept only values: (0,1)
-##            name (optional)
-##            org (optional)
-##            addr (optional)
-##            voice (optional)
-##            fax (optional)
-##            email (optional)
-##        vat (optional)
-##        ssn (optional)
-##        notifyEmail (optional)
-##        (self, contact_id, add=None, rem=None, chg=None)
-        add = ('ok', 'clientTransferProhibited')
-        rem = None
         chg = {
             'postal_info': {
                 'name': u'čuřil šížala',
@@ -134,70 +107,79 @@ class Test(unitest_ccReg.BaseTest):
             'ssn':'123486',
             'notifyEmail':'notifak@jojo.cz',
         }
-        self.epc.update_contact(self.handle_contact, add, rem, chg)
-        self.assertEqual(self.epc.is_val(), 1000)
+        epp_cli.update_contact(handle_contact, None, None, chg)
+        self.assertEqual(epp_cli.is_val(), 1000)
         
-    def test_2_8(self):
-        '2.8 Pokus o update stavu Server*'
-        self.epc.update_contact(self.handle_contact, 'serverDeleteProhibited')
-        self.assertNotEqual(self.epc.is_val(), 1000)
+    def test_2_08(self):
+        '2.8 Pokus o update vsech stavu server*'
+        for status in ('serverDeleteProhibited', 'serverUpdateProhibited'):
+            epp_cli.update_contact(handle_contact, status)
+            self.assertNotEqual(epp_cli.is_val(), 1000, 'Status "%s" prosel prestoze nemel.'%status)
         
-    def test_2_9(self):
+    def test_2_09(self):
         '2.9 Update stavu clientDeleteProhibited a pokus o smazani'
         status = 'clientDeleteProhibited'
-        self.epc.update_contact(self.handle_contact, status)
-        self.assertEqual(self.epc.is_val(), 1000, 'Nepodarilo se nastavit status: %s'%status)
-        if self.epc.is_val() == 1000: return
+        epp_cli.update_contact(handle_contact, status)
+        self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se nastavit status: %s'%status)
         # pokus o smazání
-        self.epc.delete_contact(self.handle_contact)
-        self.assertNotEqual(self.epc.is_val(), 1000, 'Kontakt se smazal, prestoze mel nastaven %s'%status)
+        epp_cli.delete_contact(handle_contact)
+        self.assertNotEqual(epp_cli.is_val(), 1000, 'Kontakt se smazal, prestoze mel nastaven %s'%status)
         # zrušení stavu
-        self.epc.update_contact(self.handle_contact, None, status)
-        self.assertEqual(self.epc.is_val(), 1000, 'Nepodarilo se odstranit status: %s'%status)
+        epp_cli.update_contact(handle_contact, None, status)
+        self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se odstranit status: %s'%status)
         
     def test_2_10(self):
         '2.10 Update stavu clientUpdateProhibited a pokus o zmenu objektu, smazani stavu'
         status = 'clientUpdateProhibited'
-        self.epc.update_contact(self.handle_contact, status)
-        self.assertEqual(self.epc.is_val(), 1000, 'Nepodarilo se nastavit status: %s'%status)
-        if self.epc.is_val() == 1000: return
+        epp_cli.update_contact(handle_contact, status)
+        self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se nastavit status: %s'%status)
         # pokus o změnu
-        self.epc.update_contact(self.handle_contact, None, None, {'notifyEmail':'notifak@jinak.cz'})
-        self.assertNotEqual(self.epc.is_val(), 1000, 'Kontakt se aktualizoval, prestoze mel nastaven %s'%status)
+        epp_cli.update_contact(handle_contact, None, None, {'notifyEmail':'notifak@jinak.cz'})
+        self.assertNotEqual(epp_cli.is_val(), 1000, 'Kontakt se aktualizoval, prestoze mel nastaven %s'%status)
         # zrušení stavu
-        self.epc.update_contact(self.handle_contact, None, status)
-        self.assertEqual(self.epc.is_val(), 1000, 'Nepodarilo se odstranit status: %s'%status)
-        
+        epp_cli.update_contact(handle_contact, None, status)
+        self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se odstranit status: %s'%status)
+
     def test_2_11(self):
         '2.11 Vytvoreni nnsetu napojeneho na kontakt'
-##(self, nsset_id, pw, dns, tech=None):
-##    dns (required)               list with max 9 items.
-##        name (required)
-##        addr (optional)         unbounded list
-##        dns = {'name':'ns1.test.cz'}
-        self.epc.create_nsset(self.handle_nsset, 'heslo', {'name':'ns1.test.cz'})
-        self.assertEqual(self.epc.is_val(), 1000)
+        epp_cli.create_nsset(handle_nsset, 'heslo', {'name':'ns1.test.cz'}, handle_contact)
+        self.assertEqual(epp_cli.is_val(), 1000)
         
     def test_2_12(self):
         '2.12 Smazani kontaktu na ktery existuji nejake vazby'
-        self.epc.delete_contact(self.handle_contact)
-        self.assertNotEqual(self.epc.is_val(), 1000)
+        epp_cli.delete_contact(handle_contact)
+        self.assertNotEqual(epp_cli.is_val(), 1000)
 
     def test_2_13(self):
         '2.13 Smazani nssetu'
-        self.epc.delete_nsset(self.handle_nsset)
-        self.assertEqual(self.epc.is_val(), 1000)
+        epp_cli.delete_nsset(handle_nsset)
+        self.assertEqual(epp_cli.is_val(), 1000)
 
     def test_2_14(self):
         '2.14 Smazani kontaktu'
-        self.epc.delete_contact(self.handle_contact)
-        self.assertEqual(self.epc.is_val(), 1000)
+        epp_cli.delete_contact(handle_contact)
+        self.assertEqual(epp_cli.is_val(), 1000)
 
     def test_2_15(self):
         '2.15 Check na smazany kontakt'
-        self.epc.check_contact(self.handle_contact)
-        self.assertEqual(self.epc.is_val(('data',self.handle_contact)), 1)
+        epp_cli.check_contact(handle_contact)
+        self.assertEqual(epp_cli.is_val(('data',handle_contact)), 1)
 
+def __find_available_handle__(epp_cli, type_object, prefix):
+    'Find first available object.'
+    available_handle = ''
+    handles = []
+    for n in range(10):
+        handles.append('%s%02d'%(prefix,n))
+    getattr(epp_cli,'check_%s'%type_object)(handles)
+    for name in handles:
+        if epp_cli.is_val(('data',name)) == 1:
+            available_handle = name
+            break
+    return available_handle
+
+
+epp_cli, handle_contact, handle_nsset = None,None,None
 
 if __name__ == '__main__':
     suite = unittest.TestSuite()
