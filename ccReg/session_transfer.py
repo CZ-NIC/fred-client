@@ -59,6 +59,8 @@ class ManagerTransfer(ManagerBase):
         # Protože lze posílat i XML již vytvořené dříve nebo z jiného programu.
         epp_xml = eppdoc_client.Message()
         epp_xml.parse_xml(message)
+        err = epp_xml.fetch_errors()
+        if len(err): self._errors.append(err)
         return epp_xml.get_epp_command_name()
 
     #==================================================
