@@ -17,8 +17,15 @@
 2.14 Smazani kontaktu 
 2.15 Check na smazany kontakt
 """
+import sys
 import unittest
 import ccReg
+
+#----------------------------------------------
+# Nastavení serveru, na kterém se bude testovat
+# (Pokud je None, tak je to default)
+#----------------------------------------------
+HOST = None # 'curlew'
 
 class Test(unittest.TestCase):
 
@@ -26,6 +33,7 @@ class Test(unittest.TestCase):
         '2.0 Inicializace spojeni a definovani testovacich handlu'
         global epp_cli, handle_contact, handle_nsset
         epp_cli = ccReg.Client()
+        if HOST: epp_cli._epp.set_host(HOST) # nastavení serveru
         epp_cli._epp.load_config()
         # login
         dct = epp_cli._epp.get_default_params_from_config('login')
@@ -182,6 +190,7 @@ def __find_available_handle__(epp_cli, type_object, prefix):
 epp_cli, handle_contact, handle_nsset = None,None,None
 
 if __name__ == '__main__':
+    if len(sys.argv) > 1: HOST = sys.argv[1]
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(Test))
     unittest.TextTestRunner(verbosity=2).run(suite)

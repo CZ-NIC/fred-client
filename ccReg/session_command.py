@@ -199,6 +199,7 @@ ${BOLD}send${NORMAL} [filename] ${CYAN}# send selected file to the server (for t
                 command_name, xmldoc = self.load_filename(filepath)
         elif re.match('connect',cmd):
             self.connect() # připojení k serveru
+            command_name = 'connect'
         elif re.match('confirm',cmd):
             m = re.match('confirm\s+(\S+)',cmd)
             if m:

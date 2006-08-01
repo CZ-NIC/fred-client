@@ -146,7 +146,7 @@ class ManagerBase:
         empty_row = '%s%s%s'%(frm[1],' '*msglen,frm[1])
         horizontal_line = frm[0]*msglen
         return '%s%s%s\n%s\n%s%s%s\n%s\n%s%s%s\n%s\n%s'%(frm[2],horizontal_line,frm[3],empty_row,frm[1],welcome,frm[1],empty_row,frm[4],horizontal_line,frm[5],
-             'Version 1.0. Beta release.',
+             'Version 1.1. Basic release.',
             _T('For help type "help" (or "h", "?")'))
 
 
@@ -345,14 +345,13 @@ class ManagerBase:
             os.unlink(tmpname)
             return '' # schema path is not set
         try:
-            pipes = os.popen3('xmllint --schema "%s" "%s"'%(schema_path, tmpname))
+            pipes = os.popen3('xmllint --noout --schema "%s" "%s"'%(schema_path, tmpname))
         except IOError, msg:
             self.append_note(str(msg),('RED','BOLD'))
-        xmldoc = pipes[1].read() # unfortunately this doesnt work: ('...'-OK, ''-invalid)
         errors = pipes[2].read()
         map(lambda f: f.close(), pipes)
         os.unlink(tmpname)
-        if re.search(' validates$', errors) or xmldoc == '':
+        if re.search(' validates$', errors):
             errors = '' # it seems be OK...
         else:
             if re.search('Schemas parser error',errors):

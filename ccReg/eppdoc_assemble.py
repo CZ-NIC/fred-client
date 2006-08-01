@@ -214,6 +214,7 @@ class Message(eppdoc.Message):
             errors, param = self.__interactive_params__(command_name, vals[1], dct)
             if not errors:
                 example = __build_command_example__(columns, dct)
+            raw_input(session_base.colored_output.render('${BOLD}${YELLOW}%s${NORMAL}'%_T('End of interactive input. [press enter]')))
         else:
             errors = cmd_parser.parse(dct, columns, cmd)
         if errors: error.extend(errors)

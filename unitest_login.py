@@ -8,14 +8,22 @@
 1.5 Zalogovani se spatnym otiskem certifikatu
 1.6 Zmena hesla tam a zpatky s kontrolnim zalogovanim
 """
+import sys
 import unittest
 import ccReg
+
+#----------------------------------------------
+# Nastavení serveru, na kterém se bude testovat
+# (Pokud je None, tak je to default)
+#----------------------------------------------
+HOST = None # 'curlew'
 
 class Test(unittest.TestCase):
 
     def setUp(self):
         '1.0 vytvoreni klienta'
         self.epc = ccReg.Client()
+        if HOST: self.epc._epp.set_host(HOST) # nastavení serveru
         self.epc._epp.load_config()
 
     def __login__(self, dct):
@@ -56,12 +64,18 @@ class Test(unittest.TestCase):
 
     def test_1_5(self):
         '1.5 Zalogovani se spatnym otiskem certifikatu'
+        # Jestliže HOST je None, tak certifikát musí být jiný, než default (connect)
+        # Pokud HOST není None, tak bude certifikát jiný než connect_HOST.
         cert_name = None
+        valid_certificat = self.epc._epp.get_config_value('conect','ssl_cert')
         for section in self.epc._epp._conf.sections():
-            if section[:7] == 'conect_':
-                cert_name = self.epc._epp.get_config_value(section,'ssl_cert')
-                break
-        self.assert_(cert_name, 'Nebyl nalezen jiny certifikat')
+            if section[:6] == 'conect': # and section != section_name:
+                # vybere se jiný certifikát než platný
+                certificat = self.epc._epp.get_config_value(section,'ssl_cert')
+                if certificat != valid_certificat:
+                    cert_name = certificat
+                    break
+        self.assert_(cert_name, 'Nebyl nalezen vhodny certifikat. Nastavte v configu alespon jednu sekci conect_HOST s jinym certifikatem, nez je ten platny.')
         if not cert_name: return
         # přiřazení neplatného certifikátu
         self.epc._epp._conf.set('conect','ssl_cert', cert_name)
@@ -98,6 +112,7 @@ class Test(unittest.TestCase):
         self.assertEqual(code, 1000, 'Nepodarilo se zadat nove heslo. Code: %d.\nDuvod: %s'%(code,self.epc.is_val('reason')))
 
 if __name__ == '__main__':
+    if len(sys.argv) > 1: HOST = sys.argv[1]
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(Test))
     unittest.TextTestRunner(verbosity=2).run(suite)
