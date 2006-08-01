@@ -559,15 +559,17 @@ def test_display():
     print '='*60
     print prepare_display(exampe2)
 
-def test_parse(xml):
+def test_parse(filename):
     m = Message()
+    xml = m.load_xml_doc(filename)
     m.parse_xml(xml)
     print m.fetch_errors()
     print m.get_xml()
+
     
 if __name__ == '__main__':
     "Testování zpracování XML dokumentu a mapování XML.DOM do python dict/class."
-    test_display()
-##    test_parse('~/test.xml')
+##    test_display()
+    test_parse('~/test-disclose.xml')
 ##    ret = {'reason': u'Authentication error; server closing connection', 'code': 2501, 'data': {"h1":"ano"}, 'errors': []}
 ##    print get_value_from_dict(ret, ('data','h1'))

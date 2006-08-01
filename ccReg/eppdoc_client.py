@@ -112,12 +112,12 @@ class Message(eppdoc_assemble.Message):
             ('fax',(0,1),(),_T('fax number'),()),
             ('disclose',(0,1),(),_T('disclose part'),(
                 ('flag',(1,1),('0','1'),_T('disclose flag'),()),
-                ('name',(0,1),(),_T('disclose name'),()),
-                ('org',(0,1),(),_T('disclose organisation name'),()),
-                ('addr',(0,1),(),_T('disclose address'),()),
-                ('voice',(0,1),(),_T('disclose voice (phone)'),()),
-                ('fax',(0,1),(),_T('disclose fax'),()),
-                ('email',(0,1),(),_T('disclose email'),()),
+                ('name',(0,1),('0','1'),_T('disclose name'),()),
+                ('org',(0,1),('0','1'),_T('disclose organisation name'),()),
+                ('addr',(0,1),('0','1'),_T('disclose address'),()),
+                ('voice',(0,1),('0','1'),_T('disclose voice (phone)'),()),
+                ('fax',(0,1),('0','1'),_T('disclose fax'),()),
+                ('email',(0,1),('0','1'),_T('disclose email'),()),
             )),
             ('vat',(0,1),(),_T('VAT'),()),
             ('ssn',(0,1),(),_T('SSN'),()), # Security social number

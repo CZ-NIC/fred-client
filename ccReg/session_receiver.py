@@ -188,15 +188,20 @@ class ManagerReceiver(ManagerCommand):
             self.append_error('answer_response_contact_info KeyError: %s'%msg)
         else:
             self.__append_note_from_dct__(contact_infData,
-                ('contact:id','contact:roid','contact:status s','contact:disclose flag'))
+                ('contact:id','contact:roid','contact:status s','contact:disclose flag',
+                'contact:voice','contact:fax','contact:email','contact:status ok',
+                'contact:crDate','contact:crID',))
             self.__append_note_from_dct__(contact_postalInfo,('contact:name','contact:org'))
             contact_addr = contact_postalInfo.get('contact:addr',None)
             if contact_addr:
-                self.__append_note_from_dct__(contact_addr,('contact:street','contact:city','contact:cc'))
-            self.__append_note_from_dct__(contact_infData,('contact:email','contact:crID','contact:crDate','contact:upID','contact:upDate'))
+                self.__append_note_from_dct__(contact_addr,('contact:sp','contact:cc',
+                    'contact:city','contact:street','contact:pc',))
             contact_disclose = contact_infData.get('contact:disclose',None)
             if contact_disclose:
-                self.__append_note_from_dct__(contact_disclose,('contact:name','contact:org','contact:addr','contact:voice','contact:fax','contact:email'))
+                #  <contact:disclose flag='0'/>
+                # TODO: jine nacitani - overeni pritomnosti uzlu
+                self.__append_note_from_dct__(contact_disclose,('contact:name','contact:org',
+                'contact:addr','contact:voice','contact:fax','contact:email'))
 
     def answer_response_domain_info(self, data):
         "data=(response,result,code,msg)"

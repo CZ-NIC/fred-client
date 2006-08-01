@@ -1,5 +1,5 @@
-# -*- coding: utf8 -*-
 #!/usr/bin/env python
+# -*- coding: utf8 -*-
 """
 2.1 Check na seznam dvou neexistujicich kontaktu
 2.2 Pokus o Info na neexistujici kontakt
@@ -27,9 +27,93 @@ import ccReg
 #----------------------------------------------
 HOST = None # 'curlew'
 
+# CCREG_CONTACT[1] - create
+# CCREG_CONTACT[2] - modify
+##CCREG_CONTACT = ({'contact-id': 'test_contact001'},{'contact-id': 'test_contact001'},{'contact-id': 'test_contact001'})
+##CCREG_CONTACT = (1,2,3)
+CONTACT_HANDLE = 'test001'
+CCREG_CONTACT = ( 
+    {   # template
+    'contact-id': '', # (povinný) vaše kontaktní ID
+    'name': '', # (povinný) vaše jméno
+    'email': '', #(povinný) váš email
+    'city': '', #(povinný) město
+    'cc': '', #(povinný) kód země
+    'org': '', #(nepovinný) název organizace
+    'street': '', #(nepovinný)  seznam o maximálně 3 položkách. ulice
+    'sp': '', #(nepovinný) č.p.
+    'pc': '', #(nepovinný) PSČ
+    'voice': '', #(nepovinný) telefon
+    'fax': '', #(nepovinný) fax
+    'disclose': { #(nepovinný) část pro veřejnost
+        'flag': '', #(povinný) povoleny pouze hodnoty: (0,1) indikátor zveřejnění
+        'name': '', #(nepovinný) veřejné jméno
+        'org': '', #(nepovinný) veřejný název organizace
+        'addr': '', #(nepovinný) veřejná adresa
+        'voice': '', #(nepovinný) veřejný telefon
+        'fax': '', #(nepovinný) veřejný fax
+        'email': '', #(nepovinný) veřejný email
+    },
+    'vat': '', #(nepovinný) DPH
+    'ssn': '', #(nepovinný) SSN
+    'notify_email': '', #(nepovinný) oznámení na email
+    },
+    {   # create contact
+    'contact-id': CONTACT_HANDLE, # (povinný) vaše kontaktní ID
+    'name': u'Řehoř Čížek', # (povinný) vaše jméno
+    'email': 'rehor.cizek@mail.cz', #(povinný) váš email
+    'city': u'Český Krumlov', #(povinný) město
+    'cc': 'CZ', #(povinný) kód země
+    'org': u'Čížková a spol', #(nepovinný) název organizace
+    'street': (u'U práce',u'Za monitorem',u'Nad klávesnicí',), #(nepovinný)  seznam o maximálně 3 položkách. ulice
+    'sp': '123', #(nepovinný) č.p.
+    'pc': '12300', #(nepovinný) PSČ
+    'voice': '+123.456789', #(nepovinný) telefon
+    'fax': '+321.564987', #(nepovinný) fax
+    'disclose': { #(nepovinný) část pro veřejnost
+        'flag': '0', #(povinný) povoleny pouze hodnoty: (0,1) indikátor zveřejnění
+        'name': '0', #(nepovinný) veřejné jméno
+        'org': '0', #(nepovinný) veřejný název organizace
+        'addr': '0', #(nepovinný) veřejná adresa
+        'voice': '0', #(nepovinný) veřejný telefon
+        'fax': '0', #(nepovinný) veřejný fax
+        'email': '0', #(nepovinný) veřejný email
+    },
+    'vat': '963', #(nepovinný) DPH
+    'ssn': '852', #(nepovinný) SSN
+    'notify_email': 'info@rehorovi.cz', #(nepovinný) oznámení na email
+    },
+    {   # modify contact
+    'contact-id': CONTACT_HANDLE, # (povinný) vaše kontaktní ID
+    'name': u'Břéťa Žlučník', # (povinný) vaše jméno
+    'email': 'breta.zlucnik@bricho.cz', #(povinný) váš email
+    'city': u'Střevníkov', #(povinný) město
+    'cc': 'CZ', #(povinný) kód země
+    'org': u'Bolení s.r.o.', #(nepovinný) název organizace
+    'street': (u'Na toaletách',u'U mísy'), #(nepovinný)  seznam o maximálně 3 položkách. ulice
+    'sp': '321', #(nepovinný) č.p.
+    'pc': '23101', #(nepovinný) PSČ
+    'voice': '+321.987654', #(nepovinný) telefon
+    'fax': '+321.987564', #(nepovinný) fax
+    'disclose': { #(nepovinný) část pro veřejnost
+        'flag': '1', #(povinný) povoleny pouze hodnoty: (0,1) indikátor zveřejnění
+        'name': '1', #(nepovinný) veřejné jméno
+        'org': '1', #(nepovinný) veřejný název organizace
+        'addr': '1', #(nepovinný) veřejná adresa
+        'voice': '1', #(nepovinný) veřejný telefon
+        'fax': '1', #(nepovinný) veřejný fax
+        'email': '1', #(nepovinný) veřejný email
+    },
+    'vat': '753', #(nepovinný) DPH
+    'ssn': '357', #(nepovinný) SSN
+    'notify_email': 'info@zlucnikovi.cz', #(nepovinný) oznámení na email
+    },
+)
+
+
 class Test(unittest.TestCase):
 
-    def test_2_00(self):
+    def test_2_000(self):
         '2.0 Inicializace spojeni a definovani testovacich handlu'
         global epp_cli, handle_contact, handle_nsset
         epp_cli = ccReg.Client()
@@ -42,30 +126,40 @@ class Test(unittest.TestCase):
         # handle_contact = __find_available_handle__(epp_cli, 'contact','nexcon')
         # handle_nsset = __find_available_handle__(epp_cli, 'nsset','nexns')
         # Natvrdo definovany handle:
-        handle_contact = 'neexist01'
+        handle_contact = CCREG_CONTACT[1]['contact-id'] # 'neexist01'
         handle_nsset = 'neexist01'
         # kontrola:
         self.assert_(epp_cli.is_logon(), 'Nepodarilo se zalogovat.')
         self.assert_(len(handle_contact), 'Nepodarilo se nalezt volny handle contact.')
         self.assert_(len(handle_nsset), 'Nepodarilo se nalezt volny handle nsset.')
     
-    def test_2_01(self):
+    def test_2_010(self):
         '2.1 Check na seznam dvou neexistujicich kontaktu'
         handles = (handle_contact,'neexist002')
         epp_cli.check_contact(handles)
         for name in handles:
             self.assertEqual(epp_cli.is_val(('data',name)), 1, 'Kontakt existuje: %s'%name)
 
-    def test_2_02(self):
+    def test_2_020(self):
         '2.2 Pokus o Info na neexistujici kontakt'
         epp_cli.info_contact(handle_contact)
         self.assertNotEqual(epp_cli.is_val(), 1000)
 
-    def test_2_03(self):
+    def test_2_030(self):
         '2.3 Zalozeni neexistujiciho noveho kontaktu'
-        # contact_id, name, email, city, cc
-        epp_cli.create_contact(handle_contact,'Pepa Zdepa','pepa@zdepa.cz','Praha','CZ')
+        d = CCREG_CONTACT[1]
+        epp_cli.create_contact(handle_contact, 
+            d['name'], d['email'], d['city'], d['cc'], d['org'], 
+            d['street'], d['sp'], d['pc'], d['voice'], d['fax'], d['disclose'],
+            d['vat'], d['ssn'], d['notify_email'])
         self.assertEqual(epp_cli.is_val(), 1000)
+
+    def test_2_040(self):
+        '2.4 Overevni vsech hodnot vznikleho kontaktu'
+        epp_cli.info_contact(handle_contact)
+##        d = epp_cli.is_val('data')
+##        for k,v in d.items():
+##            print k,'\t',v #!!!
 
     def test_2_04(self):
         '2.4 Pokus o zalozeni existujiciho kontaktu'
@@ -163,12 +257,12 @@ class Test(unittest.TestCase):
         epp_cli.delete_nsset(handle_nsset)
         self.assertEqual(epp_cli.is_val(), 1000)
 
-    def test_2_14(self):
+    def test_2_140(self):
         '2.14 Smazani kontaktu'
         epp_cli.delete_contact(handle_contact)
         self.assertEqual(epp_cli.is_val(), 1000)
 
-    def test_2_15(self):
+    def test_2_150(self):
         '2.15 Check na smazany kontakt'
         epp_cli.check_contact(handle_contact)
         self.assertEqual(epp_cli.is_val(('data',handle_contact)), 1)

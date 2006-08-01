@@ -30,7 +30,7 @@ class ManagerTransfer(ManagerBase):
     def __reset_src__(self):
         'Reset buffers of sources.'
         self._raw_answer = '' # XML EPP odpověd serveru
-        self._dict_answer = '' #!!! dict - slovník vytvořený z XML EPP odpovědi
+        self._dict_answer = '' # dict - slovník vytvořený z XML EPP odpovědi
         self._dct_answer = {'code':0,'command':'',  'reason':'', 'errors':[], 'data':{}} # API response
 
     def reset_round(self):
@@ -95,8 +95,9 @@ class ManagerTransfer(ManagerBase):
             self.__check_is_connected__()
             if epp_greeting:
                 self.process_answer(epp_greeting)
-                # self.print_answer() # 1. departure from the rule to print answers
                 return 1
+            else:
+                self.append_error(_T("Server doesn't return Greeting message. Contact server administrator."))
         return 0
         
     def close(self):
