@@ -130,6 +130,7 @@ class Message(eppdoc.Message):
         param = ''
         is_child = len(parents)>0
         min = 0
+        param_reqired_type = (_T('optional'),_T('required'),_T('required only if part is set'))
         for row in columns:
             if len(param) and param[0] == '!': break
             if is_child and param == '' and min:
@@ -157,8 +158,9 @@ class Message(eppdoc.Message):
                 parents.pop()
                 continue
             is_child = len(parents)>1
-            color = ('GREEN','YELLOW')[is_child]
-            req = (_T('optional'),'${BOLD}${%s}%s${NORMAL}'%(color,_T('required')))[min]
+            # Type of parameter:
+            req = min
+            if is_child and min: req = 2 # if param is child and required in this child part
             print_info_listmax(max) # (Value can be a list of max %d values.)
             if len(allowed):
                 session_base.print_unicode('%s: (${BOLD}%s${NORMAL})'%(_T('Param MUST be a value from this list'),', '.join(allowed)))
@@ -166,9 +168,9 @@ class Message(eppdoc.Message):
             stop=0
             while max is UNBOUNDED or cr < max:
                 parents[-1][1] = cr
-                prompt = '${BOLD}${GREEN}!${NORMAL}%s:${BOLD}%s${NORMAL} (%s) > '%(command_name,__scope_to_string__(parents),req)
+                prompt = '!%s:%s (%s) > '%(command_name,__scope_to_string__(parents), param_reqired_type[req])
                 try:
-                    param = raw_input(session_base.colored_output.render(prompt)).strip()
+                    param = raw_input(prompt).strip()
                 except (KeyboardInterrupt, EOFError):
                     stop=1
                     break
@@ -214,7 +216,11 @@ class Message(eppdoc.Message):
             errors, param = self.__interactive_params__(command_name, vals[1], dct)
             if not errors:
                 example = __build_command_example__(columns, dct)
-            raw_input(session_base.colored_output.render('${BOLD}${YELLOW}%s${NORMAL}'%_T('End of interactive input. [press enter]')))
+            # Note the interactive mode is closed.
+            try:
+                raw_input(session_base.colored_output.render('${BOLD}${YELLOW}%s${NORMAL}'%_T('End of interactive input. [press enter]')))
+            except (KeyboardInterrupt, EOFError):
+                pass
         else:
             errors = cmd_parser.parse(dct, columns, cmd)
         if errors: error.extend(errors)
@@ -803,4 +809,3 @@ def remove_empty_keys(dct):
                     scope.append(item)
             if len(scope): retd[key] = scope
     return retd
-

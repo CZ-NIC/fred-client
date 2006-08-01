@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-01 11:28+0200\n"
+"POT-Creation-Date: 2006-08-01 12:08+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Zdeněk Böhm <zdenek.bohm@nic.cz>\n"
 "Language-Team: CS <info@nic.cz>\n"
@@ -91,11 +91,11 @@ msgstr "Nesprávné použití závorek (list)."
 msgid "Invalid bracket definition (childs)."
 msgstr "Nesprávné použití závorek (childs)."
 
-#: ccReg/eppdoc_assemble.py:33 ccReg/eppdoc_assemble.py:161
+#: ccReg/eppdoc_assemble.py:33 ccReg/eppdoc_assemble.py:133
 msgid "required"
 msgstr "povinný"
 
-#: ccReg/eppdoc_assemble.py:35 ccReg/eppdoc_assemble.py:161
+#: ccReg/eppdoc_assemble.py:35 ccReg/eppdoc_assemble.py:133
 msgid "optional"
 msgstr "nepovinný"
 
@@ -138,20 +138,24 @@ msgstr "Hodnota \"%s\" není povolena. Platná je:"
 msgid "missing"
 msgstr "chybí"
 
-#: ccReg/eppdoc_assemble.py:164
+#: ccReg/eppdoc_assemble.py:133
+msgid "required only if part is set"
+msgstr "povinný jen je-li tato část zadána"
+
+#: ccReg/eppdoc_assemble.py:166
 msgid "Param MUST be a value from this list"
 msgstr "Parametr MUSÍ být hodnota z následujícího seznamu"
 
-#: ccReg/eppdoc_assemble.py:205
+#: ccReg/eppdoc_assemble.py:207
 msgid "Unknown command"
 msgstr "Neznámý příkaz"
 
-#: ccReg/eppdoc_assemble.py:206 ccReg/eppdoc_assemble.py:229
+#: ccReg/eppdoc_assemble.py:208 ccReg/eppdoc_assemble.py:235
 #: ccReg/session_command.py:111
 msgid "For more type"
 msgstr "Pro více informací zadejte"
 
-#: ccReg/eppdoc_assemble.py:212
+#: ccReg/eppdoc_assemble.py:214
 msgid ""
 "${BOLD}${YELLOW}Start interactive input of params. To break type: ${NORMAL}"
 "${BOLD}!${NORMAL}[!!...] (one ${BOLD}!${NORMAL} for scope)"
@@ -160,24 +164,24 @@ msgstr ""
 "zadejte: ${NORMAL}${BOLD}!${NORMAL}[!!...] (jeden ${BOLD}!${NORMAL} pro "
 "každou podskupinu)"
 
-#: ccReg/eppdoc_assemble.py:217
+#: ccReg/eppdoc_assemble.py:221
 msgid "End of interactive input. [press enter]"
 msgstr "Konec interaktivního zadání parametrů. [stiskněte enter]"
 
-#: ccReg/eppdoc_assemble.py:227
+#: ccReg/eppdoc_assemble.py:233
 msgid "Missing values. Required minimum is"
 msgstr "Chybí parametry. Požadované minimum je"
 
-#: ccReg/eppdoc_assemble.py:228
+#: ccReg/eppdoc_assemble.py:234
 msgid "Type"
 msgstr "Zadejte"
 
-#: ccReg/eppdoc_assemble.py:787
+#: ccReg/eppdoc_assemble.py:793
 #, python-format
 msgid "(Value can be a list of max %d values.)"
 msgstr "(Hodnota může být seznam o max. velikosti %d položek.)"
 
-#: ccReg/eppdoc_assemble.py:789
+#: ccReg/eppdoc_assemble.py:795
 msgid "(Value can be an unbouded list of values.)"
 msgstr "(Hodnota může být libovolně velký seznam.)"
 
@@ -775,23 +779,23 @@ msgstr "Zdrojová odpověď"
 msgid "Dir list"
 msgstr "Výpis adresáře"
 
-#: ccReg/session_command.py:206
+#: ccReg/session_command.py:207
 msgid "Confirm is"
 msgstr "Potvrzení je nastaveno na"
 
-#: ccReg/session_command.py:215
+#: ccReg/session_command.py:216
 msgid "poll ack is"
 msgstr "poll ack je"
 
-#: ccReg/session_command.py:225
+#: ccReg/session_command.py:226
 msgid "Load file"
 msgstr "Načíst soubor"
 
-#: ccReg/session_command.py:231
+#: ccReg/session_command.py:232
 msgid "Not found"
 msgstr "Nenalezen"
 
-#: ccReg/session_command.py:250
+#: ccReg/session_command.py:251
 msgid "You are logged already."
 msgstr "Jste již zalogován"
 
@@ -881,7 +885,7 @@ msgstr "Chcete odeslat tento poříkaz na server?"
 msgid "You are not connected! Type login for connection to the server."
 msgstr "Nejste připojeni! Pro připojení k serveru zadejte login."
 
-#: ccreg_console.py:75
+#: ccreg_console.py:76
 msgid ""
 "Usage: python ccreg_console.py [host] [lang] # (lang is only cs/en and it "
 "can be also set befor host)"
