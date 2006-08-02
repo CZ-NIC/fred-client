@@ -39,8 +39,11 @@ class ManagerBase:
         # defaults
         self.defs = ['']*DEFS_LENGTH
         self.defs[LANGS] = ('en','cs') # seznam dostupných jazyků
-        self.defs[objURI] = []
-        self.defs[extURI] = []
+        # Values objURI a extURI are loaded from greeting message.
+        self.defs[objURI] = ['http://www.nic.cz/xml/epp/contact-1.0',
+                'http://www.nic.cz/xml/epp/domain-1.0',
+                'http://www.nic.cz/xml/epp/nsset-1.0']
+        self.defs[extURI] = ['http://www.nic.cz/xml/epp/enumval-1.0']
         self.defs[PREFIX] = '' # pro každé sezení nový prefix
         self._conf = None # <ConfigParser object>
         self._name_conf = '.ccReg.conf' # name of config file
@@ -50,11 +53,6 @@ class ManagerBase:
     def set_auto_connect(self, switch):
         'Set auto connection ON/OFF. switch = 0/1.'
         self._auto_connect = {False:0,True:1}[switch==1]
-        if not self._auto_connect and len(self.defs[objURI]) == 0:
-            self.defs[objURI] = ['http://www.nic.cz/xml/epp/contact-1.0',
-                'http://www.nic.cz/xml/epp/domain-1.0',
-                'http://www.nic.cz/xml/epp/nsset-1.0']
-            self.defs[extURI] = ['http://www.nic.cz/xml/epp/enumval-1.0']
 
     def is_logon(self):
         'Returns 0-offline,1-online.'

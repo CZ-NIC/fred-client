@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-01 12:08+0200\n"
+"POT-Creation-Date: 2006-08-02 08:53+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Zdeněk Böhm <zdenek.bohm@nic.cz>\n"
 "Language-Team: CS <info@nic.cz>\n"
@@ -16,9 +16,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ccReg/client_socket.py:47
-#, python-format
-msgid "Connected to host ${GREEN}${BOLD}%s${NORMAL}, port %d"
-msgstr "Připojen na host ${GREEN}${BOLD}%s${NORMAL}, port %d"
+msgid "Open connection on host"
+msgstr "Navázáno spojení na host"
 
 #: ccReg/client_socket.py:54 ccReg/client_socket.py:87
 #: ccReg/client_socket.py:114 ccReg/client_socket.py:140
@@ -839,11 +838,11 @@ msgstr "Relace zahájena!"
 msgid "Login failed"
 msgstr "Login se nezdařil"
 
-#: ccReg/session_receiver.py:368
+#: ccReg/session_receiver.py:373
 msgid "You are not connected! For connection type: connect or login"
 msgstr "Nejste připojeni! Po připojení zadejte: connect nebo login"
 
-#: ccReg/session_receiver.py:371
+#: ccReg/session_receiver.py:376
 msgid "You are not logged. You must call login() before working on the server."
 msgstr ""
 "Nejste zalogováni. Před samotnou prací na serveru musíte volat funkci login()"
@@ -856,15 +855,19 @@ msgstr "Spojení přerušeno"
 msgid "Impossible create connection. Required config values missing"
 msgstr "Není možné vytvořit spojení. Požadované hodnoty z config chybí"
 
-#: ccReg/session_transfer.py:126
+#: ccReg/session_transfer.py:100
+msgid "Server doesn't return Greeting message. Contact server administrator."
+msgstr "Server nevrátil Greeting odpověď. Kontaktujte správce serveru."
+
+#: ccReg/session_transfer.py:127
 msgid "Command was sent to EPP server."
 msgstr "Příkaz byl odeslán na EPP server."
 
-#: ccReg/session_transfer.py:129 ccReg/session_transfer.py:153
+#: ccReg/session_transfer.py:130 ccReg/session_transfer.py:154
 msgid "You are not connected."
 msgstr "Nejste připojeni."
 
-#: ccReg/session_transfer.py:138
+#: ccReg/session_transfer.py:139
 msgid "Send logout"
 msgstr "Odeslán logout"
 

@@ -182,6 +182,8 @@ class ManagerTransfer(ManagerBase):
                     print_unicode(colored_output.render('\t${BOLD}%s:${NORMAL} (list) %s%s'%(k,space,str_lists(v[0]))))
                     for text in v[1:]:
                         print_unicode('\t\t%s'%str_lists(text))
+                else:
+                    print_unicode(colored_output.render('\t${BOLD}%s:${NORMAL} (list) []'%k))
             else:
                 print_unicode(colored_output.render('\t${BOLD}%s:${NORMAL} (%s) %s'%(k, patt_type.match(str(type(v))).group(1), v)))
         print '-'*60

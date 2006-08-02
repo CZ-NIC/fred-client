@@ -198,10 +198,12 @@ class ManagerReceiver(ManagerCommand):
                     'contact:city','contact:street','contact:pc',))
             contact_disclose = contact_infData.get('contact:disclose',None)
             if contact_disclose:
-                #  <contact:disclose flag='0'/>
-                # TODO: jine nacitani - overeni pritomnosti uzlu
-                self.__append_note_from_dct__(contact_disclose,('contact:name','contact:org',
-                'contact:addr','contact:voice','contact:fax','contact:email'))
+                # Disclosed nodes are always empty. Name of node express the value in this case!
+                # Value can be only 0/1. What value is you see in disclose.flag attribute.
+                disclosed = []
+                for k,v in contact_disclose.items():
+                    if v == {}: disclosed.append(k)
+                dct['contact:disclose'] = disclosed
 
     def answer_response_domain_info(self, data):
         "data=(response,result,code,msg)"
@@ -435,7 +437,6 @@ def test(name_amd_xml):
     m.display()
     m.print_answer()
     m.__put_raw_into_note__(m._dict_answer)
-    # m.__put_raw_into_note__(m._raw_answer)
     m.display()
 
 if __name__ == '__main__':
@@ -447,4 +448,4 @@ if __name__ == '__main__':
         # TEST selected document:
         # Data item has format: ('command:name',"""<?xml ...XML document... >""")
         # For example: ('nsset:info',"""<?xml ...<epp ...><response> ... </epp>""")
-        test(test_incomming_messages.data[8])
+        test(test_incomming_messages.data[9])

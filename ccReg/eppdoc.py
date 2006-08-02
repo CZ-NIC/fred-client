@@ -451,17 +451,20 @@ def __pfd__(dict_data,color=0,indent=0):
         for key in dict_data.keys():
             # podřízené uzly
             if key in ('attr','data'): continue
-            rows = __pfd__(dict_data[key],color,indent+4)
-            if len(rows):
-                if len(rows)>1:
-                    # více řádků [klíč]: a na další řádky hodnoty
-                    body.append(patt[2]%(ind,key))
-                    for r in rows:
-                        body.append('%s%s'%(ind,r))
-                else:
-                    # jeden řádek - [klíč]: hodnota
-                    body.append(patt[3]%(ind,key,rows[0]))
-
+            if dict_data[key] == {}:
+                # display empty node
+                body.append(patt[2]%(ind,key))
+            else:
+                rows = __pfd__(dict_data[key],color,indent+4)
+                if len(rows):
+                    if len(rows)>1:
+                        # více řádků [klíč]: a na další řádky hodnoty
+                        body.append(patt[2]%(ind,key))
+                        for r in rows:
+                            body.append('%s%s'%(ind,r))
+                    else:
+                        # jeden řádek - [klíč]: hodnota
+                        body.append(patt[3]%(ind,key,rows[0]))
     return body
 
 def prepare_display(dict_data,color=0):
@@ -562,14 +565,20 @@ def test_display():
 def test_parse(filename):
     m = Message()
     xml = m.load_xml_doc(filename)
+    errors = m.fetch_errors()
+    if errors:
+        print errors
+        return
     m.parse_xml(xml)
     print m.fetch_errors()
     print m.get_xml()
+    epp_dict = m.create_data()
+    print prepare_display(epp_dict)
 
     
 if __name__ == '__main__':
     "Testování zpracování XML dokumentu a mapování XML.DOM do python dict/class."
 ##    test_display()
-    test_parse('~/test-disclose.xml')
+    test_parse('test-disclose.xml')
 ##    ret = {'reason': u'Authentication error; server closing connection', 'code': 2501, 'data': {"h1":"ano"}, 'errors': []}
 ##    print get_value_from_dict(ret, ('data','h1'))
