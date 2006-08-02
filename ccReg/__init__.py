@@ -177,13 +177,21 @@ class Client:
     voice (optional)
     fax (optional)
     disclose (optional)
+
+           The "flag" attribute contains "0"/"1".
+           A value "1" notes a client preference to allow disclosure 
+           of the specified elements as an exception to the stated data 
+           collection policy.  A value "0" notes a client preference to not allow
+           disclosure of the specified elements as an exception to the stated
+           data collection policy.
+   
         flag (required) accept only values: (0,1)
-        name (optional)
-        org (optional)
-        addr (optional)
-        voice (optional)
-        fax (optional)
-        email (optional)
+        name (optional) accept only values: (0,1)
+        org (optional) accept only values: (0,1)
+        addr (optional) accept only values: (0,1)
+        voice (optional) accept only values: (0,1)
+        fax (optional) accept only values: (0,1)
+        email (optional) accept only values: (0,1)
     vat (optional)
     ssn (optional)
     notify_email (optional)
