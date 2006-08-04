@@ -221,6 +221,7 @@ ${BOLD}send${NORMAL} [filename] # send selected file to the server (for test onl
             # příkazy pro EPP
             command_name = self.epp_command(cmd)
             self._raw_cmd = self._epp_cmd.get_xml()
+            self.append_error(self._epp_cmd.fetch_errors()) # any problems on the command line occurrs
         return command_name, self._raw_cmd
 
     def load_filename(self, filepath):

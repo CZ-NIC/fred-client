@@ -8,6 +8,7 @@ import re
 import getopt
 import ccReg
 from ccReg.translate import _T
+from ccReg.session_receiver import ccRegError
 
 def __auto_login__(epp):
     'Do login'

@@ -144,7 +144,7 @@ class ManagerBase:
         empty_row = '%s%s%s'%(frm[1],' '*msglen,frm[1])
         horizontal_line = frm[0]*msglen
         return '%s%s%s\n%s\n%s%s%s\n%s\n%s%s%s\n%s\n%s'%(frm[2],horizontal_line,frm[3],empty_row,frm[1],welcome,frm[1],empty_row,frm[4],horizontal_line,frm[5],
-             'Version 1.1.1 Basic release.',
+             'Version 1.1.2 Basic release.',
             _T('For help type "help" (or "h", "?")'))
 
 
@@ -352,7 +352,9 @@ class ManagerBase:
         if re.search(' validates$', errors):
             errors = '' # it seems be OK...
         else:
-            if re.search('Schemas parser error',errors):
+            if re.search('command not found',errors) \
+                or re.search(u'není názvem vnitřního ani vnějšího příkazu'.encode('cp852'),errors) \
+                or re.search('Schemas parser error',errors):
                 # schema missing!
                 self.append_note('%s ${BOLD}validate on${NORMAL}.'%_T('Validator has been disabled. For enable type'))
                 self._validate = 0 # automatické vypnutí validace
