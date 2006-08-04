@@ -41,6 +41,10 @@ class ManagerTransfer(ManagerBase):
         self._epp_response.reset()
         self._command_sent = '' # jméno posledního odeslaného příkazu
 
+    def get_command_line(self):
+        'Returns example of command built from parameters.'
+        return self._epp_cmd.get_command_line()
+
     #---------------------------------
     # funkce pro nastavení session
     #---------------------------------

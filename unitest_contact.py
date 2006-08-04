@@ -33,7 +33,7 @@ HOST = None # 'curlew'
 CONTACT_HANDLE = 'test001'
 CCREG_CONTACT = ( 
     {   # template
-    'contact-id': '', # (povinný) vaše kontaktní ID
+    'id': '', # (povinný) vaše kontaktní ID
     'name': '', # (povinný) vaše jméno
     'email': '', #(povinný) váš email
     'city': '', #(povinný) město
@@ -116,6 +116,10 @@ class Test(unittest.TestCase):
     def test_2_000(self):
         '2.0 Inicializace spojeni a definovani testovacich handlu'
         global epp_cli, handle_contact, handle_nsset
+        # Natvrdo definovany handle:
+        handle_contact = CCREG_CONTACT[1]['id'] # 'neexist01'
+        handle_nsset = 'neexist01'
+        # create client object
         epp_cli = ccReg.Client()
         if HOST: epp_cli._epp.set_host(HOST) # nastavení serveru
         epp_cli._epp.load_config()
@@ -125,9 +129,6 @@ class Test(unittest.TestCase):
         # Tady se da nalezt prazdny handle (misto pevne definovaneho):
         # handle_contact = __find_available_handle__(epp_cli, 'contact','nexcon')
         # handle_nsset = __find_available_handle__(epp_cli, 'nsset','nexns')
-        # Natvrdo definovany handle:
-        handle_contact = CCREG_CONTACT[1]['id'] # 'neexist01'
-        handle_nsset = 'neexist01'
         # kontrola:
         self.assert_(epp_cli.is_logon(), 'Nepodarilo se zalogovat.')
         self.assert_(len(handle_contact), 'Nepodarilo se nalezt volny handle contact.')
@@ -152,15 +153,15 @@ class Test(unittest.TestCase):
             d['name'], d['email'], d['city'], d['cc'], d['org'], 
             d['street'], d['sp'], d['pc'], d['voice'], d['fax'], d['disclose'],
             d['vat'], d['ssn'], d['notify_email'])
-        self.assertEqual(epp_cli.is_val(), 1000)
+        self.assertEqual(epp_cli.is_val(), 1000, __get_reason__())
 
-    def test_2_031(self):
-        '2.3.1 Overevni vsech hodnot vznikleho kontaktu'
-        epp_cli.info_contact(handle_contact)
-        errors, disclose_names = __info_contact__('contact', CCREG_CONTACT[1], epp_cli.is_val('data'))
-        err = __check_disclosed_over__(disclose_names, epp_cli.is_val(('data','contact:disclose')))
-        if len(err): errors.extend(err)
-        self.assert_(len(errors), '\n'.join(errors))
+##    def test_2_031(self):
+##        '2.3.1 Overevni vsech hodnot vznikleho kontaktu'
+##        epp_cli.info_contact(handle_contact)
+##        errors, disclose_names = __info_contact__('contact', CCREG_CONTACT[1], epp_cli.is_val('data'))
+##        err = __check_disclosed_over__(disclose_names, epp_cli.is_val(('data','contact:disclose')))
+##        if len(err): errors.extend(err)
+##        self.assert_(len(errors), '\n'.join(errors))
 
     def test_2_040(self):
         '2.4 Pokus o zalozeni existujiciho kontaktu'
@@ -176,9 +177,13 @@ class Test(unittest.TestCase):
         self.assertEqual(epp_cli.is_val(('data','neexist002')), 1)
 
     def test_2_060(self):
-        '2.6 Info na existujici kontakt'
+        '2.6 Info na existujici kontakt a overeni vsech hodnot'
         epp_cli.info_contact(handle_contact)
-        self.assertEqual(epp_cli.is_val(), 1000)
+        self.assertEqual(epp_cli.is_val(), 1000, __get_reason__())
+        errors, disclose_names = __info_contact__('contact', CCREG_CONTACT[1], epp_cli.is_val('data'))
+        err = __check_disclosed_over__(disclose_names, epp_cli.is_val(('data','contact:disclose')))
+        if len(err): errors.extend(err)
+        self.assert_(len(errors), '\n'.join(errors))
 
     def test_2_070(self):
         '2.7 Update vsech parametru krome stavu'
@@ -213,11 +218,12 @@ class Test(unittest.TestCase):
             'notify_email': d['notify_email'],
         }
         epp_cli.update_contact(handle_contact, None, None, chg)
-        self.assertEqual(epp_cli.is_val(), 1000)
+        self.assertEqual(epp_cli.is_val(), 1000, __get_reason__())
 
     def test_2_071(self):
         '2.7.1 Overevni vsech hodnot zmeneneho kontaktu'
         epp_cli.info_contact(handle_contact)
+        self.assertEqual(epp_cli.is_val(), 1000, __get_reason__())
         errors, disclose_names = __info_contact__('contact', CCREG_CONTACT[2], epp_cli.is_val('data'))
         err = __check_disclosed_over__(disclose_names, epp_cli.is_val(('data','contact:disclose')))
         if len(err): errors.extend(err)
@@ -256,27 +262,44 @@ class Test(unittest.TestCase):
     def test_2_110(self):
         '2.11 Vytvoreni nnsetu napojeneho na kontakt'
         epp_cli.create_nsset(handle_nsset, 'heslo', {'name':'ns1.test.cz'}, handle_contact)
-        self.assertEqual(epp_cli.is_val(), 1000)
+        self.assertEqual(epp_cli.is_val(), 1000, __get_reason__())
         
     def test_2_120(self):
         '2.12 Smazani kontaktu na ktery existuji nejake vazby'
         epp_cli.delete_contact(handle_contact)
-        self.assertNotEqual(epp_cli.is_val(), 1000)
+        self.assertNotEqual(epp_cli.is_val(), 1000, __get_reason__())
 
     def test_2_130(self):
         '2.13 Smazani nssetu'
         epp_cli.delete_nsset(handle_nsset)
-        self.assertEqual(epp_cli.is_val(), 1000)
+        self.assertEqual(epp_cli.is_val(), 1000, __get_reason__())
 
     def test_2_140(self):
         '2.14 Smazani kontaktu'
         epp_cli.delete_contact(handle_contact)
-        self.assertEqual(epp_cli.is_val(), 1000)
+        self.assertEqual(epp_cli.is_val(), 1000, __get_reason__())
 
     def test_2_150(self):
         '2.15 Check na smazany kontakt'
         epp_cli.check_contact(handle_contact)
         self.assertEqual(epp_cli.is_val(('data',handle_contact)), 1)
+
+    def test_2_160(self):
+        '2.16 Poll require'
+        # 1000 OK (ack)
+        # 1300 No messages
+        # 1301 Any message
+        epp_cli.poll('req')
+        if epp_cli.is_val() not in (1000,1300,1301):
+            self.assertEqual(0, 1, __get_reason__())
+
+def __get_reason__():
+    'Returs reason a errors from client object'
+    reason = get_local_text(epp_cli.is_val('reason'))
+    er = []
+    for error in epp_cli.is_val('errors'):
+        er.append(get_local_text(error))
+    return  '%s ERRORS:[%s]\nCOMMAND: %s'%(reason, '\n'.join(er), get_local_text(epp_cli._epp.get_command_line()))
 
 def __find_available_handle__(epp_cli, type_object, prefix):
     'Find first available object.'
@@ -316,7 +339,7 @@ def __info_contact__(prefix, cols, scope, key=None, pkeys=[]):
                     errors.append('Atribut %s chybi'%key)
                 continue
             key = '%s:%s'%(prefix,k)
-##            print "!!! key:",key,'flag:',flag #!!!
+            # print "!!! key:",key,'flag:',flag #!!!
             # TODO: dodelat kontrolu na 0/1
             if key in data:
                 disclose_names.append(key)
@@ -347,14 +370,18 @@ def __info_contact__(prefix, cols, scope, key=None, pkeys=[]):
 def __check_disclosed_over__(disclose_names, saved_data):
     'Check disclosed names if they are over.'
     errors = []
-    data = saved_data[:]
-    for name in disclose_names:
-        if name in data:
-            data.pop(data.index(name))
-    if len(data): errors.append('Disclose hodnoty navic: (%s)'%', '.join(data))
+    if saved_data is None: # NoneType
+        errors.append('Neplatna disclosed data')
+    else:
+        data = saved_data[:]
+        for name in disclose_names:
+            if name in data:
+                data.pop(data.index(name))
+        if len(data): errors.append('Disclose hodnoty navic: (%s)'%', '.join(data))
     return errors
     
 epp_cli, handle_contact, handle_nsset = None,None,None
+get_local_text = ccReg.session_base.get_ltext
 
 if __name__ == '__main__':
 ##if 0:

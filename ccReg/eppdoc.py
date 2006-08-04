@@ -422,9 +422,12 @@ def get_dct_values(dict_data, names, attr_name=''):
             ret.append(dict_data)
     return ret
 
-def get_dct_value(dict_data, names, sep='\n', attr_name=''):
+def get_dct_value(dict_data, names, sep='\n', attr_name='', defval=''):
     "Returns value of the key name in names list."
-    return sep.join(get_dct_values(dict_data, names, attr_name))
+    retvals = get_dct_values(dict_data, names, attr_name)
+    if type(retvals) in (list,tuple): retvals = sep.join(retvals)
+    if retvals == '': retvals = defval
+    return retvals
 
 def __pfd__(dict_data,color=0,indent=0):
     "Prepare dictionary data for display."

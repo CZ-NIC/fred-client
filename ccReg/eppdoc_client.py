@@ -99,7 +99,7 @@ class Message(eppdoc_assemble.Message):
         ),notice['transfer'],('transfer-nsset name-nsset request password',)),
         #----------------------------------------------------
         'create_contact': (5,(
-            ('contact-id',(1,1),(),_T('your contact ID'),()),
+            ('contact_id',(1,1),(),_T('your contact ID'),()),
             ('name',(1,1),(),_T('your name'),()), # odtud shoda s update contact
             ('email',(1,1),(),_T('your email'),()),
             ('city',(1,1),(),_T('your city'),()),
@@ -333,6 +333,7 @@ def test(commands):
                 print "Errors:",errors
             if xmlepp:
                 print 'VALID?',manag.is_epp_valid(xmlepp)
+        print "EXAMPLE:",epp.get_command_line()
         print '='*60
 
 def test_help(command_names):

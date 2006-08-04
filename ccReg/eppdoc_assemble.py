@@ -193,6 +193,16 @@ class Message(eppdoc.Message):
         if len(param) and param[0] == '!': param = param[1:]
         return errors,param
 
+    def get_command_line(self):
+        'Returns example of command built from parameters.'
+        retval = ''
+        if type(self._dct.get('command')) is list:
+            command_name = self._dct['command'][0]
+            columns = [(command_name,(1,1),(),'',())]
+            columns.extend(self._command_params[command_name][1])
+            retval = __build_command_example__(columns, self._dct)
+        return retval
+    
     def parse_cmd(self, command_name, cmd, config, interactive):
         "Parse command line. Returns errors. Save parsed values to self._dct."
         dct = {}
@@ -210,6 +220,7 @@ class Message(eppdoc.Message):
         if not vals[1]: return error # bez parametrů
         columns = [(command_name,(1,1),(),'',())]
         columns.extend(self._command_params[command_name][1])
+        dct['command'] = [command_name]
         if interactive:
             session_base.print_unicode(_T('${BOLD}${YELLOW}Start interactive input of params. To break type: ${NORMAL}${BOLD}!${NORMAL}[!!...] (one ${BOLD}!${NORMAL} for scope)'))
             dct[command_name] = [command_name]
@@ -438,7 +449,7 @@ class Message(eppdoc.Message):
             ('epp', 'command'),
             ('command', 'create'),
             ('create', 'contact:create', '', attr),
-            ('contact:create','contact:id', dct['contact-id'][0]),
+            ('contact:create','contact:id', dct['contact_id'][0]),
             ('contact:create','contact:postalInfo'),
             ('contact:postalInfo','contact:name', dct['name'][0])] # required
         if __has_key__(dct,'org'): data.append(('contact:postalInfo','contact:org', dct['org'][0]))

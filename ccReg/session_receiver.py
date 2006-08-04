@@ -218,8 +218,7 @@ class ManagerReceiver(ManagerCommand):
                 ('domain:name','domain:roid','domain:status s','domain:registrant'
                 ,'domain:contact','domain:contact type','domain:nsset','domain:clID','domain:crID'
                 ,'domain:crDate','domain:upDate','domain:exDate','domain:upID'))
-            authInfo = domain_infData.get('domain:authInfo',None)
-            if authInfo: self.__append_note_from_dct__(authInfo,('domain:pw',))
+            self._dct_answer['data']['domain:pw'] = eppdoc.get_dct_value(domain_infData, ('domain:authInfo','domain:pw'), '\n', '', '******')
             m = re.match('\d{4}-\d{2}-\d{2}', self.get_value_from_dict(('data','domain:exDate')))
             if m: self._dct_answer['data']['domain:renew'] = m.group(0) # value for renew-domain
 
@@ -244,6 +243,8 @@ class ManagerReceiver(ManagerCommand):
                     addr = eppdoc.get_dct_value(ns, 'nsset:addr').split('\n')
                     dns.append([name,addr])
                 self._dct_answer['data']['nsset:ns'] = dns
+            self._dct_answer['data']['nsset:pw'] = eppdoc.get_dct_value(nsset_infData, ('nsset:authInfo','nsset:pw'), '\n', '', '******')
+
 
     #-------------------------------------
     # *** check ***
@@ -358,6 +359,7 @@ class ManagerReceiver(ManagerCommand):
         Create EPP command - send to server - receive answer - parse answer to dict - returns dict.
         """
         self.reset_round()
+        self.__reset_src__() # this is in process_answer() but it must be here for case NOT is_online()
         dct_params = adjust_dict(params)                                      # turn params into expecterd format
         self.create_command_with_params(command_name, dct_params)             # create EPP command
         self._raw_cmd = self._epp_cmd.get_xml()                               # get EPP in XML (string)
@@ -375,7 +377,7 @@ class ManagerReceiver(ManagerCommand):
                 errors = _T("You are not connected! For connection type: connect or login")
                 raise ccRegError(errors)
         else:
-            self._dct_answer['errors'].append(_T('You are not logged. You must call login() before working on the server.')) # _T("XML EPP document was not created.")
+            self._dct_answer['errors'].append(_T('You are not logged. You must call login() before working on the server.'))
         if len(self._errors): raise ccRegError(self.fetch_errors())
         return self._dct_answer
 

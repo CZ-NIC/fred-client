@@ -89,7 +89,7 @@ class Client:
         - string        login("user","pass")
         - list          check_domain(['domain1','domain2','domain3'])
         - dict          create_domain(period={'num':6, 'unit':'y'}, ...
-        - list of dict  update_nsset('handle_nsset', {'ns':[{'name':'ns.name1', 'addr':'127.0.0.1'}, {'name':'ns.name2', 'addr':'127.2.2.2'}, ...], 'tech':'...'}, ...)
+        - list of dict  update_nsset('handle_nsset', {'dns':[{'name':'ns.name1', 'addr':'127.0.0.1'}, {'name':'ns.name2', 'addr':'127.2.2.2'}, ...], 'tech':'...'}, ...)
 
     Exception is raised if any error occurs.
     """
@@ -165,7 +165,7 @@ class Client:
 
     PARAMS:
 
-    contact-id (required)
+    contact_id (required)
     name (required)
     email (required)
     city (required)
@@ -207,7 +207,7 @@ class Client:
 
         """
         return self._epp.api_command('create_contact',{
-            'contact-id':contact_id, 'name':name, 'email':email, 'city':city, 'cc':cc,
+            'contact_id':contact_id, 'name':name, 'email':email, 'city':city, 'cc':cc,
             'org':org, 'street':street, 'sp':sp, 'pc':pc, 'voice':voice, 'fax':fax,
             'disclose':disclose, 'vat':vat, 'ssn':ssn, 'notify_email':notify_email})
 

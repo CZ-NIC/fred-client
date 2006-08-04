@@ -118,6 +118,9 @@ ${BOLD}send${NORMAL} [filename] ${CYAN}# send selected file to the server (for t
         
     def create_command_with_params(self, command_name, dct_params):
         "Create EPP command. Check if session is loggend or not."
+        # for build example later
+        dct_params['command'] = [command_name]
+        dct_params[command_name] = [command_name]
         self._epp_cmd.set_params(dct_params) # set params from API (or one's own)
         self._raw_cmd = ''
         if command_name in ('login','hello'):
