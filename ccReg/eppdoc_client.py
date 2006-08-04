@@ -122,7 +122,7 @@ class Message(eppdoc_assemble.Message):
             ('vat',(0,1),(),_T('VAT'),()),
             ('ssn',(0,1),(),_T('SSN'),()), # Security social number
             ('notify_email',(0,1),(),_T('notify email'),()),
-            ),notice['create'],('create-contact reg-id "John Doe" jon@mail.com "New York" US "Example Inc." ("Yellow harbor" "Blueberry hill") VA 20166-6503 +1.7035555555 +1.7035555556 (0 1 1 1 1 1 1) vat-test ssn-test notify@here.net',)),
+            ),notice['create'],('create-contact reg-id "John Doe" jon@mail.com "New York" US "Example Inc." ("Yellow harbor" "Blueberry hill") VA 20166-6503 +1.7035555555 +1.7035555556 (0 1 1 1 1 1 1) vat-test ssn-test notify@here.cz',)),
         #----------------------------------------------------
         'create_domain': (2,(
             ('name',(1,1),(),_T('domain name'),()),
@@ -147,7 +147,7 @@ class Message(eppdoc_assemble.Message):
             )),
             ('contact',(0,UNBOUNDED),(),_T('contact'),()),
             ('val_ex_date',(0,1),(),_T('valExDate'),()),
-            ),notice['create'],('create-domain-enum 1.1.1.1.1.1.1.1.1.0.2.4.e164.arpa password nsset1 reg-id (3 y) (handle1,handle2) 2006-06-08',)),
+            ),notice['create'],('create-domain-enum 1.1.1.7.4.5.2.2.2.0.2.4.e164.arpa password nsset1 reg-id (3 y) (handle1,handle2) 2006-06-08',)),
         #----------------------------------------------------
         'create_nsset': (2,(
             ('id',(1,1),(),_T('nsset ID'),()),
@@ -160,7 +160,7 @@ class Message(eppdoc_assemble.Message):
 
             ),notice['create'],(
                 'create-nsset example passw',
-                'create-nsset nsset1 passw ((ns1.domain.net (217.31.207.130 217.31.207.129)),(ns2.domain.net (217.31.206.130 217.31.206.129)),(ns3.domain.net (217.31.205.130 217.31.205.129))) reg-id'
+                'create-nsset nsset1 passw ((ns1.domain.cz (217.31.207.130 217.31.207.129)),(ns2.domain.cz (217.31.206.130 217.31.206.129)),(ns3.domain.cz (217.31.205.130 217.31.205.129))) reg-id'
             )),
         #----------------------------------------------------
         'delete_contact': (1,(
@@ -276,7 +276,7 @@ class Message(eppdoc_assemble.Message):
                 )),
             )),
             ('val_ex_date',(0,1),(),_T('valExDate'),()),
-            ),notice['update'],('update-domain-enum 1.1.1.1.1.arpa64.net (linked add-contact) ((ok linked) rem-contact) (nsset registrant (password extensions)) 2006-06-08',)),
+            ),notice['update'],('update-domain-enum 1.1.1.7.4.5.2.2.2.0.2.4.e164.arpa (linked add-contact) ((ok linked) rem-contact) (nsset registrant (password extensions)) 2006-06-08',)),
         #----------------------------------------------------
         'update_nsset': (1,(
             ('id',(1,1),(),_T('nsset ID'),()),
