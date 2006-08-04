@@ -66,15 +66,18 @@ def main(host):
 
 
 if __name__ == '__main__':
-    host = None
-    if len(sys.argv) > 1:
-        for arg in sys.argv[1:]:
-            if arg in ('en','cs'): continue
-            host = arg
-            break
+    if sys.version_info[:2] < (2,4):
+        print _T('This program needs Python 2.4 or higher. Your version is'),sys.version
     else:
-        print _T("Usage: python ccreg_console.py [host] [lang] # (lang is only cs/en and it can be also set befor host)")
-    if ccReg.translate.warning:
-        print colored_output.render("${BOLD}${RED}%s${NORMAL}"%ccReg.translate.warning)
-    print colored_output.render('Unicode encodings to ${BOLD}%s${NORMAL}.'%ccReg.translate.encoding)
-    main(host)
+        host = None
+        if len(sys.argv) > 1:
+            for arg in sys.argv[1:]:
+                if arg in ('en','cs'): continue
+                host = arg
+                break
+        else:
+            print _T("Usage: python ccreg_console.py [host] [lang] # (lang is only cs/en and it can be also set befor host)")
+        if ccReg.translate.warning:
+            print colored_output.render("${BOLD}${RED}%s${NORMAL}"%ccReg.translate.warning)
+        print colored_output.render('Unicode encodings to ${BOLD}%s${NORMAL}.'%ccReg.translate.encoding)
+        main(host)

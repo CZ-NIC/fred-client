@@ -128,7 +128,7 @@ class ManagerTransfer(ManagerBase):
                 # If XML doc has been sent, manager saves the name of this command.
                 # This is essensial for resolve how type the server answer is.
                 self._command_sent = self.grab_command_name_from_xml(message)
-                self.append_note(_T('Command was sent to EPP server.'),('GREEN','BOLD'))
+                self.append_note(_T('Command was sent to EPP server.'),'BOLD')
             self.__check_is_connected__()
         else:
             self.append_error(_T('You are not connected.'))
@@ -171,7 +171,7 @@ class ManagerTransfer(ManagerBase):
         print colored_output.render('${BOLD}code:${NORMAL} %d'%code)
         print colored_output.render('${BOLD}command:${NORMAL} %s'%dct['command'])
         print colored_output.render('${BOLD}reason:${NORMAL}'),
-        print_unicode(colored_output.render('${BOLD}${%s}%s${NORMAL}'%({False:'YELLOW',True:'GREEN'}[code==1000],dct['reason'])))
+        print_unicode(colored_output.render('${%s}%s${NORMAL}'%({False:'NORMAL',True:'GREEN'}[code==1000],dct['reason'])))
         print colored_output.render('${BOLD}errors:${NORMAL}')
         if len(dct['errors']):
             print colored_output.render('${BOLD}${RED}')

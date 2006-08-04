@@ -163,7 +163,7 @@ class Message(eppdoc.Message):
             if is_child and min: req = 2 # if param is child and required in this child part
             print_info_listmax(max) # (Value can be a list of max %d values.)
             if len(allowed):
-                session_base.print_unicode('${WHITE}%s:${NORMAL} (${BOLD}%s${NORMAL})'%(_T('Param MUST be a value from this list'),', '.join(allowed)))
+                session_base.print_unicode('${WHITE}%s:${NORMAL} (%s)'%(_T('Param MUST be a value from this list'),', '.join(allowed)))
             cr = 0
             stop=0
             while max is UNBOUNDED or cr < max:

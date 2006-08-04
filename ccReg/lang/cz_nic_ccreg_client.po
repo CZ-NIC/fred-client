@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-02 08:53+0200\n"
+"POT-Creation-Date: 2006-08-04 09:43+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Zdeněk Böhm <zdenek.bohm@nic.cz>\n"
 "Language-Team: CS <info@nic.cz>\n"
@@ -145,16 +145,16 @@ msgstr "povinný jen je-li tato část zadána"
 msgid "Param MUST be a value from this list"
 msgstr "Parametr MUSÍ být hodnota z následujícího seznamu"
 
-#: ccReg/eppdoc_assemble.py:207
+#: ccReg/eppdoc_assemble.py:217
 msgid "Unknown command"
 msgstr "Neznámý příkaz"
 
-#: ccReg/eppdoc_assemble.py:208 ccReg/eppdoc_assemble.py:235
+#: ccReg/eppdoc_assemble.py:218 ccReg/eppdoc_assemble.py:246
 #: ccReg/session_command.py:111
 msgid "For more type"
 msgstr "Pro více informací zadejte"
 
-#: ccReg/eppdoc_assemble.py:214
+#: ccReg/eppdoc_assemble.py:225
 msgid ""
 "${BOLD}${YELLOW}Start interactive input of params. To break type: ${NORMAL}"
 "${BOLD}!${NORMAL}[!!...] (one ${BOLD}!${NORMAL} for scope)"
@@ -163,24 +163,24 @@ msgstr ""
 "zadejte: ${NORMAL}${BOLD}!${NORMAL}[!!...] (jeden ${BOLD}!${NORMAL} pro "
 "každou podskupinu)"
 
-#: ccReg/eppdoc_assemble.py:221
+#: ccReg/eppdoc_assemble.py:232
 msgid "End of interactive input. [press enter]"
 msgstr "Konec interaktivního zadání parametrů. [stiskněte enter]"
 
-#: ccReg/eppdoc_assemble.py:233
+#: ccReg/eppdoc_assemble.py:244
 msgid "Missing values. Required minimum is"
 msgstr "Chybí parametry. Požadované minimum je"
 
-#: ccReg/eppdoc_assemble.py:234
+#: ccReg/eppdoc_assemble.py:245
 msgid "Type"
 msgstr "Zadejte"
 
-#: ccReg/eppdoc_assemble.py:793
+#: ccReg/eppdoc_assemble.py:804
 #, python-format
 msgid "(Value can be a list of max %d values.)"
 msgstr "(Hodnota může být seznam o max. velikosti %d položek.)"
 
-#: ccReg/eppdoc_assemble.py:795
+#: ccReg/eppdoc_assemble.py:806
 msgid "(Value can be an unbouded list of values.)"
 msgstr "(Hodnota může být libovolně velký seznam.)"
 
@@ -577,60 +577,60 @@ msgstr "Dokument má chybné kódování. LookupError: %s"
 msgid "Internal Error: Master node '%s' doesn't exist."
 msgstr "Interní chyba: Nadřazený uzel '%s' neexistuje."
 
-#: ccReg/session_base.py:74
+#: ccReg/session_base.py:72
 msgid "Confirm has been set to"
 msgstr "Potvrzení bylo nastaveno na"
 
-#: ccReg/session_base.py:139 test.py:48 test.py:53 test.py:57
+#: ccReg/session_base.py:137 test.py:48 test.py:53 test.py:57
 msgid "Welcome to the ccReg console"
 msgstr "Vítejte v ccReg konzoli"
 
-#: ccReg/session_base.py:150
+#: ccReg/session_base.py:148
 msgid "For help type \"help\" (or \"h\", \"?\")"
 msgstr "Pro více informací zadejte \"help\" (nebo \"h\", \"?\")"
 
-#: ccReg/session_base.py:169
+#: ccReg/session_base.py:167
 msgid "Create default config failed."
 msgstr "Vytvoření defaultního config souboru selhalo."
 
-#: ccReg/session_base.py:171
+#: ccReg/session_base.py:169
 msgid "Actual config is"
 msgstr "Aktuální config je"
 
-#: ccReg/session_base.py:173
+#: ccReg/session_base.py:171
 msgid "No config"
 msgstr "Žádný config"
 
-#: ccReg/session_base.py:254
+#: ccReg/session_base.py:252
 msgid "Default config file saved. For more see help."
 msgstr "Defaultní config soubor byl uložen. Další informace naleznete v helpu."
 
-#: ccReg/session_base.py:257
+#: ccReg/session_base.py:255
 msgid "Impossible saving conf file. Reason"
 msgstr "Není možné uložit config soubor. Důvod"
 
-#: ccReg/session_base.py:263
+#: ccReg/session_base.py:261
 msgid "Fatal error: Create default config failed."
 msgstr "Fatální chyba: Vytvoření defaultních config hodnot selhalo."
 
-#: ccReg/session_base.py:283
+#: ccReg/session_base.py:281
 msgid "This language code is not allowed"
 msgstr "Tento kód jazyka není povolen"
 
-#: ccReg/session_base.py:299
+#: ccReg/session_base.py:297
 msgid "Status: Validation is"
 msgstr "Aktuální nastavení validace je"
 
-#: ccReg/session_base.py:303
+#: ccReg/session_base.py:301
 msgid "Validation is set"
 msgstr "Validace byla nastavena na"
 
-#: ccReg/session_base.py:324 ccReg/session_base.py:340
-#: ccReg/session_base.py:359
+#: ccReg/session_base.py:322 ccReg/session_base.py:338
+#: ccReg/session_base.py:357
 msgid "Validator has been disabled. For enable type"
 msgstr "Validátor byl deaktivován. Opětná aktivace se provede zadáním"
 
-#: ccReg/session_base.py:339
+#: ccReg/session_base.py:337
 msgid "Temporary file for verify XML EPP validity cannot been created. Reason"
 msgstr ""
 "Dočasný soubor pro ověření XML EPP validity se nepodařilo vytvořit. Důvod"
@@ -742,59 +742,59 @@ msgstr ""
 msgid "Unknown EPP command: %s."
 msgstr "Neznámý EPP příkaz: %s."
 
-#: ccReg/session_command.py:154
+#: ccReg/session_command.py:157
 msgid "Session language was set to"
 msgstr "Jazyk relace byl nastaven na"
 
-#: ccReg/session_command.py:156
+#: ccReg/session_command.py:159
 msgid "Unknown language code"
 msgstr "Neznámý kód jazyka"
 
-#: ccReg/session_command.py:158
+#: ccReg/session_command.py:161
 msgid "Session language is"
 msgstr "Nastavený jazyk relace je"
 
-#: ccReg/session_command.py:158
+#: ccReg/session_command.py:161
 msgid "Available values"
 msgstr "Povolené hodnoty"
 
-#: ccReg/session_command.py:168
+#: ccReg/session_command.py:171
 msgid "Interpreted command"
 msgstr "Přeložený příkaz"
 
-#: ccReg/session_command.py:173
+#: ccReg/session_command.py:176
 msgid "Command source"
 msgstr "Zdrojový příkaz"
 
-#: ccReg/session_command.py:178
+#: ccReg/session_command.py:181
 msgid "Interpreted answer"
 msgstr "Přeložená odpověď"
 
-#: ccReg/session_command.py:181
+#: ccReg/session_command.py:184
 msgid "Answer source"
 msgstr "Zdrojová odpověď"
 
-#: ccReg/session_command.py:192
+#: ccReg/session_command.py:195
 msgid "Dir list"
 msgstr "Výpis adresáře"
 
-#: ccReg/session_command.py:207
+#: ccReg/session_command.py:210
 msgid "Confirm is"
 msgstr "Potvrzení je nastaveno na"
 
-#: ccReg/session_command.py:216
+#: ccReg/session_command.py:219
 msgid "poll ack is"
 msgstr "poll ack je"
 
-#: ccReg/session_command.py:226
+#: ccReg/session_command.py:229
 msgid "Load file"
 msgstr "Načíst soubor"
 
-#: ccReg/session_command.py:232
+#: ccReg/session_command.py:235
 msgid "Not found"
 msgstr "Nenalezen"
 
-#: ccReg/session_command.py:251
+#: ccReg/session_command.py:254
 msgid "You are logged already."
 msgstr "Jste již zalogován"
 
@@ -838,36 +838,36 @@ msgstr "Relace zahájena!"
 msgid "Login failed"
 msgstr "Login se nezdařil"
 
-#: ccReg/session_receiver.py:373
+#: ccReg/session_receiver.py:377
 msgid "You are not connected! For connection type: connect or login"
 msgstr "Nejste připojeni! Po připojení zadejte: connect nebo login"
 
-#: ccReg/session_receiver.py:376
+#: ccReg/session_receiver.py:380
 msgid "You are not logged. You must call login() before working on the server."
 msgstr ""
 "Nejste zalogováni. Před samotnou prací na serveru musíte volat funkci login()"
 
-#: ccReg/session_transfer.py:51
+#: ccReg/session_transfer.py:55
 msgid "Connection broken"
 msgstr "Spojení přerušeno"
 
-#: ccReg/session_transfer.py:91
+#: ccReg/session_transfer.py:95
 msgid "Impossible create connection. Required config values missing"
 msgstr "Není možné vytvořit spojení. Požadované hodnoty z config chybí"
 
-#: ccReg/session_transfer.py:100
+#: ccReg/session_transfer.py:104
 msgid "Server doesn't return Greeting message. Contact server administrator."
 msgstr "Server nevrátil Greeting odpověď. Kontaktujte správce serveru."
 
-#: ccReg/session_transfer.py:127
+#: ccReg/session_transfer.py:131
 msgid "Command was sent to EPP server."
 msgstr "Příkaz byl odeslán na EPP server."
 
-#: ccReg/session_transfer.py:130 ccReg/session_transfer.py:154
+#: ccReg/session_transfer.py:134 ccReg/session_transfer.py:158
 msgid "You are not connected."
 msgstr "Nejste připojeni."
 
-#: ccReg/session_transfer.py:139
+#: ccReg/session_transfer.py:143
 msgid "Send logout"
 msgstr "Odeslán logout"
 
@@ -888,7 +888,11 @@ msgstr "Chcete odeslat tento poříkaz na server?"
 msgid "You are not connected! Type login for connection to the server."
 msgstr "Nejste připojeni! Pro připojení k serveru zadejte login."
 
-#: ccreg_console.py:76
+#: ccreg_console.py:70 ccreg_create.py:11 ccreg_sender.py:101
+msgid "This program needs Python 2.4 or higher. Your version is"
+msgstr "Tento program vyžaduje Python 2.4 nebo vyšší. Vaše verze je"
+
+#: ccreg_console.py:79
 msgid ""
 "Usage: python ccreg_console.py [host] [lang] # (lang is only cs/en and it "
 "can be also set befor host)"

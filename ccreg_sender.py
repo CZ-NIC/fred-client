@@ -7,6 +7,7 @@ import os
 import re
 import getopt
 import ccReg
+from ccReg.translate import _T
 
 def __auto_login__(epp):
     'Do login'
@@ -96,11 +97,16 @@ def run_pipe():
 
 
 if __name__ == '__main__':
-    if sys.stdin.isatty():
-        if len(sys.argv) > 1:
-            send_docs() # commands from argv
+    if sys.version_info[:2] < (2,4):
+        print _T('This program needs Python 2.4 or higher. Your version is'),sys.version
+    else:
+        if not sys.stdin.isatty():
+            run_pipe() # commands from pipe
         else:
-            print """*** ccReg Sender ***
+            if len(sys.argv) > 1:
+                send_docs() # commands from argv
+            else:
+                print """*** ccReg Sender ***
 
 Send all files to the EPP server on the order of the list filenames.
 If first file is NOT login - does login automaticly.
@@ -118,6 +124,3 @@ or
 
 ./ccreg_create.py info-domain nic.cz | ./ccreg_create.py info-contact reg-id pokus | ./ccreg_create.py check-domain hokus pokus cosi | ./ccreg_sender.py
 """
-    else:
-        run_pipe() # commands from pipe
-

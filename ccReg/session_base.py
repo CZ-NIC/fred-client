@@ -144,7 +144,7 @@ class ManagerBase:
         empty_row = '%s%s%s'%(frm[1],' '*msglen,frm[1])
         horizontal_line = frm[0]*msglen
         return '%s%s%s\n%s\n%s%s%s\n%s\n%s%s%s\n%s\n%s'%(frm[2],horizontal_line,frm[3],empty_row,frm[1],welcome,frm[1],empty_row,frm[4],horizontal_line,frm[5],
-             'Version 1.1. Basic release.',
+             'Version 1.1.1 Basic release.',
             _T('For help type "help" (or "h", "?")'))
 
 
@@ -250,7 +250,7 @@ class ManagerBase:
             self._conf.write(fp)
             fp.close()
             self.append_note(_T('Default config file saved. For more see help.'))
-            self.append_note(filepath,('BOLD','GREEN'))
+            self.append_note(filepath,'GREEN')
         except IOError, (no, msg):
             self.append_error('%s: [%d] %s'%(_T('Impossible saving conf file. Reason'),no,msg))
 
@@ -361,11 +361,14 @@ class ManagerBase:
 
 def append_with_colors(list_of_messages, msg, color):
     "Used by Manager::append_error() and Manager::append_note() functions"
-    if type(color) in (list, tuple):
-        c = ''.join(['${%s}'%c for c in color])
+    if color:
+        if type(color) in (list, tuple):
+            c = ''.join(['${%s}'%c for c in color])
+        else:
+            c = '${%s}'%(color or 'WHITE') # default color
+        list_of_messages.append('%s%s${NORMAL}'%(c,msg))
     else:
-        c = '${%s}'%(color or 'WHITE') # default color
-    list_of_messages.append('%s%s${NORMAL}'%(c,msg))
+        list_of_messages.append(msg)
 
 def join_unicode(u_list, sep='\n'):
     'Convert str objects to unicode and catch errors.'

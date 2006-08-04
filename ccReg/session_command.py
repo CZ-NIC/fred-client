@@ -65,7 +65,7 @@ class ManagerCommand(ManagerTransfer):
             command_line,command_help,notice, examples = self._epp_cmd.get_help(command_name)
             if command_line: self.append_note('%s: %s\n'%(_T('Usage'),command_line))
             if command_help: self.append_note(command_help)
-            if notice:       self.append_note('\n${WHITE}%s${NORMAL}'%notice)
+            #if notice:       self.append_note('\n${WHITE}%s${NORMAL}'%notice)
             if len(examples): self.append_note('\n${BOLD}%s:${NORMAL}\n%s'%(_T('Examples'),'\n'.join(examples)))
             command_name='.'
         else:
@@ -73,7 +73,7 @@ class ManagerCommand(ManagerTransfer):
             if command_name == 'command':
                 self.append_note(_T('Instead "command" Select one from this list bellow:'))
                 command_name='.'
-            self.append_note('\n${BOLD}${GREEN}%s:${NORMAL}\n%s'%(_T("Available EPP commands"),", ".join(self._available_commands)))
+            self.append_note('\n${BOLD}%s:${NORMAL}\n%s'%(_T("Available EPP commands"),", ".join(self._available_commands)))
             self.append_note(_T('Type "?command" (or "h(elp) command") for mode details about parameters.'))
             self.append_note(_T('To start the interactive mode of input the command params type: ${BOLD}!command${NORMAL}'))
             self.append_note(_T('For stop interactive input type ! instead of value (or more "!" for leave sub-scope)'))
@@ -82,17 +82,17 @@ class ManagerCommand(ManagerTransfer):
     def make_help_session(self, command_name):
         # Když je dotaz na help
         if not command_name or command_name != '.':
-            self.append_note(_T("""\n${BOLD}${GREEN}Session commands:${NORMAL}
-${BOLD}connect${NORMAL} (or directly login) ${CYAN}# connect to the server (for test only)${NORMAL}
-${BOLD}lang${NORMAL} cs ${CYAN}# set language of the incomming server messages. It MUST be set BEFORE send login! Later has no effect.${NORMAL}
-${BOLD}validate${NORMAL} [on/off] ${CYAN}# set validation or display actual setting${NORMAL}
-${BOLD}poll-ack${NORMAL} [on/off] ${CYAN}# send "poll ack" straight away after "poll req"${NORMAL}
-${BOLD}raw-c${NORMAL}[ommand] [xml]/${BOLD}d${NORMAL}[ict] ${CYAN}# display raw command${NORMAL} (instead of raw you can also type ${BOLD}src${NORMAL})
-${BOLD}raw-a${NORMAL}[nswer] [xml]/${BOLD}d${NORMAL}[ict]  ${CYAN}# display raw answer${NORMAL}
-${BOLD}confirm${NORMAL} ${BOLD}on${NORMAL}/[off]  ${CYAN}# confirm editable commands befor sending to the server${NORMAL}
-${BOLD}config${NORMAL} ${CYAN}# display actual config${NORMAL}
-${BOLD}config${NORMAL} ${BOLD}create${NORMAL} ${CYAN}# create default config file in user home folder.${NORMAL}
-${BOLD}send${NORMAL} [filename] ${CYAN}# send selected file to the server (for test only). If param is not valid file the command shows folder.${NORMAL}
+            self.append_note(_T("""\n${BOLD}Session commands:${NORMAL}
+${BOLD}connect${NORMAL} (or directly login) # connect to the server (for test only)
+${BOLD}lang${NORMAL} cs # set language of the incomming server messages. It MUST be set BEFORE send login! Later has no effect.
+${BOLD}validate${NORMAL} [on/off] # set validation or display actual setting
+${BOLD}poll-ack${NORMAL} [on/off] # send "poll ack" straight away after "poll req"
+${BOLD}raw-c${NORMAL}[ommand] [xml]/${BOLD}d${NORMAL}[ict] # display raw command (instead of raw you can also type ${BOLD}src${NORMAL})
+${BOLD}raw-a${NORMAL}[nswer] [xml]/${BOLD}d${NORMAL}[ict]  # display raw answer
+${BOLD}confirm${NORMAL} ${BOLD}on${NORMAL}/[off] # confirm editable commands befor sending to the server
+${BOLD}config${NORMAL} # display actual config
+${BOLD}config${NORMAL} ${BOLD}create${NORMAL} # create default config file in user home folder.
+${BOLD}send${NORMAL} [filename] # send selected file to the server (for test only). If param is not valid file the command shows folder.
 """))
 
     def epp_command(self, cmdline):
@@ -168,20 +168,20 @@ ${BOLD}send${NORMAL} [filename] ${CYAN}# send selected file to the server (for t
                 if m.group(1)[0]=='c' and self._raw_cmd:
                     # zobrazit EPP příkaz, který se poslal serveru
                     if m.group(2) and m.group(2)[0]=='d': # d dict
-                        self.append_note(_T('Interpreted command'),('GREEN','BOLD'))
+                        self.append_note(_T('Interpreted command'),'BOLD')
                         edoc = eppdoc_client.Message()
                         edoc.parse_xml(self._raw_cmd)
                         self.__put_raw_into_note__(edoc.create_data())
                     else: # e epp
-                        self.append_note(_T('Command source'),('GREEN','BOLD'))
+                        self.append_note(_T('Command source'),'BOLD')
                         self.append_note(self._raw_cmd,'GREEN')
                 if m.group(1)[0]=='a' and (self._dict_answer or self._raw_answer): # a answer
                     # zobrazit odpověd serveru
                     if m.group(2) and m.group(2)[0]=='d': # d dict
-                        self.append_note(_T('Interpreted answer'),('GREEN','BOLD'))
+                        self.append_note(_T('Interpreted answer'),'BOLD')
                         self.__put_raw_into_note__(self._dict_answer)
                     else: # e epp
-                        self.append_note(_T('Answer source'),('GREEN','BOLD'))
+                        self.append_note(_T('Answer source'),'BOLD')
                         self.__put_raw_into_note__(self._raw_answer)
         elif re.match('send',cmd):
             self._raw_cmd = ''

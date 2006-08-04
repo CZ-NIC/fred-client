@@ -122,7 +122,7 @@ class Message(eppdoc_assemble.Message):
             ('vat',(0,1),(),_T('VAT'),()),
             ('ssn',(0,1),(),_T('SSN'),()), # Security social number
             ('notify_email',(0,1),(),_T('notify email'),()),
-            ),notice['create'],('create-contact reg-id "John Doe" jon@mail.com "New York" US "Example Inc." ("Yellow harbor" "Blueberry hill") VA 20166-6503 +1.7035555555 +1.7035555556 (0 d-name "d org." "Street number City" +21321313 +734321 my@mail.com) vat-test ssn-test notify@here.net',)),
+            ),notice['create'],('create-contact reg-id "John Doe" jon@mail.com "New York" US "Example Inc." ("Yellow harbor" "Blueberry hill") VA 20166-6503 +1.7035555555 +1.7035555556 (0 1 1 1 1 1 1) vat-test ssn-test notify@here.net',)),
         #----------------------------------------------------
         'create_domain': (2,(
             ('name',(1,1),(),_T('domain name'),()),
@@ -192,7 +192,7 @@ class Message(eppdoc_assemble.Message):
                 ('unit',(1,1),('y','m'),_T('period unit (y year(default), m month)'),()),
             )),
             ('valExDate',(0,1),(),_T('valExDate'),()),
-            ),notice['renew'],('renew-domain-enum nic.cz 2023-06-02 () 2006-08-09')),
+            ),notice['renew'],('renew-domain-enum nic.cz 2023-06-02 () 2006-08-09',)),
         #----------------------------------------------------
         'update_contact': (1,(
             ('contact-id',(1,1),(),_T('your contact ID'),()),

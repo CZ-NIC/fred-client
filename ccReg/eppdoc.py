@@ -432,7 +432,7 @@ def get_dct_value(dict_data, names, sep='\n', attr_name='', defval=''):
 def __pfd__(dict_data,color=0,indent=0):
     "Prepare dictionary data for display."
     if color:
-        patt=('${BOLD}%s:${NORMAL} %s','[${YELLOW}${BOLD}ATTR:${NORMAL} %s]','%s[${GREEN}${BOLD}%s${NORMAL}]:','%s[${GREEN}${BOLD}%s${NORMAL}]: %s')
+        patt=('${BOLD}%s:${NORMAL} %s','[${YELLOW}ATTR:${NORMAL} %s]','%s[${GREEN}%s${NORMAL}]:','%s[${GREEN}%s${NORMAL}]: %s')
     else:
         patt=('%s: %s','[ATTR: %s]','%s[%s]:','%s[%s]: %s')
     body=[]
@@ -485,7 +485,7 @@ def prepare_for_display(dict_values,color=0,indent=0):
             if data: body.append(data)
     else:
         if color:
-            patt = ('%s[${YELLOW}${BOLD}ATTR${NORMAL}: %s]','%s[${GREEN}${BOLD}%s${NORMAL}]:\n%s','${BOLD}%s:${NORMAL} %s')
+            patt = ('%s[${YELLOW}${BOLD}ATTR${NORMAL}: %s]','%s[${GREEN}%s${NORMAL}]:\n%s','${GREEN}%s:${NORMAL} %s')
         else:
             patt = ('%s[ATTR: %s]','%s[%s]:\n%s','%s: %s')
         for key in dict_values.keys():
