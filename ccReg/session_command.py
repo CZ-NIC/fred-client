@@ -6,7 +6,7 @@ import dircache # jen pro testování. v ostré verzi to nebude
 
 import eppdoc
 import eppdoc_client
-from translate import _T
+from translate import _T, encoding
 
 from session_base import *
 from session_transfer import ManagerTransfer
@@ -42,7 +42,7 @@ class ManagerCommand(ManagerTransfer):
         "Check if parameters are valid. Params save into dict for use to assembling EPP document."
         errors, example = self._epp_cmd.parse_cmd(command_name, cmdline, self._conf, interactive)
         if errors: self._errors.extend(errors)
-        if example: self.append_note('${BOLD}%s:${NORMAL}\n%s'%(_T('Example of input'),example))
+        if example: self.append_note('${BOLD}%s:${NORMAL}\n%s'%(_T('Example of input'),example.encode(encoding)))
         return (len(errors) == 0)
 
     def get_default_params_from_config(self, command_name):
@@ -62,10 +62,10 @@ class ManagerCommand(ManagerTransfer):
         if command_name and command_name != 'command':
             # s parametrem - zobrazí se help na vybraný příkaz
             self.append_note('%s: ${BOLD}${GREEN}%s${NORMAL}'%(_T("Help for command"),command_name))
-            command_line,command_help,notice, examples = self._epp_cmd.get_help(command_name)
+            command_line,command_help, notice, examples = self._epp_cmd.get_help(command_name)
             if command_line: self.append_note('%s: %s\n'%(_T('Usage'),command_line))
             if command_help: self.append_note(command_help)
-            #if notice:       self.append_note('\n${WHITE}%s${NORMAL}'%notice)
+            if notice:       self.append_note('\n${WHITE}%s${NORMAL}'%notice)
             if len(examples): self.append_note('\n${BOLD}%s:${NORMAL}\n%s'%(_T('Examples'),'\n'.join(examples)))
             command_name='.'
         else:
@@ -107,7 +107,7 @@ ${BOLD}send${NORMAL} [filename] # send selected file to the server (for test onl
                 else:
                     self.append_error(self._epp_cmd.get_errors()) # any problems on the command line occurrs
             else:
-                self.append_note(_T("Unknown EPP command: %s.")%cmdline)
+                self.append_note(_T("Unknown EPP command: %s.")%cmdline.encode(encoding))
                 self.append_note('(%s: ${BOLD}help${NORMAL})'%_T('For more type'))
                 self._epp_cmd.help_check_name(self._notes, cmdline)
         return command_name
@@ -197,7 +197,7 @@ ${BOLD}send${NORMAL} [filename] # send selected file to the server (for test onl
                     stuff = dircache.listdir(filepath)
                 except OSError, (no, msg):
                     stuff = 'OSError: [%d] %s'%(no, msg)
-                self.append_note(stuff)
+                self.append_note(str(stuff))
             else:
                 command_name, xmldoc = self.load_filename(filepath)
         elif re.match('connect',cmd):
@@ -219,6 +219,12 @@ ${BOLD}send${NORMAL} [filename] # send selected file to the server (for test onl
             self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('poll ack is'),{False:'OFF',True:'ON'}[self._session[POLL_AUTOACK]]))
         else:
             # příkazy pro EPP
+            if type(cmd) != unicode:
+                try:
+                    cmd = unicode(cmd, encoding)
+                except UnicodeDecodeError, msg:
+                    self.append_error('UnicodeDecodeError: %s'%msg)
+                    cmd = unicode(repr(cmd), encoding)
             command_name = self.epp_command(cmd)
             self._raw_cmd = self._epp_cmd.get_xml()
             self.append_error(self._epp_cmd.fetch_errors()) # any problems on the command line occurrs

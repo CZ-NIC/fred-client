@@ -2,9 +2,10 @@
 #!/usr/bin/env python
 import operator
 import eppdoc
+from eppdoc_assemble import contact_disclose
 from session_base import *
 from session_command import ManagerCommand
-from translate import _T
+from translate import _T, encoding
 
 SEPARATOR = '-'*60
 ANSW_RESULT, ANSW_CODE, ANSW_MSG = range(3)
@@ -183,12 +184,11 @@ class ManagerReceiver(ManagerCommand):
             resData = self._dict_answer['response']['resData']
             contact_infData = resData['contact:infData']
             contact_postalInfo = contact_infData['contact:postalInfo']
-            contact_disclose = contact_infData['contact:disclose']
         except KeyError, msg:
             self.append_error('answer_response_contact_info KeyError: %s'%msg)
         else:
             self.__append_note_from_dct__(contact_infData,
-                ('contact:id','contact:roid','contact:status s','contact:disclose flag',
+                ('contact:id','contact:roid','contact:status s',
                 'contact:voice','contact:fax','contact:email','contact:status ok',
                 'contact:crDate','contact:crID',))
             self.__append_note_from_dct__(contact_postalInfo,('contact:name','contact:org'))
@@ -196,14 +196,17 @@ class ManagerReceiver(ManagerCommand):
             if contact_addr:
                 self.__append_note_from_dct__(contact_addr,('contact:sp','contact:cc',
                     'contact:city','contact:street','contact:pc',))
-            contact_disclose = contact_infData.get('contact:disclose',None)
-            if contact_disclose:
-                # Disclosed nodes are always empty. Name of node express the value in this case!
-                # Value can be only 0/1. What value is you see in disclose.flag attribute.
-                disclosed = []
-                for k,v in contact_disclose.items():
-                    if v == {}: disclosed.append(k)
-                dct['contact:disclose'] = disclosed
+            disclosed = list(contact_disclose) # eppdoc_assemble.contact_disclose
+            not_disclosed = []
+            condis = contact_infData.get('contact:disclose',None)
+            if condis:
+                for k,v in condis.items():
+                    if v == {}: not_disclosed.append(k[8:])
+            for name in not_disclosed:
+                if name in disclosed:
+                    disclosed.pop(disclosed.index(name))
+            dct['contact:disclose'] = disclosed
+            dct['contact:hide'] = not_disclosed
 
     def answer_response_domain_info(self, data):
         "data=(response,result,code,msg)"
@@ -408,7 +411,8 @@ def adjust_dict(dct_data):
     if type(dct_data) == dict:
         for k in dct_data:
             if dct_data[k] is None: continue
-            if type(dct_data[k]) in (str,unicode):
+            if type(dct_data[k]) == str: dct_data[k] = unicode(dct_data[k], encoding)
+            if type(dct_data[k]) == unicode:
                 dct[k] = [dct_data[k]]
             elif type(dct_data[k]) == dict:
                 d = adjust_dict(dct_data[k])
@@ -420,7 +424,9 @@ def adjust_dict(dct_data):
                         d = adjust_dict(item)
                         if len(d): dct[k].append(d)
                     else:
-                        if item != None: dct[k].append(item)
+                        if item != None:
+                            if type(item) == str: item = unicode(item, encoding)
+                            dct[k].append(item)
     return dct
 
 def adjust_dct_keys(dct, names):

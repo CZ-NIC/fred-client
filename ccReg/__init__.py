@@ -159,7 +159,8 @@ class Client:
         return self._epp.api_command('check_nsset',{'name':name})
 
     def create_contact(self, contact_id, name, email, city, cc, org=None, 
-            street=None, sp=None, pc=None, voice=None, fax=None, disclose=None,
+            street=None, sp=None, pc=None, voice=None, fax=None, 
+            disclose_flag=None, disclose=None,
             vat=None, ssn=None, notify_email=None):
         """Usage: create-contact contact-id name email city cc
 
@@ -176,22 +177,8 @@ class Client:
     pc (optional)
     voice (optional)
     fax (optional)
-    disclose (optional)
-
-           The "flag" attribute contains "0"/"1".
-           A value "1" notes a client preference to allow disclosure 
-           of the specified elements as an exception to the stated data 
-           collection policy.  A value "0" notes a client preference to not allow
-           disclosure of the specified elements as an exception to the stated
-           data collection policy.
-   
-        flag (required) accept only values: (0,1)
-        name (optional) accept only values: (0,1)
-        org (optional) accept only values: (0,1)
-        addr (optional) accept only values: (0,1)
-        voice (optional) accept only values: (0,1)
-        fax (optional) accept only values: (0,1)
-        email (optional) accept only values: (0,1)
+    disclose_flag (optional) y/n default y
+    disclose (optional) list: (name,org,addr,voice,fax,email)
     vat (optional)
     ssn (optional)
     notify_email (optional)
@@ -209,7 +196,8 @@ class Client:
         return self._epp.api_command('create_contact',{
             'contact_id':contact_id, 'name':name, 'email':email, 'city':city, 'cc':cc,
             'org':org, 'street':street, 'sp':sp, 'pc':pc, 'voice':voice, 'fax':fax,
-            'disclose':disclose, 'vat':vat, 'ssn':ssn, 'notify_email':notify_email})
+            'disclose_flag':disclose_flag, 'disclose':disclose, 'vat':vat, 'ssn':ssn, 
+            'notify_email':notify_email})
 
     def create_domain(self, name, pw, nsset, registrant, period=None, contact=None):
         """Usage: create-domain name pw nsset registrant
@@ -568,7 +556,7 @@ class Client:
 
     PARAMS:
 
-    contact-id (required)
+    contact_id (required)
     add (optional)              list with max 5 items.
     rem (optional)              list with max 5 items.
     chg (optional)
@@ -584,14 +572,8 @@ class Client:
         voice (optional)
         fax (optional)
         email (optional)
-        disclose (optional)
-            flag (required) accept only values: (0,1)
-            name (optional)
-            org (optional)
-            addr (optional)
-            voice (optional)
-            fax (optional)
-            email (optional)
+        disclose_flag (optional) y/n default y
+        disclose (optional) list: (name,org,addr,voice,fax,email)
         vat (optional)
         ssn (optional)
         notifyEmail (optional)
@@ -600,7 +582,7 @@ class Client:
 
     The EPP "update" command is used to update an instance of an existing object.
         """
-        return self._epp.api_command('update_contact',{'contact-id':contact_id, 'add':add, 'rem':rem, 'chg':chg})
+        return self._epp.api_command('update_contact',{'contact_id':contact_id, 'add':add, 'rem':rem, 'chg':chg})
 
 
     def update_domain(self, name, add=None, rem=None, chg=None):

@@ -72,11 +72,7 @@ class Message:
                 xml = f.read()
             else:
                 # Kdyz chybi funkce PrettyPrint()
-                try:
-                    xml = self.dom.toprettyxml('', '') # , self.encoding doesn't work in some OS
-                except UnicodeDecodeError, msg:
-                    self.errors.append((0,'dom.toprettyxml (encoding: %s) UnicodeDecodeError'%self.encoding, msg))
-                    xml = ''
+                xml = self.dom.toprettyxml('', '', self.encoding)
         # hook parametru standalone
         return re.sub('(<?xml .+?)\?>','\\1 standalone="no"?>',xml, re.I)
         return xml

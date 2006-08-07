@@ -14,9 +14,10 @@ import ConfigParser
 import eppdoc
 import cmd_parser
 import session_base
-from translate import _T
+from translate import _T, encoding
 
 UNBOUNDED = None
+contact_disclose = ('name','org','addr','voice','fax','email')
 
 class Message(eppdoc.Message):
     "Client EPP commands."
@@ -113,7 +114,7 @@ class Message(eppdoc.Message):
                     # check allowed values
                     for value in dct_values[name]:
                         if value not in allowed:
-                            errors.append('%s: %s %s'%(scope_name,_T('Value "%s" is not allowed here. Valid:')%value,str(allowed)))
+                            errors.append('%s: %s %s'%(scope_name,_T('Value "%s" is not allowed here. Valid:')%value.encode(encoding),str(allowed)))
                 # walk throught descendants:
                 if children:
                     for dct in dct_values[name]:
@@ -168,9 +169,9 @@ class Message(eppdoc.Message):
             stop=0
             while max is UNBOUNDED or cr < max:
                 parents[-1][1] = cr
-                prompt = '!%s:%s (%s) > '%(command_name,__scope_to_string__(parents), param_reqired_type[req])
+                prompt = u'!%s:%s (%s) > '%(command_name,__scope_to_string__(parents), unicode(param_reqired_type[req],encoding))
                 try:
-                    param = raw_input(prompt).strip()
+                    param = raw_input(prompt.encode(encoding)).strip()
                 except (KeyboardInterrupt, EOFError):
                     stop=1
                     break
@@ -183,6 +184,12 @@ class Message(eppdoc.Message):
                             dct[name] = ['']
                     break
                 else:
+                    if type(param) != unicode:
+                        try:
+                            param = unicode(param, encoding)
+                        except UnicodeDecodeError, msg:
+                            errors.append('UnicodeDecodeError: %s'%msg)
+                            param = unicode(repr(param), encoding)
                     if param[0] == '!': break
                     if param[0] != '(': param = append_quotes(param)
                     err = cmd_parser.parse(dct, ((name,min_max,allowed,'',()),), param)
@@ -243,7 +250,7 @@ class Message(eppdoc.Message):
             # build command_line example
             error.append('%s %d.'%(_T('Missing values. Required minimum is'),vals[0]))
             error.append('%s: %s'%(_T('Type'),self.get_help(command_name)[0]))
-            error.append('(%s: ${BOLD}help %s${NORMAL})'%(_T('For more type'),command_name.replace('_','-')))
+            error.append('(%s: ${BOLD}help %s${NORMAL})'%(_T('For more type'),command_name.replace('_','-').encode(encoding)))
         self._dct = dct
         return error, example
 
@@ -465,11 +472,12 @@ class Message(eppdoc.Message):
         if __has_key__(dct,'fax'): data.append(('contact:create','contact:fax', dct['fax'][0]))
         data.append(('contact:create','contact:email',dct['email'][0])) # required
         # --- BEGIN disclose ------
-        if __has_key_dict__(dct,'disclose'):
-            disclose = dct['disclose'][0]
-            data.append(('contact:create','contact:disclose','',(('flag',disclose['flag'][0]),)))
-            for key in ('name','org','addr','voice','fax','email'):
-                if __has_key__(disclose,key): data.append(('contact:disclose','contact:%s'%key,disclose[key][0]))
+        disclose = dct.get('disclose',[])
+        if len(disclose):
+            flag = {'y':'1','n':'0'}.get(dct.get('disclose_flag',['n'])[0], '0')
+            data.append(('contact:create','contact:disclose','',(('flag',flag),)))
+            for key in disclose:
+                data.append(('contact:disclose','contact:%s'%key))
         # --- END disclose ------
         if __has_key__(dct,'vat'): data.append(('contact:create','contact:vat', dct['vat'][0]))
         if __has_key__(dct,'ssn'): data.append(('contact:create','contact:ssn', dct['ssn'][0]))
@@ -582,7 +590,7 @@ class Message(eppdoc.Message):
             ('epp', 'command'),
             ('command', 'update'),
             ('update', 'contact:update', '', attr),
-            ('contact:update','contact:id', dct['contact-id'][0]),
+            ('contact:update','contact:id', dct['contact_id'][0]),
             ]
         if __has_key__(dct,'add'):
             data.append(('contact:update', 'contact:add'))
@@ -605,13 +613,14 @@ class Message(eppdoc.Message):
                         if __has_key__(addr,key): data.append(('contact:addr','contact:%s'%key, addr[key][0]))
                 for key in ('voice','fax','email'):
                     if __has_key__(chg,key): data.append(('contact:chg','contact:%s'%key, chg[key][0]))
-                if __has_key_dict__(chg,'disclose'):
-                    # --- BEGIN disclose ------
-                    disclose = chg['disclose'][0]
-                    data.append(('contact:chg','contact:disclose','',(('flag',disclose['flag'][0]),)))
-                    for key in ('name','org','addr','voice','fax','email'):
-                        if __has_key__(disclose,key): data.append(('contact:disclose','contact:%s'%key,disclose[key][0]))
-                # --- END disclose ------
+            # --- BEGIN disclose ------
+            disclose = chg.get('disclose',[])
+            if len(disclose):
+                flag = {'y':'1','n':'0'}.get(chg.get('disclose_flag',['n'])[0], '0')
+                data.append(('contact:chg','contact:disclose','',(('flag',flag),)))
+                for key in disclose:
+                    data.append(('contact:disclose','contact:%s'%key))
+            # --- END disclose ------
         for key in ('vat','ssn'):
             if __has_key__(dct,key): data.append(('contact:chg','contact:%s'%key, dct[key][0]))
         if __has_key__(dct,'notify_email'): data.append(('contact:chg','contact:notifyEmail', dct['notify_email'][0]))

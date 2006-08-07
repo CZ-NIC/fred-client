@@ -37,7 +37,8 @@ notice = {'check':_T("""
 """),
    'delete':_T("""The EPP "delete" command is used to remove an instance of an existing object."""),
    'renew':_T("""The EPP "renew" command is used to extend validity of an existing object."""),
-   'update':_T("""The EPP "update" command is used to update an instance of an existing object.""")
+   'update':_T("""The EPP "update" command is used to update an instance of an existing object."""),
+   'disclose':_T('Names what are not included into disclose list are set to opposite value of the disclose flag value.'),
 }
 
 class Message(eppdoc_assemble.Message):
@@ -110,19 +111,12 @@ class Message(eppdoc_assemble.Message):
             ('pc',(0,1),(),_T('postal code'),()),
             ('voice',(0,1),(),_T('voice (phone number)'),()),
             ('fax',(0,1),(),_T('fax number'),()),
-            ('disclose',(0,1),(),_T('disclose part'),(
-                ('flag',(1,1),('0','1'),_T('disclose flag'),()),
-                ('name',(0,1),('0','1'),_T('disclose name'),()),
-                ('org',(0,1),('0','1'),_T('disclose organisation name'),()),
-                ('addr',(0,1),('0','1'),_T('disclose address'),()),
-                ('voice',(0,1),('0','1'),_T('disclose voice (phone)'),()),
-                ('fax',(0,1),('0','1'),_T('disclose fax'),()),
-                ('email',(0,1),('0','1'),_T('disclose email'),()),
-            )),
+            ('disclose_flag',(0,1),('y','n'),_T('disclose flag (default y)'),()),
+            ('disclose',(0,len(eppdoc_assemble.contact_disclose)),eppdoc_assemble.contact_disclose,_T('not disclose'),()),
             ('vat',(0,1),(),_T('VAT'),()),
             ('ssn',(0,1),(),_T('SSN'),()), # Security social number
             ('notify_email',(0,1),(),_T('notify email'),()),
-            ),notice['create'],('create-contact reg-id "John Doe" jon@mail.com "New York" US "Example Inc." ("Yellow harbor" "Blueberry hill") VA 20166-6503 +1.7035555555 +1.7035555556 (0 1 1 1 1 1 1) vat-test ssn-test notify@here.cz',)),
+            ),'%s\n%s'%(notice['create'],notice['disclose']),('create-contact reg-id "John Doe" jon@mail.com "New York" US "Example Inc." ("Yellow harbor" "Blueberry hill") VA 20166-6503 +1.7035555555 +1.7035555556 n (org voice fax email) vat-test ssn-test notify@here.cz',)),
         #----------------------------------------------------
         'create_domain': (2,(
             ('name',(1,1),(),_T('domain name'),()),
@@ -195,7 +189,7 @@ class Message(eppdoc_assemble.Message):
             ),notice['renew'],('renew-domain-enum nic.cz 2023-06-02 () 2006-08-09',)),
         #----------------------------------------------------
         'update_contact': (1,(
-            ('contact-id',(1,1),(),_T('your contact ID'),()),
+            ('contact_id',(1,1),(),_T('your contact ID'),()),
             ('add',(0,5),update_status,_T('add status'),()),
             ('rem',(0,5),update_status,_T('remove status'),()),
             ('chg',(0,1),(),_T('change status'),(
@@ -213,23 +207,16 @@ class Message(eppdoc_assemble.Message):
                 ('voice',(0,1),(),_T('voice (phone number)'),()),
                 ('fax',(0,1),(),_T('fax number'),()),
                 ('email',(0,1),(),_T('your email'),()),
-                ('disclose',(0,1),(),_T('disclose part'),(
-                    ('flag',(1,1),('0','1'),_T('disclose flag'),()),
-                    ('name',(0,1),(),_T('disclose name'),()),
-                    ('org',(0,1),(),_T('disclose organisation name'),()),
-                    ('addr',(0,1),(),_T('disclose address'),()),
-                    ('voice',(0,1),(),_T('disclose voice (phone)'),()),
-                    ('fax',(0,1),(),_T('disclose fax'),()),
-                    ('email',(0,1),(),_T('disclose email'),()),
-                )),
+                ('disclose_flag',(0,1),('y','n'),_T('disclose flag (default y)'),()),
+                ('disclose',(0,len(eppdoc_assemble.contact_disclose)),eppdoc_assemble.contact_disclose,_T('disclosed values'),()),
                 ('vat',(0,1),(),_T('VAT'),()),
                 ('ssn',(0,1),(),_T('SSN'),()),
                 ('notify_email',(0,1),(),_T('notify email'),()),
             )),
-            ),notice['update'],(
+            ),'%s\n%s'%(notice['update'],notice['disclose']),(
                     'update-contact reg-id clientDeleteProhibited',
                     'update-contact reg-id (clientDeleteProhibited linked ok)',
-                    "update_contact reg-id (linked ok) clientDeleteProhibited (('John Doe' 'Doe Company' (('Yellow line', 'Downing street') 'New York' VA 123456 US)) +123.45674654 +123.1264897 mail@mycom.cz (0 'My Name' 'My org' address +213.5467897 +123.547894654 my.mail@co.cz) 1234564 1245678 not@mail.cz)",
+                    "update_contact reg-id (linked ok) clientDeleteProhibited (('John Doe' 'Doe Company' (('Yellow line', 'Downing street') 'New York' VA 123456 US)) +123.45674654 +123.1264897 mail@mycom.cz n (org voice fax email) 1234564 1245678 not@mail.cz)",
                     "update-contact reg-id '' '' (('' '' ('' 'New York' '' '' US)) '' '' '' () '' '' notify@mail.cz)",
                     "update-contact reg-id '' '' (('' '' ('' 'New York' '' '' US)))",
             )),

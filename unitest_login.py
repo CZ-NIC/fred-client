@@ -111,6 +111,7 @@ class Test(unittest.TestCase):
         self.assert_(len(error)==0, error)
         self.assertEqual(code, 1000, 'Nepodarilo se zadat nove heslo. Code: %d.\nDuvod: %s'%(code,self.epc.is_val('reason')))
 
+
 if __name__ == '__main__':
     if len(sys.argv) > 1: HOST = sys.argv[1]
     suite = unittest.TestSuite()

@@ -144,7 +144,7 @@ class ManagerBase:
         empty_row = '%s%s%s'%(frm[1],' '*msglen,frm[1])
         horizontal_line = frm[0]*msglen
         return '%s%s%s\n%s\n%s%s%s\n%s\n%s%s%s\n%s\n%s'%(frm[2],horizontal_line,frm[3],empty_row,frm[1],welcome,frm[1],empty_row,frm[4],horizontal_line,frm[5],
-             'Version 1.1.3 Basic release.',
+             'Version 1.1.4 Basic release.',
             _T('For help type "help" (or "h", "?")'))
 
 
@@ -326,7 +326,6 @@ class ManagerBase:
         "Check XML EPP by xmllint. OUT: '' - correct; '...' any error occurs."
         if not self._validate: return '' # validace je vypnutá
         tmpname = os.path.join(os.path.expanduser('~'),'eppdoc_tmp_test_validity.xml')
-        message = get_ltext(message)
         try:
             open(tmpname,'w').write(message)
         except IOError, (no, msg):

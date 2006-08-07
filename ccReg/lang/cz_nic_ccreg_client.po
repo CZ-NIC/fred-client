@@ -385,36 +385,12 @@ msgid "fax number"
 msgstr "fax"
 
 #: ccReg/eppdoc_client.py:113 ccReg/eppdoc_client.py:216
-msgid "disclose part"
-msgstr "část pro veřejnost"
+msgid "not disclose"
+msgstr "nezveřejňovat"
 
-#: ccReg/eppdoc_client.py:114 ccReg/eppdoc_client.py:217
-msgid "disclose flag"
-msgstr "indikátor zveřejnění"
-
-#: ccReg/eppdoc_client.py:115 ccReg/eppdoc_client.py:218
-msgid "disclose name"
-msgstr "veřejné jméno"
-
-#: ccReg/eppdoc_client.py:116 ccReg/eppdoc_client.py:219
-msgid "disclose organisation name"
-msgstr "veřejný název organizace"
-
-#: ccReg/eppdoc_client.py:117 ccReg/eppdoc_client.py:220
-msgid "disclose address"
-msgstr "veřejná adresa"
-
-#: ccReg/eppdoc_client.py:118 ccReg/eppdoc_client.py:221
-msgid "disclose voice (phone)"
-msgstr "veřejný telefon"
-
-#: ccReg/eppdoc_client.py:119 ccReg/eppdoc_client.py:222
-msgid "disclose fax"
-msgstr "veřejný fax"
-
-#: ccReg/eppdoc_client.py:120 ccReg/eppdoc_client.py:223
-msgid "disclose email"
-msgstr "veřejný email"
+#: ccReg/eppdoc_client.py:208
+msgid "disclose flag (default y)"
+msgstr "přepínač zveřejnit (default y)"
 
 #: ccReg/eppdoc_client.py:122 ccReg/eppdoc_client.py:225
 msgid "VAT"

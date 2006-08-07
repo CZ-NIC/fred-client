@@ -44,15 +44,7 @@ CCREG_CONTACT = (
     'pc': '', #(nepovinný) PSČ
     'voice': '', #(nepovinný) telefon
     'fax': '', #(nepovinný) fax
-    'disclose': { #(nepovinný) část pro veřejnost
-        'flag': '', #(povinný) povoleny pouze hodnoty: (0,1) indikátor zveřejnění
-        'name': '', #(nepovinný) veřejné jméno
-        'org': '', #(nepovinný) veřejný název organizace
-        'addr': '', #(nepovinný) veřejná adresa
-        'voice': '', #(nepovinný) veřejný telefon
-        'fax': '', #(nepovinný) veřejný fax
-        'email': '', #(nepovinný) veřejný email
-        },
+    'disclose': ('name','org','addr','voice','fax','email'),
     'vat': '', #(nepovinný) DPH
     'ssn': '', #(nepovinný) SSN
     'notify_email': '', #(nepovinný) oznámení na email
@@ -69,15 +61,8 @@ CCREG_CONTACT = (
     'pc': '12300', #(nepovinný) PSČ
     'voice': '+123.456789', #(nepovinný) telefon
     'fax': '+321.564987', #(nepovinný) fax
-    'disclose': { #(nepovinný) část pro veřejnost
-        'flag': '1', #(povinný) povoleny pouze hodnoty: (0,1) indikátor zveřejnění
-        'name': '1', #(nepovinný) veřejné jméno
-        'org': '1', #(nepovinný) veřejný název organizace
-        'addr': '1', #(nepovinný) veřejná adresa
-        'voice': '1', #(nepovinný) veřejný telefon
-        'fax': '1', #(nepovinný) veřejný fax
-        'email': '1', #(nepovinný) veřejný email
-        },
+    'disclose_flag': '0',
+    'disclose': ('name','org','addr','voice','fax','email'),
     'vat': '963', #(nepovinný) DPH
     'ssn': '852', #(nepovinný) SSN
     'notify_email': 'info@rehorovi.cz', #(nepovinný) oznámení na email
@@ -94,17 +79,8 @@ CCREG_CONTACT = (
     'pc': '23101', #(nepovinný) PSČ
     'voice': '+321.987654', #(nepovinný) telefon
     'fax': '+321.987564', #(nepovinný) fax
-    'disclose': { #(nepovinný) část pro veřejnost
-##        Hodnota "true" nebo "1" oznamuje klientovu volbu povolit odkrytí určených prvků.
-##        Hodnota "false" nebo "0" oznamuje klientovu volbu NEpovolit odkrytí určených prvků.
-        'flag': '0', #(povinný) povoleny pouze hodnoty: (0,1) indikátor zveřejnění
-        'name': '1', #(nepovinný) veřejné jméno
-        'org': '1', #(nepovinný) veřejný název organizace
-        'addr': '1', #(nepovinný) veřejná adresa
-        'voice': '1', #(nepovinný) veřejný telefon
-        'fax': '1', #(nepovinný) veřejný fax
-        'email': '1', #(nepovinný) veřejný email
-        },
+    'disclose_flag': '0',
+    'disclose': ('name','org','addr','voice','fax','email'),
     'vat': '753', #(nepovinný) DPH
     'ssn': '357', #(nepovinný) SSN
     'notify_email': 'info@zlucnikovi.cz', #(nepovinný) oznámení na email
@@ -204,15 +180,8 @@ class Test(unittest.TestCase):
             'voice': d['voice'],
             'fax': d['fax'],
             'email': d['email'],
-            'disclose': {
-                'flag': dd['flag'],
-                'name': dd['name'],
-                'org': dd['org'],
-                'addr': dd['addr'],
-                'voice': dd['voice'],
-                'fax': dd['fax'],
-                'email': dd['email'],
-            },
+            'disclose_flag': '1',
+            'disclose': ('name','org','addr','voice','fax','email'),
             'vat': d['vat'],
             'ssn': d['ssn'],
             'notify_email': d['notify_email'],
