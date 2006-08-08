@@ -39,7 +39,7 @@ class Lorry:
             pass
         try:
             tc = socket.getaddrinfo(DATA[0], DATA[1])
-            self._conn = socket.socket(tc[0][0], tc[0][1], tc[0][2])
+            self._conn = socket.socket(tc[0][0], socket.SOCK_STREAM)
             ok = 1
         except socket.error, (no,msg):
             self._errors.append('Create socket.error [%d] %s'%(no,msg))
