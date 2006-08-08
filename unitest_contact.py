@@ -17,9 +17,12 @@
 2.14 Smazani kontaktu 
 2.15 Check na smazany kontakt
 """
-import sys
+import sys, os, re
 import unittest
 import ccReg
+from ccReg.translate import encoding
+from ccReg.eppdoc_assemble import contact_disclose
+import ccReg.eppdoc
 
 #----------------------------------------------
 # Nastavení serveru, na kterém se bude testovat
@@ -29,9 +32,9 @@ HOST = None # 'curlew'
 
 # CCREG_CONTACT[1] - create
 # CCREG_CONTACT[2] - modify
-# symbols: @ - attribute
+# CCREG_CONTACT[3] - chg (changes)
 CONTACT_HANDLE = 'test001'
-CCREG_CONTACT = ( 
+CCREG_CONTACT = [
     {   # template
     'id': '', # (povinný) vaše kontaktní ID
     'name': '', # (povinný) vaše jméno
@@ -44,6 +47,7 @@ CCREG_CONTACT = (
     'pc': '', #(nepovinný) PSČ
     'voice': '', #(nepovinný) telefon
     'fax': '', #(nepovinný) fax
+    'disclose_flag':'n',
     'disclose': ('name','org','addr','voice','fax','email'),
     'vat': '', #(nepovinný) DPH
     'ssn': '', #(nepovinný) SSN
@@ -61,8 +65,8 @@ CCREG_CONTACT = (
     'pc': '12300', #(nepovinný) PSČ
     'voice': '+123.456789', #(nepovinný) telefon
     'fax': '+321.564987', #(nepovinný) fax
-    'disclose_flag': '0',
-    'disclose': ('name','org','addr','voice','fax','email'),
+    'disclose_flag': 'n',
+    'disclose': ('name',), # ,'org','addr','voice','fax','email'
     'vat': '963', #(nepovinný) DPH
     'ssn': '852', #(nepovinný) SSN
     'notify_email': 'info@rehorovi.cz', #(nepovinný) oznámení na email
@@ -79,19 +83,42 @@ CCREG_CONTACT = (
     'pc': '23101', #(nepovinný) PSČ
     'voice': '+321.987654', #(nepovinný) telefon
     'fax': '+321.987564', #(nepovinný) fax
-    'disclose_flag': '0',
-    'disclose': ('name','org','addr','voice','fax','email'),
+    'disclose_flag': 'y',
+    'disclose': ('voice','fax','email'), # 'name','org','addr',
     'vat': '753', #(nepovinný) DPH
     'ssn': '357', #(nepovinný) SSN
     'notify_email': 'info@zlucnikovi.cz', #(nepovinný) oznámení na email
     },
-)
+]
+
+d = CCREG_CONTACT[2]
+CCREG_CONTACT.append({ # chg part to modify contact
+            'postal_info': {
+                'name': d['name'],
+                'org': d['org'],
+                'addr':{
+                    'street': d['street'],
+                    'city':  d['city'],
+                    'sp': d['sp'],
+                    'pc': d['pc'],
+                    'cc': d['cc'],
+                },
+            },
+            'voice': d['voice'],
+            'fax': d['fax'],
+            'email': d['email'],
+            'disclose_flag': d['disclose_flag'],
+            'disclose': d['disclose'],
+            'vat': d['vat'],
+            'ssn': d['ssn'],
+            'notify_email': d['notify_email'],
+    })
 
 class Test(unittest.TestCase):
 
     def test_2_000(self):
         '2.0 Inicializace spojeni a definovani testovacich handlu'
-        global epp_cli, handle_contact, handle_nsset
+        global epp_cli, handle_contact, handle_nsset, log_fp
         # Natvrdo definovany handle:
         handle_contact = CCREG_CONTACT[1]['id'] # 'neexist01'
         handle_nsset = 'neexist01'
@@ -109,149 +136,147 @@ class Test(unittest.TestCase):
         self.assert_(epp_cli.is_logon(), 'Nepodarilo se zalogovat.')
         self.assert_(len(handle_contact), 'Nepodarilo se nalezt volny handle contact.')
         self.assert_(len(handle_nsset), 'Nepodarilo se nalezt volny handle nsset.')
+        # logovací soubor
+        filepath = os.path.join(os.path.expanduser('~'),'unittest_contact_log.txt')
+        try:
+            log_fp = open(filepath,'w')
+        except IOError, (no, msg):
+            pass # ignore if log file doenst created
     
     def test_2_010(self):
         '2.1 Check na seznam dvou neexistujicich kontaktu'
         handles = (handle_contact,'neexist002')
         epp_cli.check_contact(handles)
+        __write_log__()
         for name in handles:
             self.assertEqual(epp_cli.is_val(('data',name)), 1, 'Kontakt existuje: %s'%name)
 
     def test_2_020(self):
         '2.2 Pokus o Info na neexistujici kontakt'
         epp_cli.info_contact(handle_contact)
-        self.assertNotEqual(epp_cli.is_val(), 1000)
+        __write_log__()
+        self.assertNotEqual(epp_cli.is_val(), 1000, 'handle_contact %s existuje'%handle_contact)
 
     def test_2_030(self):
         '2.3 Zalozeni neexistujiciho noveho kontaktu'
         d = CCREG_CONTACT[1]
         epp_cli.create_contact(handle_contact, 
             d['name'], d['email'], d['city'], d['cc'], d['org'], 
-            d['street'], d['sp'], d['pc'], d['voice'], d['fax'], d['disclose'],
+            d['street'], d['sp'], d['pc'], d['voice'], d['fax'], d['disclose_flag'], d['disclose'],
             d['vat'], d['ssn'], d['notify_email'])
+        __write_log__()
         self.assertEqual(epp_cli.is_val(), 1000, __get_reason__())
 
-##    def test_2_031(self):
-##        '2.3.1 Overevni vsech hodnot vznikleho kontaktu'
-##        epp_cli.info_contact(handle_contact)
-##        errors, disclose_names = __info_contact__('contact', CCREG_CONTACT[1], epp_cli.is_val('data'))
-##        err = __check_disclosed_over__(disclose_names, epp_cli.is_val(('data','contact:disclose')))
-##        if len(err): errors.extend(err)
-##        self.assert_(len(errors), '\n'.join(errors))
+    def test_2_031(self):
+        '2.3.1 Overevni vsech hodnot vznikleho kontaktu'
+        epp_cli.info_contact(handle_contact)
+        __write_log__()
+        errors = __info_contact__('contact', CCREG_CONTACT[1], epp_cli.is_val('data'))
+        self.assert_(len(errors), '\n'.join(errors))
 
     def test_2_040(self):
         '2.4 Pokus o zalozeni existujiciho kontaktu'
         # contact_id, name, email, city, cc
         epp_cli.create_contact(handle_contact,'Pepa Zdepa','pepa@zdepa.cz','Praha','CZ')
+        __write_log__()
         self.assertNotEqual(epp_cli.is_val(), 1000)
 
     def test_2_050(self):
         '2.5 Check na seznam existujiciho a neexistujicich kontaktu'
         handles = (handle_contact,'neexist002')
         epp_cli.check_contact(handles)
+        __write_log__()
         self.assertEqual(epp_cli.is_val(('data',handle_contact)), 0)
         self.assertEqual(epp_cli.is_val(('data','neexist002')), 1)
 
     def test_2_060(self):
         '2.6 Info na existujici kontakt a overeni vsech hodnot'
         epp_cli.info_contact(handle_contact)
+        __write_log__()
         self.assertEqual(epp_cli.is_val(), 1000, __get_reason__())
-        errors, disclose_names = __info_contact__('contact', CCREG_CONTACT[1], epp_cli.is_val('data'))
-        err = __check_disclosed_over__(disclose_names, epp_cli.is_val(('data','contact:disclose')))
-        if len(err): errors.extend(err)
+        errors = __info_contact__('contact', CCREG_CONTACT[1], epp_cli.is_val('data'))
         self.assert_(len(errors), '\n'.join(errors))
 
     def test_2_070(self):
         '2.7 Update vsech parametru krome stavu'
-        d = CCREG_CONTACT[2]
-        dd = d['disclose']
-        chg = {
-            'postal_info': {
-                'name': d['name'],
-                'org': d['org'],
-                'addr':{
-                    'street': d['street'],
-                    'city':  d['city'],
-                    'sp': d['sp'],
-                    'pc': d['pc'],
-                    'cc': d['cc'],
-                },
-            },
-            'voice': d['voice'],
-            'fax': d['fax'],
-            'email': d['email'],
-            'disclose_flag': '1',
-            'disclose': ('name','org','addr','voice','fax','email'),
-            'vat': d['vat'],
-            'ssn': d['ssn'],
-            'notify_email': d['notify_email'],
-        }
-        epp_cli.update_contact(handle_contact, None, None, chg)
+        epp_cli.update_contact(handle_contact, None, None, CCREG_CONTACT[3])
+        __write_log__()
         self.assertEqual(epp_cli.is_val(), 1000, __get_reason__())
 
     def test_2_071(self):
         '2.7.1 Overevni vsech hodnot zmeneneho kontaktu'
         epp_cli.info_contact(handle_contact)
+        __write_log__()
         self.assertEqual(epp_cli.is_val(), 1000, __get_reason__())
-        errors, disclose_names = __info_contact__('contact', CCREG_CONTACT[2], epp_cli.is_val('data'))
-        err = __check_disclosed_over__(disclose_names, epp_cli.is_val(('data','contact:disclose')))
-        if len(err): errors.extend(err)
+        errors = __info_contact__('contact', CCREG_CONTACT[2], epp_cli.is_val('data'))
         self.assert_(len(errors), '\n'.join(errors))
         
     def test_2_080(self):
         '2.8 Pokus o update vsech stavu server*'
         for status in ('serverDeleteProhibited', 'serverUpdateProhibited'):
             epp_cli.update_contact(handle_contact, status)
+            __write_log__()
             self.assertNotEqual(epp_cli.is_val(), 1000, 'Status "%s" prosel prestoze nemel.'%status)
         
     def test_2_090(self):
         '2.9 Update stavu clientDeleteProhibited a pokus o smazani'
         status = 'clientDeleteProhibited'
         epp_cli.update_contact(handle_contact, status)
+        __write_log__()
         self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se nastavit status: %s'%status)
         # pokus o smazání
         epp_cli.delete_contact(handle_contact)
+        __write_log__()
         self.assertNotEqual(epp_cli.is_val(), 1000, 'Kontakt se smazal, prestoze mel nastaven %s'%status)
         # zrušení stavu
         epp_cli.update_contact(handle_contact, None, status)
+        __write_log__()
         self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se odstranit status: %s'%status)
         
     def test_2_100(self):
         '2.10 Update stavu clientUpdateProhibited a pokus o zmenu objektu, smazani stavu'
         status = 'clientUpdateProhibited'
         epp_cli.update_contact(handle_contact, status)
+        __write_log__()
         self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se nastavit status: %s'%status)
         # pokus o změnu
         epp_cli.update_contact(handle_contact, None, None, {'notifyEmail':'notifak@jinak.cz'})
+        __write_log__()
         self.assertNotEqual(epp_cli.is_val(), 1000, 'Kontakt se aktualizoval, prestoze mel nastaven %s'%status)
         # zrušení stavu
         epp_cli.update_contact(handle_contact, None, status)
+        __write_log__()
         self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se odstranit status: %s'%status)
 
     def test_2_110(self):
         '2.11 Vytvoreni nnsetu napojeneho na kontakt'
         epp_cli.create_nsset(handle_nsset, 'heslo', {'name':'ns1.test.cz'}, handle_contact)
+        __write_log__()
         self.assertEqual(epp_cli.is_val(), 1000, __get_reason__())
         
     def test_2_120(self):
         '2.12 Smazani kontaktu na ktery existuji nejake vazby'
         epp_cli.delete_contact(handle_contact)
+        __write_log__()
         self.assertNotEqual(epp_cli.is_val(), 1000, __get_reason__())
 
     def test_2_130(self):
         '2.13 Smazani nssetu'
         epp_cli.delete_nsset(handle_nsset)
+        __write_log__()
         self.assertEqual(epp_cli.is_val(), 1000, __get_reason__())
 
     def test_2_140(self):
         '2.14 Smazani kontaktu'
         epp_cli.delete_contact(handle_contact)
+        __write_log__()
         self.assertEqual(epp_cli.is_val(), 1000, __get_reason__())
 
     def test_2_150(self):
         '2.15 Check na smazany kontakt'
         epp_cli.check_contact(handle_contact)
-        self.assertEqual(epp_cli.is_val(('data',handle_contact)), 1)
+        __write_log__()
+        self.assertEqual(epp_cli.is_val(('data',handle_contact)), 1, '%s nelze smazat'%handle_contact)
 
     def test_2_160(self):
         '2.16 Poll require'
@@ -259,6 +284,7 @@ class Test(unittest.TestCase):
         # 1300 No messages
         # 1301 Any message
         epp_cli.poll('req')
+        __write_log__()
         if epp_cli.is_val() not in (1000,1300,1301):
             self.assertEqual(0, 1, __get_reason__())
 
@@ -283,73 +309,87 @@ def __find_available_handle__(epp_cli, type_object, prefix):
             break
     return available_handle
 
+def __are_equal__(val1,val2):
+    'Compare values or lists. True - equal, False - not equal.'
+    if type(val1) in (list, tuple):
+        if type(val2) not in (list, tuple): return False
+        lst2 = list(val2)
+        if len(val1) == len(lst2):
+            for v in val1:
+                if v in lst2: lst2.pop(lst2.index(v))
+            retv = len(lst2) == 0
+        else:
+            retv = False
+    else:
+        retv = val1 == val2
+    return retv
+
+def make_str(value):
+    if type(value) in (tuple,list):
+        arr=[]
+        for item in value:
+            arr.append(item.encode(encoding))
+        value = '(%s)'%', '.join(arr)
+    elif type(value) == unicode:
+        value = value.encode(encoding)
+    return value
+    
 def __info_contact__(prefix, cols, scope, key=None, pkeys=[]):
     'Check info-[object] against selected set.'
-    disclose_names = []
     prevkeys = ':'.join(pkeys)
     if key:
         data = scope[key]
     else:
         data = scope
-    # print '%s\nCOLS:\n%s\n%s\nDATA:\n%s\n%s\n'%('='*60, str(cols), '-'*60, str(data), '_'*60)
+    #print '%s\nCOLS:\n%s\n%s\nDATA:\n%s\n%s\n'%('='*60, str(cols), '-'*60, str(data), '_'*60)
     errors = []
-    if type(data) is list:
-        # Special mode for disclose.
-        flag = scope.get('%s.%s'%(prevkeys,'flag'),None)
-        for k in cols:
-            if k == 'flag': # Exception for "flag" name.
-                key = '%s.%s'%(prevkeys,k)
-                refval = cols[k]
-                if scope.has_key(key):
-                    value = scope[key]
-                    if value != refval:
-                        errors.append('Data nesouhlasi. %s JSOU:%s MELY BYT:%s'%(key,str(value),str(refval)))
-                else:
-                    errors.append('Atribut %s chybi'%key)
-                continue
-            key = '%s:%s'%(prefix,k)
-            # print "!!! key:",key,'flag:',flag #!!!
-            # TODO: dodelat kontrolu na 0/1
-            if key in data:
-                disclose_names.append(key)
-            else:
-                errors.append('Hodnota %s.%s chybi'%(prevkeys,key))
-        return errors, disclose_names
+    # prepare list disclose, hide: if disclose_flag is 0, names must be moved into hide
+    keep_disclose = cols['disclose']
+    cols['hide'] = []
+    if cols['disclose_flag'] == 'n':
+        cols['hide'] = cols['disclose']
+        cols['disclose'] = []
+    if len(cols['hide']):
+        cols['disclose'] = tuple([n for n in contact_disclose if n not in cols['hide']])
+    else:
+        cols['hide'] = tuple([n for n in contact_disclose if n not in cols['disclose']])
     #--------------------------------
     for k,v in cols.items():
         key = '%s:%s'%(prefix,k)
         if data.has_key(key):
             if type(v) is dict:
                 pkeys.append(key)
-                err, disnam = __info_contact__(prefix, v, data, key, pkeys)
+                err = __info_contact__(prefix, v, data, key, pkeys)
                 pkeys.pop()
                 if len(err): errors.extend(err)
-                if len(disnam): disclose_names.extend(disnam)
             else:
                 if type(data[key]) is list:
                     vals = tuple(data[key])
                 else:
                     vals = data[key]
-                if vals != v:
-                    errors.append('Data nesouhlasi. %s.%s JSOU:%s MELY BYT:%s'%(prevkeys,key,str(vals),str(v)))
+                if not __are_equal__(vals,v):
+                    errors.append('Data nesouhlasi. %s.%s JSOU:%s MELY BYT:%s'%(prevkeys,key,make_str(vals),make_str(v)))
         else:
-            errors.append('Chybi klic %s'%key)
-    return errors, disclose_names
-
-def __check_disclosed_over__(disclose_names, saved_data):
-    'Check disclosed names if they are over.'
-    errors = []
-    if saved_data is None: # NoneType
-        errors.append('Neplatna disclosed data')
-    else:
-        data = saved_data[:]
-        for name in disclose_names:
-            if name in data:
-                data.pop(data.index(name))
-        if len(data): errors.append('Disclose hodnoty navic: (%s)'%', '.join(data))
+            if key != '%s:disclose_flag'%prefix: # except disclose_flag - it not shown
+                errors.append('Chybi klic %s'%key)
+    cols['disclose'] = keep_disclose # restore values
     return errors
+
+def __write_log__():
+    if log_fp:
+        log_fp.write('COMMAND: %s\n%s\n'%(epp_cli._epp._command_sent,'.'*60))
+        log_fp.write(epp_cli._epp._raw_cmd)
+        log_fp.write('%s\nANSWER:\n'%('-'*60))
+        answer = epp_cli.get_answer()
+        if answer:
+            log_fp.write('%s\n'%re.sub('\x1b(\\[|\\()\d*(m|B)','',answer))
+        edoc = ccReg.eppdoc.Message()
+        edoc.parse_xml(epp_cli._epp._raw_answer)
+        log_fp.write(edoc.get_xml())
+        log_fp.write('\n%s\n'%('='*60))
     
-epp_cli, handle_contact, handle_nsset = None,None,None
+    
+epp_cli, handle_contact, handle_nsset, log_fp = None,None,None,None
 get_local_text = ccReg.session_base.get_ltext
 
 if __name__ == '__main__':
@@ -358,31 +398,26 @@ if __name__ == '__main__':
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(Test))
     unittest.TextTestRunner(verbosity=2).run(suite)
+    if log_fp: log_fp.close()
 
 if 0:
 ##if __name__ == '__main__':
     # TEST equals data
-    saved_data = {'contact:voice': u'+123.456789', 'contact:org': u'\u010c\xed\u017ekov\xe1 a spol', 
-    'contact:fax': u'+321.564987', 'contact:status.s': u'ok', 
-    'contact:disclose': ['contact:voice', 'contact:org', 'contact:fax', 'contact:email', 'contact:name','contact:addr'], 
-    'contact:email': u'rehor.cizek@mail.cz', 'contact:city': u'\u010cesk\xfd Krumlov', 
-    'contact:disclose.flag': u'1', 
-    'contact:pc': u'12300', 'contact:crDate': u'2006-08-02T09:19:48.0Z', 
-    'contact:street': [u'U pr\xe1ce', u'Za monitorem', u'Nad kl\xe1vesnic\xed'], 
-    'contact:crID': u'REG-LRR', 'contact:sp': u'123', 'contact:roid': u'C0000001153-CZ', 
-    'contact:cc': u'CZ', 'contact:name': u'\u0158eho\u0159 \u010c\xed\u017eek', 
-    'contact:id': u'test001',
-    'contact:ssn':'852',
-    'contact:notify_email':'info@rehorovi.cz',
-    'contact:vat':'963',
-    }
-    errors, disclose_names = __info_contact__('contact', CCREG_CONTACT[1], saved_data)
-    err = __check_disclosed_over__(disclose_names, saved_data['contact:disclose'])
-    if len(err): errors.extend(err)
-    if len(errors):
-        print "ERRORS:"
-        for e in errors:
-            print e
-    else:
-        print "OK, NO ERRORS."
-
+    DATA = (
+    #'2.3.1 Overevni vsech hodnot vznikleho kontaktu'
+    (CCREG_CONTACT[1], {'contact:voice': u'+123.456789', 'contact:org': u'\u010c\xed\u017ekov\xe1 a spol', 'contact:fax': u'+321.564987', 'contact:status.s': u'ok', 'contact:disclose': ['name', 'org', 'addr', 'email', 'fax', 'voice'], 'contact:hide': [], 'contact:email': u'rehor.cizek@mail.cz', 'contact:city': u'\u010cesk\xfd Krumlov', 'contact:pc': u'12300', 'contact:crDate': u'2006-08-08T07:59:03.0Z', 'contact:street': [u'U pr\xe1ce', u'Za monitorem', u'Nad kl\xe1vesnic\xed'], 'contact:crID': u'REG-LRR', 'contact:sp': u'123', 'contact:roid': u'C0000426646-CZ', 'contact:cc': u'CZ', 'contact:name': u'\u0158eho\u0159 \u010c\xed\u017eek', 'contact:id': u'test001'}),
+    #'2.6 Info na existujici kontakt a overeni vsech hodnot'
+    (CCREG_CONTACT[1], {'contact:voice': u'+123.456789', 'contact:org': u'\u010c\xed\u017ekov\xe1 a spol', 'contact:fax': u'+321.564987', 'contact:status.s': u'ok', 'contact:disclose': ['name', 'org', 'addr', 'voice', 'fax', 'email'], 'contact:hide': [], 'contact:email': u'rehor.cizek@mail.cz', 'contact:city': u'\u010cesk\xfd Krumlov', 'contact:pc': u'12300', 'contact:crDate': u'2006-08-08T07:59:03.0Z', 'contact:street': [u'U pr\xe1ce', u'Za monitorem', u'Nad kl\xe1vesnic\xed'], 'contact:crID': u'REG-LRR', 'contact:sp': u'123', 'contact:roid': u'C0000426646-CZ', 'contact:cc': u'CZ', 'contact:name': u'\u0158eho\u0159 \u010c\xed\u017eek', 'contact:id': u'test001'}),
+    #'2.7.1 Overevni vsech hodnot zmeneneho kontaktu'
+    (CCREG_CONTACT[2], {'contact:voice': u'+321.987654', 'contact:org': u'Bolen\xed s.r.o.', 'contact:fax': u'+321.987564', 'contact:status.s': u'ok', 'contact:disclose': ['name', 'org', 'addr', 'voice', 'fax', 'email'], 'contact:hide': [], 'contact:email': u'breta.zlucnik@bricho.cz', 'contact:city': u'St\u0159evn\xedkov', 'contact:pc': u'23101', 'contact:crDate': u'2006-08-08T07:59:03.0Z', 'contact:street': (u'Na toaletách',u'U mísy'), 'contact:crID': u'REG-LRR', 'contact:sp': u'321', 'contact:roid': u'C0000426646-CZ', 'contact:cc': u'CZ', 'contact:name': u'B\u0159\xe9\u0165a \u017dlu\u010dn\xedk', 'contact:id': u'test001','contact:ssn':'357','contact:notify_email':'info@zlucnikovi.cz','contact:vat':'753'}),
+    )
+    print '-'*60
+    for cols,vals in DATA:
+        errors = __info_contact__('contact', cols, vals)
+        if len(errors):
+            print "ERRORS:"
+            for e in errors:
+                print e
+        else:
+            print "OK, NO ERRORS."
+        print '_'*60

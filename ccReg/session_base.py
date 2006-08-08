@@ -124,29 +124,16 @@ class ManagerBase:
             self._errors = []
             msg.append(colored_output.render('${NORMAL}'))
         return sep.join(msg)
-    
+
     def welcome(self):
         "Welcome message for console modul."
-        # frame:  - | |- -| |_ _|
-        if encoding == 'cp852':
-            frm=('\xcd','\xba','\xc9','\xbb','\xc8','\xbc')
-        else:
-            frm=[]
-            for c in (u'\u2550',u'\u2551',u'\u2554',u'\u2557',u'\u255a',u'\u255d'):
-                frm.append(c.encode('utf-8'))
-        msg = _T('Welcome to the ccReg console')
-        try:
-            msglen = len(unicode(msg, encoding))
-        except UnicodeDecodeError:
-            msglen = len(msg) # (Problem with terminal encoding)
-        welcome = '   %s   '%msg
-        msglen+=6
-        empty_row = '%s%s%s'%(frm[1],' '*msglen,frm[1])
-        horizontal_line = frm[0]*msglen
-        return '%s%s%s\n%s\n%s%s%s\n%s\n%s%s%s\n%s\n%s'%(frm[2],horizontal_line,frm[3],empty_row,frm[1],welcome,frm[1],empty_row,frm[4],horizontal_line,frm[5],
-             'Version 1.1.4 Basic release.',
-            _T('For help type "help" (or "h", "?")'))
-
+        return '\n'.join((
+            '-'*60,
+            _T('Welcome to the ccReg console'),
+            '-'*60,
+            'Version 1.1.5 Basic release.',
+            _T('For help type "help" (or "h", "?")'),
+            ))
 
     def __next_clTRID__(self):
         """Generate next clTRID value.
@@ -173,7 +160,7 @@ class ManagerBase:
             for section in self._conf.sections():
                 print colored_output.render('${BOLD}[%s]${NORMAL}'%section)
                 for option in self._conf.options(section):
-                    print_unicode(colored_output.render('\t${BOLD}%s${NORMAL} = %s'%(option,self._conf.get(section,option))))
+                    print_unicode(colored_output.render('\t${BOLD}%s${NORMAL} = %s'%(option,str(self.get_config_value(section,option)))))
 
     def __config_conect_host__(self, host):
         'Overwrite default host values'
@@ -186,7 +173,7 @@ class ManagerBase:
         if self._conf.has_section(section_host):
             # adjust pathnames
             modul_path,fn = os.path.split(__file__)
-            root_path = os.path.normpath(os.path.join(modul_path,'..'))
+            root_path = os.path.normpath(os.path.join(modul_path,'../certificates'))
             for option in ('ssl_cert','ssl_key'):
                 name = self.get_config_value(section_host, option)
                 self._conf.set(section, option, os.path.join(root_path,name))
@@ -226,20 +213,32 @@ class ManagerBase:
             ok = self.__config_conect_host__(self._host)
         return ok 
 
+    def __is_config_section__(self, section):
+        return self._conf.has_section(section)
+
+    def __is_config_option__(self, section, option):
+        'Returns if exists key in config.'
+        ret = False
+        if self._conf.has_section(section):
+            ret = self._conf.has_option(section, option)
+        return ret
+
     def get_config_value(self, section, option, omit_errors=0, is_int=None):
         'Get value from config and catch exceptions.'
         value=None
         if not self._conf: return value
         try:
             value = self._conf.get(section,option)
-        except (ConfigParser.NoSectionError, ConfigParser.NoOptionError), msg:
-            if not omit_errors: self.append_error('ConfigError: %s'%msg)
+        except (ConfigParser.NoSectionError, ConfigParser.NoOptionError, ConfigParser.InterpolationMissingOptionError), msg:
+            if not omit_errors: self.append_error('ConfigError: %s (%s, %s)'%(msg,section,option))
         if is_int:
-            try:
-                value = int(value)
-            except ValueError, msg:
-                self.append_error('Config ${BOLD}%s:${NORMAL} %s.'%(option,msg))
+            if value is None:
                 value = 0
+            else:
+                try:
+                    value = int(value)
+                except ValueError, msg:
+                    self.append_error('Config ${BOLD}%s:${NORMAL} %s.'%(option,msg))
         return value
 
     def save_confing(self):
@@ -254,17 +253,23 @@ class ManagerBase:
         except IOError, (no, msg):
             self.append_error('%s: [%d] %s'%(_T('Impossible saving conf file. Reason'),no,msg))
 
+    def __config_defaults__(self):
+        'Set config defaults.'
+        if self._host:
+            section = 'conect_%s'%self._host
+        else:
+            section = 'conect'
+        if self.__is_config_section__(section):
+            if not self.__is_config_option__(section, 'timeout'):
+                self._conf.set(section, 'timeout','0.0')
+        
     def load_config(self):
         "Load config file and init internal variables. Returns 0 if fatal error occured."
         self._conf = ConfigParser.SafeConfigParser()
-        if not self.__create_default_conf__():
-            self.append_error(_T('Fatal error: Create default config failed.'))
-            self.display() # display errors or notes
-            return 0 # fatal error
         if os.name == 'posix':
             glob_conf = '/etc/%s'%self._name_conf
         else:
-            # ALLUSERSPROFILE =	C:\Documents and Settings\All Users
+            # ALLUSERSPROFILE = C:\Documents and Settings\All Users
             glob_conf = os.path.join(os.path.expandvars('$ALLUSERSPROFILE'),self._name_conf)
         try:
             self._conf.read([glob_conf, os.path.join(os.path.expanduser('~'),self._name_conf)])
@@ -274,14 +279,20 @@ class ManagerBase:
             return 0 # fatal error
         # set session variables
         section = 'session'
+        if not self._conf.has_section(section):
+            if not self.__create_default_conf__():
+                self.append_error(_T('Fatal error: Create default config failed.'))
+                self.display() # display errors or notes
+                return 0 # fatal error
         lang = self.get_config_value(section,'lang')
         if lang in self.defs[LANGS]:
             self._session[LANG] = lang
         else:
             self.append_note('%s: ${BOLD}%s${NORMAL} %s'%(_T('This language code is not allowed'),lang,str(self.defs[LANGS])))
         self._session[CONFIRM_SEND_COMMAND] = {False:0,True:1}[self.get_config_value(section,'confirm_send_commands') == 'on']
-        if self._host: self.__config_conect_host__(self._host)
-        # default values from config section "conect"
+        # default values
+        self.__config_defaults__()
+        # TODO: move into unittest
         self.copy_default_options('epp_login', 'conect', 'username')
         self.copy_default_options('epp_login', 'conect', 'password')
         return 1 # OK

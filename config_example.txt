@@ -1,0 +1,39 @@
+# Tento konfig je urcen jen pro interni pouziti!
+# Nemel by byt predan registratorum, protoze obsahuje testovaci loginy.
+# Prepiste si cesty k souborum dir=... a ulozte tento soubor
+# do vaseho home pod nazvem .ccReg.conf
+#
+
+[conect]
+dir=/home/username/enum/trunk/epp_client/certificates
+host = epp-test.ccreg.nic.cz
+port = 700
+ssl_cert = %(dir)s/epp_test_ccreg_nic_cz_cert.pem
+ssl_key  = %(dir)s/epp_test_ccreg_nic_cz_key.pem
+username = REG-LRR
+password = Misai7ei
+
+[conect_curlew]
+dir=/home/username/enum/trunk/epp_client/certificates
+host = curlew
+port = 700
+ssl_cert = %(dir)s/curlew_cert.pem
+ssl_key  = %(dir)s/curlew_key.pem
+username = REG-LRR
+password = 123456789
+
+[conect_unittest]
+# pouzivaji unittesty pro test logovani s neplatnym certifikatem
+dir=/home/username/enum/trunk/epp_client/certificates
+host = curlew
+port = 700
+ssl_cert = %(dir)s/epp_test_ccreg_nic_cz_cert.pem
+ssl_key  = %(dir)s/epp_test_ccreg_nic_cz_key.pem
+username = REG-LRR
+
+[session]
+lang = cs
+poll_ack = off
+confirm_send_commands = on
+validate = on
+schema = /home/username/enum/trunk/epp_client/ccReg/schemas/all-1.0.xsd

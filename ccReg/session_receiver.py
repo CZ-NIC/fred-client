@@ -260,6 +260,7 @@ class ManagerReceiver(ManagerCommand):
         value = eppdoc.get_dct_value(dict_data, column_name)
         code = eppdoc.get_dct_attr(dict_data, column_name, attr_name)
         dct_answer['data'][value] = {False:0,True:1}[code in ('1','true')]
+        dct_answer['data']['%s:reason'%value] = eppdoc.get_dct_value(dict_data, '%s:reason'%names[0])
 
     def __answer_response_check__(self, data, names):
         """Process all check_[command]() functions. 
@@ -456,4 +457,4 @@ if __name__ == '__main__':
         # TEST selected document:
         # Data item has format: ('command:name',"""<?xml ...XML document... >""")
         # For example: ('nsset:info',"""<?xml ...<epp ...><response> ... </epp>""")
-        test(test_incomming_messages.data[9])
+        test(test_incomming_messages.data[-1])

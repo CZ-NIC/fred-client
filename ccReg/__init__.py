@@ -111,8 +111,10 @@ class Client:
 
     name (required)     unbounded list
 
-    RETURN data: {name: int [,name2: int]}
-    NOTE: int is 0/1 (0-engaged name, 1-available name)
+    RETURN data: {
+                name: int,  # 0/1 (0-engaged name, 1-available name)
+                name:reason: str, # if name is not accessible
+    }
 
    The EPP "check" command is used to determine if an object can be
    provisioned within a repository.  It provides a hint that allows a
@@ -129,8 +131,10 @@ class Client:
 
     name (required)     unbounded list
 
-    RETURN data: {name: int [,name2: int]}
-    NOTE: int is 0/1 (0-engaged name, 1-available name)
+    RETURN data: {
+                name: int,  # 0/1 (0-engaged name, 1-available name)
+                name:reason: str, # if name is not accessible
+    }
 
    The EPP "check" command is used to determine if an object can be
    provisioned within a repository.  It provides a hint that allows a
@@ -147,8 +151,10 @@ class Client:
 
     name (required)     unbounded list
 
-    RETURN data: {name: int [,name2: int]}
-    NOTE: int is 0/1 (0-engaged name, 1-available name)
+    RETURN data: {
+                name: int,  # 0/1 (0-engaged name, 1-available name)
+                name:reason: str, # if name is not accessible
+    }
 
    The EPP "check" command is used to determine if an object can be
    provisioned within a repository.  It provides a hint that allows a
@@ -666,11 +672,15 @@ class Client:
         """
         return self._epp.api_command('update_nsset',{'id':nsset_id, 'add':add, 'rem':rem, 'chg':chg})
 
-    def get_answer(self):
+    def get_answer_dct(self):
         """Returns dict object answer. Same as every function returns.
         You can use this if you dont catch retvals from functions.
         """
         return self._epp._dct_answer
+
+    def get_answer(self, dct=None):
+        "Returns str of dict object."
+        return self._epp.get_answer(dct)
 
     def print_answer(self, dct=None):
         "Show dict object."

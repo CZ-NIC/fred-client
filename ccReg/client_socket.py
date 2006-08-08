@@ -38,10 +38,14 @@ class Lorry:
         except ValueError:
             pass
         try:
-            self._conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            tc = socket.getaddrinfo(DATA[0], DATA[1])
+            self._conn = socket.socket(tc[0][0], tc[0][1], tc[0][2])
             ok = 1
         except socket.error, (no,msg):
             self._errors.append('Create socket.error [%d] %s'%(no,msg))
+        except TypeError, msg:
+            self._errors.append('Create socket.error (socket.getaddrinfo): %s'%msg)
+        if self._conn is None: return 0
         try:
             self._conn.connect((DATA[0], DATA[1]))
             self._notes.append('%s ${BOLD}%s${NORMAL}, port %d'%(_T('Open connection on host'), DATA[0], DATA[1]))
@@ -49,7 +53,7 @@ class Lorry:
                 self._notes.append('Socket timeout: ${BOLD}%.1f${NORMAL} sec.'%self._timeout)
                 self._conn.settimeout(self._timeout)
         except socket.error, (no,msg):
-            self._errors.append('Connection socket.error [%d] %s'%(no,msg))
+            self._errors.append('Connection socket.error [%d] %s (%s:%s)'%(no,msg,DATA[0],DATA[1]))
         except (KeyboardInterrupt,EOFError):
             self._errors.append(_T('Interrupt from user'))
         if not ok: return ok
@@ -71,7 +75,7 @@ class Lorry:
                 self._conn_ssl = socket.ssl(self._conn)
             ssl_ok = 1
         except socket.sslerror, msg:
-            self._errors.append('socket.sslerror: %s'%str(msg))
+            self._errors.append('socket.sslerror: %s (%s:%s)'%(str(msg),DATA[0],DATA[1]))
             if type(msg) not in (str,unicode):
                 err_note = {
                     1:_T('Used certificat is not signed by verified certificate authority.'),

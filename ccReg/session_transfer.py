@@ -83,13 +83,13 @@ class ManagerTransfer(ManagerBase):
         if not data:
             if not self._conf: self.load_config() # load config, if was not been yet
             section='conect'
+            if self._host: section = 'conect_%s'%self._host
             data = [self.get_config_value(section,'host'),
                     self.get_config_value(section,'port',0,'int'),
                     self.get_config_value(section,'ssl_key'),
                     self.get_config_value(section,'ssl_cert'),
                     self.get_config_value(section,'timeout'),
                     ]
-            if self._host: data[0] = self._host
             self._session[HOST] = data[0] # for prompt info
             if None in data:
                 self.append_error('%s: %s'%(_T('Impossible create connection. Required config values missing'),str(data)))
@@ -163,34 +163,46 @@ class ManagerTransfer(ManagerBase):
         self.append_error('Internal Error: Function process_answer() must be overriden!')
 
     def print_answer(self, dct=None):
+        "Returns str of dict object."
+        print self.get_answer(dct)
+
+    def get_answer(self, dct=None, sep='\n'):
         'Show values parsed from the server answer.'
+        body=[]
+        report = body.append
         patt_type = re.compile("<type '(\w+)'>")
         if not dct: dct = self._dct_answer
         code = dct['code']
-        print '-'*60
-        print colored_output.render('${BOLD}code:${NORMAL} %d'%code)
-        print colored_output.render('${BOLD}command:${NORMAL} %s'%dct['command'])
-        print colored_output.render('${BOLD}reason:${NORMAL}'),
-        print_unicode(colored_output.render('${%s}%s${NORMAL}'%({False:'NORMAL',True:'GREEN'}[code==1000],dct['reason'])))
-        print colored_output.render('${BOLD}errors:${NORMAL}')
+        report('-'*60)
+        report(colored_output.render('${BOLD}code:${NORMAL} %d'%code))
+        report(colored_output.render('${BOLD}command:${NORMAL} %s'%dct['command']))
+        report('%s%s'%(
+            colored_output.render('${BOLD}reason:${NORMAL} '),
+            get_ltext(colored_output.render('${%s}%s${NORMAL}'%({False:'NORMAL',True:'GREEN'}[code==1000],dct['reason']))))
+            )
+        report(colored_output.render('${BOLD}errors:${NORMAL}'))
         if len(dct['errors']):
-            print colored_output.render('${BOLD}${RED}')
+            report(colored_output.render('${BOLD}${RED}'))
             for error in dct['errors']:
-                print_unicode('  %s'%error)
-            print colored_output.render('${NORMAL}')
-        print colored_output.render('${BOLD}data:${NORMAL}')
+                report(get_ltext('  %s'%error))
+            report(colored_output.render('${NORMAL}'))
+        report(colored_output.render('${BOLD}data:${NORMAL}'))
         for k,v in dct['data'].items():
             if type(v) in (list,tuple):
                 if len(v):
                     space = ' '*(8 - len('%s: '%k)) # indent justify text to the tabs on next lines
-                    print_unicode(colored_output.render('\t${BOLD}%s:${NORMAL} (list) %s%s'%(k,space,str_lists(v[0]))))
+                    report(get_ltext(colored_output.render('\t${BOLD}%s:${NORMAL} (list) %s%s'%(k,space,str_lists(v[0])))))
                     for text in v[1:]:
-                        print_unicode('\t\t%s'%str_lists(text))
+                        report(get_ltext('\t\t%s'%str_lists(text)))
                 else:
-                    print_unicode(colored_output.render('\t${BOLD}%s:${NORMAL} (list) []'%k))
+                    report(get_ltext(colored_output.render('\t${BOLD}%s:${NORMAL} (list) []'%k)))
             else:
-                print_unicode(colored_output.render('\t${BOLD}%s:${NORMAL} (%s) %s'%(k, patt_type.match(str(type(v))).group(1), v)))
-        print '-'*60
+                report(get_ltext(colored_output.render('\t${BOLD}%s:${NORMAL} (%s) %s'%(k, patt_type.match(str(type(v))).group(1), v))))
+        report('-'*60)
+        for n in range(len(body)):
+            if type(body[n]) == unicode: body[n] = body[n].encode(encoding)
+        return sep.join(body)
+
 
 def str_lists(text):
     """Prepare list or tuples for display. Same as str() but ommit u'...' symbols

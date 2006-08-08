@@ -67,9 +67,10 @@ class Test(unittest.TestCase):
         # Jestliže HOST je None, tak certifikát musí být jiný, než default (connect)
         # Pokud HOST není None, tak bude certifikát jiný než connect_HOST.
         cert_name = None
-        valid_certificat = self.epc._epp.get_config_value('conect','ssl_cert')
+        current_section = {False:'conect_%s'%HOST, True:'conect'}[HOST is None]
+        valid_certificat = self.epc._epp.get_config_value(current_section,'ssl_cert')
         for section in self.epc._epp._conf.sections():
-            if section[:6] == 'conect': # and section != section_name:
+            if section[:6]=='conect' and section != current_section:
                 # vybere se jiný certifikát než platný
                 certificat = self.epc._epp.get_config_value(section,'ssl_cert')
                 if certificat != valid_certificat:
@@ -78,7 +79,7 @@ class Test(unittest.TestCase):
         self.assert_(cert_name, 'Nebyl nalezen vhodny certifikat. Nastavte v configu alespon jednu sekci conect_HOST s jinym certifikatem, nez je ten platny.')
         if not cert_name: return
         # přiřazení neplatného certifikátu
-        self.epc._epp._conf.set('conect','ssl_cert', cert_name)
+        self.epc._epp._conf.set(current_section, 'ssl_cert', cert_name)
         dct = self.epc._epp.get_default_params_from_config('login')
         code, error = self.__login__(dct)
         self.assert_(len(error), error)

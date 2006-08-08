@@ -474,7 +474,7 @@ class Message(eppdoc.Message):
         # --- BEGIN disclose ------
         disclose = dct.get('disclose',[])
         if len(disclose):
-            flag = {'y':'1','n':'0'}.get(dct.get('disclose_flag',['n'])[0], '0')
+            flag = {'n':'0','y':'1'}.get(dct.get('disclose_flag',['n'])[0], 'n')
             data.append(('contact:create','contact:disclose','',(('flag',flag),)))
             for key in disclose:
                 data.append(('contact:disclose','contact:%s'%key))
@@ -616,7 +616,7 @@ class Message(eppdoc.Message):
             # --- BEGIN disclose ------
             disclose = chg.get('disclose',[])
             if len(disclose):
-                flag = {'y':'1','n':'0'}.get(chg.get('disclose_flag',['n'])[0], '0')
+                flag = {'n':'0','y':'1'}.get(chg.get('disclose_flag',['n'])[0], 'n')
                 data.append(('contact:chg','contact:disclose','',(('flag',flag),)))
                 for key in disclose:
                     data.append(('contact:disclose','contact:%s'%key))
