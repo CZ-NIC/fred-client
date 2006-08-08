@@ -2,6 +2,7 @@
 # -*- coding: utf8 -*-
 # localization in lang folder.
 import os, sys
+import getopt
 import gettext
 
 def find_valid_encoding():
@@ -24,26 +25,37 @@ def find_valid_encoding():
     #print 'Actual unicode encoding is %s.'%valid_charset
     return valid_charset,warning
 
-#
-# INIT language versions:
-#
-lang = 'cs'
+#--------------------------
+# INIT options:
+#--------------------------
+session_name = None
+session_lang = 'cs'
+option_errors = ''
+option_help = False
+option_args = ()
 if len(sys.argv) > 1:
-    # set language from command line
-    for arg in sys.argv[1:]:
-        if arg in ('en','cs'):
-            lang = arg
-            break
+    try:
+        opts, option_args = getopt.getopt(sys.argv[1:], 's:l:h', ('session=', 'lang=','help'))
+    except getopt.GetoptError, msg:
+        print "Options error:",msg
+        option_errors = "Options error: %s"%msg
+    else:
+        if len(option_args):
+            option_errors = '%s: (%s)'%('Unknown options',', '.join(option_args))
+        for k,v in opts:
+            if k in ('-s','--session'): session_name = v
+            if k in ('-l','--lang'): session_lang = v
+            if k in ('-h','--help'): option_help = True
 else:
     # set language from environ
     code = os.environ.get('LANG') # 'cs_CZ.UTF-8'
     if type(code) is str and len(code) > 1:
         arg = code[:2]
-        if arg in ('en','cs'): lang = arg
-
+        if arg in ('en','cs'): session_lang = arg
+#--------------------------
         
 encoding, warning = find_valid_encoding()
-if lang == 'en':
+if session_lang == 'en':
     _T = gettext.gettext
 else:
     try:

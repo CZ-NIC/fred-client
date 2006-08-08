@@ -47,8 +47,12 @@ class ManagerBase:
         self.defs[PREFIX] = '' # pro každé sezení nový prefix
         self._conf = None # <ConfigParser object>
         self._name_conf = '.ccReg.conf' # name of config file
-        self._host = None # explicit defined host
+        self._session_name = None
         self._auto_connect = 1 # auto connection during login or hello
+
+    def set_session_lang(self, lang):
+        'Set session language'
+        self._session[LANG] = lang
         
     def set_auto_connect(self, switch):
         'Set auto connection ON/OFF. switch = 0/1.'
@@ -71,8 +75,8 @@ class ManagerBase:
         self._session[CONFIRM_SEND_COMMAND] = (0,1)[type in ('on','ON')]
         self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('Confirm has been set to'),('OFF','ON')[self._session[CONFIRM_SEND_COMMAND]]))
 
-    def set_host(self,host):
-        self._host = host
+    def set_session_name(self, name):
+        self._session_name = name
 
     def get_errors(self, sep='\n'):
         return sep.join(self._errors)
@@ -131,7 +135,7 @@ class ManagerBase:
             '-'*60,
             _T('Welcome to the ccReg console'),
             '-'*60,
-            'Version 1.1.5 Basic release.',
+            'Version 1.1.6 Basic release.',
             _T('For help type "help" (or "h", "?")'),
             ))
 
@@ -162,25 +166,28 @@ class ManagerBase:
                 for option in self._conf.options(section):
                     print_unicode(colored_output.render('\t${BOLD}%s${NORMAL} = %s'%(option,str(self.get_config_value(section,option)))))
 
-    def __config_conect_host__(self, host):
+    def __config_conect_host__(self, session_name):
         'Overwrite default host values'
         ok = 0
         section = section_host = 'conect'
-        if host:
-            section_host = 'conect_%s'%host
+        if session_name:
+            section_host = 'conect_%s'%session_name
             if not self._conf.has_section(section_host):
                 section_host = 'conect' # if explicit section doesnt exist, use default
         if self._conf.has_section(section_host):
             # adjust pathnames
             modul_path,fn = os.path.split(__file__)
             root_path = os.path.normpath(os.path.join(modul_path,'../certificates'))
-            for option in ('ssl_cert','ssl_key'):
-                name = self.get_config_value(section_host, option)
-                self._conf.set(section, option, os.path.join(root_path,name))
+            self._conf.set(section, 'dir', root_path)
+##            for option in ('ssl_cert','ssl_key'):
+##                name = self.get_config_value(section_host, option)
+##                self._conf.set(section, option, os.path.join(root_path,name))
+            # copy 'conect' values from default into session_name
             if section != section_host:
                 for option in ('host','port','username','password'):
-                    name = self.get_config_value(section_host, option, 1)
-                    if name: self._conf.set(section, option, name)
+                    if not self.__is_config_option__(section, option): # if only value missing
+                        value = self.get_config_value(section_host, option, 1) # 1-ommit errors
+                        if value: self._conf.set(section, option, value)
             ok = 1
         return ok
 
@@ -210,7 +217,7 @@ class ManagerBase:
             name = self.get_config_value(seop[0], seop[1])
             self._conf.set(seop[0], seop[1], os.path.join(modul_path,'schemas',name))
             self._session[POLL_AUTOACK] = {False:0,True:1}[self.get_config_value(seop[0], 'poll_ack') in ('on','ON')]
-            ok = self.__config_conect_host__(self._host)
+            ok = self.__config_conect_host__(self._session_name)
         return ok 
 
     def __is_config_section__(self, section):
@@ -253,12 +260,17 @@ class ManagerBase:
         except IOError, (no, msg):
             self.append_error('%s: [%d] %s'%(_T('Impossible saving conf file. Reason'),no,msg))
 
-    def __config_defaults__(self):
-        'Set config defaults.'
-        if self._host:
-            section = 'conect_%s'%self._host
+    def __config_get_section__(self):
+        'Set section name "conect" in config.'
+        if self._session_name:
+            section = 'conect_%s'%self._session_name
         else:
             section = 'conect'
+        return section
+
+    def __config_defaults__(self):
+        'Set config defaults.'
+        section = self.__config_get_section__()
         if self.__is_config_section__(section):
             if not self.__is_config_option__(section, 'timeout'):
                 self._conf.set(section, 'timeout','0.0')

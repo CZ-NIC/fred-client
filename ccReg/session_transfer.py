@@ -83,7 +83,7 @@ class ManagerTransfer(ManagerBase):
         if not data:
             if not self._conf: self.load_config() # load config, if was not been yet
             section='conect'
-            if self._host: section = 'conect_%s'%self._host
+            if self._session_name: section = 'conect_%s'%self._session_name
             data = [self.get_config_value(section,'host'),
                     self.get_config_value(section,'port',0,'int'),
                     self.get_config_value(section,'ssl_key'),

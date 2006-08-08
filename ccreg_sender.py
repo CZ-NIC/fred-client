@@ -5,10 +5,10 @@
 import sys
 import os
 import re
-import getopt
+##import getopt
 import ccReg
-from ccReg.translate import _T
 from ccReg.session_receiver import ccRegError
+from ccReg.translate import _T, session_name, session_lang, option_errors, option_help, option_args
 
 def __auto_login__(epp):
     'Do login'
@@ -24,28 +24,20 @@ def __auto_login__(epp):
     print '_'*60
     return ok
 
-def __get_host_and_filenames__():
-    args = sys.argv[1:]
-    optlist, args = getopt.getopt(args, 'h:')
-    host = None
-    for k,v in optlist:
-        if k == '-h': host = v
-    return host, args
-            
 def send_docs(docs=[]):
-    host, names = __get_host_and_filenames__()
+    names = ()
     #-------------------------------------------------
     # Inicializace klienta
     #-------------------------------------------------
     epp = ccReg.ClientSession()
-    if host:
-        print "SET HOST:",host
-        epp.set_host(host)
+    if session_name:
+        print "SET SESSION_NAME:",session_name
+        epp.set_session_name(session_name)
     if not epp.load_config(): return
     #-------------------------------------------------
     # Apped docs from argv params
     #-------------------------------------------------
-    for filepath in names:
+    for filepath in option_args:
         if os.path.isfile(filepath):
             docs.append((1,open(filepath).read()))
         else:
@@ -104,7 +96,7 @@ if __name__ == '__main__':
         if not sys.stdin.isatty():
             run_pipe() # commands from pipe
         else:
-            if len(sys.argv) > 1:
+            if not option_help and len(sys.argv) > 1:
                 send_docs() # commands from argv
             else:
                 print """*** ccReg Sender ***
@@ -112,14 +104,19 @@ if __name__ == '__main__':
 Send all files to the EPP server on the order of the list filenames.
 If first file is NOT login - does login automaticly.
 
-Usage: 
+Usage: python ccreg_sender.py [OPTIONS] [files]
 
-python ccreg_sender.py [-h host] file.xml [file.xml ...]
+OPTIONS:
+    -s --session  name of session used for conect to the EPP server
+                  session values are read from config file
+    -l --lang     language of session
+    -h --help     this help
 
 Examples:
 ./ccreg_create.py info-domain nic.cz > cmd1.xml
 ./ccreg_create.py info-contact reg-id pokus > cmd2.xml
 ./ccreg_sender.py cmd1.xml cmd2.xml
+./ccreg_sender.py -s epp_host -l en cmd1.xml cmd2.xml
 
 or
 

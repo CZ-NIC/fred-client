@@ -33,7 +33,7 @@ import ccReg
 # Nastavení serveru, na kterém se bude testovat
 # (Pokud je None, tak je to default)
 #----------------------------------------------
-HOST = None # 'curlew'
+SESSION_NAME = None # 'curlew'
 
 # CCREG_DATA[1] - create
 # CCREG_DATA[2] - modify
@@ -99,10 +99,10 @@ class Test(unittest.TestCase):
         # create client object
         epp_cli = ccReg.Client()
         epp_cli_TRANSF = ccReg.Client()
-        if HOST:
+        if SESSION_NAME:
             # nastavení serveru
-            epp_cli._epp.set_host(HOST)
-            epp_cli_TRANSF._epp.set_host(HOST)
+            epp_cli._epp.set_session_name(SESSION_NAME)
+            epp_cli_TRANSF._epp.set_session_name(SESSION_NAME)
         epp_cli._epp.load_config()
         epp_cli_TRANSF._epp.load_config()
         # login
@@ -357,7 +357,7 @@ get_local_text = ccReg.session_base.get_ltext
 
 if __name__ == '__main__':
 ##if 0:
-    if len(sys.argv) > 1: HOST = sys.argv[1]
+    if len(sys.argv) > 1: SESSION_NAME = sys.argv[1]
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(Test))
     unittest.TextTestRunner(verbosity=2).run(suite)
@@ -365,9 +365,9 @@ if __name__ == '__main__':
 if 0:
 ##if __name__ == '__main__':
     # TEST equals data
-    if len(sys.argv) > 1: HOST = sys.argv[1]
+    if len(sys.argv) > 1: SESSION_NAME = sys.argv[1]
     epp_cli = ccReg.Client()
-    if HOST: epp_cli._epp.set_host(HOST) # nastavení serveru
+    if SESSION_NAME: epp_cli._epp.set_session_name(SESSION_NAME) # nastavení serveru
     epp_cli._epp.load_config()
     saved_data = {'nsset:upID': u'REG-LRR', 
         'nsset:status.s': u'ok', 

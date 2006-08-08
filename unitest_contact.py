@@ -28,7 +28,7 @@ import ccReg.eppdoc
 # Nastavení serveru, na kterém se bude testovat
 # (Pokud je None, tak je to default)
 #----------------------------------------------
-HOST = None # 'curlew'
+SESSION_NAME = None # 'curlew'
 
 # CCREG_CONTACT[1] - create
 # CCREG_CONTACT[2] - modify
@@ -124,7 +124,7 @@ class Test(unittest.TestCase):
         handle_nsset = 'neexist01'
         # create client object
         epp_cli = ccReg.Client()
-        if HOST: epp_cli._epp.set_host(HOST) # nastavení serveru
+        if SESSION_NAME: epp_cli._epp.set_session_name(SESSION_NAME) # nastavení serveru
         epp_cli._epp.load_config()
         # login
         dct = epp_cli._epp.get_default_params_from_config('login')
@@ -394,7 +394,7 @@ get_local_text = ccReg.session_base.get_ltext
 
 if __name__ == '__main__':
 ##if 0:
-    if len(sys.argv) > 1: HOST = sys.argv[1]
+    if len(sys.argv) > 1: SESSION_NAME = sys.argv[1]
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(Test))
     unittest.TextTestRunner(verbosity=2).run(suite)

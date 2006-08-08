@@ -16,14 +16,14 @@ import ccReg
 # Nastavení serveru, na kterém se bude testovat
 # (Pokud je None, tak je to default)
 #----------------------------------------------
-HOST = None # 'curlew'
+SESSION_NAME = None # 'curlew'
 
 class Test(unittest.TestCase):
 
     def setUp(self):
         '1.0 vytvoreni klienta'
         self.epc = ccReg.Client()
-        if HOST: self.epc._epp.set_host(HOST) # nastavení serveru
+        if SESSION_NAME: self.epc._epp.set_session_name(SESSION_NAME) # nastavení serveru
         self.epc._epp.load_config()
 
     def __login__(self, dct):
@@ -64,10 +64,8 @@ class Test(unittest.TestCase):
 
     def test_1_5(self):
         '1.5 Zalogovani se spatnym otiskem certifikatu'
-        # Jestliže HOST je None, tak certifikát musí být jiný, než default (connect)
-        # Pokud HOST není None, tak bude certifikát jiný než connect_HOST.
         cert_name = None
-        current_section = {False:'conect_%s'%HOST, True:'conect'}[HOST is None]
+        current_section = {False:'conect_%s'%SESSION_NAME, True:'conect'}[SESSION_NAME is None]
         valid_certificat = self.epc._epp.get_config_value(current_section,'ssl_cert')
         for section in self.epc._epp._conf.sections():
             if section[:6]=='conect' and section != current_section:
@@ -76,7 +74,7 @@ class Test(unittest.TestCase):
                 if certificat != valid_certificat:
                     cert_name = certificat
                     break
-        self.assert_(cert_name, 'Nebyl nalezen vhodny certifikat. Nastavte v configu alespon jednu sekci conect_HOST s jinym certifikatem, nez je ten platny.')
+        self.assert_(cert_name, 'Nebyl nalezen vhodny certifikat. Nastavte v configu alespon jednu sekci conect_SESSION_NAME s jinym certifikatem, nez je ten platny.')
         if not cert_name: return
         # přiřazení neplatného certifikátu
         self.epc._epp._conf.set(current_section, 'ssl_cert', cert_name)
@@ -114,7 +112,7 @@ class Test(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    if len(sys.argv) > 1: HOST = sys.argv[1]
+    if len(sys.argv) > 1: SESSION_NAME = sys.argv[1]
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(Test))
     unittest.TextTestRunner(verbosity=2).run(suite)

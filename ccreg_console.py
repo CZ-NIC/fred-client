@@ -8,13 +8,14 @@
 import sys, re
 import ccReg
 from ccReg.session_base import colored_output
-from ccReg import _T
+from ccReg.translate import _T, session_name, session_lang, option_errors, option_help
 
-def main(host):
+def main(session_name):
     epp = ccReg.ClientSession()
     ccReg.cmd_history.set_history(epp.get_command_names())
-    if host: epp.set_host(host)
+    if session_name: epp.set_session_name(session_name)
     if not epp.load_config(): return
+    epp.set_session_lang(session_lang)
     print epp.welcome()
     epp.display() # display errors or notes
     print _T('For connection to the EPP server type "connect" or directly "login".')
@@ -69,15 +70,21 @@ if __name__ == '__main__':
     if sys.version_info[:2] < (2,4):
         print _T('This program needs Python 2.4 or higher. Your version is'),sys.version
     else:
-        host = None
-        if len(sys.argv) > 1:
-            for arg in sys.argv[1:]:
-                if arg in ('en','cs'): continue
-                host = arg
-                break
+        if option_help:
+            print _T("""Usage: python ccreg_console.py [OPTIONS]
+Console for communication with EPP server.
+
+OPTIONS:
+    -s --session  name of session used for conect to the EPP server
+                  session values are read from config file
+    -l --lang     language of session
+    -h --help     this help
+""")
         else:
-            print _T("Usage: python ccreg_console.py [host] [lang] # (lang is only cs/en and it can be also set befor host)")
-        if ccReg.translate.warning:
-            print colored_output.render("${BOLD}${RED}%s${NORMAL}"%ccReg.translate.warning)
-        print colored_output.render('Unicode encodings to ${BOLD}%s${NORMAL}.'%ccReg.translate.encoding)
-        main(host)
+            if option_errors:
+                print option_errors
+            else:
+                if ccReg.translate.warning:
+                    print colored_output.render("${BOLD}${RED}%s${NORMAL}"%ccReg.translate.warning)
+                print colored_output.render('Unicode encodings to ${BOLD}%s${NORMAL}.'%ccReg.translate.encoding)
+                main(session_name)

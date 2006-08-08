@@ -84,7 +84,6 @@ class ManagerCommand(ManagerTransfer):
         if not command_name or command_name != '.':
             self.append_note(_T("""\n${BOLD}Session commands:${NORMAL}
 ${BOLD}connect${NORMAL} (or directly login) # connect to the server (for test only)
-${BOLD}lang${NORMAL} cs # set language of the incomming server messages. It MUST be set BEFORE send login! Later has no effect.
 ${BOLD}validate${NORMAL} [on/off] # set validation or display actual setting
 ${BOLD}poll-ack${NORMAL} [on/off] # send "poll ack" straight away after "poll req"
 ${BOLD}raw-c${NORMAL}[ommand] [xml]/${BOLD}d${NORMAL}[ict] # display raw command (instead of raw you can also type ${BOLD}src${NORMAL})
@@ -147,18 +146,6 @@ ${BOLD}send${NORMAL} [filename] # send selected file to the server (for test onl
             if m: help, help_item = m.groups()
         if help:
             self.make_help_session(self.make_help(help_item))
-        elif re.match('lang(\s+\w+)?',cmd):
-            # nastavení zazykové verze
-            m = re.match('lang\s+(\w+)',cmd)
-            if m:
-                lang = m.group(1)
-                if lang in self.defs[LANGS]:
-                    self._session[LANG] = lang
-                    self.append_note('%s: "${BOLD}%s${NORMAL}"'%(_T('Session language was set to'),lang))
-                else:
-                    self.append_error('%s: "${BOLD}%s${NORMAL}"'%(_T('Unknown language code'),lang))
-            else:
-                self.append_note('%s: "${BOLD}%s${NORMAL}". %s: %s'%(_T('Session language is'),self._session[LANG],_T('Available values'),str(self.defs[LANGS])))
         elif re.match('(raw|src)[-_]',cmd):
             # Zobrazení 'surových' dat - zdrojová data
             # raw-cmd; raw-a[nswer] e[pp]; raw-answ [dict]
