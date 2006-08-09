@@ -4,7 +4,7 @@
 # do vaseho home pod nazvem .ccReg.conf
 #
 
-[conect]
+[connect]
 dir=/home/username/enum/trunk/epp_client/certificates
 host = epp-test.ccreg.nic.cz
 port = 700
@@ -13,7 +13,7 @@ ssl_key  = %(dir)s/epp_test_ccreg_nic_cz_key.pem
 username = REG-LRR
 password = Misai7ei
 
-[conect_curlew]
+[connect_curlew]
 dir=/home/username/enum/trunk/epp_client/certificates
 host = curlew
 port = 700
@@ -22,7 +22,7 @@ ssl_key  = %(dir)s/curlew_key.pem
 username = REG-LRR
 password = 123456789
 
-[conect_unittest]
+[connect_unittest]
 # pouzivaji unittesty pro test logovani s neplatnym certifikatem
 dir=/home/username/enum/trunk/epp_client/certificates
 host = curlew

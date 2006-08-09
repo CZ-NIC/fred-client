@@ -131,6 +131,7 @@ class ManagerReceiver(ManagerCommand):
                     self.__put_raw_into_note__(self._dict_answer)
         else:
             self.append_note(_T("No response. EPP Server doesn't answer."))
+            if not self.is_connected(): self.append_error(_T("Broken connection."))
 
     #==================================================
     #

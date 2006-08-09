@@ -144,6 +144,7 @@ ${BOLD}send${NORMAL} [filename] # send selected file to the server (for test onl
         else:
             m = re.match('(\?)(?:$|\s*(\S+))',cmd)
             if m: help, help_item = m.groups()
+##        if re.match('disconnect',cmd): cmd = 'logout'
         if help:
             self.make_help_session(self.make_help(help_item))
         elif re.match('(raw|src)[-_]',cmd):
@@ -187,9 +188,23 @@ ${BOLD}send${NORMAL} [filename] # send selected file to the server (for test onl
                 self.append_note(str(stuff))
             else:
                 command_name, xmldoc = self.load_filename(filepath)
+                if command_name == 'login' and not self.is_connected():
+                    self.connect() # connect to the host
         elif re.match('connect',cmd):
-            self.connect() # připojení k serveru
-            command_name = 'connect'
+            if self.is_connected():
+                self.append_note(_T('You are connected already. Type disconnect for close connection.'))
+            else:
+                self.connect() # připojení k serveru
+                command_name = 'connect'
+        elif re.match('disconnect',cmd):
+            if self.is_connected():
+                if self.is_online(''):
+                    self.send_logout()
+                else:
+                    self.close()
+                self.append_note(_T("You has been disconnected."))
+            else:
+                self.append_note(_T("You are not connected."))
         elif re.match('confirm',cmd):
             m = re.match('confirm\s+(\S+)',cmd)
             if m:

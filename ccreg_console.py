@@ -75,7 +75,7 @@ if __name__ == '__main__':
 Console for communication with EPP server.
 
 OPTIONS:
-    -s --session  name of session used for conect to the EPP server
+    -s --session  name of session used for connect to the EPP server
                   session values are read from config file
     -l --lang     language of session
     -h --help     this help

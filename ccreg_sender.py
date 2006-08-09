@@ -49,8 +49,11 @@ def send_docs(docs=[]):
         if code:
             command_name = epp.grab_command_name_from_xml(xmldoc)
             if len(command_name):
-                if not epp.is_connected(): 
-                    if not __auto_login__(epp): break
+                if not epp.is_connected():
+                    if command_name == 'login':
+                        epp.connect()
+                    else:
+                        if not __auto_login__(epp): break
                 #-------------------------------------------------
                 # pokud je zalogováno, tak pošle soubor
                 #-------------------------------------------------
@@ -107,7 +110,7 @@ If first file is NOT login - does login automaticly.
 Usage: python ccreg_sender.py [OPTIONS] [files]
 
 OPTIONS:
-    -s --session  name of session used for conect to the EPP server
+    -s --session  name of session used for connect to the EPP server
                   session values are read from config file
     -l --lang     language of session
     -h --help     this help

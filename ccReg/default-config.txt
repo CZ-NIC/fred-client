@@ -1,4 +1,4 @@
-[conect]
+[connect]
 dir = ~
 host = epp-test.ccreg.nic.cz
 port = 700

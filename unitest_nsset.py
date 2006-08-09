@@ -326,7 +326,7 @@ def __check_equality__(cols, data):
     #   nsset:crDate        u'2006-08-03T09:38:05.0Z'
     #   nsset:roid          u'N0000000027-CZ'
     key = 'nsset:upID'
-    ref_value = epp_cli._epp.get_config_value('conect','username')
+    ref_value = epp_cli._epp.get_config_value('connect','username')
     __err_not_equal__(errors, data, 'nsset:clID', ref_value)
     __err_not_equal__(errors, data, 'nsset:id', cols['id'])
     __err_not_equal__(errors, data, 'nsset:tech', cols['tech'])

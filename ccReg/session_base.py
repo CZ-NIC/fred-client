@@ -166,30 +166,27 @@ class ManagerBase:
                 for option in self._conf.options(section):
                     print_unicode(colored_output.render('\t${BOLD}%s${NORMAL} = %s'%(option,str(self.get_config_value(section,option)))))
 
-    def __config_conect_host__(self, session_name):
-        'Overwrite default host values'
-        ok = 0
-        section = section_host = 'conect'
-        if session_name:
-            section_host = 'conect_%s'%session_name
-            if not self._conf.has_section(section_host):
-                section_host = 'conect' # if explicit section doesnt exist, use default
-        if self._conf.has_section(section_host):
-            # adjust pathnames
-            modul_path,fn = os.path.split(__file__)
-            root_path = os.path.normpath(os.path.join(modul_path,'../certificates'))
-            self._conf.set(section, 'dir', root_path)
-##            for option in ('ssl_cert','ssl_key'):
-##                name = self.get_config_value(section_host, option)
-##                self._conf.set(section, option, os.path.join(root_path,name))
-            # copy 'conect' values from default into session_name
-            if section != section_host:
-                for option in ('host','port','username','password'):
-                    if not self.__is_config_option__(section, option): # if only value missing
-                        value = self.get_config_value(section_host, option, 1) # 1-ommit errors
-                        if value: self._conf.set(section, option, value)
-            ok = 1
-        return ok
+##    def __config_connect_host__(self, session_name):
+##        'Overwrite default host values'
+##        ok = 0
+##        section = section_host = 'connect'
+##        if session_name:
+##            section_host = 'connect_%s'%session_name
+##            if not self._conf.has_section(section_host):
+##                section_host = 'connect' # if explicit section doesnt exist, use default
+##        if self._conf.has_section(section_host):
+##            # adjust pathnames
+##            modul_path,fn = os.path.split(__file__)
+##            root_path = os.path.normpath(os.path.join(modul_path,'../certificates'))
+##            self._conf.set(section, 'dir', root_path)
+##            # copy 'connect' values from default into session_name
+##            if section != section_host:
+##                for option in ('host','port','username','password'):
+##                    if not self.__is_config_option__(section, option): # if only value missing
+##                        value = self.get_config_value(section_host, option, 1) # 1-ommit errors
+##                        if value: self._conf.set(section, option, value)
+##            ok = 1
+##        return ok
 
     def copy_default_options(self, section, section_default, option):
         'Copy default options where they missing.'
@@ -217,7 +214,11 @@ class ManagerBase:
             name = self.get_config_value(seop[0], seop[1])
             self._conf.set(seop[0], seop[1], os.path.join(modul_path,'schemas',name))
             self._session[POLL_AUTOACK] = {False:0,True:1}[self.get_config_value(seop[0], 'poll_ack') in ('on','ON')]
-            ok = self.__config_conect_host__(self._session_name)
+##            ok = self.__config_connect_host__(self._session_name)
+            # adjust pathnames
+            modul_path,fn = os.path.split(__file__)
+            root_path = os.path.normpath(os.path.join(modul_path,'../certificates'))
+            self._conf.set(self.__config_get_section_connect__(), 'dir', root_path)
         return ok 
 
     def __is_config_section__(self, section):
@@ -260,17 +261,17 @@ class ManagerBase:
         except IOError, (no, msg):
             self.append_error('%s: [%d] %s'%(_T('Impossible saving conf file. Reason'),no,msg))
 
-    def __config_get_section__(self):
-        'Set section name "conect" in config.'
+    def __config_get_section_connect__(self):
+        'Set section name "connect" in config.'
         if self._session_name:
-            section = 'conect_%s'%self._session_name
+            section = 'connect_%s'%self._session_name
         else:
-            section = 'conect'
+            section = 'connect'
         return section
 
     def __config_defaults__(self):
         'Set config defaults.'
-        section = self.__config_get_section__()
+        section = self.__config_get_section_connect__()
         if self.__is_config_section__(section):
             if not self.__is_config_option__(section, 'timeout'):
                 self._conf.set(section, 'timeout','0.0')
@@ -302,11 +303,12 @@ class ManagerBase:
         else:
             self.append_note('%s: ${BOLD}%s${NORMAL} %s'%(_T('This language code is not allowed'),lang,str(self.defs[LANGS])))
         self._session[CONFIRM_SEND_COMMAND] = {False:0,True:1}[self.get_config_value(section,'confirm_send_commands') == 'on']
-        # default values
+        # default values (timeout)
         self.__config_defaults__()
-        # TODO: move into unittest
-        self.copy_default_options('epp_login', 'conect', 'username')
-        self.copy_default_options('epp_login', 'conect', 'password')
+        # for login with no parameters
+        section = self.__config_get_section_connect__()
+        self.copy_default_options('epp_login', section, 'username')
+        self.copy_default_options('epp_login', section, 'password')
         return 1 # OK
 
 

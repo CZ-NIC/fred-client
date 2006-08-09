@@ -65,16 +65,16 @@ class Test(unittest.TestCase):
     def test_1_5(self):
         '1.5 Zalogovani se spatnym otiskem certifikatu'
         cert_name = None
-        current_section = {False:'conect_%s'%SESSION_NAME, True:'conect'}[SESSION_NAME is None]
+        current_section = {False:'connect_%s'%SESSION_NAME, True:'connect'}[SESSION_NAME is None]
         valid_certificat = self.epc._epp.get_config_value(current_section,'ssl_cert')
         for section in self.epc._epp._conf.sections():
-            if section[:6]=='conect' and section != current_section:
+            if section[:6]=='connect' and section != current_section:
                 # vybere se jiný certifikát než platný
                 certificat = self.epc._epp.get_config_value(section,'ssl_cert')
                 if certificat != valid_certificat:
                     cert_name = certificat
                     break
-        self.assert_(cert_name, 'Nebyl nalezen vhodny certifikat. Nastavte v configu alespon jednu sekci conect_SESSION_NAME s jinym certifikatem, nez je ten platny.')
+        self.assert_(cert_name, 'Nebyl nalezen vhodny certifikat. Nastavte v configu alespon jednu sekci connect_SESSION_NAME s jinym certifikatem, nez je ten platny.')
         if not cert_name: return
         # přiřazení neplatného certifikátu
         self.epc._epp._conf.set(current_section, 'ssl_cert', cert_name)
