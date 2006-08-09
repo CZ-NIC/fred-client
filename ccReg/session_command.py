@@ -144,7 +144,6 @@ ${BOLD}send${NORMAL} [filename] # send selected file to the server (for test onl
         else:
             m = re.match('(\?)(?:$|\s*(\S+))',cmd)
             if m: help, help_item = m.groups()
-##        if re.match('disconnect',cmd): cmd = 'logout'
         if help:
             self.make_help_session(self.make_help(help_item))
         elif re.match('(raw|src)[-_]',cmd):

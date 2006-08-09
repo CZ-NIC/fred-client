@@ -68,7 +68,7 @@ class Test(unittest.TestCase):
         current_section = {False:'connect_%s'%SESSION_NAME, True:'connect'}[SESSION_NAME is None]
         valid_certificat = self.epc._epp.get_config_value(current_section,'ssl_cert')
         for section in self.epc._epp._conf.sections():
-            if section[:6]=='connect' and section != current_section:
+            if section[:7]=='connect' and section != current_section:
                 # vybere se jiný certifikát než platný
                 certificat = self.epc._epp.get_config_value(section,'ssl_cert')
                 if certificat != valid_certificat:

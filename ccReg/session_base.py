@@ -166,28 +166,6 @@ class ManagerBase:
                 for option in self._conf.options(section):
                     print_unicode(colored_output.render('\t${BOLD}%s${NORMAL} = %s'%(option,str(self.get_config_value(section,option)))))
 
-##    def __config_connect_host__(self, session_name):
-##        'Overwrite default host values'
-##        ok = 0
-##        section = section_host = 'connect'
-##        if session_name:
-##            section_host = 'connect_%s'%session_name
-##            if not self._conf.has_section(section_host):
-##                section_host = 'connect' # if explicit section doesnt exist, use default
-##        if self._conf.has_section(section_host):
-##            # adjust pathnames
-##            modul_path,fn = os.path.split(__file__)
-##            root_path = os.path.normpath(os.path.join(modul_path,'../certificates'))
-##            self._conf.set(section, 'dir', root_path)
-##            # copy 'connect' values from default into session_name
-##            if section != section_host:
-##                for option in ('host','port','username','password'):
-##                    if not self.__is_config_option__(section, option): # if only value missing
-##                        value = self.get_config_value(section_host, option, 1) # 1-ommit errors
-##                        if value: self._conf.set(section, option, value)
-##            ok = 1
-##        return ok
-
     def copy_default_options(self, section, section_default, option):
         'Copy default options where they missing.'
         value = self.get_config_value(section, option, 1)
@@ -214,7 +192,6 @@ class ManagerBase:
             name = self.get_config_value(seop[0], seop[1])
             self._conf.set(seop[0], seop[1], os.path.join(modul_path,'schemas',name))
             self._session[POLL_AUTOACK] = {False:0,True:1}[self.get_config_value(seop[0], 'poll_ack') in ('on','ON')]
-##            ok = self.__config_connect_host__(self._session_name)
             # adjust pathnames
             modul_path,fn = os.path.split(__file__)
             root_path = os.path.normpath(os.path.join(modul_path,'../certificates'))

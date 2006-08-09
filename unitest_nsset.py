@@ -275,8 +275,6 @@ def __get_reason__(client):
     'Returs reason a errors from client object'
     reason = get_local_text(client.is_val('reason'))
     er = []
-##    print "!!! ??? errors:",client.is_val('errors')
-##    print "!!! client._epp._dct_answer:",client._epp._dct_answer
     for error in client.is_val('errors'):
         er.append(get_local_text(error))
     return  '%s ERRORS:[%s]\nCOMMAND: %s'%(reason, '\n'.join(er), get_local_text(client._epp.get_command_line()))
