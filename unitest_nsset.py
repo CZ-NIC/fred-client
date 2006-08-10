@@ -90,6 +90,10 @@ CCREG_DATA = (
 
 class Test(unittest.TestCase):
 
+    def setUp(self):
+        'Check if cilent is online.'
+        if epp_cli: self.assert_(epp_cli.is_logon(),'client is offline')
+                
     def test_000(self):
         '3.0 Inicializace spojeni a definovani testovacich handlu'
         global epp_cli, epp_cli_TRANSF, handle_contact, handle_nsset
@@ -292,6 +296,11 @@ def __find_available_handle__(epp_cli, type_object, prefix):
             break
     return available_handle
 
+
+def __err_not_equal__(errors, data, key, refval):
+    if data[key] != refval:
+        errors.append('Neplatny klic "%s" je "%s" (ma byt: "%s")'%(key,data[key],refval))
+
 def __check_equality__(cols, data):
     'Check if values are equal'
     #print '%s\nCOLS:\n%s\n%s\nDATA:\n%s\n%s\n'%('='*60, str(cols), '-'*60, str(data), '_'*60)
@@ -345,10 +354,6 @@ def __check_equality__(cols, data):
     else:
         errors.append('Seznam DNS nema pozadovany pocet. Ma %d a mel by mit %d.'%(len(ns),len(dns)))
     return errors
-
-def __err_not_equal__(errors, data, key, refval):
-    if data[key] != refval:
-        errors.append('Neplatny klic "%s" je "%s" (ma byt: "%s")'%(key,data[key],refval))
 
 epp_cli, epp_cli_TRANSF, handle_contact, handle_nsset = None,None,None,None
 get_local_text = ccReg.session_base.get_ltext

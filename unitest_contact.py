@@ -116,6 +116,13 @@ CCREG_CONTACT.append({ # chg part to modify contact
 
 class Test(unittest.TestCase):
 
+    def setUp(self):
+        'Check if cilent is online.'
+        if epp_cli: self.assert_(epp_cli.is_logon(),'client is offline')
+
+    def tearDown(self):
+        __write_log__()
+
     def test_2_000(self):
         '2.0 Inicializace spojeni a definovani testovacich handlu'
         global epp_cli, handle_contact, handle_nsset, log_fp
@@ -137,24 +144,23 @@ class Test(unittest.TestCase):
         self.assert_(len(handle_contact), 'Nepodarilo se nalezt volny handle contact.')
         self.assert_(len(handle_nsset), 'Nepodarilo se nalezt volny handle nsset.')
         # logovací soubor
-        filepath = os.path.join(os.path.expanduser('~'),'unittest_contact_log.txt')
-        try:
-            log_fp = open(filepath,'w')
-        except IOError, (no, msg):
-            pass # ignore if log file doenst created
+        if 0: # zapnuti/vypuni ukladani prikazu do logu
+            filepath = os.path.join(os.path.expanduser('~'),'unittest_contact_log.txt')
+            try:
+                log_fp = open(filepath,'w')
+            except IOError, (no, msg):
+                pass # ignore if log file doenst created
     
     def test_2_010(self):
         '2.1 Check na seznam dvou neexistujicich kontaktu'
         handles = (handle_contact,'neexist002')
         epp_cli.check_contact(handles)
-        __write_log__()
         for name in handles:
             self.assertEqual(epp_cli.is_val(('data',name)), 1, 'Kontakt existuje: %s'%name)
 
     def test_2_020(self):
         '2.2 Pokus o Info na neexistujici kontakt'
         epp_cli.info_contact(handle_contact)
-        __write_log__()
         self.assertNotEqual(epp_cli.is_val(), 1000, 'handle_contact %s existuje'%handle_contact)
 
     def test_2_030(self):
@@ -164,118 +170,117 @@ class Test(unittest.TestCase):
             d['name'], d['email'], d['city'], d['cc'], d['org'], 
             d['street'], d['sp'], d['pc'], d['voice'], d['fax'], d['disclose_flag'], d['disclose'],
             d['vat'], d['ssn'], d['notify_email'])
-        __write_log__()
         self.assertEqual(epp_cli.is_val(), 1000, __get_reason__())
 
     def test_2_031(self):
         '2.3.1 Overevni vsech hodnot vznikleho kontaktu'
         epp_cli.info_contact(handle_contact)
-        __write_log__()
         errors = __info_contact__('contact', CCREG_CONTACT[1], epp_cli.is_val('data'))
-        self.assert_(len(errors), '\n'.join(errors))
+        self.assert_(len(errors)==0, '\n'.join(errors))
 
     def test_2_040(self):
         '2.4 Pokus o zalozeni existujiciho kontaktu'
         # contact_id, name, email, city, cc
         epp_cli.create_contact(handle_contact,'Pepa Zdepa','pepa@zdepa.cz','Praha','CZ')
-        __write_log__()
-        self.assertNotEqual(epp_cli.is_val(), 1000)
+        self.assertNotEqual(epp_cli.is_val(), 1000, 'Contakt se vytvoril prestoze jiz existuje.')
 
     def test_2_050(self):
         '2.5 Check na seznam existujiciho a neexistujicich kontaktu'
         handles = (handle_contact,'neexist002')
         epp_cli.check_contact(handles)
-        __write_log__()
         self.assertEqual(epp_cli.is_val(('data',handle_contact)), 0)
         self.assertEqual(epp_cli.is_val(('data','neexist002')), 1)
 
     def test_2_060(self):
         '2.6 Info na existujici kontakt a overeni vsech hodnot'
         epp_cli.info_contact(handle_contact)
-        __write_log__()
         self.assertEqual(epp_cli.is_val(), 1000, __get_reason__())
         errors = __info_contact__('contact', CCREG_CONTACT[1], epp_cli.is_val('data'))
-        self.assert_(len(errors), '\n'.join(errors))
+        self.assert_(len(errors)==0, '\n'.join(errors))
 
     def test_2_070(self):
         '2.7 Update vsech parametru krome stavu'
         epp_cli.update_contact(handle_contact, None, None, CCREG_CONTACT[3])
-        __write_log__()
         self.assertEqual(epp_cli.is_val(), 1000, __get_reason__())
 
     def test_2_071(self):
         '2.7.1 Overevni vsech hodnot zmeneneho kontaktu'
         epp_cli.info_contact(handle_contact)
-        __write_log__()
         self.assertEqual(epp_cli.is_val(), 1000, __get_reason__())
         errors = __info_contact__('contact', CCREG_CONTACT[2], epp_cli.is_val('data'))
-        self.assert_(len(errors), '\n'.join(errors))
+        self.assert_(len(errors)==0, '\n'.join(errors))
         
     def test_2_080(self):
-        '2.8 Pokus o update vsech stavu server*'
-        for status in ('serverDeleteProhibited', 'serverUpdateProhibited'):
-            epp_cli.update_contact(handle_contact, status)
-            __write_log__()
-            self.assertNotEqual(epp_cli.is_val(), 1000, 'Status "%s" prosel prestoze nemel.'%status)
-        
+        '2.8.1 Pokus o update stavu serverDeleteProhibited'
+        status = 'serverDeleteProhibited'
+        epp_cli.update_contact(handle_contact, status)
+        self.assertNotEqual(epp_cli.is_val(), 1000, 'Status "%s" prosel prestoze nemel.'%status)
+
+    def test_2_081(self):
+        '2.8.2 Pokus o update stavu serverUpdateProhibited'
+        status = 'serverUpdateProhibited'
+        epp_cli.update_contact(handle_contact, status)
+        self.assertNotEqual(epp_cli.is_val(), 1000, 'Status "%s" prosel prestoze nemel.'%status)
+
     def test_2_090(self):
-        '2.9 Update stavu clientDeleteProhibited a pokus o smazani'
+        '2.9.1 Update stavu clientDeleteProhibited a pokus o smazani'
         status = 'clientDeleteProhibited'
         epp_cli.update_contact(handle_contact, status)
-        __write_log__()
         self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se nastavit status: %s'%status)
+
+    def test_2_091(self):
+        '2.9.2 Update stavu clientDeleteProhibited a pokus o smazani'
         # pokus o smazání
         epp_cli.delete_contact(handle_contact)
-        __write_log__()
         self.assertNotEqual(epp_cli.is_val(), 1000, 'Kontakt se smazal, prestoze mel nastaven %s'%status)
+
+    def test_2_092(self):
+        '2.9.3 Update stavu clientDeleteProhibited a pokus o smazani'
         # zrušení stavu
         epp_cli.update_contact(handle_contact, None, status)
-        __write_log__()
         self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se odstranit status: %s'%status)
         
     def test_2_100(self):
         '2.10 Update stavu clientUpdateProhibited a pokus o zmenu objektu, smazani stavu'
         status = 'clientUpdateProhibited'
         epp_cli.update_contact(handle_contact, status)
-        __write_log__()
         self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se nastavit status: %s'%status)
+
+    def test_2_101(self):
+        '2.10.1 Update stavu clientUpdateProhibited a pokus o zmenu objektu, smazani stavu'
         # pokus o změnu
         epp_cli.update_contact(handle_contact, None, None, {'notifyEmail':'notifak@jinak.cz'})
-        __write_log__()
         self.assertNotEqual(epp_cli.is_val(), 1000, 'Kontakt se aktualizoval, prestoze mel nastaven %s'%status)
+
+    def test_2_102(self):
+        '2.10.2 Update stavu clientUpdateProhibited a pokus o zmenu objektu, smazani stavu'
         # zrušení stavu
         epp_cli.update_contact(handle_contact, None, status)
-        __write_log__()
         self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se odstranit status: %s'%status)
 
     def test_2_110(self):
         '2.11 Vytvoreni nnsetu napojeneho na kontakt'
         epp_cli.create_nsset(handle_nsset, 'heslo', {'name':'ns1.test.cz'}, handle_contact)
-        __write_log__()
         self.assertEqual(epp_cli.is_val(), 1000, __get_reason__())
         
     def test_2_120(self):
         '2.12 Smazani kontaktu na ktery existuji nejake vazby'
         epp_cli.delete_contact(handle_contact)
-        __write_log__()
         self.assertNotEqual(epp_cli.is_val(), 1000, __get_reason__())
 
     def test_2_130(self):
         '2.13 Smazani nssetu'
         epp_cli.delete_nsset(handle_nsset)
-        __write_log__()
         self.assertEqual(epp_cli.is_val(), 1000, __get_reason__())
 
     def test_2_140(self):
         '2.14 Smazani kontaktu'
         epp_cli.delete_contact(handle_contact)
-        __write_log__()
         self.assertEqual(epp_cli.is_val(), 1000, __get_reason__())
 
     def test_2_150(self):
         '2.15 Check na smazany kontakt'
         epp_cli.check_contact(handle_contact)
-        __write_log__()
         self.assertEqual(epp_cli.is_val(('data',handle_contact)), 1, '%s nelze smazat'%handle_contact)
 
     def test_2_160(self):
@@ -284,7 +289,6 @@ class Test(unittest.TestCase):
         # 1300 No messages
         # 1301 Any message
         epp_cli.poll('req')
-        __write_log__()
         if epp_cli.is_val() not in (1000,1300,1301):
             self.assertEqual(0, 1, __get_reason__())
 
@@ -376,7 +380,7 @@ def __info_contact__(prefix, cols, scope, key=None, pkeys=[]):
     return errors
 
 def __write_log__():
-    if log_fp:
+    if log_fp and epp_cli._epp._raw_cmd:
         log_fp.write('COMMAND: %s\n%s\n'%(epp_cli._epp._command_sent,'.'*60))
         log_fp.write(epp_cli._epp._raw_cmd)
         log_fp.write('%s\nANSWER:\n'%('-'*60))
@@ -387,7 +391,7 @@ def __write_log__():
         edoc.parse_xml(epp_cli._epp._raw_answer)
         log_fp.write(edoc.get_xml())
         log_fp.write('\n%s\n'%('='*60))
-    
+        epp_cli._epp._raw_cmd = '' # reset
     
 epp_cli, handle_contact, handle_nsset, log_fp = None,None,None,None
 get_local_text = ccReg.session_base.get_ltext
