@@ -107,7 +107,7 @@
       <sequence>
         <element name="id" type="nsset:nssT"/>
         <element name="ns" type="nsset:nsT"
-	minOccurs="0" maxOccurs="9"/>
+	 maxOccurs="9"/>
         <element name="tech" type="eppcom:clIDType"
          minOccurs="0" maxOccurs="unbounded"/>
         <element name="authInfo" type="nsset:authInfoType"
