@@ -135,7 +135,7 @@ class ManagerBase:
             '-'*60,
             _T('Welcome to the ccReg console'),
             '-'*60,
-            'Version 1.1.6 Basic release.',
+            'Version 1.1.7 Basic release.',
             _T('For help type "help" (or "h", "?")'),
             ))
 
@@ -304,6 +304,7 @@ class ManagerBase:
 
     def check_validator(self):
         'Check if exists external validator (xmllint).'
+        if not self._validate: return # validate is set OFF
         ok = 0
         try:
             pipes = os.popen3('xmllint')

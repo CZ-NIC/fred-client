@@ -1,7 +1,7 @@
 # -*- coding: utf8 -*-
 #!/usr/bin/env python
 import re
-from translate import _T
+from translate import _T, encoding
 
 UNFINITE = None
 MOD_NORMAL, MOD_LIST, MOD_LIST_AGAIN, MOD_CHILD, MOD_CHILD_LIST, MOD_INSIDE_LIST = range(6)
@@ -66,7 +66,7 @@ def __get_name_pos__(errors,key,name,cols):
         try:
             pos = int(m.group(2))
         except ValueError:
-            errors.append("%s: '%s' [%s]."%(_T('Invalid parameter index'),key,m.group(2)))
+            errors.append("%s: '%s' [%s]."%(_T('Invalid parameter index'),key.encode(encoding),m.group(2).encode(encoding)))
             pos = None
     children=None
     for row in cols:
@@ -74,7 +74,7 @@ def __get_name_pos__(errors,key,name,cols):
             children = row[4] # children
             break
     if children is None:
-        errors.append("%s: '%s' (%s)."%(_T('Unknown parameter name'),key,name))
+        errors.append("%s: '%s' (%s)."%(_T('Unknown parameter name'),key.encode(encoding),name.encode(encoding)))
         name = ''
     return name,pos,children
 
@@ -123,6 +123,8 @@ def parse(dct_root, cols_root, text_line):
     
     value "value with space" 'other value with space'
     -key = value ("more than one", "second value")
+    
+    text_line MUST be unicode.
     """
     errors=[]
     explicit_key = sep = ''
