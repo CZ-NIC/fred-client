@@ -22,12 +22,12 @@ class ManagerTransfer(ManagerBase):
         self._raw_cmd = '' # XML EPP příkaz odeslaný serveru
         self._raw_answer = '' # XML EPP odpověd serveru
         self._dct_answer = {} # API response
-        self.__reset_src__()
+        self.reset_src()
 
     def get_command_names(self):
         return self._available_commands
 
-    def __reset_src__(self):
+    def reset_src(self):
         'Reset buffers of sources.'
         self._raw_answer = '' # XML EPP odpověd serveru
         self._dict_answer = '' # dict - slovník vytvořený z XML EPP odpovědi
@@ -82,7 +82,7 @@ class ManagerTransfer(ManagerBase):
         self._lorry.handler_message = self.process_answer
         if not data:
             if not self._conf: self.load_config() # load config, if was not been yet
-            section = self.__config_get_section_connect__()
+            section = self.config_get_section_connect()
             data = [self.get_config_value(section,'host'),
                     self.get_config_value(section,'port',0,'int'),
                     self.get_config_value(section,'ssl_key'),
@@ -133,7 +133,7 @@ class ManagerTransfer(ManagerBase):
             self.append_error(_T('You are not connected.'))
         return ret
 
-    def send_logout(self):
+    def send_logout(self, no_outoupt=None):
         'Send EPP logout message.'
         if not self._session[ONLINE]: return # session zalogována nebyla
         self._epp_cmd.assemble_logout(self.__next_clTRID__())
@@ -143,7 +143,7 @@ class ManagerTransfer(ManagerBase):
             self.send(epp_doc)          # odeslání dokumentu na server
             answer = self.receive()     # příjem odpovědi
             self.process_answer(answer) # zpracování odpovědi
-            self.print_answer() # 2. departure from the rule to print answers
+            if not no_outoupt: self.print_answer() # 2. departure from the rule to print answers
         else:
             self.append_error(self._epp_cmd.get_errors())
             

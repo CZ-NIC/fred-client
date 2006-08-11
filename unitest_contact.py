@@ -17,18 +17,11 @@
 2.14 Smazani kontaktu 
 2.15 Check na smazany kontakt
 """
-import sys, os, re
 import unittest
 import ccReg
-from ccReg.translate import encoding
 from ccReg.eppdoc_assemble import contact_disclose
-import ccReg.eppdoc
+import unitest_ccreg_share
 
-#----------------------------------------------
-# Nastavení serveru, na kterém se bude testovat
-# (Pokud je None, tak je to default)
-#----------------------------------------------
-SESSION_NAME = None # 'curlew'
 
 # CCREG_CONTACT[1] - create
 # CCREG_CONTACT[2] - modify
@@ -121,7 +114,7 @@ class Test(unittest.TestCase):
         if epp_cli: self.assert_(epp_cli.is_logon(),'client is offline')
 
     def tearDown(self):
-        __write_log__()
+        unitest_ccreg_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription())
 
     def test_2_000(self):
         '2.0 Inicializace spojeni a definovani testovacich handlu'
@@ -131,7 +124,8 @@ class Test(unittest.TestCase):
         handle_nsset = 'neexist01'
         # create client object
         epp_cli = ccReg.Client()
-        if SESSION_NAME: epp_cli._epp.set_session_name(SESSION_NAME) # nastavení serveru
+        if ccReg.translate.session_name:
+            epp_cli._epp.set_session_name(ccReg.translate.session_name) # nastavení serveru
         epp_cli._epp.load_config()
         # login
         dct = epp_cli._epp.get_default_params_from_config('login')
@@ -139,17 +133,13 @@ class Test(unittest.TestCase):
         # Tady se da nalezt prazdny handle (misto pevne definovaneho):
         # handle_contact = __find_available_handle__(epp_cli, 'contact','nexcon')
         # handle_nsset = __find_available_handle__(epp_cli, 'nsset','nexns')
+        # self.assert_(len(handle_contact), 'Nepodarilo se nalezt volny handle contact.')
+        # self.assert_(len(handle_nsset), 'Nepodarilo se nalezt volny handle nsset.')
         # kontrola:
         self.assert_(epp_cli.is_logon(), 'Nepodarilo se zalogovat.')
-        self.assert_(len(handle_contact), 'Nepodarilo se nalezt volny handle contact.')
-        self.assert_(len(handle_nsset), 'Nepodarilo se nalezt volny handle nsset.')
         # logovací soubor
-        if 0: # zapnuti/vypuni ukladani prikazu do logu
-            filepath = os.path.join(os.path.expanduser('~'),'unittest_contact_log.txt')
-            try:
-                log_fp = open(filepath,'w')
-            except IOError, (no, msg):
-                pass # ignore if log file doenst created
+        if ccReg.translate.option_log_name: # zapnuti/vypuni ukladani prikazu do logu
+            log_fp = open(ccReg.translate.option_log_name,'w')
     
     def test_2_010(self):
         '2.1 Check na seznam dvou neexistujicich kontaktu'
@@ -170,7 +160,7 @@ class Test(unittest.TestCase):
             d['name'], d['email'], d['city'], d['cc'], d['org'], 
             d['street'], d['sp'], d['pc'], d['voice'], d['fax'], d['disclose_flag'], d['disclose'],
             d['vat'], d['ssn'], d['notify_email'])
-        self.assertEqual(epp_cli.is_val(), 1000, __get_reason__())
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_2_031(self):
         '2.3.1 Overevni vsech hodnot vznikleho kontaktu'
@@ -194,19 +184,19 @@ class Test(unittest.TestCase):
     def test_2_060(self):
         '2.6 Info na existujici kontakt a overeni vsech hodnot'
         epp_cli.info_contact(handle_contact)
-        self.assertEqual(epp_cli.is_val(), 1000, __get_reason__())
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
         errors = __info_contact__('contact', CCREG_CONTACT[1], epp_cli.is_val('data'))
         self.assert_(len(errors)==0, '\n'.join(errors))
 
     def test_2_070(self):
         '2.7 Update vsech parametru krome stavu'
         epp_cli.update_contact(handle_contact, None, None, CCREG_CONTACT[3])
-        self.assertEqual(epp_cli.is_val(), 1000, __get_reason__())
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_2_071(self):
         '2.7.1 Overevni vsech hodnot zmeneneho kontaktu'
         epp_cli.info_contact(handle_contact)
-        self.assertEqual(epp_cli.is_val(), 1000, __get_reason__())
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
         errors = __info_contact__('contact', CCREG_CONTACT[2], epp_cli.is_val('data'))
         self.assert_(len(errors)==0, '\n'.join(errors))
         
@@ -223,37 +213,29 @@ class Test(unittest.TestCase):
         self.assertNotEqual(epp_cli.is_val(), 1000, 'Status "%s" prosel prestoze nemel.'%status)
 
     def test_2_090(self):
-        '2.9.1 Update stavu clientDeleteProhibited a pokus o smazani'
+        '2.9 Update stavu clientDeleteProhibited a pokus o smazani'
         status = 'clientDeleteProhibited'
         epp_cli.update_contact(handle_contact, status)
+        unitest_ccreg_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(1,3))
         self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se nastavit status: %s'%status)
-
-    def test_2_091(self):
-        '2.9.2 Update stavu clientDeleteProhibited a pokus o smazani'
         # pokus o smazání
         epp_cli.delete_contact(handle_contact)
+        unitest_ccreg_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(2,3))
         self.assertNotEqual(epp_cli.is_val(), 1000, 'Kontakt se smazal, prestoze mel nastaven %s'%status)
-
-    def test_2_092(self):
-        '2.9.3 Update stavu clientDeleteProhibited a pokus o smazani'
         # zrušení stavu
         epp_cli.update_contact(handle_contact, None, status)
         self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se odstranit status: %s'%status)
-        
+
     def test_2_100(self):
         '2.10 Update stavu clientUpdateProhibited a pokus o zmenu objektu, smazani stavu'
         status = 'clientUpdateProhibited'
         epp_cli.update_contact(handle_contact, status)
+        unitest_ccreg_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(1,3))
         self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se nastavit status: %s'%status)
-
-    def test_2_101(self):
-        '2.10.1 Update stavu clientUpdateProhibited a pokus o zmenu objektu, smazani stavu'
         # pokus o změnu
         epp_cli.update_contact(handle_contact, None, None, {'notifyEmail':'notifak@jinak.cz'})
+        unitest_ccreg_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(2,3))
         self.assertNotEqual(epp_cli.is_val(), 1000, 'Kontakt se aktualizoval, prestoze mel nastaven %s'%status)
-
-    def test_2_102(self):
-        '2.10.2 Update stavu clientUpdateProhibited a pokus o zmenu objektu, smazani stavu'
         # zrušení stavu
         epp_cli.update_contact(handle_contact, None, status)
         self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se odstranit status: %s'%status)
@@ -261,22 +243,22 @@ class Test(unittest.TestCase):
     def test_2_110(self):
         '2.11 Vytvoreni nnsetu napojeneho na kontakt'
         epp_cli.create_nsset(handle_nsset, 'heslo', {'name':'ns1.test.cz'}, handle_contact)
-        self.assertEqual(epp_cli.is_val(), 1000, __get_reason__())
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
         
     def test_2_120(self):
         '2.12 Smazani kontaktu na ktery existuji nejake vazby'
         epp_cli.delete_contact(handle_contact)
-        self.assertNotEqual(epp_cli.is_val(), 1000, __get_reason__())
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_2_130(self):
         '2.13 Smazani nssetu'
         epp_cli.delete_nsset(handle_nsset)
-        self.assertEqual(epp_cli.is_val(), 1000, __get_reason__())
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_2_140(self):
         '2.14 Smazani kontaktu'
         epp_cli.delete_contact(handle_contact)
-        self.assertEqual(epp_cli.is_val(), 1000, __get_reason__())
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_2_150(self):
         '2.15 Check na smazany kontakt'
@@ -290,53 +272,8 @@ class Test(unittest.TestCase):
         # 1301 Any message
         epp_cli.poll('req')
         if epp_cli.is_val() not in (1000,1300,1301):
-            self.assertEqual(0, 1, __get_reason__())
+            self.assertEqual(0, 1, unitest_ccreg_share.get_reason(epp_cli))
 
-def __get_reason__():
-    'Returs reason a errors from client object'
-    reason = get_local_text(epp_cli.is_val('reason'))
-    er = []
-    for error in epp_cli.is_val('errors'):
-        er.append(get_local_text(error))
-    return  '%s ERRORS:[%s]\nCOMMAND: %s'%(reason, '\n'.join(er), get_local_text(epp_cli._epp.get_command_line()))
-
-def __find_available_handle__(epp_cli, type_object, prefix):
-    'Find first available object.'
-    available_handle = ''
-    handles = []
-    for n in range(30):
-        handles.append('%s%02d'%(prefix,n))
-    getattr(epp_cli,'check_%s'%type_object)(handles)
-    for name in handles:
-        if epp_cli.is_val(('data',name)) == 1:
-            available_handle = name
-            break
-    return available_handle
-
-def __are_equal__(val1,val2):
-    'Compare values or lists. True - equal, False - not equal.'
-    if type(val1) in (list, tuple):
-        if type(val2) not in (list, tuple): return False
-        lst2 = list(val2)
-        if len(val1) == len(lst2):
-            for v in val1:
-                if v in lst2: lst2.pop(lst2.index(v))
-            retv = len(lst2) == 0
-        else:
-            retv = False
-    else:
-        retv = val1 == val2
-    return retv
-
-def make_str(value):
-    if type(value) in (tuple,list):
-        arr=[]
-        for item in value:
-            arr.append(item.encode(encoding))
-        value = '(%s)'%', '.join(arr)
-    elif type(value) == unicode:
-        value = value.encode(encoding)
-    return value
     
 def __info_contact__(prefix, cols, scope, key=None, pkeys=[]):
     'Check info-[object] against selected set.'
@@ -371,38 +308,27 @@ def __info_contact__(prefix, cols, scope, key=None, pkeys=[]):
                     vals = tuple(data[key])
                 else:
                     vals = data[key]
-                if not __are_equal__(vals,v):
-                    errors.append('Data nesouhlasi. %s.%s JSOU:%s MELY BYT:%s'%(prevkeys,key,make_str(vals),make_str(v)))
+                if not unitest_ccreg_share.are_equal(vals,v):
+                    errors.append('Data nesouhlasi:\n%s.%s JSOU:%s MELY BYT:%s'%(prevkeys, key, unitest_ccreg_share.make_str(vals), unitest_ccreg_share.make_str(v)))
         else:
             if key != '%s:disclose_flag'%prefix: # except disclose_flag - it not shown
                 errors.append('Chybi klic %s'%key)
     cols['disclose'] = keep_disclose # restore values
     return errors
 
-def __write_log__():
-    if log_fp and epp_cli._epp._raw_cmd:
-        log_fp.write('COMMAND: %s\n%s\n'%(epp_cli._epp._command_sent,'.'*60))
-        log_fp.write(epp_cli._epp._raw_cmd)
-        log_fp.write('%s\nANSWER:\n'%('-'*60))
-        answer = epp_cli.get_answer()
-        if answer:
-            log_fp.write('%s\n'%re.sub('\x1b(\\[|\\()\d*(m|B)','',answer))
-        edoc = ccReg.eppdoc.Message()
-        edoc.parse_xml(epp_cli._epp._raw_answer)
-        log_fp.write(edoc.get_xml())
-        log_fp.write('\n%s\n'%('='*60))
-        epp_cli._epp._raw_cmd = '' # reset
-    
-epp_cli, handle_contact, handle_nsset, log_fp = None,None,None,None
-get_local_text = ccReg.session_base.get_ltext
+epp_cli, log_fp, log_step, handle_contact, handle_nsset = (None,)*5
 
 if __name__ == '__main__':
 ##if 0:
-    if len(sys.argv) > 1: SESSION_NAME = sys.argv[1]
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(Test))
-    unittest.TextTestRunner(verbosity=2).run(suite)
-    if log_fp: log_fp.close()
+    if ccReg.translate.option_errors:
+        print ccReg.translate.option_errors
+    elif ccReg.translate.option_help:
+        print unitest_ccreg_share.__doc__
+    else:
+        suite = unittest.TestSuite()
+        suite.addTest(unittest.makeSuite(Test))
+        unittest.TextTestRunner(verbosity=2).run(suite)
+        if log_fp: log_fp.close()
 
 if 0:
 ##if __name__ == '__main__':

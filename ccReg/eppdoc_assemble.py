@@ -208,7 +208,7 @@ class Message(eppdoc.Message):
             columns = [(command_name,(1,1),(),'',())]
             columns.extend(self._command_params[command_name][1])
             retval = __build_command_example__(columns, self._dct)
-        return retval
+        return retval.encode(encoding)
     
     def parse_cmd(self, command_name, cmd, config, interactive):
         "Parse command line. Returns errors. Save parsed values to self._dct."

@@ -25,15 +25,9 @@
 3.22 Check na smazany nsset
 3.23 Smazani pomocnych kontaktu
 """
-import sys
 import unittest
 import ccReg
-
-#----------------------------------------------
-# Nastavení serveru, na kterém se bude testovat
-# (Pokud je None, tak je to default)
-#----------------------------------------------
-SESSION_NAME = None # 'curlew'
+import unitest_ccreg_share
 
 # CCREG_DATA[1] - create
 # CCREG_DATA[2] - modify
@@ -50,8 +44,8 @@ CCREG_DATA = (
     'id': CCREG_HANDLE, # (required)
     'pw': 'heslo', # (required)
     'dns': ( # (required)               list with max 9 items.
-        {'name': 'ns.name1.cz', 'addr': ('127.0.0.1','127.1.1.1','127.2.2.2') },
-        {'name': 'ns.name2.cz', 'addr': ('126.0.0.1','126.1.1.1','126.2.2.2') },
+        {'name': 'ns.name1.cz', 'addr': ('217.31.207.130','217.31.207.129','217.31.207.128') },
+        {'name': 'ns.name2.cz', 'addr': ('217.31.206.130','217.31.206.129','217.31.206.128') },
         ),
     'tech': (CCREG_CONTACT1,)  # (optional)             unbounded list
     },
@@ -60,8 +54,8 @@ CCREG_DATA = (
     'id': CCREG_HANDLE, # (required)
     'add': {
         'dns': (
-            {'name':'ns.name3.cz','addr':('123.0.0.1','123.1.1.1','123.2.2.2')},
-            {'name':'ns.name4.cz','addr':('124.0.0.1','124.1.1.1','124.2.2.2')},
+            {'name':'ns.name3.cz','addr':('217.31.205.130','217.31.205.129','217.31.205.128')},
+            {'name':'ns.name4.cz','addr':('217.31.204.130','217.31.204.129','217.31.204.128')},
         ),
         'tech':CCREG_CONTACT2,
         #'status':'clientDeleteProhibited',
@@ -80,8 +74,8 @@ CCREG_DATA = (
     'id': CCREG_HANDLE,
     'pw': NSSET_PASSWORD,
     'dns': (
-            {'name':'ns.name3.cz','addr':('123.0.0.1','123.1.1.1','123.2.2.2')},
-            {'name':'ns.name4.cz','addr':('124.0.0.1','124.1.1.1','124.2.2.2')},
+            {'name':'ns.name3.cz','addr':('217.31.205.130','217.31.205.129','217.31.205.128')},
+            {'name':'ns.name4.cz','addr':('217.31.204.130','217.31.204.129','217.31.204.128')},
         ),
     'tech': (CCREG_CONTACT2,)
     },
@@ -93,20 +87,23 @@ class Test(unittest.TestCase):
     def setUp(self):
         'Check if cilent is online.'
         if epp_cli: self.assert_(epp_cli.is_logon(),'client is offline')
-                
+
+    def tearDown(self):
+        unitest_ccreg_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription())
+        
     def test_000(self):
         '3.0 Inicializace spojeni a definovani testovacich handlu'
-        global epp_cli, epp_cli_TRANSF, handle_contact, handle_nsset
+        global epp_cli, epp_cli_TRANSF, handle_contact, handle_nsset, log_fp
         # Natvrdo definovany handle:
         handle_nsset = CCREG_DATA[1]['id'] # 'neexist01'
         handle_contact = CCREG_CONTACT1
         # create client object
         epp_cli = ccReg.Client()
         epp_cli_TRANSF = ccReg.Client()
-        if SESSION_NAME:
+        if ccReg.translate.session_name:
             # nastavení serveru
-            epp_cli._epp.set_session_name(SESSION_NAME)
-            epp_cli_TRANSF._epp.set_session_name(SESSION_NAME)
+            epp_cli._epp.set_session_name(ccReg.translate.session_name)
+            epp_cli_TRANSF._epp.set_session_name(ccReg.translate.session_name)
         epp_cli._epp.load_config()
         epp_cli_TRANSF._epp.load_config()
         # login
@@ -114,41 +111,44 @@ class Test(unittest.TestCase):
         epp_cli.login(dct['username'], dct['password'])
         epp_cli_TRANSF.login('REG-LRR2', dct['password'])
         # Tady se da nalezt prazdny handle (misto pevne definovaneho):
-        # handle_contact = __find_available_handle__(epp_cli, 'contact','nexcon')
-        # handle_nsset = __find_available_handle__(epp_cli, 'nsset','nexns')
+        # handle_contact = unitest_ccreg_share.find_available_handle(epp_cli, 'contact','nexcon')
+        # handle_nsset = unitest_ccreg_share.find_available_handle(epp_cli, 'nsset','nexns')
+        # self.assert_(len(handle_contact), 'Nepodarilo se nalezt volny handle contact.')
+        # self.assert_(len(handle_nsset), 'Nepodarilo se nalezt volny handle nsset.')
         # kontrola:
         self.assert_(epp_cli.is_logon(), 'Nepodarilo se zalogovat.')
         self.assert_(epp_cli_TRANSF.is_logon(), 'Nepodarilo se zalogovat uzivatele "REG-LRR2" pro transfer.')
-        self.assert_(len(handle_contact), 'Nepodarilo se nalezt volny handle contact.')
-        self.assert_(len(handle_nsset), 'Nepodarilo se nalezt volny handle nsset.')
+        # logovací soubor
+        if ccReg.translate.option_log_name: # zapnuti/vypuni ukladani prikazu do logu
+            log_fp = open(ccReg.translate.option_log_name,'w')
     
     def test_010(self):
         '3.1 Check na seznam dvou neexistujicich nssetu'
         handles = (handle_nsset,'neexist002')
         epp_cli.check_nsset(handles)
-        self.assertEqual(epp_cli.is_val(), 1000, __get_reason__(epp_cli))
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
         for name in handles:
             self.assertEqual(epp_cli.is_val(('data',name)), 1, 'Nsset existuje: %s'%name)
 
     def test_020(self):
         '3.2 Pokus o Info na neexistujici nsset'
         epp_cli.info_nsset(handle_nsset)
-        self.assertNotEqual(epp_cli.is_val(), 1000, __get_reason__(epp_cli))
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_031(self):
         '3.3.1 Zalozeni pomocnych kontaktu'
         epp_cli.create_contact(CCREG_CONTACT1,'Pepa Zdepa','pepa@zdepa.cz','Praha','CZ')
-        self.assertEqual(epp_cli.is_val(), 1000, __get_reason__(epp_cli))
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
     def test_032(self):
         '3.3.2 Zalozeni pomocnych kontaktu'
         epp_cli.create_contact(CCREG_CONTACT2,u'Miloš Pažout','milos@pazout.cz','Jevany','CZ')
-        self.assertEqual(epp_cli.is_val(), 1000, __get_reason__(epp_cli))
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_040(self):
         '3.4 Zalozeni neexistujiciho noveho nssetu'
         d = CCREG_DATA[1]
         epp_cli.create_nsset(d['id'], d['pw'], d['dns'], d['tech'])
-        self.assertEqual(epp_cli.is_val(), 1000, __get_reason__(epp_cli))
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_050(self):
         '3.5 Pokus o zalozeni existujiciho nssetu'
@@ -166,7 +166,7 @@ class Test(unittest.TestCase):
     def test_070(self):
         '3.7 Info na existujici nsset a kontrola hodnot'
         epp_cli.info_nsset(handle_nsset)
-        self.assertEqual(epp_cli.is_val(), 1000, __get_reason__(epp_cli))
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
         errors = __check_equality__(CCREG_DATA[1], epp_cli.is_val('data'))
         self.assert_(len(errors), '\n'.join(errors))
 
@@ -174,12 +174,12 @@ class Test(unittest.TestCase):
         '3.8 Update vsech parametru krome stavu'
         d = CCREG_DATA[2]
         epp_cli.update_nsset(d['id'], d['add'], d['rem'], d['chg'])
-        self.assertEqual(epp_cli.is_val(), 1000, __get_reason__(epp_cli))
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_081(self):
         '3.8.1 Overevni vsech hodnot zmeneneho nssetu'
         epp_cli.info_nsset(handle_nsset)
-        self.assertEqual(epp_cli.is_val(), 1000, __get_reason__(epp_cli))
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
         errors = __check_equality__(CCREG_DATA[3], epp_cli.is_val('data'))
         self.assert_(len(errors), '\n'.join(errors))
         
@@ -216,7 +216,7 @@ class Test(unittest.TestCase):
     def test_120(self):
         '3.12 Vytvoreni domeny napojene na nsset'
         epp_cli.create_domain('test-nsset.cz', 'heslo', handle_nsset, handle_contact)
-        self.assertEqual(epp_cli.is_val(), 1000, __get_reason__(epp_cli))
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
         
     def test_130(self):
         '3.13 Smazani nssetu na ktery existuji nejake vazby'
@@ -226,42 +226,42 @@ class Test(unittest.TestCase):
     def test_140(self):
         '3.14 Pokus o trasfer na vlastni nsset (Objekt je nezpůsobilý pro transfer)'
         epp_cli.transfer_nsset(handle_nsset, NSSET_PASSWORD)
-        self.assertNotEqual(epp_cli.is_val(), 1000, __get_reason__(epp_cli))
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_150(self):
         '3.15 Druhy registrator: Pokus o trasfer s neplatnym heslem (Chyba oprávnění)'
         epp_cli_TRANSF.transfer_nsset(handle_nsset, 'heslo neznam')
-        self.assertNotEqual(epp_cli_TRANSF.is_val(), 1000, __get_reason__(epp_cli_TRANSF))
+        self.assertNotEqual(epp_cli_TRANSF.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli_TRANSF))
 
     def test_160(self):
         '3.16 Druhy registrator: Trasfer nssetu'
         epp_cli_TRANSF.transfer_nsset(handle_nsset, NSSET_PASSWORD)
-        self.assertEqual(epp_cli_TRANSF.is_val(), 1000, __get_reason__(epp_cli_TRANSF))
+        self.assertEqual(epp_cli_TRANSF.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli_TRANSF))
 
     def test_170(self):
         '3.17 Druhy registrator: Zmena hesla po prevodu nssetu'
         epp_cli_TRANSF.update_nsset(handle_nsset, None, None, {'pw':'nove-heslo'})
-        self.assertEqual(epp_cli_TRANSF.is_val(), 1000, __get_reason__(epp_cli_TRANSF))
+        self.assertEqual(epp_cli_TRANSF.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli_TRANSF))
 
     def test_180(self):
         '3.18 Pokus o zmenu hesla nssetu, ktery registratorovi jiz nepatri'
         epp_cli.update_nsset(handle_nsset, None, None, {'pw':'moje-heslo'})
-        self.assertNotEqual(epp_cli.is_val(), 1000, __get_reason__(epp_cli))
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_190(self):
         '3.19 Smazani domeny'
         epp_cli.delete_domain('test-nsset.cz')
-        self.assertEqual(epp_cli.is_val(), 1000, __get_reason__(epp_cli))
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_200(self):
         '3.20 Pokus o smazani nssetu, ktery registrator nevlastni'
         epp_cli.delete_nsset(handle_nsset)
-        self.assertNotEqual(epp_cli.is_val(), 1000, __get_reason__(epp_cli))
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_210(self):
         '3.21 Druhy registrator: Smazani nssetu'
         epp_cli_TRANSF.delete_nsset(handle_nsset)
-        self.assertEqual(epp_cli_TRANSF.is_val(), 1000, __get_reason__(epp_cli_TRANSF))
+        self.assertEqual(epp_cli_TRANSF.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli_TRANSF))
 
     def test_220(self):
         '3.22 Check na smazany nsset'
@@ -271,35 +271,10 @@ class Test(unittest.TestCase):
     def test_230(self):
         '3.23 Smazani pomocnych kontaktu'
         epp_cli.delete_contact(CCREG_CONTACT1)
-        self.assertEqual(epp_cli.is_val(), 1000, __get_reason__(epp_cli))
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
         epp_cli.delete_contact(CCREG_CONTACT2)
-        self.assertEqual(epp_cli.is_val(), 1000, __get_reason__(epp_cli))
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
-def __get_reason__(client):
-    'Returs reason a errors from client object'
-    reason = get_local_text(client.is_val('reason'))
-    er = []
-    for error in client.is_val('errors'):
-        er.append(get_local_text(error))
-    return  '%s ERRORS:[%s]\nCOMMAND: %s'%(reason, '\n'.join(er), get_local_text(client._epp.get_command_line()))
-
-def __find_available_handle__(epp_cli, type_object, prefix):
-    'Find first available object.'
-    available_handle = ''
-    handles = []
-    for n in range(30):
-        handles.append('%s%02d'%(prefix,n))
-    getattr(epp_cli,'check_%s'%type_object)(handles)
-    for name in handles:
-        if epp_cli.is_val(('data',name)) == 1:
-            available_handle = name
-            break
-    return available_handle
-
-
-def __err_not_equal__(errors, data, key, refval):
-    if data[key] != refval:
-        errors.append('Neplatny klic "%s" je "%s" (ma byt: "%s")'%(key,data[key],refval))
 
 def __check_equality__(cols, data):
     'Check if values are equal'
@@ -334,9 +309,9 @@ def __check_equality__(cols, data):
     #   nsset:roid          u'N0000000027-CZ'
     key = 'nsset:upID'
     ref_value = epp_cli._epp.get_config_value('connect','username')
-    __err_not_equal__(errors, data, 'nsset:clID', ref_value)
-    __err_not_equal__(errors, data, 'nsset:id', cols['id'])
-    __err_not_equal__(errors, data, 'nsset:tech', cols['tech'])
+    unitest_ccreg_share.err_not_equal(errors, data, 'nsset:clID', ref_value)
+    unitest_ccreg_share.err_not_equal(errors, data, 'nsset:id', cols['id'])
+    unitest_ccreg_share.err_not_equal(errors, data, 'nsset:tech', cols['tech'])
     ns = data.get('nsset:ns',[])
     dns = cols['dns']
     if len(ns) == len(dns):
@@ -355,22 +330,25 @@ def __check_equality__(cols, data):
         errors.append('Seznam DNS nema pozadovany pocet. Ma %d a mel by mit %d.'%(len(ns),len(dns)))
     return errors
 
-epp_cli, epp_cli_TRANSF, handle_contact, handle_nsset = None,None,None,None
-get_local_text = ccReg.session_base.get_ltext
+epp_cli, epp_cli_TRANSF, log_fp, log_step, handle_contact, handle_nsset = (None,)*6
 
 if __name__ == '__main__':
 ##if 0:
-    if len(sys.argv) > 1: SESSION_NAME = sys.argv[1]
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(Test))
-    unittest.TextTestRunner(verbosity=2).run(suite)
+    if ccReg.translate.option_errors:
+        print ccReg.translate.option_errors
+    elif ccReg.translate.option_help:
+        print unitest_ccreg_share.__doc__
+    else:
+        suite = unittest.TestSuite()
+        suite.addTest(unittest.makeSuite(Test))
+        unittest.TextTestRunner(verbosity=2).run(suite)
+        if log_fp: log_fp.close()
 
 if 0:
 ##if __name__ == '__main__':
     # TEST equals data
-    if len(sys.argv) > 1: SESSION_NAME = sys.argv[1]
     epp_cli = ccReg.Client()
-    if SESSION_NAME: epp_cli._epp.set_session_name(SESSION_NAME) # nastavení serveru
+    if ccReg.translate.session_name: epp_cli._epp.set_session_name(ccReg.translate.session_name) # nastavení serveru
     epp_cli._epp.load_config()
     saved_data = {'nsset:upID': u'REG-LRR', 
         'nsset:status.s': u'ok', 

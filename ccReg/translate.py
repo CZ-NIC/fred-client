@@ -32,12 +32,12 @@ session_name = None
 session_lang = 'cs'
 option_errors = ''
 option_help = False
+option_log_name = ''
 option_args = ()
 if len(sys.argv) > 1:
     try:
-        opts, option_args = getopt.getopt(sys.argv[1:], 's:l:h', ('session=', 'lang=','help'))
+        opts, option_args = getopt.getopt(sys.argv[1:], 's:l:g:h', ('session=', 'lang=','log=','help'))
     except getopt.GetoptError, msg:
-        print "Options error:",msg
         option_errors = "Options error: %s"%msg
     else:
         if len(option_args):
@@ -46,6 +46,7 @@ if len(sys.argv) > 1:
             if k in ('-s','--session'): session_name = v
             if k in ('-l','--lang'): session_lang = v
             if k in ('-h','--help'): option_help = True
+            if k in ('-g','--log'): option_log_name = v
 else:
     # set language from environ
     code = os.environ.get('LANG') # 'cs_CZ.UTF-8'

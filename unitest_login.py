@@ -8,23 +8,11 @@
 1.5 Zalogovani se spatnym otiskem certifikatu
 1.6 Zmena hesla tam a zpatky s kontrolnim zalogovanim
 """
-import sys
 import unittest
 import ccReg
-
-#----------------------------------------------
-# Nastavení serveru, na kterém se bude testovat
-# (Pokud je None, tak je to default)
-#----------------------------------------------
-SESSION_NAME = None # 'curlew'
+import unitest_ccreg_share
 
 class Test(unittest.TestCase):
-
-    def setUp(self):
-        '1.0 vytvoreni klienta'
-        self.epc = ccReg.Client()
-        if SESSION_NAME: self.epc._epp.set_session_name(SESSION_NAME) # nastavení serveru
-        self.epc._epp.load_config()
 
     def __login__(self, dct):
         'Login and logout.'
@@ -35,84 +23,120 @@ class Test(unittest.TestCase):
         if not error:
             try:
                 if dct.has_key('new_password'):
-                    self.epc.login(dct['username'], dct['password'], dct['new_password'])
+                    epp_cli.login(dct['username'], dct['password'], dct['new_password'])
                 else:
-                    self.epc.login(dct['username'], dct['password'])
-                code = self.epc.is_val()
+                    epp_cli.login(dct['username'], dct['password'])
+                code = epp_cli.is_val()
             except ccReg.ccRegError, msg:
                 error = 'ccRegError: %s'%msg
         return code, error
 
-    def test_1_1(self):
+    def setUp(self):
+        '1.0 vytvoreni klienta'
+        if epp_cli:
+            if epp_cli._epp.is_online('') and epp_cli._epp.is_connected(): # only if we are online
+                epp_cli.logout()
+                self.assertEqual(epp_cli.is_val(), 1500, unitest_ccreg_share.get_reason(epp_cli))
+            else:
+                epp_cli.close()
+
+    def tearDown(self):
+        unitest_ccreg_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription())
+
+    def test_000(self):
+        '1.0 Inicializace spojeni a definovani testovacich handlu'
+        global epp_cli, log_fp
+        epp_cli = ccReg.Client()
+        if ccReg.translate.session_name:
+            # nastavení serveru
+            epp_cli._epp.set_session_name(ccReg.translate.session_name)
+        epp_cli._epp.load_config()
+        # logovací soubor
+        if ccReg.translate.option_log_name: # zapnuti/vypuni ukladani prikazu do logu
+            log_fp = open(ccReg.translate.option_log_name,'w')
+            unitest_ccreg_share.write_log_header(log_fp)
+
+    def test_010(self):
         '1.1 Zalogovani s neexistujicim username'
         code, error = self.__login__({'username':'neexistuje', 'password':'123456789'})
         self.assert_(len(error)==0, error)
-        self.assertEqual(code, 2501)
+        self.assertEqual(code, 2501, unitest_ccreg_share.get_reason(epp_cli))
 
         
-    def test_1_2_a_4(self):
-        '1.2 Zalogovani se spravnym heslem + 1.4 Zalogovani se spravnym otiskem certifikatu'
-        dct = self.epc._epp.get_default_params_from_config('login')
+    def test_020(self):
+        '1.2 Zalogovani se spravnym heslem a spravnym otiskem certifikatu'
+        dct = epp_cli._epp.get_default_params_from_config('login')
         code, error = self.__login__(dct)
         self.assert_(len(error)==0, error)
-        self.assertEqual(code, 1000)
+        self.assertEqual(code, 1000, unitest_ccreg_share.get_reason(epp_cli))
 
-    def test_1_3(self):
+    def test_030(self):
         '1.3 Zalogovani se spatnym heslem'
-        self.epc.login('REG-LRR','chybne')
-        self.assertEqual(self.epc.is_val(), 2501)
+        epp_cli.login('REG-LRR','chybne')
+        self.assertEqual(epp_cli.is_val(), 2501, unitest_ccreg_share.get_reason(epp_cli))
 
-    def test_1_5(self):
-        '1.5 Zalogovani se spatnym otiskem certifikatu'
+    def test_040(self):
+        '1.4 Zalogovani se spatnym otiskem certifikatu'
         cert_name = None
-        current_section = {False:'connect_%s'%SESSION_NAME, True:'connect'}[SESSION_NAME is None]
-        valid_certificat = self.epc._epp.get_config_value(current_section,'ssl_cert')
-        for section in self.epc._epp._conf.sections():
+        current_section = epp_cli._epp.config_get_section_connect()
+        valid_certificat = epp_cli._epp.get_config_value(current_section,'ssl_cert')
+        for section in epp_cli._epp._conf.sections():
             if section[:7]=='connect' and section != current_section:
                 # vybere se jiný certifikát než platný
-                certificat = self.epc._epp.get_config_value(section,'ssl_cert')
+                certificat = epp_cli._epp.get_config_value(section,'ssl_cert')
                 if certificat != valid_certificat:
                     cert_name = certificat
                     break
         self.assert_(cert_name, 'Nebyl nalezen vhodny certifikat. Nastavte v configu alespon jednu sekci connect_SESSION_NAME s jinym certifikatem, nez je ten platny.')
         if not cert_name: return
         # přiřazení neplatného certifikátu
-        self.epc._epp._conf.set(current_section, 'ssl_cert', cert_name)
-        dct = self.epc._epp.get_default_params_from_config('login')
+        epp_cli._epp._conf.set(current_section, 'ssl_cert', cert_name)
+        dct = epp_cli._epp.get_default_params_from_config('login')
         code, error = self.__login__(dct)
+        # navrácení platného certifikátu
+        epp_cli._epp._conf.set(current_section, 'ssl_cert', valid_certificat)
         self.assert_(len(error), error)
-        self.assertNotEqual(code, 1000)
+        self.assertNotEqual(code, 1000, 'Zalogovani proslo s neplatnym certifikatem:\n%s (section: %s)\nplatny je:\n%s.'%(cert_name,current_section,valid_certificat))
 
-    def test_1_6(self):
-        '1.6 Zmena hesla tam a zpatky s kontrolnim zalogovanim'
-        dct = self.epc._epp.get_default_params_from_config('login')
+    def test_050(self):
+        '1.5 Zmena hesla tam a zpatky s kontrolnim zalogovanim'
+        dct = epp_cli._epp.get_default_params_from_config('login')
         for key in ('username','password'):
             self.assert_(dct.has_key(key))
         puvodni_heslo = dct['password']
         # změna hesla ........................................
         dct['new_password'] = 'nove-heslo'
         code, error = self.__login__(dct)
+        unitest_ccreg_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(1,3))
         self.assert_(len(error)==0, error)
-        self.assertEqual(code, 1000, 'Nepodarilo se zadat nove heslo. Code: %d.\nDuvod: %s'%(code,self.epc.is_val('reason')))
-        self.epc.logout()
-        self.assertEqual(self.epc.is_val(), 1500,'Logout se nepodaril.')
+        self.assertEqual(code, 1000, unitest_ccreg_share.get_reason(epp_cli))
+        epp_cli.logout()
+        self.assertEqual(epp_cli.is_val(), 1500, unitest_ccreg_share.get_reason(epp_cli))
         # zalogování pod novým heslem ........................
         dct['password'] = dct['new_password']
         dct.pop('new_password')
         code, error = self.__login__(dct)
+        unitest_ccreg_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(2,3))
         self.assert_(len(error)==0, error)
-        self.assertEqual(code, 1000, 'Nepodarilo se zadat nove heslo. Code: %d.\nDuvod: %s'%(code,self.epc.is_val('reason')))
-        self.epc.logout()
-        self.assertEqual(self.epc.is_val(), 1500,'Logout se nepodaril.')
+        self.assertEqual(code, 1000, unitest_ccreg_share.get_reason(epp_cli))
+        epp_cli.logout()
+        self.assertEqual(epp_cli.is_val(), 1500, unitest_ccreg_share.get_reason(epp_cli))
         # vrácení původního hesla ............................
         dct['new_password'] = puvodni_heslo
         code, error = self.__login__(dct)
         self.assert_(len(error)==0, error)
-        self.assertEqual(code, 1000, 'Nepodarilo se zadat nove heslo. Code: %d.\nDuvod: %s'%(code,self.epc.is_val('reason')))
+        self.assertEqual(code, 1000, unitest_ccreg_share.get_reason(epp_cli))
 
+epp_cli, log_fp, log_step = (None,)*3
 
 if __name__ == '__main__':
-    if len(sys.argv) > 1: SESSION_NAME = sys.argv[1]
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(Test))
-    unittest.TextTestRunner(verbosity=2).run(suite)
+    if ccReg.translate.option_errors:
+        print ccReg.translate.option_errors
+    elif ccReg.translate.option_help:
+        print unitest_ccreg_share.__doc__
+    else:
+        suite = unittest.TestSuite()
+        suite.addTest(unittest.makeSuite(Test))
+        unittest.TextTestRunner(verbosity=2).run(suite)
+        if log_fp: log_fp.close()
+

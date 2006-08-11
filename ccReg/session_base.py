@@ -195,7 +195,7 @@ class ManagerBase:
             # adjust pathnames
             modul_path,fn = os.path.split(__file__)
             root_path = os.path.normpath(os.path.join(modul_path,'../certificates'))
-            self._conf.set(self.__config_get_section_connect__(), 'dir', root_path)
+            self._conf.set(self.config_get_section_connect(), 'dir', root_path)
         return ok 
 
     def __is_config_section__(self, section):
@@ -238,7 +238,7 @@ class ManagerBase:
         except IOError, (no, msg):
             self.append_error('%s: [%d] %s'%(_T('Impossible saving conf file. Reason'),no,msg))
 
-    def __config_get_section_connect__(self):
+    def config_get_section_connect(self):
         'Set section name "connect" in config.'
         if self._session_name:
             section = 'connect_%s'%self._session_name
@@ -248,7 +248,7 @@ class ManagerBase:
 
     def __config_defaults__(self):
         'Set config defaults.'
-        section = self.__config_get_section_connect__()
+        section = self.config_get_section_connect()
         if self.__is_config_section__(section):
             if not self.__is_config_option__(section, 'timeout'):
                 self._conf.set(section, 'timeout','0.0')
@@ -283,7 +283,7 @@ class ManagerBase:
         # default values (timeout)
         self.__config_defaults__()
         # for login with no parameters
-        section = self.__config_get_section_connect__()
+        section = self.config_get_section_connect()
         self.copy_default_options('epp_login', section, 'username')
         self.copy_default_options('epp_login', section, 'password')
         return 1 # OK

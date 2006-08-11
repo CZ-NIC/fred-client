@@ -102,7 +102,7 @@ class ManagerReceiver(ManagerCommand):
         'Main function. Process incomming EPP messages. This funcion is called by listen socket.'
         # Hlavní funkce pro zpracování odpovědi. Rozparsuje XML, provede validaci a pak pokračuje
         # funkcí answer_response().
-        self.__reset_src__()
+        self.reset_src()
         if epp_server_answer:
             self._raw_answer = epp_server_answer
             # create XML DOM tree:
@@ -364,7 +364,7 @@ class ManagerReceiver(ManagerCommand):
         Create EPP command - send to server - receive answer - parse answer to dict - returns dict.
         """
         self.reset_round()
-        self.__reset_src__() # this is in process_answer() but it must be here for case NOT is_online()
+        self.reset_src() # this is in process_answer() but it must be here for case NOT is_online()
         dct_params = adjust_dict(params)                                      # turn params into expecterd format
         self.create_command_with_params(command_name, dct_params)             # create EPP command
         self._raw_cmd = self._epp_cmd.get_xml()                               # get EPP in XML (string)
