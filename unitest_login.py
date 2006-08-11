@@ -42,6 +42,7 @@ class Test(unittest.TestCase):
 
     def tearDown(self):
         unitest_ccreg_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription())
+        unitest_ccreg_share.reset_client(epp_cli)
 
     def test_000(self):
         '1.0 Inicializace spojeni a definovani testovacich handlu'
@@ -110,6 +111,7 @@ class Test(unittest.TestCase):
         unitest_ccreg_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(1,3))
         self.assert_(len(error)==0, error)
         self.assertEqual(code, 1000, unitest_ccreg_share.get_reason(epp_cli))
+        unitest_ccreg_share.reset_client(epp_cli)
         epp_cli.logout()
         self.assertEqual(epp_cli.is_val(), 1500, unitest_ccreg_share.get_reason(epp_cli))
         # zalogování pod novým heslem ........................
@@ -119,6 +121,7 @@ class Test(unittest.TestCase):
         unitest_ccreg_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(2,3))
         self.assert_(len(error)==0, error)
         self.assertEqual(code, 1000, unitest_ccreg_share.get_reason(epp_cli))
+        unitest_ccreg_share.reset_client(epp_cli)
         epp_cli.logout()
         self.assertEqual(epp_cli.is_val(), 1500, unitest_ccreg_share.get_reason(epp_cli))
         # vrácení původního hesla ............................

@@ -90,6 +90,7 @@ class Test(unittest.TestCase):
 
     def tearDown(self):
         unitest_ccreg_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription())
+        unitest_ccreg_share.reset_client(epp_cli)
         
     def test_000(self):
         '3.0 Inicializace spojeni a definovani testovacich handlu'

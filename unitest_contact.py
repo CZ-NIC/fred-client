@@ -115,6 +115,7 @@ class Test(unittest.TestCase):
 
     def tearDown(self):
         unitest_ccreg_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription())
+        unitest_ccreg_share.reset_client(epp_cli)
 
     def test_2_000(self):
         '2.0 Inicializace spojeni a definovani testovacich handlu'
@@ -218,10 +219,12 @@ class Test(unittest.TestCase):
         epp_cli.update_contact(handle_contact, status)
         unitest_ccreg_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(1,3))
         self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se nastavit status: %s'%status)
+        unitest_ccreg_share.reset_client(epp_cli)
         # pokus o smazání
         epp_cli.delete_contact(handle_contact)
         unitest_ccreg_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(2,3))
         self.assertNotEqual(epp_cli.is_val(), 1000, 'Kontakt se smazal, prestoze mel nastaven %s'%status)
+        unitest_ccreg_share.reset_client(epp_cli)
         # zrušení stavu
         epp_cli.update_contact(handle_contact, None, status)
         self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se odstranit status: %s'%status)
@@ -232,10 +235,12 @@ class Test(unittest.TestCase):
         epp_cli.update_contact(handle_contact, status)
         unitest_ccreg_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(1,3))
         self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se nastavit status: %s'%status)
+        unitest_ccreg_share.reset_client(epp_cli)
         # pokus o změnu
         epp_cli.update_contact(handle_contact, None, None, {'notifyEmail':'notifak@jinak.cz'})
         unitest_ccreg_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(2,3))
         self.assertNotEqual(epp_cli.is_val(), 1000, 'Kontakt se aktualizoval, prestoze mel nastaven %s'%status)
+        unitest_ccreg_share.reset_client(epp_cli)
         # zrušení stavu
         epp_cli.update_contact(handle_contact, None, status)
         self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se odstranit status: %s'%status)

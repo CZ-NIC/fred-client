@@ -87,6 +87,7 @@ class Test(unittest.TestCase):
 
     def tearDown(self):
         unitest_ccreg_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription())
+        unitest_ccreg_share.reset_client(epp_cli)
 
     def test_000(self):
         '3.0 Inicializace spojeni a definovani testovacich handlu'
@@ -236,10 +237,12 @@ class Test(unittest.TestCase):
         epp_cli.update_domain(CCREG_DOMAIN1, {'status':status})
         unitest_ccreg_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(1,3))
         self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se nastavit status: %s'%status)
+        unitest_ccreg_share.reset_client(epp_cli)
         # pokus o smazání
         epp_cli.delete_domain(CCREG_DOMAIN1)
         unitest_ccreg_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(2,3))
         self.assertNotEqual(epp_cli.is_val(), 1000, 'Kontakt se smazal, prestoze mel nastaven %s'%status)
+        unitest_ccreg_share.reset_client(epp_cli)
         # zrušení stavu
         epp_cli.update_domain(CCREG_DOMAIN1, None, {'status':status})
         self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se odstranit status: %s'%status)
@@ -250,10 +253,12 @@ class Test(unittest.TestCase):
         epp_cli.update_domain(CCREG_DOMAIN1, {'status':status})
         unitest_ccreg_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(1,3))
         self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se nastavit status: %s'%status)
+        unitest_ccreg_share.reset_client(epp_cli)
         # pokus o změnu
         epp_cli.update_domain(CCREG_DOMAIN1, None, None, {'auth_info':{'pw':'zmena hesla'}})
         unitest_ccreg_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(2,3))
         self.assertNotEqual(epp_cli.is_val(), 1000, 'Domena se aktualizovala, prestoze mela nastaven status %s'%status)
+        unitest_ccreg_share.reset_client(epp_cli)
         # zrušení stavu
         epp_cli.update_domain(CCREG_DOMAIN1, None, {'status':status})
         self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se odstranit status: %s'%status)
@@ -272,9 +277,11 @@ class Test(unittest.TestCase):
         # prodlozeni o nastavenou periodu
         period = {'num':'3','unit':'y'}
         renew = epp_cli.is_val(('data','domain:renew')) # cur_exp_date
+        unitest_ccreg_share.reset_client(epp_cli)
         epp_cli.renew_domain(CCREG_DOMAIN1, renew, period)
         unitest_ccreg_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(2,3))
         self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+        unitest_ccreg_share.reset_client(epp_cli)
         # kontrola nastaveni
         epp_cli.info_domain(CCREG_DOMAIN1)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))

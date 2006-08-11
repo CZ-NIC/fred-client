@@ -35,7 +35,6 @@ def get_reason(client):
 def write_log_header(log_fp):
     log_fp.write('Created at %s\n'%time.strftime("%Y-%m-%d %H:%M:%S",time.localtime()))
     
-    
 def write_log(epp_cli, log_fp, log_step, fnc_name, fnc_doc, step=None):
     if log_fp and epp_cli._epp._raw_cmd:
         step_sep = ''
@@ -61,11 +60,12 @@ def write_log(epp_cli, log_fp, log_step, fnc_name, fnc_doc, step=None):
         edoc.parse_xml(epp_cli._epp._raw_answer)
         log_fp.write(edoc.get_xml())
         log_fp.write('\n%s\n'%('='*60))
-        # reset
-        epp_cli._epp._command_sent = ''
-        epp_cli._epp._raw_cmd = ''
-        epp_cli._epp.reset_round()
-        epp_cli._epp.reset_src()
+
+def reset_client(epp_cli):
+    epp_cli._epp._command_sent = ''
+    epp_cli._epp._raw_cmd = ''
+    epp_cli._epp.reset_round()
+    epp_cli._epp.reset_src()
 
 def make_str(value):
     if type(value) in (tuple,list):
