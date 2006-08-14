@@ -168,6 +168,14 @@
       </simpleContent>
     </complexType>
 
+    <complexType name="ssnUpdT">
+      <simpleContent>
+        <extension base="contact:ssnValueT">
+          <attribute name="type" type="contact:ssnTypeT"/>
+        </extension>
+      </simpleContent>
+    </complexType>
+
     <simpleType name="ssnValueT">
       <restriction base="token">
         <maxLength value="32"/>
@@ -180,6 +188,7 @@
         <enumeration value="rc"/>
         <enumeration value="passport"/>
         <enumeration value="mpsv"/>
+        <enumeration value="ico"/>
       </restriction>
     </simpleType>
 
@@ -238,7 +247,7 @@
          minOccurs="0"/>
         <element name="vat" type="contact:vatT"
 	 minOccurs="0"/>
-        <element name="ssn" type="contact:ssnT"
+        <element name="ssn" type="contact:ssnUpdT"
 	 minOccurs="0"/>
         <element name="notifyEmail" type="eppcom:minTokenType"
          minOccurs="0"/>
