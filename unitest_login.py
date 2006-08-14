@@ -48,13 +48,13 @@ class Test(unittest.TestCase):
         '1.0 Inicializace spojeni a definovani testovacich handlu'
         global epp_cli, log_fp
         epp_cli = ccReg.Client()
-        if ccReg.translate.session_name:
+        if ccReg.translate.options['session']:
             # nastavení serveru
-            epp_cli._epp.set_session_name(ccReg.translate.session_name)
+            epp_cli._epp.set_session_name(ccReg.translate.options['session'])
         epp_cli._epp.load_config()
         # logovací soubor
-        if ccReg.translate.option_log_name: # zapnuti/vypuni ukladani prikazu do logu
-            log_fp = open(ccReg.translate.option_log_name,'w')
+        if ccReg.translate.options['log']: # zapnuti/vypuni ukladani prikazu do logu
+            log_fp = open(ccReg.translate.options['log'],'w')
             unitest_ccreg_share.write_log_header(log_fp)
 
     def test_010(self):
@@ -135,7 +135,7 @@ epp_cli, log_fp, log_step = (None,)*3
 if __name__ == '__main__':
     if ccReg.translate.option_errors:
         print ccReg.translate.option_errors
-    elif ccReg.translate.option_help:
+    elif ccReg.translate.options['help']:
         print unitest_ccreg_share.__doc__
     else:
         suite = unittest.TestSuite()

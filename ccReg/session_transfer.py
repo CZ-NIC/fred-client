@@ -89,6 +89,8 @@ class ManagerTransfer(ManagerBase):
                     self.get_config_value(section,'ssl_cert'),
                     self.get_config_value(section,'timeout'),
                     ]
+            # command options
+            if self._options['host']: data[0] = self._options['host']
             self._session[HOST] = data[0] # for prompt info
             if None in data:
                 self.append_error('%s: %s'%(_T('Impossible create connection. Required config values missing'),str(data)))

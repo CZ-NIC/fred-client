@@ -83,11 +83,20 @@ def __insert_on_pos__(dct, name, value, pos, empty_only):
     if not dct.has_key(name): dct[name] = ['']
     while pos >= len(dct[name]):
         dct[name].append('')
-    if empty_only:
-        if dct[name][pos] == '':
-            dct[name][pos] = value # set if only empy value
+    if type(value) is list:
+        d = dct[name]
+        for itm in value:
+            if pos < len(d):
+                if empty_only and d[pos] != '':
+                    pos+= 1
+                    continue
+            else:
+                d.append('')
+            d[pos] = itm
+            pos+= 1
     else:
-        dct[name][pos] = value
+        if not empty_only or (empty_only and dct[name][pos] == ''):
+            dct[name][pos] = value
 
 def __get_on_pos__(dct,name,pos):
     'Get dict on the defined position.'
@@ -126,6 +135,9 @@ def parse(dct_root, cols_root, text_line):
     
     text_line MUST be unicode.
     """
+    # print 'dct_root =',dct_root
+    # print 'cols_root =',cols_root
+    # print 'text_line = "%s"'%stext_line
     errors=[]
     explicit_key = sep = ''
     quot=[]
@@ -135,6 +147,7 @@ def parse(dct_root, cols_root, text_line):
     cols = cols_root
     current = [0]
     mode = [MOD_NORMAL]
+    keyname_token = None # prom list for --key = (value, value)
     #
     tokens = re.split('(=|\'|"|,|\(|\)|\s+)', text_line)
     for pos in range(len(tokens)):
@@ -150,8 +163,12 @@ def parse(dct_root, cols_root, text_line):
                 token = ''.join(quot)
                 quot=[]
                 if explicit_key:
-                    # uložení na pozici klíče
-                    insert_on_key(errors,dct,cols_root,explicit_key,token)
+                    if mode[-1] == MOD_NORMAL:
+                        # uložení na pozici klíče
+                        insert_on_key(errors,dct,cols_root,explicit_key,token)
+                        explicit_key = ''
+                    else:
+                        keyname_token.append(token)
                 else:
                     __append_token__(dct,cols,current,mode,token)
                     explicit_key = ''
@@ -173,7 +190,11 @@ def parse(dct_root, cols_root, text_line):
                 # 3. list of subsets of the column names
                 if explicit_key:
                     # On explicit key definition is allowed only simple LIST.
-                    __append_mode_list__(mode)
+                    __append_mode_list__(mode) # 1. list of values
+                    if keyname_token is None:
+                        keyname_token = [] # init
+                    else:
+                        errors.append(_T('Invalid bracket. In key definition is only allowed a value or simple list.'))
                     continue
                 cr = current[-1]
                 if mode[-1] == MOD_CHILD_LIST:
@@ -200,6 +221,12 @@ def parse(dct_root, cols_root, text_line):
                 
             elif token == ')':
                 btype = mode.pop()
+                if explicit_key:
+                    if mode[-1] == MOD_NORMAL:
+                        insert_on_key(errors,dct,cols_root,explicit_key,keyname_token)
+                        explicit_key = ''
+                        keyname_token = None # reset to empty
+                    continue
                 if btype == MOD_INSIDE_LIST:
                     # end of the group values
                     cols = col_scope.pop()
@@ -218,11 +245,15 @@ def parse(dct_root, cols_root, text_line):
             else:
                 if token[-1]==',': token = token[:-1]
                 if explicit_key:
-                    # save value into position
-                    insert_on_key(errors,dct,cols_root,explicit_key,token)
+                    if mode[-1] == MOD_NORMAL:
+                        # save value into position
+                        insert_on_key(errors,dct,cols_root,explicit_key,token)
+                        explicit_key = ''
+                    else:
+                        keyname_token.append(token)
                 else:
                     __append_token__(dct,cols,current,mode,token)
-                explicit_key = ''
+                    explicit_key = ''
     return errors
 
 #----------------------------------

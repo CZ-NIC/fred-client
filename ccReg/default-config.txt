@@ -7,7 +7,6 @@ ssl_cert = %(dir)s/epp_test_ccreg_nic_cz_cert.pem
 timeout = 0.0
 
 [session]
-lang = cs
 validate = on
 schema = all-1.0.xsd
 poll_ack = off

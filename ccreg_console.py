@@ -8,26 +8,27 @@
 import sys, re
 import ccReg
 from ccReg.session_base import colored_output
-from ccReg.translate import _T, session_name, session_lang, option_errors, option_help
+from ccReg.translate import _T, options, option_errors
 
 def main(session_name):
     epp = ccReg.ClientSession()
     ccReg.cmd_history.set_history(epp.get_command_names())
-    if session_name: epp.set_session_name(session_name)
+    epp.set_options(options)
+    if session_name: epp.set_session_name(session_name) # TODO: duplicita
     if not epp.load_config(): return
-    epp.set_session_lang(session_lang)
+    epp.set_session_lang(options['lang'])
+    epp.set_session_color(colored_output)
     print epp.welcome()
     epp.display() # display errors or notes
-    print _T('For connection to the EPP server type "connect" or directly "login".')
     is_online = 0
-    status = ('OFF','ON')
-    online = status[is_online]
+    prompt = 'ccReg'
+    online = prompt
     while 1:
         try:
-            command = raw_input("> (?-help, q-quit) %s: "%online)
+            command = raw_input('%s: '%online)
         except (KeyboardInterrupt, EOFError):
             break
-        if command in ('q','quit','exit','konec'):
+        if command in ('q','quit','exit'):
             epp.send_logout()
             break
         command_name, epp_doc = epp.create_eppdoc(command)
@@ -54,9 +55,9 @@ def main(session_name):
         if is_online:
             if not epp.is_logon():
                 is_online = 0
-                online = status[is_online]
+                online = prompt
         else:
-            online = status[0]
+            online = prompt
             if epp.is_logon():
                 is_online = 1
                 online = '%s@%s'%epp.get_username_and_host()
@@ -69,15 +70,26 @@ if __name__ == '__main__':
     if sys.version_info[:2] < (2,4):
         print _T('This program needs Python 2.4 or higher. Your version is'),sys.version
     else:
-        if option_help:
+        if options['help']:
+            epp = ccReg.ClientSession()
+            epp.welcome()
             print _T("""Usage: python ccreg_console.py [OPTIONS]
 Console for communication with EPP server.
 
-OPTIONS:
+OPTIONS with values:
     -s --session  name of session used for connect to the EPP server
                   session values are read from config file
+    -h --host     host name (overwrite config value)
+    -u --user     user name (overwrite config value)
+    -p --password (overwrite config value)
     -l --lang     language of session
-    -h --help     this help
+    -v --verbose  display modes: 1,2,3; default: 1
+                  1 - essensial values
+                  2 - all returned values
+                  3 - display XML sources
+OPTIONS:
+    -r --color    set on colored output
+    -? --help     this help
 """)
         else:
             if option_errors:
@@ -85,5 +97,4 @@ OPTIONS:
             else:
                 if ccReg.translate.warning:
                     print colored_output.render("${BOLD}${RED}%s${NORMAL}"%ccReg.translate.warning)
-                print colored_output.render('Unicode encodings to ${BOLD}%s${NORMAL}.'%ccReg.translate.encoding)
-                main(session_name)
+                main(options['session'])

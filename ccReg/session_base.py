@@ -4,10 +4,11 @@ import re, time
 import sys, os, commands
 import ConfigParser
 import terminal_controler
-from translate import _T, encoding
+from translate import _T, encoding, options
 
 # Colored output
 colored_output = terminal_controler.TerminalController()
+colored_output.set_mode(options['color'])
 
 # názvy sloupců pro data sestavené při spojení se serverem
 ONLINE, CMD_ID, LANG, POLL_AUTOACK, CONFIRM_SEND_COMMAND, USERNAME, HOST = range(7)
@@ -49,10 +50,19 @@ class ManagerBase:
         self._name_conf = '.ccReg.conf' # name of config file
         self._session_name = None
         self._auto_connect = 1 # auto connection during login or hello
+        self._options = {} # parameters from command line
 
+    def set_options(self, options):
+        'Param options must be dict.'
+        self._options = options
+        
     def set_session_lang(self, lang):
         'Set session language'
         self._session[LANG] = lang
+
+    def set_session_color(self, colored_output):
+        'Set colored output mode from config file.'
+        if self.get_config_value('session', 'color', 'ommit-errors'): colored_output.set_mode('yes')
         
     def set_auto_connect(self, switch):
         'Set auto connection ON/OFF. switch = 0/1.'
@@ -109,7 +119,8 @@ class ManagerBase:
 
     def display(self):
         "Output all messages to stdout or log file."
-        print self.get_messages()
+        msg = self.get_messages()
+        if msg: print msg
 
     def get_messages(self, sep='\n'):
         'Same as display but returns as local string.'
@@ -130,14 +141,8 @@ class ManagerBase:
         return sep.join(msg)
 
     def welcome(self):
-        "Welcome message for console modul."
-        return '\n'.join((
-            '-'*60,
-            _T('Welcome to the ccReg console'),
-            '-'*60,
-            'Version 1.1.7 Basic release.',
-            _T('For help type "help" (or "h", "?")'),
-            ))
+        "Welcome message."
+        return 'ccReg client version 1.1 Type "help", "license" or "credits" for more information.'
 
     def __next_clTRID__(self):
         """Generate next clTRID value.
@@ -174,7 +179,7 @@ class ManagerBase:
             if value:
                 if not self._conf.has_section(section): self._conf.add_section(section)
                 self._conf.set(section, option, value)
-    
+
     def __create_default_conf__(self):
         'Create default config file.'
         ok = 0
@@ -192,14 +197,22 @@ class ManagerBase:
             name = self.get_config_value(seop[0], seop[1])
             self._conf.set(seop[0], seop[1], os.path.join(modul_path,'schemas',name))
             self._session[POLL_AUTOACK] = {False:0,True:1}[self.get_config_value(seop[0], 'poll_ack') in ('on','ON')]
+            # make copy if need
+            new_section = ''
+            section = self.config_get_section_connect()
+            if section != 'connect':
+                new_section = section
+                section = 'connect'
             # adjust pathnames
             modul_path,fn = os.path.split(__file__)
             root_path = os.path.normpath(os.path.join(modul_path,'../certificates'))
-            self._conf.set(self.config_get_section_connect(), 'dir', root_path)
+            self._conf.set(section, 'dir', root_path)
+            if new_section:
+                # copy default values into new connection
+                self._conf.add_section(new_section)
+                for option in ('host','port','ssl_key','ssl_cert','dir'):
+                    self.copy_default_options(new_section, section, option)
         return ok 
-
-    def __is_config_section__(self, section):
-        return self._conf.has_section(section)
 
     def __is_config_option__(self, section, option):
         'Returns if exists key in config.'
@@ -249,7 +262,7 @@ class ManagerBase:
     def __config_defaults__(self):
         'Set config defaults.'
         section = self.config_get_section_connect()
-        if self.__is_config_section__(section):
+        if self._conf.has_section(section):
             if not self.__is_config_option__(section, 'timeout'):
                 self._conf.set(section, 'timeout','0.0')
         
@@ -284,8 +297,13 @@ class ManagerBase:
         self.__config_defaults__()
         # for login with no parameters
         section = self.config_get_section_connect()
-        self.copy_default_options('epp_login', section, 'username')
-        self.copy_default_options('epp_login', section, 'password')
+        section_epp_login = 'epp_login'
+        self.copy_default_options(section_epp_login, section, 'username')
+        self.copy_default_options(section_epp_login, section, 'password')
+        # overwrite from options (command line)
+        if self._conf.has_section(section_epp_login):
+            if self._options['user']: self._conf.set(section_epp_login,'username',self._options['user'])
+            if self._options['password']: self._conf.set(section_epp_login,'password',self._options['password'])
         return 1 # OK
 
 

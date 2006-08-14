@@ -83,6 +83,10 @@ class ManagerCommand(ManagerTransfer):
         # Když je dotaz na help
         if not command_name or command_name != '.':
             self.append_note(_T("""\n${BOLD}Session commands:${NORMAL}
+${BOLD}q${NORMAL} (or ${BOLD}quit${NORMAL}, ${BOLD}exit${NORMAL}) # quit this application
+${BOLD}help${NORMAL} (or ${BOLD}h${NORMAL}, ${BOLD}?${NORMAL})  # display this help
+${BOLD}licence${NORMAL} # display licence
+${BOLD}credits${NORMAL} # display credits
 ${BOLD}connect${NORMAL} (or directly login) # connect to the server (for test only)
 ${BOLD}validate${NORMAL} [on/off] # set validation or display actual setting
 ${BOLD}poll-ack${NORMAL} [on/off] # send "poll ack" straight away after "poll req"
@@ -161,7 +165,7 @@ ${BOLD}send${NORMAL} [filename] # send selected file to the server (for test onl
                         self.__put_raw_into_note__(edoc.create_data())
                     else: # e epp
                         self.append_note(_T('Command source'),'BOLD')
-                        self.append_note(self._raw_cmd,'GREEN')
+                        self.append_note(human_readable(self._raw_cmd),'GREEN')
                 if m.group(1)[0]=='a' and (self._dict_answer or self._raw_answer): # a answer
                     # zobrazit odpověd serveru
                     if m.group(2) and m.group(2)[0]=='d': # d dict
@@ -169,7 +173,7 @@ ${BOLD}send${NORMAL} [filename] # send selected file to the server (for test onl
                         self.__put_raw_into_note__(self._dict_answer)
                     else: # e epp
                         self.append_note(_T('Answer source'),'BOLD')
-                        self.__put_raw_into_note__(self._raw_answer)
+                        self.__put_raw_into_note__(human_readable(self._raw_answer))
         elif re.match('send',cmd):
             self._raw_cmd = ''
             # Posílání již vytvořených souborů na server
@@ -213,6 +217,14 @@ ${BOLD}send${NORMAL} [filename] # send selected file to the server (for test onl
             self.manage_config(re.match('config\s*(.*)',cmd).groups())
         elif re.match('validate',cmd):
             self.set_validate(cmd) # set validation of created EPP document
+        elif re.match('licence',cmd):
+            body, error = load_file(make_filepath('licence.txt'))
+            if body: self.append_note(body)
+            if error: self.append_error(error)
+        elif re.match('credits',cmd):
+            body, error = load_file(make_filepath('credits.txt'))
+            if body: self.append_note(body)
+            if error: self.append_error(error)
         elif re.match('poll[-_]ack',cmd):
             m = re.match('poll[-_]ack\s+(\S+)',cmd)
             if m:
@@ -281,7 +293,25 @@ ${BOLD}send${NORMAL} [filename] # send selected file to the server (for test onl
         if dct is None: dct = self._dct_answer
         return eppdoc.get_value_from_dict(dct, names)
 
+def make_filepath(filename):
+    modul_path,fn = os.path.split(__file__)
+    return os.path.join(modul_path, filename)
 
+def load_file(filename):
+    'Returs body and error if any occurs.'
+    body = error = ''
+    try:
+        body = open(filename).read()
+    except IOError, (errnum, msg):
+        error = 'IOError: %d. %s (%s)'%(errnum,msg,filename)
+    return body, error
+
+def human_readable(body):
+    'Resample to rows if they missing. This is hook while PrettyPrint missing.'
+    if not re.search('</\w+>\n<',body):
+        body = re.sub('(</[^>]+>)','\\1\n',body)
+    return body
+        
 if __name__ == '__main__':
     # Test
     m = ManagerCommand()

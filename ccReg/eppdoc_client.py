@@ -2,7 +2,7 @@
 #!/usr/bin/env python
 import re
 import eppdoc_assemble
-from translate import _T
+from translate import _T, options
 
 UNBOUNDED = eppdoc_assemble.UNBOUNDED
 
@@ -326,6 +326,7 @@ def test(commands):
 def test_help(command_names):
     import terminal_controler
     colored_output = terminal_controler.TerminalController()
+    colored_output.set_mode(options['color'])
     epp = Message()
     for command_name in command_names:
         command_line,command_help,notice, examples = epp.get_help(command_name)

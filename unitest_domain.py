@@ -95,10 +95,10 @@ class Test(unittest.TestCase):
         # create client object
         epp_cli = ccReg.Client()
         epp_cli_TRANSF = ccReg.Client()
-        if ccReg.translate.session_name:
+        if ccReg.translate.options['session']:
             # nastavení serveru
-            epp_cli._epp.set_session_name(ccReg.translate.session_name)
-            epp_cli_TRANSF._epp.set_session_name(ccReg.translate.session_name)
+            epp_cli._epp.set_session_name(ccReg.translate.options['session'])
+            epp_cli_TRANSF._epp.set_session_name(ccReg.translate.options['session'])
         epp_cli._epp.load_config()
         epp_cli_TRANSF._epp.load_config()
         # login
@@ -109,8 +109,8 @@ class Test(unittest.TestCase):
         self.assert_(epp_cli.is_logon(), 'Nepodarilo se zalogovat.')
         self.assert_(epp_cli_TRANSF.is_logon(), 'Nepodarilo se zalogovat uzivatele "REG-LRR2" pro transfer.')
         # logovací soubor
-        if ccReg.translate.option_log_name: # zapnuti/vypuni ukladani prikazu do logu
-            log_fp = open(ccReg.translate.option_log_name,'w')
+        if ccReg.translate.options['log']: # zapnuti/vypuni ukladani prikazu do logu
+            log_fp = open(ccReg.translate.options['log'],'w')
 
     def test_010(self):
         '4.1  Check na seznam dvou neexistujicich domen'
@@ -404,7 +404,7 @@ epp_cli, epp_cli_TRANSF, log_fp, log_step = (None,)*4
 if __name__ == '__main__':
     if ccReg.translate.option_errors:
         print ccReg.translate.option_errors
-    elif ccReg.translate.option_help:
+    elif ccReg.translate.options['help']:
         print unitest_ccreg_share.__doc__
     else:
         suite = unittest.TestSuite()

@@ -125,8 +125,8 @@ class Test(unittest.TestCase):
         handle_nsset = 'neexist01'
         # create client object
         epp_cli = ccReg.Client()
-        if ccReg.translate.session_name:
-            epp_cli._epp.set_session_name(ccReg.translate.session_name) # nastavení serveru
+        if ccReg.translate.options['session']:
+            epp_cli._epp.set_session_name(ccReg.translate.options['session']) # nastavení serveru
         epp_cli._epp.load_config()
         # login
         dct = epp_cli._epp.get_default_params_from_config('login')
@@ -139,8 +139,8 @@ class Test(unittest.TestCase):
         # kontrola:
         self.assert_(epp_cli.is_logon(), 'Nepodarilo se zalogovat.')
         # logovací soubor
-        if ccReg.translate.option_log_name: # zapnuti/vypuni ukladani prikazu do logu
-            log_fp = open(ccReg.translate.option_log_name,'w')
+        if ccReg.translate.options['log']: # zapnuti/vypuni ukladani prikazu do logu
+            log_fp = open(ccReg.translate.options['log'],'w')
     
     def test_2_010(self):
         '2.1 Check na seznam dvou neexistujicich kontaktu'
@@ -327,7 +327,7 @@ if __name__ == '__main__':
 ##if 0:
     if ccReg.translate.option_errors:
         print ccReg.translate.option_errors
-    elif ccReg.translate.option_help:
+    elif ccReg.translate.options['help']:
         print unitest_ccreg_share.__doc__
     else:
         suite = unittest.TestSuite()

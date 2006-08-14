@@ -8,7 +8,8 @@ import re
 ##import getopt
 import ccReg
 from ccReg.session_receiver import ccRegError
-from ccReg.translate import _T, session_name, session_lang, option_errors, option_help, option_args
+##from ccReg.translate import _T, session_name, session_lang, option_errors, option_help, option_args
+from ccReg.translate import _T, options, option_errors, option_args
 
 def __auto_login__(epp):
     'Do login'
@@ -30,9 +31,9 @@ def send_docs(docs=[]):
     # Inicializace klienta
     #-------------------------------------------------
     epp = ccReg.ClientSession()
-    if session_name:
-        print "SET SESSION_NAME:",session_name
-        epp.set_session_name(session_name)
+    if options['session']:
+        print "SET SESSION_NAME:",options['session']
+        epp.set_session_name(options['session'])
     if not epp.load_config(): return
     #-------------------------------------------------
     # Apped docs from argv params
@@ -99,7 +100,7 @@ if __name__ == '__main__':
         if not sys.stdin.isatty():
             run_pipe() # commands from pipe
         else:
-            if not option_help and len(sys.argv) > 1:
+            if not option['help'] and len(sys.argv) > 1:
                 send_docs() # commands from argv
             else:
                 print """*** ccReg Sender ***

@@ -101,6 +101,8 @@ class TerminalController:
         self.COLS = curses.tigetnum('cols')
         self.LINES = curses.tigetnum('lines')
         
+        self._is_mode_color = 0
+        
         # Look up string capabilities.
         for capability in self._STRING_CAPABILITIES:
             (attrib, cap_name) = capability.split('=')
@@ -138,13 +140,17 @@ class TerminalController:
         the corresponding terminal control string (if it's defined) or
         '' (if it's not).
         """
-        return re.sub(r'\$\$|\${\w+}', self._render_sub, template)
+        return re.sub(r'\$\$|\${\w+}', ('',self._render_sub)[self._is_mode_color], template)
 
     def _render_sub(self, match):
         s = match.group()
         if s == '$$': return s
         else: return getattr(self, s[2:-1])
 
+    def set_mode(self, mode):
+        "Set color or not: mode='yes'/''."
+        self._is_mode_color = (0,1)[mode!='']
+    
 #######################################################################
 # Example use case: progress bar
 #######################################################################

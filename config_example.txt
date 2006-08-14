@@ -32,8 +32,8 @@ ssl_key  = %(dir)s/epp_test_ccreg_nic_cz_key.pem
 username = REG-LRR
 
 [session]
-lang = cs
 poll_ack = off
 confirm_send_commands = on
 validate = on
 schema = /home/username/enum/trunk/epp_client/ccReg/schemas/all-1.0.xsd
+color = yes

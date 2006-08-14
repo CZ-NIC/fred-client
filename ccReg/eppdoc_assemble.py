@@ -609,7 +609,8 @@ class Message(eppdoc.Message):
                 if __has_key_dict__(poin,'addr'):
                     addr = poin['addr'][0]
                     data.append(('contact:postalInfo','contact:addr'))
-                    for key in ('street','city','sp','pc','cc'):
+                    self.__append_values__(data, addr, 'street', 'contact:addr', 'contact:street')
+                    for key in ('city','sp','pc','cc'):
                         if __has_key__(addr,key): data.append(('contact:addr','contact:%s'%key, addr[key][0]))
                 for key in ('voice','fax','email'):
                     if __has_key__(chg,key): data.append(('contact:chg','contact:%s'%key, chg[key][0]))

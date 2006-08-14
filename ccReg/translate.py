@@ -28,35 +28,44 @@ def find_valid_encoding():
 #--------------------------
 # INIT options:
 #--------------------------
-session_name = None
-session_lang = 'cs'
-option_errors = ''
-option_help = False
-option_log_name = ''
+optcols = ('s:session','l:lang','g:log','h:host','u:user','p:password',
+        'v:verbose','c:command','r color','? help')
+options = {}
+for key in optcols:
+    options[key[2:]] = ''
+#--------------------------
+# Defaults:
+#--------------------------
+options['lang'] = 'en'
 option_args = ()
+option_errors = ''
+
 if len(sys.argv) > 1:
     try:
-        opts, option_args = getopt.getopt(sys.argv[1:], 's:l:g:h', ('session=', 'lang=','log=','help'))
+        opts, option_args = getopt.getopt(sys.argv[1:], 
+            ''.join(map(lambda s:s[:2].strip(),optcols)),
+            map(lambda s:('%s','%s=')[s[1]==':']%s[2:],optcols))
     except getopt.GetoptError, msg:
         option_errors = "Options error: %s"%msg
     else:
         if len(option_args):
             option_errors = '%s: (%s)'%('Unknown options',', '.join(option_args))
         for k,v in opts:
-            if k in ('-s','--session'): session_name = v
-            if k in ('-l','--lang'): session_lang = v
-            if k in ('-h','--help'): option_help = True
-            if k in ('-g','--log'): option_log_name = v
+            for key in optcols:
+                keys = ('-%s'%key[0], '--%s'%key[2:])
+                if k in keys:
+                    if v=='': v='yes'
+                    options[key[2:]] = v
 else:
     # set language from environ
     code = os.environ.get('LANG') # 'cs_CZ.UTF-8'
     if type(code) is str and len(code) > 1:
         arg = code[:2]
-        if arg in ('en','cs'): session_lang = arg
+        if arg in ('en','cs'): options['lang'] = arg
 #--------------------------
         
 encoding, warning = find_valid_encoding()
-if session_lang == 'en':
+if options['lang'] == 'en':
     _T = gettext.gettext
 else:
     try:
