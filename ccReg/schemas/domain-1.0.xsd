@@ -32,6 +32,7 @@
     <element name="renew" type="domain:renewType"/>
     <element name="transfer" type="domain:transferType"/>
     <element name="update" type="domain:updateType"/>
+    <element name="list"/>
 
   <!--
   Child elements of the <create> command.
@@ -239,6 +240,8 @@
     <element name="panData" type="domain:panDataType"/>
     <element name="trnData" type="domain:trnDataType"/>
     -->
+    <!-- list domains extension -->
+    <element name="listData" type="domain:listDataType"/>
 
   <!--
   <check> response elements.
@@ -288,7 +291,12 @@
         <element name="roid" type="eppcom:roidType"/>
         <element name="status" type="domain:statusType"
          minOccurs="0" maxOccurs="8"/>
-        <element name="registrant" type="eppcom:clIDType"/>
+	<!--
+	optional registrant is hack for hiding indentity of e164
+	number holder
+	-->
+        <element name="registrant" type="eppcom:clIDType"
+         minOccurs="0"/>
         <element name="contact" type="domain:contactType"
          minOccurs="0" maxOccurs="unbounded"/>
         <element name="nsset" type="eppcom:labelType"/>
@@ -399,6 +407,13 @@
       </sequence>
     </complexType>
     -->
+
+    <complexType name="listDataType">
+      <sequence>
+        <element name="name" type="eppcom:labelType"
+         minOccurs="0" maxOccurs="unbounded"/>
+      </sequence>
+    </complexType>
 
   <!--
   End of schema.

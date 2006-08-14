@@ -32,6 +32,8 @@
     <element name="info" type="nsset:sIDType"/>
     <element name="update" type="nsset:updateType"/>
     <element name="transfer" type="nsset:transferType"/>
+    <!-- list contacts extension -->
+    <element name="list"/>
 
   <!--
   Child elements of the <transfer> command.
@@ -198,6 +200,8 @@
     <element name="chkData" type="nsset:chkDataType"/>
     <element name="creData" type="nsset:creDataType"/>
     <element name="infData" type="nsset:infDataType"/>
+    <!-- list nssets extension -->
+    <element name="listData" type="nsset:listDataType"/>
 
   <!--
   <check> response elements.
@@ -265,6 +269,13 @@
         <element name="pw" type="eppcom:pwAuthInfoType"/>
         <element name="ext" type="eppcom:extAuthInfoType"/>
       </choice>
+    </complexType>
+
+    <complexType name="listDataType">
+      <sequence>
+        <element name="id" type="nsset:nssT"
+         minOccurs="0" maxOccurs="unbounded"/>
+      </sequence>
     </complexType>
 
   <!--

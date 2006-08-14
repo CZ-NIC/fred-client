@@ -31,6 +31,8 @@
     <element name="info" type="contact:authIDType"/>
     <element name="transfer" type="contact:authIDType"/>
     <element name="update" type="contact:updateType"/>
+    <!-- list contacts extension -->
+    <element name="list"/>
 
   <!--
   Utility types.
@@ -79,9 +81,7 @@
         <element name="fax" type="contact:e164StringType"
          minOccurs="0"/>
         <element name="email" type="eppcom:minTokenType"/>
-	<!--
         <element name="authInfo" type="contact:authInfoType"/>
-	-->
         <element name="disclose" type="contact:discloseType"
          minOccurs="0"/>
         <element name="vat" type="contact:vatT"
@@ -115,14 +115,12 @@
       </sequence>
     </complexType>
 
-<!--
     <complexType name="authInfoType">
       <choice>
         <element name="pw" type="eppcom:pwAuthInfoType"/>
         <element name="ext" type="eppcom:extAuthInfoType"/>
       </choice>
     </complexType>
--->
     <complexType name="discloseType">
       <sequence>
         <element name="name" minOccurs="0"/>
@@ -162,9 +160,26 @@
     </simpleType>
 
     <!--  SSN type -->
-    <simpleType name="ssnT">
+    <complexType name="ssnT">
+      <simpleContent>
+        <extension base="contact:ssnValueT">
+          <attribute name="type" type="contact:ssnTypeT" use="required"/>
+        </extension>
+      </simpleContent>
+    </complexType>
+
+    <simpleType name="ssnValueT">
       <restriction base="token">
         <maxLength value="32"/>
+      </restriction>
+    </simpleType>
+
+    <simpleType name="ssnTypeT">
+      <restriction base="token">
+        <enumeration value="op"/>
+        <enumeration value="rc"/>
+        <enumeration value="passport"/>
+        <enumeration value="mpsv"/>
       </restriction>
     </simpleType>
 
@@ -174,10 +189,8 @@
     <complexType name="authIDType">
       <sequence>
         <element name="id" type="eppcom:clIDType"/>
-  <!--
         <element name="authInfo" type="contact:authInfoType"
          minOccurs="0"/>
-    -->
       </sequence>
     </complexType>
 
@@ -219,16 +232,14 @@
          minOccurs="0"/>
         <element name="email" type="eppcom:minTokenType"
          minOccurs="0"/>
-	 <!--
         <element name="authInfo" type="contact:authInfoType"
          minOccurs="0"/>
-	 -->
         <element name="disclose" type="contact:discloseType"
          minOccurs="0"/>
         <element name="vat" type="contact:vatT"
-		minOccurs="0"/>
+	 minOccurs="0"/>
         <element name="ssn" type="contact:ssnT"
-		minOccurs="0"/>
+	 minOccurs="0"/>
         <element name="notifyEmail" type="eppcom:minTokenType"
          minOccurs="0"/>
       </sequence>
@@ -255,6 +266,8 @@
     <element name="panData" type="contact:panDataType"/>
     <element name="trnData" type="contact:trnDataType"/>
 	-->
+    <!-- list contacts extension -->
+    <element name="listData" type="contact:listDataType"/>
 
   <!--
   <check> response elements.
@@ -308,21 +321,17 @@
         <element name="fax" type="contact:e164StringType"
          minOccurs="0"/>
         <element name="email" type="eppcom:minTokenType"/>
-	<!--
         <element name="clID" type="eppcom:clIDType"/>
-	-->
         <element name="crID" type="eppcom:clIDType"/>
         <element name="crDate" type="dateTime"/>
         <element name="upID" type="eppcom:clIDType"
          minOccurs="0"/>
         <element name="upDate" type="dateTime"
          minOccurs="0"/>
-	 <!--
         <element name="trDate" type="dateTime"
          minOccurs="0"/>
         <element name="authInfo" type="contact:authInfoType"
          minOccurs="0"/>
-	 -->
         <element name="disclose" type="contact:discloseType"
          minOccurs="0"/>
         <element name="vat" type="contact:vatT"
@@ -355,14 +364,14 @@
         <enumeration value="clientUpdateProhibited"/>
         <enumeration value="linked"/>
         <enumeration value="ok"/>
-	<!--
         <enumeration value="clientTransferProhibited"/>
+	<!--
         <enumeration value="pendingCreate"/>
         <enumeration value="pendingDelete"/>
         <enumeration value="pendingTransfer"/>
         <enumeration value="pendingUpdate"/>
-        <enumeration value="serverTransferProhibited"/>
 	-->
+        <enumeration value="serverTransferProhibited"/>
         <enumeration value="serverDeleteProhibited"/>
         <enumeration value="serverUpdateProhibited"/>
       </restriction>
@@ -405,6 +414,13 @@
       </sequence>
     </complexType>
     -->
+
+    <complexType name="listDataType">
+      <sequence>
+        <element name="id" type="eppcom:clIDType"
+         minOccurs="0" maxOccurs="unbounded"/>
+      </sequence>
+    </complexType>
 
   <!--
   End of schema.
