@@ -29,7 +29,7 @@ def find_valid_encoding():
 # INIT options:
 #--------------------------
 optcols = ('s:session','l:lang','g:log','h:host','u:user','p:password',
-        'v:verbose','c:command','r color','? help')
+        'v:verbose','c:command','r colors','? help')
 options = {}
 for key in optcols:
     options[key[2:]] = ''

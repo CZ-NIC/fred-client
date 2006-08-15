@@ -148,8 +148,9 @@ class TerminalController:
         else: return getattr(self, s[2:-1])
 
     def set_mode(self, mode):
-        "Set color or not: mode='yes'/''."
-        self._is_mode_color = (0,1)[mode!='']
+        "Set color or not: mode=0/1."
+        if type(mode) is not int: mode = (0,1)[mode!='']
+        self._is_mode_color = mode
     
 #######################################################################
 # Example use case: progress bar

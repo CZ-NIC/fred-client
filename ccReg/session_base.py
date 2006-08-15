@@ -8,10 +8,10 @@ from translate import _T, encoding, options
 
 # Colored output
 colored_output = terminal_controler.TerminalController()
-colored_output.set_mode(options['color'])
 
 # názvy sloupců pro data sestavené při spojení se serverem
-ONLINE, CMD_ID, LANG, POLL_AUTOACK, CONFIRM_SEND_COMMAND, USERNAME, HOST = range(7)
+ONLINE, CMD_ID, LANG, POLL_AUTOACK, CONFIRM_SEND_COMMAND, \
+    USERNAME, NAME, HOST, COLORS, VALIDATE, VERBOSE = range(11)
 # názvy sloupců pro defaultní hodnoty
 DEFS_LENGTH = 4
 LANGS,objURI,extURI,PREFIX = range(DEFS_LENGTH)
@@ -24,7 +24,6 @@ class ManagerBase:
         self._notes = [] # upozornění na chybné zadání
         self._errors = [] # chybová hlášení při přenosu, parsování
         self._sep = '\n' # oddělovač jednotlivých zpráv
-        self._validate = 1 # automatické zapnutí validace EPP XML dokumentů
         #-----------------------------------------
         # Session data:
         #-----------------------------------------
@@ -35,7 +34,11 @@ class ManagerBase:
                 0,      # POLL_AUTOACK
                 1,      # CONFIRM_SEND_COMMAND
                 '',     # USERNAME (for prompt info)
+                '',     # NAME
                 '',     # HOST (for prompt info)
+                0,      # COLORS 0/1
+                1,      # VALIDATE
+                1,      # VERBOSE 1,2,3
                 ]
         # defaults
         self.defs = ['']*DEFS_LENGTH
@@ -48,21 +51,23 @@ class ManagerBase:
         self.defs[PREFIX] = '' # pro každé sezení nový prefix
         self._conf = None # <ConfigParser object>
         self._name_conf = '.ccReg.conf' # name of config file
-        self._session_name = None
         self._auto_connect = 1 # auto connection during login or hello
         self._options = {} # parameters from command line
 
     def set_options(self, options):
         'Param options must be dict.'
         self._options = options
-        
-    def set_session_lang(self, lang):
-        'Set session language'
-        self._session[LANG] = lang
+        if self._options['session']: self._session[NAME] = self._options['session']
 
-    def set_session_color(self, colored_output):
-        'Set colored output mode from config file.'
-        if self.get_config_value('session', 'color', 'ommit-errors'): colored_output.set_mode('yes')
+    def init_options(self):
+        'Init variables from options (after loaded config).'
+        if self._options['lang'] and self._options['lang'] in self.defs[LANGS]:
+            self._session[LANG] = self._options['lang']
+        if self._options['colors']:
+            colored_output.set_mode(1)
+            self._session[COLORS] = 1
+        if self._options['verbose']:
+            self.__init_verbose__(self._options['verbose'])
         
     def set_auto_connect(self, switch):
         'Set auto connection ON/OFF. switch = 0/1.'
@@ -84,9 +89,6 @@ class ManagerBase:
         'Set switch confirm_commands_before_send'
         self._session[CONFIRM_SEND_COMMAND] = (0,1)[type in ('on','ON')]
         self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('Confirm has been set to'),('OFF','ON')[self._session[CONFIRM_SEND_COMMAND]]))
-
-    def set_session_name(self, name):
-        self._session_name = name
 
     def get_errors(self, sep='\n'):
         return sep.join(self._errors)
@@ -196,7 +198,6 @@ class ManagerBase:
             seop = ('session','schema')
             name = self.get_config_value(seop[0], seop[1])
             self._conf.set(seop[0], seop[1], os.path.join(modul_path,'schemas',name))
-            self._session[POLL_AUTOACK] = {False:0,True:1}[self.get_config_value(seop[0], 'poll_ack') in ('on','ON')]
             # make copy if need
             new_section = ''
             section = self.config_get_section_connect()
@@ -253,8 +254,8 @@ class ManagerBase:
 
     def config_get_section_connect(self):
         'Set section name "connect" in config.'
-        if self._session_name:
-            section = 'connect_%s'%self._session_name
+        if self._session[NAME]:
+            section = 'connect_%s'%self._session[NAME]
         else:
             section = 'connect'
         return section
@@ -287,12 +288,6 @@ class ManagerBase:
                 self.append_error(_T('Fatal error: Create default config failed.'))
                 self.display() # display errors or notes
                 return 0 # fatal error
-        lang = self.get_config_value(section,'lang')
-        if lang in self.defs[LANGS]:
-            self._session[LANG] = lang
-        else:
-            self.append_note('%s: ${BOLD}%s${NORMAL} %s'%(_T('This language code is not allowed'),lang,str(self.defs[LANGS])))
-        self._session[CONFIRM_SEND_COMMAND] = {False:0,True:1}[self.get_config_value(section,'confirm_send_commands') == 'on']
         # default values (timeout)
         self.__config_defaults__()
         # for login with no parameters
@@ -304,25 +299,38 @@ class ManagerBase:
         if self._conf.has_section(section_epp_login):
             if self._options['user']: self._conf.set(section_epp_login,'username',self._options['user'])
             if self._options['password']: self._conf.set(section_epp_login,'password',self._options['password'])
+        # session
+        section = 'session'
+        self._session[POLL_AUTOACK] = {False:0,True:1}[self.get_config_value(section,'poll_ack').lower() == 'on']
+        self._session[CONFIRM_SEND_COMMAND] = {False:0,True:1}[self.get_config_value(section,'confirm_send_commands').lower() == 'on']
+        self._session[VALIDATE] = {False:0,True:1}[self.get_config_value(section,'validate').lower() == 'on']
+        colors = self.get_config_value(section,'colors',1)
+        if colors:
+            self._session[COLORS] = (0,1)[colors.lower() == 'on']
+            colored_output.set_mode(self._session[COLORS])
+        self.__init_verbose__(self.get_config_value(section,'verbose',1))
+        # init vrom command line options
+        self.init_options()
         return 1 # OK
 
+    def __init_verbose__(self, verbose):
+        'Init verbose mode.'
+        if verbose:
+            try:
+                verbose = int(verbose)
+                if verbose in (1,2,3):
+                    self._session[VERBOSE] = verbose
+                else:
+                    self.append_error(_T('Verbose mode can be set only to 1 or 2 or 3.'))
+            except ValueError, msg:
+                self.append_error('Verbose ValueError: %s'%msg)
 
     #---------------------------
     # validation
     #---------------------------
-    def set_validate(self, cmd):
-        "Set feature of the manager - it will or not validate EPP documents. cmd='validate on/off'"
-        if re.match('validate$',cmd):
-            # jen zobrazení stavu
-            self.append_note('%s ${BOLD}%s${NORMAL}'%(_T('Status: Validation is'),('OFF','ON')[self._validate]))
-        else:
-            # změna stavu
-            self._validate = {False:0,True:1}[re.match('validate\s+on',cmd, re.I) is not None]
-            self.append_note('%s ${BOLD}%s${NORMAL}'%(_T('Validation is set'),('OFF','ON')[self._validate]))
-
     def check_validator(self):
         'Check if exists external validator (xmllint).'
-        if not self._validate: return # validate is set OFF
+        if not self._session[VALIDATE]: return # validate is set OFF
         ok = 0
         try:
             pipes = os.popen3('xmllint')
@@ -339,13 +347,13 @@ class ManagerBase:
             except UnicodeDecodeError:
                 uerr = repr(errors)
             self.append_note(uerr)
-            self._validate = 0 # validator is automaticly switched off
+            self._session[VALIDATE] = 0 # validator is automaticly switched off
             self.append_note('%s ${BOLD}validate on${NORMAL}.'%_T('Validator has been disabled. For enable type'))
         return ok
     
     def is_epp_valid(self, message):
         "Check XML EPP by xmllint. OUT: '' - correct; '...' any error occurs."
-        if not self._validate: return '' # validace je vypnutá
+        if not self._session[VALIDATE]: return '' # validace je vypnutá
         tmpname = os.path.join(os.path.expanduser('~'),'eppdoc_tmp_test_validity.xml')
         try:
             open(tmpname,'w').write(message)
@@ -354,7 +362,7 @@ class ManagerBase:
                 msg = msg.decode(encoding)
             except UnicodeDecodeError, error:
                 msg = '(UnicodeDecodeError) '+repr(msg)
-            self._validate = 0 # automatické vypnutí validace
+            self._session[VALIDATE] = 0 # automatické vypnutí validace
             self.append_note('%s: [%d] %s'%(_T('Temporary file for verify XML EPP validity cannot been created. Reason'),no,msg))
             self.append_note('%s ${BOLD}validate on${NORMAL}.'%_T('Validator has been disabled. For enable type'))
             return '' # impossible save xml file needed for validation
@@ -378,7 +386,7 @@ class ManagerBase:
                 or re.search('Schemas parser error',errors):
                 # schema missing!
                 self.append_note('%s ${BOLD}validate on${NORMAL}.'%_T('Validator has been disabled. For enable type'))
-                self._validate = 0 # automatické vypnutí validace
+                self._session[VALIDATE] = 0 # automatické vypnutí validace
                 errors=''
         return errors
 

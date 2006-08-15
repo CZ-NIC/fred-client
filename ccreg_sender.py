@@ -5,10 +5,8 @@
 import sys
 import os
 import re
-##import getopt
 import ccReg
 from ccReg.session_receiver import ccRegError
-##from ccReg.translate import _T, session_name, session_lang, option_errors, option_help, option_args
 from ccReg.translate import _T, options, option_errors, option_args
 
 def __auto_login__(epp):
@@ -31,10 +29,9 @@ def send_docs(docs=[]):
     # Inicializace klienta
     #-------------------------------------------------
     epp = ccReg.ClientSession()
-    if options['session']:
-        print "SET SESSION_NAME:",options['session']
-        epp.set_session_name(options['session'])
+    epp.set_options(options)
     if not epp.load_config(): return
+
     #-------------------------------------------------
     # Apped docs from argv params
     #-------------------------------------------------
@@ -100,29 +97,33 @@ if __name__ == '__main__':
         if not sys.stdin.isatty():
             run_pipe() # commands from pipe
         else:
-            if not option['help'] and len(sys.argv) > 1:
+            if not options['help'] and len(sys.argv) > 1:
                 send_docs() # commands from argv
             else:
-                print """*** ccReg Sender ***
-
+                print """Usage: python ccreg_sender.py [OPTIONS]
 Send all files to the EPP server on the order of the list filenames.
 If first file is NOT login - does login automaticly.
 
-Usage: python ccreg_sender.py [OPTIONS] [files]
-
-OPTIONS:
+OPTIONS with values:
     -s --session  name of session used for connect to the EPP server
                   session values are read from config file
+    -h --host     host name (overwrite config value)
+    -u --user     user name (overwrite config value)
+    -p --password (overwrite config value)
     -l --lang     language of session
-    -h --help     this help
-
-Examples:
+    -v --verbose  display modes: 1,2,3; default: 1
+                  1 - essensial values
+                  2 - all returned values
+                  3 - display XML sources
+OPTIONS:
+    -r --colors   set on colored output
+    -? --help     this help
+    
+EXAMPLES:
 ./ccreg_create.py info-domain nic.cz > cmd1.xml
 ./ccreg_create.py info-contact reg-id pokus > cmd2.xml
 ./ccreg_sender.py cmd1.xml cmd2.xml
-./ccreg_sender.py -s epp_host -l en cmd1.xml cmd2.xml
-
-or
+./ccreg_sender.py -s epp_host -l cs cmd1.xml cmd2.xml
 
 ./ccreg_create.py info-domain nic.cz | ./ccreg_create.py info-contact reg-id pokus | ./ccreg_create.py check-domain hokus pokus cosi | ./ccreg_sender.py
 """

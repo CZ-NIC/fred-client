@@ -14,10 +14,7 @@ def main(session_name):
     epp = ccReg.ClientSession()
     ccReg.cmd_history.set_history(epp.get_command_names())
     epp.set_options(options)
-    if session_name: epp.set_session_name(session_name) # TODO: duplicita
     if not epp.load_config(): return
-    epp.set_session_lang(options['lang'])
-    epp.set_session_color(colored_output)
     print epp.welcome()
     epp.display() # display errors or notes
     is_online = 0
@@ -88,7 +85,7 @@ OPTIONS with values:
                   2 - all returned values
                   3 - display XML sources
 OPTIONS:
-    -r --color    set on colored output
+    -r --colors   set on colored output
     -? --help     this help
 """)
         else:

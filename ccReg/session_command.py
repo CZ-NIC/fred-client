@@ -85,7 +85,7 @@ class ManagerCommand(ManagerTransfer):
             self.append_note(_T("""\n${BOLD}Session commands:${NORMAL}
 ${BOLD}q${NORMAL} (or ${BOLD}quit${NORMAL}, ${BOLD}exit${NORMAL}) # quit this application
 ${BOLD}help${NORMAL} (or ${BOLD}h${NORMAL}, ${BOLD}?${NORMAL})  # display this help
-${BOLD}licence${NORMAL} # display licence
+${BOLD}license${NORMAL} # display license
 ${BOLD}credits${NORMAL} # display credits
 ${BOLD}connect${NORMAL} (or directly login) # connect to the server (for test only)
 ${BOLD}validate${NORMAL} [on/off] # set validation or display actual setting
@@ -96,6 +96,8 @@ ${BOLD}confirm${NORMAL} ${BOLD}on${NORMAL}/[off] # confirm editable commands bef
 ${BOLD}config${NORMAL} # display actual config
 ${BOLD}config${NORMAL} ${BOLD}create${NORMAL} # create default config file in user home folder.
 ${BOLD}send${NORMAL} [filename] # send selected file to the server (for test only). If param is not valid file the command shows folder.
+${BOLD}colors${NORMAL} [on/off] # turn on/off colored output
+${BOLD}verbose${NORMAL} [number] # set verbose mode: 1 - brief (default); 2 - full; 3 - full & XML sources
 """))
 
     def epp_command(self, cmdline):
@@ -216,13 +218,27 @@ ${BOLD}send${NORMAL} [filename] # send selected file to the server (for test onl
         elif re.match('config\s*(.*)',cmd):
             self.manage_config(re.match('config\s*(.*)',cmd).groups())
         elif re.match('validate',cmd):
-            self.set_validate(cmd) # set validation of created EPP document
-        elif re.match('licence',cmd):
-            body, error = load_file(make_filepath('licence.txt'))
+            m = re.match('validate\s+(\S+)',cmd)
+            if m:
+                self._session[VALIDATE] = (0,1)[m.group(1).lower()=='on']
+            self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('Validation process is'),{False:'OFF',True:'ON'}[self._session[VALIDATE]]))
+        elif re.match('colors',cmd):
+            m = re.match('colors\s+(\S+)',cmd)
+            if m:
+                self._session[COLORS] = (0,1)[m.group(1).lower()=='on']
+                colored_output.set_mode(self._session[COLORS])
+            self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('Colors mode is'),{False:'OFF',True:'ON'}[self._session[COLORS]]))
+        elif re.match('verbose',cmd):
+            m = re.match('verbose\s+(\S+)',cmd)
+            if m:
+                self.__init_verbose__(m.group(1))
+            self.append_note('%s: ${BOLD}%d${NORMAL}'%(_T('Verbose mode is'),self._session[VERBOSE]))
+        elif re.match('license',cmd):
+            body, error = load_file(make_filepath('LICENSE'))
             if error: self.append_error(error)
             if body: self.append_note(self.convert_utf8(body))
         elif re.match('credits',cmd):
-            body, error = load_file(make_filepath('credits.txt'))
+            body, error = load_file(make_filepath('CREDITS'))
             if error: self.append_error(error)
             if body: self.append_note(self.convert_utf8(body))
         elif re.match('poll[-_]ack',cmd):

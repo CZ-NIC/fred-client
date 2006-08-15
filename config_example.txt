@@ -36,4 +36,5 @@ poll_ack = off
 confirm_send_commands = on
 validate = on
 schema = /home/username/enum/trunk/epp_client/ccReg/schemas/all-1.0.xsd
-color = yes
+colors = yes
+verbose = 2

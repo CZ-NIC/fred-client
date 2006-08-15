@@ -100,12 +100,10 @@ class Test(unittest.TestCase):
         handle_contact = CCREG_CONTACT1
         # create client object
         epp_cli = ccReg.Client()
-        epp_cli_TRANSF = ccReg.Client()
-        if ccReg.translate.options['session']:
-            # nastavení serveru
-            epp_cli._epp.set_session_name(ccReg.translate.options['session'])
-            epp_cli_TRANSF._epp.set_session_name(ccReg.translate.options['session'])
+        epp_cli._epp.set_options(ccReg.translate.options)
         epp_cli._epp.load_config()
+        epp_cli_TRANSF = ccReg.Client()
+        epp_cli_TRANSF._epp.set_options(ccReg.translate.options)
         epp_cli_TRANSF._epp.load_config()
         # login
         dct = epp_cli._epp.get_default_params_from_config('login')

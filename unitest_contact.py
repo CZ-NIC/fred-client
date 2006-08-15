@@ -125,8 +125,7 @@ class Test(unittest.TestCase):
         handle_nsset = 'neexist01'
         # create client object
         epp_cli = ccReg.Client()
-        if ccReg.translate.options['session']:
-            epp_cli._epp.set_session_name(ccReg.translate.options['session']) # nastavení serveru
+        epp_cli._epp.set_options(ccReg.translate.options)
         epp_cli._epp.load_config()
         # login
         dct = epp_cli._epp.get_default_params_from_config('login')

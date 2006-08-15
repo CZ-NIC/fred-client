@@ -4,7 +4,7 @@
 """
 import sys
 import ccReg
-from ccReg.translate import _T
+from ccReg.translate import _T, options
 
 if __name__ == '__main__':
     if sys.version_info[:2] < (2,4):
@@ -13,6 +13,7 @@ if __name__ == '__main__':
         if not sys.stdin.isatty(): print sys.stdin.read() # keep previous output
         if len(sys.argv) > 1:
             epp = ccReg.ClientSession()
+            epp.set_options(options)
             epp.load_config()
             epp.set_auto_connect(0) # set OFF auto connection
             command_name, epp_doc = epp.create_eppdoc(' '.join(sys.argv[1:]))
