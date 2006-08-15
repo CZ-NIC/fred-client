@@ -44,7 +44,7 @@
          minOccurs="0"/>
         <element name="nsset" type="eppcom:labelType"/>
         <element name="registrant" type="eppcom:clIDType"/>
-        <element name="contact" type="domain:contactType"
+        <element name="admin" type="eppcom:clIDType"
          minOccurs="0" maxOccurs="unbounded"/>
         <element name="authInfo" type="domain:authInfoType"/>
       </sequence>
@@ -86,6 +86,7 @@
   structure defined in the host mapping.
   -->
 
+  <!-- Does not have any meaning since we have only one contact type
     <complexType name="contactType">
       <simpleContent>
         <extension base="eppcom:clIDType">
@@ -100,6 +101,7 @@
         <enumeration value="billing"/>
       </restriction>
     </simpleType>
+	-->
 
     <complexType name="authInfoType">
       <choice>
@@ -184,7 +186,7 @@
   -->
     <complexType name="addRemType">
       <sequence>
-        <element name="contact" type="domain:contactType"
+        <element name="admin" type="eppcom:clIDType"
          minOccurs="0" maxOccurs="unbounded"/>
         <element name="status" type="domain:statusType"
          minOccurs="0" maxOccurs="8"/>
@@ -297,7 +299,7 @@
 	-->
         <element name="registrant" type="eppcom:clIDType"
          minOccurs="0"/>
-        <element name="contact" type="domain:contactType"
+        <element name="admin" type="eppcom:clIDType"
          minOccurs="0" maxOccurs="unbounded"/>
         <element name="nsset" type="eppcom:labelType"/>
         <element name="clID" type="eppcom:clIDType"/>
