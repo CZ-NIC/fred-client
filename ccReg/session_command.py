@@ -219,12 +219,12 @@ ${BOLD}send${NORMAL} [filename] # send selected file to the server (for test onl
             self.set_validate(cmd) # set validation of created EPP document
         elif re.match('licence',cmd):
             body, error = load_file(make_filepath('licence.txt'))
-            if body: self.append_note(body)
             if error: self.append_error(error)
+            if body: self.append_note(self.convert_utf8(body))
         elif re.match('credits',cmd):
             body, error = load_file(make_filepath('credits.txt'))
-            if body: self.append_note(body)
             if error: self.append_error(error)
+            if body: self.append_note(self.convert_utf8(body))
         elif re.match('poll[-_]ack',cmd):
             m = re.match('poll[-_]ack\s+(\S+)',cmd)
             if m:
@@ -255,6 +255,15 @@ ${BOLD}send${NORMAL} [filename] # send selected file to the server (for test onl
             self.append_note('%s: %s'%(_T('Not found'),filepath))
             command_name = ''
         return command_name, self._raw_cmd
+
+    def convert_utf8(self, text_utf8):
+        'Convert str in UTF-8 to unicode.'
+        try:
+            utext = text_utf8.decode('utf-8')
+        except UnicodeDecodeError, msg:
+            self.append_note('UnicodeDecodeError: %s'%msg)
+            utext = ''
+        return utext
 
     #==================================================
     #
@@ -311,7 +320,8 @@ def human_readable(body):
     if not re.search('</\w+>\n<',body):
         body = re.sub('(</[^>]+>)','\\1\n',body)
     return body
-        
+
+
 if __name__ == '__main__':
     # Test
     m = ManagerCommand()
