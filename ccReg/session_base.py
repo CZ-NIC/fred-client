@@ -54,6 +54,9 @@ class ManagerBase:
         self._auto_connect = 1 # auto connection during login or hello
         self._options = {} # parameters from command line
 
+    def get_session(self, offset):
+        return self._session[offset]
+        
     def set_options(self, options):
         'Param options must be dict.'
         self._options = options
@@ -144,7 +147,7 @@ class ManagerBase:
 
     def welcome(self):
         "Welcome message."
-        return 'ccReg client version 1.1 Type "help", "license" or "credits" for more information.'
+        return _T('ccReg client version 1.1 Type "help", "license" or "credits" for more information.')
 
     def __next_clTRID__(self):
         """Generate next clTRID value.

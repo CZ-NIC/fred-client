@@ -7,7 +7,7 @@
 #
 import sys, re
 import ccReg
-from ccReg.session_base import colored_output
+from ccReg.session_base import colored_output, VERBOSE
 from ccReg.translate import _T, options, option_errors
 
 def main(session_name):
@@ -18,11 +18,11 @@ def main(session_name):
     print epp.welcome()
     epp.display() # display errors or notes
     is_online = 0
-    prompt = 'ccReg'
+    prompt = '> '
     online = prompt
     while 1:
         try:
-            command = raw_input('%s: '%online)
+            command = raw_input(online)
         except (KeyboardInterrupt, EOFError):
             break
         if command in ('q','quit','exit'):
@@ -33,7 +33,9 @@ def main(session_name):
             invalid_epp = epp.is_epp_valid(epp_doc)
             if invalid_epp:
                 epp.append_error(_T('EPP document is not valid'),'BOLD')
-                epp.append_error(invalid_epp)
+                v = epp.get_session(VERBOSE)
+                if v > 1: epp.append_error(invalid_epp)
+                if v > 2: epp.append_error(epp_doc)
             else:
                 if epp.is_online(command_name) and epp.is_connected(): # only if we are online
                     if epp.is_confirm_cmd_name(command_name):
@@ -57,7 +59,7 @@ def main(session_name):
             online = prompt
             if epp.is_logon():
                 is_online = 1
-                online = '%s@%s'%epp.get_username_and_host()
+                online = '%s@%s: '%epp.get_username_and_host()
     epp.close()
     epp.display() # display logout messages
     print "[END]"

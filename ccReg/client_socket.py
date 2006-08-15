@@ -29,7 +29,7 @@ class Lorry:
     def get_timeout(self):
         return self._timeout
 
-    def connect(self, DATA):
+    def connect(self, DATA, verbose=1):
         "DATA = ('host', PORT, 'file.key', 'file.crt', timeout)"
         ok = 0
         self._conn = None
@@ -57,7 +57,7 @@ class Lorry:
         except (KeyboardInterrupt,EOFError):
             self._errors.append(_T('Interrupt from user'))
         if not ok: return ok
-        self._notes.append(_T('Init SSL connection'))
+        if verbose > 1: self._notes.append(_T('Init SSL connection'))
         if len(DATA) < 4:
             self._errors.append(_T('Certificate names not set.'))
         if len(DATA) > 2 and not os.path.isfile(DATA[2]):

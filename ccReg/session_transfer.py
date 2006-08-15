@@ -95,7 +95,7 @@ class ManagerTransfer(ManagerBase):
             if None in data:
                 self.append_error('%s: %s'%(_T('Impossible create connection. Required config values missing'),str(data)))
                 return 0
-        if self._lorry.connect(data):
+        if self._lorry.connect(data, self._session[VERBOSE]):
             epp_greeting = self._lorry.receive() # receive greeting
             self.__check_is_connected__()
             if epp_greeting:
@@ -129,7 +129,7 @@ class ManagerTransfer(ManagerBase):
                 # If XML doc has been sent, manager saves the name of this command.
                 # This is essensial for resolve how type the server answer is.
                 self._command_sent = self.grab_command_name_from_xml(message)
-                self.append_note(_T('Command was sent to EPP server.'),'BOLD')
+                if self._session[VERBOSE] > 1: self.append_note(_T('Command was sent to EPP server.'),'BOLD')
             self.__check_is_connected__()
         else:
             self.append_error(_T('You are not connected.'))
@@ -174,20 +174,25 @@ class ManagerTransfer(ManagerBase):
         patt_type = re.compile("<type '(\w+)'>")
         if not dct: dct = self._dct_answer
         code = dct['code']
-        report('-'*60)
-        report(colored_output.render('${BOLD}code:${NORMAL} %d'%code))
-        report(colored_output.render('${BOLD}command:${NORMAL} %s'%dct['command']))
-        report('%s%s'%(
-            colored_output.render('${BOLD}reason:${NORMAL} '),
-            get_ltext(colored_output.render('${%s}%s${NORMAL}'%({False:'NORMAL',True:'GREEN'}[code==1000],dct['reason']))))
-            )
-        report(colored_output.render('${BOLD}errors:${NORMAL}'))
+        if self._session[VERBOSE] < 2:
+            # brief
+            report(get_ltext(colored_output.render('${BOLD}%d${NORMAL}: ${%s}%s${NORMAL}'%(code,{False:'NORMAL',True:'GREEN'}[code==1000],dct['reason']))))
+        else:
+            # full
+            report('-'*60)
+            report(colored_output.render('${BOLD}code:${NORMAL} %d'%code))
+            report(colored_output.render('${BOLD}command:${NORMAL} %s'%dct['command']))
+            report('%s%s'%(
+                colored_output.render('${BOLD}reason:${NORMAL} '),
+                get_ltext(colored_output.render('${%s}%s${NORMAL}'%({False:'NORMAL',True:'GREEN'}[code==1000],dct['reason']))))
+                )
+            report(colored_output.render('${BOLD}errors:${NORMAL}'))
         if len(dct['errors']):
             report(colored_output.render('${BOLD}${RED}'))
             for error in dct['errors']:
                 report(get_ltext('  %s'%error))
             report(colored_output.render('${NORMAL}'))
-        report(colored_output.render('${BOLD}data:${NORMAL}'))
+        if self._session[VERBOSE] > 1: report(colored_output.render('${BOLD}data:${NORMAL}'))
         for k,v in dct['data'].items():
             if type(v) in (list,tuple):
                 if len(v):
@@ -202,6 +207,12 @@ class ManagerTransfer(ManagerBase):
         report('-'*60)
         for n in range(len(body)):
             if type(body[n]) == unicode: body[n] = body[n].encode(encoding)
+        if self._session[VERBOSE] == 3:
+            report(colored_output.render('${BOLD}COMMAND:${NORMAL}${GREEN}'))
+            report(human_readable(self._raw_cmd))
+            report(colored_output.render('${NORMAL}${BOLD}ANSWER:${NORMAL}${GREEN}'))
+            report(human_readable(self._raw_answer))
+            report(colored_output.render('${NORMAL}'))
         return sep.join(body)
 
 
@@ -215,3 +226,9 @@ def str_lists(text):
             body.append(str_lists(item))
         text = '(%s)'%', '.join(body)
     return text
+
+def human_readable(body):
+    'Resample to rows if they missing. This is hook while PrettyPrint missing.'
+    if not re.search('</\w+>\n<',body):
+        body = re.sub('(</[^>]+>)','\\1\n',body)
+    return body

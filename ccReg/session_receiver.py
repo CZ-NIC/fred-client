@@ -117,7 +117,7 @@ class ManagerReceiver(ManagerCommand):
                 if invalid_epp:
                     # když se odpověd serveru neplatná...
                     self.append_note(_T('Server answer is not valid!'),('RED','BOLD'))
-                    self.append_note(invalid_epp)
+                    if self._session[VERBOSE] > 1: self.append_note(invalid_epp)
                     self.append_note('%s ${BOLD}validate off${NORMAL}.'%_T('For disable validator type'))
             if not self._epp_response.is_error():
                 # když přišla nějaká odpověd a podařilo se jí zparsovat:

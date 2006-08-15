@@ -9,7 +9,7 @@ import eppdoc_client
 from translate import _T, encoding
 
 from session_base import *
-from session_transfer import ManagerTransfer
+from session_transfer import ManagerTransfer, human_readable
 
 from eppdoc import nic_cz_version as eppdoc_nic_cz_version
 
@@ -330,12 +330,6 @@ def load_file(filename):
     except IOError, (errnum, msg):
         error = 'IOError: %d. %s (%s)'%(errnum,msg,filename)
     return body, error
-
-def human_readable(body):
-    'Resample to rows if they missing. This is hook while PrettyPrint missing.'
-    if not re.search('</\w+>\n<',body):
-        body = re.sub('(</[^>]+>)','\\1\n',body)
-    return body
 
 
 if __name__ == '__main__':
