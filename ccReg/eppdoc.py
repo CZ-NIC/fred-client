@@ -41,6 +41,7 @@ class Message:
         self._cr = '\n' # new line
         self._dct = {}  # parsed parameters from command line
         self._command_params = {} # struct of command parameters
+        self._verbose = 1  # verbose interactive params input
         
     def reset(self):
         self.__reset_dom__()

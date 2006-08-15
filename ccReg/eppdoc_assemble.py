@@ -27,7 +27,7 @@ class Message(eppdoc.Message):
         msg=[]
         indent = '    '*deep
         for row in params:
-            name,min_max,allowed,help,children = row
+            name,min_max,allowed,help,example,pattern,children = row
             min,max = min_max
             if min > 0:
                 color = {False:'YELLOW',True:'GREEN'}[deep==1]
@@ -93,7 +93,7 @@ class Message(eppdoc.Message):
     def get_default_params_from_config(self, config, command_name):
         'Returns dict with default parameters from config.'
         dct = {}
-        columns = [(command_name,(1,1),(),'',())]
+        columns = [(command_name,(1,1),(),'','','',())]
         columns.extend(self._command_params[command_name][1])
         self.__fill_empy_from_config__(config, dct, columns)
         return dct
@@ -104,7 +104,7 @@ class Message(eppdoc.Message):
         if len(scopes) and not len(dct_values): return errors # if descendant is empty - not check
         if type(dct_values) != dict: return ('%s (%s)'%(_T('Invalid input format.'),[c[0] for c in columns]),)
         for row in columns:
-            name,min_max,allowed,msg_help,children = row
+            name,min_max,allowed,msg_help,example,pattern,children = row
             scopes.append(name)
             scope_name = '.'.join(scopes)
             if dct_values.has_key(name):
@@ -136,7 +136,7 @@ class Message(eppdoc.Message):
             if len(param) and param[0] == '!': break
             if is_child and param == '' and min:
                 break
-            name,min_max,allowed,msg_help,children = row
+            name,min_max,allowed,msg_help,example,pattern,children = row
             min,max = min_max
             parents.append([name,0,max])
             if len(children):
@@ -163,8 +163,11 @@ class Message(eppdoc.Message):
             req = min
             if is_child and min: req = 2 # if param is child and required in this child part
             print_info_listmax(max) # (Value can be a list of max %d values.)
-            if len(allowed):
-                session_base.print_unicode('${WHITE}%s:${NORMAL} (%s)'%(_T('Param MUST be a value from this list'),', '.join(allowed)))
+            if self._verbose > 1:
+                if len(allowed):
+                    session_base.print_unicode('${WHITE}%s:${NORMAL} (%s)'%(_T('Param MUST be a value from this list'),', '.join(allowed)))
+                if len(example):
+                    session_base.print_unicode('${WHITE}%s %s:${NORMAL} %s'%(_T('Example'),__scope_to_string__(parents),example))
             cr = 0
             stop=0
             while max is UNBOUNDED or cr < max:
@@ -192,7 +195,7 @@ class Message(eppdoc.Message):
                             param = unicode(repr(param), encoding)
                     if param[0] == '!': break
                     if param[0] != '(': param = append_quotes(param)
-                    err = cmd_parser.parse(dct, ((name,min_max,allowed,'',()),), param)
+                    err = cmd_parser.parse(dct, ((name,min_max,allowed,'','','',()),), param)
                     if err: errors.extend(err)
                 cr+=1
             parents.pop()
@@ -205,16 +208,17 @@ class Message(eppdoc.Message):
         retval = ''
         if type(self._dct.get('command')) is list:
             command_name = self._dct['command'][0]
-            columns = [(command_name,(1,1),(),'',())]
+            columns = [(command_name,(1,1),(),'','','',())]
             columns.extend(self._command_params[command_name][1])
             retval = __build_command_example__(columns, self._dct)
         return retval.encode(encoding)
     
-    def parse_cmd(self, command_name, cmd, config, interactive):
+    def parse_cmd(self, command_name, cmd, config, interactive, verbose):
         "Parse command line. Returns errors. Save parsed values to self._dct."
         dct = {}
         error=[]
         example = ''
+        self._verbose = verbose
         m = re.match('check_(\w+)\s+(.+)',cmd)
         if m:
             # úprava pro příkazy check_..., kde se jména seskupí do jednoho parametru name
@@ -225,7 +229,7 @@ class Message(eppdoc.Message):
             error.append('(%s: ${BOLD}help${NORMAL})'%(_T('For more type')))
             return error
         if not vals[1]: return error # bez parametrů
-        columns = [(command_name,(1,1),(),'',())]
+        columns = [(command_name,(1,1),(),'','','',())]
         columns.extend(self._command_params[command_name][1])
         dct['command'] = [command_name]
         if interactive:
@@ -471,16 +475,21 @@ class Message(eppdoc.Message):
         if __has_key__(dct,'voice'): data.append(('contact:create','contact:voice', dct['voice'][0]))
         if __has_key__(dct,'fax'): data.append(('contact:create','contact:fax', dct['fax'][0]))
         data.append(('contact:create','contact:email',dct['email'][0])) # required
+        # password required
+        data.append(('contact:create','contact:authInfo'))
+        data.append(('contact:authInfo','contact:pw',dct['pw'][0]))
         # --- BEGIN disclose ------
-        disclose = dct.get('disclose',[])
-        if len(disclose):
-            flag = {'n':'0','y':'1'}.get(dct.get('disclose_flag',['n'])[0], 'n')
+        if __has_key_dict__(dct,'disclose'):
+            ds = dct['disclose'][0]
+            flag = {'n':'0','y':'1'}.get(ds.get('flag',['n'])[0], 'n')
             data.append(('contact:create','contact:disclose','',(('flag',flag),)))
-            for key in disclose:
+            for key in ds.get('data',[]):
                 data.append(('contact:disclose','contact:%s'%key))
         # --- END disclose ------
         if __has_key__(dct,'vat'): data.append(('contact:create','contact:vat', dct['vat'][0]))
-        if __has_key__(dct,'ssn'): data.append(('contact:create','contact:ssn', dct['ssn'][0]))
+        if __has_key_dict__(dct,'ssn'):
+            ssn = dct['ssn'][0]
+            data.append(('contact:create','contact:ssn', ssn['number'][0], (('type',ssn['type'][0]),)))
         if __has_key__(dct,'notify_email'): data.append(('contact:create','contact:notifyEmail', dct['notify_email'][0]))
         data.append(('command', 'clTRID', params[0]))
         self.__assemble_cmd__(data)
@@ -614,17 +623,23 @@ class Message(eppdoc.Message):
                         if __has_key__(addr,key): data.append(('contact:addr','contact:%s'%key, addr[key][0]))
                 for key in ('voice','fax','email'):
                     if __has_key__(chg,key): data.append(('contact:chg','contact:%s'%key, chg[key][0]))
+            # password
+            if __has_key__(chg,'pw'):
+                data.append(('contact:chg','contact:authInfo')) # required
+                data.append(('contact:authInfo','contact:pw',chg['pw'][0])) # required
             # --- BEGIN disclose ------
-            disclose = chg.get('disclose',[])
-            if len(disclose):
-                flag = {'n':'0','y':'1'}.get(chg.get('disclose_flag',['n'])[0], 'n')
+            if __has_key_dict__(chg,'disclose'):
+                ds = chg['disclose'][0]
+                flag = {'n':'0','y':'1'}.get(ds.get('flag',['n'])[0], 'n')
                 data.append(('contact:chg','contact:disclose','',(('flag',flag),)))
-                for key in disclose:
+                for key in ds.get('data',[]):
                     data.append(('contact:disclose','contact:%s'%key))
             # --- END disclose ------
-        for key in ('vat','ssn'):
-            if __has_key__(dct,key): data.append(('contact:chg','contact:%s'%key, dct[key][0]))
-        if __has_key__(dct,'notify_email'): data.append(('contact:chg','contact:notifyEmail', dct['notify_email'][0]))
+            if __has_key__(chg,'vat'): data.append(('contact:chg','contact:vat', chg['vat'][0]))
+            if __has_key_dict__(chg,'ssn'):
+                ssn = chg['ssn'][0]
+                data.append(('contact:chg','contact:ssn', ssn['number'][0], (('type',ssn['type'][0]),)))
+            if __has_key__(chg,'notify_email'): data.append(('contact:chg','contact:notifyEmail', chg['notify_email'][0]))
         data.append(('command', 'clTRID', params[0]))
         self.__assemble_cmd__(data)
 
@@ -761,7 +776,7 @@ def __build_command_example__(columns, dct_data):
     'Build command line from data (what was put in interactive mode).'
     body = []
     for row in columns:
-        name,min_max,allowed,help,children = row
+        name,min_max,allowed,help,example,pattern,children = row
         min,max = min_max
         if len(children):
             text=''

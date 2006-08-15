@@ -164,10 +164,9 @@ class Client:
    """
         return self._epp.api_command('check_nsset',{'name':name})
 
-    def create_contact(self, contact_id, name, email, city, cc, org=None, 
-            street=None, sp=None, pc=None, voice=None, fax=None, 
-            disclose_flag=None, disclose=None,
-            vat=None, ssn=None, notify_email=None):
+    def create_contact(self, contact_id, name, email, city, cc, pw,
+            org=None, street=None, sp=None, pc=None, voice=None, fax=None, 
+            disclose=None, vat=None, ssn=None, notify_email=None):
         """Usage: create-contact contact-id name email city cc
 
     PARAMS:
@@ -177,16 +176,20 @@ class Client:
     email (required)
     city (required)
     cc (required)
+    pw (required)
     org (optional)
     street (optional)           list with max 3 items.
     sp (optional)
     pc (optional)
     voice (optional)
     fax (optional)
-    disclose_flag (optional) y/n default y
-    disclose (optional) list: (name,org,addr,voice,fax,email)
+    disclose (optional)
+        flag (required) y/n default y
+        data (required) list: (name,org,addr,voice,fax,email)
     vat (optional)
     ssn (optional)
+        type (required)
+        number (required)
     notify_email (optional)
 
     RETURN data: {
@@ -200,9 +203,9 @@ class Client:
 
         """
         return self._epp.api_command('create_contact',{
-            'contact_id':contact_id, 'name':name, 'email':email, 'city':city, 'cc':cc,
+            'contact_id':contact_id, 'name':name, 'email':email, 'city':city, 'cc':cc, 'pw':pw,
             'org':org, 'street':street, 'sp':sp, 'pc':pc, 'voice':voice, 'fax':fax,
-            'disclose_flag':disclose_flag, 'disclose':disclose, 'vat':vat, 'ssn':ssn, 
+            'disclose':disclose, 'vat':vat, 'ssn':ssn, 
             'notify_email':notify_email})
 
     def create_domain(self, name, pw, nsset, registrant, period=None, contact=None):
@@ -578,10 +581,14 @@ class Client:
         voice (optional)
         fax (optional)
         email (optional)
-        disclose_flag (optional) y/n default y
-        disclose (optional) list: (name,org,addr,voice,fax,email)
+        pw (optional)
+        disclose (optional)
+            flag (required) y/n default y
+            data (required) list: (name,org,addr,voice,fax,email)
         vat (optional)
         ssn (optional)
+            type (required)
+            number (required)
         notifyEmail (optional)
 
     RETURN data: {}

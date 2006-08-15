@@ -40,7 +40,7 @@ class ManagerCommand(ManagerTransfer):
 
     def __parse_command_params__(self, command_name, cmdline, interactive):
         "Check if parameters are valid. Params save into dict for use to assembling EPP document."
-        errors, example = self._epp_cmd.parse_cmd(command_name, cmdline, self._conf, interactive)
+        errors, example = self._epp_cmd.parse_cmd(command_name, cmdline, self._conf, interactive, self._session[VERBOSE])
         if errors: self._errors.extend(errors)
         if example: self.append_note('${BOLD}%s:${NORMAL}\n%s'%(_T('Example of input'),example.encode(encoding)))
         return (len(errors) == 0)

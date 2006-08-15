@@ -6,6 +6,9 @@ from translate import _T, encoding
 UNFINITE = None
 MOD_NORMAL, MOD_LIST, MOD_LIST_AGAIN, MOD_CHILD, MOD_CHILD_LIST, MOD_INSIDE_LIST = range(6)
 
+# STUCT COLUMNS:
+COL_NAME,COL_MINMAX,COL_ALLOWED,COL_HELP,COL_EXAMPLE,COL_PATTERN,COL_CHILDS = range(7)
+
 _patt_not_slash = re.compile(r'(\\+)$')
 _patt_key = re.compile('-+(.+)')
 _patt_name_pos = re.compile(r'(\w+)\[([^\]]+)\]')
@@ -34,7 +37,7 @@ def __add_token__(dct,key,token):
 
 def __append_token__(dct,cols,current,mode,token):
     'Append token on the column names list position.'
-    __add_token__(dct, cols[current[-1]][0], token)
+    __add_token__(dct, cols[current[-1]][COL_NAME], token)
     if mode[-1] not in (MOD_LIST, MOD_LIST_AGAIN):
         __next_key__(cols,current) # print error
 
@@ -44,12 +47,12 @@ def __append_mode_list__(mode):
 
 def __new_scope__(col_scope, dct_scope, cols, cr, current, dct):
     'Set new scope of the column names and dictionary values. Returns new cols and dict scope.'
-    column_name = cols[cr][0]
+    column_name = cols[cr][COL_NAME]
     __add_token__(dct, column_name, {})
     dct_scope.append(dct)
     dct = dct[column_name][-1]
     col_scope.append(cols)
-    cols = cols[cr][4] # childs
+    cols = cols[cr][COL_CHILDS] # childs
     current.append(0)
     return cols,dct
 
@@ -71,7 +74,7 @@ def __get_name_pos__(errors,key,name,cols):
     children=None
     for row in cols:
         if row[0] == name:
-            children = row[4] # children
+            children = row[COL_CHILDS] # children
             break
     if children is None:
         errors.append("%s: '%s' (%s)."%(_T('Unknown parameter name'),key.encode(encoding),name.encode(encoding)))
@@ -204,8 +207,8 @@ def parse(dct_root, cols_root, text_line):
                         errors.append(_T('Invalid bracket definition (list).'))
                         break
                     continue
-                if cols[cr][4]: # childs
-                    max = cols[cr][1][1]
+                if cols[cr][COL_CHILDS]: # childs
+                    max = cols[cr][COL_MINMAX][1]
                     if max > 1:
                         # 3. list of subsets of the column names
                         mode.append(MOD_CHILD_LIST)

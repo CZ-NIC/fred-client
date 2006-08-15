@@ -26,6 +26,8 @@ import unitest_ccreg_share
 # CCREG_CONTACT[1] - create
 # CCREG_CONTACT[2] - modify
 # CCREG_CONTACT[3] - chg (changes)
+CONTACT_PASSWORD_1 = 'mojeheslo'
+CONTACT_PASSWORD_2 = 'nove-heslo'
 CONTACT_HANDLE = 'test001'
 CCREG_CONTACT = [
     {   # template
@@ -34,16 +36,17 @@ CCREG_CONTACT = [
     'email': '', #(povinný) váš email
     'city': '', #(povinný) město
     'cc': '', #(povinný) kód země
+    'pw': '', #(povinný) heslo
     'org': '', #(nepovinný) název organizace
     'street': '', #(nepovinný)  seznam o maximálně 3 položkách. ulice
     'sp': '', #(nepovinný) č.p.
     'pc': '', #(nepovinný) PSČ
     'voice': '', #(nepovinný) telefon
     'fax': '', #(nepovinný) fax
-    'disclose_flag':'n',
-    'disclose': ('name','org','addr','voice','fax','email'),
+    'disclose': {'flag':'n', 'data':('name','org','addr','voice','fax','email')},
     'vat': '', #(nepovinný) DPH
     'ssn': '', #(nepovinný) SSN
+    'ssn': {'type':'','number':''}, #(nepovinný) SSN
     'notify_email': '', #(nepovinný) oznámení na email
     },
     {   # create contact
@@ -52,16 +55,16 @@ CCREG_CONTACT = [
     'email': 'rehor.cizek@mail.cz', #(povinný) váš email
     'city': u'Český Krumlov', #(povinný) město
     'cc': 'CZ', #(povinný) kód země
+    'pw': CONTACT_PASSWORD_1, #(povinný) heslo
     'org': u'Čížková a spol', #(nepovinný) název organizace
     'street': (u'U práce',u'Za monitorem',u'Nad klávesnicí',), #(nepovinný)  seznam o maximálně 3 položkách. ulice
     'sp': '123', #(nepovinný) č.p.
     'pc': '12300', #(nepovinný) PSČ
     'voice': '+123.456789', #(nepovinný) telefon
     'fax': '+321.564987', #(nepovinný) fax
-    'disclose_flag': 'n',
-    'disclose': ('name',), # ,'org','addr','voice','fax','email'
+    'disclose': {'flag':'n', 'data':('name',)},
     'vat': '963', #(nepovinný) DPH
-    'ssn': '852', #(nepovinný) SSN
+    'ssn': {'type':'op','number':'12345679'}, #(nepovinný) SSN
     'notify_email': 'info@rehorovi.cz', #(nepovinný) oznámení na email
     },
     {   # modify contact
@@ -70,16 +73,16 @@ CCREG_CONTACT = [
     'email': 'breta.zlucnik@bricho.cz', #(povinný) váš email
     'city': u'Střevníkov', #(povinný) město
     'cc': 'CZ', #(povinný) kód země
+    'pw': CONTACT_PASSWORD_2, #(povinný) heslo
     'org': u'Bolení s.r.o.', #(nepovinný) název organizace
     'street': (u'Na toaletách',u'U mísy'), #(nepovinný)  seznam o maximálně 3 položkách. ulice
     'sp': '321', #(nepovinný) č.p.
     'pc': '23101', #(nepovinný) PSČ
     'voice': '+321.987654', #(nepovinný) telefon
     'fax': '+321.987564', #(nepovinný) fax
-    'disclose_flag': 'y',
-    'disclose': ('voice','fax','email'), # 'name','org','addr',
+    'disclose': {'flag':'y', 'data':('voice','fax','email')},
     'vat': '753', #(nepovinný) DPH
-    'ssn': '357', #(nepovinný) SSN
+    'ssn': {'type':'rc','number':'831101934'}, #(nepovinný) SSN
     'notify_email': 'info@zlucnikovi.cz', #(nepovinný) oznámení na email
     },
 ]
