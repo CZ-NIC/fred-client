@@ -6,20 +6,28 @@ import sys
 import ccReg
 from ccReg.translate import _T, options
 
+def main(command):
+    epp = ccReg.ClientSession()
+    epp.set_options(options)
+    epp.load_config()
+    epp.set_auto_connect(0) # set OFF auto connection
+    command_name, epp_doc = epp.create_eppdoc(command)
+    errors = epp.fetch_errors()
+    if not epp_doc and not errors: errors = _T('Unknown command!')
+    xml_error = ''
+    if errors:
+        xml_error = ccReg.session_base.get_ltext("<?xml encoding='utf-8'?><errors>%s: %s</errors>"%(command_name,errors))
+    return epp_doc, xml_error
+
 if __name__ == '__main__':
     if sys.version_info[:2] < (2,4):
         print _T('This program needs Python 2.4 or higher. Your version is'),sys.version
     else:
         if not sys.stdin.isatty(): print sys.stdin.read() # keep previous output
         if len(sys.argv) > 1:
-            epp = ccReg.ClientSession()
-            epp.set_options(options)
-            epp.load_config()
-            epp.set_auto_connect(0) # set OFF auto connection
-            command_name, epp_doc = epp.create_eppdoc(' '.join(sys.argv[1:]))
-            errors = epp.fetch_errors()
-            if errors:
-                ccReg.session_base.print_unicode("<?xml encoding='utf-8'?><errors>%s: %s</errors>"%(command_name,errors))
+            epp_doc, xml_error = main(' '.join(sys.argv[1:]))
+            if xml_error:
+                print xml_error
             else:
                 print epp_doc
         else:

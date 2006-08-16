@@ -301,7 +301,10 @@ class Message(eppdoc.Message):
         key = name of key pointed to vlaue in parameters dictionary
         params must have ('clTRID',('name',['name','name',]))
         """
-        col1 = '%s:%s'%(cols[1],(cols[0],cols[3])[len(cols) > 3])
+        if len(cols) > 3:
+            col1 = '%s:%s'%(cols[1],cols[3])
+        else:
+            col1 = '%s:%s'%(cols[1],cols[0])
         col2 = '%s:%s'%(cols[1],cols[2])
         data=[('epp', 'command'),
             ('command', cols[0]),
