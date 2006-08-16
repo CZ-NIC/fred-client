@@ -35,16 +35,17 @@ notice = {'check':_T("""
    An object can be created for an indefinite period of time, or an
    object can be created for a specific validity period.
 """),
-   'delete':_T("""\n   The EPP "delete" command is used to remove an instance of an existing object."""),
-   'renew':_T("""\n   The EPP "renew" command is used to extend validity of an existing object."""),
-   'update':_T("""\n   The EPP "update" command is used to update an instance of an existing object."""),
+   'delete':_T("""The EPP "delete" command is used to remove an instance of an existing object."""),
+   'renew':_T("""The EPP "renew" command is used to extend validity of an existing object."""),
+   'update':_T("""The EPP "update" command is used to update an instance of an existing object."""),
    'disclose':_T('Names what are not included into disclose list are set to opposite value of the disclose flag value.'),
    'ssn':_T("""   SSN types can be: 
       op       number identity card
       rc       number of birth
       passport number of passport
       mpsv     number of Ministry of Labour and social affairs
-      ico      number of company""")
+      ico      number of company"""),
+    'list':_T("""The EPP "list" command is used to list all ID of an existing object owning by registrant."""),
 }
 
 class Message(eppdoc_assemble.Message):
@@ -93,17 +94,22 @@ class Message(eppdoc_assemble.Message):
             ('msg_id',(0,1),(),_T('index of message, required with op=ack!'),'123','',()),
         ),_T('The EPP "poll" command is used to discover and retrieve service messages queued by a server for individual clients.'),('poll req','poll ack 4',)),
         #----------------------------------------------------
-        'transfer_domain': (2,(
-            ('name',(1,1),(),_T('domain name'),'domain.cz','',()),
-            #('op',(1,1),transfer_op,_T('query type'),()),
+        'transfer_contact': (2,(
+            ('name',(1,1),(),_T('contact id'),'CID:ID01','',()),
             ('passw',(1,1),(),_T('password'),'mypassword','',()),
-        ),notice['transfer'],('transfer-domain name-domain request password',)),
+        ),notice['transfer'],('transfer-contact CID:ID01 password',)),
         #----------------------------------------------------
         'transfer_nsset': (2,(
             ('name',(1,1),(),_T('nsset name'),'NSSET_ID','',()),
             #('op',(1,1),transfer_op,_T('query type'),()),
             ('passw',(1,1),(),_T('password'),'mypassword','',()),
-        ),notice['transfer'],('transfer-nsset name-nsset request password',)),
+        ),notice['transfer'],('transfer-nsset name-nsset password',)),
+        #----------------------------------------------------
+        'transfer_domain': (2,(
+            ('name',(1,1),(),_T('domain name'),'domain.cz','',()),
+            #('op',(1,1),transfer_op,_T('query type'),()),
+            ('passw',(1,1),(),_T('password'),'mypassword','',()),
+        ),notice['transfer'],('transfer-domain name-domain password',)),
         #----------------------------------------------------
         'create_contact': (6,(
             ('contact_id',(1,1),(),_T('your contact ID'),'CID:ID01','',()),
@@ -305,6 +311,17 @@ class Message(eppdoc_assemble.Message):
             ),notice['update'],(
                 "update-nsset nsset1 (((ns1.dns.cz (217.31.207.130, 217.31.207.131, 217.31.207.132)), (ns2.dns.cz (217.31.207.130, 217.31.207.131, 217.31.207.132))) (tech1, tech2, tech3) (ok, clientTransferProhibited)) (((rem1.dns.cz, rem2.dns.cz) (tech-rem01, tech-rem02) serverUpdateProhibited)) (password)",
             )),
+        #----------------------------------------------------
+        'list_contact': (1,(
+            ('id',(1,1),(),_T('clTRID'),'CID:ID01','',()),
+        ),notice['list'],('list-contact CID:ID01',)),
+        'list_nsset': (1,(
+            ('id',(1,1),(),_T('clTRID'),'CID:ID01','',()),
+        ),notice['list'],('list-nsset CID:ID01',)),
+        'list_domain': (1,(
+            ('id',(1,1),(),_T('clTRID'),'CID:ID01','',()),
+        ),notice['list'],('list-domain CID:ID01',)),
+
     }
 
     def __init__(self):

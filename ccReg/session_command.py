@@ -64,9 +64,10 @@ class ManagerCommand(ManagerTransfer):
             self.append_note('%s: ${BOLD}${GREEN}%s${NORMAL}'%(_T("Help for command"),command_name))
             command_line, command_help, notice, examples = self._epp_cmd.get_help(command_name)
             patt = re.compile("^(\S)",re.MULTILINE)
+            patt_sub = "   \\1"
             #
             self.append_note('%s:'%_T('DESCRIPTION'),'BOLD')
-            self.append_note('${WHITE}%s${NORMAL}'%patt.sub("   \\1",notice))
+            self.append_note('${WHITE}%s${NORMAL}'%patt.sub(patt_sub,notice))
             #
             self.append_note('\n%s:'%_T('SYNTAX'),'BOLD')
             self.append_note('    '+command_line)
@@ -75,12 +76,8 @@ class ManagerCommand(ManagerTransfer):
             self.append_note(command_help)
             #
             self.append_note('\n%s:'%_T('EXAMPLES'),'BOLD')
-            self.append_note('    %s'%'\n    '.join(examples))
-            ##
-##            if command_line: self.append_note('%s: %s\n'%(_T('Usage'),command_line))
-##            if command_help: self.append_note(command_help)
-##            if notice:       self.append_note('\n${WHITE}%s${NORMAL}'%notice)
-##            if len(examples): self.append_note('\n${BOLD}%s:${NORMAL}\n%s'%(_T('Examples'),'\n'.join(examples)))
+            self.append_note(patt.sub(patt_sub,'\n'.join(examples)))
+            #
             command_name='.'
         else:
             # bez parametru - zobrazí se přehled helpu

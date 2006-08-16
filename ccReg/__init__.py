@@ -518,6 +518,26 @@ class Client:
             'cur_exp_date':cur_exp_date, 'period':period, 'val_ex_date':val_ex_date})
 
 
+    def transfer_contact(self, name, passw):
+        """Usage: transfer-contact name passw
+
+    PARAMS:
+
+    name (required) CONTACT-ID
+    passw (required)
+
+    RETURN data: {}
+
+   The EPP "transfer" command provides a query operation that allows a
+   client to determine real-time status of pending and completed
+   transfer requests.
+   The EPP "transfer" command is used to manage changes in client
+   sponsorship of an existing object.  Clients can initiate a transfer
+   request, cancel a transfer request, approve a transfer request, and
+   reject a transfer request using the "op" command attribute.
+        """
+        return self._epp.api_command('transfer_contact',{'name':name, 'passw':passw})
+
     def transfer_domain(self, name, passw):
         """Usage: transfer-domain name passw
 
@@ -538,13 +558,12 @@ class Client:
         """
         return self._epp.api_command('transfer_domain',{'name':name, 'passw':passw})
 
-
     def transfer_nsset(self, name, passw):
         """Usage: transfer-nsset name passw
 
     PARAMS:
 
-    name (required)
+    name (required) NSSET-ID
     passw (required)
 
     RETURN data: {}

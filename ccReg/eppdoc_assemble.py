@@ -297,19 +297,19 @@ class Message(eppdoc.Message):
 
     def __asseble_command__(self, cols, key, params):
         """Internal fnc for assembly commands info, check. 
-        cols=('check','contact','id')
+        cols=('check','contact','id' [,list])
         key = name of key pointed to vlaue in parameters dictionary
         params must have ('clTRID',('name',['name','name',]))
         """
+        col1 = '%s:%s'%(cols[1],(cols[0],cols[3])[len(cols) > 3])
+        col2 = '%s:%s'%(cols[1],cols[2])
         data=[('epp', 'command'),
             ('command', cols[0]),
-            (cols[0],'%s:%s'%(cols[1],cols[0]),None,(
+            (cols[0],col1,None,(
             ('xmlns:%s'%cols[1],'%s%s-%s'%(eppdoc.nic_cz_xml_epp_path,cols[1],eppdoc.nic_cz_version)),
             ('xsi:schemaLocation','%s%s-1.0 %s-%s.xsd'%(eppdoc.nic_cz_xml_epp_path,cols[1],cols[1],eppdoc.nic_cz_version))
             ))
             ]
-        col1 = '%s:%s'%(cols[1],cols[0])
-        col2 = '%s:%s'%(cols[1],cols[2])
         names = self._dct[key]
         if type(names) not in (list,tuple):
             names = (names,)
@@ -386,6 +386,15 @@ class Message(eppdoc.Message):
     def assemble_info_nsset(self, *params):
         self.__asseble_command__(('info','nsset','id'), 'name', params)
 
+    def assemble_list_contact(self, *params):
+        self.__asseble_command__(('info','contact','id','list'), 'id', params)
+        
+    def assemble_list_domain(self, *params):
+        self.__asseble_command__(('info','domain','id','list'), 'id', params)
+        
+    def assemble_list_nsset(self, *params):
+        self.__asseble_command__(('info','nsset','id','list'), 'id', params)
+
     def assemble_poll(self, *params):
         attr = [('op',self._dct['op'][0])]
         if self._dct.get('msg_id',None): attr.append(('msgID',self._dct['msg_id'][0]))
@@ -423,6 +432,9 @@ class Message(eppdoc.Message):
             ('%s:authInfo'%names[0], '%s:pw'%names[0], self._dct['passw'][0]),
             ('command', 'clTRID', params[0])
         ))
+
+    def assemble_transfer_contact(self, *params):
+        self.__assemble_transfer__(('contact','id'),params)
 
     def assemble_transfer_domain(self, *params):
         self.__assemble_transfer__(('domain','name'),params)
