@@ -208,6 +208,10 @@ class ManagerReceiver(ManagerCommand):
                     disclosed.pop(disclosed.index(name))
             dct['contact:disclose'] = disclosed
             dct['contact:hide'] = not_disclosed
+            dct['contact:pw'] = eppdoc.get_dct_value(contact_infData, ('contact:authInfo','contact:pw'))
+            dct['contact:ssn.type'] = eppdoc.get_dct_attr(contact_infData, 'contact:ssn', 'type')
+            dct['contact:ssn'] = eppdoc.get_dct_value(contact_infData, 'contact:ssn')
+            dct['contact:notifyEmail'] = eppdoc.get_dct_value(contact_infData, 'contact:notifyEmail')
 
     def answer_response_domain_info(self, data):
         "data=(response,result,code,msg)"

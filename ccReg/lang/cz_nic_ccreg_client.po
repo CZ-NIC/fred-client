@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-15 17:33+0200\n"
+"POT-Creation-Date: 2006-08-16 11:44+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Zdeněk Böhm <zdenek.bohm@nic.cz>\n"
 "Language-Team: CS <info@nic.cz>\n"
@@ -161,7 +161,7 @@ msgid "Unknown command"
 msgstr "Neznámý příkaz"
 
 #: ccReg/eppdoc_assemble.py:229 ccReg/eppdoc_assemble.py:257
-#: ccReg/session_command.py:116
+#: ccReg/session_command.py:129
 msgid "For more type"
 msgstr "Pro více informací zadejte"
 
@@ -257,23 +257,30 @@ msgstr ""
 
 #: ccReg/eppdoc_client.py:38
 msgid ""
-"The EPP \"delete\" command is used to remove an instance of an existing "
+"\n"
+"   The EPP \"delete\" command is used to remove an instance of an existing "
 "object."
 msgstr ""
-"EPP příkaz \"delete\" se používá pro odebrání instance vybraného objektu."
+"\n"
+"   EPP příkaz \"delete\" se používá pro odebrání instance vybraného objektu."
 
 #: ccReg/eppdoc_client.py:39
 msgid ""
-"The EPP \"renew\" command is used to extend validity of an existing object."
+"\n"
+"   The EPP \"renew\" command is used to extend validity of an existing "
+"object."
 msgstr ""
-"EPP příkaz \"renew\" se používá pro prodloužení platnosti vybraného objektu."
+"\n"
+"   EPP příkaz \"renew\" se používá pro prodloužení platnosti vybraného objektu."
 
 #: ccReg/eppdoc_client.py:40
 msgid ""
-"The EPP \"update\" command is used to update an instance of an existing "
+"\n"
+"   The EPP \"update\" command is used to update an instance of an existing "
 "object."
 msgstr ""
-"EPP příkaz \"update\" se používá pro aktualizaci hodnot instance vybraného "
+"\n"
+"   EPP příkaz \"update\" se používá pro aktualizaci hodnot instance vybraného "
 "objektu."
 
 #: ccReg/eppdoc_client.py:41
@@ -286,19 +293,19 @@ msgstr ""
 
 #: ccReg/eppdoc_client.py:42
 msgid ""
-"SSN types can be: \n"
-"   op       number identity card\n"
-"   rc       number of birth\n"
-"   passport number of passport\n"
-"   mpsv     number of Ministry of Labour and social affairs\n"
-"   ico      number of company"
+"   SSN types can be: \n"
+"      op       number identity card\n"
+"      rc       number of birth\n"
+"      passport number of passport\n"
+"      mpsv     number of Ministry of Labour and social affairs\n"
+"      ico      number of company"
 msgstr ""
-"SSN typ může být: \n"
-"   op       číslo občanského průkazu\n"
-"   rc       rodné číslo\n"
-"   passport číslo pasu\n"
-"   mpsv     číslo Ministerstva práce a sociálních věcí\n"
-"   ico      IČO"
+"   SSN typ může být: \n"
+"      op       číslo občanského průkazu\n"
+"      rc       rodné číslo\n"
+"      passport číslo pasu\n"
+"      mpsv     číslo Ministerstva práce a sociálních věcí\n"
+"      ico      IČO"
 
 #: ccReg/eppdoc_client.py:60
 msgid ""
@@ -477,9 +484,13 @@ msgstr "počet měsíců nebo roků"
 msgid "period unit (y year(default), m month)"
 msgstr "jednotka období (y rok(default), m měsíc)"
 
-#: ccReg/eppdoc_client.py:143 ccReg/eppdoc_client.py:155
-#: ccReg/eppdoc_client.py:245 ccReg/eppdoc_client.py:249
-#: ccReg/eppdoc_client.py:268 ccReg/eppdoc_client.py:272
+#: ccReg/eppdoc_client.py:143
+msgid "admin"
+msgstr ""
+
+#: ccReg/eppdoc_client.py:155 ccReg/eppdoc_client.py:245
+#: ccReg/eppdoc_client.py:249 ccReg/eppdoc_client.py:268
+#: ccReg/eppdoc_client.py:272
 msgid "contact"
 msgstr "kontakt"
 
@@ -618,8 +629,8 @@ msgid ""
 "ccReg client version 1.1 Type \"help\", \"license\" or \"credits\" for more "
 "information."
 msgstr ""
-"ccReg client verze 1.1 Zadejte \"help\", \"license\" nebo \"credits\" pro zobrazení "
-"více informací."
+"ccReg client verze 1.1 Zadejte \"help\", \"license\" nebo \"credits\" pro "
+"zobrazení více informací."
 
 #: ccReg/session_base.py:168
 msgid "Create default config failed."
@@ -671,30 +682,38 @@ msgstr "Příklad zadání"
 msgid "Help for command"
 msgstr "Help pro příkaz"
 
-#: ccReg/session_command.py:66
-msgid "Usage"
-msgstr "Použití"
+#: ccReg/session_command.py:67
+msgid "DESCRIPTION"
+msgstr "POPIS"
 
-#: ccReg/session_command.py:69
-msgid "Examples"
-msgstr "Příklady"
+#: ccReg/session_command.py:70
+msgid "SYNTAX"
+msgstr "SYNTAXE"
 
-#: ccReg/session_command.py:74
+#: ccReg/session_command.py:73
+msgid "OPTIONS"
+msgstr "PARAMETRY"
+
+#: ccReg/session_command.py:76
+msgid "EXAMPLES"
+msgstr "PŘÍKLADY"
+
+#: ccReg/session_command.py:87
 msgid "Instead \"command\" Select one from this list bellow:"
 msgstr "Místo \"příkaz\" vyberte jeden z následujícího seznamu:"
 
-#: ccReg/session_command.py:76
+#: ccReg/session_command.py:89
 msgid "Available EPP commands"
 msgstr "Dostupné EPP příkazy"
 
-#: ccReg/session_command.py:77
+#: ccReg/session_command.py:90
 msgid ""
 "Type \"?command\" (or \"h(elp) command\") for mode details about parameters."
 msgstr ""
 "Více informací o parametrech příkazu získáte zadáním \"?příkaz\" (nebo \"h"
 "(elp) příkaz\")."
 
-#: ccReg/session_command.py:78
+#: ccReg/session_command.py:91
 msgid ""
 "To start the interactive mode of input the command params type: ${BOLD}!"
 "command${NORMAL}"
@@ -702,7 +721,7 @@ msgstr ""
 "Interaktivní režim zadávání parametrů příkazu se spustí: ${BOLD}!příkaz"
 "${NORMAL}"
 
-#: ccReg/session_command.py:79
+#: ccReg/session_command.py:92
 msgid ""
 "For stop interactive input type ! instead of value (or more \"!\" for leave "
 "sub-scope)"
@@ -710,7 +729,7 @@ msgstr ""
 "Interaktivní zadávání parametrů se přeruší zadáním \"!\" (nebo "
 "vícevykřičníků najednou, když jste v podskupině parametrů)"
 
-#: ccReg/session_command.py:85
+#: ccReg/session_command.py:98
 msgid ""
 "\n"
 "${BOLD}Session commands:${NORMAL}\n"
@@ -751,7 +770,6 @@ msgstr ""
 "${BOLD}credits${NORMAL} # zobrazit credits\n"
 "${BOLD}connect${NORMAL} (nebo přímo login) ${CYAN}# připojení k serveru(jen "
 "pro testování)${NORMAL}\n"
-"odpovídat.MUSÍ být nastaven PŘED odesláním login! Pak již nemá žádný efekt."
 "${NORMAL}\n"
 "${BOLD}validate${NORMAL} [on/off] ${CYAN}# nastavení validace nebo zjištění "
 "aktuálního stavu${NORMAL}\n"
@@ -767,81 +785,81 @@ msgstr ""
 "${BOLD}config${NORMAL} ${CYAN}# zobrazení aktuálních hodnot v config souboru "
 "(nebo defaultu)${NORMAL}\n"
 "${BOLD}config${NORMAL} ${BOLD}create${NORMAL} ${CYAN}# vytvoření defaultního "
-"config souboru v adresáři uživatele (user home).${NORMAL}\n"
+"config souboru v adresáři uživatele (/home/user).${NORMAL}\n"
 "${BOLD}send${NORMAL} [jméno] ${CYAN}# odešle soubor daného jména na server "
 "(jen testování). Pokud jméno není platný soubor, tak příkaz zobrazuje "
 "adresář.${NORMAL}\n"
-"${BOLD}colors${NORMAL} [on/off] # zapnout/vypnoput barevný výstup\n"
+"${BOLD}colors${NORMAL} [on/off] # zapnout/vypnout barevný výstup\n"
 "${BOLD}verbose${NORMAL} [number] # nastavit mód výpisu: 1 - stručný "
 "(default); 2 - plný; 3 - plný & XML zdroje\n"
 
-#: ccReg/session_command.py:115
+#: ccReg/session_command.py:128
 #, python-format
 msgid "Unknown EPP command: %s."
 msgstr "Neznámý EPP příkaz: %s."
 
-#: ccReg/session_command.py:164
+#: ccReg/session_command.py:177
 msgid "Interpreted command"
 msgstr "Přeložený příkaz"
 
-#: ccReg/session_command.py:169
+#: ccReg/session_command.py:182
 msgid "Command source"
 msgstr "Zdrojový příkaz"
 
-#: ccReg/session_command.py:174
+#: ccReg/session_command.py:187
 msgid "Interpreted answer"
 msgstr "Přeložená odpověď"
 
-#: ccReg/session_command.py:177
+#: ccReg/session_command.py:190
 msgid "Answer source"
 msgstr "Zdrojová odpověď"
 
-#: ccReg/session_command.py:188
+#: ccReg/session_command.py:201
 msgid "Dir list"
 msgstr "Výpis adresáře"
 
-#: ccReg/session_command.py:200
+#: ccReg/session_command.py:213
 msgid "You are connected already. Type disconnect for close connection."
 msgstr "Již jste připojeni. Pro odpojení zadejte disconnect."
 
-#: ccReg/session_command.py:210
+#: ccReg/session_command.py:223
 msgid "You has been disconnected."
 msgstr "Spojení bylo ukončeno."
 
-#: ccReg/session_command.py:212 ccReg/session_transfer.py:135
+#: ccReg/session_command.py:225 ccReg/session_transfer.py:135
 #: ccReg/session_transfer.py:159
 msgid "You are not connected."
 msgstr "Nejste připojeni."
 
-#: ccReg/session_command.py:217
+#: ccReg/session_command.py:230
 msgid "Confirm is"
 msgstr "Potvrzení je nastaveno na"
 
-#: ccReg/session_command.py:224
+#: ccReg/session_command.py:237
 msgid "Validation process is"
 msgstr "Validace je nastavena na"
 
-#: ccReg/session_command.py:230
+#: ccReg/session_command.py:243
 msgid "Colors mode is"
 msgstr "Mód barevnosti je"
 
-#: ccReg/session_command.py:235
+#: ccReg/session_command.py:248
 msgid "Verbose mode is"
 msgstr "Mód rozsahu výpisu je"
 
-#: ccReg/session_command.py:248
+#: ccReg/session_command.py:261
 msgid "poll ack is"
 msgstr "poll ack je"
 
-#: ccReg/session_command.py:265
+#: ccReg/session_command.py:278
 msgid "Load file"
 msgstr "Načíst soubor"
 
-#: ccReg/session_command.py:271
+#: ccReg/session_command.py:284
 msgid "Not found"
 msgstr "Nenalezen"
 
-#: ccReg/session_command.py:299
+#: ccReg/session_command.py:312
 msgid "You are logged already."
 msgstr "Jste již zalogován"
 
@@ -889,11 +907,11 @@ msgstr "Relace zahájena!"
 msgid "Login failed"
 msgstr "Login se nezdařil"
 
-#: ccReg/session_receiver.py:382
+#: ccReg/session_receiver.py:386
 msgid "You are not connected! For connection type: connect or login"
 msgstr "Nejste připojeni! Po připojení zadejte: connect nebo login"
 
-#: ccReg/session_receiver.py:385
+#: ccReg/session_receiver.py:389
 msgid "You are not logged. You must call login() before working on the server."
 msgstr ""
 "Nejste zalogováni. Před samotnou prací na serveru musíte volat funkci login()"

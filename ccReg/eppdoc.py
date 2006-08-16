@@ -371,7 +371,7 @@ def append_to_dict(d,key,val):
     else:
         d[key] = val
 
-def get_dct_attr(dict_data, names, attr_name, sep='\n'):
+def get_dct_attr(dict_data, names, attr_name, sep=u'\n'):
     "Returns attribute value of the key name in names list."
     return get_dct_value(dict_data, names, sep, attr_name)
 
@@ -391,6 +391,7 @@ def get_value_from_dict(dct, names):
     return scope.get(name,None)
     
 def get_dct_values(dict_data, names, attr_name=''):
+    "Returns raw data or attribute from names queue."
     ret=[]
     if type(names) not in (tuple,list):
         names = (names,)
@@ -410,21 +411,21 @@ def get_dct_values(dict_data, names, attr_name=''):
     else:
         if type(dict_data) == dict:
             if attr_name:
-                vals = dict_data.get('attr','')
+                vals = dict_data.get('attr',u'')
                 if vals:
                     for k,v in vals:
                         if k==attr_name:
                             if v: ret.append(v)
                             break
             else:
-                vals = dict_data.get('data','')
+                vals = dict_data.get('data',u'')
                 if vals: ret.append(vals)
         else:
             ret.append(dict_data)
     return ret
 
-def get_dct_value(dict_data, names, sep='\n', attr_name='', defval=''):
-    "Returns value of the key name in names list."
+def get_dct_value(dict_data, names, sep=u'\n', attr_name='', defval=u''):
+    "Returns value as a string from names queue."
     retvals = get_dct_values(dict_data, names, attr_name)
     if type(retvals) in (list,tuple): retvals = sep.join(retvals)
     if retvals == '': retvals = defval

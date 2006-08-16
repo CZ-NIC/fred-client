@@ -57,7 +57,7 @@ Tento dokument je uložen v kódování UTF-8
      | session_base.py                      |  | |   +=================================+
      |                                      |  | +---| cmd_parser.py                   |
      | tato část se stará o chybová hlášení,|  |     |---------------------------------|
-     | o validaci dokumnetů a o config      |  |     | parsuje příkazovou řádku do dict|
+     | o validaci dokumentů a o config      |  |     | parsuje příkazovou řádku do dict|
      |                                      |  |     +=================================+
      +======================================+  |
               |       |      |      |          |     +=================================+

@@ -167,7 +167,7 @@ class Message(eppdoc.Message):
                 if len(allowed):
                     session_base.print_unicode('${WHITE}%s:${NORMAL} (%s)'%(_T('Param MUST be a value from this list'),', '.join(allowed)))
                 if len(example):
-                    session_base.print_unicode('${WHITE}%s %s:${NORMAL} %s'%(_T('Example'),__scope_to_string__(parents),example))
+                    session_base.print_unicode('${WHITE}%s %s:${NORMAL} %s'%(_T('Example'),__scope_to_string__(parents),example.encode(encoding)))
             cr = 0
             stop=0
             while max is UNBOUNDED or cr < max:
@@ -512,7 +512,7 @@ class Message(eppdoc.Message):
             data.append(('domain:create','domain:period',period['num'][0], (('unit',period['unit'][0]),)))
         if __has_key__(dct,'nsset'): data.append(('domain:create','domain:nsset',dct['nsset'][0]))
         if __has_key__(dct,'registrant'): data.append(('domain:create','domain:registrant',dct['registrant'][0]))
-        self.__append_values__(data, dct, 'contact', 'domain:create', 'domain:contact')
+        self.__append_values__(data, dct, 'admin', 'domain:create', 'domain:admin')
         data.extend((
             ('domain:create','domain:authInfo'),
             ('domain:authInfo','domain:pw', dct['pw'][0])

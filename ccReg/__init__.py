@@ -208,7 +208,7 @@ class Client:
             'disclose':disclose, 'vat':vat, 'ssn':ssn, 
             'notify_email':notify_email})
 
-    def create_domain(self, name, pw, nsset, registrant, period=None, contact=None):
+    def create_domain(self, name, pw, nsset, registrant, period=None, admin=None):
         """Usage: create-domain name pw nsset registrant
 
     PARAMS:
@@ -220,7 +220,7 @@ class Client:
         unit (required) accept only values: (y,m)
     nsset (optional)
     registrant (optional)
-    contact (optional)          unbounded list
+    admin (optional)          unbounded list
 
     RETURN data: {domain:name, domain:crDate, domain:exDate}
 
@@ -229,7 +229,7 @@ class Client:
    object can be created for a specific validity period.
     """
         return self._epp.api_command('create_domain',{'name':name,'pw':pw,
-            'period':period,'nsset':nsset,'registrant':registrant,'contact':contact})
+            'period':period,'nsset':nsset,'registrant':registrant,'admin':admin})
 
     def create_domain_enum(self, name, pw, nsset, registrant, period=None,
          contact=None, val_ex_date=None):
