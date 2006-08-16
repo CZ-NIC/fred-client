@@ -310,11 +310,12 @@ class Message(eppdoc.Message):
             ('xsi:schemaLocation','%s%s-1.0 %s-%s.xsd'%(eppdoc.nic_cz_xml_epp_path,cols[1],cols[1],eppdoc.nic_cz_version))
             ))
             ]
-        names = self._dct[key]
-        if type(names) not in (list,tuple):
-            names = (names,)
-        for value in names:
-            data.append((col1, col2, value))
+        if key:
+            names = self._dct[key]
+            if type(names) not in (list,tuple):
+                names = (names,)
+            for value in names:
+                data.append((col1, col2, value))
         data.append(('command', 'clTRID', params[0]))
         self.__assemble_cmd__(data)
 
@@ -387,13 +388,13 @@ class Message(eppdoc.Message):
         self.__asseble_command__(('info','nsset','id'), 'name', params)
 
     def assemble_list_contact(self, *params):
-        self.__asseble_command__(('info','contact','id','list'), 'id', params)
+        self.__asseble_command__(('info','contact','id','list'), '', params)
         
     def assemble_list_domain(self, *params):
-        self.__asseble_command__(('info','domain','id','list'), 'id', params)
+        self.__asseble_command__(('info','domain','id','list'), '', params)
         
     def assemble_list_nsset(self, *params):
-        self.__asseble_command__(('info','nsset','id','list'), 'id', params)
+        self.__asseble_command__(('info','nsset','id','list'), '', params)
 
     def assemble_poll(self, *params):
         attr = [('op',self._dct['op'][0])]

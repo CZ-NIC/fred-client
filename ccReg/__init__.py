@@ -698,6 +698,43 @@ class Client:
         """
         return self._epp.api_command('update_nsset',{'id':nsset_id, 'add':add, 'rem':rem, 'chg':chg})
 
+    def list_contact(self):
+        """Usage: list-contact
+
+    PARAMS:
+
+    RETURN data: {
+            id:    list
+            }
+    The EPP "list" command is used to list all ID of an existing object owning by registrant.
+        """
+        return self._epp.api_command('list_contact')
+        
+    def list_nsset(self):
+        """Usage: list-nsset
+
+    PARAMS:
+
+    RETURN data: {
+            id:    list
+            }
+    The EPP "list" command is used to list all ID of an existing object owning by registrant.
+        """
+        return self._epp.api_command('list_nsset')
+
+    def list_domain(self):
+        """Usage: list-domain
+
+    PARAMS:
+
+    RETURN data: {
+            id:    list
+            }
+    The EPP "list" command is used to list all ID of an existing object owning by registrant.
+        """
+        return self._epp.api_command('list_domain')
+
+        
     def get_answer_dct(self):
         """Returns dict object answer. Same as every function returns.
         You can use this if you dont catch retvals from functions.

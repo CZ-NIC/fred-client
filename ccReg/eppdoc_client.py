@@ -312,15 +312,10 @@ class Message(eppdoc_assemble.Message):
                 "update-nsset nsset1 (((ns1.dns.cz (217.31.207.130, 217.31.207.131, 217.31.207.132)), (ns2.dns.cz (217.31.207.130, 217.31.207.131, 217.31.207.132))) (tech1, tech2, tech3) (ok, clientTransferProhibited)) (((rem1.dns.cz, rem2.dns.cz) (tech-rem01, tech-rem02) serverUpdateProhibited)) (password)",
             )),
         #----------------------------------------------------
-        'list_contact': (1,(
-            ('id',(1,1),(),_T('clTRID'),'CID:ID01','',()),
-        ),notice['list'],('list-contact CID:ID01',)),
-        'list_nsset': (1,(
-            ('id',(1,1),(),_T('clTRID'),'CID:ID01','',()),
-        ),notice['list'],('list-nsset CID:ID01',)),
-        'list_domain': (1,(
-            ('id',(1,1),(),_T('clTRID'),'CID:ID01','',()),
-        ),notice['list'],('list-domain CID:ID01',)),
+        'list_contact': (0,(('',(0,0),(),'','','',()),),notice['list'],()),
+        'list_nsset': (0,(('',(0,0),(),'','','',()),),notice['list'],()),
+        'list_domain': (0,(('',(0,0),(),'','','',()),),notice['list'],()),
+        #----------------------------------------------------
 
     }
 
