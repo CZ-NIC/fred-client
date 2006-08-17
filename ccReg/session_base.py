@@ -209,7 +209,7 @@ class ManagerBase:
                 section = 'connect'
             # adjust pathnames
             modul_path,fn = os.path.split(__file__)
-            root_path = os.path.normpath(os.path.join(modul_path,'../certificates'))
+            root_path = os.path.normpath(os.path.join(modul_path,'certificates'))
             self._conf.set(section, 'dir', root_path)
             if new_section:
                 # copy default values into new connection

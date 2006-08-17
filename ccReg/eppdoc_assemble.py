@@ -167,7 +167,8 @@ class Message(eppdoc.Message):
                 if len(allowed):
                     session_base.print_unicode('${WHITE}%s:${NORMAL} (%s)'%(_T('Param MUST be a value from this list'),', '.join(allowed)))
                 if len(example):
-                    session_base.print_unicode('${WHITE}%s %s:${NORMAL} %s'%(_T('Example'),__scope_to_string__(parents),example.encode(encoding)))
+                    if type(example) == unicode: example = example.encode(encoding)
+                    session_base.print_unicode('${WHITE}%s %s:${NORMAL} %s'%(_T('Example'),__scope_to_string__(parents),example))
             cr = 0
             stop=0
             while max is UNBOUNDED or cr < max:

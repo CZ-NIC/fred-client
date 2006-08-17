@@ -1,0 +1,10 @@
+global-include README*.*
+global-exclude test_*.*
+include ccReg/default-config.txt
+include ccReg/CREDITS
+include ccReg/LICENSE
+graft ccReg/schemas
+graft ccReg/lang
+graft ccReg/certificates
+prune .svn
+prune ccReg/.svn

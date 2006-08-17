@@ -3,7 +3,7 @@
 import eppdoc_client
 import client_socket
 from session_base import *
-from translate import _T
+from translate import _T, encoding
 
 class ManagerTransfer(ManagerBase):
     """EPP client support.
