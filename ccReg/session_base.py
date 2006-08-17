@@ -4,7 +4,10 @@ import re, time
 import sys, os, commands
 import ConfigParser
 import terminal_controler
-from translate import _T, encoding, options
+import translate
+##from translate import _T, encoding, options, config
+
+_T = translate._T
 
 # Colored output
 colored_output = terminal_controler.TerminalController()
@@ -42,15 +45,13 @@ class ManagerBase:
                 ]
         # defaults
         self.defs = ['']*DEFS_LENGTH
-        self.defs[LANGS] = ('en','cs') # seznam dostupných jazyků
         # Values objURI a extURI are loaded from greeting message.
         self.defs[objURI] = ['http://www.nic.cz/xml/epp/contact-1.0',
                 'http://www.nic.cz/xml/epp/domain-1.0',
                 'http://www.nic.cz/xml/epp/nsset-1.0']
         self.defs[extURI] = ['http://www.nic.cz/xml/epp/enumval-1.0']
         self.defs[PREFIX] = '' # pro každé sezení nový prefix
-        self._conf = None # <ConfigParser object>
-        self._name_conf = '.ccReg.conf' # name of config file
+        self._conf = translate.config # <ConfigParser object> from translate module
         self._auto_connect = 1 # auto connection during login or hello
         self._options = {} # parameters from command line
 
@@ -64,8 +65,7 @@ class ManagerBase:
 
     def init_options(self):
         'Init variables from options (after loaded config).'
-        if self._options['lang'] and self._options['lang'] in self.defs[LANGS]:
-            self._session[LANG] = self._options['lang']
+        self._session[LANG] = self._options['lang']
         if self._options['colors']:
             colored_output.set_mode(1)
             self._session[COLORS] = 1
@@ -245,7 +245,7 @@ class ManagerBase:
 
     def save_confing(self):
         'Save conf file.'
-        filepath = os.path.join(os.path.expanduser('~'),self._name_conf)
+        filepath = os.path.join(os.path.expanduser('~'),translate.config_name)
         try:
             fp = open(filepath,'w')
             self._conf.write(fp)
@@ -272,18 +272,25 @@ class ManagerBase:
         
     def load_config(self):
         "Load config file and init internal variables. Returns 0 if fatal error occured."
-        self._conf = ConfigParser.SafeConfigParser()
-        if os.name == 'posix':
-            glob_conf = '/etc/%s'%self._name_conf
-        else:
-            # ALLUSERSPROFILE = C:\Documents and Settings\All Users
-            glob_conf = os.path.join(os.path.expandvars('$ALLUSERSPROFILE'),self._name_conf)
-        try:
-            self._conf.read([glob_conf, os.path.join(os.path.expanduser('~'),self._name_conf)])
-        except (ConfigParser.MissingSectionHeaderError, ConfigParser.ParsingError), msg:
-            self.append_error('ConfigParserError: %s'%str(msg))
+##        config
+##        self._conf = translate.load_config(translate.config_name)
+##        self._conf = ConfigParser.SafeConfigParser()
+##        if os.name == 'posix':
+##            glob_conf = '/etc/%s'%translate.config_name
+##        else:
+##            # ALLUSERSPROFILE = C:\Documents and Settings\All Users
+##            glob_conf = os.path.join(os.path.expandvars('$ALLUSERSPROFILE'),translate.config_name)
+##        try:
+##            self._conf.read([glob_conf, os.path.join(os.path.expanduser('~'),translate.config_name)])
+##        except (ConfigParser.MissingSectionHeaderError, ConfigParser.ParsingError), msg:
+##            self.append_error('ConfigParserError: %s'%str(msg))
+##            self.display() # display errors or notes
+##            return 0 # fatal error
+        if not self._conf:
+            self.append_error(translate.config_error)
             self.display() # display errors or notes
             return 0 # fatal error
+            
         # set session variables
         section = 'session'
         if not self._conf.has_section(section):
@@ -346,7 +353,7 @@ class ManagerBase:
             ok = 1 # OK, support is enabled.
         else:
             try:
-                uerr = errors.decode(encoding)
+                uerr = errors.decode(translate.encoding)
             except UnicodeDecodeError:
                 uerr = repr(errors)
             self.append_note(uerr)
@@ -362,7 +369,7 @@ class ManagerBase:
             open(tmpname,'w').write(message)
         except IOError, (no, msg):
             try:
-                msg = msg.decode(encoding)
+                msg = msg.decode(translate.encoding)
             except UnicodeDecodeError, error:
                 msg = '(UnicodeDecodeError) '+repr(msg)
             self._session[VALIDATE] = 0 # automatické vypnutí validace
@@ -410,7 +417,7 @@ def join_unicode(u_list, sep='\n'):
     for row in u_list:
         if type(row) == str:
             try:
-                row = row.decode(encoding)
+                row = row.decode(translate.encoding)
             except UnicodeDecodeError, error:
                 row = '(UnicodeDecodeError) '+repr(row)
         out.append(row)
@@ -422,7 +429,7 @@ def get_ltext(text):
         ltext = colored_output.render(text)
     else:
         try:
-            ltext = text.encode(encoding)
+            ltext = text.encode(translate.encoding)
         except UnicodeEncodeError, msg:
             ltext = repr(re.sub('\x1b[^m]*m','',text))
         else:
@@ -438,7 +445,7 @@ def get_unicode(text):
     'Convert to unicode and catch problems with conversion.'
     if type(text) == str:
         try:
-            text = text.decode(encoding)
+            text = text.decode(translate.encoding)
         except UnicodeDecodeError:
             text = repr(re.sub('\$\{[A-Z]+\}','',text)) # remove color tags
     return text

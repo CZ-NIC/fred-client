@@ -497,10 +497,19 @@ class Message(eppdoc.Message):
         # --- BEGIN disclose ------
         if __has_key_dict__(dct,'disclose'):
             ds = dct['disclose'][0]
-            flag = {'n':'0','y':'1'}.get(ds.get('flag',['n'])[0], 'n')
-            data.append(('contact:create','contact:disclose','',(('flag',flag),)))
-            for key in ds.get('data',[]):
-                data.append(('contact:disclose','contact:%s'%key))
+            flag = {'n':0,'y':1}.get(ds.get('flag',['n'])[0], 'n')
+            disit = ds.get('data',[])
+            if flag:
+                # 1 - list of disclosed -> invert other to hidden
+                disit = [key for key in contact_disclose if key not in disit]
+            else:
+                # 0 - list of hidden -> sort only (and remove duplicity)
+                disit = [key for key in contact_disclose if key in disit]
+            if disit:
+                # create if only any set of names is to hide
+                data.append(('contact:create','contact:disclose','',(('flag','0'),)))
+                for key in disit:
+                    data.append(('contact:disclose','contact:%s'%key))
         # --- END disclose ------
         if __has_key__(dct,'vat'): data.append(('contact:create','contact:vat', dct['vat'][0]))
         if __has_key_dict__(dct,'ssn'):

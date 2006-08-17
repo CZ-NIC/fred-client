@@ -11,6 +11,8 @@ from ccReg.session_base import colored_output, VERBOSE
 from ccReg.translate import _T, options, option_errors
 
 def main(session_name):
+    if ccReg.translate.warning:
+        print colored_output.render("${BOLD}${RED}%s${NORMAL}"%ccReg.translate.warning)
     epp = ccReg.ClientSession()
     ccReg.cmd_history.set_history(epp.get_command_names())
     epp.set_options(options)
@@ -94,6 +96,4 @@ OPTIONS:
             if option_errors:
                 print option_errors
             else:
-                if ccReg.translate.warning:
-                    print colored_output.render("${BOLD}${RED}%s${NORMAL}"%ccReg.translate.warning)
                 main(options['session'])

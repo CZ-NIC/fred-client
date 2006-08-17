@@ -358,6 +358,29 @@ class ManagerReceiver(ManagerCommand):
         self.__response_create__(data, ('domain','renew','renData'), ('name','exDate'))
 
 
+    def __answer_response_list__(self, data, columns):
+        'Dispatch list answers.'
+        if self.__code_isnot_1000__(data, '%s:list'%columns[0]): return
+        try:
+            resData = self._dict_answer['response']['resData']
+            listData = resData['%s:listData'%columns[0]] # contact:listData
+        except KeyError, msg:
+            self.append_error('answer_response_list:%s KeyError: %s'%(columns[0],msg))
+        else:
+            self._dct_answer['data']['list'] = eppdoc.get_dct_values(listData, '%s:%s'%columns)
+            self._dct_answer['data']['count'] = len(self._dct_answer['data']['list'])
+        
+    def answer_response_contact_list(self, data):
+        "data=(response,result,code,msg)"
+        self.__answer_response_list__(data, ('contact','id'))
+    def answer_response_nsset_list(self, data):
+        "data=(response,result,code,msg)"
+        self.__answer_response_list__(data, ('nsset','id'))
+    def answer_response_domain_list(self, data):
+        "data=(response,result,code,msg)"
+        self.__answer_response_list__(data, ('domain','name'))
+        
+        
     #-------------------------------------------------
     #
     # Main API function

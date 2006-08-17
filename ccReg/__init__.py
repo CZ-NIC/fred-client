@@ -704,7 +704,8 @@ class Client:
     PARAMS:
 
     RETURN data: {
-            id:    list
+            count:   int
+            list:    list
             }
     The EPP "list" command is used to list all ID of an existing object owning by registrant.
         """
@@ -716,7 +717,8 @@ class Client:
     PARAMS:
 
     RETURN data: {
-            id:    list
+            count:   int
+            list:    list
             }
     The EPP "list" command is used to list all ID of an existing object owning by registrant.
         """
@@ -728,7 +730,8 @@ class Client:
     PARAMS:
 
     RETURN data: {
-            id:    list
+            count:   int
+            list:    list
             }
     The EPP "list" command is used to list all ID of an existing object owning by registrant.
         """
