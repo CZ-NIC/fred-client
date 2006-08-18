@@ -35,10 +35,10 @@ import ccReg
 import unitest_ccreg_share
 
 #-----------------------
-CCREG_CONTACT1 = 'TDOMCONT01'
-CCREG_CONTACT2 = 'TDOMCONT02'
-CCREG_NSSET1 = 'TDOMNSSET01'
-CCREG_NSSET2 = 'TDOMNSSET02'
+CCREG_CONTACT1 = 'CID:TDOMCONT01'
+CCREG_CONTACT2 = 'CID:TDOMCONT02'
+CCREG_NSSET1 = 'NSSID:TDOMNSSET01'
+CCREG_NSSET2 = 'NSSID:TDOMNSSET02'
 CCREG_DOMAIN1 = 'hokus-pokus.cz'
 CCREG_DOMAIN2 = '0.1.1.7.4.5.2.2.2.0.2.4.e164.arpa'
 CCREG_DOMAIN_PASSW = 'heslicko'
@@ -123,12 +123,12 @@ class Test(unittest.TestCase):
         
     def test_030(self):
         '4.3.1 Zalozeni 1. pomocneho kontaktu'
-        epp_cli.create_contact(CCREG_CONTACT1,'Pepa Zdepa','pepa@zdepa.cz','Praha','CZ')
+        epp_cli.create_contact(CCREG_CONTACT1,'Pepa Zdepa','pepa@zdepa.cz','Praha','CZ','heslo')
         self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_031(self):
         '4.3.2 Zalozeni 2. pomocneho kontaktu'
-        epp_cli.create_contact(CCREG_CONTACT2, u'řehoř čuřil','rehor@curil.cz','Praha','CZ')
+        epp_cli.create_contact(CCREG_CONTACT2, u'řehoř čuřil','rehor@curil.cz','Praha','CZ','heslo')
         self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_040(self):

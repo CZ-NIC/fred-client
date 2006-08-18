@@ -9,7 +9,7 @@
 # Funkce s prefixem "assemble_" jsou jednotlivé EPP příkazy, které třída
 # Message() umí sestavit. Seznam dostupných příkazů vrací funkce get_client_commands().
 #
-import re, sys
+import re, sys, os
 import ConfigParser
 import eppdoc
 import cmd_parser
@@ -27,6 +27,7 @@ except ImportError:
 
 UNBOUNDED = None
 contact_disclose = ('name','org','addr','voice','fax','email')
+history_filename = os.path.join(os.path.expanduser('~'),'.ccreg_history') # compatibility s MS Win
 
 class Message(eppdoc.Message):
     "Client EPP commands."
@@ -245,9 +246,9 @@ class Message(eppdoc.Message):
         if interactive:
             session_base.print_unicode(_T('${BOLD}${YELLOW}Start interactive input of params. To break type: ${NORMAL}${BOLD}!${NORMAL}[!!...] (one ${BOLD}!${NORMAL} for scope)'))
             dct[command_name] = [command_name]
-            if history_write: history_write() # save history
+            if history_write: history_write(history_filename) # save history
             errors, param = self.__interactive_params__(command_name, vals[1], dct)
-            if history_read: history_read() # restore history (flush interactive params)
+            if history_read: history_read(history_filename) # restore history (flush interactive params)
             if not errors:
                 example = __build_command_example__(columns, dct)
             # Note the interactive mode is closed.

@@ -8,7 +8,7 @@ from translate import _T
 class Completer:
     'Class holds history of commands.'
     def __init__(self, words):
-        self.words = [w.replace('-','_') for w in words]
+        self.words = words
         self.prefix = None
         
     def complete(self, prefix, index):
