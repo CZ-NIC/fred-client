@@ -116,7 +116,7 @@ ${BOLD}verbose${NORMAL} [number] # set verbose mode: 1 - brief (default); 2 - fu
         command_name = cmdline
         m=re.match('(!)?\s*(\S+)',cmdline)
         if m:
-            if m.group(2).replace('_','-') in self._available_commands:
+            if m.group(2) in self._available_commands: ## .replace('_','-')
                 command_name = m.group(2)
                 if self.__parse_command_params__(command_name, cmdline, m.group(1)):
                     self.create_command_with_params(command_name, self._epp_cmd.get_params())

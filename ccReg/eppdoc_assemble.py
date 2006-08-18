@@ -266,13 +266,13 @@ class Message(eppdoc.Message):
             # build command_line example
             error.append('%s %d.'%(_T('Missing values. Required minimum is'),vals[0]))
             error.append('%s: %s'%(_T('Type'),self.get_help(command_name)[0]))
-            error.append('(%s: ${BOLD}help %s${NORMAL})'%(_T('For more type'),command_name.replace('_','-').encode(encoding)))
+            error.append('(%s: ${BOLD}help %s${NORMAL})'%(_T('For more type'),command_name.encode(encoding))) ## .replace('_','-')
         self._dct = dct
         return error, example
 
     def get_client_commands(self):
         'Return available client commands.'
-        return [name[9:].replace('_','-') for name in dir(self.__class__) if name[:9]=='assemble_']
+        return [name[9:] for name in dir(self.__class__) if name[:9]=='assemble_'] ## .replace('_','-')
 
     #===========================================
     #

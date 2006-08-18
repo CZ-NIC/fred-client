@@ -71,23 +71,23 @@ class Message(eppdoc_assemble.Message):
         #----------------------------------------------------
         'info_contact': (1,(
             ('name',(1,1),(),_T('contact name'),'CID:ID01','',()),
-        ),notice['info'],('info-contact contact-ID',)),
+        ),notice['info'],('info_contact contact-ID',)),
         'info_domain': (1,(
             ('name',(1,1),(),_T('domain name'),'mydomain.cz','',()),
-        ),notice['info'],('info-domain my-domain.cz',)),
+        ),notice['info'],('info_domain my-domain.cz',)),
         'info_nsset': (1,(
             ('name',(1,1),(),_T('nsset name'),'NSSET_ID','',()),
-        ),notice['info'],('info-nsset NSSET_ID',)),
+        ),notice['info'],('info_nsset NSSET_ID',)),
         #----------------------------------------------------
         'check_contact': (1,(
             ('name',(1,UNBOUNDED),(),_T('contact name'),'CID:ID01','',()),
-        ),notice['check'],('check-contact my-contact1 my-contact2',)),
+        ),notice['check'],('check_contact my-contact1 my-contact2',)),
         'check_domain': (1,(
             ('name',(1,UNBOUNDED),(),_T('domain name'),'mydomain.cz','',()),
-        ),notice['check'],('check-domain domain1.cz domain2.cz',)),
+        ),notice['check'],('check_domain domain1.cz domain2.cz',)),
         'check_nsset': (1,(
             ('name',(1,UNBOUNDED),(),_T('nsset name'),'NSSET_ID','',()),
-        ),notice['check'],('check-nsset nsset1 nsset2',)),
+        ),notice['check'],('check_nsset nsset1 nsset2',)),
         #----------------------------------------------------
         'poll': (1,(
             ('op',(1,1),('req','ack'),_T('query type'),'','',()),
@@ -97,19 +97,19 @@ class Message(eppdoc_assemble.Message):
         'transfer_contact': (2,(
             ('name',(1,1),(),_T('contact id'),'CID:ID01','',()),
             ('passw',(1,1),(),_T('password'),'mypassword','',()),
-        ),notice['transfer'],('transfer-contact CID:ID01 password',)),
+        ),notice['transfer'],('transfer_contact CID:ID01 password',)),
         #----------------------------------------------------
         'transfer_nsset': (2,(
             ('name',(1,1),(),_T('nsset name'),'NSSET_ID','',()),
             #('op',(1,1),transfer_op,_T('query type'),()),
             ('passw',(1,1),(),_T('password'),'mypassword','',()),
-        ),notice['transfer'],('transfer-nsset name-nsset password',)),
+        ),notice['transfer'],('transfer_nsset name-nsset password',)),
         #----------------------------------------------------
         'transfer_domain': (2,(
             ('name',(1,1),(),_T('domain name'),'domain.cz','',()),
             #('op',(1,1),transfer_op,_T('query type'),()),
             ('passw',(1,1),(),_T('password'),'mypassword','',()),
-        ),notice['transfer'],('transfer-domain name-domain password',)),
+        ),notice['transfer'],('transfer_domain name-domain password',)),
         #----------------------------------------------------
         'create_contact': (6,(
             ('contact_id',(1,1),(),_T('your contact ID'),'CID:ID01','',()),
@@ -135,7 +135,7 @@ class Message(eppdoc_assemble.Message):
                 ('number',(1,1),(),_T('SSN number'),'8888888856','',()),
             )),
             ('notify_email',(0,1),(),_T('notify email'),'info@mymail.cz','',()),
-            ),'%s\n   %s\n%s'%(notice['create'],notice['disclose'],notice['ssn']),("create-contact CID:ID01 'Jan Novak' info@mymail.cz Praha CZ mypassword 'Firma s.r.o.' 'Narodni trida 1230/12' '' 12000 +420.222745111 +420.222745111 (y (org fax email)) 7035555556 (op 8888888856) info@mymail.cz",)),
+            ),'%s\n   %s\n%s'%(notice['create'],notice['disclose'],notice['ssn']),("create_contact CID:ID01 'Jan Novak' info@mymail.cz Praha CZ mypassword 'Firma s.r.o.' 'Narodni trida 1230/12' '' 12000 +420.222745111 +420.222745111 (y (org fax email)) 7035555556 (op 8888888856) info@mymail.cz",)),
         #----------------------------------------------------
         'create_domain': (2,(
             ('name',(1,1),(),_T('domain name'),'mydomain.cz','',()),
@@ -147,7 +147,7 @@ class Message(eppdoc_assemble.Message):
                 ('unit',(1,1),('y','m'),_T('period unit (y year(default), m month)'),'','',()),
             )),
             ('admin',(0,UNBOUNDED),(),_T('admin'),'ADMIN_ID','',()),
-            ),notice['create'],('create-domain domain.cz password nsset1 reg-id (3 y) (handle1,handle2)',)),
+            ),notice['create'],('create_domain domain.cz password nsset1 reg-id (3 y) (handle1,handle2)',)),
         #----------------------------------------------------
         'create_domain_enum': (2,(
             ('name',(1,1),(),_T('domain name'),'mydomain.cz','',()),
@@ -160,7 +160,7 @@ class Message(eppdoc_assemble.Message):
             )),
             ('contact',(0,UNBOUNDED),(),_T('contact'),'CID:ID01','',()),
             ('val_ex_date',(0,1),(),_T('valExDate'),'2008-12-03','',()),
-            ),notice['create'],('create-domain-enum 1.1.1.7.4.5.2.2.2.0.2.4.e164.arpa password nsset1 reg-id (3 y) (handle1,handle2) 2006-06-08',)),
+            ),notice['create'],('create_domain_enum 1.1.1.7.4.5.2.2.2.0.2.4.e164.arpa password nsset1 reg-id (3 y) (handle1,handle2) 2006-06-08',)),
         #----------------------------------------------------
         'create_nsset': (2,(
             ('id',(1,1),(),_T('nsset ID'),'NSSETID','',()),
@@ -172,8 +172,8 @@ class Message(eppdoc_assemble.Message):
             ('tech',(0,UNBOUNDED),(),_T('tech contact'),'CID:ID01','',()),
 
             ),notice['create'],(
-                'create-nsset example passw',
-                'create-nsset nsset1 passw ((ns1.domain.cz (217.31.207.130 217.31.207.129)),(ns2.domain.cz (217.31.206.130 217.31.206.129)),(ns3.domain.cz (217.31.205.130 217.31.205.129))) reg-id'
+                'create_nsset example passw',
+                'create_nsset nsset1 passw ((ns1.domain.cz (217.31.207.130 217.31.207.129)),(ns2.domain.cz (217.31.206.130 217.31.206.129)),(ns3.domain.cz (217.31.205.130 217.31.205.129))) reg-id'
             )),
         #----------------------------------------------------
         'delete_contact': (1,(
@@ -195,7 +195,7 @@ class Message(eppdoc_assemble.Message):
                 ('num',(1,1),(),_T('number of months or years'),'3','',()),
                 ('unit',(1,1),('y','m'),_T('period unit (y year(default), m month)'),'','',()),
             )),
-            ),notice['renew'],('renew-domain nic.cz 2008-06-02 (6 y)',)),
+            ),notice['renew'],('renew_domain nic.cz 2008-06-02 (6 y)',)),
         #----------------------------------------------------
         'renew_domain_enum': (2,(
             ('name',(1,1),(),_T('domain name'),'mydomain.cz','',()),
@@ -205,7 +205,7 @@ class Message(eppdoc_assemble.Message):
                 ('unit',(1,1),('y','m'),_T('period unit (y year(default), m month)'),'','',()),
             )),
             ('valExDate',(0,1),(),_T('valExDate'),'2008-12-03','',()),
-            ),notice['renew'],('renew-domain-enum nic.cz 2023-06-02 () 2006-08-09',)),
+            ),notice['renew'],('renew_domain_enum nic.cz 2023-06-02 () 2006-08-09',)),
         #----------------------------------------------------
         'update_contact': (1,(
             ('contact_id',(1,1),(),_T('your contact ID'),'CID:ID01','',()),
@@ -239,10 +239,10 @@ class Message(eppdoc_assemble.Message):
                 ('notify_email',(0,1),(),_T('notify email'),'notify@mymail.cz','',()),
             )),
             ),'%s\n%s'%(notice['update'],notice['disclose']),(
-                    'update-contact reg-id clientDeleteProhibited',
-                    'update-contact reg-id (clientDeleteProhibited linked ok)',
+                    'update_contact CID:ID01 clientDeleteProhibited',
+                    'update_contact CID:ID01 (clientDeleteProhibited linked ok)',
                     "update_contact CID:ID01 clientTransferProhibited (clientDeleteProhibited, clientUpdateProhibited) (('Jan Nowak' 'Firma s.r.o.' (('Na narodni 1230/12', 'Americka 12') Praha Vinohrady 12000 CZ)) +420.222745111 +420.222745111 info@mymail.cz mypassword (y (org, voice, email)) 7035555556 (ico 8888888856) notify@mymail.cz)",
-                    "update-contact myid () () (() '' '' '' '' () '' () change.only@notify-mail.cz)",
+                    "update_contact CID:ID01 () () (() '' '' '' '' () '' () change.only@notify-mail.cz)",
             )),
         #----------------------------------------------------
         'update_domain': (1,(
@@ -264,8 +264,8 @@ class Message(eppdoc_assemble.Message):
                 )),
             )),
             ),notice['update'],(
-                'update-domain nic.cz',
-                'update-domain nic.cz (linked add-contact) ((ok linked) rem-contact) (nsset registrant (password extensions))',
+                'update_domain nic.cz',
+                'update_domain nic.cz (linked add-contact) ((ok linked) rem-contact) (nsset registrant (password extensions))',
             )),
         #----------------------------------------------------
         'update_domain_enum': (1,(
@@ -287,7 +287,7 @@ class Message(eppdoc_assemble.Message):
                 )),
             )),
             ('val_ex_date',(0,1),(),_T('valExDate'),'2008-12-03','',()),
-            ),notice['update'],('update-domain-enum 1.1.1.7.4.5.2.2.2.0.2.4.e164.arpa (linked add-contact) ((ok linked) rem-contact) (nsset registrant (password extensions)) 2006-06-08',)),
+            ),notice['update'],('update_domain_enum 1.1.1.7.4.5.2.2.2.0.2.4.e164.arpa (linked add-contact) ((ok linked) rem-contact) (nsset registrant (password extensions)) 2006-06-08',)),
         #----------------------------------------------------
         'update_nsset': (1,(
             ('id',(1,1),(),_T('nsset ID'),'NSSET_ID','',()),
@@ -309,7 +309,7 @@ class Message(eppdoc_assemble.Message):
                 #('ext',(0,1),(),_T('ext'),'','',()),
             )),
             ),notice['update'],(
-                "update-nsset nsset1 (((ns1.dns.cz (217.31.207.130, 217.31.207.131, 217.31.207.132)), (ns2.dns.cz (217.31.207.130, 217.31.207.131, 217.31.207.132))) (tech1, tech2, tech3) (ok, clientTransferProhibited)) (((rem1.dns.cz, rem2.dns.cz) (tech-rem01, tech-rem02) serverUpdateProhibited)) (password)",
+                "update_nsset nsset1 (((ns1.dns.cz (217.31.207.130, 217.31.207.131, 217.31.207.132)), (ns2.dns.cz (217.31.207.130, 217.31.207.131, 217.31.207.132))) (tech1, tech2, tech3) (ok, clientTransferProhibited)) (((rem1.dns.cz, rem2.dns.cz) (tech-rem01, tech-rem02) serverUpdateProhibited)) (password)",
             )),
         #----------------------------------------------------
         'list_contact': (0,(('',(0,0),(),'','','',()),),notice['list'],()),
