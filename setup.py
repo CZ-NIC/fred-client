@@ -11,7 +11,7 @@ setup(name = 'ccRegClient',
     license = 'GNU GPL',
     packages = ['ccReg'],
     package_data={
-        'ccReg':['LICENSE','CREDITS','*.txt','schemas/*.xsd',
+        'ccReg':['INSTALL','LICENSE','CREDITS','*.txt','schemas/*.xsd',
         'lang/cz_nic_ccreg_client.po',
         'lang/cs/LC_MESSAGES/cz_nic_ccreg_client.mo',
         'certificates/*.pem',

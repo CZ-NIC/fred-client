@@ -28,7 +28,7 @@ import unitest_ccreg_share
 # CCREG_CONTACT[3] - chg (changes)
 CONTACT_PASSWORD_1 = 'mojeheslo'
 CONTACT_PASSWORD_2 = 'nove-heslo'
-CONTACT_HANDLE = 'test001'
+CONTACT_HANDLE = 'CID:test001'
 CCREG_CONTACT = [
     {   # template
     'id': '', # (povinný) vaše kontaktní ID
@@ -103,7 +103,6 @@ CCREG_CONTACT.append({ # chg part to modify contact
             'voice': d['voice'],
             'fax': d['fax'],
             'email': d['email'],
-            'disclose_flag': d['disclose_flag'],
             'disclose': d['disclose'],
             'vat': d['vat'],
             'ssn': d['ssn'],
@@ -120,7 +119,7 @@ class Test(unittest.TestCase):
         unitest_ccreg_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription())
         unitest_ccreg_share.reset_client(epp_cli)
 
-    def test_2_000(self):
+    def test_000(self):
         '2.0 Inicializace spojeni a definovani testovacich handlu'
         global epp_cli, handle_contact, handle_nsset, log_fp
         # Natvrdo definovany handle:
@@ -128,8 +127,7 @@ class Test(unittest.TestCase):
         handle_nsset = 'neexist01'
         # create client object
         epp_cli = ccReg.Client()
-        epp_cli._epp.set_options(ccReg.translate.options)
-        epp_cli._epp.load_config()
+        epp_cli._epp.load_config(ccReg.translate.options['session'])
         # login
         dct = epp_cli._epp.get_default_params_from_config('login')
         epp_cli.login(dct['username'], dct['password'])
@@ -144,78 +142,78 @@ class Test(unittest.TestCase):
         if ccReg.translate.options['log']: # zapnuti/vypuni ukladani prikazu do logu
             log_fp = open(ccReg.translate.options['log'],'w')
     
-    def test_2_010(self):
+    def test_010(self):
         '2.1 Check na seznam dvou neexistujicich kontaktu'
         handles = (handle_contact,'neexist002')
         epp_cli.check_contact(handles)
         for name in handles:
             self.assertEqual(epp_cli.is_val(('data',name)), 1, 'Kontakt existuje: %s'%name)
 
-    def test_2_020(self):
+    def test_020(self):
         '2.2 Pokus o Info na neexistujici kontakt'
         epp_cli.info_contact(handle_contact)
         self.assertNotEqual(epp_cli.is_val(), 1000, 'handle_contact %s existuje'%handle_contact)
 
-    def test_2_030(self):
+    def test_030(self):
         '2.3 Zalozeni neexistujiciho noveho kontaktu'
         d = CCREG_CONTACT[1]
         epp_cli.create_contact(handle_contact, 
-            d['name'], d['email'], d['city'], d['cc'], d['org'], 
-            d['street'], d['sp'], d['pc'], d['voice'], d['fax'], d['disclose_flag'], d['disclose'],
+            d['name'], d['email'], d['city'], d['cc'], d['pw'],  d['org'], 
+            d['street'], d['sp'], d['pc'], d['voice'], d['fax'], d['disclose'],
             d['vat'], d['ssn'], d['notify_email'])
         self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
-    def test_2_031(self):
+    def test_031(self):
         '2.3.1 Overevni vsech hodnot vznikleho kontaktu'
         epp_cli.info_contact(handle_contact)
         errors = __info_contact__('contact', CCREG_CONTACT[1], epp_cli.is_val('data'))
         self.assert_(len(errors)==0, '\n'.join(errors))
 
-    def test_2_040(self):
+    def test_040(self):
         '2.4 Pokus o zalozeni existujiciho kontaktu'
         # contact_id, name, email, city, cc
-        epp_cli.create_contact(handle_contact,'Pepa Zdepa','pepa@zdepa.cz','Praha','CZ')
+        epp_cli.create_contact(handle_contact,'Pepa Zdepa','pepa@zdepa.cz','Praha','CZ', 'heslo')
         self.assertNotEqual(epp_cli.is_val(), 1000, 'Contakt se vytvoril prestoze jiz existuje.')
 
-    def test_2_050(self):
+    def test_050(self):
         '2.5 Check na seznam existujiciho a neexistujicich kontaktu'
         handles = (handle_contact,'neexist002')
         epp_cli.check_contact(handles)
         self.assertEqual(epp_cli.is_val(('data',handle_contact)), 0)
         self.assertEqual(epp_cli.is_val(('data','neexist002')), 1)
 
-    def test_2_060(self):
+    def test_060(self):
         '2.6 Info na existujici kontakt a overeni vsech hodnot'
         epp_cli.info_contact(handle_contact)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
         errors = __info_contact__('contact', CCREG_CONTACT[1], epp_cli.is_val('data'))
         self.assert_(len(errors)==0, '\n'.join(errors))
 
-    def test_2_070(self):
+    def test_070(self):
         '2.7 Update vsech parametru krome stavu'
         epp_cli.update_contact(handle_contact, None, None, CCREG_CONTACT[3])
         self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
-    def test_2_071(self):
+    def test_071(self):
         '2.7.1 Overevni vsech hodnot zmeneneho kontaktu'
         epp_cli.info_contact(handle_contact)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
         errors = __info_contact__('contact', CCREG_CONTACT[2], epp_cli.is_val('data'))
         self.assert_(len(errors)==0, '\n'.join(errors))
         
-    def test_2_080(self):
+    def test_080(self):
         '2.8.1 Pokus o update stavu serverDeleteProhibited'
         status = 'serverDeleteProhibited'
         epp_cli.update_contact(handle_contact, status)
         self.assertNotEqual(epp_cli.is_val(), 1000, 'Status "%s" prosel prestoze nemel.'%status)
 
-    def test_2_081(self):
+    def test_081(self):
         '2.8.2 Pokus o update stavu serverUpdateProhibited'
         status = 'serverUpdateProhibited'
         epp_cli.update_contact(handle_contact, status)
         self.assertNotEqual(epp_cli.is_val(), 1000, 'Status "%s" prosel prestoze nemel.'%status)
 
-    def test_2_090(self):
+    def test_090(self):
         '2.9 Update stavu clientDeleteProhibited a pokus o smazani'
         status = 'clientDeleteProhibited'
         epp_cli.update_contact(handle_contact, status)
@@ -231,7 +229,7 @@ class Test(unittest.TestCase):
         epp_cli.update_contact(handle_contact, None, status)
         self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se odstranit status: %s'%status)
 
-    def test_2_100(self):
+    def test_100(self):
         '2.10 Update stavu clientUpdateProhibited a pokus o zmenu objektu, smazani stavu'
         status = 'clientUpdateProhibited'
         epp_cli.update_contact(handle_contact, status)
@@ -247,32 +245,32 @@ class Test(unittest.TestCase):
         epp_cli.update_contact(handle_contact, None, status)
         self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se odstranit status: %s'%status)
 
-    def test_2_110(self):
+    def test_110(self):
         '2.11 Vytvoreni nnsetu napojeneho na kontakt'
         epp_cli.create_nsset(handle_nsset, 'heslo', {'name':'ns1.test.cz'}, handle_contact)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
         
-    def test_2_120(self):
+    def test_120(self):
         '2.12 Smazani kontaktu na ktery existuji nejake vazby'
         epp_cli.delete_contact(handle_contact)
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
-    def test_2_130(self):
+    def test_130(self):
         '2.13 Smazani nssetu'
         epp_cli.delete_nsset(handle_nsset)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
-    def test_2_140(self):
+    def test_140(self):
         '2.14 Smazani kontaktu'
         epp_cli.delete_contact(handle_contact)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
-    def test_2_150(self):
+    def test_150(self):
         '2.15 Check na smazany kontakt'
         epp_cli.check_contact(handle_contact)
         self.assertEqual(epp_cli.is_val(('data',handle_contact)), 1, '%s nelze smazat'%handle_contact)
 
-    def test_2_160(self):
+    def test_160(self):
         '2.16 Poll require'
         # 1000 OK (ack)
         # 1300 No messages
@@ -294,7 +292,7 @@ def __info_contact__(prefix, cols, scope, key=None, pkeys=[]):
     # prepare list disclose, hide: if disclose_flag is 0, names must be moved into hide
     keep_disclose = cols['disclose']
     cols['hide'] = []
-    if cols['disclose_flag'] == 'n':
+    if cols['disclose']['flag'] == 'n':
         cols['hide'] = cols['disclose']
         cols['disclose'] = []
     if len(cols['hide']):

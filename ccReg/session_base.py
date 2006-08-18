@@ -53,16 +53,11 @@ class ManagerBase:
         self.defs[PREFIX] = '' # pro každé sezení nový prefix
         self._conf = translate.config # <ConfigParser object> from translate module
         self._auto_connect = 1 # auto connection during login or hello
-        self._options = {} # parameters from command line
+        self._options = translate.options # parameters from command line
 
     def get_session(self, offset):
         return self._session[offset]
         
-    def set_options(self, options):
-        'Param options must be dict.'
-        self._options = options
-        if self._options['session']: self._session[NAME] = self._options['session']
-
     def init_options(self):
         'Init variables from options (after loaded config).'
         self._session[LANG] = self._options['lang']
@@ -270,27 +265,13 @@ class ManagerBase:
             if not self.__is_config_option__(section, 'timeout'):
                 self._conf.set(section, 'timeout','0.0')
         
-    def load_config(self):
+    def load_config(self, session=''):
         "Load config file and init internal variables. Returns 0 if fatal error occured."
-##        config
-##        self._conf = translate.load_config(translate.config_name)
-##        self._conf = ConfigParser.SafeConfigParser()
-##        if os.name == 'posix':
-##            glob_conf = '/etc/%s'%translate.config_name
-##        else:
-##            # ALLUSERSPROFILE = C:\Documents and Settings\All Users
-##            glob_conf = os.path.join(os.path.expandvars('$ALLUSERSPROFILE'),translate.config_name)
-##        try:
-##            self._conf.read([glob_conf, os.path.join(os.path.expanduser('~'),translate.config_name)])
-##        except (ConfigParser.MissingSectionHeaderError, ConfigParser.ParsingError), msg:
-##            self.append_error('ConfigParserError: %s'%str(msg))
-##            self.display() # display errors or notes
-##            return 0 # fatal error
         if not self._conf:
             self.append_error(translate.config_error)
             self.display() # display errors or notes
             return 0 # fatal error
-            
+        if session: self._session[NAME] = session # API definition of --session parameter.
         # set session variables
         section = 'session'
         if not self._conf.has_section(section):

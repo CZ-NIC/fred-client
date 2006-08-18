@@ -5,6 +5,9 @@ port = 700
 ssl_key = %(dir)s/epp_test_ccreg_nic_cz_key.pem
 ssl_cert = %(dir)s/epp_test_ccreg_nic_cz_cert.pem
 timeout = 0.0
+# registrant:
+# username = regname
+# password = regpass
 
 [session]
 validate = on

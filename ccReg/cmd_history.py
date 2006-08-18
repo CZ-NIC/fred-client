@@ -8,8 +8,9 @@ from translate import _T
 class Completer:
     'Class holds history of commands.'
     def __init__(self, words):
-        self.words = words
+        self.words = [w.replace('-','_') for w in words]
         self.prefix = None
+        
     def complete(self, prefix, index):
         if prefix != self.prefix:
             # we have a new prefix!
@@ -31,5 +32,3 @@ def set_history(words):
         completer = Completer(words)
         readline.parse_and_bind("tab: complete")
         readline.set_completer(completer.complete)
-
-

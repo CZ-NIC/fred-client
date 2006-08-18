@@ -32,9 +32,9 @@ import unitest_ccreg_share
 # CCREG_DATA[1] - create
 # CCREG_DATA[2] - modify
 # CCREG_DATA[3] - modified
-CCREG_HANDLE = 'test001'
-CCREG_CONTACT1 = 'CONTACT1'
-CCREG_CONTACT2 = 'CONTACT2'
+CCREG_HANDLE = 'NSSID:test001'
+CCREG_CONTACT1 = 'CID:CONTACT1'
+CCREG_CONTACT2 = 'CID:CONTACT2'
 NSSET_PASSWORD = 'heslicko'
 CCREG_DATA = ( 
     { # 0. template
@@ -100,11 +100,9 @@ class Test(unittest.TestCase):
         handle_contact = CCREG_CONTACT1
         # create client object
         epp_cli = ccReg.Client()
-        epp_cli._epp.set_options(ccReg.translate.options)
-        epp_cli._epp.load_config()
+        epp_cli._epp.load_config(ccReg.translate.options['session'])
         epp_cli_TRANSF = ccReg.Client()
-        epp_cli_TRANSF._epp.set_options(ccReg.translate.options)
-        epp_cli_TRANSF._epp.load_config()
+        epp_cli_TRANSF._epp.load_config(ccReg.translate.options['session'])
         # login
         dct = epp_cli._epp.get_default_params_from_config('login')
         epp_cli.login(dct['username'], dct['password'])
@@ -136,11 +134,11 @@ class Test(unittest.TestCase):
 
     def test_031(self):
         '3.3.1 Zalozeni pomocnych kontaktu'
-        epp_cli.create_contact(CCREG_CONTACT1,'Pepa Zdepa','pepa@zdepa.cz','Praha','CZ')
+        epp_cli.create_contact(CCREG_CONTACT1,'Pepa Zdepa','pepa@zdepa.cz','Praha','CZ','heslo')
         self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
     def test_032(self):
         '3.3.2 Zalozeni pomocnych kontaktu'
-        epp_cli.create_contact(CCREG_CONTACT2,u'Miloš Pažout','milos@pazout.cz','Jevany','CZ')
+        epp_cli.create_contact(CCREG_CONTACT2,u'Miloš Pažout','milos@pazout.cz','Jevany','CZ','heslo')
         self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_040(self):

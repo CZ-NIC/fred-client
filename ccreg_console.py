@@ -15,8 +15,7 @@ def main(session_name):
         print colored_output.render("${BOLD}${RED}%s${NORMAL}"%ccReg.translate.warning)
     epp = ccReg.ClientSession()
     ccReg.cmd_history.set_history(epp.get_command_names())
-    epp.set_options(options)
-    if not epp.load_config(): return
+    if not epp.load_config(options['session']): return
     print epp.welcome()
     epp.display() # display errors or notes
     is_online = 0

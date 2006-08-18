@@ -29,8 +29,7 @@ def send_docs(docs=[]):
     # Inicializace klienta
     #-------------------------------------------------
     epp = ccReg.ClientSession()
-    epp.set_options(options)
-    if not epp.load_config(): return
+    if not epp.load_config(options['session']): return
 
     #-------------------------------------------------
     # Apped docs from argv params

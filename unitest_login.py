@@ -48,8 +48,7 @@ class Test(unittest.TestCase):
         '1.0 Inicializace spojeni a definovani testovacich handlu'
         global epp_cli, log_fp
         epp_cli = ccReg.Client()
-        epp_cli._epp.set_options(ccReg.translate.options)
-        epp_cli._epp.load_config()
+        epp_cli._epp.load_config(ccReg.translate.options['session'])
         # logovací soubor
         if ccReg.translate.options['log']: # zapnuti/vypuni ukladani prikazu do logu
             log_fp = open(ccReg.translate.options['log'],'w')

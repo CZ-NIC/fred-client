@@ -16,6 +16,15 @@ import cmd_parser
 import session_base
 from translate import _T, encoding
 
+try:
+    import readline
+    history_write = readline.write_history_file
+    history_read = readline.read_history_file
+except ImportError:
+    history_write = None
+    history_read = None
+
+
 UNBOUNDED = None
 contact_disclose = ('name','org','addr','voice','fax','email')
 
@@ -236,7 +245,9 @@ class Message(eppdoc.Message):
         if interactive:
             session_base.print_unicode(_T('${BOLD}${YELLOW}Start interactive input of params. To break type: ${NORMAL}${BOLD}!${NORMAL}[!!...] (one ${BOLD}!${NORMAL} for scope)'))
             dct[command_name] = [command_name]
+            if history_write: history_write() # save history
             errors, param = self.__interactive_params__(command_name, vals[1], dct)
+            if history_read: history_read() # restore history (flush interactive params)
             if not errors:
                 example = __build_command_example__(columns, dct)
             # Note the interactive mode is closed.

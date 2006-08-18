@@ -774,6 +774,10 @@ class Client:
         'Check if client is login on the server.'
         return self._epp.is_logon()
 
+    def load_config(self, session=''):
+        'Load config file.'
+        return self._epp.load_config(session)
+
 class ClientSession(ManagerReceiver):
     "Use for console or batch applications."
 

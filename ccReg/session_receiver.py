@@ -226,7 +226,7 @@ class ManagerReceiver(ManagerCommand):
                 ('domain:name','domain:roid','domain:status s','domain:registrant'
                 ,'domain:contact','domain:contact type','domain:nsset','domain:clID','domain:crID'
                 ,'domain:crDate','domain:upDate','domain:exDate','domain:upID'))
-            self._dct_answer['data']['domain:pw'] = eppdoc.get_dct_value(domain_infData, ('domain:authInfo','domain:pw'), '\n', '', '******')
+            self._dct_answer['data']['domain:pw'] = eppdoc.get_dct_value(domain_infData, ('domain:authInfo','domain:pw')) ## , '\n', '', u'******'
             m = re.match('\d{4}-\d{2}-\d{2}', self.get_value_from_dict(('data','domain:exDate')))
             if m: self._dct_answer['data']['domain:renew'] = m.group(0) # value for renew-domain
 
@@ -251,7 +251,7 @@ class ManagerReceiver(ManagerCommand):
                     addr = eppdoc.get_dct_value(ns, 'nsset:addr').split('\n')
                     dns.append([name,addr])
                 self._dct_answer['data']['nsset:ns'] = dns
-            self._dct_answer['data']['nsset:pw'] = eppdoc.get_dct_value(nsset_infData, ('nsset:authInfo','nsset:pw'), '\n', '', '******')
+            self._dct_answer['data']['nsset:pw'] = eppdoc.get_dct_value(nsset_infData, ('nsset:authInfo','nsset:pw')) ## , '\n', '', '******'
 
 
     #-------------------------------------
