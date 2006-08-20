@@ -85,6 +85,8 @@ class TerminalController:
         output; if this stream is not a tty, then the terminal is
         assumed to be a dumb terminal (i.e., have no capabilities).
         """
+        self._is_mode_color = 0
+        
         # Curses isn't available on all platforms
         try: import curses
         except: return
@@ -100,8 +102,6 @@ class TerminalController:
         # Look up numeric capabilities.
         self.COLS = curses.tigetnum('cols')
         self.LINES = curses.tigetnum('lines')
-        
-        self._is_mode_color = 0
         
         # Look up string capabilities.
         for capability in self._STRING_CAPABILITIES:
