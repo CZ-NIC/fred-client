@@ -142,7 +142,7 @@ class ManagerBase:
 
     def welcome(self):
         "Welcome message."
-        return _T('ccReg client version 1.1 Type "help", "license" or "credits" for more information.')
+        return _T('ccRegClient 1.1\nType "help", "license" or "credits" for more information.')
 
     def __next_clTRID__(self):
         """Generate next clTRID value.

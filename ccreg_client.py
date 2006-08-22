@@ -24,7 +24,7 @@ OPTIONS with values:
                   2 - all returned values
                   3 - display XML sources
     -c --command  send command to the EPP server
-                  example: --command='info-domain nic.cz'
+                  example: --command='info_domain nic.cz'
 
 OPTIONS:
     -r --colors   set on colored output

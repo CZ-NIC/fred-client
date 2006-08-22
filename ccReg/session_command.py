@@ -57,6 +57,25 @@ class ManagerCommand(ManagerTransfer):
     def make_help(self, command_name):
         "Make help for chosen command."
         if command_name:
+            command_name = command_name.replace('-','_')
+            if command_name in self._available_commands:
+                command_name = self.__make_help__(command_name)
+            else:
+                self.append_note('%s "%s".'%(_T('No help available for'),command_name))
+                command_name = '.'
+        else:
+            self.__make_help_list_EPP_commands__()
+        return command_name
+
+    def __make_help_list_EPP_commands__(self):
+        self.append_note('\n${BOLD}%s:${NORMAL}\n%s'%(_T("Available EPP commands"),", ".join(self._available_commands)))
+        self.append_note(_T('Type "?command" (or "h(elp) command") for mode details about parameters.'))
+        self.append_note(_T('To start the interactive mode of input the command params type: ${BOLD}!command${NORMAL}'))
+        self.append_note(_T('For stop interactive input type ! instead of value (or more "!" for leave sub-scope)'))
+
+    def __make_help__(self, command_name):
+        "Make help for chosen command."
+        if command_name:
             m = re.match('(\S+)', command_name)
             if m:command_name = m.group(1)
         if command_name and command_name != 'command':
@@ -92,7 +111,7 @@ class ManagerCommand(ManagerTransfer):
 
     def make_help_session(self, command_name):
         # Když je dotaz na help
-        if not command_name or command_name != '.':
+        if command_name is None or command_name != '.':
             self.append_note(_T("""\n${BOLD}Session commands:${NORMAL}
 ${BOLD}q${NORMAL} (or ${BOLD}quit${NORMAL}, ${BOLD}exit${NORMAL}) # quit this application
 ${BOLD}help${NORMAL} (or ${BOLD}h${NORMAL}, ${BOLD}?${NORMAL})  # display this help
@@ -123,8 +142,8 @@ ${BOLD}verbose${NORMAL} [number] # set verbose mode: 1 - brief (default); 2 - fu
                 else:
                     self.append_error(self._epp_cmd.get_errors()) # any problems on the command line occurrs
             else:
-                self.append_note(_T("Unknown EPP command: %s.")%cmdline.encode(encoding))
-                self.append_note('(%s: ${BOLD}help${NORMAL})'%_T('For more type'))
+                self.append_note('%s: %s'%(_T("Unknown command"),cmdline.encode(encoding)))
+                self.append_note('(%s: ${BOLD}help${NORMAL})'%_T('For list all commands type'))
                 self._epp_cmd.help_check_name(self._notes, cmdline)
         return command_name
 

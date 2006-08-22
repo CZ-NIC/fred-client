@@ -87,7 +87,7 @@ OPTIONS s hodnotami:
                   2 - plný
                   3 - plný & XML zdroje
     -c --command  odeslání příkatu na EPP server
-                  příklad: --command='info-domain nic.cz'
+                  příklad: --command='info_domain nic.cz'
 
 OPTIONS:
     -r --colors   zapnutí barevného výstupu
@@ -249,23 +249,23 @@ Například:
     > login moje-ID "moje heslo s mezerami"
 
 Některé parametry můžou obsahovat seznam hodnot. Například parametr 
-"street" v příkazu create-contact.
+"street" v příkazu create_contact.
 Výpis části helpu:
 
-    ?create-contact
+    ?create_contact
     ...
     ... street (nepovinný)  seznam o maximálně 3 položkách.
     ...
 
 Seznam zadáte tak, že hodnoty uzavřete do závorek:
 
-    > create-contact my-ID my-name mail city 
+    > create_contact my-ID my-name mail city 
             cc org (Vodičkova, "Na příkopě", "U přívozu") voice
 
 Pokud zadáváte jen jednu hodnotu ze seznamu, tak závorky zadávat
 nemusíte:
 
-    > create-contact my-ID my-name mail city cc org Vodičkova voice
+    > create_contact my-ID my-name mail city cc org Vodičkova voice
 
 Parametry musíte zadávat v pořadí, v jakém jsou v helpu vypsány. Povinné
 jsou vždy na začátku a nepovinné tak není nutné zadávat. Pro případ, že
@@ -275,11 +275,11 @@ parametru - klíče. To řeší situaci, kdy by se kvůli jednomu parametru
 na konci řady musely zadávat všechny parametry před ním.
 
 Klíč (jméno parametru) se definuje pomocí jednoho nebo dvou spojovníků.
-Například chcete v příkazu create-contact zadat kromě povinných údajů už
+Například chcete v příkazu create_contact zadat kromě povinných údajů už
 jen hodnotu "notify email", která se nachází právě na úplném konci
 seznamu parametrů. Pak tuto hodnotu zadáte takto:
 
-  > create-contact my-ID my-name mail city cc --notify_email = muj@mail.cz
+  > create_contact my-ID my-name mail city cc --notify_email = muj@mail.cz
 
 Jaký má být klíč (název parametru) zjistíte z helpu daného příkazu.
 Parametr s klíčem pak již nemusí být na "své" pozici, ale může být
@@ -287,29 +287,29 @@ kdekoliv v řadě mezi ostatními parametry. Takový parametr stojí "mimo"
 pořadí a nenarušuje pozice ostatních parametrů bez klíče. Zde jsou 
 do řady parametrů vloženy hodnoty s klíči "vat" a "notify_email":
 
-    > create-contact my-ID my-name mail --vat = 12346 --notify_email = muj@mail.cz city cc
+    > create_contact my-ID my-name mail --vat = 12346 --notify_email = muj@mail.cz city cc
 
 Některé příkazy mají parametry vnořené do dalších parametrů. Ty vytvářejí
-jmenné prostory. Například v příkazu "create-contact" je parametr 
+jmenné prostory. Například v příkazu "create_contact" je parametr 
 "disclose". Ten obsahuje další parametry "flag", "data", atd. Samotný
 název "disclose" není v tomto případě název klíče, ale název jmenného
 prostoru, ve kterém se nacházejí klíče "flag" a "data". Jmenné
 prostory se definují stejně jako seznamy pomocí závorek:
 
-  > create-contact my-ID my-name mail city cc org street sp pc 
+  > create_contact my-ID my-name mail city cc org street sp pc 
         voice fax (n (name org addr voice fax email)) vat ssn
 
 Pokud jmenný prostor nechcete zadávat, napište prostě jen prázdné
 závorky. To platí i pro seznamy:
 
-  > create-contact my-ID my-name mail city cc org street sp pc voice fax () vat ssn notify@email
+  > create_contact my-ID my-name mail city cc org street sp pc voice fax () vat ssn notify@email
 
 Některé příkazy mají v parametrech seznamy jmenných prostorů. V takovém
 případě pak závorky mají své významy podle toho, jak jsou hodnoty
-strukturované. Například příkaz "update-nsset" má jeden 
+strukturované. Například příkaz "update_nsset" má jeden 
 nepovinný parametr "add". Pokud jej nechcete zadávat, tak napíšete:
 
-  > update-nsset id () ...    - parametr add je nyní prázdný
+  > update_nsset id () ...    - parametr add je nyní prázdný
 
 Pokud ale "add" zadat chcete, tak "add" (jak vidíte v helpu) obsahuje
 seznam devíti jmenných prostorů "dns"! Každý "dns" prostor pak dále
@@ -319,7 +319,7 @@ jmenného prostoru "add". Druhá závorka pro začátek seznamu jmenných prosto
 Třetí závorka pro samotný jmenný prostor "dns". Teprve pak následuje
 hodnota parametru "name". Za ním pak následuje závorka seznamu "addr":
 
-  >  update-nsset nsset1 (((ns1.dns.cz (217.31.207.130, 217.31.207.131, 217.31.207.132)), 
+  >  update_nsset nsset1 (((ns1.dns.cz (217.31.207.130, 217.31.207.131, 217.31.207.132)), 
         (ns2.dns.cz (217.31.207.130, 217.31.207.131, 217.31.207.132))) (tech1, tech2, tech3) 
         (ok, clientTransferProhibited)) (((rem1.dns.cz, rem2.dns.cz) (tech-rem01, tech-rem02) 
             serverUpdateProhibited)) (password)
@@ -328,7 +328,7 @@ Pokud "addr" není seznam, ale jen jedna hodnota, tak se závorky pro
 "addr" zadávat nemusí:
 (To je pravidlo již zmíněné v předchozím textu.)
 
-  > update-nsset nsset-ID (((nsset1 217.31.207.130),(nsset2 217.31.207.130))
+  > update_nsset nsset-ID (((nsset1 217.31.207.130),(nsset2 217.31.207.130))
         tech status) ...
 
 Takto složité zadávání naštěstí existuje jen v malém množství příkazů a
@@ -340,7 +340,7 @@ příklad zadání všech parametrů.
 Pokud chcete parametry přikazu zadávat interaktivně, napište před příkaz
 vykřičník:
 
-  > !update-nsset
+  > !update_nsset
 
 Tím spustíte režim interaktivního vkládání parametrů. Konzole vždy
 vypíše jméno parametru a čeká na zadání hodnoty. Pokud hodnotu nechcete
@@ -354,7 +354,7 @@ prostoru nebo ukončit režim celý, tak zadejte více vykřičníků najednou.
 Jeden vykčiřník na jeden jmenný prostor. Nevadí bude-li jich více, než
 požadovaný počet:
 
-    > !update-nsset
+    > !update_nsset
     Start interaktivního zadávání parametrů. Pro ukončení zadejte: 
         ![!!...] (jeden ! pro každou podskupinu)
     > !update_nsset:id (povinný) > moje-id
@@ -482,20 +482,20 @@ Skripty ''ccreg_create.py'' a ''ccreg_sender.py'' jsou určeny pro použití v s
 ''ccreg_create.py'' přijímá parametry se standardního vstupu a vygeneruje 
 XML EPP dokument na standardní výstup. Například:
 
-    $ python ccreg_create.py info-domain nic.cz
-    $ ./ccreg_create.py info-domain nic.cz
+    $ python ccreg_create.py info_domain nic.cz
+    $ ./ccreg_create.py info_domain nic.cz
 
 <?xml version='1.0' encoding....
 
 Pokud nastane nějaká chyba, tak vrací XML s chybovým hlášením:
 
-    $ python ccreg_create.py inxo-domain nic.cz
+    $ python ccreg_create.py inxo_domain nic.cz
 
 <?xml encoding='utf-8'?><errors>inxo_domain nic.cz: Neznámý příkaz!</errors>
 
 Příkazy se dají zřetězit:
 
-    $ ./ccreg_create.py check-domain test.cz nic.cz | ./ccreg_create.py info-domain nic.cz
+    $ ./ccreg_create.py check_domain test.cz nic.cz | ./ccreg_create.py info_domain nic.cz
 
 
 ''ccreg_sender.py'' odesílá dokumenty na server. Skript se automaticky zaloguje, pak
@@ -506,14 +506,14 @@ Skript může odesílat dokumenty dvěma způsoby:
     1. dokumenty se uloží do souboru a skriptu se předají jména souborů. Skript
        je pak odesílá v uvedeném pořadí. Například:
 
-    $ ./ccreg_create.py check-domain cosi.cz nic.cz > doc1.xml
-    $ ./ccreg_create.py info-domain nic.cz > doc2.xml
+    $ ./ccreg_create.py check_domain cosi.cz nic.cz > doc1.xml
+    $ ./ccreg_create.py info_domain nic.cz > doc2.xml
     $ ./ccreg_sender.py doc1.xml doc2.xml
 
     2. PIPE - Zřetězením příkazů create a sender.
        Například:
 
-    $ ./ccreg_create.py check-domain cosi.cz nic.cz | ./ccreg_create.py info-domain nic.cz | ./ccreg_sender.py
+    $ ./ccreg_create.py check_domain cosi.cz nic.cz | ./ccreg_create.py info_domain nic.cz | ./ccreg_sender.py
 
 
 
@@ -574,7 +574,7 @@ Každá funkce (EPP příkazu) vrací tuto "retval" hodnotu, která je typu dict
 
     {'reason': u'Text of answer reason', 
      'code': 1000,
-     'command': 'command-name',  
+     'command': 'command_name',  
      'errors': []
      'data': {'key': 'value' [,'next-key':'next-value']}, 
     }

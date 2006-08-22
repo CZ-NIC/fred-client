@@ -74,7 +74,7 @@ class Message(eppdoc.Message):
         if self._command_params.has_key(command_name):
             # příkaz existuje
             required,params,notice,examples = self._command_params[command_name]
-            command_line = ['${BOLD}%s${NORMAL}'%command_name.replace('_','-')]
+            command_line = ['${BOLD}%s${NORMAL}'%command_name] ## .replace('_','-')
             if params:
                 for pos in range(required):
                     command_line.append(params[pos][0])
@@ -131,7 +131,7 @@ class Message(eppdoc.Message):
                         err = self.__check_required__(children, dct, scopes)
                         if err: errors.extend(err)
             else:
-                if min_max[0] > 0: errors.append('%s %s.'%(scope_name,_T('missing')))
+                if min_max[0] > 0: errors.append('%s: %s %s'%(_T('ERROR'),scope_name,_T('missing')))
             scopes.pop()
         return errors
 
@@ -244,7 +244,7 @@ class Message(eppdoc.Message):
         columns.extend(self._command_params[command_name][1])
         dct['command'] = [command_name]
         if interactive:
-            session_base.print_unicode(_T('${BOLD}${YELLOW}Start interactive input of params. To break type: ${NORMAL}${BOLD}!${NORMAL}[!!...] (one ${BOLD}!${NORMAL} for scope)'))
+            session_base.print_unicode('${BOLD}${YELLOW}%s: ${NORMAL}${BOLD}!${NORMAL} (%s)'%(_T('Interactive input params mode. For BREAK type'),_T('If you are inside namespace type more "!" together: e.g.: !!!!.')))
             dct[command_name] = [command_name]
             if history_write: history_write(history_filename) # save history
             errors, param = self.__interactive_params__(command_name, vals[1], dct)

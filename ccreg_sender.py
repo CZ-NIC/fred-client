@@ -119,10 +119,10 @@ OPTIONS:
     -? --help     this help
     
 EXAMPLES:
-./ccreg_create.py info-domain nic.cz > cmd1.xml
-./ccreg_create.py info-contact reg-id pokus > cmd2.xml
+./ccreg_create.py info_domain nic.cz > cmd1.xml
+./ccreg_create.py info_contact reg-id pokus > cmd2.xml
 ./ccreg_sender.py cmd1.xml cmd2.xml
 ./ccreg_sender.py -s epp_host -l cs cmd1.xml cmd2.xml
 
-./ccreg_create.py info-domain nic.cz | ./ccreg_create.py info-contact reg-id pokus | ./ccreg_create.py check-domain hokus pokus cosi | ./ccreg_sender.py
+./ccreg_create.py info_domain nic.cz | ./ccreg_create.py info_contact reg-id pokus | ./ccreg_create.py check_domain hokus pokus cosi | ./ccreg_sender.py
 """

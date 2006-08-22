@@ -105,7 +105,7 @@ class Client:
         self._epp.close()
         
     def check_contact(self, name):
-        """Usage: check-contact name [,name2]
+        """Usage: check_contact name [,name2]
     
     PARAMS:
 
@@ -125,7 +125,7 @@ class Client:
         return self._epp.api_command('check_contact',{'name':name})
 
     def check_domain(self, name):
-        """Usage: check-domain name [,name2]
+        """Usage: check_domain name [,name2]
 
     PARAMS:
 
@@ -145,7 +145,7 @@ class Client:
         return self._epp.api_command('check_domain',{'name':name})
 
     def check_nsset(self, name):
-        """Usage: check-nsset name [,name2]
+        """Usage: check_nsset name [,name2]
 
     PARAMS:
 
@@ -167,7 +167,7 @@ class Client:
     def create_contact(self, contact_id, name, email, city, cc, pw,
             org=None, street=None, sp=None, pc=None, voice=None, fax=None, 
             disclose=None, vat=None, ssn=None, notify_email=None):
-        """Usage: create-contact contact-id name email city cc
+        """Usage: create_contact contact-id name email city cc
 
     PARAMS:
 
@@ -209,7 +209,7 @@ class Client:
             'notify_email':notify_email})
 
     def create_domain(self, name, pw, nsset, registrant, period=None, admin=None):
-        """Usage: create-domain name pw nsset registrant
+        """Usage: create_domain name pw nsset registrant
 
     PARAMS:
 
@@ -233,7 +233,7 @@ class Client:
 
     def create_domain_enum(self, name, pw, nsset, registrant, period=None,
          contact=None, val_ex_date=None):
-        """Usage: create-domain-enum name pw nsset registrant
+        """Usage: create_domain_enum name pw nsset registrant
 
     PARAMS:
 
@@ -259,7 +259,7 @@ class Client:
             'contact':contact, 'val_ex_date':val_ex_date})
 
     def create_nsset(self, nsset_id, pw, dns, tech=None):
-        """Usage: create-nsset id pw
+        """Usage: create_nsset id pw
 
     PARAMS:
 
@@ -277,15 +277,15 @@ class Client:
    object can be created for a specific validity period.
 
     Examples:
-    create-nsset exampleNsset passw
-    create-nsset example1 passw ((ns1.domain.net (217.31.207.130 217.31.207.129)),(ns2.domain.net (217.31.206.130 217.31.206.129)),(ns3.domain.net (217.31.205.130 217.31.205.129))) reg-id
+    create_nsset exampleNsset passw
+    create_nsset example1 passw ((ns1.domain.net (217.31.207.130 217.31.207.129)),(ns2.domain.net (217.31.206.130 217.31.206.129)),(ns3.domain.net (217.31.205.130 217.31.205.129))) reg-id
 
         """
         return self._epp.api_command('create_nsset',{'id':nsset_id, 'pw':pw, 'dns':dns, 'tech':tech})
 
 
     def delete_contact(self, nsset_id):
-        """Usage: delete-contact id
+        """Usage: delete_contact id
 
     PARAMS:
 
@@ -300,7 +300,7 @@ class Client:
 
 
     def delete_domain(self, name):
-        """Usage: delete-domain name
+        """Usage: delete_domain name
 
     PARAMS:
 
@@ -314,7 +314,7 @@ class Client:
 
 
     def delete_nsset(self, nsset_id):
-        """Usage: delete-nsset id
+        """Usage: delete_nsset id
 
     PARAMS:
 
@@ -347,7 +347,7 @@ class Client:
 
 
     def info_contact(self, name):
-        """Usage: info-contact name
+        """Usage: info_contact name
 
     PARAMS:
 
@@ -370,7 +370,7 @@ class Client:
 
 
     def info_domain(self, name):
-        """Usage: info-domain name
+        """Usage: info_domain name
 
     PARAMS:
 
@@ -393,7 +393,7 @@ class Client:
         domain:renew: (unicode)
         domain:contact.type: (list)
         }
-        NOTE: domain:renew (you can use for renew-domain command)
+        NOTE: domain:renew (you can use for renew_domain command)
 
    The EPP "info" command is used to retrieve information associated
    with an existing object. The elements needed to identify an object
@@ -405,7 +405,7 @@ class Client:
 
 
     def info_nsset(self, name):
-        """Usage: info-nsset name
+        """Usage: info_nsset name
 
     PARAMS:
 
@@ -481,7 +481,7 @@ class Client:
 
 
     def renew_domain(self, name, cur_exp_date, period=None):
-        """Usage: renew-domain name cur_exp_date
+        """Usage: renew_domain name cur_exp_date
 
     PARAMS:
 
@@ -499,7 +499,7 @@ class Client:
 
 
     def renew_domain_enum(self, name, cur_exp_date, period=None, valExDate=None):
-        """Usage: renew-domain-enum name cur_exp_date
+        """Usage: renew_domain_enum name cur_exp_date
 
     PARAMS:
 
@@ -519,7 +519,7 @@ class Client:
 
 
     def transfer_contact(self, name, passw):
-        """Usage: transfer-contact name passw
+        """Usage: transfer_contact name passw
 
     PARAMS:
 
@@ -539,7 +539,7 @@ class Client:
         return self._epp.api_command('transfer_contact',{'name':name, 'passw':passw})
 
     def transfer_domain(self, name, passw):
-        """Usage: transfer-domain name passw
+        """Usage: transfer_domain name passw
 
     PARAMS:
 
@@ -559,7 +559,7 @@ class Client:
         return self._epp.api_command('transfer_domain',{'name':name, 'passw':passw})
 
     def transfer_nsset(self, name, passw):
-        """Usage: transfer-nsset name passw
+        """Usage: transfer_nsset name passw
 
     PARAMS:
 
@@ -580,7 +580,7 @@ class Client:
 
 
     def update_contact(self, contact_id, add=None, rem=None, chg=None):
-        """Usage: update-contact contact-id
+        """Usage: update_contact contact-id
 
     PARAMS:
 
@@ -618,7 +618,7 @@ class Client:
 
 
     def update_domain(self, name, add=None, rem=None, chg=None):
-        """Usage: update-domain name
+        """Usage: update_domain name
 
     PARAMS:
 
@@ -643,7 +643,7 @@ class Client:
 
 
     def update_domain_enum(self, name, add=None, rem=None, chg=None, val_ex_date=None):
-        """Usage: update-domain-enum name
+        """Usage: update_domain_enum name
 
     PARAMS:
 
@@ -670,7 +670,7 @@ class Client:
 
 
     def update_nsset(self, nsset_id, add=None, rem=None, chg=None):
-        """Usage: update-nsset id
+        """Usage: update_nsset id
 
     PARAMS:
 
@@ -693,13 +693,13 @@ class Client:
     The EPP "update" command is used to update an instance of an existing object.
 
     Examples:
-    update-nsset nic.cz
-    update-nsset nsset-ID (((nsset1.name.cz 127.0.0.1),(nsset2.name.cz (127.0.2.1 127.0.2.2)),) tech-add-contact ok) ("My Name",("Tech contact 1","Tech contact 2"),(clientDeleteProhibited ok)) (password extension)
+    update_nsset nic.cz
+    update_nsset nsset-ID (((nsset1.name.cz 127.0.0.1),(nsset2.name.cz (127.0.2.1 127.0.2.2)),) tech-add-contact ok) ("My Name",("Tech contact 1","Tech contact 2"),(clientDeleteProhibited ok)) (password extension)
         """
         return self._epp.api_command('update_nsset',{'id':nsset_id, 'add':add, 'rem':rem, 'chg':chg})
 
     def list_contact(self):
-        """Usage: list-contact
+        """Usage: list_contact
 
     PARAMS:
 
@@ -712,7 +712,7 @@ class Client:
         return self._epp.api_command('list_contact')
         
     def list_nsset(self):
-        """Usage: list-nsset
+        """Usage: list_nsset
 
     PARAMS:
 
@@ -725,7 +725,7 @@ class Client:
         return self._epp.api_command('list_nsset')
 
     def list_domain(self):
-        """Usage: list-domain
+        """Usage: list_domain
 
     PARAMS:
 

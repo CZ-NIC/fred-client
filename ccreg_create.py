@@ -12,7 +12,7 @@ def main(command):
     epp.set_auto_connect(0) # set OFF auto connection
     command_name, epp_doc = epp.create_eppdoc(command)
     errors = epp.fetch_errors()
-    if not epp_doc and not errors: errors = _T('Unknown command!')
+    if not epp_doc and not errors: errors = _T('Unknown command')
     xml_error = ''
     if errors:
         if type(command_name) == unicode: command_name = command_name.encode(encoding)
@@ -40,8 +40,8 @@ Usage:
 python ccreg_create.py command params
 
 Example:
-python ccreg_create.py info-domain nic.cz
-python ccreg_create.py info-contact reg-id
+python ccreg_create.py info_domain nic.cz
+python ccreg_create.py info_contact reg-id
 
 If any error occurs, script returns errors in XML with top node errors.
 """

@@ -136,10 +136,12 @@ if w: warnings.append(w)
 if options['lang'] == 'en':
     _T = gettext.gettext
 else:
+    domain = 'cz_nic_ccreg_client'
+    tpath = os.path.join(os.path.split(__file__)[0],'lang')
     try:
-        _T = gettext.translation('cz_nic_ccreg_client',os.path.join(os.path.split(__file__)[0],'lang'),(options['lang'],), codeset=encoding).gettext
+        _T = gettext.translation(domain,tpath,(options['lang'],), codeset=encoding).gettext
     except IOError, (no,msg):
-        print 'Translate IOError',no,msg
+        print 'Translate IOError',no,msg,'\nMISSING:','%s/%s/LC_MESSAGES/%s.mo'%(tpath,options['lang'],domain)
         _T = gettext.gettext
 
 option_errors = '\n'.join(errors)

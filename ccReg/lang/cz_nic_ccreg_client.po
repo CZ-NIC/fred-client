@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-16 16:08+0200\n"
+"POT-Creation-Date: 2006-08-22 11:12+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Zdeněk Böhm <zdenek.bohm@nic.cz>\n"
 "Language-Team: CS <info@nic.cz>\n"
@@ -66,7 +66,7 @@ msgstr ""
 msgid "Connection closed"
 msgstr "Spojení uzavřeno"
 
-#: ccReg/cmd_history.py:29
+#: ccReg/cmd_history.py:30
 msgid "readline module missing - cmd history is diabled"
 msgstr "readline modul chybí - historie příkazů je deaktivována"
 
@@ -97,101 +97,104 @@ msgstr "Nesprávné použití závorek (list)."
 msgid "Invalid bracket definition (childs)."
 msgstr "Nesprávné použití závorek (childs)."
 
-#: ccReg/eppdoc_assemble.py:34 ccReg/eppdoc_assemble.py:134
+#: ccReg/eppdoc_assemble.py:44 ccReg/eppdoc_assemble.py:144
 msgid "required"
 msgstr "povinný"
 
-#: ccReg/eppdoc_assemble.py:36 ccReg/eppdoc_assemble.py:134
+#: ccReg/eppdoc_assemble.py:46 ccReg/eppdoc_assemble.py:144
 msgid "optional"
 msgstr "nepovinný"
 
-#: ccReg/eppdoc_assemble.py:39
+#: ccReg/eppdoc_assemble.py:49
 msgid "unbounded list"
 msgstr "libovolně velký seznam"
 
-#: ccReg/eppdoc_assemble.py:41
+#: ccReg/eppdoc_assemble.py:51
 #, python-format
 msgid "list with max %d items."
 msgstr "seznam o maximálně %d položkách."
 
-#: ccReg/eppdoc_assemble.py:49
+#: ccReg/eppdoc_assemble.py:59
 msgid "accept only values"
 msgstr "povoleny pouze hodnoty"
 
-#: ccReg/eppdoc_assemble.py:74
+#: ccReg/eppdoc_assemble.py:84
 msgid "Unknown EPP command. Select one from EPP commands list (Type help)."
 msgstr ""
 "Neznámý EPP příkaz. Vyberte jeden ze seznamu EPP příkazů (zadejte help)."
 
-#: ccReg/eppdoc_assemble.py:81
+#: ccReg/eppdoc_assemble.py:91
 msgid "Try"
 msgstr "Zkuste"
 
-#: ccReg/eppdoc_assemble.py:105
+#: ccReg/eppdoc_assemble.py:115
 msgid "Invalid input format."
 msgstr "Neplatný vstupní formát"
 
-#: ccReg/eppdoc_assemble.py:112
+#: ccReg/eppdoc_assemble.py:122
 msgid "list of values overflow. Maximum is"
 msgstr "Počet položek v seznamu je překročen. Maximum je"
 
-#: ccReg/eppdoc_assemble.py:117
+#: ccReg/eppdoc_assemble.py:127
 #, python-format
 msgid "Value \"%s\" is not allowed here. Valid:"
 msgstr "Hodnota \"%s\" není povolena. Platná je:"
 
-#: ccReg/eppdoc_assemble.py:124
+#: ccReg/eppdoc_assemble.py:134
+msgid "ERROR"
+msgstr "CHYBA"
+
+#: ccReg/eppdoc_assemble.py:134
 msgid "missing"
 msgstr "chybí"
 
-#: ccReg/eppdoc_assemble.py:134
+#: ccReg/eppdoc_assemble.py:144
 msgid "required only if part is set"
 msgstr "povinný jen je-li tato část zadána"
 
-#: ccReg/eppdoc_assemble.py:168
+#: ccReg/eppdoc_assemble.py:178
 msgid "Param MUST be a value from this list"
 msgstr "Parametr MUSÍ být hodnota z následujícího seznamu"
 
-#: ccReg/eppdoc_assemble.py:170
+#: ccReg/eppdoc_assemble.py:181
 msgid "Example"
 msgstr "Příklad"
 
-#: ccReg/eppdoc_assemble.py:228
+#: ccReg/eppdoc_assemble.py:239 ccReg/session_command.py:145
+#: ccreg_create.py:15
 msgid "Unknown command"
 msgstr "Neznámý příkaz"
 
-#: ccReg/eppdoc_assemble.py:229 ccReg/eppdoc_assemble.py:257
-#: ccReg/session_command.py:127
+#: ccReg/eppdoc_assemble.py:240 ccReg/eppdoc_assemble.py:270
 msgid "For more type"
 msgstr "Pro více informací zadejte"
 
-#: ccReg/eppdoc_assemble.py:236
-msgid ""
-"${BOLD}${YELLOW}Start interactive input of params. To break type: ${NORMAL}"
-"${BOLD}!${NORMAL}[!!...] (one ${BOLD}!${NORMAL} for scope)"
-msgstr ""
-"${BOLD}${YELLOW}Start interaktivního zadávání parametrů. Pro ukončení "
-"zadejte: ${NORMAL}${BOLD}!${NORMAL}[!!...] (jeden ${BOLD}!${NORMAL} pro "
-"každou podskupinu)"
+#: ccReg/eppdoc_assemble.py:247
+msgid "Interactive input params mode. For BREAK type"
+msgstr "Mód interaktivního zadávání parametrů. Pro přerušení zadejte"
 
-#: ccReg/eppdoc_assemble.py:243
+#: ccReg/eppdoc_assemble.py:247
+msgid "If you are inside namespace type more \"!\" together: e.g.: !!!!."
+msgstr "Pokud jste ve jmenném prostoru, zadejte více \"!\" najednou. Např.: !!!!."
+
+#: ccReg/eppdoc_assemble.py:256
 msgid "End of interactive input. [press enter]"
 msgstr "Konec interaktivního zadání parametrů. [stiskněte enter]"
 
-#: ccReg/eppdoc_assemble.py:255
+#: ccReg/eppdoc_assemble.py:268
 msgid "Missing values. Required minimum is"
 msgstr "Chybí parametry. Požadované minimum je"
 
-#: ccReg/eppdoc_assemble.py:256
+#: ccReg/eppdoc_assemble.py:269
 msgid "Type"
 msgstr "Zadejte"
 
-#: ccReg/eppdoc_assemble.py:845
+#: ccReg/eppdoc_assemble.py:867
 #, python-format
 msgid "(Value can be a list of max %d values.)"
 msgstr "(Hodnota může být seznam o max. velikosti %d položek.)"
 
-#: ccReg/eppdoc_assemble.py:847
+#: ccReg/eppdoc_assemble.py:869
 msgid "(Value can be an unbouded list of values.)"
 msgstr "(Hodnota může být libovolně velký seznam.)"
 
@@ -266,16 +269,15 @@ msgstr ""
 msgid ""
 "The EPP \"renew\" command is used to extend validity of an existing object."
 msgstr ""
-"EPP příkaz \"renew\" se používá pro prodloužení platnosti vybraného "
-"objektu."
+"EPP příkaz \"renew\" se používá pro prodloužení platnosti vybraného objektu."
 
 #: ccReg/eppdoc_client.py:40
 msgid ""
 "The EPP \"update\" command is used to update an instance of an existing "
 "object."
 msgstr ""
-"EPP příkaz \"update\" se používá pro aktualizaci hodnot instance "
-"vybraného objektu."
+"EPP příkaz \"update\" se používá pro aktualizaci hodnot instance vybraného "
+"objektu."
 
 #: ccReg/eppdoc_client.py:41
 msgid ""
@@ -626,52 +628,52 @@ msgstr "Dokument má chybné kódování. LookupError: %s"
 msgid "Internal Error: Master node '%s' doesn't exist."
 msgstr "Interní chyba: Nadřazený uzel '%s' neexistuje."
 
-#: ccReg/session_base.py:94
+#: ccReg/session_base.py:89
 msgid "Confirm has been set to"
 msgstr "Potvrzení bylo nastaveno na"
 
-#: ccReg/session_base.py:150
+#: ccReg/session_base.py:145
 msgid ""
-"ccReg client version 1.1 Type \"help\", \"license\" or \"credits\" for more "
-"information."
+"ccRegClient 1.1\n"
+"Type \"help\", \"license\" or \"credits\" for more information."
 msgstr ""
-"ccReg client verze 1.1 Zadejte \"help\", \"license\" nebo \"credits\" pro "
-"zobrazení více informací."
+"ccRegClient 1.1\n"
+"Zadejte \"help\", \"license\" or \"credits\" pro zobrazení více informací."
 
-#: ccReg/session_base.py:168
+#: ccReg/session_base.py:163
 msgid "Create default config failed."
 msgstr "Vytvoření defaultního config souboru selhalo."
 
-#: ccReg/session_base.py:170
+#: ccReg/session_base.py:165
 msgid "Actual config is"
 msgstr "Aktuální config je"
 
-#: ccReg/session_base.py:172
+#: ccReg/session_base.py:167
 msgid "No config"
 msgstr "Žádný config"
 
-#: ccReg/session_base.py:253
+#: ccReg/session_base.py:248
 msgid "Default config file saved. For more see help."
 msgstr "Defaultní config soubor byl uložen. Další informace naleznete v helpu."
 
-#: ccReg/session_base.py:256
+#: ccReg/session_base.py:251
 msgid "Impossible saving conf file. Reason"
 msgstr "Není možné uložit config soubor. Důvod"
 
-#: ccReg/session_base.py:291
+#: ccReg/session_base.py:279
 msgid "Fatal error: Create default config failed."
 msgstr "Fatální chyba: Vytvoření defaultních config hodnot selhalo."
 
-#: ccReg/session_base.py:327
+#: ccReg/session_base.py:315
 msgid "Verbose mode can be set only to 1 or 2 or 3."
 msgstr "Mód výstupu může být nastaven jen na hodnoty 1, 2 nebo 3."
 
-#: ccReg/session_base.py:354 ccReg/session_base.py:370
-#: ccReg/session_base.py:391
+#: ccReg/session_base.py:342 ccReg/session_base.py:358
+#: ccReg/session_base.py:379
 msgid "Validator has been disabled. For enable type"
 msgstr "Validátor byl deaktivován. Opětná aktivace se provede zadáním"
 
-#: ccReg/session_base.py:369
+#: ccReg/session_base.py:357
 msgid "Temporary file for verify XML EPP validity cannot been created. Reason"
 msgstr ""
 "Dočasný soubor pro ověření XML EPP validity se nepodařilo vytvořit. Důvod"
@@ -685,41 +687,21 @@ msgid "Example of input"
 msgstr "Příklad zadání"
 
 #: ccReg/session_command.py:64
-msgid "Help for command"
-msgstr "Help pro příkaz"
+msgid "No help available for"
+msgstr "Help nebyl nalezen pro"
 
-#: ccReg/session_command.py:69
-msgid "DESCRIPTION"
-msgstr "POPIS"
-
-#: ccReg/session_command.py:72
-msgid "SYNTAX"
-msgstr "SYNTAXE"
-
-#: ccReg/session_command.py:75
-msgid "OPTIONS"
-msgstr "PARAMETRY"
-
-#: ccReg/session_command.py:78
-msgid "EXAMPLES"
-msgstr "PŘÍKLADY"
-
-#: ccReg/session_command.py:85
-msgid "Instead \"command\" Select one from this list bellow:"
-msgstr "Místo \"příkaz\" vyberte jeden z následujícího seznamu:"
-
-#: ccReg/session_command.py:87
+#: ccReg/session_command.py:71 ccReg/session_command.py:106
 msgid "Available EPP commands"
 msgstr "Dostupné EPP příkazy"
 
-#: ccReg/session_command.py:88
+#: ccReg/session_command.py:72 ccReg/session_command.py:107
 msgid ""
 "Type \"?command\" (or \"h(elp) command\") for mode details about parameters."
 msgstr ""
 "Více informací o parametrech příkazu získáte zadáním \"?příkaz\" (nebo \"h"
 "(elp) příkaz\")."
 
-#: ccReg/session_command.py:89
+#: ccReg/session_command.py:73 ccReg/session_command.py:108
 msgid ""
 "To start the interactive mode of input the command params type: ${BOLD}!"
 "command${NORMAL}"
@@ -727,7 +709,7 @@ msgstr ""
 "Interaktivní režim zadávání parametrů příkazu se spustí: ${BOLD}!příkaz"
 "${NORMAL}"
 
-#: ccReg/session_command.py:90
+#: ccReg/session_command.py:74 ccReg/session_command.py:109
 msgid ""
 "For stop interactive input type ! instead of value (or more \"!\" for leave "
 "sub-scope)"
@@ -735,7 +717,31 @@ msgstr ""
 "Interaktivní zadávání parametrů se přeruší zadáním \"!\" (nebo "
 "vícevykřičníků najednou, když jste v podskupině parametrů)"
 
-#: ccReg/session_command.py:96
+#: ccReg/session_command.py:83
+msgid "Help for command"
+msgstr "Help pro příkaz"
+
+#: ccReg/session_command.py:88
+msgid "DESCRIPTION"
+msgstr "POPIS"
+
+#: ccReg/session_command.py:91
+msgid "SYNTAX"
+msgstr "SYNTAXE"
+
+#: ccReg/session_command.py:94
+msgid "OPTIONS"
+msgstr "PARAMETRY"
+
+#: ccReg/session_command.py:97
+msgid "EXAMPLES"
+msgstr "PŘÍKLADY"
+
+#: ccReg/session_command.py:104
+msgid "Instead \"command\" Select one from this list bellow:"
+msgstr "Místo \"příkaz\" vyberte jeden z následujícího seznamu:"
+
+#: ccReg/session_command.py:115
 msgid ""
 "\n"
 "${BOLD}Session commands:${NORMAL}\n"
@@ -799,73 +805,72 @@ msgstr ""
 "${BOLD}verbose${NORMAL} [number] # nastavit mód výpisu: 1 - stručný "
 "(default); 2 - plný; 3 - plný & XML zdroje\n"
 
-#: ccReg/session_command.py:126
-#, python-format
-msgid "Unknown EPP command: %s."
-msgstr "Neznámý EPP příkaz: %s."
+#: ccReg/session_command.py:146
+msgid "For list all commands type"
+msgstr "Pro výpis celého seznamu příkazů zadejte"
 
-#: ccReg/session_command.py:175
+#: ccReg/session_command.py:194
 msgid "Interpreted command"
 msgstr "Přeložený příkaz"
 
-#: ccReg/session_command.py:180
+#: ccReg/session_command.py:199
 msgid "Command source"
 msgstr "Zdrojový příkaz"
 
-#: ccReg/session_command.py:185
+#: ccReg/session_command.py:204
 msgid "Interpreted answer"
 msgstr "Přeložená odpověď"
 
-#: ccReg/session_command.py:188
+#: ccReg/session_command.py:207
 msgid "Answer source"
 msgstr "Zdrojová odpověď"
 
-#: ccReg/session_command.py:199
+#: ccReg/session_command.py:218
 msgid "Dir list"
 msgstr "Výpis adresáře"
 
-#: ccReg/session_command.py:211
+#: ccReg/session_command.py:230
 msgid "You are connected already. Type disconnect for close connection."
 msgstr "Již jste připojeni. Pro odpojení zadejte disconnect."
 
-#: ccReg/session_command.py:221
+#: ccReg/session_command.py:240
 msgid "You has been disconnected."
 msgstr "Spojení bylo ukončeno."
 
-#: ccReg/session_command.py:223 ccReg/session_transfer.py:135
+#: ccReg/session_command.py:242 ccReg/session_transfer.py:135
 #: ccReg/session_transfer.py:159
 msgid "You are not connected."
 msgstr "Nejste připojeni."
 
-#: ccReg/session_command.py:228
+#: ccReg/session_command.py:247
 msgid "Confirm is"
 msgstr "Potvrzení je nastaveno na"
 
-#: ccReg/session_command.py:235
+#: ccReg/session_command.py:254
 msgid "Validation process is"
 msgstr "Validace je nastavena na"
 
-#: ccReg/session_command.py:241
+#: ccReg/session_command.py:260
 msgid "Colors mode is"
 msgstr "Mód barevnosti je"
 
-#: ccReg/session_command.py:246
+#: ccReg/session_command.py:265
 msgid "Verbose mode is"
 msgstr "Mód rozsahu výpisu je"
 
-#: ccReg/session_command.py:259
+#: ccReg/session_command.py:278
 msgid "poll ack is"
 msgstr "poll ack je"
 
-#: ccReg/session_command.py:276
+#: ccReg/session_command.py:295
 msgid "Load file"
 msgstr "Načíst soubor"
 
-#: ccReg/session_command.py:282
+#: ccReg/session_command.py:301
 msgid "Not found"
 msgstr "Nenalezen"
 
-#: ccReg/session_command.py:310
+#: ccReg/session_command.py:329
 msgid "You are logged already."
 msgstr "Jste již zalogován"
 
@@ -913,11 +918,11 @@ msgstr "Relace zahájena!"
 msgid "Login failed"
 msgstr "Login se nezdařil"
 
-#: ccReg/session_receiver.py:386
+#: ccReg/session_receiver.py:409
 msgid "You are not connected! For connection type: connect or login"
 msgstr "Nejste připojeni! Po připojení zadejte: connect nebo login"
 
-#: ccReg/session_receiver.py:389
+#: ccReg/session_receiver.py:412
 msgid "You are not logged. You must call login() before working on the server."
 msgstr ""
 "Nejste zalogováni. Před samotnou prací na serveru musíte volat funkci login()"
@@ -942,7 +947,7 @@ msgstr "Příkaz byl odeslán na EPP server."
 msgid "Send logout"
 msgstr "Odeslán logout"
 
-#: ccreg_client.py:9 ccreg_console.py:70 ccreg_create.py:24 ccreg_sender.py:95
+#: ccreg_client.py:9 ccreg_console.py:71 ccreg_create.py:25 ccreg_sender.py:94
 msgid "This program needs Python 2.4 or higher. Your version is"
 msgstr "Tento program vyžaduje Python 2.4 nebo vyšší. Vaše verze je"
 
@@ -963,7 +968,7 @@ msgid ""
 "                  2 - all returned values\n"
 "                  3 - display XML sources\n"
 "    -c --command  send command to the EPP server\n"
-"                  example: --command='info-domain nic.cz'\n"
+"                  example: --command='info_domain nic.cz'\n"
 "\n"
 "OPTIONS:\n"
 "    -r --colors   set on colored output\n"
@@ -985,25 +990,25 @@ msgstr ""
 "                  2 - plný\n"
 "                  3 - plný & XML zdroje\n"
 "    -c --command  odeslání příkatu na EPP server\n"
-"                  příklad: --command='info-domain nic.cz'\n"
+"                  příklad: --command='info_domain nic.cz'\n"
 "\n"
 "OPTIONS:\n"
 "    -r --colors   zapnutí barevného výstupu\n"
 "    -? --help     tento help\n"
 
-#: ccreg_console.py:35
+#: ccreg_console.py:36
 msgid "EPP document is not valid"
 msgstr "EPP dokument není validní"
 
-#: ccreg_console.py:42
+#: ccreg_console.py:43
 msgid "Do you want send this command to the server?"
 msgstr "Chcete odeslat tento poříkaz na server?"
 
-#: ccreg_console.py:50
+#: ccreg_console.py:51
 msgid "You are not connected! Type login for connection to the server."
 msgstr "Nejste připojeni! Pro připojení k serveru zadejte login."
 
-#: ccreg_console.py:75
+#: ccreg_console.py:76
 msgid ""
 "Usage: python ccreg_console.py [OPTIONS]\n"
 "Console for communication with EPP server.\n"
@@ -1041,7 +1046,3 @@ msgstr ""
 "OPTIONS:\n"
 "    -r --colors   zapnutí barevného výstupu\n"
 "    -? --help     tento help\n"
-
-#: ccreg_create.py:16
-msgid "Unknown command!"
-msgstr "Neznámý příkaz!"
