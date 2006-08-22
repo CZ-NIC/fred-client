@@ -39,7 +39,7 @@ CCREG_CONTACT1 = 'CID:TDOMCONT01'
 CCREG_CONTACT2 = 'CID:TDOMCONT02'
 CCREG_NSSET1 = 'NSSID:TDOMNSSET01'
 CCREG_NSSET2 = 'NSSID:TDOMNSSET02'
-CCREG_DOMAIN1 = 'hokus-pokus.cz'
+CCREG_DOMAIN1 = 'hokus-pokus.cz' # hokus-pokus.cz sakra.cz
 CCREG_DOMAIN2 = '0.1.1.7.4.5.2.2.2.0.2.4.e164.arpa'
 CCREG_DOMAIN_PASSW = 'heslicko'
 CCREG_DOMAIN_PASSW_NEW = 'noveheslo'
@@ -110,11 +110,11 @@ class Test(unittest.TestCase):
 
     def test_010(self):
         '4.1  Check na seznam dvou neexistujicich domen'
-        handles = (CCREG_DOMAIN1,'neexist002')
+        handles = (CCREG_DOMAIN1,'neexist002.cz')
         epp_cli.check_domain(handles)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
         for name in handles:
-            self.assertEqual(epp_cli.is_val(('data',name)), 1, 'Domena existuje: %s'%name)
+            self.assertEqual(epp_cli.is_val(('data',name)), 0, 'Domena existuje: %s'%name)
 
     def test_020(self):
         '4.2  Pokus o Info na neexistujici domenu'

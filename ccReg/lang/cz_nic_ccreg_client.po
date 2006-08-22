@@ -173,10 +173,6 @@ msgstr "Pro více informací zadejte"
 msgid "Interactive input params mode. For BREAK type"
 msgstr "Mód interaktivního zadávání parametrů. Pro přerušení zadejte"
 
-#: ccReg/eppdoc_assemble.py:247
-msgid "If you are inside namespace type more \"!\" together: e.g.: !!!!."
-msgstr "Pokud jste ve jmenném prostoru, zadejte více \"!\" najednou. Např.: !!!!."
-
 #: ccReg/eppdoc_assemble.py:256
 msgid "End of interactive input. [press enter]"
 msgstr "Konec interaktivního zadání parametrů. [stiskněte enter]"

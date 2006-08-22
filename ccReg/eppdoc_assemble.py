@@ -139,6 +139,7 @@ class Message(eppdoc.Message):
         'Runs LOOP of interactive input of the command params.'
         errors = []
         param = ''
+        stop=0
         is_child = len(parents)>0
         min = 0
         param_reqired_type = (_T('optional'),_T('required'),_T('required only if part is set'))
@@ -156,14 +157,16 @@ class Message(eppdoc.Message):
                 while max is UNBOUNDED or idc < max:
                     dct[name].append({})
                     parents[-1][1] = idc
-                    err, param = self.__interactive_params__(command_name, children, dct[name][-1], parents)
+                    err, param, stop = self.__interactive_params__(command_name, children, dct[name][-1], parents)
                     if err: errors.extend(err)
+                    if stop: break
                     if len(param) and param[0] == '!':
                         if max is None or max > 1: 
                             param = param[1:]
                         break
                     idc+=1
                 parents.pop()
+                if stop: break
                 continue
             if name =='':
                 parents.pop()
@@ -187,7 +190,7 @@ class Message(eppdoc.Message):
                 try:
                     param = raw_input(prompt.encode(encoding)).strip()
                 except (KeyboardInterrupt, EOFError):
-                    stop=1
+                    stop=2
                     break
                 if param == '':
                     if cr == 0:
@@ -204,7 +207,9 @@ class Message(eppdoc.Message):
                         except UnicodeDecodeError, msg:
                             errors.append('UnicodeDecodeError: %s'%msg)
                             param = unicode(repr(param), encoding)
-                    if param[0] == '!': break
+                    if param[0] == '!':
+                        stop=1
+                        break
                     if param[0] != '(': param = append_quotes(param)
                     err = cmd_parser.parse(dct, ((name,min_max,allowed,'','','',()),), param)
                     if err: errors.extend(err)
@@ -212,7 +217,7 @@ class Message(eppdoc.Message):
             parents.pop()
             if stop: break
         if len(param) and param[0] == '!': param = param[1:]
-        return errors,param
+        return errors,param,stop
 
     def get_command_line(self):
         'Returns example of command built from parameters.'
@@ -229,6 +234,7 @@ class Message(eppdoc.Message):
         dct = {}
         error=[]
         example = ''
+        stop = 0
         self._verbose = verbose
         m = re.match('check_(\w+)\s+(.+)',cmd)
         if m:
@@ -244,18 +250,19 @@ class Message(eppdoc.Message):
         columns.extend(self._command_params[command_name][1])
         dct['command'] = [command_name]
         if interactive:
-            session_base.print_unicode('${BOLD}${YELLOW}%s: ${NORMAL}${BOLD}!${NORMAL} (%s)'%(_T('Interactive input params mode. For BREAK type'),_T('If you are inside namespace type more "!" together: e.g.: !!!!.')))
+            session_base.print_unicode('${BOLD}${YELLOW}%s: ${NORMAL}${BOLD}!${NORMAL} %s'%(_T('Interactive input params mode. For BREAK type'),_T("If you don't fill item press ENTER.")))
             dct[command_name] = [command_name]
             if history_write: history_write(history_filename) # save history
-            errors, param = self.__interactive_params__(command_name, vals[1], dct)
+            errors, param, stop = self.__interactive_params__(command_name, vals[1], dct)
             if history_read: history_read(history_filename) # restore history (flush interactive params)
             if not errors:
                 example = __build_command_example__(columns, dct)
-            # Note the interactive mode is closed.
-            try:
-                raw_input(session_base.colored_output.render('${BOLD}${YELLOW}%s${NORMAL}'%_T('End of interactive input. [press enter]')))
-            except (KeyboardInterrupt, EOFError):
-                pass
+            if stop != 2: # user press Ctrl+C or Ctrl+D
+                # Note the interactive mode is closed.
+                try:
+                    raw_input(session_base.colored_output.render('${BOLD}${YELLOW}%s${NORMAL}'%_T('End of interactive input. [press enter]')))
+                except (KeyboardInterrupt, EOFError):
+                    pass
         else:
             errors = cmd_parser.parse(dct, columns, cmd)
         if errors: error.extend(errors)
@@ -269,7 +276,7 @@ class Message(eppdoc.Message):
             error.append('%s: %s'%(_T('Type'),self.get_help(command_name)[0]))
             error.append('(%s: ${BOLD}help %s${NORMAL})'%(_T('For more type'),command_name.encode(encoding))) ## .replace('_','-')
         self._dct = dct
-        return error, example
+        return error, example, stop
 
     def get_client_commands(self):
         'Return available client commands.'
@@ -478,6 +485,24 @@ class Message(eppdoc.Message):
             names = ('enumval',tag_name)
         data.append(('%s:%s'%names,'%s:valExDate'%names[0], self._dct['val_ex_date'][0]))
 
+    def __append_disclose__(self, data, node_name, ds):
+        'Create disclose nodes'
+        flag = {'n':0,'y':1}.get(ds.get('flag',['n'])[0], 'n')
+        disit = ds.get('data',[])
+        if len(disit):
+            if flag:
+                # 1 - list of disclosed -> invert other to hidden
+                disit = [key for key in contact_disclose if key not in disit]
+            else:
+                # 0 - list of hidden -> sort only (and remove duplicity)
+                disit = [key for key in contact_disclose if key in disit]
+            data.append(('contact:%s'%node_name,'contact:disclose','',(('flag','0'),)))
+            # create if only any set of names is to hide
+            for key in disit:
+                data.append(('contact:disclose','contact:%s'%key))
+        else:
+            data.append(('contact:%s'%node_name,'contact:disclose','',(('flag',str(flag)),)))
+
     def assemble_create_contact(self, *params):
         "Assemble XML EPP command."
         dct = self._dct
@@ -509,20 +534,7 @@ class Message(eppdoc.Message):
         data.append(('contact:authInfo','contact:pw',dct['pw'][0]))
         # --- BEGIN disclose ------
         if __has_key_dict__(dct,'disclose'):
-            ds = dct['disclose'][0]
-            flag = {'n':0,'y':1}.get(ds.get('flag',['n'])[0], 'n')
-            disit = ds.get('data',[])
-            if flag:
-                # 1 - list of disclosed -> invert other to hidden
-                disit = [key for key in contact_disclose if key not in disit]
-            else:
-                # 0 - list of hidden -> sort only (and remove duplicity)
-                disit = [key for key in contact_disclose if key in disit]
-            if disit:
-                # create if only any set of names is to hide
-                data.append(('contact:create','contact:disclose','',(('flag','0'),)))
-                for key in disit:
-                    data.append(('contact:disclose','contact:%s'%key))
+            self.__append_disclose__(data, 'create', dct['disclose'][0])
         # --- END disclose ------
         if __has_key__(dct,'vat'): data.append(('contact:create','contact:vat', dct['vat'][0]))
         if __has_key_dict__(dct,'ssn'):
@@ -667,11 +679,7 @@ class Message(eppdoc.Message):
                 data.append(('contact:authInfo','contact:pw',chg['pw'][0])) # required
             # --- BEGIN disclose ------
             if __has_key_dict__(chg,'disclose'):
-                ds = chg['disclose'][0]
-                flag = {'n':'0','y':'1'}.get(ds.get('flag',['n'])[0], 'n')
-                data.append(('contact:chg','contact:disclose','',(('flag',flag),)))
-                for key in ds.get('data',[]):
-                    data.append(('contact:disclose','contact:%s'%key))
+                self.__append_disclose__(data, 'chg', chg['disclose'][0])
             # --- END disclose ------
             if __has_key__(chg,'vat'): data.append(('contact:chg','contact:vat', chg['vat'][0]))
             if __has_key_dict__(chg,'ssn'):

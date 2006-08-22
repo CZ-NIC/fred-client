@@ -127,7 +127,7 @@ class Message(eppdoc_assemble.Message):
             ('disclose',(0,1),(),_T('disclose'),'','',(
                 ('flag',(1,1),('y','n'),_T('disclose flag (default y)'),'','',()),
 ##                data pro které se nastaví příznak, data for with is set flag of value
-                ('data',(1,len(eppdoc_assemble.contact_disclose)),eppdoc_assemble.contact_disclose,_T('data for with is set the flag value'),'','',()),
+                ('data',(0,len(eppdoc_assemble.contact_disclose)),eppdoc_assemble.contact_disclose,_T('data for with is set the flag value'),'','',()),
             )),
             ('vat',(0,1),(),_T('VAT (Value-added tax)'),'7035555556','',()), # daˇnový identifikátor
             ('ssn',(0,1),(),_T('SSN (Security social number)'),'','',( # mpsv: identifikátor Ministerstva práce a sociálních věcí
@@ -229,7 +229,7 @@ class Message(eppdoc_assemble.Message):
                 ('pw',(0,1),(),_T('password'),'mypassword','',()),
                 ('disclose',(0,1),(),_T('disclose'),'','',(
                     ('flag',(1,1),('y','n'),_T('disclose flag (default y)'),'','',()),
-                    ('data',(1,len(eppdoc_assemble.contact_disclose)),eppdoc_assemble.contact_disclose,_T('data for with is set the flag value'),'','',()),
+                    ('data',(0,len(eppdoc_assemble.contact_disclose)),eppdoc_assemble.contact_disclose,_T('data for with is set the flag value'),'','',()),
                 )),
                 ('vat',(0,1),(),_T('VAT'),'7035555556','',()),
                 ('ssn',(0,1),(),_T('SSN (Security social number)'),'','',(
@@ -337,7 +337,8 @@ def test(commands):
         if not m: continue
         cmd_name = m.group(1)
         epp.reset()
-        errors, example = epp.parse_cmd(cmd_name, cmd, manag._conf, 0, 2)
+        errors, example, stop = epp.parse_cmd(cmd_name, cmd, manag._conf, 0, 2)
+        if stop == 2: break # User press Ctrl+C or Ctrl+D
         if errors:
             print "Errors:",errors
         else:

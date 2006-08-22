@@ -40,10 +40,10 @@ class ManagerCommand(ManagerTransfer):
 
     def __parse_command_params__(self, command_name, cmdline, interactive):
         "Check if parameters are valid. Params save into dict for use to assembling EPP document."
-        errors, example = self._epp_cmd.parse_cmd(command_name, cmdline, self._conf, interactive, self._session[VERBOSE])
+        errors, example, stop = self._epp_cmd.parse_cmd(command_name, cmdline, self._conf, interactive, self._session[VERBOSE])
         if errors: self._errors.extend(errors)
         if example: self.append_note('${BOLD}%s:${NORMAL}\n%s'%(_T('Example of input'),example.encode(encoding)))
-        return (len(errors) == 0)
+        return (len(errors) == 0), stop
 
     def get_default_params_from_config(self, command_name):
         'Returns dict with default parameters from config.'
@@ -137,7 +137,9 @@ ${BOLD}verbose${NORMAL} [number] # set verbose mode: 1 - brief (default); 2 - fu
         if m:
             if m.group(2) in self._available_commands: ## .replace('_','-')
                 command_name = m.group(2)
-                if self.__parse_command_params__(command_name, cmdline, m.group(1)):
+                errors, stop = self.__parse_command_params__(command_name, cmdline, m.group(1))
+                if stop == 2: return 'q' # User press Ctrl+C or Ctrl+D
+                if errors:
                     self.create_command_with_params(command_name, self._epp_cmd.get_params())
                 else:
                     self.append_error(self._epp_cmd.get_errors()) # any problems on the command line occurrs
@@ -285,8 +287,9 @@ ${BOLD}verbose${NORMAL} [number] # set verbose mode: 1 - brief (default); 2 - fu
                     self.append_error('UnicodeDecodeError: %s'%msg)
                     cmd = unicode(repr(cmd), encoding)
             command_name = self.epp_command(cmd)
-            self._raw_cmd = self._epp_cmd.get_xml()
-            self.append_error(self._epp_cmd.fetch_errors()) # any problems on the command line occurrs
+            if command_name != 'q': # User press Ctrl+C or Ctrl+D in interactive mode.
+                self._raw_cmd = self._epp_cmd.get_xml()
+                self.append_error(self._epp_cmd.fetch_errors()) # any problems on the command line occurrs
         return command_name, self._raw_cmd
 
     def load_filename(self, filepath):

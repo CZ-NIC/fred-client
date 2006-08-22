@@ -30,6 +30,9 @@ def main(session_name):
             epp.send_logout()
             break
         command_name, epp_doc = epp.create_eppdoc(command)
+        if command_name == 'q': # User press Ctrl+C or Ctrl+D in interactive mode.
+            epp.send_logout()
+            break
         if command_name and epp_doc: # if only command is EPP command
             invalid_epp = epp.is_epp_valid(epp_doc)
             if invalid_epp:
