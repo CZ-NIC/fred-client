@@ -212,6 +212,7 @@ class ManagerReceiver(ManagerCommand):
             dct['contact:ssn.type'] = eppdoc.get_dct_attr(contact_infData, 'contact:ssn', 'type')
             dct['contact:ssn'] = eppdoc.get_dct_value(contact_infData, 'contact:ssn')
             dct['contact:notifyEmail'] = eppdoc.get_dct_value(contact_infData, 'contact:notifyEmail')
+            dct['contact:vat'] = eppdoc.get_dct_value(contact_infData, 'contact:vat')
 
     def answer_response_domain_info(self, data):
         "data=(response,result,code,msg)"

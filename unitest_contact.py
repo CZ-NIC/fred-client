@@ -103,6 +103,7 @@ CCREG_CONTACT.append({ # chg part to modify contact
             'voice': d['voice'],
             'fax': d['fax'],
             'email': d['email'],
+            'pw': d['pw'],
             'disclose': d['disclose'],
             'vat': d['vat'],
             'ssn': d['ssn'],
@@ -124,7 +125,7 @@ class Test(unittest.TestCase):
         global epp_cli, handle_contact, handle_nsset, log_fp
         # Natvrdo definovany handle:
         handle_contact = CCREG_CONTACT[1]['id'] # 'neexist01'
-        handle_nsset = 'neexist01'
+        handle_nsset = 'NSSID:neexist01'
         # create client object
         epp_cli = ccReg.Client()
         epp_cli._epp.load_config(ccReg.translate.options['session'])
@@ -144,7 +145,7 @@ class Test(unittest.TestCase):
     
     def test_010(self):
         '2.1 Check na seznam dvou neexistujicich kontaktu'
-        handles = (handle_contact,'neexist002')
+        handles = (handle_contact,'NSSID:neexist002')
         epp_cli.check_contact(handles)
         for name in handles:
             self.assertEqual(epp_cli.is_val(('data',name)), 1, 'Kontakt existuje: %s'%name)
@@ -177,10 +178,10 @@ class Test(unittest.TestCase):
 
     def test_050(self):
         '2.5 Check na seznam existujiciho a neexistujicich kontaktu'
-        handles = (handle_contact,'neexist002')
+        handles = (handle_contact,'NSSID:neexist002')
         epp_cli.check_contact(handles)
         self.assertEqual(epp_cli.is_val(('data',handle_contact)), 0)
-        self.assertEqual(epp_cli.is_val(('data','neexist002')), 1)
+        self.assertEqual(epp_cli.is_val(('data','NSSID:neexist002')), 1)
 
     def test_060(self):
         '2.6 Info na existujici kontakt a overeni vsech hodnot'
@@ -279,7 +280,31 @@ class Test(unittest.TestCase):
         if epp_cli.is_val() not in (1000,1300,1301):
             self.assertEqual(0, 1, unitest_ccreg_share.get_reason(epp_cli))
 
-    
+def __compare_disclose__(cols, disclose, hide):
+    'Compare disclose list.'
+    c = {}
+    c['disclose'] = cols['data']
+    c['hide'] = []
+    if cols['flag'] == 'n':
+        c['hide'] = c['disclose']
+        c['disclose'] = []
+    if len(c['hide']):
+        c['disclose'] = tuple([n for n in contact_disclose if n not in c['hide']])
+    else:
+        c['hide'] = tuple([n for n in contact_disclose if n not in c['disclose']])
+    is_error = not (unitest_ccreg_share.are_equal(c['disclose'],disclose) and
+                unitest_ccreg_share.are_equal(c['hide'],hide))
+    return (is_error, 
+        'disclose(%s) hide(%s)'%(','.join(disclose),','.join(hide)), 
+        'disclose(%s) hide(%s)'%(','.join(c['disclose']),','.join(c['hide']))
+        )
+
+def __compare_ssn__(cols_ssn, data):
+    ssn_type = data.get('contact:ssn.type','')
+    ssn_number = data.get('contact:ssn','')
+    is_error = not(cols_ssn['type'] == ssn_type and cols_ssn['number'] == ssn_number)
+    return is_error, '(%s)%s'%(ssn_type,ssn_number), '(%s)%s'%(cols_ssn['type'],cols_ssn['number'])
+            
 def __info_contact__(prefix, cols, scope, key=None, pkeys=[]):
     'Check info-[object] against selected set.'
     prevkeys = ':'.join(pkeys)
@@ -287,21 +312,23 @@ def __info_contact__(prefix, cols, scope, key=None, pkeys=[]):
         data = scope[key]
     else:
         data = scope
-    #print '%s\nCOLS:\n%s\n%s\nDATA:\n%s\n%s\n'%('='*60, str(cols), '-'*60, str(data), '_'*60)
+    # print '%s\nCOLS:\n%s\n%s\nDATA:\n%s\n%s\n'%('='*60, str(cols), '-'*60, str(data), '_'*60)
     errors = []
-    # prepare list disclose, hide: if disclose_flag is 0, names must be moved into hide
-    keep_disclose = cols['disclose']
-    cols['hide'] = []
-    if cols['disclose']['flag'] == 'n':
-        cols['hide'] = cols['disclose']
-        cols['disclose'] = []
-    if len(cols['hide']):
-        cols['disclose'] = tuple([n for n in contact_disclose if n not in cols['hide']])
-    else:
-        cols['hide'] = tuple([n for n in contact_disclose if n not in cols['disclose']])
     #--------------------------------
     for k,v in cols.items():
+        if k == 'notify_email': k = 'notifyEmail'
         key = '%s:%s'%(prefix,k)
+        if k == 'disclose':
+            err, vals, v = __compare_disclose__(cols['disclose'], data.get('contact:disclose',[]), data.get('contact:hide',[]))
+            if err:
+                errors.append('Data nesouhlasi:\n%s.%s JSOU:%s MELY BYT:%s'%(prevkeys, key, unitest_ccreg_share.make_str(vals), unitest_ccreg_share.make_str(v)))
+            continue
+        if k == 'ssn':
+            err, vals, v = __compare_ssn__(cols['ssn'], data)
+            if err:
+                errors.append('Data nesouhlasi:\n%s.%s JSOU:%s MELY BYT:%s'%(prevkeys, key, unitest_ccreg_share.make_str(vals), unitest_ccreg_share.make_str(v)))
+            continue
+        if type(data) != dict: data = {key:data}
         if data.has_key(key):
             if type(v) is dict:
                 pkeys.append(key)
@@ -318,7 +345,6 @@ def __info_contact__(prefix, cols, scope, key=None, pkeys=[]):
         else:
             if key != '%s:disclose_flag'%prefix: # except disclose_flag - it not shown
                 errors.append('Chybi klic %s'%key)
-    cols['disclose'] = keep_disclose # restore values
     return errors
 
 epp_cli, log_fp, log_step, handle_contact, handle_nsset = (None,)*5

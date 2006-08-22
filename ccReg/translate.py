@@ -127,6 +127,8 @@ if not len(options['lang']):
         arg = code[:2]
         options['lang'], error = get_valid_lang(arg,'os.environ.LANG')
         if error: warnings.append("%s Set default to: '%s'."%(error, default_lang))
+    else:
+        options['lang'] = default_lang
 
 #---------------------------
 # SET LANGUAGE VERSION

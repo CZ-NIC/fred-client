@@ -132,14 +132,21 @@ class Lorry:
         if self._body_length:
             ok = 0
             try:
-                data = self._conn_ssl.read(self._body_length)
-                ok = 1
+                while(len(data) < self._body_length):
+                    part = self._conn_ssl.read(self._body_length)
+                    if not len(part):
+                        self._errors.append('READ empty part')
+                        break
+                    data += part
+                ok = len(data) == self._body_length
             except socket.timeout, msg:
                 self._errors.append('READ socket.timeout: %s'%msg)
             except socket.sslerror, msg:
                 self._errors.append('READ socket.sslerror: %s'%str(msg))
             except socket.error, (no, msg):
                 self._errors.append('READ socket.error: [%d] %s'%(no, msg))
+            except MemoryError, msg:
+                self._errors.append('READ socket.receive MemoryError: %s'%msg)
             except (KeyboardInterrupt,EOFError):
                 self._errors.append(_T('Interrupt from user'))
             if not ok: self.close()
