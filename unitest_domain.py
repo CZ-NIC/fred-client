@@ -114,7 +114,7 @@ class Test(unittest.TestCase):
         epp_cli.check_domain(handles)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
         for name in handles:
-            self.assertEqual(epp_cli.is_val(('data',name)), 0, 'Domena existuje: %s'%name)
+            self.assertEqual(epp_cli.is_val(('data',name)), 1, 'Domena existuje: %s'%name)
 
     def test_020(self):
         '4.2  Pokus o Info na neexistujici domenu'
@@ -191,10 +191,10 @@ class Test(unittest.TestCase):
 
     def test_110(self):
         '4.11 Check na seznam existujici a neexistujici domeny'
-        handles = (CCREG_DOMAIN1,'neexist002')
+        handles = (CCREG_DOMAIN1,'neexist002.cz')
         epp_cli.check_domain(handles)
         self.assertEqual(epp_cli.is_val(('data',CCREG_DOMAIN1)), 0)
-        self.assertEqual(epp_cli.is_val(('data','neexist002')), 1)
+        self.assertEqual(epp_cli.is_val(('data','neexist002.cz')), 1)
 
     def test_120(self):
         '4.12 Info na existujici domenu a kontrola hodnot'
