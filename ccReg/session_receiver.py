@@ -191,7 +191,7 @@ class ManagerReceiver(ManagerCommand):
             self.__append_note_from_dct__(contact_infData,
                 ('contact:id','contact:roid','contact:status s',
                 'contact:voice','contact:fax','contact:email','contact:status ok',
-                'contact:crDate','contact:crID',))
+                'contact:crDate','contact:crID',  'contact:trDate', 'contact:clID'))
             self.__append_note_from_dct__(contact_postalInfo,('contact:name','contact:org'))
             contact_addr = contact_postalInfo.get('contact:addr',None)
             if contact_addr:
