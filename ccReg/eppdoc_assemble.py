@@ -705,8 +705,8 @@ class Message(eppdoc.Message):
             if __has_key_dict__(dct,key):
                 data.append(('domain:update', 'domain:%s'%key))
                 dct_key = dct[key][0]
-                if __has_key__(dct_key,'contact'):
-                    self.__append_values__(data, dct_key, 'contact', 'domain:%s'%key, 'domain:contact')
+                if __has_key__(dct_key,'admin'):
+                    self.__append_values__(data, dct_key, 'admin', 'domain:%s'%key, 'domain:admin')
                 self.__append_attr__(data, dct_key, 'status', 'domain:%s'%key, 'domain:status','s')
         if __has_key_dict__(dct,'chg'):
             chg = dct['chg'][0]
@@ -718,13 +718,9 @@ class Message(eppdoc.Message):
                 authInfo = chg['auth_info'][0]
                 if __has_key__(authInfo,'pw'): data.append(('domain:authInfo','domain:pw', authInfo['pw'][0]))
                 #if __has_key__(authInfo,'ext'): data.append(('domain:authInfo','domain:ext', authInfo['ext'][0]))
-        if len(params)>1 and params[1]=='extensions': self.__enum_extensions__('update',data, params,'chg')
+        self.__enum_extensions__('update',data, params,'chg')
         data.append(('command', 'clTRID', params[0]))
         self.__assemble_cmd__(data)
-
-    def assemble_update_domain_enum(self, *params):
-        "Assemble XML EPP command"
-        self.assemble_update_domain(params[0], 'extensions')
 
     def assemble_update_nsset(self, *params):
         """Assemble XML EPP command. 

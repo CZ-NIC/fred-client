@@ -239,34 +239,11 @@ class Message(eppdoc_assemble.Message):
         'update_domain': (1,(
             ('name',(1,1),(),_T('domain name'),'mydomain.cz','',()),
             ('add',(0,1),(),_T('add status'),'','',(
-                ('contact',(0,UNBOUNDED),(),_T('contact'),'CID:ID01','',()),
+                ('admin',(0,UNBOUNDED),(),_T('admin'),'CID:ID01','',()),
                 ('status',(0,8),update_status,_T('status'),'','',()),
             )),
             ('rem',(0,1),(),_T('remove status'),'','',(
-                ('contact',(0,UNBOUNDED),(),_T('contact'),'CID:ID01','',()),
-                ('status',(0,8),update_status,_T('status'),'','',()),
-            )),
-            ('chg',(0,1),(),_T('change status'),'','',(
-                ('nsset',(0,1),(),_T('nsset'),'NSSET_ID','',()),
-                ('registrant',(0,1),(),_T('registrant'),'CID:ID01','',()),
-                ('auth_info',(0,1),(),_T('authInfo'),'','',(
-                    ('pw',(0,1),(),_T('password'),'mypassword','',()),
-                    #('ext',(0,1),(),_T('ext'),'','',()),
-                )),
-            )),
-            ),notice['update'],(
-                'update_domain nic.cz',
-                'update_domain nic.cz (linked add-contact) ((ok linked) rem-contact) (nsset registrant (password extensions))',
-            )),
-        #----------------------------------------------------
-        'update_domain_enum': (1,(
-            ('name',(1,1),(),_T('domain name'),'mydomain.cz','',()),
-            ('add',(0,1),(),_T('add status'),'','',(
-                ('contact',(0,UNBOUNDED),(),_T('contact'),'CID:ID01','',()),
-                ('status',(0,8),update_status,_T('status'),'','',()),
-            )),
-            ('rem',(0,1),(),_T('remove status'),'','',(
-                ('contact',(0,UNBOUNDED),(),_T('contact'),'CID:ID01','',()),
+                ('admin',(0,UNBOUNDED),(),_T('admin'),'CID:ID01','',()),
                 ('status',(0,8),update_status,_T('status'),'','',()),
             )),
             ('chg',(0,1),(),_T('change status'),'','',(
@@ -278,7 +255,10 @@ class Message(eppdoc_assemble.Message):
                 )),
             )),
             ('val_ex_date',(0,1),(),_T('valExDate'),'2008-12-03','',()),
-            ),notice['update'],('update_domain_enum 1.1.1.7.4.5.2.2.2.0.2.4.e164.arpa (linked add-contact) ((ok linked) rem-contact) (nsset registrant (password extensions)) 2006-06-08',)),
+            ),notice['update'],(
+                'update_domain mydomain.cz ((CID:ID01, CID:ID02) clientTransferProhibited) (CID:ID03 clientDeleteProhibited) (NSSID:NSSET01 CID:ID04 (mypass))',
+                'update_domain 1.1.1.7.4.5.2.2.2.0.2.4.e164.arpa ((CID:ID01, CID:ID02) clientTransferProhibited) (CID:ID03 clientDeleteProhibited) (NSSID:NSSET01 CID:ID04 (mypass)) 2008-12-03',
+            )),
         #----------------------------------------------------
         'update_nsset': (1,(
             ('id',(1,1),(),_T('nsset ID'),'NSSET_ID','',()),
