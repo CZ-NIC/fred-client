@@ -147,20 +147,11 @@ class Message(eppdoc_assemble.Message):
                 ('unit',(1,1),('y','m'),_T('period unit (y year(default), m month)'),'','',()),
             )),
             ('admin',(0,UNBOUNDED),(),_T('admin'),'ADMIN_ID','',()),
-            ),notice['create'],('create_domain domain.cz password nsset1 reg-id (3 y) (handle1,handle2)',)),
-        #----------------------------------------------------
-        'create_domain_enum': (2,(
-            ('name',(1,1),(),_T('domain name'),'mydomain.cz','',()),
-            ('pw',(1,1),(),_T('password'),'mypassword','',()),
-            ('nsset',(1,1),(),_T('nsset'),'NSSETID','',()),
-            ('registrant',(1,1),(),_T('registrant'),'REGISTANT_ID','',()),
-            ('period',(0,1),(),_T('period'),'','',(
-                ('num',(1,1),(),_T('number of months or years'),'3','',()),
-                ('unit',(1,1),('y','m'),_T('period unit (y year(default), m month)'),'','',()),
-            )),
-            ('contact',(0,UNBOUNDED),(),_T('contact'),'CID:ID01','',()),
             ('val_ex_date',(0,1),(),_T('valExDate'),'2008-12-03','',()),
-            ),notice['create'],('create_domain_enum 1.1.1.7.4.5.2.2.2.0.2.4.e164.arpa password nsset1 reg-id (3 y) (handle1,handle2) 2006-06-08',)),
+            ),notice['create'],(
+                'create_domain domain.cz password nsset1 reg-id (3 y) (handle1,handle2)',
+                'create_domain 1.1.1.7.4.5.2.2.2.0.2.4.e164.arpa password nsset1 reg-id (3 y) (handle1,handle2) 2006-06-08'
+            )),
         #----------------------------------------------------
         'create_nsset': (2,(
             ('id',(1,1),(),_T('nsset ID'),'NSSETID','',()),
@@ -318,7 +309,47 @@ class Message(eppdoc_assemble.Message):
         #----------------------------------------------------
 
     }
+    #----------------------------------
+    # OUTPUT SORTED BY NAMES
+    #----------------------------------
+    sort_by_names = {
+    
+      'info_contact': ('contact',(
+        'id','roid',
+        'crID','clID','upID',
+        'crDate','trDate','upDate',
+        'name','org','street','city','sp','pc','cc','pw',
+        'voice','fax','email','notifyEmail',
+        'status.s','disclose','hide',
+        'vat','ssn.type','ssn',
+        )),
 
+      'info_domain': ('domain',(
+        'name','roid',
+        'crID','trID','clID','upID',
+        'crDate','trDate','upDate','exDate','renew',
+        'nsset','pw','status.s','registrant','admin',
+        )),
+
+      'info_nsset': ('nsset',(
+        'id','roid',
+        'crID','clID','upID',
+        'crDate','trDate','upDate',
+        'pw','status.s','tech','ns',
+        )),
+        
+    }
+
+    def get_sort_by_names(self, command_name):
+        'Prepare column names for sorted output answer.'
+        scope = Message.sort_by_names.get(command_name,None)
+        if scope:
+            names = map(lambda name: '%s:%s'%(scope[0],name),scope[1])
+        else:
+            names = []
+        return names
+
+    
     def __init__(self):
         eppdoc_assemble.Message.__init__(self)
         self._command_params = Message.command_params

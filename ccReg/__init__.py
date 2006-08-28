@@ -208,7 +208,7 @@ class Client:
             'disclose':disclose, 'vat':vat, 'ssn':ssn, 
             'notify_email':notify_email})
 
-    def create_domain(self, name, pw, nsset, registrant, period=None, admin=None):
+    def create_domain(self, name, pw, nsset, registrant, period=None, admin=None, val_ex_date=None):
         """Usage: create_domain name pw nsset registrant
 
     PARAMS:
@@ -221,6 +221,7 @@ class Client:
     nsset (optional)
     registrant (optional)
     admin (optional)          unbounded list
+    val_ex_date (optional)
 
     RETURN data: {domain:name, domain:crDate, domain:exDate}
 
@@ -229,34 +230,8 @@ class Client:
    object can be created for a specific validity period.
     """
         return self._epp.api_command('create_domain',{'name':name,'pw':pw,
-            'period':period,'nsset':nsset,'registrant':registrant,'admin':admin})
-
-    def create_domain_enum(self, name, pw, nsset, registrant, period=None,
-         contact=None, val_ex_date=None):
-        """Usage: create_domain_enum name pw nsset registrant
-
-    PARAMS:
-
-    name (required)
-    pw (required)
-    period (optional)
-        num (required)
-        unit (required) accept only values: (y,m)
-    nsset (optional)
-    registrant (optional)
-    contact (optional)          unbounded list
-    val_ex_date (optional)
-
-    RETURN data: {}
-
-   The EPP "create" command is used to create an instance of an object.
-   An object can be created for an indefinite period of time, or an
-   object can be created for a specific validity period.
-
-        """
-        return self._epp.api_command('create_domain_enum',{'name':name, 
-            'pw':pw, 'period':period, 'nsset':nsset, 'registrant':registrant, 
-            'contact':contact, 'val_ex_date':val_ex_date})
+            'period':period,'nsset':nsset,'registrant':registrant,'admin':admin,
+            'val_ex_date':val_ex_date})
 
     def create_nsset(self, nsset_id, pw, dns, tech=None):
         """Usage: create_nsset id pw

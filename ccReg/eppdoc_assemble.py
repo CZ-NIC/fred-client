@@ -252,9 +252,8 @@ class Message(eppdoc.Message):
         if interactive:
             session_base.print_unicode('${BOLD}${YELLOW}%s: ${NORMAL}${BOLD}!${NORMAL} %s'%(_T('Interactive input params mode. For BREAK type'),_T("If you don't fill item press ENTER.")))
             dct[command_name] = [command_name]
-            if history_write: history_write(history_filename) # save history
+            self.save_history()
             errors, param, stop = self.__interactive_params__(command_name, vals[1], dct)
-            if history_read: history_read(history_filename) # restore history (flush interactive params)
             if not errors:
                 example = __build_command_example__(columns, dct)
             if stop != 2: # user press Ctrl+C or Ctrl+D
@@ -263,6 +262,7 @@ class Message(eppdoc.Message):
                     raw_input(session_base.colored_output.render('${BOLD}${YELLOW}%s${NORMAL}'%_T('End of interactive input. [press enter]')))
                 except (KeyboardInterrupt, EOFError):
                     pass
+            self.restore_history()
         else:
             errors = cmd_parser.parse(dct, columns, cmd)
         if errors: error.extend(errors)
@@ -567,13 +567,9 @@ class Message(eppdoc.Message):
             ('domain:create','domain:authInfo'),
             ('domain:authInfo','domain:pw', dct['pw'][0])
         ))
-        if len(params)>1 and params[1]=='extensions': self.__enum_extensions__('create',data, params)
+        self.__enum_extensions__('create',data, params)
         data.append(('command', 'clTRID', params[0]))
         self.__assemble_cmd__(data)
-
-    def assemble_create_domain_enum(self, *params):
-        'Extensions for enum.'
-        self.assemble_create_domain(params[0], 'extensions')
 
     def __append_nsset__(self, tag_name, data, dct_ns):
         "ns:  {'name': ['ns3.domain.net'], 'addr': ['127.3.0.1', '127.3.0.2']}"
@@ -661,6 +657,7 @@ class Message(eppdoc.Message):
             chg = dct['chg'][0]
             data.append(('contact:update','contact:chg'))
             if __has_key_dict__(chg,'postal_info'):
+                # Part contact:postalInfo ------------------------
                 poin = chg['postal_info'][0]
                 data.append(('contact:chg','contact:postalInfo'))
                 for key in ('name','org'):
@@ -671,8 +668,8 @@ class Message(eppdoc.Message):
                     self.__append_values__(data, addr, 'street', 'contact:addr', 'contact:street')
                     for key in ('city','sp','pc','cc'):
                         if __has_key__(addr,key): data.append(('contact:addr','contact:%s'%key, addr[key][0]))
-                for key in ('voice','fax','email'):
-                    if __has_key__(chg,key): data.append(('contact:chg','contact:%s'%key, chg[key][0]))
+            for key in ('voice','fax','email'):
+                if __has_key__(chg,key): data.append(('contact:chg','contact:%s'%key, chg[key][0]))
             # password
             if __has_key__(chg,'pw'):
                 data.append(('contact:chg','contact:authInfo')) # required
@@ -773,6 +770,15 @@ class Message(eppdoc.Message):
         self.__assemble_cmd__(data)
 
     #===========================================
+
+    def save_history(self):
+        'Save history of command line.'
+        if history_write: history_write(history_filename) # save history
+        
+    def restore_history(self):
+        'Restore history of command line.'
+        if history_read: history_read(history_filename) # restore history (flush interactive params)
+
 
 def __has_key__(dct, key):
     'Check if key exists and if any value is set. (dct MUST be in format: dct[key] = [{...}, ...])'

@@ -43,7 +43,9 @@ def main(session_name):
             else:
                 if epp.is_online(command_name) and epp.is_connected(): # only if we are online
                     if epp.is_confirm_cmd_name(command_name):
+                        epp.save_history()
                         confirmation = raw_input('%s (y/n): '%_T('Do you want send this command to the server?'))
+                        epp.restore_history()
                         if confirmation not in ('y','Y'): continue
                     epp.send(epp_doc)          # send to server
                     xml_answer = epp.receive()     # receive answer

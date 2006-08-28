@@ -40,6 +40,7 @@ class ManagerTransfer(ManagerBase):
         self._epp_cmd.reset()
         self._epp_response.reset()
         self._command_sent = '' # jméno posledního odeslaného příkazu
+        self._session[SORT_BY_COLUMNS] = []
 
     def get_command_line(self):
         'Returns example of command built from parameters.'
@@ -138,6 +139,7 @@ class ManagerTransfer(ManagerBase):
     def send_logout(self, no_outoupt=None):
         'Send EPP logout message.'
         if not self._session[ONLINE]: return # session zalogována nebyla
+        self.reset_round()
         self._epp_cmd.assemble_logout(self.__next_clTRID__())
         epp_doc = self._epp_cmd.get_xml()
         if epp_doc and self.is_connected():
@@ -193,17 +195,13 @@ class ManagerTransfer(ManagerBase):
                 report(get_ltext('  %s'%error))
             report(colored_output.render('${NORMAL}'))
         if self._session[VERBOSE] > 1: report(colored_output.render('${BOLD}data:${NORMAL}'))
-        for k,v in dct['data'].items():
-            if type(v) in (list,tuple):
-                if len(v):
-                    space = ' '*(8 - len('%s: '%k)) # indent justify text to the tabs on next lines
-                    report(get_ltext(colored_output.render('\t${BOLD}%s:${NORMAL} (list) %s%s'%(k,space,str_lists(v[0])))))
-                    for text in v[1:]:
-                        report(get_ltext('\t\t%s'%str_lists(text)))
-                else:
-                    report(get_ltext(colored_output.render('\t${BOLD}%s:${NORMAL} (list) []'%k)))
-            else:
-                report(get_ltext(colored_output.render('\t${BOLD}%s:${NORMAL} (%s) %s'%(k, patt_type.match(str(type(v))).group(1), v))))
+        if self._session[SORT_BY_COLUMNS]:
+            keys = self._session[SORT_BY_COLUMNS] # sorted output (included in create command part)
+        else:
+            keys = dct['data'].keys() # default (unsorted)
+        for k in keys:
+            v = dct['data'].get(k,u'')
+            __append_into_report__(body,patt_type,k,v)
         report('-'*60)
         for n in range(len(body)):
             if type(body[n]) == unicode: body[n] = body[n].encode(encoding)
@@ -215,6 +213,26 @@ class ManagerTransfer(ManagerBase):
             report(colored_output.render('${NORMAL}'))
         return sep.join(body)
 
+    def save_history(self):
+        'Save history of command line.'
+        self._epp_cmd.save_history()
+    def restore_history(self):
+        'Restore history of command line.'
+        self._epp_cmd.restore_history()
+        
+        
+def __append_into_report__(body,patt_type,k,v):
+    'Append value type(unicode|list|tuple) into report body.'
+    if type(v) in (list,tuple):
+        if len(v):
+            space = ' '*(8 - len('%s: '%k)) # indent justify text to the tabs on next lines
+            body.append(get_ltext(colored_output.render('\t${BOLD}%s:${NORMAL} (list) %s%s'%(k,space,str_lists(v[0])))))
+            for text in v[1:]:
+                body.append(get_ltext('\t\t%s'%str_lists(text)))
+        else:
+            body.append(get_ltext(colored_output.render('\t${BOLD}%s:${NORMAL} (list) []'%k)))
+    else:
+        body.append(get_ltext(colored_output.render('\t${BOLD}%s:${NORMAL} (%s) %s'%(k, patt_type.match(str(type(v))).group(1), v))))
 
 def str_lists(text):
     """Prepare list or tuples for display. Same as str() but ommit u'...' symbols

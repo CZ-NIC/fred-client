@@ -5,7 +5,6 @@ import sys, os, commands
 import ConfigParser
 import terminal_controler
 import translate
-##from translate import _T, encoding, options, config
 
 _T = translate._T
 
@@ -14,7 +13,7 @@ colored_output = terminal_controler.TerminalController()
 
 # názvy sloupců pro data sestavené při spojení se serverem
 ONLINE, CMD_ID, LANG, POLL_AUTOACK, CONFIRM_SEND_COMMAND, \
-    USERNAME, NAME, HOST, COLORS, VALIDATE, VERBOSE = range(11)
+    USERNAME, NAME, HOST, COLORS, VALIDATE, VERBOSE, SORT_BY_COLUMNS = range(12)
 # názvy sloupců pro defaultní hodnoty
 DEFS_LENGTH = 4
 LANGS,objURI,extURI,PREFIX = range(DEFS_LENGTH)
@@ -42,6 +41,7 @@ class ManagerBase:
                 0,      # COLORS 0/1
                 1,      # VALIDATE
                 1,      # VERBOSE 1,2,3
+                [],     # SORT_BY_COLUMNS - support for sotring received values (used by check_...)
                 ]
         # defaults
         self.defs = ['']*DEFS_LENGTH
@@ -380,6 +380,7 @@ class ManagerBase:
                 self._session[VALIDATE] = 0 # automatické vypnutí validace
                 errors=''
         return errors
+
 
 def append_with_colors(list_of_messages, msg, color):
     "Used by Manager::append_error() and Manager::append_note() functions"

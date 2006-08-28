@@ -190,8 +190,9 @@ class ManagerReceiver(ManagerCommand):
         else:
             self.__append_note_from_dct__(contact_infData,
                 ('contact:id','contact:roid','contact:status s',
-                'contact:voice','contact:fax','contact:email','contact:status ok',
-                'contact:crDate','contact:crID',  'contact:trDate', 'contact:clID'))
+                'contact:voice','contact:fax','contact:email',
+                'contact:crID', 'contact:clID', 'contact:upID', 
+                'contact:crDate', 'contact:trDate', 'contact:upDate'))
             self.__append_note_from_dct__(contact_postalInfo,('contact:name','contact:org'))
             contact_addr = contact_postalInfo.get('contact:addr',None)
             if contact_addr:
@@ -213,6 +214,7 @@ class ManagerReceiver(ManagerCommand):
             dct['contact:ssn'] = eppdoc.get_dct_value(contact_infData, 'contact:ssn')
             dct['contact:notifyEmail'] = eppdoc.get_dct_value(contact_infData, 'contact:notifyEmail')
             dct['contact:vat'] = eppdoc.get_dct_value(contact_infData, 'contact:vat')
+            self._session[SORT_BY_COLUMNS] = self._epp_cmd.get_sort_by_names('info_contact')
 
     def answer_response_domain_info(self, data):
         "data=(response,result,code,msg)"
@@ -224,12 +226,14 @@ class ManagerReceiver(ManagerCommand):
             self.append_error('answer_response_domain_info KeyError: %s'%msg)
         else:
             self.__append_note_from_dct__(domain_infData,
-                ('domain:name','domain:roid','domain:status s','domain:registrant'
-                ,'domain:contact','domain:contact type','domain:nsset','domain:clID','domain:crID'
-                ,'domain:crDate','domain:upDate','domain:exDate','domain:upID'))
+                ('domain:name','domain:roid','domain:status s','domain:registrant','domain:admin',
+                 'domain:contact','domain:contact type','domain:nsset',
+                 'domain:crID','domain:trID','domain:clID','domain:upID',
+                 'domain:crDate','domain:trDate','domain:upDate','domain:exDate'))
             self._dct_answer['data']['domain:pw'] = eppdoc.get_dct_value(domain_infData, ('domain:authInfo','domain:pw')) ## , '\n', '', u'******'
             m = re.match('\d{4}-\d{2}-\d{2}', self.get_value_from_dict(('data','domain:exDate')))
             if m: self._dct_answer['data']['domain:renew'] = m.group(0) # value for renew-domain
+            self._session[SORT_BY_COLUMNS] = self._epp_cmd.get_sort_by_names('info_domain')
 
     def answer_response_nsset_info(self, data):
         "data=(response,result,code,msg)"
@@ -240,8 +244,9 @@ class ManagerReceiver(ManagerCommand):
         except KeyError, msg:
             self.append_error('answer_response_nsset_info KeyError: %s'%msg)
         else:
-            self.__append_note_from_dct__(nsset_infData,('nsset:id','nsset:roid','nsset:clID','nsset:crID'
-                ,'nsset:crDate','nsset:upID','nsset:trDate','nsset:authInfo','nsset:tech',
+            self.__append_note_from_dct__(nsset_infData,('nsset:id','nsset:roid',
+                'nsset:clID','nsset:crID','nsset:trID','nsset:upID',
+                'nsset:crDate','nsset:trDate','nsset:upDate','nsset:authInfo','nsset:tech',
                 'nsset:status s'))
             if nsset_infData.has_key('nsset:ns'):
                 nsset_ns = nsset_infData['nsset:ns']
@@ -253,6 +258,7 @@ class ManagerReceiver(ManagerCommand):
                     dns.append([name,addr])
                 self._dct_answer['data']['nsset:ns'] = dns
             self._dct_answer['data']['nsset:pw'] = eppdoc.get_dct_value(nsset_infData, ('nsset:authInfo','nsset:pw')) ## , '\n', '', '******'
+            self._session[SORT_BY_COLUMNS] = self._epp_cmd.get_sort_by_names('info_nsset')
 
 
     #-------------------------------------
@@ -265,8 +271,11 @@ class ManagerReceiver(ManagerCommand):
         column_name = '%s:%s'%names
         value = eppdoc.get_dct_value(dict_data, column_name)
         code = eppdoc.get_dct_attr(dict_data, column_name, attr_name)
+        reason_key = '%s:reason'%value
         dct_answer['data'][value] = {False:0,True:1}[code in ('1','true')]
-        dct_answer['data']['%s:reason'%value] = eppdoc.get_dct_value(dict_data, '%s:reason'%names[0])
+        dct_answer['data'][reason_key] = eppdoc.get_dct_value(dict_data, '%s:reason'%names[0])
+        if dct_answer['data'][value] == 1 and dct_answer['data'][reason_key] == '':
+            dct_answer['data'][reason_key] = _T('Not in registry: Object is available.')
 
     def __answer_response_check__(self, data, names):
         """Process all check_[command]() functions. 
@@ -288,6 +297,12 @@ class ManagerReceiver(ManagerCommand):
                     self.__check_available__(self._dct_answer, item, names, 'avail')
             else:
                 self.__check_available__(self._dct_answer, chunk_cd, names, 'avail')
+            # SORTING OUTPUT: Join reason column name:
+            cols = []
+            for name in self._session[SORT_BY_COLUMNS]:
+                cols.append(name)
+                cols.append('%s:reason'%name)
+            self._session[SORT_BY_COLUMNS] = cols
 
     def answer_response_contact_check(self, data):
         "data=(response,result,code,msg)"

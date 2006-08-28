@@ -137,10 +137,14 @@ ${BOLD}verbose${NORMAL} [number] # set verbose mode: 1 - brief (default); 2 - fu
         if m:
             if m.group(2) in self._available_commands: ## .replace('_','-')
                 command_name = m.group(2)
-                errors, stop = self.__parse_command_params__(command_name, cmdline, m.group(1))
+                all_is_OK, stop = self.__parse_command_params__(command_name, cmdline, m.group(1))
                 if stop == 2: return 'q' # User press Ctrl+C or Ctrl+D
-                if errors:
-                    self.create_command_with_params(command_name, self._epp_cmd.get_params())
+                if all_is_OK:
+                    cmd_params = self._epp_cmd.get_params()
+                    if re.match('check_',cmd_params.get('command',[''])[0]):
+                        # Save order of names for sorting answer (check_...).
+                        self._session[SORT_BY_COLUMNS] = cmd_params.get('name',[])
+                    self.create_command_with_params(command_name, cmd_params)
                 else:
                     self.append_error(self._epp_cmd.get_errors()) # any problems on the command line occurrs
             else:
@@ -342,7 +346,6 @@ ${BOLD}verbose${NORMAL} [number] # set verbose mode: 1 - brief (default); 2 - fu
             self._epp_cmd.assemble_login(self.__next_clTRID__(), (eppdoc_nic_cz_version, self.defs[objURI], self.defs[extURI], self._session[LANG]))
             if self._epp_cmd._dct.has_key('username'):
                 self._session[USERNAME] = self._epp_cmd._dct['username'][0] # for prompt info
-
 
     def get_value_from_dict(self, names, dct = None):
         """Returns safetly value form dict (treat missing keys).

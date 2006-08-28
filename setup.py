@@ -4,8 +4,8 @@ from distutils.core import setup
 
 setup(name = 'ccRegClient',
     description = 'ccReg EPP Client',
-    author = 'CZ.NIC',
-    author_email = 'info@nic.cz',
+    author = 'Zdenek Bohm, CZ.NIC',
+    author_email = 'zdenek.bohm@nic.cz',
     url = 'http://www.nic.cz',
     version = '1.1',
     license = 'GNU GPL',
