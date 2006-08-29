@@ -91,7 +91,7 @@ def run_pipe():
 
 if __name__ == '__main__':
     if sys.version_info[:2] < (2,4):
-        print _T('This program needs Python 2.4 or higher. Your version is'),sys.version
+        print _T('This program requires Python 2.4 or higher. Your version is'),sys.version
     else:
         if not sys.stdin.isatty():
             run_pipe() # commands from pipe
@@ -99,30 +99,35 @@ if __name__ == '__main__':
             if not options['help'] and len(sys.argv) > 1:
                 send_docs() # commands from argv
             else:
-                print """Usage: python ccreg_sender.py [OPTIONS]
-Send all files to the EPP server on the order of the list filenames.
-If first file is NOT login - does login automaticly.
+                print '%s: %s [OPTIONS...]\n\n%s\n\n%s\n\n%s:\n%s\n\n  %s\n'%(_T('Usage'), 'ccreg_sender.py',
+_T('Module for sending files to the EPP server.'),
+_T("""Connection options:
+  -?, --help       show this help and exit
+  -V, --version    Display program version information
 
-OPTIONS with values:
-    -s --session  name of session used for connect to the EPP server
-                  session values are read from config file
-    -h --host     host name (overwrite config value)
-    -u --user     user name (overwrite config value)
-    -p --password (overwrite config value)
-    -l --lang     language of session
-    -v --verbose  display modes: 1,2,3; default: 1
-                  1 - essensial values
-                  2 - all returned values
-                  3 - display XML sources
-OPTIONS:
-    -r --colors   set on colored output
-    -? --help     this help
-    
-EXAMPLES:
-./ccreg_create.py info_domain nic.cz > cmd1.xml
-./ccreg_create.py info_contact reg-id pokus > cmd2.xml
-./ccreg_sender.py cmd1.xml cmd2.xml
-./ccreg_sender.py -s epp_host -l cs cmd1.xml cmd2.xml
-
-./ccreg_create.py info_domain nic.cz | ./ccreg_create.py info_contact reg-id pokus | ./ccreg_create.py check_domain hokus pokus cosi | ./ccreg_sender.py
+  -l LANGUAGE, --lang=LANGUAGE
+                   set user interface language
+  -r, --colors     turn on colored output
+  -v LEVEL, --verbose=LEVEL
+                   set verbose level
+                   1 - normal operation
+                   2 - print more details
+                   3 - print more details and display XML sources
+  -h HOSTNAME, --host=HOSTNAME
+                   ccReg server to connect 
+  -u USERNAME, --user=USERNAME
+                   authenticate to server as user
+  -p PASSWORD, --password=PASSWORD
+                   authenticate to server with password
+  -s SESSION, --session=SESSION
+                   read session name  used for connect to the EPP server
+                   session values are read from config file"""),
+    _T('EXAMPLES'),
 """
+  ./ccreg_create.py info_domain nic.cz > cmd1.xml
+  ./ccreg_create.py info_contact reg-id pokus > cmd2.xml
+  ./ccreg_sender.py cmd1.xml cmd2.xml
+  ./ccreg_sender.py -s epp_host -l cs cmd1.xml cmd2.xml
+    
+  ./ccreg_create.py info_domain nic.cz | ./ccreg_create.py info_contact reg-id pokus | ./ccreg_create.py check_domain hokus pokus cosi | ./ccreg_sender.py""",
+   _T('For more information, see README.'))

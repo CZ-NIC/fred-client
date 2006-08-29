@@ -27,7 +27,7 @@ def set_history(words):
     try:
         import readline
     except ImportError:
-        print _T('readline module missing - cmd history is diabled')
+        print _T('Readline module missing, command history diabled. For more see README.')
     else:
         completer = Completer(words)
         readline.parse_and_bind("tab: complete")

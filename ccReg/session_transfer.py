@@ -113,7 +113,7 @@ class ManagerTransfer(ManagerBase):
             if self._options['host']: data[0] = self._options['host']
             self._session[HOST] = data[0] # for prompt info
             if None in data:
-                self.append_error('%s: %s'%(_T('Impossible create connection. Required config values missing'),str(data)))
+                self.append_error('%s: %s'%(_T('Can not create connection. Missing values'),str(data)))
                 return 0
         if self._lorry.connect(data, self._session[VERBOSE]):
             epp_greeting = self._lorry.receive() # receive greeting
@@ -122,7 +122,7 @@ class ManagerTransfer(ManagerBase):
                 self.process_answer(epp_greeting)
                 return 1
             else:
-                self.append_error(_T("Server doesn't return Greeting message. Contact server administrator."))
+                self.append_error(_T("Server didn't return Greeting message. Contact server administrator."))
         return 0
         
     def close(self):
@@ -149,7 +149,7 @@ class ManagerTransfer(ManagerBase):
                 # If XML doc has been sent, manager saves the name of this command.
                 # This is essensial for resolve how type the server answer is.
                 self._command_sent = self.grab_command_name_from_xml(message)
-                if self._session[VERBOSE] > 1: self.append_note(_T('Command was sent to EPP server.'),'BOLD')
+                if self._session[VERBOSE] > 1: self.append_note(_T('Command sent to EPP server.'),'BOLD')
             self.__check_is_connected__()
         else:
             self.append_error(_T('You are not connected.'))
@@ -162,7 +162,7 @@ class ManagerTransfer(ManagerBase):
         self._epp_cmd.assemble_logout(self.__next_clTRID__())
         epp_doc = self._epp_cmd.get_xml()
         if epp_doc and self.is_connected():
-            self.append_note(_T('Send logout'))
+            self.append_note(_T('Logout command sent to server'))
             self.send(epp_doc)          # odeslání dokumentu na server
             answer = self.receive()     # příjem odpovědi
             self.process_answer(answer) # zpracování odpovědi

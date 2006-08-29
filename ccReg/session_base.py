@@ -143,7 +143,10 @@ class ManagerBase:
 
     def welcome(self):
         "Welcome message."
-        return _T('ccRegClient 1.1\nType "help", "license" or "credits" for more information.')
+        return 'ccRegClient %s\n%s'%(self.version(),_T('Type "help", "license" or "credits" for more information.'))
+
+    def version(self):
+        return '1.1' # version of the client
 
     def __next_clTRID__(self):
         """Generate next clTRID value.
@@ -246,10 +249,10 @@ class ManagerBase:
             fp = open(filepath,'w')
             self._conf.write(fp)
             fp.close()
-            self.append_note(_T('Default config file saved. For more see help.'))
+            self.append_note(_T('Default config file saved. See help for more.'))
             self.append_note(filepath,'GREEN')
         except IOError, (no, msg):
-            self.append_error('%s: [%d] %s'%(_T('Impossible saving conf file. Reason'),no,msg))
+            self.append_error('%s: [%d] %s'%(_T('Can not save config file. Reason'),no,msg))
 
     def config_get_section_connect(self):
         'Set section name "connect" in config.'
@@ -277,7 +280,7 @@ class ManagerBase:
         section = 'session'
         if not self._conf.has_section(section):
             if not self.__create_default_conf__():
-                self.append_error(_T('Fatal error: Create default config failed.'))
+                self.append_error(_T('Fatal error: Default config create failed.'))
                 self.display() # display errors or notes
                 return 0 # fatal error
         # default values (timeout)
@@ -313,7 +316,7 @@ class ManagerBase:
                 if verbose in (1,2,3):
                     self._session[VERBOSE] = verbose
                 else:
-                    self.append_error(_T('Verbose mode can be set only to 1 or 2 or 3.'))
+                    self.append_error(_T('Available verbose modes: 1, 2r 3.'))
             except ValueError, msg:
                 self.append_error('Verbose ValueError: %s'%msg)
 
@@ -340,7 +343,7 @@ class ManagerBase:
                 uerr = repr(errors)
             self.append_note(uerr)
             self._session[VALIDATE] = 0 # validator is automaticly switched off
-            self.append_note('%s ${BOLD}validate on${NORMAL}.'%_T('Validator has been disabled. For enable type'))
+            self.append_note(_T('Validator has been disabled. Type %s to enable it.')%'${BOLD}validate on${NORMAL}')
         return ok
     
     def is_epp_valid(self, message):
@@ -355,8 +358,8 @@ class ManagerBase:
             except UnicodeDecodeError, error:
                 msg = '(UnicodeDecodeError) '+repr(msg)
             self._session[VALIDATE] = 0 # automatické vypnutí validace
-            self.append_note('%s: [%d] %s'%(_T('Temporary file for verify XML EPP validity cannot been created. Reason'),no,msg))
-            self.append_note('%s ${BOLD}validate on${NORMAL}.'%_T('Validator has been disabled. For enable type'))
+            self.append_note('%s: [%d] %s'%(_T('Temporary file for XML EPP validity verification can not been created. Reason'),no,msg))
+            self.append_note(_T('Validator has been disabled. Type %s to enable it.')%'${BOLD}validate on${NORMAL}')
             return '' # impossible save xml file needed for validation
         # kontrola validity XML
         schema_path = self.get_config_value('session','schema')
@@ -377,7 +380,7 @@ class ManagerBase:
                 or re.search(u'není názvem vnitřního ani vnějšího příkazu'.encode('cp852'),errors) \
                 or re.search('Schemas parser error',errors):
                 # schema missing!
-                self.append_note('%s ${BOLD}validate on${NORMAL}.'%_T('Validator has been disabled. For enable type'))
+                self.append_note(_T('Validator has been disabled. Type %s to enable it.')%'${BOLD}validate on${NORMAL}')
                 self._session[VALIDATE] = 0 # automatické vypnutí validace
                 errors=''
         return errors

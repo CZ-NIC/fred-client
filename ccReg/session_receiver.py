@@ -116,9 +116,9 @@ class ManagerReceiver(ManagerCommand):
                 invalid_epp = self.is_epp_valid(self._epp_response.get_xml())
                 if invalid_epp:
                     # když se odpověd serveru neplatná...
-                    self.append_note(_T('Server answer is not valid!'),('RED','BOLD'))
+                    self.append_note(_T('Server reply is not valid!'),('RED','BOLD'))
                     if self._session[VERBOSE] > 1: self.append_note(invalid_epp)
-                    self.append_note('%s ${BOLD}validate off${NORMAL}.'%_T('For disable validator type'))
+                    self.append_note(_T('Type %s to disable validator')%'${BOLD}validate off${NORMAL}')
             if not self._epp_response.is_error():
                 # když přišla nějaká odpověd a podařilo se jí zparsovat:
                 self._dict_answer = self._epp_response.create_data()
@@ -130,8 +130,8 @@ class ManagerReceiver(ManagerCommand):
                     self.append_note(_T('Unknown response type'),('RED','BOLD'))
                     self.__put_raw_into_note__(self._dict_answer)
         else:
-            self.append_note(_T("No response. EPP Server doesn't answer."))
-            if not self.is_connected(): self.append_error(_T("Broken connection."))
+            self.append_note(_T("No response from EPP server."))
+            if not self.is_connected(): self.append_error(_T("Connection interrupted."))
 
     #==================================================
     #
@@ -143,7 +143,7 @@ class ManagerReceiver(ManagerCommand):
         "Part of process answer - parse greeting node."
         dct = self._dct_answer['data']
         greeting = self._dict_answer['greeting']
-        if not self._dct_answer['reason']: self._dct_answer['reason'] = _T('Greeting message incomming')
+        if not self._dct_answer['reason']: self._dct_answer['reason'] = _T('Incoming greeting message')
         for key in ('svID','svDate'):
             dct[key] = eppdoc.get_dct_value(greeting, key)
         svcMenu = greeting.get('svcMenu',{})
@@ -169,7 +169,7 @@ class ManagerReceiver(ManagerCommand):
         if data[ANSW_CODE] == 1000:
             self._session[ONLINE] = 1 # indikátor zalogování
             self._session[CMD_ID] = 1 # reset - první command byl login
-            self._dct_answer['data']['session'] = '*** %s ***'%_T('Start session!')
+            self._dct_answer['data']['session'] = '*** %s ***'%_T('Session started')
         else:
             self._dct_answer['data']['session'] = '--- %s ---'%_T('Login failed')
             self.__code_isnot_1000__(data, 'login')
@@ -422,7 +422,7 @@ class ManagerReceiver(ManagerCommand):
                 self.process_answer(xml_answer)                               # process answer
                 if len(self._errors): raise ccRegError(self.fetch_errors())
             else:
-                errors = _T("You are not connected! For connection type: connect or login")
+                errors = _T('You are not logged. First type login.')
                 raise ccRegError(errors)
         else:
             self._dct_answer['errors'].append(_T('You are not logged. You must call login() before working on the server.'))

@@ -56,7 +56,7 @@ class Message(eppdoc.Message):
             if len(allowed):
                 txt = ','.join(allowed)
                 if len(txt)>37: txt = txt[:37]+'...' # shorter too long text
-                text = '%s ${WHITE}%s: ${CYAN}(%s)${NORMAL}'%(text,_T('accept only values'),txt)
+                text = '%s ${WHITE}%s: ${CYAN}(%s)${NORMAL}'%(text,_T('accepts only values'),txt)
             msg.append('%s %s'%(text,help))
             if len(children):
                 msg.extend(self.__get_help_scope__(children, deep+1))
@@ -124,7 +124,7 @@ class Message(eppdoc.Message):
                     # check allowed values
                     for value in dct_values[name]:
                         if value not in allowed:
-                            errors.append('%s: %s %s'%(scope_name,_T('Value "%s" is not allowed here. Valid:')%value.encode(encoding),str(allowed)))
+                            errors.append('%s: %s %s'%(scope_name,_T('Value "%s" is not allowed. Valid is:')%value.encode(encoding),str(allowed)))
                 # walk throught descendants:
                 if children:
                     for dct in dct_values[name]:
@@ -178,7 +178,7 @@ class Message(eppdoc.Message):
             print_info_listmax(max) # (Value can be a list of max %d values.)
             if self._verbose > 1:
                 if len(allowed):
-                    session_base.print_unicode('${WHITE}%s:${NORMAL} (%s)'%(_T('Param MUST be a value from this list'),', '.join(allowed)))
+                    session_base.print_unicode('${WHITE}%s:${NORMAL} (%s)'%(_T('Parameter MUST be a value from following list'),', '.join(allowed)))
                 if len(example):
                     if type(example) == unicode: example = example.encode(encoding)
                     session_base.print_unicode('${WHITE}%s %s:${NORMAL} %s'%(_T('Example'),__scope_to_string__(parents),example))

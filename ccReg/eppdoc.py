@@ -155,7 +155,7 @@ class Message:
             node=self.new_node(master, name, value, attribs)
         else:
             # pokud nadřazený uzel neexistuje, tak by se to celé mělo zastavit?
-            self.errors.append((2001, None, _T("Internal Error: Master node '%s' doesn't exist."%master_name)))
+            self.errors.append((2001, None, _T("Internal error: Master node '%s' doesn't exist."%master_name)))
             raise "Internal Error: Master node '%s' doesn't exist."%master_name # TODO ????
             node=None # TODO ????
         return node

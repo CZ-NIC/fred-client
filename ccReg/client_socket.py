@@ -48,16 +48,16 @@ class Lorry:
         if self._conn is None: return 0
         try:
             self._conn.connect((DATA[0], DATA[1]))
-            self._notes.append('%s ${BOLD}%s${NORMAL}, port %d'%(_T('Open connection on host'), DATA[0], DATA[1]))
+            self._notes.append('%s ${BOLD}%s${NORMAL}, port %d'%(_T('Opened connection to'), DATA[0], DATA[1]))
             if self._timeout:
                 self._notes.append('Socket timeout: ${BOLD}%.1f${NORMAL} sec.'%self._timeout)
                 self._conn.settimeout(self._timeout)
         except socket.error, (no,msg):
             self._errors.append('Connection socket.error [%d] %s (%s:%s)'%(no,msg,DATA[0],DATA[1]))
         except (KeyboardInterrupt,EOFError):
-            self._errors.append(_T('Interrupt from user'))
+            self._errors.append(_T('Interrupted by user'))
         if not ok: return ok
-        if verbose > 1: self._notes.append(_T('Init SSL connection'))
+        if verbose > 1: self._notes.append(_T('SSL connection initiated'))
         if len(DATA) < 4:
             self._errors.append(_T('Certificate names not set.'))
         if len(DATA) > 2 and not os.path.isfile(DATA[2]):
@@ -71,16 +71,16 @@ class Lorry:
             if len(DATA) > 3 and DATA[2] and DATA[3]:
                 self._conn_ssl = socket.ssl(self._conn, DATA[2], DATA[3])
             else:
-                self._notes.append(_T('Certificates missing. Try connect without SSL!'))
+                self._notes.append(_T('Certificates missing. Trying to connect without SSL!'))
                 self._conn_ssl = socket.ssl(self._conn)
             ssl_ok = 1
         except socket.sslerror, msg:
             self._errors.append('socket.sslerror: %s (%s:%s)'%(str(msg),DATA[0],DATA[1]))
             if type(msg) not in (str,unicode):
                 err_note = {
-                    1:_T('Used certificat is not signed by verified certificate authority.'),
-                    2:'%s\n%s'%(_T('The server configuration is not valid. Contact the server administrator.'),
-                      _T('If this script runs under MS Windows and timeout is not zero, it is probably SLL bug! Set timeout back to zero.')),
+                    1:_T('Certificate not signed by verified certificate authority.'),
+                    2:'%s\n%s'%(_T('Server configuration is not valid. Contact administrator.'),
+                      _T('If this client runs under MS Windows and timeout is not zero, it is probably SLL bug! Set timeout back to zero.')),
                 }
                 try:
                     text = err_note.get(msg[0],None)
@@ -88,7 +88,7 @@ class Lorry:
                 except (TypeError, IndexError):
                     pass
         except (KeyboardInterrupt,EOFError):
-            self._errors.append(_T('Interrupt from user'))
+            self._errors.append(_T('Interrupted by user'))
         if not ssl_ok:
             self._conn.close()
             self._conn = None
@@ -115,7 +115,7 @@ class Lorry:
         except socket.error, (no, msg):
             self._errors.append('READ HEADER socket.error: [%d] %s'%(no, msg))
         except (KeyboardInterrupt,EOFError):
-            self._errors.append(_T('Interrupt from user'))
+            self._errors.append(_T('Interrupted by user'))
         else:
             # hlavička zprávy
             try:
@@ -148,7 +148,7 @@ class Lorry:
             except MemoryError, msg:
                 self._errors.append('READ socket.receive MemoryError: %s'%msg)
             except (KeyboardInterrupt,EOFError):
-                self._errors.append(_T('Interrupt from user'))
+                self._errors.append(_T('Interrupted by user'))
             if not ok: self.close()
         return data.strip()
 
@@ -182,7 +182,7 @@ class Lorry:
         except socket.error, (no, msg):
             self._errors.append('SEND socket.error: [%d] %s'%(no, msg))
         except (KeyboardInterrupt,EOFError):
-            self._errors.append(_T('Interrupt from user'))
+            self._errors.append(_T('Interrupted by user'))
         if not ok: self.close()
         return ok
 
@@ -194,7 +194,7 @@ class Lorry:
                 self._conn = None
                 self._conn_ssl = None
             except (KeyboardInterrupt,EOFError):
-                self._errors.append(_T('Interrupt from user'))
+                self._errors.append(_T('Interrupted by user'))
             self._errors.append(_T('Connection closed'))
 
 if __name__ == '__main__':

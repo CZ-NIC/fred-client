@@ -73,7 +73,7 @@ config_name = '.ccReg.conf'
 available_langs = ('en','cs')
 default_lang = 'en'
 optcols = ('s:session','l:lang','g:log','h:host','u:user','p:password',
-        'v:verbose','c:command','r colors','? help')
+        'v:verbose','c:command','r colors','? help','V version')
 options = {}
 for key in optcols:
     options[key[2:]] = ''

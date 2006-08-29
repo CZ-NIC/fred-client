@@ -6,30 +6,38 @@ from ccReg.translate import _T, options, option_errors
 
 if __name__ == '__main__':
     if sys.version_info[:2] < (2,4):
-        print _T('This program needs Python 2.4 or higher. Your version is'),sys.version
+        print _T('This program requires Python 2.4 or higher. Your version is'),sys.version
     else:
         if options['help']:
-            print _T("""Usage: python ccreg_client.py [OPTIONS]
-Client for communication with EPP server.
+            print '%s: %s [OPTIONS...]\n\n%s\n\n%s\n  %s\n\n  %s\n'%(_T('Usage'), 'ccreg_client',
+_T('Client for communication with EPP server.'),
+_T("""Connection options:
+  -?, --help       show this help and exit
+  -V, --version    Display program version information
 
-OPTIONS with values:
-    -s --session  name of session used for connect to the EPP server
-                  session values are read from config file
-    -h --host     host name (overwrite config value)
-    -u --user     user name (overwrite config value)
-    -p --password (overwrite config value)
-    -l --lang     language of session
-    -v --verbose  display modes: 1,2,3; default: 1
-                  1 - essensial values
-                  2 - all returned values
-                  3 - display XML sources
-    -c --command  send command to the EPP server
-                  example: --command='info_domain nic.cz'
-
-OPTIONS:
-    -r --colors   set on colored output
-    -? --help     this help
-""")
+  -l LANGUAGE, --lang=LANGUAGE
+                   set user interface language
+  -r, --colors     turn on colored output
+  -v LEVEL, --verbose=LEVEL
+                   set verbose level
+                   1 - normal operation
+                   2 - print more details
+                   3 - print more details and display XML sources
+  -h HOSTNAME, --host=HOSTNAME
+                   ccReg server to connect 
+  -u USERNAME, --user=USERNAME
+                   authenticate to server as user
+  -p PASSWORD, --password=PASSWORD
+                   authenticate to server with password
+  -s SESSION, --session=SESSION
+                   read session name  used for connect to the EPP server
+                   session values are read from config file"""),
+   _T("""-c COMMAND, --command=COMMAND
+                   send command to server and exit"""),
+   _T('For more information, see README.'))
+        elif options['version']:
+            epp = ccReg.ClientSession()
+            print epp.version()
         elif option_errors:
             print option_errors
         else:

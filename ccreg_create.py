@@ -22,7 +22,7 @@ def main(command):
 
 if __name__ == '__main__':
     if sys.version_info[:2] < (2,4):
-        print _T('This program needs Python 2.4 or higher. Your version is'),sys.version
+        print _T('This program requires Python 2.4 or higher. Your version is'),sys.version
     else:
         if not sys.stdin.isatty(): print sys.stdin.read() # keep previous output
         if len(sys.argv) > 1:

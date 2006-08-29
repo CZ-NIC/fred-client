@@ -116,12 +116,12 @@ class Message(eppdoc_assemble.Message):
             ('name',(1,1),(),_T('your name'),u'Jan Novák','',()), # odtud shoda s update contact
             ('email',(1,1),(),_T('your email'),'info@mymail.cz','',()),
             ('city',(1,1),(),_T('your city'),'Praha','',()),
-            ('cc',(1,1),(),_T('country code'),'CZ','',()),
-            ('pw',(1,1),(),_T('password'),'mypassword','',()), # required end
+            ('cc',(1,1),(),_T('country code'),'CZ',_T('country code'),()),
+            ('pw',(1,1),(),_T('password'),'mypassword',_T('password'),()), # required end
             ('org',(0,1),(),_T('organisation name'),'Firma s.r.o.','',()),
             ('street',(0,3),(),_T('street'),u'Národní třída 1230/12','',()),
             ('sp',(0,1),(),_T('state or province'),_T('state or province'),'',()),
-            ('pc',(0,1),(),_T('postal code'),'12000','',()),
+            ('pc',(0,1),(),_T('postal code'),'12000',_T('postal code'),()),
             ('voice',(0,1),(),_T('voice (phone number)'),'+420.222745111','',()),
             ('fax',(0,1),(),_T('fax number'),'+420.222745111','',()),
             ('disclose',(0,1),(),_T('disclose'),'','',(
@@ -130,7 +130,7 @@ class Message(eppdoc_assemble.Message):
                 ('data',(0,len(eppdoc_assemble.contact_disclose)),eppdoc_assemble.contact_disclose,_T('data for with is set the flag value'),'','',()),
             )),
             ('vat',(0,1),(),_T('VAT (Value-added tax)'),'7035555556','',()), # daˇnový identifikátor
-            ('ssn',(0,1),(),_T('SSN (Security social number)'),'','',( # mpsv: identifikátor Ministerstva práce a sociálních věcí
+            ('ssn',(0,1),(),_T('SSN (Social security number)'),'','',( # mpsv: identifikátor Ministerstva práce a sociálních věcí
                 ('type',(1,1),('op','rc','passport','mpsv','ico'),_T('SSN type'),'op','',()),
                 ('number',(1,1),(),_T('SSN number'),'8888888856','',()),
             )),

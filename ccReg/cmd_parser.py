@@ -197,7 +197,7 @@ def parse(dct_root, cols_root, text_line):
                     if keyname_token is None:
                         keyname_token = [] # init
                     else:
-                        errors.append(_T('Invalid bracket. In key definition is only allowed a value or simple list.'))
+                        errors.append(_T('Invalid bracket. Only value or simple list allowed in key definition.'))
                     continue
                 cr = current[-1]
                 if mode[-1] == MOD_CHILD_LIST:
