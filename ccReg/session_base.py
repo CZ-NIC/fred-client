@@ -54,6 +54,7 @@ class ManagerBase:
         self._conf = translate.config # <ConfigParser object> from translate module
         self._auto_connect = 1 # auto connection during login or hello
         self._options = translate.options # parameters from command line
+        self._email_reports_bug = 'info@nic.cz'
 
     def get_session(self, offset):
         return self._session[offset]

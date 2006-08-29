@@ -23,6 +23,25 @@ class ManagerTransfer(ManagerBase):
         self._raw_answer = '' # XML EPP odpověd serveru
         self._dct_answer = {} # API response
         self.reset_src()
+        self._session_commands = (
+            ('!', ('EPP_command',), _T('Start the interactive mode of the input command params.'), ('!create_domain',)),
+            ('?', (), _T('Same as help. For command details type "help command-name".'), ('?info_contact',)),
+            ('colors', ('on','off'), _T('Turn on/off colored output.'), ('colors on',)),
+            ('config', ('create',), _T('Display or create config file.'), ('config',)),
+            ('confirm', ('on','off'), _T('Set on/off confirmation for sending editable commands to the server.'), ('confirm off',)),
+            ('connect', (), _T('Make connection between client and server without login.'), ()),
+            ('credits', (), _T('Display credits.'), ()),
+            ('help', (), _T('Display this help or command details.'), ('help update_nsset',)),
+            ('license', (), _T('Display license.'), ()),
+            ('poll-ack', ('on','off'), _T('Send "poll ack" straight away after "poll req".'), ('poll-ack on',)),
+            ('quit', (), _T('Quit the client. Same effect has "q" or "exit".'), ()),
+            ('raw-answer', ('d','dict',), _T('Display XML source of the EPP answer.'), ('raw-a','raw-a d','src-a','src-a d')),
+            ('raw-command', ('d','dict',), _T('Display XML source of the EPP command.'), ('raw-c','raw-c d','src-c','src-c d')),
+            ('send', ('filename',), _T('Send any file to the server. If filename missing command shows actual folder.'), ('send mydoc.xml',)),
+            ('validate', ('on','off'), _T('Set on/off external validation of the XML documents.'), ('validate off',)),
+            ('verbose', ('1','2','3'), _T('Set verbose mode: 1 - brief (default); 2 - full; 3 - full & XML sources.'), ('verbose 2',)),
+        )
+        self._available_session_commands = [n for n,p,e,x in self._session_commands]
 
     def get_command_names(self):
         return self._available_commands
@@ -223,6 +242,7 @@ class ManagerTransfer(ManagerBase):
         
 def __append_into_report__(body,patt_type,k,v):
     'Append value type(unicode|list|tuple) into report body.'
+    if type(v) is str: v = v.decode(encoding)
     if type(v) in (list,tuple):
         if len(v):
             space = ' '*(8 - len('%s: '%k)) # indent justify text to the tabs on next lines

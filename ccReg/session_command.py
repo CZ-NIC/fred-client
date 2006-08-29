@@ -1,7 +1,6 @@
 # -*- coding: utf8 -*-
 #!/usr/bin/env python
-import re
-import random
+import re, random, math
 import dircache # jen pro testování. v ostré verzi to nebude
 
 import eppdoc
@@ -54,34 +53,62 @@ class ManagerCommand(ManagerTransfer):
     # main creation command functions
     #
     #==================================================
-    def make_help(self, command_name):
-        "Make help for chosen command."
+    def display_help(self, command_name):
+        'Display help (build for display)'
         if command_name:
-            command_name = command_name.replace('-','_')
-            if command_name in self._available_commands:
-                command_name = self.__make_help__(command_name)
+            # help command
+            type = ''
+            m = re.match('(raw|src)[-_](a|c)',command_name)
+            if m: command_name = 'raw-%s'%('command','answer')[m.group(2)=='a']
+            if command_name in self._available_session_commands:
+                type = 'session'
+            else:
+                command_name = command_name.replace('-','_')
+                if command_name in self._available_commands:
+                    type = 'EPP'
+            if type:
+                self.__make_help_details__(command_name, type)
             else:
                 self.append_note('%s "%s".'%(_T('No help available for'),command_name))
-                command_name = '.'
         else:
-            self.__make_help_list_EPP_commands__()
-        return command_name
+            # help content
+            self.append_note('%s\n\n${BOLD}%s:${NORMAL}\n%s\n\n${BOLD}%s:${NORMAL}\n%s\n\n%s %s'%(
+            _T('Type "help command" to get help on particular command.'),
+            _T('Available session commands'),
+            __make_help_columns__(self._available_session_commands, 2.0),
+            _T('Available EPP commands'),
+            __make_help_columns__(self._available_commands, 3.0),
+            _T('Report bugs to'), self._email_reports_bug
+            ))
 
-    def __make_help_list_EPP_commands__(self):
-        self.append_note('\n${BOLD}%s:${NORMAL}\n%s'%(_T("Available EPP commands"),", ".join(self._available_commands)))
-        self.append_note(_T('Type "?command" (or "h(elp) command") for mode details about parameters.'))
-        self.append_note(_T('To start the interactive mode of input the command params type: ${BOLD}!command${NORMAL}'))
-        self.append_note(_T('For stop interactive input type ! instead of value (or more "!" for leave sub-scope)'))
+    def __get_help_session_detail__(self, command_name):
+        'Returns set of details of the session command.'
+        command_line = command_help = notice = ''
+        examples = ()
+        for name,params,explain,ex in self._session_commands:
+            if name == command_name:
+                notice = explain
+                examples = ex
+                if len(params):
+                    command_line = '%s [param]'%name
+                    command_help = '%s: (%s)'%(_T('Available values'),', '.join(params))
+                else:
+                    command_line = name
+                break
+        return command_line, command_help, notice, examples
 
-    def __make_help__(self, command_name):
+    def __make_help_details__(self, command_name, type):
         "Make help for chosen command."
         if command_name:
             m = re.match('(\S+)', command_name)
             if m:command_name = m.group(1)
-        if command_name and command_name != 'command':
+        if command_name:
             # s parametrem - zobrazí se help na vybraný příkaz
             self.append_note('%s: ${BOLD}${GREEN}%s${NORMAL}'%(_T("Help for command"),command_name))
-            command_line, command_help, notice, examples = self._epp_cmd.get_help(command_name)
+            if type == 'EPP':
+                command_line, command_help, notice, examples = self._epp_cmd.get_help(command_name)
+            else:
+                command_line, command_help, notice, examples = self.__get_help_session_detail__(command_name)
             patt = re.compile("^(\S)",re.MULTILINE)
             patt_sub = "   \\1"
             #
@@ -92,43 +119,13 @@ class ManagerCommand(ManagerTransfer):
             self.append_note('    '+command_line)
             #
             self.append_note('\n%s:'%_T('OPTIONS'),'BOLD')
-            self.append_note(command_help)
+            self.append_note(patt.sub(patt_sub,command_help))
             #
             self.append_note('\n%s:'%_T('EXAMPLES'),'BOLD')
             self.append_note(patt.sub(patt_sub,'\n'.join(examples)))
             #
             command_name='.'
-        else:
-            # bez parametru - zobrazí se přehled helpu
-            if command_name == 'command':
-                self.append_note(_T('Instead "command" Select one from this list bellow:'))
-                command_name='.'
-            self.append_note('\n${BOLD}%s:${NORMAL}\n%s'%(_T("Available EPP commands"),", ".join(self._available_commands)))
-            self.append_note(_T('Type "?command" (or "h(elp) command") for mode details about parameters.'))
-            self.append_note(_T('To start the interactive mode of input the command params type: ${BOLD}!command${NORMAL}'))
-            self.append_note(_T('For stop interactive input type ! instead of value (or more "!" for leave sub-scope)'))
         return command_name
-
-    def make_help_session(self, command_name):
-        # Když je dotaz na help
-        if command_name is None or command_name != '.':
-            self.append_note(_T("""\n${BOLD}Session commands:${NORMAL}
-${BOLD}q${NORMAL} (or ${BOLD}quit${NORMAL}, ${BOLD}exit${NORMAL}) # quit this application
-${BOLD}help${NORMAL} (or ${BOLD}h${NORMAL}, ${BOLD}?${NORMAL})  # display this help
-${BOLD}license${NORMAL} # display license
-${BOLD}credits${NORMAL} # display credits
-${BOLD}connect${NORMAL} (or directly login) # connect to the server (for test only)
-${BOLD}validate${NORMAL} [on/off] # set validation or display actual setting
-${BOLD}poll-ack${NORMAL} [on/off] # send "poll ack" straight away after "poll req"
-${BOLD}raw-c${NORMAL}[ommand] [xml]/${BOLD}d${NORMAL}[ict] # display raw command (instead of raw you can also type ${BOLD}src${NORMAL})
-${BOLD}raw-a${NORMAL}[nswer] [xml]/${BOLD}d${NORMAL}[ict]  # display raw answer
-${BOLD}confirm${NORMAL} ${BOLD}on${NORMAL}/[off] # confirm editable commands befor sending to the server
-${BOLD}config${NORMAL} # display actual config
-${BOLD}config${NORMAL} ${BOLD}create${NORMAL} # create default config file in user home folder.
-${BOLD}send${NORMAL} [filename] # send selected file to the server (for test only). If param is not valid file the command shows folder.
-${BOLD}colors${NORMAL} [on/off] # turn on/off colored output
-${BOLD}verbose${NORMAL} [number] # set verbose mode: 1 - brief (default); 2 - full; 3 - full & XML sources
-"""))
 
     def epp_command(self, cmdline):
         'Find EPP command in input and check if is known.'
@@ -174,10 +171,11 @@ ${BOLD}verbose${NORMAL} [number] # set verbose mode: 1 - brief (default); 2 - fu
         "Dispatch command line from user and set internal variables or create EPP document."
         command_name = ''
         self.reset_round()
-        cmd = command.strip()
+        cmd = EPP_command = command.strip()
         # Možnost zadání pomlčky místo podtržítka:
         m = re.match('(\S+)(.*)',cmd)
-        if m: cmd = '%s%s'%(m.group(1).replace('-','_'), m.group(2))
+        if m: EPP_command = '%s%s'%(m.group(1).replace('-','_'), m.group(2))
+        if cmd == '!': cmd = '? !'
         # help
         help, help_item = None,None
         m = re.match('(h(?:elp)?)(?:$|\s+(\S+))',cmd)
@@ -187,7 +185,7 @@ ${BOLD}verbose${NORMAL} [number] # set verbose mode: 1 - brief (default); 2 - fu
             m = re.match('(\?)(?:$|\s*(\S+))',cmd)
             if m: help, help_item = m.groups()
         if help:
-            self.make_help_session(self.make_help(help_item))
+            self.display_help(help_item)
         elif re.match('(raw|src)[-_]',cmd):
             # Zobrazení 'surových' dat - zdrojová data
             # raw-cmd; raw-a[nswer] e[pp]; raw-answ [dict]
@@ -284,6 +282,7 @@ ${BOLD}verbose${NORMAL} [number] # set verbose mode: 1 - brief (default); 2 - fu
             self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('poll ack is'),{False:'OFF',True:'ON'}[self._session[POLL_AUTOACK]]))
         else:
             # příkazy pro EPP
+            cmd = EPP_command
             if type(cmd) != unicode:
                 try:
                     cmd = unicode(cmd, encoding)
@@ -366,6 +365,11 @@ def load_file(filename):
     except IOError, (errnum, msg):
         error = 'IOError: %d. %s (%s)'%(errnum,msg,filename)
     return body, error
+
+def __make_help_columns__(names,fcols,padding=26):
+    'Make columns from list of names. Param cols must be float.'
+    length = int(math.ceil(len(names)/fcols))
+    return '\n'.join([''.join(map(lambda s: s.ljust(padding), names[i::length])) for i in range(length)])
 
 
 if __name__ == '__main__':
