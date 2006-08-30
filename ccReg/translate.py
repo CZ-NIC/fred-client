@@ -33,17 +33,33 @@ def find_valid_encoding():
         valid_charset = sys.stdout.encoding
     return valid_charset,warning
 
+def load_config_from_file(filename):
+    'Load config file from specifiend filename only.'
+    config = None
+    error = ''
+    if os.path.isfile(filename):
+        try:
+            config = ConfigParser.SafeConfigParser()
+            config.read(filename)
+        except (ConfigParser.MissingSectionHeaderError, ConfigParser.ParsingError), msg:
+            error = 'ConfigParserError: %s'%str(msg)
+            config = None
+    else:
+        error = "Configuration file '%s' missing."%filename
+    return config, error
+
 def load_config(config_name):
     "Load config file and init internal variables. Returns 0 if fatal error occured."
     config = ConfigParser.SafeConfigParser()
     error = ''
+    modul_conf = os.path.join(os.path.split(__file__)[0],config_name)
     if os.name == 'posix':
         glob_conf = '/etc/%s'%config_name
     else:
         # ALLUSERSPROFILE = C:\Documents and Settings\All Users
         glob_conf = os.path.join(os.path.expandvars('$ALLUSERSPROFILE'),config_name)
     try:
-        config.read([glob_conf, os.path.join(os.path.expanduser('~'),config_name)])
+        config.read([glob_conf, modul_conf, os.path.join(os.path.expanduser('~'),config_name)])
     except (ConfigParser.MissingSectionHeaderError, ConfigParser.ParsingError), msg:
         error = 'ConfigParserError: %s'%str(msg)
         config = None
@@ -69,11 +85,11 @@ def get_valid_lang(key, msg):
 #---------------------------
 # INIT options:
 #---------------------------
-config_name = '.ccReg.conf'
+config_name = '.ccreg_client.conf' # .ccReg.conf
 available_langs = ('en','cs')
 default_lang = 'en'
 optcols = ('s:session','l:lang','g:log','h:host','u:user','p:password',
-        'v:verbose','c:command','r colors','? help','V version')
+        'v:verbose','c:command','r colors','? help','V version','c:config')
 options = {}
 for key in optcols:
     options[key[2:]] = ''
@@ -83,17 +99,6 @@ for key in optcols:
 option_args = ()
 errors = []
 warnings = []
-#---------------------------
-# LOAD CONFIG
-#---------------------------
-config, config_error = load_config(config_name)
-if config:
-    key, error = get_config_value(config, 'session','lang',1)
-    if error:
-        errors.append(error)
-    elif key:
-        options['lang'], error = get_valid_lang(key, 'config')
-        if error: errors.append(error)
 
 #---------------------------
 # PARSE COMMAND LINE OPTIONS
@@ -119,6 +124,22 @@ if len(sys.argv) > 1:
                         if error: errors.append(error)
                     else:
                         options[key] = v
+
+#---------------------------
+# LOAD CONFIG
+#---------------------------
+if options['config']:
+    config, config_error = load_config_from_file(options['config'])
+else:
+    config, config_error = load_config(config_name)
+if config and not options['lang']:
+    key, error = get_config_value(config, 'session','lang',1)
+    if error:
+        errors.append(error)
+    elif key:
+        options['lang'], error = get_valid_lang(key, 'config')
+        if error: errors.append(error)
+
 
 if not len(options['lang']):
     # set language from environ

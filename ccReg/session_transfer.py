@@ -29,7 +29,7 @@ class ManagerTransfer(ManagerBase):
             ('colors', ('on','off'), _T('Turn on/off colored output.'), ('colors on',)),
             ('config', ('create',), _T('Display or create config file.'), ('config',)),
             ('confirm', ('on','off'), _T('Set on/off confirmation for sending editable commands to the server.'), ('confirm off',)),
-            ('connect', (), _T('Make connection between client and server without login.'), ()),
+            #('connect', (), _T('Make connection between client and server without login.'), ()),
             ('credits', (), _T('Display credits.'), ()),
             ('help', (), _T('Display this help or command details.'), ('help update_nsset',)),
             ('license', (), _T('Display license.'), ()),
@@ -93,6 +93,21 @@ class ManagerTransfer(ManagerBase):
     #    funkce pro komunikaci se socketem
     #
     #==================================================
+    def __get_connect_defaults__(self):
+        'Get connect defaults from config'
+        if not self._conf: self.load_config() # load config, if was not been yet
+        section = self.config_get_section_connect()
+        data = [self.get_config_value(section,'host'),
+                self.get_config_value(section,'port',0,'int'),
+                self.get_config_value(section,'ssl_key'),
+                self.get_config_value(section,'ssl_cert'),
+                self.get_config_value(section,'timeout'),
+                ]
+        # command options
+        if self._options['host']: data[0] = self._options['host']
+        self._session[HOST] = data[0] # for prompt info
+        return data
+
     def connect(self, data=None):
         "Connect transfer socket. data=('host',port,'client-type')"
         if self.is_connected(): return 1 # spojení je již navázáno
@@ -101,17 +116,7 @@ class ManagerTransfer(ManagerBase):
         self._lorry._errors = self._errors
         self._lorry.handler_message = self.process_answer
         if not data:
-            if not self._conf: self.load_config() # load config, if was not been yet
-            section = self.config_get_section_connect()
-            data = [self.get_config_value(section,'host'),
-                    self.get_config_value(section,'port',0,'int'),
-                    self.get_config_value(section,'ssl_key'),
-                    self.get_config_value(section,'ssl_cert'),
-                    self.get_config_value(section,'timeout'),
-                    ]
-            # command options
-            if self._options['host']: data[0] = self._options['host']
-            self._session[HOST] = data[0] # for prompt info
+            data = self.__get_connect_defaults__()
             if None in data:
                 self.append_error('%s: %s'%(_T('Can not create connection. Missing values'),str(data)))
                 return 0
@@ -169,7 +174,7 @@ class ManagerTransfer(ManagerBase):
             if not no_outoupt: self.print_answer() # 2. departure from the rule to print answers
         else:
             self.append_error(self._epp_cmd.get_errors())
-            
+
     def receive(self):
         "Receive message from server."
         ret = ''

@@ -21,7 +21,18 @@ def main(session_name):
     is_online = 0
     prompt = '> '
     online = prompt
+    epp.automatic_login()
     while 1:
+        # change prompt status:
+        if is_online:
+            if not epp.is_logon():
+                is_online = 0
+                online = prompt
+        else:
+            online = prompt
+            if epp.is_logon():
+                is_online = 1
+                online = '%s@%s: '%epp.get_username_and_host()
         try:
             command = raw_input(online)
         except (KeyboardInterrupt, EOFError):
@@ -56,24 +67,15 @@ def main(session_name):
                     epp.append_note(_T('You are not connected! Type login for connection to the server.'),('BOLD','RED'))
         if command_name == 'connect': epp.print_answer()
         epp.display() # display errors or notes
-        # change prompt status:
-        if is_online:
-            if not epp.is_logon():
-                is_online = 0
-                online = prompt
-        else:
-            online = prompt
-            if epp.is_logon():
-                is_online = 1
-                online = '%s@%s: '%epp.get_username_and_host()
     epp.close()
     epp.display() # display logout messages
     print "[END]"
 
 
 if __name__ == '__main__':
-    if sys.version_info[:2] < (2,4):
-        print _T('This program requires Python 2.4 or higher. Your version is'),sys.version
+    msg_invalid = ccReg.check_python_version()
+    if msg_invalid:
+        print msg_invalid
     else:
         if options['help']:
             print '%s: %s [OPTIONS...]\n\n%s\n\n%s\n\n  %s\n'%(_T('Usage'), 'ccreg_console.py',
@@ -98,7 +100,9 @@ _T("""Connection options:
                    authenticate to server with password
   -s SESSION, --session=SESSION
                    read session name  used for connect to the EPP server
-                   session values are read from config file"""),
+                   session values are read from config file
+  -c CONFIG, --config=CONFIG
+                   load config from filename"""),
    _T('For more information, see README.'))
         elif options['version']:
             epp = ccReg.ClientSession()

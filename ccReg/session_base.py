@@ -170,8 +170,12 @@ class ManagerBase:
             if not self._conf:
                 print_unicode(_T('No config'))
                 return
+            selected_section = self.config_get_section_connect()
             for section in self._conf.sections():
-                print colored_output.render('${BOLD}[%s]${NORMAL}'%section)
+                msg = ''
+                if section == selected_section:
+                    msg = '${BOLD}${GREEN}### %s ###${NORMAL}'%_T('Actual connection HERE')
+                print colored_output.render('${BOLD}[%s]${NORMAL} %s'%(section,msg))
                 for option in self._conf.options(section):
                     print_unicode(colored_output.render('\t${BOLD}%s${NORMAL} = %s'%(option,str(self.get_config_value(section,option)))))
 
@@ -267,7 +271,7 @@ class ManagerBase:
         section = self.config_get_section_connect()
         if self._conf.has_section(section):
             if not self.__is_config_option__(section, 'timeout'):
-                self._conf.set(section, 'timeout','0.0')
+                self._conf.set(section, 'timeout','10.0')
         
     def load_config(self, session=''):
         "Load config file and init internal variables. Returns 0 if fatal error occured."

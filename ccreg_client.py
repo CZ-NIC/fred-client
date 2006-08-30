@@ -5,8 +5,9 @@ import ccReg
 from ccReg.translate import _T, options, option_errors
 
 if __name__ == '__main__':
-    if sys.version_info[:2] < (2,4):
-        print _T('This program requires Python 2.4 or higher. Your version is'),sys.version
+    msg_invalid = ccReg.check_python_version()
+    if msg_invalid:
+        print msg_invalid
     else:
         if options['help']:
             print '%s: %s [OPTIONS...]\n\n%s\n\n%s\n  %s\n\n  %s\n'%(_T('Usage'), 'ccreg_client',
@@ -31,7 +32,9 @@ _T("""Connection options:
                    authenticate to server with password
   -s SESSION, --session=SESSION
                    read session name  used for connect to the EPP server
-                   session values are read from config file"""),
+                   session values are read from config file
+  -c CONFIG, --config=CONFIG
+                   load config from filename"""),
    _T("""-c COMMAND, --command=COMMAND
                    send command to server and exit"""),
    _T('For more information, see README.'))

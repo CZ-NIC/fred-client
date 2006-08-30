@@ -90,8 +90,9 @@ def run_pipe():
 
 
 if __name__ == '__main__':
-    if sys.version_info[:2] < (2,4):
-        print _T('This program requires Python 2.4 or higher. Your version is'),sys.version
+    msg_invalid = ccReg.check_python_version()
+    if msg_invalid:
+        print msg_invalid
     else:
         if not sys.stdin.isatty():
             run_pipe() # commands from pipe
@@ -121,7 +122,9 @@ _T("""Connection options:
                    authenticate to server with password
   -s SESSION, --session=SESSION
                    read session name  used for connect to the EPP server
-                   session values are read from config file"""),
+                   session values are read from config file
+  -c CONFIG, --config=CONFIG
+                   load config from filename"""),
     _T('EXAMPLES'),
 """
   ./ccreg_create.py info_domain nic.cz > cmd1.xml

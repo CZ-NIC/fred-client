@@ -10,6 +10,7 @@
 # Message() umí sestavit. Seznam dostupných příkazů vrací funkce get_client_commands().
 #
 import re, sys, os
+import random
 import ConfigParser
 import eppdoc
 import cmd_parser
@@ -23,7 +24,6 @@ try:
 except ImportError:
     history_write = None
     history_read = None
-
 
 UNBOUNDED = None
 contact_disclose = ('name','org','addr','voice','fax','email')
@@ -93,11 +93,12 @@ class Message(eppdoc.Message):
     def __fill_empy_from_config__(self, config, dct, columns):
         'Fill missing values from config.'
         errors = []
-        section = 'epp_%s'%columns[0][0]
-        if not config or not config.has_section(section): return errors # silent, no errors
-        for key,value in config.items(section):
-            # go throught dict and create keys if missing:
-            cmd_parser.insert_on_key(errors, dct, columns, key, value, 1)
+        # DISABLED: function was disabled. For restore remove '#' from following five rows:
+        #section = 'epp_%s'%columns[0][0]
+        #if not config or not config.has_section(section): return errors # silent, no errors
+        #for key,value in config.items(section):
+        #    # go throught dict and create keys if missing:
+        #    cmd_parser.insert_on_key(errors, dct, columns, key, value, 1)
         return errors
 
     def get_default_params_from_config(self, config, command_name):
@@ -181,9 +182,10 @@ class Message(eppdoc.Message):
                     session_base.print_unicode('${WHITE}%s:${NORMAL} (%s)'%(_T('Parameter MUST be a value from following list'),', '.join(allowed)))
                 if len(example):
                     if type(example) == unicode: example = example.encode(encoding)
-                    session_base.print_unicode('${WHITE}%s %s:${NORMAL} %s'%(_T('Example'),__scope_to_string__(parents),example))
+                    session_base.print_unicode('%s ${WHITE}(%s)${NORMAL} %s: %s'%(__scope_to_string__(parents),msg_help,_T('Example'),example))
             cr = 0
             stop=0
+            autofill=0
             while max is UNBOUNDED or cr < max:
                 parents[-1][1] = cr
                 prompt = u'!%s:%s (%s) > '%(command_name,__scope_to_string__(parents), unicode(param_reqired_type[req],encoding))
@@ -192,7 +194,16 @@ class Message(eppdoc.Message):
                 except (KeyboardInterrupt, EOFError):
                     stop=2
                     break
+                if autofill > 2 and param == '':
+                    param = example
+                    if not param: param = 'example' # value MUST be set
+                    session_base.print_unicode('${BOLD}${GREEN}%s, %s:${NORMAL} %s'%((_T("I'm fed up"),_T("It's boring"))[random.randint(0,1)],_T("example inserted"),param))
+                    autofill=0
                 if param == '':
+                    if req == 1: # require in first level only
+                        session_base.print_unicode('${BOLD}${RED}%s${NORMAL}'%_T('Value is required. MUST be set:'))
+                        autofill+=1
+                        continue
                     if cr == 0:
                         # one item MUST be set at minimum
                         if dct.has_key(name):

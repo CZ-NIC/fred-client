@@ -15,6 +15,7 @@ from eppdoc import nic_cz_version as eppdoc_nic_cz_version
 
 COLOR = 1
 SEPARATOR = '-'*60
+OMMIT_ERROR = 1
 
 class ManagerCommand(ManagerTransfer):
     """EPP client support.
@@ -60,6 +61,7 @@ class ManagerCommand(ManagerTransfer):
             type = ''
             m = re.match('(raw|src)[-_](a|c)',command_name)
             if m: command_name = 'raw-%s'%('command','answer')[m.group(2)=='a']
+            if command_name in ('q','exit'): command_name = 'quit'
             if command_name in self._available_session_commands:
                 type = 'session'
             else:
@@ -229,21 +231,22 @@ class ManagerCommand(ManagerTransfer):
                 command_name, xmldoc = self.load_filename(filepath)
                 if command_name == 'login' and not self.is_connected():
                     self.connect() # connect to the host
-        elif re.match('connect',cmd):
-            if self.is_connected():
-                self.append_note(_T('You are connected already. Type disconnect for close connection.'))
-            else:
-                self.connect() # připojení k serveru
-                command_name = 'connect'
-        elif re.match('disconnect',cmd):
-            if self.is_connected():
-                if self.is_online(''):
-                    self.send_logout()
-                else:
-                    self.close()
-                self.append_note(_T("You has been disconnected."))
-            else:
-                self.append_note(_T("You are not connected."))
+        # DISABLED
+        #elif re.match('connect',cmd):
+        #    if self.is_connected():
+        #        self.append_note(_T('You are connected already. Type disconnect for close connection.'))
+        #    else:
+        #        self.connect() # připojení k serveru
+        #        command_name = 'connect'
+        #elif re.match('disconnect',cmd):
+        #    if self.is_connected():
+        #        if self.is_online(''):
+        #            self.send_logout()
+        #        else:
+        #            self.close()
+        #        self.append_note(_T("You has been disconnected."))
+        #    else:
+        #        self.append_note(_T("You are not connected."))
         elif re.match('confirm',cmd):
             m = re.match('confirm\s+(\S+)',cmd)
             if m:
@@ -353,6 +356,41 @@ class ManagerCommand(ManagerTransfer):
         if dct is None: dct = self._dct_answer
         return eppdoc.get_value_from_dict(dct, names)
 
+    def automatic_login(self, no_outoupt=None):
+        'Automatic login if all needed informations are known.'
+        if self._session[ONLINE]: return # session is logged on already
+        data = self.__get_connect_defaults__()
+        if self.get_config_value('session', 'auto_login',OMMIT_ERROR) == 'no': return # prohibited in config
+        section_epp_login = 'epp_login'
+        data.append(self.get_config_value(section_epp_login, 'username',OMMIT_ERROR))
+        data.append(self.get_config_value(section_epp_login, 'password',OMMIT_ERROR))
+        # Check if all values are present:
+        if not (data[0] # host
+            and data[1] # port
+            and data[2] # privkey
+            and data[3] # cert
+            # 4 timeout
+            and data[5] # username
+            and data[6] # password
+            ):
+            return # no automatic login, some data missing
+        self._epp_cmd.set_params({'username':[data[5]],'password':[data[6]]})
+        self.reset_round()
+        self.create_login()
+        epp_doc = self._epp_cmd.get_xml()
+        if epp_doc and self.is_connected():
+            self.append_note(_T('Login command sent to server'))
+            self.send(epp_doc)          # odeslání dokumentu na server
+            answer = self.receive()     # příjem odpovědi
+            self.process_answer(answer) # zpracování odpovědi
+            if not no_outoupt:
+                self.display() # display errors or notes
+                self.print_answer() # 2. departure from the rule to print answers
+        else:
+            self.append_error(self._epp_cmd.get_errors())
+            self.display() # display errors or notes
+            
+        
 def make_filepath(filename):
     modul_path,fn = os.path.split(__file__)
     return os.path.join(modul_path, filename)

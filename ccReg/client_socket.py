@@ -16,18 +16,13 @@ class Lorry:
         self._notes = [] # hlášení o stavu
         self._errors = [] # chybová hlášení
         self._body_length = 0 # velikost EPP zprávy, která se má přijmout
-        self._timeout = 0.0 # Windows bug! MUST be zero.
+        self._timeout = 10.0 # Windows bug! In MS-Win MUST be zero.
 
     def is_error(self):
         return len(self._errors)
 
     def is_connected(self):
         return self._conn and self._conn_ssl
-
-    def set_timeout(self, sec):
-        self._timeout = sec
-    def get_timeout(self):
-        return self._timeout
 
     def connect(self, DATA, verbose=1):
         "DATA = ('host', PORT, 'file.key', 'file.crt', timeout)"
@@ -46,14 +41,14 @@ class Lorry:
         except TypeError, msg:
             self._errors.append('Create socket.error (socket.getaddrinfo): %s'%msg)
         if self._conn is None: return 0
+        if self._timeout:
+            self._notes.append('Socket timeout: ${BOLD}%.1f${NORMAL} sec.'%self._timeout)
+            self._conn.settimeout(self._timeout)
         try:
             self._conn.connect((DATA[0], DATA[1]))
             self._notes.append('%s ${BOLD}%s${NORMAL}, port %d'%(_T('Opened connection to'), DATA[0], DATA[1]))
-            if self._timeout:
-                self._notes.append('Socket timeout: ${BOLD}%.1f${NORMAL} sec.'%self._timeout)
-                self._conn.settimeout(self._timeout)
-        except socket.error, (no,msg):
-            self._errors.append('Connection socket.error [%d] %s (%s:%s)'%(no,msg,DATA[0],DATA[1]))
+        except socket.error, tmsg:
+            self._errors.append('Connection socket.error: %s (%s:%s)'%(str(tmsg),DATA[0],DATA[1]))
         except (KeyboardInterrupt,EOFError):
             self._errors.append(_T('Interrupted by user'))
         if not ok: return ok
@@ -112,8 +107,8 @@ class Lorry:
             self._errors.append('READ HEADER socket.timeout: %s'%msg)
         except socket.sslerror, msg:
             self._errors.append('READ HEADER socket.sslerror: %s'%str(msg))
-        except socket.error, (no, msg):
-            self._errors.append('READ HEADER socket.error: [%d] %s'%(no, msg))
+        except socket.error, tmsg:
+            self._errors.append('READ HEADER socket.error: %s'%str(tmsg))
         except (KeyboardInterrupt,EOFError):
             self._errors.append(_T('Interrupted by user'))
         else:
@@ -143,8 +138,8 @@ class Lorry:
                 self._errors.append('READ socket.timeout: %s'%msg)
             except socket.sslerror, msg:
                 self._errors.append('READ socket.sslerror: %s'%str(msg))
-            except socket.error, (no, msg):
-                self._errors.append('READ socket.error: [%d] %s'%(no, msg))
+            except socket.error, tmsg:
+                self._errors.append('READ socket.error: %s'%str(tmsg))
             except MemoryError, msg:
                 self._errors.append('READ socket.receive MemoryError: %s'%msg)
             except (KeyboardInterrupt,EOFError):
@@ -179,8 +174,8 @@ class Lorry:
             self._errors.append('SEND socket.timeout: %s'%msg)
         except socket.sslerror, msg:
             self._errors.append('SEND socket.sslerror: %s'%str(msg))
-        except socket.error, (no, msg):
-            self._errors.append('SEND socket.error: [%d] %s'%(no, msg))
+        except socket.error, tmsg:
+            self._errors.append('SEND socket.error: %s'%str(tmsg))
         except (KeyboardInterrupt,EOFError):
             self._errors.append(_T('Interrupted by user'))
         if not ok: self.close()

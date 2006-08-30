@@ -21,8 +21,9 @@ def main(command):
     return epp_doc, xml_error
 
 if __name__ == '__main__':
-    if sys.version_info[:2] < (2,4):
-        print _T('This program requires Python 2.4 or higher. Your version is'),sys.version
+    msg_invalid = ccReg.check_python_version()
+    if msg_invalid:
+        print msg_invalid
     else:
         if not sys.stdin.isatty(): print sys.stdin.read() # keep previous output
         if len(sys.argv) > 1:
@@ -32,16 +33,13 @@ if __name__ == '__main__':
             else:
                 print epp_doc
         else:
-            print """*** ccReg Create ***
-
-Create EPP XML document from command line parameters.
-
-Usage:
-python ccreg_create.py command params
-
-Example:
-python ccreg_create.py info_domain nic.cz
-python ccreg_create.py info_contact reg-id
-
-If any error occurs, script returns errors in XML with top node errors.
-"""
+            print '%s: %s command params\n\n%s\n\n%s%s\n%s\n\n  %s\n'%(_T('Usage'), 'ccreg_create.py',
+                _T('Create EPP XML document from command line parameters.'),
+                _T('EXAMPLES'),
+                """
+./ccreg_create.py info_domain nic.cz
+./ccreg_create.py info_contact reg-id
+""",
+                _T('Eventual errors are return in XML format: <errors>... msg ...</errors>.'),
+                _T('For more information, see README.')
+                )

@@ -58,7 +58,7 @@ if epp.is_val() == 1000:
     epp.logout()
 
 """
-
+import sys
 import cmd_history
 from translate import _T
 from session_receiver import ManagerReceiver
@@ -727,6 +727,14 @@ class Client:
     def load_config(self, session=''):
         'Load config file.'
         return self._epp.load_config(session)
+    
+def check_python_version():
+    'Check for needed Python version. Returns "" if OK anf "..." not valid.'
+    if sys.version_info[:2] < (2,4):
+        invalid = _T('This program requires Python 2.4 or higher. Your version is'),sys.version
+    else:
+        invalid = ''
+    return invalid
 
 class ClientSession(ManagerReceiver):
     "Use for console or batch applications."
