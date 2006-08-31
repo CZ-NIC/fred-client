@@ -228,7 +228,7 @@ class ManagerReceiver(ManagerCommand):
             self.__append_note_from_dct__(domain_infData,
                 ('domain:name','domain:roid','domain:status s','domain:registrant','domain:admin',
                  'domain:contact','domain:contact type','domain:nsset',
-                 'domain:crID','domain:trID','domain:clID','domain:upID',
+                 'domain:crID','domain:clID','domain:upID',
                  'domain:crDate','domain:trDate','domain:upDate','domain:exDate'))
             self._dct_answer['data']['domain:pw'] = eppdoc.get_dct_value(domain_infData, ('domain:authInfo','domain:pw')) ## , '\n', '', u'******'
             m = re.match('\d{4}-\d{2}-\d{2}', self.get_value_from_dict(('data','domain:exDate')))

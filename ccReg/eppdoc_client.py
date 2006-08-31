@@ -137,11 +137,11 @@ class Message(eppdoc_assemble.Message):
             ('notify_email',(0,1),(),_T('notify email'),'info@mymail.cz','',()),
             ),'%s\n   %s\n%s'%(notice['create'],notice['disclose'],notice['ssn']),("create_contact CID:ID01 'Jan Novak' info@mymail.cz Praha CZ mypassword 'Firma s.r.o.' 'Narodni trida 1230/12' '' 12000 +420.222745111 +420.222745111 (y (org fax email)) 7035555556 (op 8888888856) info@mymail.cz",)),
         #----------------------------------------------------
-        'create_domain': (2,(
+        'create_domain': (3,(
             ('name',(1,1),(),_T('domain name'),'mydomain.cz','',()),
             ('pw',(1,1),(),_T('password'),'mypassword','',()),
-            ('nsset',(1,1),(),_T('nsset'),'NSSETID','',()),
             ('registrant',(1,1),(),_T('registrant'),'REGID','',()),
+            ('nsset',(0,1),(),_T('nsset'),'NSSETID','',()),
             ('period',(0,1),(),_T('period'),'','',(
                 ('num',(1,1),(),_T('number of months or years'),'3','',()),
                 ('unit',(1,1),('y','m'),_T('period unit (y year(default), m month)'),'','',()),
@@ -149,11 +149,11 @@ class Message(eppdoc_assemble.Message):
             ('admin',(0,UNBOUNDED),(),_T('admin'),'ADMIN_ID','',()),
             ('val_ex_date',(0,1),(),_T('valExDate'),'2008-12-03','',()),
             ),notice['create'],(
-                'create_domain domain.cz password nsset1 reg-id (3 y) (handle1,handle2)',
-                'create_domain 1.1.1.7.4.5.2.2.2.0.2.4.e164.arpa password nsset1 reg-id (3 y) (handle1,handle2) 2006-06-08'
+                'create_domain domain.cz password reg-id nsset1 (3 y) (handle1,handle2)',
+                'create_domain 1.1.1.7.4.5.2.2.2.0.2.4.e164.arpa password reg-id nsset1 (3 y) (handle1,handle2) 2006-06-08'
             )),
         #----------------------------------------------------
-        'create_nsset': (2,(
+        'create_nsset': (3,(
             ('id',(1,1),(),_T('nsset ID'),'NSSETID','',()),
             ('pw',(1,1),(),_T('password'),'mypassword','',()),
             ('dns',(1,9),(),_T('LIST of DNS'),'','',(
@@ -186,17 +186,8 @@ class Message(eppdoc_assemble.Message):
                 ('num',(1,1),(),_T('number of months or years'),'3','',()),
                 ('unit',(1,1),('y','m'),_T('period unit (y year(default), m month)'),'','',()),
             )),
-            ),notice['renew'],('renew_domain nic.cz 2008-06-02 (6 y)',)),
-        #----------------------------------------------------
-        'renew_domain_enum': (2,(
-            ('name',(1,1),(),_T('domain name'),'mydomain.cz','',()),
-            ('cur_exp_date',(1,1),(),_T('current expiration date'),'2006-12-03','',()),
-            ('period',(0,1),(),_T('period'),'','',(
-                ('num',(1,1),(),_T('number of months or years'),'3','',()),
-                ('unit',(1,1),('y','m'),_T('period unit (y year(default), m month)'),'','',()),
-            )),
             ('valExDate',(0,1),(),_T('valExDate'),'2008-12-03','',()),
-            ),notice['renew'],('renew_domain_enum nic.cz 2023-06-02 () 2006-08-09',)),
+            ),notice['renew'],('renew_domain nic.cz 2008-06-02 (6 y)',)),
         #----------------------------------------------------
         'update_contact': (1,(
             ('contact_id',(1,1),(),_T('your contact ID'),'CID:ID01','',()),
@@ -290,7 +281,9 @@ class Message(eppdoc_assemble.Message):
 
     }
     #----------------------------------
+    #
     # OUTPUT SORTED BY NAMES
+    #
     #----------------------------------
     sort_by_names = {
     
@@ -306,7 +299,7 @@ class Message(eppdoc_assemble.Message):
 
       'info_domain': ('domain',(
         'name','roid',
-        'crID','trID','clID','upID',
+        'crID','clID','upID',
         'crDate','trDate','upDate','exDate','renew',
         'nsset','pw','status.s','registrant','admin',
         )),

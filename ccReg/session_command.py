@@ -360,7 +360,7 @@ class ManagerCommand(ManagerTransfer):
         'Automatic login if all needed informations are known.'
         if self._session[ONLINE]: return # session is logged on already
         data = self.__get_connect_defaults__()
-        if self.get_config_value('session', 'auto_login',OMMIT_ERROR) == 'no': return # prohibited in config
+        if self.get_config_value('session', 'auto_login',OMMIT_ERROR) in ('no','off'): return # prohibited in config
         section_epp_login = 'epp_login'
         data.append(self.get_config_value(section_epp_login, 'username',OMMIT_ERROR))
         data.append(self.get_config_value(section_epp_login, 'password',OMMIT_ERROR))

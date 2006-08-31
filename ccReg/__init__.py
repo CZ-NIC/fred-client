@@ -208,8 +208,8 @@ class Client:
             'disclose':disclose, 'vat':vat, 'ssn':ssn, 
             'notify_email':notify_email})
 
-    def create_domain(self, name, pw, nsset, registrant, period=None, admin=None, val_ex_date=None):
-        """Usage: create_domain name pw nsset registrant
+    def create_domain(self, name, pw, registrant, nsset=None, period=None, admin=None, val_ex_date=None):
+        """Usage: create_domain name pw registrant
 
     PARAMS:
 
@@ -230,7 +230,7 @@ class Client:
    object can be created for a specific validity period.
     """
         return self._epp.api_command('create_domain',{'name':name,'pw':pw,
-            'period':period,'nsset':nsset,'registrant':registrant,'admin':admin,
+            'period':period,'registrant':registrant,'nsset':nsset,'admin':admin,
             'val_ex_date':val_ex_date})
 
     def create_nsset(self, nsset_id, pw, dns, tech=None):
@@ -455,26 +455,8 @@ class Client:
         return self._epp.api_command('poll',{'op':op,'msg_id':msg_id})
 
 
-    def renew_domain(self, name, cur_exp_date, period=None):
+    def renew_domain(self, name, cur_exp_date, period=None, val_ex_date=None):
         """Usage: renew_domain name cur_exp_date
-
-    PARAMS:
-
-    name (required)
-    cur_exp_date (required)
-    period (optional)
-        num (required)
-        unit (required) accept only values: (y,m)
-
-    RETURN data: {domain:name, domain:exDate}
-
-    The EPP "renew" command is used to extend validity of an existing object.
-        """
-        return self._epp.api_command('renew_domain',{'name':name, 'cur_exp_date':cur_exp_date, 'period':period})
-
-
-    def renew_domain_enum(self, name, cur_exp_date, period=None, valExDate=None):
-        """Usage: renew_domain_enum name cur_exp_date
 
     PARAMS:
 
@@ -485,12 +467,12 @@ class Client:
         unit (required) accept only values: (y,m)
     val_ex_date (optional)
 
-    RETURN data: {}
+    RETURN data: {domain:name, domain:exDate}
 
     The EPP "renew" command is used to extend validity of an existing object.
         """
-        return self._epp.api_command('renew_domain_enum',{'name':name, 
-            'cur_exp_date':cur_exp_date, 'period':period, 'val_ex_date':val_ex_date})
+        return self._epp.api_command('renew_domain',{'name':name, 'cur_exp_date':cur_exp_date, 
+            'period':period, 'val_ex_date':val_ex_date})
 
 
     def transfer_contact(self, name, passw):

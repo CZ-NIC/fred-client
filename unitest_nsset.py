@@ -212,7 +212,7 @@ class Test(unittest.TestCase):
 
     def test_120(self):
         '3.12 Vytvoreni domeny napojene na nsset'
-        epp_cli.create_domain('test-nsset.cz', 'heslo', handle_nsset, handle_contact)
+        epp_cli.create_domain('test-nsset.cz', 'heslo', handle_contact, handle_nsset)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
         
     def test_130(self):

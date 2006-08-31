@@ -93,12 +93,13 @@ class Message(eppdoc.Message):
     def __fill_empy_from_config__(self, config, dct, columns):
         'Fill missing values from config.'
         errors = []
-        # DISABLED: function was disabled. For restore remove '#' from following five rows:
-        #section = 'epp_%s'%columns[0][0]
-        #if not config or not config.has_section(section): return errors # silent, no errors
-        #for key,value in config.items(section):
-        #    # go throught dict and create keys if missing:
-        #    cmd_parser.insert_on_key(errors, dct, columns, key, value, 1)
+        #DISABLED: function was disabled except login.
+        if columns[0][0] == 'login':
+            section = 'epp_%s'%columns[0][0]
+            if not config or not config.has_section(section): return errors # silent, no errors
+            for key,value in config.items(section):
+                # go throught dict and create keys if missing:
+                cmd_parser.insert_on_key(errors, dct, columns, key, value, 1)
         return errors
 
     def get_default_params_from_config(self, config, command_name):
@@ -635,13 +636,9 @@ class Message(eppdoc.Message):
             period = dct['period'][0]
             if not __has_key__(period,'unit'): period['unit']=('y',)
             data.append(('domain:renew','domain:period',period['num'][0], (('unit',period['unit'][0]),)))
-        if len(params)>1 and params[1]=='extensions': self.__enum_extensions__('renew',data, params)
+        self.__enum_extensions__('renew',data, params)
         data.append(('command', 'clTRID', params[0]))
         self.__assemble_cmd__(data)
-
-    def assemble_renew_domain_enum(self, *params):
-        "Assemble XML EPP command"
-        self.assemble_renew_domain(params[0], 'extensions')
 
     def assemble_update_contact(self, *params):
         """Assemble XML EPP command. 

@@ -197,7 +197,6 @@ class ManagerTransfer(ManagerBase):
         'Show values parsed from the server answer.'
         body=[]
         report = body.append
-        patt_type = re.compile("<type '(\w+)'>")
         if not dct: dct = self._dct_answer
         code = dct['code']
         if self._session[VERBOSE] < 2:
@@ -225,7 +224,7 @@ class ManagerTransfer(ManagerBase):
             keys = dct['data'].keys() # default (unsorted)
         for k in keys:
             v = dct['data'].get(k,u'')
-            __append_into_report__(body,patt_type,k,v)
+            __append_into_report__(body,k,v)
         report('-'*60)
         for n in range(len(body)):
             if type(body[n]) == unicode: body[n] = body[n].encode(encoding)
@@ -245,19 +244,19 @@ class ManagerTransfer(ManagerBase):
         self._epp_cmd.restore_history()
         
         
-def __append_into_report__(body,patt_type,k,v):
+def __append_into_report__(body,k,v):
     'Append value type(unicode|list|tuple) into report body.'
     if type(v) is str: v = v.decode(encoding)
     if type(v) in (list,tuple):
         if len(v):
             space = ' '*(8 - len('%s: '%k)) # indent justify text to the tabs on next lines
-            body.append(get_ltext(colored_output.render('\t${BOLD}%s:${NORMAL} (list) %s%s'%(k,space,str_lists(v[0])))))
+            body.append(get_ltext(colored_output.render('\t${BOLD}%s:${NORMAL} %s%s'%(k,space,str_lists(v[0])))))
             for text in v[1:]:
                 body.append(get_ltext('\t\t%s'%str_lists(text)))
         else:
-            body.append(get_ltext(colored_output.render('\t${BOLD}%s:${NORMAL} (list) []'%k)))
+            body.append(get_ltext(colored_output.render('\t${BOLD}%s:${NORMAL}'%k)))
     else:
-        body.append(get_ltext(colored_output.render('\t${BOLD}%s:${NORMAL} (%s) %s'%(k, patt_type.match(str(type(v))).group(1), v))))
+        body.append(get_ltext(colored_output.render('\t${BOLD}%s:${NORMAL} %s'%(k, v))))
 
 def str_lists(text):
     """Prepare list or tuples for display. Same as str() but ommit u'...' symbols

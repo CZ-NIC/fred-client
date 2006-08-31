@@ -144,25 +144,25 @@ class Test(unittest.TestCase):
     def test_050(self):
         '4.5  Pokus o zalozeni domeny s neexistujicim nssetem'
         d = CCREG_DATA[DOMAIN_1]
-        epp_cli.create_domain(d['name'], d['pw'], 'nsset-not-exists', d['registrant'], d['period'], d['contact'])
+        epp_cli.create_domain(d['name'], d['pw'], d['registrant'], 'nsset-not-exists', d['period'], d['contact'])
         self.assertNotEqual(epp_cli.is_val(), 1000)
 
     def test_060(self):
         '4.6.1  Pokus o zalozeni domeny s neexistujicim registratorem'
         d = CCREG_DATA[DOMAIN_1]
-        epp_cli.create_domain(d['name'], d['pw'], d['nsset'], 'reg-not-exists', d['period'], d['contact'])
+        epp_cli.create_domain(d['name'], d['pw'], 'reg-not-exists', d['nsset'], d['period'], d['contact'])
         self.assertNotEqual(epp_cli.is_val(), 1000)
 
     def test_062(self):
         '4.6.2  Pokus o zalozeni domeny s neexistujicim kontaktem'
         d = CCREG_DATA[DOMAIN_1]
-        epp_cli.create_domain(d['name'], d['pw'], d['nsset'], d['registrant'], d['period'], 'CXXX0X')
+        epp_cli.create_domain(d['name'], d['pw'], d['registrant'], d['nsset'], d['period'], 'CXXX0X')
         self.assertNotEqual(epp_cli.is_val(), 1000)
 
     def test_070(self):
         '4.7  Pokusy o zalozeni domeny s neplatnym nazvem'
         d = CCREG_DATA[DOMAIN_1]
-        epp_cli.create_domain(INVALID_DOMAIN_NAME, d['pw'], d['nsset'], d['registrant'], d['period'], d['contact'])
+        epp_cli.create_domain(INVALID_DOMAIN_NAME, d['pw'], d['registrant'], d['nsset'], d['period'], d['contact'])
         self.assertNotEqual(epp_cli.is_val(), 1000, 'Domena %s se vytvorila prestoze nemela.'%INVALID_DOMAIN_NAME)
 
     def test_071(self):
@@ -174,19 +174,19 @@ class Test(unittest.TestCase):
     def test_080(self):
         '4.8  Zalozeni nove domeny'
         d = CCREG_DATA[DOMAIN_1]
-        epp_cli.create_domain(d['name'], d['pw'], d['nsset'], d['registrant'], d['period'], d['contact'])
+        epp_cli.create_domain(d['name'], d['pw'], d['registrant'], d['nsset'], d['period'], d['contact'])
         self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_090(self):
         '4.9  Zalozeni nove domeny enum'
         d = CCREG_DATA[DOMAIN_2]
-        epp_cli.create_domain(d['name'], d['pw'], d['nsset'], d['registrant'], d['period'], d['contact'])
+        epp_cli.create_domain(d['name'], d['pw'], d['registrant'], d['nsset'], d['period'], d['contact'])
         self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_100(self):
         '4.10  Pokus o zalozeni jiz existujici domeny'
         d = CCREG_DATA[DOMAIN_1]
-        epp_cli.create_domain(d['name'], d['pw'], d['nsset'], d['registrant'], d['period'], d['contact'])
+        epp_cli.create_domain(d['name'], d['pw'], d['registrant'], d['nsset'], d['period'], d['contact'])
         self.assertNotEqual(epp_cli.is_val(), 1000, 'Domena se vytvorila prestoze jiz existuje')
 
     def test_110(self):
