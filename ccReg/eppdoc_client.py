@@ -283,41 +283,121 @@ class Message(eppdoc_assemble.Message):
     #----------------------------------
     #
     # OUTPUT SORTED BY NAMES
-    #
+    # (key, verbose, description)
+    # verbose 1: shown in verbose 1 and higher
+    #         2: shown in verbose 2 and higher
+    #         ...
     #----------------------------------
     sort_by_names = {
     
-      'info_contact': ('contact',(
-        'id','roid',
-        'crID','clID','upID',
-        'crDate','trDate','upDate',
-        'name','org','street','city','sp','pc','cc','pw',
-        'voice','fax','email','notifyEmail',
-        'status.s','disclose','hide',
-        'vat','ssn.type','ssn',
+      'contact:info': ('contact',(
+        ('id',          1,  _T('Contact ID')),
+        ('roid',        1,  _T('Repository object ID')),
+        ('crID',        1,  _T("Creator's ID")),
+        ('clID',        1,  _T("Client's ID")),
+        ('upID',        1,  _T("Updator's ID")),
+        ('crDate',      1,  _T('Creation date')),
+        ('trDate',      1,  _T('Transfer date')),
+        ('upDate',      1,  _T('Update date')),
+        ('name',        1,  _T('Name')),
+        ('org',         1,  _T('Organisation')),
+        ('street',      1,  _T('Street')),
+        ('city',        1,  _T('City')),
+        ('sp',          1,  _T('state or province')),
+        ('pc',          1,  _T('postal code')),
+        ('cc',          1,  _T('country code')),
+        ('pw',          1,  _T('password')),
+        ('voice',       1,  _T('voice (phone number)')),
+        ('fax',         1,  'fax'),
+        ('email',       1,  'email'),
+        ('notifyEmail', 1,  _T('notify email')),
+        ('status.s',    1,  _T('status')),
+        ('disclose',    1,  _T('disclose')),
+        ('hide',        1,  _T('hide')),
+        ('vat',         1,  _T('VAT (Value-added tax)')),
+        ('ssn.type',    1,  _T('SSN type')),
+        ('ssn',         1,  _T('SSN (Social security number)')),
         )),
 
-      'info_domain': ('domain',(
-        'name','roid',
-        'crID','clID','upID',
-        'crDate','trDate','upDate','exDate','renew',
-        'nsset','pw','status.s','registrant','admin',
+      'domain:info': ('domain',(
+        ('name',        1,  _T('Domain name')),
+        ('roid',        1,  _T('Repository object ID')),
+        ('crID',        1,  _T("Creator's ID")),
+        ('clID',        1,  _T("Client's ID")),
+        ('upID',        1,  _T("Updator's ID")),
+        ('crDate',      1,  _T('Creation date')),
+        ('trDate',      1,  _T('Transfer date')),
+        ('upDate',      1,  _T('Update date')),
+        ('exDate',      1,  _T('Expiration date')),
+        ('renew',       1,  _T('Renew date')),
+        ('nsset',       1,  _T('NSSET ID')),
+        ('pw',          1,  _T('password')),
+        ('status.s',    1,  _T('status')),
+        ('registrant',  1,  _T('Registrant ID')),
+        ('admin',       1,  _T('Admin ID')),
         )),
 
-      'info_nsset': ('nsset',(
-        'id','roid',
-        'crID','clID','upID',
-        'crDate','trDate','upDate',
-        'pw','status.s','tech','ns',
+      'nsset:info': ('nsset',(
+        ('id',          1,  _T('NSSET ID')),
+        ('roid',        1,  _T('Repository object ID')),
+        ('crID',        1,  _T("Creator's ID")),
+        ('clID',        1,  _T("Client's ID")),
+        ('upID',        1,  _T("Updator's ID")),
+        ('crDate',      1,  _T('Creation date')),
+        ('trDate',      1,  _T('Transfer date')),
+        ('upDate',      1,  _T('Update date')),
+        ('pw',          1,  _T('password')),
+        ('status.s',    1,  _T('status')),
+        ('tech',        1,  _T('Technical contact')),
+        ('ns',          1,  'NSSET'),
+        )),
+
+      'nsset:create': ('nsset',(
+        ('crDate',      1,  _T('Creation date')),
+        ('id',          1,  'ID'),
+        )),
+
+      'hello': ('',(
+        ('lang',        2,  _T('Available languages')),
+        ('svID',        1,  _T('Server ID')),
+        ('svDate',      2,  _T('Server date')),
+        ('version',     2,  _T('Server version')),
+        ('objURI',      2,  _T('Object URI')),
+        ('extURI',      2,  _T('Extensions URI')),
+        )),
+
+      'domain:list': ('',(
+        ('count',       1,  _T('Count')),
+        ('list',        1,  _T('List')),
+        )),
+
+      'poll': ('',(
+        ('msgQ.count',  1,  _T('Count of messages')),
+        ('msgQ.id',     1,  _T('Message ID')),
+        ('qDate',       1,  _T('Message input date')),
+        ('msg',         1,  _T('Message text')),
+        )),
+
+      'domain:renew': ('',(
+        ('name',        1,  _T('Domain name')),
+        ('exDate',      1,  _T('Expiration date')),
         )),
         
     }
-
+    # append similar objects
+    sort_by_names['contact:create'] = ('contact', sort_by_names['nsset:create'][1])
+    sort_by_names['domain:create']  = ('domain', sort_by_names['nsset:create'][1])
+    sort_by_names['contact:list']   = sort_by_names['domain:list']
+    sort_by_names['nsset:list']     = sort_by_names['domain:list']
+    
     def get_sort_by_names(self, command_name):
         'Prepare column names for sorted output answer.'
         scope = Message.sort_by_names.get(command_name,None)
         if scope:
-            names = map(lambda name: '%s:%s'%(scope[0],name),scope[1])
+            if scope[0]:
+                names = map(lambda i: ('%s:%s'%(scope[0],i[0]),i[1],i[2]),scope[1])
+            else:
+                names = scope[1]
         else:
             names = []
         return names

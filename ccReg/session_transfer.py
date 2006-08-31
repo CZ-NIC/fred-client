@@ -51,6 +51,13 @@ class ManagerTransfer(ManagerBase):
         self._raw_answer = '' # XML EPP odpověd serveru
         self._dict_answer = '' # dict - slovník vytvořený z XML EPP odpovědi
         self._dct_answer = {'code':0,'command':'',  'reason':'', 'errors':[], 'data':{}} # API response
+        # Set output SORT BY and VEROBOSE names:
+        cols = self._epp_cmd.get_sort_by_names(self._command_sent)
+        if cols:
+            self._session[SORT_BY_COLUMNS] = cols
+        else:
+            self._session[SORT_BY_COLUMNS] = []
+
 
     def reset_round(self):
         'Prepare for next round. Reset internal dict with communication values.'
@@ -221,10 +228,11 @@ class ManagerTransfer(ManagerBase):
         if self._session[SORT_BY_COLUMNS]:
             keys = self._session[SORT_BY_COLUMNS] # sorted output (included in create command part)
         else:
-            keys = dct['data'].keys() # default (unsorted)
-        for k in keys:
-            v = dct['data'].get(k,u'')
-            __append_into_report__(body,k,v)
+            keys = map(lambda n:(n,1,''), dct['data'].keys()) # default (unsorted)
+        for key,verbose,explain in keys:
+            if verbose > self._session[VERBOSE]: continue
+            value = dct['data'].get(key,u'')
+            if value not in ('',[]): __append_into_report__(body,key,value,explain)
         report('-'*60)
         for n in range(len(body)):
             if type(body[n]) == unicode: body[n] = body[n].encode(encoding)
@@ -244,19 +252,23 @@ class ManagerTransfer(ManagerBase):
         self._epp_cmd.restore_history()
         
         
-def __append_into_report__(body,k,v):
+def __append_into_report__(body,k,v,explain):
     'Append value type(unicode|list|tuple) into report body.'
+    if explain: k = explain # overwrite key by explain message
+    if type(k) is str: k = k.decode(encoding)
     if type(v) is str: v = v.decode(encoding)
+    indent = '   '
+    space = 20 # indent between names and values
+    key = (k+':').ljust(space)
     if type(v) in (list,tuple):
         if len(v):
-            space = ' '*(8 - len('%s: '%k)) # indent justify text to the tabs on next lines
-            body.append(get_ltext(colored_output.render('\t${BOLD}%s:${NORMAL} %s%s'%(k,space,str_lists(v[0])))))
+            body.append(get_ltext(colored_output.render('%s${BOLD}%s${NORMAL} %s'%(indent,key,str_lists(v[0])))))
             for text in v[1:]:
-                body.append(get_ltext('\t\t%s'%str_lists(text)))
+                body.append(get_ltext('%s%s'%(''.ljust(space+len(indent)+1),str_lists(text))))
         else:
-            body.append(get_ltext(colored_output.render('\t${BOLD}%s:${NORMAL}'%k)))
+            body.append(get_ltext(colored_output.render('%s${BOLD}%s${NORMAL}'%(indent,key))))
     else:
-        body.append(get_ltext(colored_output.render('\t${BOLD}%s:${NORMAL} %s'%(k, v))))
+        body.append(get_ltext(colored_output.render('%s${BOLD}%s${NORMAL} %s'%(indent,key, v))))
 
 def str_lists(text):
     """Prepare list or tuples for display. Same as str() but ommit u'...' symbols

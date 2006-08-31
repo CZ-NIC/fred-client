@@ -214,7 +214,6 @@ class ManagerReceiver(ManagerCommand):
             dct['contact:ssn'] = eppdoc.get_dct_value(contact_infData, 'contact:ssn')
             dct['contact:notifyEmail'] = eppdoc.get_dct_value(contact_infData, 'contact:notifyEmail')
             dct['contact:vat'] = eppdoc.get_dct_value(contact_infData, 'contact:vat')
-            self._session[SORT_BY_COLUMNS] = self._epp_cmd.get_sort_by_names('info_contact')
 
     def answer_response_domain_info(self, data):
         "data=(response,result,code,msg)"
@@ -233,7 +232,6 @@ class ManagerReceiver(ManagerCommand):
             self._dct_answer['data']['domain:pw'] = eppdoc.get_dct_value(domain_infData, ('domain:authInfo','domain:pw')) ## , '\n', '', u'******'
             m = re.match('\d{4}-\d{2}-\d{2}', self.get_value_from_dict(('data','domain:exDate')))
             if m: self._dct_answer['data']['domain:renew'] = m.group(0) # value for renew-domain
-            self._session[SORT_BY_COLUMNS] = self._epp_cmd.get_sort_by_names('info_domain')
 
     def answer_response_nsset_info(self, data):
         "data=(response,result,code,msg)"
@@ -258,7 +256,6 @@ class ManagerReceiver(ManagerCommand):
                     dns.append([name,addr])
                 self._dct_answer['data']['nsset:ns'] = dns
             self._dct_answer['data']['nsset:pw'] = eppdoc.get_dct_value(nsset_infData, ('nsset:authInfo','nsset:pw')) ## , '\n', '', '******'
-            self._session[SORT_BY_COLUMNS] = self._epp_cmd.get_sort_by_names('info_nsset')
 
 
     #-------------------------------------
@@ -300,8 +297,8 @@ class ManagerReceiver(ManagerCommand):
             # SORTING OUTPUT: Join reason column name:
             cols = []
             for name in self._session[SORT_BY_COLUMNS]:
-                cols.append(name)
-                cols.append('%s:reason'%name)
+                cols.append((name,1,''))
+                cols.append(('%s:reason'%name,1,''))
             self._session[SORT_BY_COLUMNS] = cols
 
     def answer_response_contact_check(self, data):
