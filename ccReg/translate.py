@@ -158,12 +158,14 @@ encoding, w = find_valid_encoding()
 if w: warnings.append(w)
 if options['lang'] == 'en':
     _T = gettext.gettext
+    _TP = gettext.ngettext
 else:
     domain = 'cz_nic_ccreg_client'
     tpath = os.path.join(os.path.split(__file__)[0],'lang')
     try:
-        _T = gettext.translation(domain,tpath,(options['lang'],), codeset=encoding).gettext
-        _TP = gettext.translation(domain,tpath,(options['lang'],), codeset=encoding).ngettext
+        gt = gettext.translation(domain,tpath,(options['lang'],), codeset=encoding)
+        _T = gt.gettext
+        _TP = gt.ngettext
     except IOError, (no,msg):
         print 'Translate IOError',no,msg,'\nMISSING:','%s/%s/LC_MESSAGES/%s.mo'%(tpath,options['lang'],domain)
         _T = gettext.gettext
