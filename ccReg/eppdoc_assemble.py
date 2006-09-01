@@ -15,7 +15,7 @@ import ConfigParser
 import eppdoc
 import cmd_parser
 import session_base
-from translate import _T, encoding
+from translate import _T, _TP, encoding
 
 try:
     import readline
@@ -48,7 +48,7 @@ class Message(eppdoc.Message):
             if max is UNBOUNDED:
                 max_size = _T('unbounded list')
             elif max > 1:
-                max_size = _T('list with max %d items.')%max
+                max_size = _TP('list with max %d item.','list with max %d items.',max)%max
             else:
                 max_size = ''
             if max_size:
@@ -432,9 +432,9 @@ class Message(eppdoc.Message):
         self.__asseble_command__(('info','nsset','id','list'), '', params)
 
     def assemble_poll(self, *params):
-        attr = [('op',self._dct['op'][0])]
+        op = self._dct.get('op',['req'])[0]
+        attr = [('op',op)]
         if self._dct.get('msg_id',None): attr.append(('msgID',self._dct['msg_id'][0]))
-        ('op',self._dct['op'][0])
         self.__assemble_cmd__((
             ('epp', 'command'),
             ('command', 'poll', '', attr),
@@ -882,7 +882,7 @@ def __build_command_example__(columns, dct_data):
     
 def print_info_listmax(max):
     if max > 1:
-        session_base.print_unicode(_T('(Value can be a list of max %d values.)')%max)
+        session_base.print_unicode(_TP('(Value can be a list of max %d value.)','(Value can be a list of max %d values.)',max)%max)
     elif max is UNBOUNDED:
         session_base.print_unicode(_T('(Value can be an unbouded list of values.)'))
 

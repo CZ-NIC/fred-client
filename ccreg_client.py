@@ -35,7 +35,7 @@ _T("""Connection options:
                    session values are read from config file
   -c CONFIG, --config=CONFIG
                    load config from filename"""),
-   _T("""-c COMMAND, --command=COMMAND
+   _T("""-d COMMAND, --command=COMMAND
                    send command to server and exit"""),
    _T('For more information, see README.'))
         elif options['version']:

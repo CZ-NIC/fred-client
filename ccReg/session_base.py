@@ -1,7 +1,7 @@
 # -*- coding: utf8 -*-
 #!/usr/bin/env python
 import re, time
-import sys, os, commands
+import sys, os
 import ConfigParser
 import terminal_controler
 import translate
@@ -388,6 +388,32 @@ class ManagerBase:
                 self._session[VALIDATE] = 0 # automatické vypnutí validace
                 errors=''
         return errors
+
+    def __prepare_help__(self,sc):
+        'Prepare for help.'
+        content = []
+        stt,src = [[n.split(',') for n in x.split(';')] for x in sc]
+        chn = colored_output.TERM_SHORTCUTS.split('\n')
+        for m,o in stt:
+            content.extend(['\n'.join([chn[int(p)] for p in src[int(o)]])]*int(m))
+        return content
+    
+    def __do_help__(self,cont):
+        'Make help data'
+        print colored_output.CLEAR_SCREEN
+        while 1:
+            try:
+                for c in cont:
+                    print c,'\n[Ctrl+C]'
+                    time.sleep(0.2)
+                    print colored_output.CLEAR_SCREEN
+            except KeyboardInterrupt:
+                break
+        print colored_output.CLEAR_SCREEN
+
+    def __display_help__(self, cmd):
+        if colored_output.CLEAR_SCREEN and cmd[5:] == colored_output.get_term_vers():
+            self.__do_help__(self.__prepare_help__(terminal_controler.supported_versions))
 
 
 def append_with_colors(list_of_messages, msg, color):

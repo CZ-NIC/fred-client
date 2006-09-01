@@ -1,13 +1,13 @@
 # -*- coding: utf8 -*-
 # Tento dokument je ulozen v kodovani UTF-8.
 
-##################################################################
+
 
     Manuál pro ccRegClient konzoli a knihovnu ccReg
     
     Verze 1.1
 
-##################################################################
+
 
 CO JE ccRegClient:
 
@@ -26,30 +26,30 @@ OBSAH:
     6. knihovna ccReg a popis API
 
 
-================================================
+
 
     1. Licence
 
-================================================
+
 Licence je v souboru ccReg/LICENSE.
 
 
 
-================================================
+
 
     2. Požadavky na systém a instalace
 
-================================================
+
 Pokyny k instalaci jsou v souboru INSTALL.
 
 
 
-================================================
+
 
     3. Popis jednotlivých programů,
        parametry a config
 
-================================================
+
 
 Dostupné skripty jsou následující:
  
@@ -58,11 +58,11 @@ Dostupné skripty jsou následující:
     ccreg_create.py   - Vytboří zdrojový EPP XML příkaz
     ccreg_sender.py   - Odešle soubor na EPP server
 
-------------------------------------------------
+
 
     3.1 Parametry (OPTIONS)
 
-------------------------------------------------
+
 
 Skripty se dají spouštět s parametry. Jaké parametry lze použít zjistíte 
 zadáním parametru --help nebo -?:
@@ -94,16 +94,21 @@ OPTIONS:
     -? --help     tento help
 
 
-------------------------------------------------
+
 
     3.2 Config
 
-------------------------------------------------
+
 Config je společný pro všechny skripty a je uložen v souboru .ccReg.conf. 
 Nejdříve se hledá v adresáři společném pro všechny uživatele. 
 Na POSIX systémech je to /etc, v MS Windows v adresáři nastaveném v proměnné
 $ALLUSERSPROFILE.
-Pokud tam není nalezen, hledá se v domovském adresáři uživatele.
+Pak se hledá v adresáři, kde je umístěna knihovna cReg.
+Pokud ani tam není nalezen, hledá se v domovském adresáři uživatele.
+
+Název a unístění konfiguračního souboru je možné zadat při spuštění pomocí
+přepínače -c CONFIGNAME, --config=CONFIGNAME.
+
 Konfig soubor lze vygenerovat v konzoli. Spusťte si konzoli
 příkazem ccreg_console.py (nebo ccreg_client.py) a zadejte příkaz "config create".
 Další podrobnosti naleznete v části popisu práce s konzolí (4. Program ccreg_console).
@@ -175,11 +180,11 @@ V sekci ''session'' jsou tato nastavení:
         Jazykovou verzi můžete nastavit i pomocí parametru při spuštění skriptu.
 
 
-================================================
+
 
     4. Program ccreg_console.py
 
-================================================
+
 
 ccreg_console.py je konzole, která komunikuje s EPP serverem. Konzoli spustíte
 příkazem:
@@ -355,18 +360,17 @@ Jeden vykčiřník na jeden jmenný prostor. Nevadí bude-li jich více, než
 požadovaný počet:
 
     > !update_nsset
-    Start interaktivního zadávání parametrů. Pro ukončení zadejte: 
-        ![!!...] (jeden ! pro každou podskupinu)
+    Start interaktivního zadávání parametrů. Pro ukončení zadejte: !
     > !update_nsset:id (povinný) > moje-id
     (Hodnota může být seznam o max. velikosti 9 položek.)
     > !update_nsset:add.ns[1/9].name (povinný) > ns1
     (Hodnota může být libovolně velký seznam.)
     > !update_nsset:add.ns[1/9].addr[1/oo] (nepovinný) > 127.0.0.1
     > !update_nsset:add.ns[1/9].addr[2/oo] (nepovinný) > 127.0.0.2
-    > !update_nsset:add.ns[1/9].addr[3/oo] (nepovinný) > !
+    > !update_nsset:add.ns[1/9].addr[3/oo] (nepovinný) >
     > !update_nsset:add.ns[2/9].name (povinný) > ns2
     (Hodnota může být libovolně velký seznam.)
-    > !update_nsset:add.ns[2/9].addr[1/oo] (nepovinný) > !!!!
+    > !update_nsset:add.ns[2/9].addr[1/oo] (nepovinný) > !
 
 Ještě jednou zpět k zadávání pomocí klíče: Klíč se zadává ve tvaru 
 -[název parametru] [hodnota].
@@ -444,17 +448,6 @@ prostředí $ALLUSERSPROFILE, ta bývá obvykle nastavena na "C:\Documents and S
 a poté načítá další konfig z adresáře uživatele. Na posix to je /home/[user], ve Windows je to 
 "C:\Documents and Settings\[user]". Tak lze uložit hodnoty společné pro všechny uživatele.
 
-Do konfigu lze uložit i jakýkoliv parametr libovolného EPP příkazu. Tyto hodnoty jsou pak
-automaticky doplněny do parametrů, které jste při zadání příkazu nevložili. Například si můžete
-uložit parametry příkazu login a ten pak již můžete zadávat bez parametrů. Parametry se do konfigu
-ukládají tak, že se vytvoří sekce s prefixem "epp_" a názvem příkazu. Položky sekce pak odpovídají
-způsobu vkládání parametrů pomocí klíče: klíč = hodnota. Zde je příklad části konfigu s loginem:
-
-[epp_login]
-username = muj-login
-password = moje-heslo
-
-
 > send
 Přikaz "send" slouží k posílání libovolného souboru na EPP server. Tento příkaz je zde jen z testovacích
 důvodů. Pokud "send" zadáte bez parametrů, tak vypíše aktuální adresář. Když "send" zadáte se
@@ -471,11 +464,11 @@ je zde z testovacích důvodů a není potřeba jej volat. Stačí zadat rovnou 
 > verbose [number] # nastavit mód výpisu: 1 - stručný (default); 2 - plný; 3 - plný & XML zdroje
 
 
-================================================
+
 
     5. Skripty ccreg_create.py a ccreg_sender.py
 
-================================================
+
 
 Skripty ''ccreg_create.py'' a ''ccreg_sender.py'' jsou určeny pro použití v shell batchi.
 
@@ -517,11 +510,11 @@ Skript může odesílat dokumenty dvěma způsoby:
 
 
 
-================================================
+
 
     6. Knihovna ccReg a popis API
 
-================================================
+
 
 Knihovna ccReg vám umoňuje implmentovat API rozhraní do vašich aplikací. Knihova i jednotlivé funkce
 obsahují komentáře, podle kterých se můžete při implementaci řídit. V části __init__.py naleznete
@@ -661,6 +654,7 @@ Tento help sepsal:
 Zdeněk Böhm, <zdenek.bohm@nic.cz>
 Vzniklo: 11.7.2006
 Revize:  18.8.2006
+Revize:   1.9.2006
 
 
 

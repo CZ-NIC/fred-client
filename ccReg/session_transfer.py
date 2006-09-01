@@ -3,7 +3,7 @@
 import eppdoc_client
 import client_socket
 from session_base import *
-from translate import _T, encoding
+from translate import _T, _TP, encoding
 
 class ManagerTransfer(ManagerBase):
     """EPP client support.
@@ -229,10 +229,15 @@ class ManagerTransfer(ManagerBase):
             keys = self._session[SORT_BY_COLUMNS] # sorted output (included in create command part)
         else:
             keys = map(lambda n:(n,1,''), dct['data'].keys()) # default (unsorted)
+        in_higher_verbose = 0
         for key,verbose,explain in keys:
-            if verbose > self._session[VERBOSE]: continue
+            if verbose > self._session[VERBOSE]:
+                in_higher_verbose += 1
+                continue
             value = dct['data'].get(key,u'')
             if value not in ('',[]): __append_into_report__(body,key,value,explain)
+        if in_higher_verbose:
+            report(colored_output.render('   ${WHITE}(${YELLOW}${BOLD}%d${NORMAL} ${WHITE}%s)${NORMAL}'%(in_higher_verbose,_TP('not displayed value','not displayed values',in_higher_verbose))))
         report('-'*60)
         for n in range(len(body)):
             if type(body[n]) == unicode: body[n] = body[n].encode(encoding)

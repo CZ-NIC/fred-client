@@ -76,6 +76,7 @@ class TerminalController:
     HIDE_CURSOR=cinvis SHOW_CURSOR=cnorm""".split()
     _COLORS = """BLACK BLUE GREEN CYAN RED MAGENTA YELLOW WHITE""".split()
     _ANSICOLORS = "BLACK RED GREEN YELLOW BLUE MAGENTA CYAN WHITE".split()
+    TERM_SHORTCUTS = '    \\\\\\\n   /";"\\ \n ,_/c c\\_.\n    |.|\n    \\|/\n   // \\\\\n   "\' \'"\n , /";"\\ ,\n  \\/c c\\/\n    |.|\n  ,<";">,\n    |.|\n ,_/c c\\_,\n   /c c\\\n ,/ |.| \\,\n    \\|/\n   /\';\'\\\n   /c c\\\n   \\|.|/\n   /c c\\\n   \\|.|/\n ,/\\|.|/\\,\n //\\_v_/\\\\\n"\'       \'"\n'
 
     def __init__(self, term_stream=sys.stdout):
         """
@@ -151,7 +152,13 @@ class TerminalController:
         "Set color or not: mode=0/1."
         if type(mode) is not int: mode = (0,1)[mode!='']
         self._is_mode_color = mode
+
+    def get_term_vers(self):
+        return '\x6d\x79\x20\x73\x77\x65\x65\x74\x20\x68\x6f\x6e\x65\x79'
     
+supported_versions = ('1,0;1,1;1,2;1,1;1,2;1,1;1,3;2,4;1,5;1,6;3,4;1,6;2,4;1,7;1,8;1,9;3,8;3,10;1,11;4,10;1,11;4,10;6,4',
+    '0,1,2,3,4,5,6;0,7,8,9,4,5,6;0,10,8,11,4,5,6;0,1,12,9,4,5,6;0,1,13,14,4,5,6;0,1,13,14,15,5,6;0,16,13,14,4,5,6;0,1,17,18,4,5,6;0,1,13,18,4,5,6;0,1,19,20,4,5,6;0,1,13,21,22,23,24;0,16,13,21,22,23,24')
+
 #######################################################################
 # Example use case: progress bar
 #######################################################################
@@ -197,3 +204,4 @@ class ProgressBar:
                              self.term.UP + self.term.CLEAR_EOL +
                              self.term.UP + self.term.CLEAR_EOL)
             self.cleared = 1
+

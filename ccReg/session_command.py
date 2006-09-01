@@ -54,7 +54,7 @@ class ManagerCommand(ManagerTransfer):
     # main creation command functions
     #
     #==================================================
-    def display_help(self, command_name):
+    def display_help(self, command_name, command):
         'Display help (build for display)'
         if command_name:
             # help command
@@ -72,6 +72,7 @@ class ManagerCommand(ManagerTransfer):
                 self.__make_help_details__(command_name, type)
             else:
                 self.append_note('%s "%s".'%(_T('No help available for'),command_name))
+                self.__display_help__(command)
         else:
             # help content
             self.append_note('%s\n\n${BOLD}%s:${NORMAL}\n%s\n\n${BOLD}%s:${NORMAL}\n%s\n\n%s %s'%(
@@ -187,7 +188,7 @@ class ManagerCommand(ManagerTransfer):
             m = re.match('(\?)(?:$|\s*(\S+))',cmd)
             if m: help, help_item = m.groups()
         if help:
-            self.display_help(help_item)
+            self.display_help(help_item, command)
         elif re.match('(raw|src)[-_]',cmd):
             # Zobrazení 'surových' dat - zdrojová data
             # raw-cmd; raw-a[nswer] e[pp]; raw-answ [dict]

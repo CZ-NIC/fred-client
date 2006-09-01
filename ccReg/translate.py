@@ -89,7 +89,7 @@ config_name = '.ccreg_client.conf' # .ccReg.conf
 available_langs = ('en','cs')
 default_lang = 'en'
 optcols = ('s:session','l:lang','g:log','h:host','u:user','p:password',
-        'v:verbose','c:command','r colors','? help','V version','c:config')
+        'v:verbose','d:command','r colors','? help','V version','c:config')
 options = {}
 for key in optcols:
     options[key[2:]] = ''
@@ -163,9 +163,12 @@ else:
     tpath = os.path.join(os.path.split(__file__)[0],'lang')
     try:
         _T = gettext.translation(domain,tpath,(options['lang'],), codeset=encoding).gettext
+        _TP = gettext.translation(domain,tpath,(options['lang'],), codeset=encoding).ngettext
     except IOError, (no,msg):
         print 'Translate IOError',no,msg,'\nMISSING:','%s/%s/LC_MESSAGES/%s.mo'%(tpath,options['lang'],domain)
         _T = gettext.gettext
+        _TP = gettext.ngettext
 
 option_errors = '\n'.join(errors)
 warning = '\n'.join(warnings)
+
