@@ -1,0 +1,644 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Manuál pro ccRegClient konzoli a knihovnu ccReg</title><meta name="generator" content="DocBook XSL Stylesheets V1.68.1" /></head><body><div class="book" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h1 class="title"><a id="id2451037"></a>Manuál pro ccRegClient konzoli a knihovnu ccReg</h1></div><div><h2 class="subtitle">Verze 1.1</h2></div><div><p class="releaseinfo">
+    Vzniklo: 11.7.2006;
+    Revize:  18.8.2006;
+    Revize:   1.9.2006;
+    Revize:   4.9.2006;
+    </p></div><div><p class="copyright">Copyright © 2006 CZ.NIC</p></div></div><hr /></div><div class="toc"><p><b>Obsah</b></p><dl><dt><span class="preface"><a href="#id2489579">CO JE ccRegClient:</a></span></dt><dt><span class="chapter"><a href="#id2489599">1. Licence</a></span></dt><dt><span class="chapter"><a href="#id2489609">2. Požadavky na systém a instalace</a></span></dt><dt><span class="chapter"><a href="#id2489620">3. 
+    Popis jednotlivých programů,
+       parametry a config
+    </a></span></dt><dd><dl><dt><span class="section"><a href="#id2451654">
+    Parametry (OPTIONS)
+    </a></span></dt><dt><span class="section"><a href="#id2451699">
+    Config
+    </a></span></dt></dl></dd><dt><span class="chapter"><a href="#id2451214">4. 
+    Program ccreg_console.py
+    </a></span></dt><dd><dl><dt><span class="section"><a href="#id2451246">Zobrazení helpu</a></span></dt><dt><span class="section"><a href="#id2451289">EPP příkazy</a></span></dt><dt><span class="section"><a href="#id2451330">Typy paramerů příkazu</a></span></dt><dt><span class="section"><a href="#id2452283">Příkazy relace (session)</a></span></dt></dl></dd><dt><span class="chapter"><a href="#id2499140">5. 
+    Skripty ccreg_create.py a ccreg_sender.py
+    </a></span></dt><dt><span class="chapter"><a href="#id2499262">6. 
+    Knihovna ccReg a popis API
+    </a></span></dt><dd><dl><dt><span class="section"><a href="#id2499279">Online dokumentace:</a></span></dt><dt><span class="section"><a href="#id2499334">Příklady práce s knihovnou</a></span></dt></dl></dd></dl></div><div class="preface" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2489579"></a>CO JE ccRegClient:</h2></div></div></div><p>
+    ccRegClient je sada scriptů v jazyce Python postavených na ccReg knihovně
+    a určených ke komunikaci s EPP serverem.
+    </p><p>Sada obsahuje EPP konzoli a skripty určené pro použití v shellu.</p></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2489599"></a>Kapitola 1. Licence</h2></div></div></div><p>Licence je v souboru ccReg/LICENSE.</p></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2489609"></a>Kapitola 2. Požadavky na systém a instalace</h2></div></div></div><p>Pokyny k instalaci jsou v souboru INSTALL.</p></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2489620"></a>Kapitola 3. 
+    Popis jednotlivých programů,
+       parametry a config
+    </h2></div></div></div><div class="toc"><p><b>Obsah</b></p><dl><dt><span class="section"><a href="#id2451654">
+    Parametry (OPTIONS)
+    </a></span></dt><dt><span class="section"><a href="#id2451699">
+    Config
+    </a></span></dt></dl></div><p>
+Dostupné skripty jsou následující:
+</p><table class="simplelist" border="0" summary="Simple list"><tr><td>ccreg_client.py   - spouští EPP konzoli nebo sekvenci crate+send (pro shell)</td></tr><tr><td>ccreg_console.py  - EPP konzole, komunikuje s EPP serverem</td></tr><tr><td>ccreg_create.py   - Vytboří zdrojový EPP XML příkaz</td></tr><tr><td>ccreg_sender.py   - Odešle soubor na EPP server</td></tr></table><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2451654"></a>
+    Parametry (OPTIONS)
+    </h2></div></div></div><p>
+Skripty se dají spouštět s parametry. Jaké parametry lze použít zjistíte 
+zadáním parametru --help nebo -?:
+</p><pre class="programlisting">
+    $ ccreg_client.py --help
+    $ ccreg_client.py -?
+
+Použití: python ccreg_console.py [OPTIONS]
+Konzole pro komunikaci s EPP serverem.
+
+OPTIONS s hodnotami:
+    -s --session  název session, který se má použít pro spojení s EPP serverem
+                  session hodnoty jsou načteny z config souboru a mohou obsahovat
+                  cesty k certifikátu, soukromému klíči, 
+                   
+    -h --host     jméno host (přepíše config hodnotu)
+    -u --user     jméno user (přepíše config hodnotu)
+    -p --password heslo (přepíše config hodnotu)
+    -l --lang     jazyková verze
+    -v --verbose  mód výpisu: 1,2,3; default: 1
+                  1 - zkrácený
+                  2 - plný
+                  3 - plný &amp; XML zdroje
+    -c --command  odeslání příkatu na EPP server
+                  příklad: --command='info_domain nic.cz'
+
+OPTIONS:
+    -r --colors   zapnutí barevného výstupu
+    -? --help     tento help
+</pre></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2451699"></a>
+    Config
+    </h2></div></div></div><p>
+Config je společný pro všechny skripty a je uložen v souboru .ccReg.conf. 
+Nejdříve se hledá v adresáři společném pro všechny uživatele. 
+Na POSIX systémech je to /etc, v MS Windows v adresáři nastaveném v proměnné
+$ALLUSERSPROFILE.</p><p>
+Pak se hledá v adresáři, kde je umístěna knihovna cReg.
+Pokud ani tam není nalezen, hledá se v domovském adresáři uživatele.
+</p><p>
+Název a unístění konfiguračního souboru je možné zadat při spuštění pomocí
+přepínače -c CONFIGNAME, --config=CONFIGNAME.
+</p><p>
+Konfig soubor lze vygenerovat v konzoli. Spusťte si konzoli
+příkazem ccreg_console.py (nebo ccreg_client.py) a zadejte příkaz "config create".
+Další podrobnosti naleznete v části popisu práce s konzolí (4. Program ccreg_console).
+</p><p>
+V konfigu se nachází sekce connect, kde jsou uloženy cesty k certifikátům
+a informace o serveru. Také tam můžou být přihlašovací údaje pro login.
+Příkaz <span class="emphasis"><em>login</em></span> tak může být zadán bez parametrů.
+</p><p>
+Zde je příklad konfigu:
+
+</p><pre class="programlisting">
+    [connect]
+    dir=/installdir/certificates
+    host = epp-test.ccreg.nic.cz
+    port = 700
+    ssl_cert = %(dir)s/epp_test_ccreg_nic_cz_cert.pem
+    ssl_key  = %(dir)s/epp_test_ccreg_nic_cz_key.pem
+    username = your-username
+    password = your-password
+
+    [session]
+    poll_ack = off
+    confirm_send_commands = on
+    validate = on
+    schema = /installdir/schemas/all-1.0.xsd
+    colors = on
+    verbose = 2
+    lang = en
+</pre><p>
+
+Sekcí <span class="emphasis"><em>connect</em></span> může být více. Která z nich se při startu použije se nastaví
+pomocí parametru --session. Například si vytvoříte sekci [connect_myeppserver]
+tu pak aktivujete: 
+
+</p><pre class="programlisting">
+    $ ccreg_client.py --session=myeppserver     (nebo -s myeppserver)
+
+    [connect_myeppserver]
+    dir=/test/certificates
+    host = myeppserver.cz
+    ssl_cert = %(dir)s/cert.pem
+    ssl_key  = %(dir)s/key.pem
+    username = myusername
+    password = mypassword
+</pre><p>
+</p><p>
+V sekci <span class="emphasis"><em>session</em></span> jsou tato nastavení:</p><div class="itemizedlist"><ul type="disc"><li><p><span class="bold"><strong>poll_ack</strong></span> = on/off </p><p>
+        Při <span class="emphasis"><em>on</em></span> se po odeslání příkazu <span class="emphasis"><em>poll req</em></span> automaticky
+        pošle i <span class="emphasis"><em>poll ack</em></span>.
+    </p></li><li><p>
+    <span class="bold"><strong>confirm_send_commands</strong></span> = on/off
+    </p><p>
+        Všechny editační příkazy (create, delete, update, ...) vyžadují v konzoli
+        pozvrzení před odesláním na server. Toto potvrzení lze vypnout/zapnout.
+    </p></li><li><p><span class="bold"><strong>validate</strong></span> = on/off</p><p>
+        K validaci se používá externí program xmllint. Validaci lze vypnout
+        a dokumnety se tak na server posílají bez ověření platnosti formátu.
+    </p></li><li><p><span class="bold"><strong>schema</strong></span> = /installdir/schemas/all-1.0.xsd</p><p>
+        Adresář, kde má validátor hledat schemata, podle kterých dokumenty ověřuje.
+    </p></li><li><p><span class="bold"><strong>colors</strong></span> = on/off</p><p>
+        Výstup na terminál může být barevný, pokud to terminál umožňuje.
+    </p></li><li><p><span class="bold"><strong>verbose</strong></span> = 1/2/3</p><p>
+        Úroveň výpisu 1 - stručná, 2 - celá, 3 - celá + XML zdrojové dokumenty.
+    </p></li><li><p><span class="bold"><strong>lang</strong></span> = en/cs</p><p>
+        Jazyková verze. Pokud není zadána žádná hodnota, tak se bere nastavení
+        z proměnné LANG prostředí OS. Dostupné jsou zatím jen angličtina a čeština.
+        Jazykovou verzi můžete nastavit i pomocí parametru při spuštění skriptu.
+    </p></li></ul></div></div></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2451214"></a>Kapitola 4. 
+    Program ccreg_console.py
+    </h2></div></div></div><div class="toc"><p><b>Obsah</b></p><dl><dt><span class="section"><a href="#id2451246">Zobrazení helpu</a></span></dt><dt><span class="section"><a href="#id2451289">EPP příkazy</a></span></dt><dt><span class="section"><a href="#id2451330">Typy paramerů příkazu</a></span></dt><dt><span class="section"><a href="#id2452283">Příkazy relace (session)</a></span></dt></dl></div><p>
+ccreg_console.py je konzole, která komunikuje s EPP serverem. Konzoli spustíte
+příkazem:
+</p><pre class="programlisting">
+    $ ccreg_console.py
+</pre><p>
+Pokud máte v configu správně nadefinovánu cestu k certifikátům a uložené login a heslo, 
+tak můžete jednoduše zadat <span class="emphasis"><em>login</em></span> a tím se spojíte s EPP serverem.
+Konzole se ukončuje příkazem "quit" nebo jen krátce "q".
+</p><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2451246"></a>Zobrazení helpu</h2></div></div></div><p>
+Jaké příkazy máte k dispozici zjistíte zadáním příkazu "help" (nebo h, ?).
+</p><pre class="programlisting">
+    ccReg client verze 1.1 Zadejte "help", "license" nebo "credits" pro zobrazení více informací.
+    &gt; help
+</pre><p>Help vypíše dvě části nápovědy:</p><table class="simplelist" border="0" summary="Simple list"><tr><td>1) Dostupné EPP příkazy</td></tr><tr><td>2) Příkazy relace (session) pro nastavení vnitřních proměnných 
+       konzole</td></tr></table></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2451289"></a>EPP příkazy</h2></div></div></div><p>
+EPP příkaz zadáváte společně s jeho parametry. Jaké parametry příkaz
+požaduje zjistíte, když zadáte "help příkaz" nebo zkráceně "h příkaz"
+nebo také "? příkaz".
+</p><p>Například:</p><pre class="programlisting">&gt; ?login</pre><p>
+Vypíšou se podrobnosti o jednotlivých parametrech daného příkazu. 
+Samotný příkaz zadáte tak, že napíšete název příkazu a za ním jeho parametry:
+</p><pre class="programlisting">&gt; login moje-ID moje-heslo</pre></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2451330"></a>Typy paramerů příkazu</h2></div></div></div><p><span class="emphasis"><em>INSTRUKCE:</em></span></p><table class="simplelist" border="0" summary="Simple list"><tr><td>parametry zadávejte v pořadí, v jakém jsou vypsané v helpu</td></tr><tr><td>hodnoty s mezerami dejte do uvozovek</td></tr><tr><td>seznamy se definují pomocí závorek, položky seznamu můžou 
+      (ale nemusí) být odděleny čárkami</td></tr><tr><td>pokud je v seznamu jen jedna položka, nemusí se závorky zadávat</td></tr><tr><td>jmenné prostory se také jako seznamy definují pomocí závorek</td></tr><tr><td>chcete-li seznam nebo jmenný porostor vynechat, zadejte jen
+      prázdné závorky</td></tr><tr><td>hodnoty mimo pořadí zadávejte pomocí klíče</td></tr></table><p><span class="emphasis"><em>VYSVĚTLENÍ:</em></span></p><table class="simplelist" border="0" summary="Simple list"><tr><td>jednoduchá hodnota:  my-value01</td></tr><tr><td>hodnota s mezerou:   'lorem ipsum'   "some value"</td></tr><tr><td>seznam:              (one two three)</td></tr><tr><td>jmenný prostor:      ((one two three) my-value01 'lorem ipsum' (enyky benyky) end-value)</td></tr></table><p>
+Pokud hodnota parametru obsahuje mezeru, tak ji napište do uvozovek. 
+Například:
+
+    </p><pre class="programlisting">&gt; login moje-ID "moje heslo s mezerami"</pre><p>
+
+Některé parametry můžou obsahovat seznam hodnot. Například parametr 
+"street" v příkazu create_contact.
+Výpis části helpu:
+
+    </p><pre class="programlisting">
+    ?create_contact
+    ...
+    ... street (nepovinný)  seznam o maximálně 3 položkách.
+    ...
+    </pre><p>
+
+Seznam zadáte tak, že hodnoty uzavřete do závorek:
+
+    </p><pre class="programlisting">&gt; create_contact my-ID my-name mail city 
+            cc org (Vodičkova, "Na příkopě", "U přívozu") voice
+    </pre><p>
+
+Pokud zadáváte jen jednu hodnotu ze seznamu, tak závorky zadávat
+nemusíte:
+
+    </p><pre class="programlisting">
+    &gt; create_contact my-ID my-name mail city cc org Vodičkova voice
+    </pre><p>
+
+Parametry musíte zadávat v pořadí, v jakém jsou v helpu vypsány. Povinné
+jsou vždy na začátku a nepovinné tak není nutné zadávat. Pro případ, že
+chcete kromě povinných hodnot zadat ještě nějakou nepovinnou, která ale
+NENÍ v pořadí, tak máte možnost ji zadat MIMO pořadí zadáním jména 
+parametru - klíče. To řeší situaci, kdy by se kvůli jednomu parametru
+na konci řady musely zadávat všechny parametry před ním.
+</p><p>
+Klíč (jméno parametru) se definuje pomocí jednoho nebo dvou spojovníků.
+Například chcete v příkazu create_contact zadat kromě povinných údajů už
+jen hodnotu "notify email", která se nachází právě na úplném konci
+seznamu parametrů. Pak tuto hodnotu zadáte takto:
+
+  </p><pre class="programlisting">
+  &gt; create_contact my-ID my-name mail city cc --notify_email = muj@mail.cz
+  </pre><p>
+
+Jaký má být klíč (název parametru) zjistíte z helpu daného příkazu.
+Parametr s klíčem pak již nemusí být na "své" pozici, ale může být
+kdekoliv v řadě mezi ostatními parametry. Takový parametr stojí "mimo"
+pořadí a nenarušuje pozice ostatních parametrů bez klíče. Zde jsou 
+do řady parametrů vloženy hodnoty s klíči "vat" a "notify_email":
+
+    </p><pre class="programlisting">
+    &gt; create_contact my-ID my-name mail --vat = 12346 --notify_email = muj@mail.cz city cc
+    </pre><p>
+
+Některé příkazy mají parametry vnořené do dalších parametrů. Ty vytvářejí
+jmenné prostory. Například v příkazu "create_contact" je parametr 
+"disclose". Ten obsahuje další parametry "flag", "data", atd. Samotný
+název "disclose" není v tomto případě název klíče, ale název jmenného
+prostoru, ve kterém se nacházejí klíče "flag" a "data". Jmenné
+prostory se definují stejně jako seznamy pomocí závorek:
+
+  </p><pre class="programlisting">
+  &gt; create_contact my-ID my-name mail city cc org street sp pc 
+        voice fax (n (name org addr voice fax email)) vat ssn
+  </pre><p>
+
+Pokud jmenný prostor nechcete zadávat, napište prostě jen prázdné
+závorky. To platí i pro seznamy:
+
+  </p><pre class="programlisting">
+  &gt; create_contact my-ID my-name mail city cc org street sp pc voice fax () vat ssn notify@email
+  </pre><p>
+
+Některé příkazy mají v parametrech seznamy jmenných prostorů. V takovém
+případě pak závorky mají své významy podle toho, jak jsou hodnoty
+strukturované. Například příkaz "update_nsset" má jeden 
+nepovinný parametr "add". Pokud jej nechcete zadávat, tak napíšete:
+
+  </p><pre class="programlisting">
+  &gt; update_nsset id () ...    - parametr add je nyní prázdný
+  </pre><p>
+
+Pokud ale "add" zadat chcete, tak "add" (jak vidíte v helpu) obsahuje
+seznam devíti jmenných prostorů "dns"! Každý "dns" prostor pak dále
+obsahuje parametr "name" a seznam "addr". Pokud chete tyto hodnoty zadat, 
+tak musíte zapsat všechny závorky, které jsou nutné: První závorka pro definování 
+jmenného prostoru "add". Druhá závorka pro začátek seznamu jmenných prostorů "dns".
+Třetí závorka pro samotný jmenný prostor "dns". Teprve pak následuje
+hodnota parametru "name". Za ním pak následuje závorka seznamu "addr":
+
+  </p><pre class="programlisting">
+  &gt;  update_nsset nsset1 (((ns1.dns.cz (217.31.207.130, 217.31.207.131, 217.31.207.132)), 
+        (ns2.dns.cz (217.31.207.130, 217.31.207.131, 217.31.207.132))) (tech1, tech2, tech3) 
+        (ok, clientTransferProhibited)) (((rem1.dns.cz, rem2.dns.cz) (tech-rem01, tech-rem02) 
+            serverUpdateProhibited)) (password)
+  </pre><p>
+
+Pokud "addr" není seznam, ale jen jedna hodnota, tak se závorky pro
+"addr" zadávat nemusí:
+(To je pravidlo již zmíněné v předchozím textu.)
+
+  </p><pre class="programlisting">
+  &gt; update_nsset nsset-ID (((nsset1 217.31.207.130),(nsset2 217.31.207.130))
+        tech status) ...
+  </pre><p>
+
+Takto složité zadávání naštěstí existuje jen v malém množství příkazů a
+tento uvedený příklad zadání je vůbec nejsložitější ze všech. Kromě
+toho máte možnost zadávat parametry příkazu v interaktivním módu - hezky
+jeden za druhým. Navíc je vždy na konci helpu každého příkazu uveden
+příklad zadání všech parametrů. 
+</p><p>
+Pokud chcete parametry přikazu zadávat interaktivně, napište před příkaz
+vykřičník:
+
+  </p><pre class="programlisting">&gt; !update_nsset</pre><p>
+
+Tím spustíte režim interaktivního vkládání parametrů. Konzole vždy
+vypíše jméno parametru a čeká na zadání hodnoty. Pokud hodnotu nechcete
+zadat, tak prostě stisknete enter a hodnota se přeskočí. Interaktivní
+režim můžete kdykoliv ukončit zadáním vykřičníku. Tím se ukončí aktuální
+jmenný prostor. Nacházíte-li se tedy v hlavním jmenném prostoru, tak se
+interaktivní režim ukončí. Pokud je prompt zanořen do nějakého jmenného
+prostoru, tak se ukončí pouze ten a interaktivní vkládání pokračuje
+nadřazeným prostorem. Chcete-li vyskočit z vícenásobně vnořeného 
+prostoru nebo ukončit režim celý, tak zadejte více vykřičníků najednou.
+Jeden vykčiřník na jeden jmenný prostor. Nevadí bude-li jich více, než
+požadovaný počet:
+
+    </p><pre class="programlisting">
+    &gt; !update_nsset
+    Start interaktivního zadávání parametrů. Pro ukončení zadejte: !
+    &gt; !update_nsset:id (povinný) &gt; moje-id
+    (Hodnota může být seznam o max. velikosti 9 položek.)
+    &gt; !update_nsset:add.ns[1/9].name (povinný) &gt; ns1
+    (Hodnota může být libovolně velký seznam.)
+    &gt; !update_nsset:add.ns[1/9].addr[1/oo] (nepovinný) &gt; 217.31.207.130
+    &gt; !update_nsset:add.ns[1/9].addr[2/oo] (nepovinný) &gt; 217.31.207.131
+    &gt; !update_nsset:add.ns[1/9].addr[3/oo] (nepovinný) &gt;
+    &gt; !update_nsset:add.ns[2/9].name (povinný) &gt; ns2
+    (Hodnota může být libovolně velký seznam.)
+    &gt; !update_nsset:add.ns[2/9].addr[1/oo] (nepovinný) &gt; !
+    </pre><p>
+
+Ještě jednou zpět k zadávání pomocí klíče: Klíč se zadává ve tvaru 
+-[název parametru] [hodnota].
+Například:
+
+</p><pre class="programlisting">
+     -heslo "toto je moje heslo"
+</pre><p>
+
+Toto zadání lze napsat i takto se stejným účinkem:
+
+</p><pre class="programlisting">
+     --heslo = "toto je moje heslo"
+</pre><p>
+
+Záleží na vás, který zápis se vám bude zdát čitelnější. Jak ale zadat
+honodotu, která je součástí jmenného prostoru? Jednoduše pomocí tečkové
+koncence:
+
+</p><pre class="programlisting">
+    --add.ns.name = nsset_name
+</pre><p>
+
+Takto jste definovali hodnotu nsset_name do jmenného porostoru "add", 
+do první položky seznamu "ns", do parametru "name". Chcete-li uložit
+hodnotu například do třetí položky seznamu "ns", tak zadejte:
+
+</p><pre class="programlisting">
+    --add.ns[2].name = nsset_name
+</pre><p>
+
+Dvojka je index seznamu v tomto případě o max. devíti položkách
+(indexy 0 - 8).
+</p></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2452283"></a>Příkazy relace (session)</h2></div></div></div><p>
+Konzole má svá vnitřní nastavení, která můžete nastavit. Pokud zadáte
+příkaz bez parametrů, tak se pouze vypíše aktuální stav.
+
+</p><pre class="programlisting">
+&gt; validate on/off
+</pre><p>
+
+Tímto přepínačem zapnete nebo vypnete proces validace XML dokumentu. Validace je v této verzi
+realizována přes externí program xmllint. Pokud není v systému přítomen, tak nastavení ON nemá
+žádný efekt. Validace ověřuje platnost XML dokumentu podle EPP schemat a to jak v odchozích,
+tak i příchozích zprávách. Pokud není dokument validní, tak jej konzole na server neodešle.
+Nevalidní dokument vznikne například tím, že zadáte hodnotu, která neodpovídá konkrétnímu schématu.
+Například příliš krátké heslo. Konzole v této verzi obsah hodnot nijak neověřuje, pouze zjišťuje
+jestli byly zadány nebo ne.
+
+</p><pre class="programlisting">
+&gt; poll-ack [on/off]
+</pre><p>
+
+Pokud je tento přepínač ON, tak se po odeslání příkazu "poll req" automaticky odesílá i "poll ack".
+Tuhle funkci asi nejvíce oceníte, když budete mít na serveru hodně zpráv. Příkaz "poll req" zprávu
+ze serveru pouze zobrazí, ale pak se zpráva musí ze serveru odstranint příkazem "poll ack ID-zprávy".
+Při automatickém poll-ack se bude odstraňování provádět automaticky.
+
+</p><pre class="programlisting">
+&gt; raw-command [dict]
+&gt; raw-answer [dict]
+</pre><p>
+
+Tyto příkazy nejsou přepínače interních proměnných, ale vypisují zdrojové tvary posledního příkazu
+a odpovědi. Místo "raw" lze zadat i "src" a všechny fungují ve zkrácené verzi:
+
+</p><pre class="programlisting">
+    raw-c, raw-c d, src-c, src-c d, raw-a, raw-a d, src-a, src-a d
+</pre><p>
+
+Každý příkaz, který zadáte v promptu se sestaví do XML EPP dokumentu. Pokud si chcete tento
+XML dokument prohlédnout, tak zadáte "src-c" a na výstup se vypíše vygenerované zdojové XML. 
+Chcete-li vidět XML zdojový dokument od serveru, zadejte "src-a".
+Pokud je XML dokument nepřehledný a vy chcete vidět jasněji strukturu jednotlivých XML uzlů,
+tak zadejte "src-c d" (nebo "src-a d"). Konzole vypíše hodnoty uzlů v přehledné formě s odsazením.
+
+</p><pre class="programlisting">
+&gt; confirm [on/off]
+</pre><p>
+
+U EPP editačních příkazů, které nějak mění hodnoty na serveru (create, upadte, delete, transfer, renew),
+se před odesláním požaduje potvrzení k odeslání. Přepínačem "confirm OFF" lze toto potvrzování vypnout.
+
+</p><pre class="programlisting">
+&gt; config [create]
+</pre><p>
+
+Konzole si hodnoty interních nastavení načítá z konfigu. Pokud ještě konfig nebyl vytvořen, tak se
+nastaví defaultní hodnoty. Aktuální hodnoty konfigu lze zobrazit příkazem "config". Chcete-li
+konfig vytvořit, zadejte "config create". Tím se vytvoří konfigurační soubor ".ccReg.conf" ve vašem
+domovském adresáři. V konfigu si pak můžete nastavit cestu k vašemu certifikátu a další hodnoty.
+Konzole se pokouší neprve načíst konfig z adresáře /etc (ve Windows z adresáře uvedeném v proměnné
+prostředí $ALLUSERSPROFILE, ta bývá obvykle nastavena na "C:\Documents and Settings\All Users")
+a poté načítá další konfig z adresáře uživatele. Na posix to je /home/[user], ve Windows je to 
+"C:\Documents and Settings\[user]". Tak lze uložit hodnoty společné pro všechny uživatele.
+
+</p><pre class="programlisting">
+&gt; send
+</pre><p>
+
+Přikaz "send" slouží k posílání libovolného souboru na EPP server. Tento příkaz je zde jen z testovacích
+důvodů. Pokud "send" zadáte bez parametrů, tak vypíše aktuální adresář. Když "send" zadáte se
+jménem platného souboru, tak tento soubor bez dalšího ptaní odešle na EPP server:
+
+</p><pre class="programlisting">
+    send some-folder/my-test-file.xml
+</pre><p>
+
+</p><pre class="programlisting">
+&gt; connect
+</pre><p>
+
+Příkaz "connect" vytváří spojení s EPP serverem aniž by na něj cokoliv posílal. Pokud se spojení
+podařilo, pošle EPP server zprávu "greeting" a tak se zobrazí na výstupu. Příkaz "connect" 
+je zde z testovacích důvodů a není potřeba jej volat. Stačí zadat rovnou "login".
+
+</p><pre class="programlisting">
+&gt; colors [on/off]
+</pre><p>
+zapnout/vypnout barevný výstup
+
+</p><pre class="programlisting">
+&gt; verbose [number]
+</pre><p>
+nastavit mód výpisu: 1 - stručný (default); 2 - plný; 3 - plný &amp; XML zdroje
+</p></div></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2499140"></a>Kapitola 5. 
+    Skripty ccreg_create.py a ccreg_sender.py
+    </h2></div></div></div><p>
+
+
+Skripty <span class="emphasis"><em>ccreg_create.py</em></span> a <span class="emphasis"><em>ccreg_sender.py</em></span> jsou určeny pro použití v shell batchi.
+
+<span class="emphasis"><em>ccreg_create.py</em></span> přijímá parametry se standardního vstupu a vygeneruje 
+XML EPP dokument na standardní výstup. Například:
+</p><pre class="programlisting">
+    $ python ccreg_create.py info_domain nic.cz
+    $ ./ccreg_create.py info_domain nic.cz
+</pre><p>&lt;?xml version='1.0' encoding....</p><p>
+Pokud nastane nějaká chyba, tak vrací XML s chybovým hlášením:
+</p><pre class="programlisting">
+    $ python ccreg_create.py inxo_domain nic.cz
+</pre><p>
+&lt;?xml encoding='utf-8'?&gt;&lt;errors&gt;inxo_domain nic.cz: Neznámý příkaz!&lt;/errors&gt;
+</p><p>
+Příkazy se dají zřetězit:
+</p><pre class="programlisting">
+    $ ./ccreg_create.py check_domain test.cz nic.cz | ./ccreg_create.py info_domain nic.cz
+</pre><p>
+<span class="emphasis"><em>ccreg_sender.py</em></span> odesílá dokumenty na server. Skript se automaticky zaloguje, pak
+předá dokument, zobrazí odpověď a odloguje se a ukončí. Pro správné zalogovájní je nutné
+mít správně nastaven config.</p><p>
+Skript může odesílat dokumenty dvěma způsoby:
+</p><p>
+    1. dokumenty se uloží do souboru a skriptu se předají jména souborů. Skript
+       je pak odesílá v uvedeném pořadí. Například:
+</p><pre class="programlisting">
+    $ ./ccreg_create.py check_domain cosi.cz nic.cz &gt; doc1.xml
+    $ ./ccreg_create.py info_domain nic.cz &gt; doc2.xml
+    $ ./ccreg_sender.py doc1.xml doc2.xml
+</pre><p>
+</p><p>
+    2. PIPE - Zřetězením příkazů create a sender.
+       Například:
+
+</p><pre class="programlisting">
+    $ ./ccreg_create.py check_domain cosi.cz nic.cz | ./ccreg_create.py info_domain nic.cz | ./ccreg_sender.py
+</pre><p>
+
+</p></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2499262"></a>Kapitola 6. 
+    Knihovna ccReg a popis API
+    </h2></div></div></div><div class="toc"><p><b>Obsah</b></p><dl><dt><span class="section"><a href="#id2499279">Online dokumentace:</a></span></dt><dt><span class="section"><a href="#id2499334">Příklady práce s knihovnou</a></span></dt></dl></div><p>
+
+Knihovna ccReg vám umoňuje implmentovat API rozhraní do vašich aplikací. Knihova i jednotlivé funkce
+obsahují komentáře, podle kterých se můžete při implementaci řídit. V části __init__.py naleznete
+i ukázky kódu.
+</p><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2499279"></a>Online dokumentace:</h2></div></div></div><p>
+Pokud si chcete projít jednotlivé třídy a funkce knihovny, tak k tomu můžete využít generátor
+dokumentace, který je standardní součástí pythonu: Zadejte na příkazové řádce příkaz:
+
+</p><pre class="programlisting">
+    $ pydoc -p 8080
+</pre><p>
+
+Tím jste spustili webový server, který generuje strany dokumentace přímo ze zdrojových souborů.
+Parametr -p udává na jakém portu je server spuštěn. Číslo portu můžete zadat jakékoliv jiné.
+Nyní si otevřete prohlížeč a zadejte adresu: http://localhost:8080/. Otevře se strana, na které
+v části ../site-packages naleznete odkaz na ccReg (package).
+</p><p>
+Pokud jste skripty neinstalovali, ale jen nakopírovali, nebo pokud se chcete podívat i na skripty
+pracující s knihovnou ccReg, tak celý proces spuštění udělejte stejně, ale s tím rozdílem, že pydoc
+spustíte z adresáře, kde máte tyto skripty uložené. Pak se v helpu zobrazí i ony:
+
+</p><pre class="programlisting">
+    $ cd ccRegClient-1.1
+    $ pydoc -p 8080
+</pre><p>
+
+Server ukončíte stiskem Ctrl+C.
+</p></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2499334"></a>Příklady práce s knihovnou</h2></div></div></div><p>
+Import knihovny provedete příkazem:
+
+</p><pre class="programlisting">
+    &gt;&gt;&gt; import ccReg
+</pre><p>
+
+Instanci EPP klienta vytvoříte:
+
+</p><pre class="programlisting">
+    &gt;&gt;&gt; epp = ccReg.Client()
+</pre><p>
+
+Ještě musíte načíst config, aby knihovna našla certifikát:
+
+</p><pre class="programlisting">
+    &gt;&gt;&gt; epp.load_config()
+</pre><p>
+
+Chcete-li načíst jinou session - analogicky k parametru --session, tak zadejte:
+
+</p><pre class="programlisting">
+    &gt;&gt;&gt; epp.load_config('my-sessison-name')
+</pre><p>
+
+Pak již můžete navázat spojení funkcí login:
+
+</p><pre class="programlisting">
+    &gt;&gt;&gt; retval = epp.login("username","password")
+</pre><p>
+
+Každá funkce (EPP příkazu) vrací tuto "retval" hodnotu, která je typu dict a ve tvaru:
+
+</p><pre class="programlisting">
+    {'reason': u'Text of answer reason', 
+     'code': 1000,
+     'command': 'command_name',  
+     'errors': []
+     'data': {'key': 'value' [,'next-key':'next-value']}, 
+    }
+</pre><p>
+
+</p><table class="simplelist" border="0" summary="Simple list"><tr><td>Klíč "reason" (str) je vyrozumění serveru o stavu odpovědi.</td></tr><tr><td>Klíč "code" (int) je číslo, které definuje typ chyby. Číslo 1000 znamená OK - vše vpořádku.</td></tr><tr><td>Klíč "command" (str) je název příkazu, na který se odpověď vztahuje (který odpověď vyvolal).</td></tr><tr><td>Klíč "errors" (list) je seznam chyb, které server nalezl.</td></tr><tr><td>Klíč "data" (dict) je slovník s hodnotami individuálními pro každý jednotlivý příkaz.</td></tr></table><p>
+
+Jaké klíče jsou v části "data" pro danou funkci (EPP příkaz) se dozvíte z dokumentace u každé funkce:
+
+</p><pre class="programlisting">
+    &gt;&gt;&gt; print epp.login.__doc__
+    ...
+    RETURN data: {...}
+    ...
+</pre><p>
+
+<span class="emphasis"><em>POZOR!</em></span> V této verzi (1.0 beta release) má slovník tu vlastnost, že pokud
+hodnota chybí, tak se klíč ve slovníku vůbec nevyskytuje. Dále, pokud je
+v seznamu hodnot jen jedna položka, tak je typu string/unicode. Tyto
+odlišnosti byste měli testovat.Ve finální verzi bude slovník pevně daný:
+Klíč bude ve slovníku i když bude hodnota prázdná a seznam zůstane,
+i když bude mít jen jednu položku.
+</p><p>
+Příklad: Když jsou vstupní data: 
+</p><pre class="programlisting">
+    name = 'jmeno'
+    addr = (1,2,3)
+    tech = ('ok',)
+    stat = ''
+</pre><p>
+
+...tak se vytvoří takovýto slovník 'data':
+</p><pre class="programlisting">
+    {'name': 'jmeno',
+     'addr':['1','2','3']
+     'tech':'ok'           # tady je type str a stat chybí
+    }
+</pre><p>
+...ale ve finální verzi by to mělo být takto:
+</p><pre class="programlisting">
+    {'name': 'jmeno',
+     'addr':['1','2','3']
+     'tech':['ok',]
+     'stat':''
+    }
+</pre><p>
+
+Návratovou hodnotu "retval" není nutné odchytávat, ukládá se do interní proměnné a lze ji kdykoliv
+zobrazit funkcí print_answer():
+
+</p><pre class="programlisting">
+    &gt;&gt;&gt; epp.print_answer()
+</pre><p>
+
+nebo testovat jakoukoliv hodnotu v retval pomocí funkce is_val():
+
+</p><pre class="programlisting">
+    &gt;&gt;&gt; epp.is_val('reason')
+    u'Text of answer reason'
+</pre><p>
+
+Každé volání další funkce EPP příkazu samozřejmě předchozí "retval" přepíše, takže uvedené dvě funkce
+pracují vždy jen s poslední návratovou hodnotou. Pokud chcete návratovou hodnotu testovat nebo
+zobrazit později, tak si ji uložte a pak ji předejte funkcím:
+
+</p><pre class="programlisting">
+    &gt;&gt;&gt; epp.print_answer(my_retval)
+    &gt;&gt;&gt; epp.is_val('reason', my_retval)
+</pre><p>
+
+Funkci is_val() je možno zadat bez parametru. V takovém případě defaultně vrací hodnotu klíče "code":
+
+</p><pre class="programlisting">
+   &gt;&gt;&gt; epp.is_val()
+    1000
+</pre><p>
+
+Pokud chcete zjistit hodnotu v jakékoliv vnořené části slovníku, tak zadejte parametr jako cestu - 
+seznam jmen (klíčů) slovníku:
+
+</p><pre class="programlisting">
+    &gt;&gt;&gt; epp.is_val(('data','next-key'))
+    next-value
+</pre><p>
+
+V případě, že daný klíč neexistuje, vrací funkce hodnotu None.
+
+</p><pre class="programlisting">
+    &gt;&gt;&gt; epp.is_val(('data','any-key'))
+    None
+</pre><p>
+
+Pokud se vyskytne nějaká chyba při přenosu nebo jiná, která zablokuje funkčnost, tak se generuje
+výjimka ccRegError.
+</p></div></div></div></body></html>
