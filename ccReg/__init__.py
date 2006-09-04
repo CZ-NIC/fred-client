@@ -452,6 +452,7 @@ class Client:
     The EPP "poll" command is used to discover and retrieve service messages queued by a server for individual clients.
 
         """
+        if not type(msg_id) in ('str','unicode'): msg_id = str(msg_id)
         return self._epp.api_command('poll',{'op':op,'msg_id':msg_id})
 
 

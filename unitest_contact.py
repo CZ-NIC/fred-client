@@ -313,6 +313,10 @@ class Test(unittest.TestCase):
         epp_cli.poll('req')
         if epp_cli.is_val() not in (1000,1300,1301):
             self.assertEqual(0, 1, unitest_ccreg_share.get_reason(epp_cli))
+        id_message = epp_cli.is_val(('data','msgQ.id'))
+        if id_message:
+            epp_cli.poll('ack', id_message)
+            self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
 
 def __compare_disclose__(cols, disclose, hide):
