@@ -122,16 +122,19 @@ class Test(unittest.TestCase):
 
     def test_000(self):
         '2.0 Inicializace spojeni a definovani testovacich handlu'
-        global epp_cli, handle_contact, handle_nsset, log_fp
+        global epp_cli, epp_cli_TRANSF, handle_contact, handle_nsset, log_fp
         # Natvrdo definovany handle:
         handle_contact = CCREG_CONTACT[1]['id'] # 'neexist01'
         handle_nsset = 'NSSID:neexist01'
         # create client object
         epp_cli = ccReg.Client()
+        epp_cli_TRANSF = ccReg.Client()
         epp_cli._epp.load_config(ccReg.translate.options['session'])
+        epp_cli_TRANSF.load_config(ccReg.translate.options['session'])
         # login
         dct = epp_cli._epp.get_default_params_from_config('login')
         epp_cli.login(dct['username'], dct['password'])
+        epp_cli_TRANSF.login('REG-LRR2', dct['password'])
         # Tady se da nalezt prazdny handle (misto pevne definovaneho):
         # handle_contact = __find_available_handle__(epp_cli, 'contact','nexcon')
         # handle_nsset = __find_available_handle__(epp_cli, 'nsset','nexns')
@@ -139,6 +142,7 @@ class Test(unittest.TestCase):
         # self.assert_(len(handle_nsset), 'Nepodarilo se nalezt volny handle nsset.')
         # kontrola:
         self.assert_(epp_cli.is_logon(), 'Nepodarilo se zalogovat.')
+        self.assert_(epp_cli_TRANSF.is_logon(), 'Nepodarilo se zalogovat uzivatele "REG-LRR2" pro transfer.')
         # logovací soubor
         if ccReg.translate.options['log']: # zapnuti/vypuni ukladani prikazu do logu
             log_fp = open(ccReg.translate.options['log'],'w')
@@ -262,23 +266,54 @@ class Test(unittest.TestCase):
         self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_140(self):
-        '2.14 Smazani kontaktu'
-        epp_cli.delete_contact(handle_contact)
-        self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
-
+        '2.14 Trasfer na vlastni contact (Objekt je nezpůsobilý pro transfer)'
+        epp_cli.transfer_contact(handle_contact, CONTACT_PASSWORD_2)
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+        
     def test_150(self):
-        '2.15 Check na smazany kontakt'
+        '2.15 Druhy registrator: Trasfer s neplatnym heslem (Chyba oprávnění)'
+        epp_cli_TRANSF.transfer_contact(handle_contact, 'heslo neznam')
+        self.assertNotEqual(epp_cli_TRANSF.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli_TRANSF))
+        
+    def test_160(self):
+        '2.16 Druhy registrator: Trasfer kontaktu'
+        epp_cli_TRANSF.transfer_contact(handle_contact, CONTACT_PASSWORD_2)
+        self.assertEqual(epp_cli_TRANSF.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli_TRANSF))
+        
+    def test_170(self):
+        '2.17 Druhy registrator: Zmena hesla po prevodu domeny'
+        epp_cli_TRANSF.update_contact(handle_contact, None, None, {'auth_info':{'pw':CONTACT_PASSWORD_1}})
+        self.assertEqual(epp_cli_TRANSF.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli_TRANSF))
+        
+    def test_180(self):
+        '2.18 Zmena hesla kontaktu, ktery registratorovi jiz nepatri'
+        epp_cli.update_contact(handle_contact, None, None, {'auth_info':{'pw':'moje-heslo2'}})
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+        
+    def test_190(self):
+        '2.19 Pokus o smazani kontaktu, ktery jiz registratorovi nepatri'
+        epp_cli.delete_contact(handle_contact)
+        self.assertNotEqual(epp_cli.is_val(), 1000, 'Contact se smazal prestoze nemel')
+        
+    def test_200(self):
+        '2.20 Smazani kontaktu'
+        epp_cli_TRANSF.delete_contact(handle_contact)
+        self.assertEqual(epp_cli_TRANSF.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli_TRANSF))
+
+    def test_210(self):
+        '2.21 Check na smazany kontakt'
         epp_cli.check_contact(handle_contact)
         self.assertEqual(epp_cli.is_val(('data',handle_contact)), 1, '%s nelze smazat'%handle_contact)
 
-    def test_160(self):
-        '2.16 Poll require'
+    def test_220(self):
+        '2.22 Poll require'
         # 1000 OK (ack)
         # 1300 No messages
         # 1301 Any message
         epp_cli.poll('req')
         if epp_cli.is_val() not in (1000,1300,1301):
             self.assertEqual(0, 1, unitest_ccreg_share.get_reason(epp_cli))
+
 
 def __compare_disclose__(cols, disclose, hide):
     'Compare disclose list.'
@@ -345,7 +380,7 @@ def __info_contact__(prefix, cols, scope, key=None, pkeys=[]):
                 errors.append('Chybi klic %s'%key)
     return errors
 
-epp_cli, log_fp, log_step, handle_contact, handle_nsset = (None,)*5
+epp_cli, epp_cli_TRANSF, log_fp, log_step, handle_contact, handle_nsset = (None,)*6
 
 if __name__ == '__main__':
 ##if 0:
