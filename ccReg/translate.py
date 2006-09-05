@@ -37,6 +37,7 @@ def load_config_from_file(filename):
     'Load config file from specifiend filename only.'
     config = None
     error = ''
+    names = []
     if os.path.isfile(filename):
         try:
             config = ConfigParser.SafeConfigParser()
@@ -44,9 +45,11 @@ def load_config_from_file(filename):
         except (ConfigParser.MissingSectionHeaderError, ConfigParser.ParsingError), msg:
             error = 'ConfigParserError: %s'%str(msg)
             config = None
+        else:
+            names.append(filename)
     else:
         error = "Configuration file '%s' missing."%filename
-    return config, error
+    return config, error, names
 
 def load_config(config_name):
     "Load config file and init internal variables. Returns 0 if fatal error occured."
@@ -59,11 +62,12 @@ def load_config(config_name):
         # ALLUSERSPROFILE = C:\Documents and Settings\All Users
         glob_conf = os.path.join(os.path.expandvars('$ALLUSERSPROFILE'),config_name)
     try:
-        config.read([glob_conf, modul_conf, os.path.join(os.path.expanduser('~'),config_name)])
+        names = config.read([glob_conf, modul_conf, os.path.join(os.path.expanduser('~'),config_name)])
     except (ConfigParser.MissingSectionHeaderError, ConfigParser.ParsingError), msg:
         error = 'ConfigParserError: %s'%str(msg)
         config = None
-    return config, error
+        names = []
+    return config, error, names
 
 def get_config_value(config, section, option, omit_errors=0):
     'Get value from config and catch exceptions.'
@@ -129,9 +133,9 @@ if len(sys.argv) > 1:
 # LOAD CONFIG
 #---------------------------
 if options['config']:
-    config, config_error = load_config_from_file(options['config'])
+    config, config_error, config_names = load_config_from_file(options['config'])
 else:
-    config, config_error = load_config(config_name)
+    config, config_error, config_names = load_config(config_name)
 if config and not options['lang']:
     key, error = get_config_value(config, 'session','lang',1)
     if error:

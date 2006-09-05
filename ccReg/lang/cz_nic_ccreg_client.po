@@ -828,8 +828,8 @@ msgid "Create default config failed."
 msgstr "Vytvoření defaultního config souboru selhalo."
 
 #: ccReg/session_base.py:169
-msgid "Actual config is"
-msgstr "Aktuální config je"
+msgid "Actual config builded from files"
+msgstr "Aktuální config sestavený ze souborů"
 
 #: ccReg/session_base.py:171
 msgid "No config"

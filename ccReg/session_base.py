@@ -166,7 +166,7 @@ class ManagerBase:
             else:
                 self.append_error(_T('Create default config failed.'))
         else:
-            print_unicode('%s:'%_T("Actual config is"))
+            print_unicode('${BOLD}${YELLOW}%s:${NORMAL}\n\t%s'%(_T('Actual config builded from files'),'\n\t'.join(translate.config_names)))
             if not self._conf:
                 print_unicode(_T('No config'))
                 return
