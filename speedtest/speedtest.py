@@ -43,7 +43,7 @@ do vysledku nezapocitava.
 
 Vychozi pocet pozadavku pro kazdy typ dotazu: %d
 """ % (targets)
-#    d.msgbox(msg, height=15, width=75, title="System pro testovani vykonu systemu ccReg")
+    d.msgbox(msg, height=15, width=75, title="System pro testovani vykonu systemu ccReg")
 
 def outro(d):
     global list_times
