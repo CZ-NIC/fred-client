@@ -10,7 +10,7 @@ echo 'Delete CONTACT'
 
 # *** NSSET ***
 echo 'Create NSSET'
-./ccreg_create.py --range=nssid:exhib[$1] 'create_nsset nssid:exhib passw ((ns1.domain.cz (217.31.207.130 217.31.207.129)))' | ./ccreg_sender.py -s curlew --bar
+./ccreg_create.py --range=nssid:exhib[$1] 'create_nsset nssid:exhib passw ((ns1.domain.cz (217.31.207.130 217.31.207.129)) (cid:exhib:))' | ./ccreg_sender.py -s curlew --bar
 echo 'Delete NSSET'
 ./ccreg_create.py --range=nssid:exhib[$1] 'delete_contact nssid:exhib' | ./ccreg_sender.py -s curlew --bar
 

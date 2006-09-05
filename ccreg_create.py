@@ -44,11 +44,13 @@ if __name__ == '__main__':
                         min = int(m.group(2))
                         max = int(m.group(3))
                     for n in range(min,max):
-                        main(re.sub(anchor,'%s:%d'%(anchor,n),command))
+                        print re.sub(anchor,'%s:%d'%(anchor,n),command)
+#                        main(re.sub(anchor,'%s:%d'%(anchor,n),command))
                 else:
                     print "<?xml encoding='utf-8'?><errors>Invalid range pattern: %s</errors>"%options['range']
             else:
-                main(command)
+		print command
+#                main(command)
         else:
             print '%s: %s command params\n\n%s\n\n%s%s\n%s\n\n  %s\n'%(_T('Usage'), 'ccreg_create.py',
                 _T('Create EPP XML document from command line parameters.'),
