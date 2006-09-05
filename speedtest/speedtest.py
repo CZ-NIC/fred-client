@@ -56,34 +56,34 @@ Vygenerovani domen trvalo: %(domain)s sekund
     d.msgbox(msg, height=15, width=75, title="System pro testovani vykonu systemu ccReg")
 
 def create_contacts(d, num):
-#    d.gauge_start("Progress: 0%", title="Generuji XML pro kontakty")
+    d.gauge_start("Progress: 0%", title="Generuji XML pro kontakty")
     for i in range(1, num+1):
 	n = math.ceil(i*100/num)
 	contact_list_xml.append(gepp.create_eppdoc(contact_create_command % (prefix, i))[1])
 	contact_list_id.append('cid:%s%s' % (prefix, i))
-#	d.gauge_update(n, "Progress: %d" % i, update_text=1)
-#    d.gauge_stop()
+	d.gauge_update(n, "Progress: %d" % i, update_text=1)
+    d.gauge_stop()
 
 def create_nssets(d, num):
-#    d.gauge_start("Progress: 0%", title="Generuji XML pro NSSETy")
+    d.gauge_start("Progress: 0%", title="Generuji XML pro NSSETy")
     for i in range(1, num+1):
 	n = math.ceil(i*100/num)
 	contact_id = random.choice(contact_list_id)
 	nsset_list_xml.append(gepp.create_eppdoc(nsset_create_command % (prefix, i, contact_id))[1])
 	nsset_list_id.append('nssid:%s%s' % (prefix, i))
-#	d.gauge_update(n, "Progress: %d" % i, update_text=1)
-#    d.gauge_stop()
+	d.gauge_update(n, "Progress: %d" % i, update_text=1)
+    d.gauge_stop()
 
 def create_domains(d, num):
-#    d.gauge_start("Progress: 0%", title="Generuji XML pro domeny")
+    d.gauge_start("Progress: 0%", title="Generuji XML pro domeny")
     for i in range(1, num+1):
 	n = math.ceil(i*100/num)
 	contact_id = random.choice(contact_list_id)
 	nsset_id = random.choice(nsset_list_id)
 	domain_list_xml.append(gepp.create_eppdoc(domain_create_command % (prefix, i, contact_id, nsset_id))[1])
 	domain_list_id.append('%s-%s' % (prefix, i))
-#	d.gauge_update(n, "Progress: %d" % i, update_text=1)
-#    d.gauge_stop()
+	d.gauge_update(n, "Progress: %d" % i, update_text=1)
+    d.gauge_stop()
 
 def worker(epp, xmllist):
     for item in xmllist:
@@ -110,22 +110,22 @@ def create_workers(objtype):
 def controller(d, objtype, msg):
     global workers, list_times
     starttime = time.time()
-#    d.gauge_start("Progress: 0%", title=msg)
+    d.gauge_start("Progress: 0%", title=msg)
     [ x.start() for x in workers ]
     for i in range(1, targets+1):
 	n = math.ceil(i*100/targets)
 	item = queue.get(True)
-#	d.gauge_update(n, "Progress: %d" % i, update_text=1)
+	d.gauge_update(n, "Progress: %d" % i, update_text=1)
     endtime = time.time()
     list_times[objtype] = endtime-starttime
-#    d.gauge_stop()
+    d.gauge_stop()
 
 
 def main():
     d = dialog.Dialog(dialog="dialog")
     d.add_persistent_args(["--backtitle", "Testovani vykonu systemu ccReg"])
 
-#    intro(d)
+    intro(d)
     
     create_contacts(d, targets)
 #    open('_contact.xml', 'w').write('\n'.join(contact_list_xml))
