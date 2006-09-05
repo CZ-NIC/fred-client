@@ -2,9 +2,9 @@
 # -*- coding: utf8 -*-
 """Create EPP XML document from command line parameters.
 """
-import sys
+import sys, re
 import ccReg
-from ccReg.translate import _T, options, encoding
+from ccReg.translate import _T, options, option_args, config_error, encoding
 
 def main(command):
     epp = ccReg.ClientSession()
@@ -18,8 +18,12 @@ def main(command):
         if type(command_name) == unicode: command_name = command_name.encode(encoding)
         if type(errors) == unicode: errors = errors.encode(encoding)
         xml_error = "<?xml encoding='utf-8'?><errors>%s: %s</errors>"%(command_name,errors)
-    return epp_doc, xml_error
+    if xml_error:
+        print xml_error
+    else:
+        print epp_doc
 
+   
 if __name__ == '__main__':
     msg_invalid = ccReg.check_python_version()
     if msg_invalid:
@@ -27,11 +31,24 @@ if __name__ == '__main__':
     else:
         if not sys.stdin.isatty(): print sys.stdin.read() # keep previous output
         if len(sys.argv) > 1:
-            epp_doc, xml_error = main(' '.join(sys.argv[1:]))
-            if xml_error:
-                print xml_error
+            command = ' '.join(option_args)
+            if options['range']:
+                epp_doc = xml_error = ''
+                m = re.match('([^\[]+)\[(\d+)(?:\s*,\s*(\d+))?\]',options['range'])
+                if m:
+                    min = 0
+                    anchor = m.group(1)
+                    if m.group(3) is None:
+                        max = int(m.group(2))
+                    else:
+                        min = int(m.group(2))
+                        max = int(m.group(3))
+                    for n in range(min,max):
+                        main(re.sub(anchor,'%s:%d'%(anchor,n),command))
+                else:
+                    print "<?xml encoding='utf-8'?><errors>Invalid range pattern: %s</errors>"%options['range']
             else:
-                print epp_doc
+                main(command)
         else:
             print '%s: %s command params\n\n%s\n\n%s%s\n%s\n\n  %s\n'%(_T('Usage'), 'ccreg_create.py',
                 _T('Create EPP XML document from command line parameters.'),

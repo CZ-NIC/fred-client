@@ -2,16 +2,14 @@
 # -*- coding: utf8 -*-
 """Send any file (EPP XML) to the EPP server.
 """
-import sys
-import os
-import re
+import sys, os, re, time
 import ccReg
 from ccReg.session_receiver import ccRegError
 from ccReg.translate import _T, options, option_errors, option_args
 
-def __auto_login__(epp):
+def __auto_login__(epp, verbose):
     'Do login'
-    print 'SEND AUTO-LOGIN:'
+    if verbose: print 'SEND AUTO-LOGIN:'
     try:
         # username a password musí být v config
         epp.api_command('login',epp.get_default_params_from_config('login'))
@@ -20,28 +18,52 @@ def __auto_login__(epp):
         print 'Error:',msg
         ok = 0
     epp.display()
-    print '_'*60
+    if verbose: print '_'*60
     return ok
 
-def send_docs(docs=[]):
+def split_docs(docset):
+    docs = []
+    patt_error = re.compile('<errors>(.+?)</errors>', re.S)
+    for doc in re.split('<\\?xml', docset):
+        doc = doc.strip()
+        if not len(doc): continue
+        m_err = patt_error.search(doc)
+        if m_err:
+            docs.append((0,m_err.group(1)))
+        else:
+            docs.append((1,'<?xml %s'%doc))
+    return docs
+    
+def send_docs(display_bar, docs=[]):
     names = ()
     #-------------------------------------------------
     # Inicializace klienta
     #-------------------------------------------------
     epp = ccReg.ClientSession()
     if not epp.load_config(options['session']): return
+    
+    if len(options['verbose']):
+        verbose = epp.set_verbose(options['verbose'])
 
     #-------------------------------------------------
     # Apped docs from argv params
     #-------------------------------------------------
     for filepath in option_args:
         if os.path.isfile(filepath):
-            docs.append((1,open(filepath).read()))
+            docs.extend(split_docs(open(filepath).read()))
         else:
             docs.append((0,'File not found: %s'%filepath))
     #-------------------------------------------------
     # For every loaded document
     #-------------------------------------------------
+    if display_bar:
+        verbose = epp.set_verbose(0)
+        sart_at = time.time()
+        bar = None
+        bar_pos = 0
+        max = len(docs)
+        bar_step = (100.0/max)*0.01
+        bar_header = '%s: %d'%(_T('Send files'),max)
     for code, xmldoc in docs:
         if code:
             command_name = epp.grab_command_name_from_xml(xmldoc)
@@ -50,12 +72,12 @@ def send_docs(docs=[]):
                     if command_name == 'login':
                         epp.connect()
                     else:
-                        if not __auto_login__(epp): break
+                        if not __auto_login__(epp, verbose): break
                 #-------------------------------------------------
                 # pokud je zalogováno, tak pošle soubor
                 #-------------------------------------------------
                 if epp.is_online(command_name) and epp.is_connected():
-                    print 'SEND COMMAND:',command_name
+                    if not display_bar and verbose: print 'SEND COMMAND:',command_name
                     # send document if only we are online
                     epp.send(xmldoc)          # send to server
                     xml_answer = epp.receive()     # receive answer
@@ -63,8 +85,20 @@ def send_docs(docs=[]):
                     epp.print_answer()
             epp.display() # display errors or notes
         else:
-            print "ERRORS:",xmldoc
-        print '_'*60
+            if not display_bar: print "ERRORS:",xmldoc
+        if not display_bar:
+            if verbose: print '_'*60
+        else:
+            if bar is None: bar = ccReg.terminal_controler.ProgressBar(ccReg.session_base.colored_output,bar_header)
+            bar.clear()
+            bar.update(bar_pos, _T('sending...'))
+            bar_pos += bar_step
+    if display_bar:
+        # print final 100%
+        note = "Ran test in %.3f sec"%(time.time() - sart_at)
+        bar.clear()
+        bar.update(1.0, note)
+
     #-------------------------------------------------
     # KONEC přenosu - automatický logout
     #-------------------------------------------------
@@ -75,30 +109,16 @@ def send_docs(docs=[]):
             print 'Error:',msg
         epp.print_answer()
 
-def run_pipe():
-    docs = []
-    patt_error = re.compile('<errors>(.+?)</errors>', re.S)
-    for doc in re.split('<\\?xml', sys.stdin.read()):
-        doc = doc.strip()
-        if not len(doc): continue
-        m_err = patt_error.search(doc)
-        if m_err:
-            docs.append((0,m_err.group(1)))
-        else:
-            docs.append((1,'<?xml %s'%doc))
-    send_docs(docs)
-
-
 if __name__ == '__main__':
     msg_invalid = ccReg.check_python_version()
     if msg_invalid:
         print msg_invalid
     else:
         if not sys.stdin.isatty():
-            run_pipe() # commands from pipe
+            send_docs(options['bar'], split_docs(sys.stdin.read())) # commands from pipe
         else:
             if not options['help'] and len(sys.argv) > 1:
-                send_docs() # commands from argv
+                send_docs(options['bar']) # commands from argv
             else:
                 print '%s: %s [OPTIONS...]\n\n%s\n\n%s\n\n%s:\n%s\n\n  %s\n'%(_T('Usage'), 'ccreg_sender.py',
 _T('Module for sending files to the EPP server.'),

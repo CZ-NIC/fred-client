@@ -92,8 +92,22 @@ def get_valid_lang(key, msg):
 config_name = '.ccreg_client.conf' # .ccReg.conf
 available_langs = ('en','cs')
 default_lang = 'en'
-optcols = ('s:session','l:lang','g:log','h:host','u:user','p:password',
-        'v:verbose','d:command','r colors','? help','V version','c:config')
+optcols = (
+    '? help',
+    'b bar',
+    'c:config',
+    'd:command',
+    'e:range',
+    'g:log',
+    'h:host',
+    'l:lang',
+    'p:password',
+    'r colors',
+    's:session',
+    'u:user',
+    'v:verbose',
+    'V version',
+    )
 options = {}
 for key in optcols:
     options[key[2:]] = ''

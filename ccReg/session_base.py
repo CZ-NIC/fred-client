@@ -121,7 +121,7 @@ class ManagerBase:
     def display(self):
         "Output all messages to stdout or log file."
         msg = self.get_messages()
-        if msg: print msg
+        if msg and self._session[VERBOSE]: print msg
 
     def get_messages(self, sep='\n'):
         'Same as display but returns as local string.'
@@ -314,16 +314,20 @@ class ManagerBase:
 
     def __init_verbose__(self, verbose):
         'Init verbose mode.'
-        if verbose:
-            try:
-                verbose = int(verbose)
-                if verbose in (1,2,3):
-                    self._session[VERBOSE] = verbose
-                else:
-                    self.append_error(_T('Available verbose modes: 1, 2r 3.'))
-            except ValueError, msg:
-                self.append_error('Verbose ValueError: %s'%msg)
+        try:
+            verbose = int(verbose)
+            if verbose in (0,1,2,3):
+                self._session[VERBOSE] = verbose
+            else:
+                self.append_error(_T('Available verbose modes: 1, 2r 3.'))
+        except ValueError, msg:
+            self.append_error('Verbose ValueError: %s'%msg)
 
+    def set_verbose(self, verbose):
+        'Set verbose mode.'
+        self.__init_verbose__(verbose)
+        return self._session[VERBOSE]
+    
     #---------------------------
     # validation
     #---------------------------

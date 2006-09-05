@@ -198,7 +198,8 @@ class ManagerTransfer(ManagerBase):
 
     def print_answer(self, dct=None):
         "Returns str of dict object."
-        print self.get_answer(dct)
+        if self._session[VERBOSE]:
+            print self.get_answer(dct) # verbose is not 0
 
     def get_answer(self, dct=None, sep='\n'):
         'Show values parsed from the server answer.'
