@@ -33,33 +33,55 @@ def split_docs(docset):
         else:
             docs.append((1,'<?xml %s'%doc))
     return docs
-    
-def send_docs(display_bar, docs=[]):
-    names = ()
-    #-------------------------------------------------
-    # Inicializace klienta
-    #-------------------------------------------------
-    epp = ccReg.ClientSession()
-    if not epp.load_config(options['session']): return
-    
-    if len(options['verbose']):
-        verbose = epp.set_verbose(options['verbose'])
 
-    #-------------------------------------------------
-    # Apped docs from argv params
-    #-------------------------------------------------
-    for filepath in option_args:
+def load_docs(names):
+    docs=[]
+    for filepath in names:
         if os.path.isfile(filepath):
             docs.extend(split_docs(open(filepath).read()))
         else:
             docs.append((0,'File not found: %s'%filepath))
+    return docs
+
+def send_docs_in_threads(epp, docs=[]):
+    max = len(docs)
+    bar_step = bar_pos = 0
+    bar = None
+    if options['bar']:
+        bar_header = '%s: %d'%(_T('Send files'),max)
+        bar = ccReg.terminal_controler.ProgressBar(ccReg.session_base.colored_output,bar_header)
+        verbose = epp.set_verbose(0)
+        sart_at = time.time()
+        bar_pos = 0
+        bar_step = (100.0/max)*0.01
+    if max > 100:
+        part = max/4.0
+##        t1 = docs[:]
+##        t2 = docs[:]
+##        t3 = docs[:]
+    send_docs(epp, bar, bar_pos, bar_step, docs)
+    # final bar
+    if bar:
+        # print final 100%
+        note = "Ran test in %.3f sec"%(time.time() - sart_at)
+        bar.clear()
+        bar.update(1.0, note)
+
+    
+def send_docs(epp, bar, bar_pos, bar_step, docs=[]):
+    names = ()
+    
+    if len(options['verbose']):
+        verbose = epp.set_verbose(options['verbose'])
+    else:
+        verbose = '1'
+
     #-------------------------------------------------
     # For every loaded document
     #-------------------------------------------------
     if display_bar:
         verbose = epp.set_verbose(0)
         sart_at = time.time()
-        bar = None
         bar_pos = 0
         max = len(docs)
         bar_step = (100.0/max)*0.01
@@ -89,15 +111,15 @@ def send_docs(display_bar, docs=[]):
         if not display_bar:
             if verbose: print '_'*60
         else:
-            if bar is None: bar = ccReg.terminal_controler.ProgressBar(ccReg.session_base.colored_output,bar_header)
+##            if bar is None: bar = ccReg.terminal_controler.ProgressBar(ccReg.session_base.colored_output,bar_header)
             bar.clear()
             bar.update(bar_pos, _T('sending...'))
             bar_pos += bar_step
-    if display_bar:
-        # print final 100%
-        note = "Ran test in %.3f sec"%(time.time() - sart_at)
-        bar.clear()
-        bar.update(1.0, note)
+##    if display_bar:
+##        # print final 100%
+##        note = "Ran test in %.3f sec"%(time.time() - sart_at)
+##        bar.clear()
+##        bar.update(1.0, note)
 
     #-------------------------------------------------
     # KONEC přenosu - automatický logout
@@ -114,11 +136,17 @@ if __name__ == '__main__':
     if msg_invalid:
         print msg_invalid
     else:
+        epp = ccReg.ClientSession()
+        epp.load_config(options['session'])
+##        if options['bar']:
+##            bar = ccReg.terminal_controler.ProgressBar(ccReg.session_base.colored_output,bar_header)
+##        else:
+##            bar = None
         if not sys.stdin.isatty():
-            send_docs(options['bar'], split_docs(sys.stdin.read())) # commands from pipe
+            send_docs_in_threads(epp, split_docs(sys.stdin.read())) # commands from pipe
         else:
             if not options['help'] and len(sys.argv) > 1:
-                send_docs(options['bar']) # commands from argv
+                send_docs_in_threads(epp, load_docs(option_args)) # commands from argv
             else:
                 print '%s: %s [OPTIONS...]\n\n%s\n\n%s\n\n%s:\n%s\n\n  %s\n'%(_T('Usage'), 'ccreg_sender.py',
 _T('Module for sending files to the EPP server.'),
