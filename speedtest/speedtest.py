@@ -58,7 +58,7 @@ threads = 10
 # Pocet objektu k vytvoreni
 targets = 1000
 # Smazat objekty? # True / False, 0 / 1, 'cokoliv' / None
-delete_after_run = False
+delete_after_run = True
 
 ## ----------- SHOCK HAZARD ----------------------------------------
 ## ----------- NO USER SERVICEABLE PARTS INSIDE --------------------
