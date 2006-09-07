@@ -329,6 +329,7 @@ class Message(eppdoc_assemble.Message):
          ('trDate',      1,  _T('Last transfer on')),
          ('upDate',      1,  _T('Last update on')),
          ('exDate',      1,  _T('Expiration date')),
+         ('valExDate',   1,  _T('Validation expires at')), # validace platná do
          ('renew',       1,  _T('Last renew on')),
          ('nsset',       1,  _T('NSSET ID')),
          ('pw',          1,  _T('Password')),

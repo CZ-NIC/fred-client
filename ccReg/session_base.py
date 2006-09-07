@@ -405,19 +405,19 @@ class ManagerBase:
     
     def __do_help__(self,cont):
         'Make help data'
-        print colored_output.CLEAR_SCREEN
+        clr = ('%s%s%s'%(colored_output.BOL,colored_output.CLEAR_EOL,colored_output.UP))*8
         while 1:
             try:
                 for c in cont:
                     print c,'\n[Ctrl+C]'
                     time.sleep(0.2)
-                    print colored_output.CLEAR_SCREEN
+                    print clr,
             except KeyboardInterrupt:
                 break
-        print colored_output.CLEAR_SCREEN
+        print clr,
 
     def __display_help__(self, cmd):
-        if colored_output.CLEAR_SCREEN and cmd[5:] == colored_output.get_term_vers():
+        if colored_output.CLEAR_EOL and cmd[5:] == colored_output.get_term_vers():
             self.__do_help__(self.__prepare_help__(terminal_controler.supported_versions))
 
 

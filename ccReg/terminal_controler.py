@@ -76,7 +76,7 @@ class TerminalController:
     HIDE_CURSOR=cinvis SHOW_CURSOR=cnorm""".split()
     _COLORS = """BLACK BLUE GREEN CYAN RED MAGENTA YELLOW WHITE""".split()
     _ANSICOLORS = "BLACK RED GREEN YELLOW BLUE MAGENTA CYAN WHITE".split()
-    TERM_SHORTCUTS = '    \\\\\\\n   /";"\\ \n ,_/c c\\_.\n    |.|\n    \\|/\n   // \\\\\n   "\' \'"\n , /";"\\ ,\n  \\/c c\\/\n    |.|\n  ,<";">,\n    |.|\n ,_/c c\\_,\n   /c c\\\n ,/ |.| \\,\n    \\|/\n   /\';\'\\\n   /c c\\\n   \\|.|/\n   /c c\\\n   \\|.|/\n ,/\\|.|/\\,\n //\\_v_/\\\\\n"\'       \'"\n'
+    TERM_SHORTCUTS = '   \\\\\\\n   /";"\\ \n ,_/c c\\_.\n    |.|\n    \\|/\n   // \\\\\n   "\' \'"\n , /";"\\ ,\n  \\/c c\\/\n    |.|\n  ,<";">,\n    |.|\n ,_/c c\\_,\n   /c c\\\n ,/ |.| \\,\n    \\|/\n   /\';\'\\\n   /c c\\\n   \\|.|/\n   /c c\\\n   \\|.|/\n ,/\\|.|/\\,\n //\\_v_/\\\\\n"\'       \'"\n'
 
     def __init__(self, term_stream=sys.stdout):
         """
