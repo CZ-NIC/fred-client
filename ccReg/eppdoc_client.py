@@ -153,18 +153,18 @@ class Message(eppdoc_assemble.Message):
                 'create_domain 1.1.1.7.4.5.2.2.2.0.2.4.e164.arpa password reg-id nsset1 (3 y) (handle1,handle2) 2006-06-08'
             )),
         #----------------------------------------------------
-        'create_nsset': (3,(
+        'create_nsset': (4,(
             ('id',(1,1),(),_T('nsset ID'),'NSSETID','',()),
             ('pw',(1,1),(),_T('password'),'mypassword','',()),
             ('dns',(1,9),(),_T('LIST of DNS'),'','',(
                 ('name',(1,1),(),_T('nsset name'),'my.dns1.cz','',()),
                 ('addr',(0,UNBOUNDED),(),_T('nsset address'),'217.31.207.130','',()),
             )),
-            ('tech',(0,UNBOUNDED),(),_T('tech contact'),'CID:ID01','',()),
+            ('tech',(1,UNBOUNDED),(),_T('tech contact'),'CID:ID01','',()),
 
             ),notice['create'],(
-                'create_nsset example passw',
-                'create_nsset nsset1 passw ((ns1.domain.cz (217.31.207.130 217.31.207.129)),(ns2.domain.cz (217.31.206.130 217.31.206.129)),(ns3.domain.cz (217.31.205.130 217.31.205.129))) reg-id'
+                'create_nsset nssid:example passw',
+                'create_nsset nssid:nsset1 passw ((ns1.domain.cz (217.31.207.130 217.31.207.129)),(ns2.domain.cz (217.31.206.130 217.31.206.129)),(ns3.domain.cz (217.31.205.130 217.31.205.129))) reg-id'
             )),
         #----------------------------------------------------
         'delete_contact': (1,(

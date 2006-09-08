@@ -133,12 +133,12 @@ class Test(unittest.TestCase):
 
     def test_040(self):
         '4.4.1 Zalozeni 1. pomocneho nssetu'
-        epp_cli.create_nsset(CCREG_NSSET1, 'heslo', {'name': u'ns.pokus1.cz', 'addr': ('217.31.204.130','217.31.204.129')})
+        epp_cli.create_nsset(CCREG_NSSET1, 'heslo', {'name': u'ns.pokus1.cz', 'addr': ('217.31.204.130','217.31.204.129')}, CCREG_CONTACT1)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_041(self):
         '4.4.2 Zalozeni 2. pomocneho nssetu'
-        epp_cli.create_nsset(CCREG_NSSET2, 'heslo', {'name': u'ns.pokus2.cz', 'addr': ('217.31.204.130','217.31.204.129')})
+        epp_cli.create_nsset(CCREG_NSSET2, 'heslo', {'name': u'ns.pokus2.cz', 'addr': ('217.31.204.130','217.31.204.129')}, CCREG_CONTACT1)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_050(self):
@@ -283,7 +283,7 @@ class Test(unittest.TestCase):
         self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
         is_equal, expiration = unitest_ccreg_share.check_date(renew, period, renew)
         exDate = epp_cli.is_val(('data','domain:exDate'))[:10]
-        self.assert_(expiration == exDate, 'Data domain:exDate nesouhlasi: je: %s ma byt: %s'%(exDate, expiration))
+        self.assert_(expiration == exDate, 'Expirace neprosla. Data domain:exDate nesouhlasi: je: %s ma byt: %s'%(exDate, expiration))
         
     def test_190(self):
         '4.19 Trasfer na vlastni domenu (Objekt je nezpůsobilý pro transfer)'

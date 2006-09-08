@@ -33,6 +33,7 @@ import unitest_ccreg_share
 # CCREG_DATA[2] - modify
 # CCREG_DATA[3] - modified
 CCREG_HANDLE = 'NSSID:test001'
+CCREG_NSSET1 = 'NSSID:examp2134'
 CCREG_CONTACT1 = 'CID:CONTACT1'
 CCREG_CONTACT2 = 'CID:CONTACT2'
 NSSET_PASSWORD = 'heslicko'
@@ -142,7 +143,30 @@ class Test(unittest.TestCase):
         self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_040(self):
-        '3.4 Zalozeni neexistujiciho noveho nssetu'
+        '3.4.1 Pokus o zalozeni nssetu bez tech kontaktu'
+        d = CCREG_DATA[1]
+        epp_cli.create_nsset(d['id'], d['pw'], d['dns'])
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+
+    def test_042(self):
+        '3.4.2 Pokus o zalozeni nssetu s neznámým tech kontaktem'
+        d = CCREG_DATA[1]
+        epp_cli.create_nsset(d['id'], d['pw'], d['dns'], 'neznamycid')
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+
+    def test_043(self):
+        '3.4.3 Pokus o zalozeni nssetu jen s jednim dns'
+        d = CCREG_DATA[1]
+        epp_cli.create_nsset(CCREG_NSSET1, d['pw'], d['dns'][0], d['tech'])
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+
+    def test_044(self):
+        '3.4.4 Pokus o smazani nssetu, ktery by nemel existovat (vytvoril se chybne s jednim dns)'
+        epp_cli.delete_nsset(CCREG_NSSET1)
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+
+    def test_045(self):
+        '3.4.5 Zalozeni neexistujiciho noveho nssetu'
         d = CCREG_DATA[1]
         epp_cli.create_nsset(d['id'], d['pw'], d['dns'], d['tech'])
         self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
@@ -180,6 +204,18 @@ class Test(unittest.TestCase):
         errors = __check_equality__(CCREG_DATA[3], epp_cli.is_val('data'))
         self.assert_(len(errors), '\n'.join(errors))
         
+    def test_082(self):
+        '3.8.2 Pokus o odebnani neexistujici dns'
+        d = CCREG_DATA[2]
+        epp_cli.update_nsset(d['id'], None, {'name':'ns.namex.cz'})
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+
+    def test_084(self):
+        '3.8.3 Pokus o odebnani dns tak, aby v nssetu zustal jen jeden'
+        d = CCREG_DATA[2]
+        epp_cli.update_nsset(d['id'], None, {'name':'ns.name3.cz'})
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+
     def test_090(self):
         '3.9 Pokus o update vsech stavu server*[delete,update]'
         for status in ('serverDeleteProhibited', 'serverUpdateProhibited'):
