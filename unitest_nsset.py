@@ -166,6 +166,16 @@ class Test(unittest.TestCase):
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_045(self):
+        '3.4.5 Pokus o zalozeni nssetu s nepovolenym GLUE (Ticket #111)'
+        d = CCREG_DATA[1]
+        dns = list(d['dns'])
+        dns.append({'name': 'ns.name1.net', 'addr': ('217.31.207.130','217.31.207.129','217.31.207.128') })
+        epp_cli.create_nsset(d['id'], d['pw'], dns, d['tech'])
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+
+    #TODO: jsete IP adresa
+
+    def test_046(self):
         '3.4.5 Zalozeni neexistujiciho noveho nssetu'
         d = CCREG_DATA[1]
         epp_cli.create_nsset(d['id'], d['pw'], d['dns'], d['tech'])
