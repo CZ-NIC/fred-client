@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+  <schema targetNamespace="http://www.nic.cz/xml/epp/messages-1.0"
+          xmlns:msg="http://www.nic.cz/xml/epp/messages-1.0"
+          xmlns:eppcom="urn:ietf:params:xml:ns:eppcom-1.0"
+          xmlns="http://www.w3.org/2001/XMLSchema"
+          elementFormDefault="qualified">
+
+  <!--
+  Import common element types.
+  -->
+    <import namespace="urn:ietf:params:xml:ns:eppcom-1.0"
+            schemaLocation="eppcom-1.0.xsd"/>
+
+    <annotation>
+      <documentation>
+        Format of messages contained in msg element of Extensible Provisioning
+	Protocol v1.0.
+      </documentation>
+    </annotation>
+
+    <!--
+    Enumeration of all kinds of valid messages accompanied by
+    their description.
+    -->
+    <!-- Transfers -->
+    <element name="domainTransferred" type="msg:transferType"/>
+    <element name="contactTransferred" type="msg:transferType"/>
+    <element name="nssetTransferred" type="msg:transferType"/>
+    <!-- Deleted because not used -->
+    <element name="DisusedContactDeleted" type="msg:disusedType"/>
+    <element name="DisusedNssetDeleted" type="msg:disusedType"/>
+    <!-- Outage of domain from zone -->
+    <element name="ZoneOutageDomain" type="msg:outageType"/>
+    <!-- Domain expiration -->
+    <element name="domainExpired" type="msg:expiredType"/>
+    <!-- Domain will expire -->
+    <element name="domainWillExpire" type="msg:expiredType"/>
+    <!-- Domain validation expired -->
+    <element name="domainValExpired" type="msg:valExpiredType"/>
+    <!-- Domain validation will expired -->
+    <element name="domainValWillExpire" type="msg:valExpiredType"/>
+
+    <complexType name="transferType">
+      <sequence>
+        <element name="handle" type="eppcom:labelType"/>
+        <element name="trID" type="eppcom:clIDType"/>
+        <element name="trDate" type="dateTime"/>
+      </sequence>
+    </complexType>
+
+    <complexType name="disusedType">
+      <sequence>
+        <element name="handle" type="eppcom:labelType"/>
+        <element name="dlDate" type="dateTime"/>
+      </sequence>
+    </complexType>
+
+    <complexType name="outageType">
+      <sequence>
+        <element name="handle" type="eppcom:labelType"/>
+        <element name="otDate" type="dateTime"/>
+      </sequence>
+    </complexType>
+
+    <complexType name="expiredType">
+      <sequence>
+        <element name="handle" type="eppcom:labelType"/>
+        <element name="exDate" type="dateTime"/>
+      </sequence>
+    </complexType>
+
+    <complexType name="valExpiredType">
+      <sequence>
+        <element name="handle" type="eppcom:labelType"/>
+        <element name="valExDate" type="dateTime"/>
+      </sequence>
+    </complexType>
+
+  </schema>
