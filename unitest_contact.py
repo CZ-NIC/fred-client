@@ -252,7 +252,7 @@ class Test(unittest.TestCase):
 
     def test_110(self):
         '2.11 Vytvoreni nnsetu napojeneho na kontakt'
-        epp_cli.create_nsset(handle_nsset, 'heslo', {'name':'ns1.test.cz'}, handle_contact)
+        epp_cli.create_nsset(handle_nsset, 'heslo', ({'name':'ns1.test.cz'},{'name':'ns2.test.cz'}), handle_contact)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
         
     def test_120(self):
