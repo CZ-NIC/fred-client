@@ -258,7 +258,7 @@ class ManagerCommand(ManagerTransfer):
         elif re.match('validate',cmd):
             m = re.match('validate\s+(\S+)',cmd)
             if m:
-                self._session[VALIDATE] = (0,1)[m.group(1).lower()=='on']
+                self.set_validate((0,1)[m.group(1).lower()=='on'])
             self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('Validation process is'),{False:'OFF',True:'ON'}[self._session[VALIDATE]]))
         elif re.match('colors',cmd):
             m = re.match('colors\s+(\S+)',cmd)

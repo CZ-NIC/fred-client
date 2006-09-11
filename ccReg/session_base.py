@@ -332,6 +332,10 @@ class ManagerBase:
     #---------------------------
     # validation
     #---------------------------
+    def set_validate(self, value):
+        'Set validate mode in session.'
+        self._session[VALIDATE] = value
+    
     def check_validator(self):
         'Check if exists external validator (xmllint).'
         if not self._session[VALIDATE]: return # validate is set OFF

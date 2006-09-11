@@ -10,6 +10,11 @@
 3.7 Info na existujici nsset a kontrola hodnot
 3.8 Update vsech parametru nssetu
 3.9 Pokus o update stavu Server*
+
+Pokus o odstraneni tech-kontaktu
+Pokus o odstraneni predposledniho dns
+Ticket #113 Update adresy 2001:200::fea5:3015
+
 3.10 Update stavu clientDeleteProhibited a pokus o smazani
 3.11 Update stavu clientUpdateProhibited a pokus o zmenu objektu, smazani stavu
 3.12 Vytvoreni domeny napojene na nsset
@@ -32,11 +37,12 @@ import unitest_ccreg_share
 # CCREG_DATA[1] - create
 # CCREG_DATA[2] - modify
 # CCREG_DATA[3] - modified
-CCREG_HANDLE = 'NSSID:test001'
+CCREG_HANDLE = 'NSSID:unittest2'
 CCREG_NSSET1 = 'NSSID:examp2134'
-CCREG_CONTACT1 = 'CID:CONTACT1'
-CCREG_CONTACT2 = 'CID:CONTACT2'
+CCREG_CONTACT1 = 'CID:UNITTEST1'
+CCREG_CONTACT2 = 'CID:UNITTEST2'
 NSSET_PASSWORD = 'heslicko'
+NSSET_GENPSW = ''
 CCREG_DATA = ( 
     { # 0. template
     },
@@ -90,12 +96,12 @@ class Test(unittest.TestCase):
         if epp_cli: self.assert_(epp_cli.is_logon(),'client is offline')
 
     def tearDown(self):
-        unitest_ccreg_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription())
-        unitest_ccreg_share.reset_client(epp_cli)
+        unitest_ccreg_share.write_log(epp_to_log, log_fp, log_step, self.id(),self.shortDescription())
+        unitest_ccreg_share.reset_client(epp_to_log)
         
     def test_000(self):
         '3.0 Inicializace spojeni a definovani testovacich handlu'
-        global epp_cli, epp_cli_TRANSF, handle_contact, handle_nsset, log_fp
+        global epp_cli, epp_cli_TRANSF, epp_to_log, handle_contact, handle_nsset, log_fp
         # Natvrdo definovany handle:
         handle_nsset = CCREG_DATA[1]['id'] # 'neexist01'
         handle_contact = CCREG_CONTACT1
@@ -119,6 +125,7 @@ class Test(unittest.TestCase):
         # logovací soubor
         if ccReg.translate.options['log']: # zapnuti/vypuni ukladani prikazu do logu
             log_fp = open(ccReg.translate.options['log'],'w')
+        epp_to_log = epp_cli
     
     def test_010(self):
         '3.1 Check na seznam dvou neexistujicich nssetu'
@@ -173,29 +180,83 @@ class Test(unittest.TestCase):
         epp_cli.create_nsset(d['id'], d['pw'], dns, d['tech'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
-    #TODO: jsete IP adresa
-
     def test_046(self):
-        '3.4.5 Zalozeni neexistujiciho noveho nssetu'
+        '3.4.6 Pokus o zalozeni nssetu s vyhrazenou IP: 127.0.0.1'
+        d = CCREG_DATA[1]
+        dns = list(d['dns'])
+        dns.append({'name': 'ns.myname1.cz', 'addr': ('217.31.207.130','127.0.0.1') })
+        epp_cli.create_nsset(d['id'], d['pw'], dns, d['tech'])
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+    
+    def test_047(self):
+        '3.4.7 Pokus o zalozeni nssetu s neplatnou IP: 217.31.130.256'
+        d = CCREG_DATA[1]
+        dns = list(d['dns'])
+        dns.append({'name': 'ns.myname1.cz', 'addr': ('217.31.207.130','217.31.130.256') })
+        epp_cli.create_nsset(d['id'], d['pw'], dns, d['tech'])
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+    
+    #def test_048(self):
+        #'3.4.8 Pokus o zalozeni nssetu s vyhrazenou IP: 0.0.0.0'
+        #d = CCREG_DATA[1]
+        #dns = list(d['dns'])
+        #dns.append({'name': 'ns.myname1.cz', 'addr': ('217.31.207.130','0.0.0.0') })
+        #epp_cli.create_nsset(d['id'], d['pw'], dns, d['tech'])
+        #self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+
+    #def test_049(self):
+        #'3.4.9 Pokus o zalozeni nssetu s vyhrazenou IP: 1.1.1.1'
+        #d = CCREG_DATA[1]
+        #dns = list(d['dns'])
+        #dns.append({'name': 'ns.myname1.cz', 'addr': ('217.31.207.130','1.1.1.1') })
+        #epp_cli.create_nsset(d['id'], d['pw'], dns, d['tech'])
+        #self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+
+    def test_051(self):
+        '3.5.1 Pokus o zalozeni nssetu s vyhrazenou IP: 10.0.0.0'
+        d = CCREG_DATA[1]
+        dns = list(d['dns'])
+        dns.append({'name': 'ns.myname1.cz', 'addr': ('217.31.207.130','10.0.0.0') })
+        epp_cli.create_nsset(d['id'], d['pw'], dns, d['tech'])
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+
+    def test_052(self):
+        '3.5.2 Pokus o zalozeni nssetu s neplatnou IP: 172.16.0.0'
+        d = CCREG_DATA[1]
+        dns = list(d['dns'])
+        dns.append({'name': 'ns.myname1.cz', 'addr': ('217.31.207.130','172.16.0.0') })
+        epp_cli.create_nsset(d['id'], d['pw'], dns, d['tech'])
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+
+    def test_053(self):
+        '3.5.3 Pokus o zalozeni nssetu s neplatnou IP: 192.168.0.0'
+        d = CCREG_DATA[1]
+        dns = list(d['dns'])
+        dns.append({'name': 'ns.myname1.cz', 'addr': ('217.31.207.130','192.168.0.0') })
+        epp_cli.create_nsset(d['id'], d['pw'], dns, d['tech'])
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+    
+    def test_076(self):
+        '3.5.6 Zalozeni neexistujiciho noveho nssetu'
         d = CCREG_DATA[1]
         epp_cli.create_nsset(d['id'], d['pw'], d['dns'], d['tech'])
         self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
-    def test_050(self):
-        '3.5 Pokus o zalozeni existujiciho nssetu'
+    def test_077(self):
+        '3.5.7 Pokus o zalozeni existujiciho nssetu'
         d = CCREG_DATA[1]
         epp_cli.create_nsset(d['id'], d['pw'], d['dns'], d['tech'])
-        self.assertNotEqual(epp_cli.is_val(), 1000)
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
-    def test_060(self):
-        '3.6 Check na seznam existujiciho a neexistujicich nssetu'
+    def test_078(self):
+        '3.7.8 Check na seznam existujiciho a neexistujicich nssetu'
         handles = (handle_nsset,'neexist002')
         epp_cli.check_nsset(handles)
         self.assertEqual(epp_cli.is_val(('data',handle_nsset)), 0)
         self.assertEqual(epp_cli.is_val(('data','neexist002')), 1)
 
-    def test_070(self):
-        '3.7 Info na existujici nsset a kontrola hodnot'
+    def test_079(self):
+        '3.7.9 Info na existujici nsset a kontrola hodnot'
         epp_cli.info_nsset(handle_nsset)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
         errors = __check_equality__(CCREG_DATA[1], epp_cli.is_val('data'))
@@ -232,6 +293,12 @@ class Test(unittest.TestCase):
             epp_cli.update_nsset(handle_nsset, {'status':status})
             self.assertNotEqual(epp_cli.is_val(), 1000, 'Status "%s" prosel prestoze nemel.'%status)
         
+    def test_094(self):
+        '3.9.1 Pokus o odstraneni tech-kontaktu'
+        d = CCREG_DATA[2]
+        epp_cli.update_nsset(d['id'], None, {'tech':CCREG_CONTACT1})
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+        
     def test_100(self):
         '3.10 Update stavu clientDeleteProhibited a pokus o smazani'
         status = 'clientDeleteProhibited'
@@ -256,12 +323,84 @@ class Test(unittest.TestCase):
         epp_cli.update_nsset(handle_nsset, None, {'status':status})
         self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se odstranit status: %s'%status)
 
+    def test_112(self):
+        '3.11.2 Pridani IPv6 2001:200::fea5:3015'
+        d = CCREG_DATA[2]
+        epp_cli.update_nsset(d['id'], {'name':'ns.myname3.cz','addr':('2001:200::fea5:3015',)})
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+
+    def test_113(self):
+        '3.11.3 Pokus o pridani neplatne IPv6 ::1'
+        d = CCREG_DATA[2]
+        epp_cli.update_nsset(d['id'], {'name':'ns.myname6.cz','addr':('::1',)})
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+
+    def test_114(self):
+        '3.11.4 Pokus o pridani neplatne IPv6 2001:718:1c01:16:214:22ff:fec9:xca5 (to "x" na konci)'
+        d = CCREG_DATA[2]
+        epp_cli.update_nsset(d['id'], {'name':'ns.myname6.cz','addr':('2001:718:1c01:16:214:22ff:fec9:xca5',)})
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+
+    def test_115(self):
+        '3.11.5 Pokus o pridani vyhrazene IP: 0.0.0.0'
+        d = CCREG_DATA[2]
+        epp_cli.update_nsset(d['id'], {'name':'ns.myname.cz','addr':('0.0.0.0',)})
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+
+    def test_116(self):
+        '3.11.6 Pokus o pridani vyhrazene IP: 1.1.1.1'
+        d = CCREG_DATA[2]
+        epp_cli.update_nsset(d['id'], {'name':'ns.myname.cz','addr':('1.1.1.1',)})
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+
+    def test_117(self):
+        '3.11.7 Pokus o pridani vyhrazene IP: 127.0.0.1'
+        d = CCREG_DATA[2]
+        epp_cli.update_nsset(d['id'], {'name':'ns.myname.cz','addr':('127.0.0.1',)})
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+
+    def test_118(self):
+        '3.11.8 Pokus o pridani vyhrazene IP (trida A): 10.0.0.0'
+        d = CCREG_DATA[2]
+        epp_cli.update_nsset(d['id'], {'name':'ns.myname.cz','addr':('10.0.0.0',)})
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+
+    def test_119(self):
+        '3.11.9 Pokus o pridani vyhrazene IP (trida A): 10.255.255.255'
+        d = CCREG_DATA[2]
+        epp_cli.update_nsset(d['id'], {'name':'ns.myname.cz','addr':('10.255.255.255',)})
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+
     def test_120(self):
+        '3.11.10 Pokus o pridani vyhrazene IP (trida B): 172.16.0.0'
+        d = CCREG_DATA[2]
+        epp_cli.update_nsset(d['id'], {'name':'ns.myname.cz','addr':('172.16.0.0',)})
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+
+    def test_121(self):
+        '3.11.11 Pokus o pridani vyhrazene IP (trida B): 172.31.255.255'
+        d = CCREG_DATA[2]
+        epp_cli.update_nsset(d['id'], {'name':'ns.myname.cz','addr':('172.31.255.255',)})
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+
+    def test_122(self):
+        '3.11.12 Pokus o pridani vyhrazene IP (trida C): 192.168.0.0'
+        d = CCREG_DATA[2]
+        epp_cli.update_nsset(d['id'], {'name':'ns.myname.cz','addr':('192.168.0.0',)})
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+
+    def test_123(self):
+        '3.11.13 Pokus o pridani vyhrazene IP (trida C): 192.168.255.255'
+        d = CCREG_DATA[2]
+        epp_cli.update_nsset(d['id'], {'name':'ns.myname.cz','addr':('192.168.255.255',)})
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+
+    def test_130(self):
         '3.12 Vytvoreni domeny napojene na nsset'
         epp_cli.create_domain('test-nsset.cz', 'heslo', handle_contact, handle_nsset)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
         
-    def test_130(self):
+    def test_135(self):
         '3.13 Smazani nssetu na ktery existuji nejake vazby'
         epp_cli.delete_nsset(handle_nsset)
         self.assertNotEqual(epp_cli.is_val(), 1000)
@@ -273,13 +412,22 @@ class Test(unittest.TestCase):
 
     def test_150(self):
         '3.15 Druhy registrator: Pokus o trasfer s neplatnym heslem (Chyba oprávnění)'
+        global epp_to_log
+        epp_to_log = epp_cli_TRANSF
         epp_cli_TRANSF.transfer_nsset(handle_nsset, 'heslo neznam')
         self.assertNotEqual(epp_cli_TRANSF.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli_TRANSF))
 
-    def test_160(self):
-        '3.16 Druhy registrator: Trasfer nssetu'
+    def test_161(self):
+        '3.16.1 Druhy registrator: Trasfer nssetu'
         epp_cli_TRANSF.transfer_nsset(handle_nsset, NSSET_PASSWORD)
         self.assertEqual(epp_cli_TRANSF.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli_TRANSF))
+
+    def test_162(self):
+        '3.16.2 Druhy registrator: Zjisteni noveho hesla'
+        global NSSET_GENPSW
+        epp_cli_TRANSF.info_nsset(handle_nsset)
+        self.assertEqual(epp_cli_TRANSF.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli_TRANSF))
+        NSSET_GENPSW = epp_cli_TRANSF.is_val(('data','pw'))
 
     def test_170(self):
         '3.17 Druhy registrator: Zmena hesla po prevodu nssetu'
@@ -288,6 +436,8 @@ class Test(unittest.TestCase):
 
     def test_180(self):
         '3.18 Pokus o zmenu hesla nssetu, ktery registratorovi jiz nepatri'
+        global epp_to_log
+        epp_to_log = epp_cli
         epp_cli.update_nsset(handle_nsset, None, None, {'pw':'moje-heslo'})
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
@@ -303,11 +453,15 @@ class Test(unittest.TestCase):
 
     def test_210(self):
         '3.21 Druhy registrator: Smazani nssetu'
+        global epp_to_log
+        epp_to_log = epp_cli_TRANSF
         epp_cli_TRANSF.delete_nsset(handle_nsset)
         self.assertEqual(epp_cli_TRANSF.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli_TRANSF))
 
     def test_220(self):
         '3.22 Check na smazany nsset'
+        global epp_to_log
+        epp_to_log = epp_cli
         epp_cli.check_nsset(handle_nsset)
         self.assertEqual(epp_cli.is_val(('data',handle_nsset)), 1)
 
@@ -373,7 +527,7 @@ def __check_equality__(cols, data):
         errors.append('Seznam DNS nema pozadovany pocet. Ma %d a mel by mit %d.'%(len(ns),len(dns)))
     return errors
 
-epp_cli, epp_cli_TRANSF, log_fp, log_step, handle_contact, handle_nsset = (None,)*6
+epp_cli, epp_cli_TRANSF, epp_to_log, log_fp, log_step, handle_contact, handle_nsset = (None,)*7
 
 if __name__ == '__main__':
 ##if 0:
