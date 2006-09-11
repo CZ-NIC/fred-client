@@ -330,67 +330,73 @@ class Test(unittest.TestCase):
         self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_113(self):
-        '3.11.3 Pokus o pridani neplatne IPv6 ::1'
+        '3.11.3 Pokus o pridani neplatne IPv6 ::'
+        d = CCREG_DATA[2]
+        epp_cli.update_nsset(d['id'], {'dns':{'name':'ns.fail01.cz','addr':('::',)}})
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+    
+    def test_114(self):
+        '3.11.4 Pokus o pridani neplatne IPv6 ::1'
         d = CCREG_DATA[2]
         epp_cli.update_nsset(d['id'], {'dns':{'name':'ns.fail01.cz','addr':('::1',)}})
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
-    def test_114(self):
-        '3.11.4 Pokus o pridani neplatne IPv6 2001:718:1c01:16:214:22ff:fec9:xca5 (to "x" na konci)'
+    def test_115(self):
+        '3.11.5 Pokus o pridani neplatne IPv6 2001:718:1c01:16:214:22ff:fec9:xca5 (to "x" na konci)'
         d = CCREG_DATA[2]
         epp_cli.update_nsset(d['id'], {'dns':{'name':'ns.fail02.cz','addr':('2001:718:1c01:16:214:22ff:fec9:xca5',)}})
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
-    def test_115(self):
-        '3.11.5 Pokus o pridani vyhrazene IP: 0.0.0.0'
+    def test_116(self):
+        '3.11.6 Pokus o pridani vyhrazene IP: 0.0.0.0'
         d = CCREG_DATA[2]
         epp_cli.update_nsset(d['id'], {'dns':{'name':'ns.fail03.cz','addr':('0.0.0.0',)}})
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
-    def test_116(self):
-        '3.11.6 Pokus o pridani vyhrazene IP: 1.1.1.1'
+    def test_117(self):
+        '3.11.7 Pokus o pridani vyhrazene IP: 1.1.1.1'
         d = CCREG_DATA[2]
         epp_cli.update_nsset(d['id'], {'dns':{'name':'ns.fail04.cz','addr':('1.1.1.1',)}})
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
-    def test_117(self):
-        '3.11.7 Pokus o pridani vyhrazene IP: 127.0.0.1'
+    def test_118(self):
+        '3.11.8 Pokus o pridani vyhrazene IP: 127.0.0.1'
         d = CCREG_DATA[2]
         epp_cli.update_nsset(d['id'], {'dns':{'name':'ns.fail05.cz','addr':('127.0.0.1',)}})
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
-    def test_118(self):
-        '3.11.8 Pokus o pridani vyhrazene IP (trida A): 10.0.0.0'
+    def test_119(self):
+        '3.11.9 Pokus o pridani vyhrazene IP (trida A): 10.0.0.0'
         d = CCREG_DATA[2]
         epp_cli.update_nsset(d['id'], {'dns':{'name':'ns.fail06.cz','addr':('10.0.0.0',)}})
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
-    def test_119(self):
-        '3.11.9 Pokus o pridani vyhrazene IP (trida A): 10.255.255.255'
+    def test_120(self):
+        '3.11.10 Pokus o pridani vyhrazene IP (trida A): 10.255.255.255'
         d = CCREG_DATA[2]
         epp_cli.update_nsset(d['id'], {'dns':{'name':'ns.fail07.cz','addr':('10.255.255.255',)}})
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
-    def test_120(self):
-        '3.11.10 Pokus o pridani vyhrazene IP (trida B): 172.16.0.0'
+    def test_121(self):
+        '3.11.11 Pokus o pridani vyhrazene IP (trida B): 172.16.0.0'
         d = CCREG_DATA[2]
         epp_cli.update_nsset(d['id'], {'dns':{'name':'ns.fail08.cz','addr':('172.16.0.0',)}})
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
-    def test_121(self):
-        '3.11.11 Pokus o pridani vyhrazene IP (trida B): 172.31.255.255'
+    def test_122(self):
+        '3.11.12 Pokus o pridani vyhrazene IP (trida B): 172.31.255.255'
         d = CCREG_DATA[2]
         epp_cli.update_nsset(d['id'], {'dns':{'name':'ns.fail09.cz','addr':('172.31.255.255',)}})
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
-    def test_122(self):
-        '3.11.12 Pokus o pridani vyhrazene IP (trida C): 192.168.0.0'
+    def test_123(self):
+        '3.11.13 Pokus o pridani vyhrazene IP (trida C): 192.168.0.0'
         d = CCREG_DATA[2]
         epp_cli.update_nsset(d['id'], {'dns':{'name':'ns.fail10.cz','addr':('192.168.0.0',)}})
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
-    def test_123(self):
-        '3.11.13 Pokus o pridani vyhrazene IP (trida C): 192.168.255.255'
+    def test_124(self):
+        '3.11.14 Pokus o pridani vyhrazene IP (trida C): 192.168.255.255'
         d = CCREG_DATA[2]
         epp_cli.update_nsset(d['id'], {'dns':{'name':'ns.fail11.cz','addr':('192.168.255.255',)}})
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))

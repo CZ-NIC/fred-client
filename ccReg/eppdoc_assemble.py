@@ -113,6 +113,8 @@ class Message(eppdoc.Message):
     def __check_required__(self, columns, dct_values, scopes=[]):
         'Check parsed values for required and allowed values.'
         errors = []
+        ## print "!!! dct_values:",dct_values
+        #TODO: if not dct_values.has_key('pw'): dct_values['pw'] = [u''] # heslo se může zadat prázdné
         if len(scopes) and not len(dct_values): return errors # if descendant is empty - not check
         if type(dct_values) != dict: return ('%s (%s)'%(_T('Invalid input format.'),[c[0] for c in columns]),)
         for row in columns:
