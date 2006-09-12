@@ -2,6 +2,7 @@
 #!/usr/bin/env python
 import re
 from translate import _T, encoding
+#_T = lambda t: t # DEBUG
 
 UNFINITE = None
 MOD_NORMAL, MOD_LIST, MOD_LIST_AGAIN, MOD_CHILD, MOD_CHILD_LIST, MOD_INSIDE_LIST = range(6)
@@ -121,11 +122,18 @@ def insert_on_key(errors, dct_root, cols, key, value, empty_only=0):
     for name in scopes[:-1]:
         name,pos,cols = __get_name_pos__(errors,key,name,cols)
         if not name: return
-        dct = __get_on_pos__(dct,name,pos)
+        if type(dct) == dict:
+            dct = __get_on_pos__(dct,name,pos)
+        else:
+            # Chybně umístěný seznam nebo jméno parametru
+            errors.append('%s: %s[%d]'%(_T('Misplaced list or key'),name.encode(encoding),pos))
     name = scopes[-1]
     name,pos,cols = __get_name_pos__(errors,key,name,cols)
     if name:
-        __insert_on_pos__(dct,name,value,pos,empty_only)
+        if type(dct) == dict:
+            __insert_on_pos__(dct,name,value,pos,empty_only)
+        else:
+            errors.append('%s: %s'%(_T('Misplaced list or key'),name.encode(encoding)))
 #------------------------------------------
 
 
@@ -138,9 +146,10 @@ def parse(dct_root, cols_root, text_line):
     
     text_line MUST be unicode.
     """
-    # print 'dct_root =',dct_root
-    # print 'cols_root =',cols_root
-    # print 'text_line = "%s"'%stext_line
+    #print 'dct_root =',dct_root # TEST
+    #print 'cols_root =',cols_root # TEST
+    #print 'text_line = "%s"'%text_line # TEST
+    #print '-'*30 # TEST
     errors=[]
     explicit_key = sep = ''
     quot=[]

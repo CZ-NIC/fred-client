@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-07 11:17+0200\n"
+"POT-Creation-Date: 2006-09-12 10:09+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Zdeněk Böhm <zdenek.bohm@nic.cz>\n"
 "Language-Team: CS <info@nic.cz>\n"
@@ -66,37 +66,41 @@ msgstr ""
 msgid "Connection closed"
 msgstr "Spojení uzavřeno"
 
-#: ccReg/cmd_parser.py:72
+#: ccReg/cmd_parser.py:73
 msgid "Invalid parameter index"
 msgstr "Neplatný index parametru"
 
-#: ccReg/cmd_parser.py:80
+#: ccReg/cmd_parser.py:81
 msgid "Unknown parameter name"
 msgstr "Neznámé jméno parametru"
 
-#: ccReg/cmd_parser.py:160
+#: ccReg/cmd_parser.py:129 ccReg/cmd_parser.py:136
+msgid "Misplaced list or key"
+msgstr "Chybně umístěný seznam nebo klíč"
+
+#: ccReg/cmd_parser.py:169
 msgid "Invalid bracket definition (mode)."
 msgstr "Nesprávné použití závorek (mode)."
 
-#: ccReg/cmd_parser.py:200
+#: ccReg/cmd_parser.py:209
 msgid "Invalid bracket. Only value or simple list allowed in key definition."
 msgstr ""
 "Neplatná závorka. V zadání hodnoty klíčem je povolena jen jedna hodnota nebo "
 "prostý seznam."
 
-#: ccReg/cmd_parser.py:207
+#: ccReg/cmd_parser.py:216
 msgid "Invalid bracket definition (list)."
 msgstr "Nesprávné použití závorek (list)."
 
-#: ccReg/cmd_parser.py:220
+#: ccReg/cmd_parser.py:229
 msgid "Invalid bracket definition (childs)."
 msgstr "Nesprávné použití závorek (childs)."
 
-#: ccReg/eppdoc_assemble.py:44 ccReg/eppdoc_assemble.py:147
+#: ccReg/eppdoc_assemble.py:44 ccReg/eppdoc_assemble.py:149
 msgid "required"
 msgstr "povinný"
 
-#: ccReg/eppdoc_assemble.py:46 ccReg/eppdoc_assemble.py:147
+#: ccReg/eppdoc_assemble.py:46 ccReg/eppdoc_assemble.py:149
 msgid "optional"
 msgstr "nepovinný"
 
@@ -125,85 +129,85 @@ msgstr ""
 msgid "Try"
 msgstr "Zkuste"
 
-#: ccReg/eppdoc_assemble.py:117
+#: ccReg/eppdoc_assemble.py:119
 msgid "Invalid input format."
 msgstr "Neplatný vstupní formát"
 
-#: ccReg/eppdoc_assemble.py:124
+#: ccReg/eppdoc_assemble.py:126
 msgid "list of values overflow. Maximum is"
 msgstr "Počet položek v seznamu je překročen. Maximum je"
 
-#: ccReg/eppdoc_assemble.py:129
+#: ccReg/eppdoc_assemble.py:131
 #, python-format
 msgid "Value \"%s\" is not allowed. Valid is:"
 msgstr "Hodnota \"%s\" není povolena. Platná je:"
 
-#: ccReg/eppdoc_assemble.py:136
+#: ccReg/eppdoc_assemble.py:138
 msgid "ERROR"
 msgstr "CHYBA"
 
-#: ccReg/eppdoc_assemble.py:136
+#: ccReg/eppdoc_assemble.py:138
 msgid "missing"
 msgstr "chybí"
 
-#: ccReg/eppdoc_assemble.py:147
+#: ccReg/eppdoc_assemble.py:149
 msgid "required only if part is set"
 msgstr "povinný jen je-li tato část zadána"
 
-#: ccReg/eppdoc_assemble.py:183
+#: ccReg/eppdoc_assemble.py:185
 msgid "Parameter MUST be a value from following list"
 msgstr "Parametr MUSÍ být hodnota z následujícího seznamu"
 
-#: ccReg/eppdoc_assemble.py:186
+#: ccReg/eppdoc_assemble.py:188
 msgid "Example"
 msgstr "Příklad"
 
-#: ccReg/eppdoc_assemble.py:201
+#: ccReg/eppdoc_assemble.py:203
 msgid "I'm fed up"
 msgstr "Mám toho dost"
 
-#: ccReg/eppdoc_assemble.py:201
+#: ccReg/eppdoc_assemble.py:203
 msgid "It's boring"
 msgstr "Už mě to nudí"
 
-#: ccReg/eppdoc_assemble.py:201
+#: ccReg/eppdoc_assemble.py:203
 msgid "example inserted"
 msgstr "vložen příklad"
 
-#: ccReg/eppdoc_assemble.py:205
+#: ccReg/eppdoc_assemble.py:207
 msgid "Value is required. MUST be set:"
 msgstr "Údaj je povinný. MUSÍ být zadán:"
 
-#: ccReg/eppdoc_assemble.py:257 ccReg/session_command.py:151
+#: ccReg/eppdoc_assemble.py:259 ccReg/session_command.py:151
 #: ccreg_create.py:15
 msgid "Unknown command"
 msgstr "Neznámý příkaz"
 
-#: ccReg/eppdoc_assemble.py:258 ccReg/eppdoc_assemble.py:289
+#: ccReg/eppdoc_assemble.py:260 ccReg/eppdoc_assemble.py:291
 msgid "For more type"
 msgstr "Pro více informací zadejte"
 
-#: ccReg/eppdoc_assemble.py:265
+#: ccReg/eppdoc_assemble.py:267
 msgid "Interactive input params mode. For BREAK type"
 msgstr "Mód interaktivního zadávání parametrů. Pro přerušení zadejte"
 
-#: ccReg/eppdoc_assemble.py:265
+#: ccReg/eppdoc_assemble.py:267
 msgid "If you don't fill item press ENTER."
 msgstr "Pokud nechcete položku zadat stiskněte ENTER."
 
-#: ccReg/eppdoc_assemble.py:274
+#: ccReg/eppdoc_assemble.py:276
 msgid "End of interactive input. [press enter]"
 msgstr "Konec interaktivního zadání parametrů. [stiskněte enter]"
 
-#: ccReg/eppdoc_assemble.py:287
+#: ccReg/eppdoc_assemble.py:289
 msgid "Missing values. Required minimum is"
 msgstr "Chybí parametry. Požadované minimum je"
 
-#: ccReg/eppdoc_assemble.py:288
+#: ccReg/eppdoc_assemble.py:290
 msgid "Type"
 msgstr "Zadejte"
 
-#: ccReg/eppdoc_assemble.py:885
+#: ccReg/eppdoc_assemble.py:887
 #, python-format
 msgid "(Value can be a list of max %d value.)"
 msgid_plural "(Value can be a list of max %d values.)"
@@ -211,7 +215,7 @@ msgstr[0] "(Hodnota může být seznam o max. velikosti %d položky.)"
 msgstr[1] "(Hodnota může být seznam o max. velikosti %d položek.)"
 msgstr[2] "(Hodnota může být seznam o max. velikosti %d položek.)"
 
-#: ccReg/eppdoc_assemble.py:887
+#: ccReg/eppdoc_assemble.py:889
 msgid "(Value can be an unbouded list of values.)"
 msgstr "(Hodnota může být libovolně velký seznam.)"
 
@@ -861,13 +865,13 @@ msgstr "Fatální chyba: Vytvoření defaultního konfiguračního souboru selha
 msgid "Available verbose modes: 1, 2r 3."
 msgstr "Mód výstupu může být nastaven jen na hodnoty 1, 2 nebo 3."
 
-#: ccReg/session_base.py:355 ccReg/session_base.py:371
-#: ccReg/session_base.py:392
+#: ccReg/session_base.py:359 ccReg/session_base.py:375
+#: ccReg/session_base.py:396
 #, python-format
 msgid "Validator has been disabled. Type %s to enable it."
 msgstr "Validátor byl deaktivován. Opětná aktivace se provede zadáním %s."
 
-#: ccReg/session_base.py:370
+#: ccReg/session_base.py:374
 msgid ""
 "Temporary file for XML EPP validity verification can not been created. Reason"
 msgstr ""
