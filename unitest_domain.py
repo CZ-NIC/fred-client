@@ -79,6 +79,11 @@ CCREG_DATA = (
     }, 
     )
 
+NSSET_DNS = (
+            {'name': u'ns.pokus1.cz', 'addr': ('217.31.204.130','217.31.204.129')},
+            {'name': u'ns.pokus2.cz', 'addr': ('217.31.204.131','217.31.204.127')},
+        )
+
 class Test(unittest.TestCase):
 
     def setUp(self):
@@ -133,12 +138,12 @@ class Test(unittest.TestCase):
 
     def test_040(self):
         '4.4.1 Zalozeni 1. pomocneho nssetu'
-        epp_cli.create_nsset(CCREG_NSSET1, 'heslo', {'name': u'ns.pokus1.cz', 'addr': ('217.31.204.130','217.31.204.129')}, CCREG_CONTACT1)
+        epp_cli.create_nsset(CCREG_NSSET1, 'heslo', NSSET_DNS, CCREG_CONTACT1)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_041(self):
         '4.4.2 Zalozeni 2. pomocneho nssetu'
-        epp_cli.create_nsset(CCREG_NSSET2, 'heslo', {'name': u'ns.pokus2.cz', 'addr': ('217.31.204.130','217.31.204.129')}, CCREG_CONTACT1)
+        epp_cli.create_nsset(CCREG_NSSET2, 'heslo', NSSET_DNS, CCREG_CONTACT1)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_050(self):

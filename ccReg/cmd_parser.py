@@ -4,6 +4,10 @@ import re
 from translate import _T, encoding
 #_T = lambda t: t # DEBUG
 
+# Subtitution of the EMPTY value
+# Not allowed chars: - "'()
+SUBTITUTE_EMPTY = 'NULL'
+
 UNFINITE = None
 MOD_NORMAL, MOD_LIST, MOD_LIST_AGAIN, MOD_CHILD, MOD_CHILD_LIST, MOD_INSIDE_LIST = range(6)
 
@@ -30,6 +34,7 @@ def __next_key__(cols,current):
 
 def __add_token__(dct,key,token):
     'Append and returns token.'
+    if token in ('""',"''"): token = SUBTITUTE_EMPTY
     if dct.has_key(key):
         dct[key].append(token)
     else:
@@ -96,10 +101,12 @@ def __insert_on_pos__(dct, name, value, pos, empty_only):
                     continue
             else:
                 d.append('')
+            if itm == '' or itm in ('""',"''"): itm = SUBTITUTE_EMPTY
             d[pos] = itm
             pos+= 1
     else:
         if not empty_only or (empty_only and dct[name][pos] == ''):
+            if value == '' or value in ('""',"''"): value = SUBTITUTE_EMPTY
             dct[name][pos] = value
 
 def __get_on_pos__(dct,name,pos):

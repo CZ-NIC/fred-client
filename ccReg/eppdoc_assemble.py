@@ -113,8 +113,6 @@ class Message(eppdoc.Message):
     def __check_required__(self, columns, dct_values, scopes=[]):
         'Check parsed values for required and allowed values.'
         errors = []
-        ## print "!!! dct_values:",dct_values
-        #TODO: if not dct_values.has_key('pw'): dct_values['pw'] = [u''] # heslo se může zadat prázdné
         if len(scopes) and not len(dct_values): return errors # if descendant is empty - not check
         if type(dct_values) != dict: return ('%s (%s)'%(_T('Invalid input format.'),[c[0] for c in columns]),)
         for row in columns:
@@ -139,6 +137,64 @@ class Message(eppdoc.Message):
             scopes.pop()
         return errors
 
+    def __insist_on_required__(self, command_name, columns, dct, parents=[]):
+        'Ask again for required values. Used by Interactive params mode.'
+        errors = []
+        param = ''
+        stop=0
+        used=[]
+        for k,v in dct.items():
+            if len(v[0]): used.append(k)
+        if not len(used): return errors,param,stop # this scope was not set, so we dont neet required values
+        for row in columns:
+            name,min_max,allowed,msg_help,example,pattern,children = row
+            min,max = min_max
+            if not min: continue
+            if dct.has_key(name):
+                for value in dct[name]:
+                    if len(value): continue # one of values is set
+            else:
+                dct[name] = ['']
+            parents.append([name,0,max])
+            stop=0
+            autofill=0
+            while not len(dct[name][0]):
+                prompt = u'!%s:%s (%s) > '%(command_name,__scope_to_string__(parents), unicode(_T('required'),encoding))
+                try:
+                    param = raw_input(prompt.encode(encoding)).strip()
+                except (KeyboardInterrupt, EOFError):
+                    stop=2
+                    break
+                if param in ('""',"''"): param = cmd_parser.SUBTITUTE_EMPTY
+                if autofill > 2 and param == '':
+                    param = example
+                    if not param: param = 'example' # value MUST be set
+                    if type(param) == unicode: param = param.encode(encoding)
+                    session_base.print_unicode('${BOLD}${GREEN}%s, %s:${NORMAL} %s'%((_T("I'm fed up"),_T("It's boring"))[random.randint(0,1)],_T("example inserted"),param))
+                    autofill=0
+                if param == '':
+                    session_base.print_unicode('${BOLD}${RED}%s${NORMAL}'%_T('Value is required. MUST be set:'))
+                    autofill+=1
+                    continue
+                else:
+                    if type(param) != unicode:
+                        try:
+                            param = unicode(param, encoding)
+                        except UnicodeDecodeError, msg:
+                            errors.append('UnicodeDecodeError: %s'%msg)
+                            param = unicode(repr(param), encoding)
+                    if param[0] == '!':
+                        stop=1
+                        break
+                    if param[0] != '(': param = append_quotes(param)
+                    req_dct = {}
+                    err = cmd_parser.parse(req_dct, ((name,min_max,allowed,'','','',()),), param)
+                    dct[name][0] = req_dct[name][0]
+                    if err: errors.extend(err)
+            parents.pop()
+        if len(param) and param[0] == '!': param = param[1:]
+        return errors,param,stop
+        
     def __interactive_params__(self, command_name, columns, dct, parents=[]):
         'Runs LOOP of interactive input of the command params.'
         errors = []
@@ -162,6 +218,9 @@ class Message(eppdoc.Message):
                     dct[name].append({})
                     parents[-1][1] = idc
                     err, param, stop = self.__interactive_params__(command_name, children, dct[name][-1], parents)
+                    if err: errors.extend(err)
+                    if stop: break
+                    err, param, stop = self.__insist_on_required__(command_name, children, dct[name][-1], parents)
                     if err: errors.extend(err)
                     if stop: break
                     if len(param) and param[0] == '!':
@@ -197,9 +256,11 @@ class Message(eppdoc.Message):
                 except (KeyboardInterrupt, EOFError):
                     stop=2
                     break
+                if param in ('""',"''"): param = cmd_parser.SUBTITUTE_EMPTY
                 if autofill > 2 and param == '':
                     param = example
                     if not param: param = 'example' # value MUST be set
+                    if type(param) == unicode: param = param.encode(encoding)
                     session_base.print_unicode('${BOLD}${GREEN}%s, %s:${NORMAL} %s'%((_T("I'm fed up"),_T("It's boring"))[random.randint(0,1)],_T("example inserted"),param))
                     autofill=0
                 if param == '':
@@ -282,6 +343,7 @@ class Message(eppdoc.Message):
         if errors: error.extend(errors)
         dct = remove_empty_keys(dct) # remove empty for better recognition of missing values
         self.__fill_empy_from_config__(config, dct, columns) # fill missing values from config
+        __subtitute_symbol_empty__(dct) # Replace SUBTITUTE_EMPTY to empty string
         errors = self.__check_required__(columns, dct) # check list and allowed values
         if errors: error.extend(errors)
         if len(dct) < vals[0]+1: # počet parametrů plus název příkazu
@@ -903,3 +965,12 @@ def remove_empty_keys(dct):
                     scope.append(item)
             if len(scope): retd[key] = scope
     return retd
+
+def __subtitute_symbol_empty__(dct):
+    'Replace SUBTITUTE_EMPTY to empty string'
+    for key, vals in dct.items():
+        for i in range(len(vals)):
+            if type(vals[i]) == dict:
+                __subtitute_symbol_empty__(vals[i])
+            else:
+                if vals[i] == cmd_parser.SUBTITUTE_EMPTY: dct[key][i]=''
