@@ -34,13 +34,25 @@ import unittest
 import ccReg
 import unitest_ccreg_share
 
+##    1 |   222 | D0000000222-CZ | 1.1.1.7.7.7.0.2.4.e164.arpa
+##    1 |   340 | D0000000340-CZ | 9.1.7.4.5.2.2.2.0.2.4.e164.arpa
+##    1 |   223 | D0000000223-CZ | 1.2.2.7.7.7.0.2.4.e164.arpa
+##    1 |   341 | D0000000341-CZ | 1.8.1.7.4.5.2.2.2.0.2.4.e164.arpa
+##    1 |   184 | D0000000184-CZ | 1.1.1.1.1.1.1.1.1.0.2.4.e164.arpa
+##    1 |   194 | D0000000194-CZ | 1.2.1.1.1.1.1.1.1.0.2.4.e164.arpa
+##    1 |   195 | D0000000195-CZ | 1.3.1.1.1.1.1.1.1.0.2.4.e164.arpa
+##    1 |   196 | D0000000196-CZ | 1.4.1.1.1.1.1.1.1.0.2.4.e164.arpa
+##    1 | 12637 | D0000012637-CZ | 2.2.2.0.2.4.e164.arpa
+##    1 | 12642 | D0000012642-CZ | 4.4.4.0.2.4.e164.arpa
+
 #-----------------------
 CCREG_CONTACT1 = 'CID:TDOMCONT01'
 CCREG_CONTACT2 = 'CID:TDOMCONT02'
 CCREG_NSSET1 = 'NSSID:TDOMNSSET01'
 CCREG_NSSET2 = 'NSSID:TDOMNSSET02'
 CCREG_DOMAIN1 = 'hokus-pokus.cz' # hokus-pokus.cz sakra.cz
-CCREG_DOMAIN2 = '0.1.1.7.4.5.2.2.2.0.2.4.e164.arpa'
+CCREG_DOMAIN2 = '0.1.1.7.4.5.1.2.2.0.2.4.e164.arpa'
+VAL_EX_DATE = '2008-09-12'
 CCREG_DOMAIN_PASSW = 'heslicko'
 CCREG_DOMAIN_PASSW_NEW = 'noveheslo'
 INVALID_DOMAIN_NAME = 'myname.net'
@@ -183,11 +195,18 @@ class Test(unittest.TestCase):
         self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_090(self):
-        '4.9  Zalozeni nove domeny enum'
+        '4.9.1 Pokus o zalozeni domeny enum bez valExpDate'
         d = CCREG_DATA[DOMAIN_2]
         epp_cli.create_domain(d['name'], d['pw'], d['registrant'], d['nsset'], d['period'], d['contact'])
-        self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
+    def test_092(self):
+        '4.9.2  Zalozeni nove domeny enum'
+        d = CCREG_DATA[DOMAIN_2]
+        epp_cli.create_domain(d['name'], d['pw'], d['registrant'], d['nsset'], d['period'], d['contact'], VAL_EX_DATE)
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+        
+        
     def test_100(self):
         '4.10  Pokus o zalozeni jiz existujici domeny'
         d = CCREG_DATA[DOMAIN_1]

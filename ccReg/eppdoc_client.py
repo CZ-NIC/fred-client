@@ -355,6 +355,7 @@ class Message(eppdoc_assemble.Message):
 
        'nsset:create': ('nsset',(
          ('crDate',      1,  _T('Created on')),
+         ('exDate',      1,  _T('Expiration date')),
          ('id',          1,  'ID'),
          )),
 

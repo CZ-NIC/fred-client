@@ -231,14 +231,23 @@ class ManagerTransfer(ManagerBase):
         else:
             keys = map(lambda n:(n,1,''), dct['data'].keys()) # default (unsorted)
         in_higher_verbose = 0
+        used = []
         for key,verbose,explain in keys:
             if verbose > self._session[VERBOSE]:
                 in_higher_verbose += 1
                 continue
             value = dct['data'].get(key,u'')
             if value not in ('',[]): __append_into_report__(body,key,value,explain)
+            used.append(key)
         if in_higher_verbose:
             report(colored_output.render('   ${WHITE}(${YELLOW}${BOLD}%d${NORMAL} ${WHITE}%s)${NORMAL}'%(in_higher_verbose,_TP('not displayed value','not displayed values',in_higher_verbose))))
+        #--- INTERNAL USE ----
+##        if self._session[SORT_BY_COLUMNS]:
+##            # in mode SORT_BY_COLUMNS check if all names was used
+##            missing = [n for n in dct['data'].keys() if n not in used]
+##            if len(missing):
+##                report(colored_output.render('\n${BOLD}${RED}%s: %s${NORMAL}'%(_T('Not used'),'(%s)'%', '.join(missing))))
+        #---------------------
         report('-'*60)
         for n in range(len(body)):
             if type(body[n]) == unicode: body[n] = body[n].encode(encoding)
