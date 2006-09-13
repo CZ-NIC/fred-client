@@ -39,4 +39,6 @@ schema = /home/username/enum/trunk/epp_client/ccReg/schemas/all-1.0.xsd
 colors = yes
 verbose = 2
 # pokud lang není zadán, tak se vezme hodnota z os.environ.LANG
-lang = en 
+lang = en
+# null_value = None
+

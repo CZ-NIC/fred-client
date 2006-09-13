@@ -164,7 +164,7 @@ class Message(eppdoc_assemble.Message):
 
             ),notice['create'],(
                 'create_nsset nssid:example passw',
-                'create_nsset nssid:nsset1 passw ((ns1.domain.cz (217.31.207.130 217.31.207.129)),(ns2.domain.cz (217.31.206.130 217.31.206.129)),(ns3.domain.cz (217.31.205.130 217.31.205.129))) reg-id'
+                'create_nsset nssid:nsset1 passw ((ns1.domain.cz (217.31.207.130 217.31.207.129)),(ns2.domain.cz (217.31.206.130 217.31.206.129)),(ns3.domain.cz (217.31.205.130 217.31.205.129))) cid:reg-id'
             )),
         #----------------------------------------------------
         'delete_contact': (1,(
@@ -224,7 +224,7 @@ class Message(eppdoc_assemble.Message):
                     'update_contact CID:ID01 clientDeleteProhibited',
                     'update_contact CID:ID01 (clientDeleteProhibited linked ok)',
                     "update_contact CID:ID01 clientTransferProhibited (clientDeleteProhibited, clientUpdateProhibited) (('Jan Nowak' 'Firma s.r.o.' (('Na narodni 1230/12', 'Americka 12') Praha Vinohrady 12000 CZ)) +420.222745111 +420.222745111 info@mymail.cz mypassword (y (org, voice, email)) 7035555556 (ico 8888888856) notify@mymail.cz)",
-                    "update_contact CID:ID01 () () (() '' '' '' '' () '' () change.only@notify-mail.cz)",
+                    "update_contact CID:ID01 () () (() NULL NULL NULL NULL () NULL () change.only@notify-mail.cz)",
             )),
         #----------------------------------------------------
         'update_domain': (1,(
@@ -434,7 +434,7 @@ def test(commands):
                 print "Errors:",errors
             if xmlepp:
                 print 'VALID?',manag.is_epp_valid(xmlepp)
-        print "EXAMPLE:",epp.get_command_line()
+        print "EXAMPLE:",epp.get_command_line(manag._session[session_base.NULL_VALUE])
         print '='*60
 
 def test_help(command_names):

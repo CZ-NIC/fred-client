@@ -40,7 +40,7 @@ class ManagerCommand(ManagerTransfer):
 
     def __parse_command_params__(self, command_name, cmdline, interactive):
         "Check if parameters are valid. Params save into dict for use to assembling EPP document."
-        errors, example, stop = self._epp_cmd.parse_cmd(command_name, cmdline, self._conf, interactive, self._session[VERBOSE])
+        errors, example, stop = self._epp_cmd.parse_cmd(command_name, cmdline, self._conf, interactive, self._session[VERBOSE], self._session[NULL_VALUE])
         if errors: self._errors.extend(errors)
         if example: self.append_note('${BOLD}%s:${NORMAL}\n%s'%(_T('Example of input'),example.encode(encoding)))
         return (len(errors) == 0), stop
@@ -100,6 +100,16 @@ class ManagerCommand(ManagerTransfer):
                 break
         return command_line, command_help, notice, examples
 
+    def __repalce_static_null_examples__(self, examples):
+        'Replace static NULL examples to defined variable NULL_VALUE'
+        if self._session[NULL_VALUE] != 'NULL':
+            ex = []
+            for e in examples:
+                ex.append(re.sub('NULL',self._session[NULL_VALUE],e))
+        else:
+            ex = examples
+        return ex
+        
     def __make_help_details__(self, command_name, type):
         "Make help for chosen command."
         if command_name:
@@ -110,6 +120,7 @@ class ManagerCommand(ManagerTransfer):
             self.append_note('%s: ${BOLD}${GREEN}%s${NORMAL}'%(_T("Help for command"),command_name))
             if type == 'EPP':
                 command_line, command_help, notice, examples = self._epp_cmd.get_help(command_name)
+                examples = self.__repalce_static_null_examples__(examples)
             else:
                 command_line, command_help, notice, examples = self.__get_help_session_detail__(command_name)
             patt = re.compile("^(\S)",re.MULTILINE)
@@ -135,7 +146,7 @@ class ManagerCommand(ManagerTransfer):
         command_name = cmdline
         m=re.match('(!)?\s*(\S+)',cmdline)
         if m:
-            if m.group(2) in self._available_commands: ## .replace('_','-')
+            if m.group(2) in self._available_commands:
                 command_name = m.group(2)
                 all_is_OK, stop = self.__parse_command_params__(command_name, cmdline, m.group(1))
                 if stop == 2: return 'q' # User press Ctrl+C or Ctrl+D
@@ -253,6 +264,10 @@ class ManagerCommand(ManagerTransfer):
             if m:
                 self.set_confirm(m.group(1))
             self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('Confirm is'),{False:'OFF',True:'ON'}[self._session[CONFIRM_SEND_COMMAND]]))
+        elif re.match('null_value',cmd):
+            m = re.match('null_value\s+(\S+)',cmd)
+            if m: self.set_null_value(m.group(1))
+            self.append_note('null_value %s: ${BOLD}%s${NORMAL}'%(_T('is'),self._session[NULL_VALUE]))
         elif re.match('config\s*(.*)',cmd):
             self.manage_config(re.match('config\s*(.*)',cmd).groups())
         elif re.match('validate',cmd):

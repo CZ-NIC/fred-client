@@ -29,6 +29,8 @@ UNBOUNDED = None
 contact_disclose = ('name','org','addr','voice','fax','email')
 history_filename = os.path.join(os.path.expanduser('~'),'.ccreg_history') # compatibility s MS Win
 
+TAG_clTRID = 'clTRID' # Definition for --key-name = clTRID value.
+
 class Message(eppdoc.Message):
     "Client EPP commands."
 
@@ -74,7 +76,7 @@ class Message(eppdoc.Message):
         if self._command_params.has_key(command_name):
             # příkaz existuje
             required,params,notice,examples = self._command_params[command_name]
-            command_line = ['${BOLD}%s${NORMAL}'%command_name] ## .replace('_','-')
+            command_line = ['${BOLD}%s${NORMAL}'%command_name]
             if params:
                 for pos in range(required):
                     command_line.append(params[pos][0])
@@ -137,7 +139,7 @@ class Message(eppdoc.Message):
             scopes.pop()
         return errors
 
-    def __insist_on_required__(self, command_name, columns, dct, parents=[]):
+    def __insist_on_required__(self, command_name, columns, dct, null_value, parents=[]):
         'Ask again for required values. Used by Interactive params mode.'
         errors = []
         param = ''
@@ -165,14 +167,14 @@ class Message(eppdoc.Message):
                 except (KeyboardInterrupt, EOFError):
                     stop=2
                     break
-                if param in ('""',"''"): param = cmd_parser.SUBTITUTE_EMPTY
-                if autofill > 2 and param == '':
+                if param == '': param = null_value
+                if autofill > 2 and param == null_value:
                     param = example
                     if not param: param = 'example' # value MUST be set
                     if type(param) == unicode: param = param.encode(encoding)
                     session_base.print_unicode('${BOLD}${GREEN}%s, %s:${NORMAL} %s'%((_T("I'm fed up"),_T("It's boring"))[random.randint(0,1)],_T("example inserted"),param))
                     autofill=0
-                if param == '':
+                if param == null_value:
                     session_base.print_unicode('${BOLD}${RED}%s${NORMAL}'%_T('Value is required. MUST be set:'))
                     autofill+=1
                     continue
@@ -195,7 +197,7 @@ class Message(eppdoc.Message):
         if len(param) and param[0] == '!': param = param[1:]
         return errors,param,stop
         
-    def __interactive_params__(self, command_name, columns, dct, parents=[]):
+    def __interactive_params__(self, command_name, columns, dct, null_value, parents=[]):
         'Runs LOOP of interactive input of the command params.'
         errors = []
         param = ''
@@ -217,10 +219,10 @@ class Message(eppdoc.Message):
                 while max is UNBOUNDED or idc < max:
                     dct[name].append({})
                     parents[-1][1] = idc
-                    err, param, stop = self.__interactive_params__(command_name, children, dct[name][-1], parents)
+                    err, param, stop = self.__interactive_params__(command_name, children, dct[name][-1], null_value, parents)
                     if err: errors.extend(err)
                     if stop: break
-                    err, param, stop = self.__insist_on_required__(command_name, children, dct[name][-1], parents)
+                    err, param, stop = self.__insist_on_required__(command_name, children, dct[name][-1], null_value, parents)
                     if err: errors.extend(err)
                     if stop: break
                     if len(param) and param[0] == '!':
@@ -256,14 +258,14 @@ class Message(eppdoc.Message):
                 except (KeyboardInterrupt, EOFError):
                     stop=2
                     break
-                if param in ('""',"''"): param = cmd_parser.SUBTITUTE_EMPTY
-                if autofill > 2 and param == '':
+                if param == '': param = null_value
+                if autofill > 2 and param == null_value:
                     param = example
                     if not param: param = 'example' # value MUST be set
                     if type(param) == unicode: param = param.encode(encoding)
                     session_base.print_unicode('${BOLD}${GREEN}%s, %s:${NORMAL} %s'%((_T("I'm fed up"),_T("It's boring"))[random.randint(0,1)],_T("example inserted"),param))
                     autofill=0
-                if param == '':
+                if param == null_value:
                     if req == 1: # require in first level only
                         session_base.print_unicode('${BOLD}${RED}%s${NORMAL}'%_T('Value is required. MUST be set:'))
                         autofill+=1
@@ -271,9 +273,9 @@ class Message(eppdoc.Message):
                     if cr == 0:
                         # one item MUST be set at minimum
                         if dct.has_key(name):
-                            dct[name].append('')
+                            dct[name].append(null_value)
                         else:
-                            dct[name] = ['']
+                            dct[name] = [null_value]
                     break
                 else:
                     if type(param) != unicode:
@@ -294,17 +296,17 @@ class Message(eppdoc.Message):
         if len(param) and param[0] == '!': param = param[1:]
         return errors,param,stop
 
-    def get_command_line(self):
+    def get_command_line(self, null_value):
         'Returns example of command built from parameters.'
         retval = ''
         if type(self._dct.get('command')) is list:
             command_name = self._dct['command'][0]
             columns = [(command_name,(1,1),(),'','','',())]
             columns.extend(self._command_params[command_name][1])
-            retval = __build_command_example__(columns, self._dct)
+            retval = __build_command_example__(columns, self._dct, null_value)
         return retval.encode(encoding)
     
-    def parse_cmd(self, command_name, cmd, config, interactive, verbose):
+    def parse_cmd(self, command_name, cmd, config, interactive, verbose, null_value):
         "Parse command line. Returns errors. Save parsed values to self._dct."
         dct = {}
         error=[]
@@ -323,14 +325,15 @@ class Message(eppdoc.Message):
         if not vals[1]: return error # bez parametrů
         columns = [(command_name,(1,1),(),'','','',())]
         columns.extend(self._command_params[command_name][1])
+        columns.append((TAG_clTRID,(0,1),(),'','','',()))
         dct['command'] = [command_name]
         if interactive:
             session_base.print_unicode('${BOLD}${YELLOW}%s: ${NORMAL}${BOLD}!${NORMAL} %s'%(_T('Interactive input params mode. For BREAK type'),_T("If you don't fill item press ENTER.")))
             dct[command_name] = [command_name]
             self.save_history()
-            errors, param, stop = self.__interactive_params__(command_name, vals[1], dct)
+            errors, param, stop = self.__interactive_params__(command_name, vals[1], dct, null_value)
             if not errors:
-                example = __build_command_example__(columns, dct)
+                example = __build_command_example__(columns, dct, null_value)
             if stop != 2: # user press Ctrl+C or Ctrl+D
                 # Note the interactive mode is closed.
                 try:
@@ -341,22 +344,21 @@ class Message(eppdoc.Message):
         else:
             errors = cmd_parser.parse(dct, columns, cmd)
         if errors: error.extend(errors)
-        dct = remove_empty_keys(dct) # remove empty for better recognition of missing values
+        dct = remove_empty_keys(dct, null_value) # remove empty for better recognition of missing values
         self.__fill_empy_from_config__(config, dct, columns) # fill missing values from config
-        __subtitute_symbol_empty__(dct) # Replace SUBTITUTE_EMPTY to empty string
         errors = self.__check_required__(columns, dct) # check list and allowed values
         if errors: error.extend(errors)
         if len(dct) < vals[0]+1: # počet parametrů plus název příkazu
             # build command_line example
             error.append('%s %d.'%(_T('Missing values. Required minimum is'),vals[0]))
             error.append('%s: %s'%(_T('Type'),self.get_help(command_name)[0]))
-            error.append('(%s: ${BOLD}help %s${NORMAL})'%(_T('For more type'),command_name.encode(encoding))) ## .replace('_','-')
+            error.append('(%s: ${BOLD}help %s${NORMAL})'%(_T('For more type'),command_name.encode(encoding)))
         self._dct = dct
         return error, example, stop
 
     def get_client_commands(self):
         'Return available client commands.'
-        return [name[9:] for name in dir(self.__class__) if name[:9]=='assemble_'] ## .replace('_','-')
+        return [name[9:] for name in dir(self.__class__) if name[:9]=='assemble_']
 
     #===========================================
     #
@@ -415,7 +417,7 @@ class Message(eppdoc.Message):
                 names = (names,)
             for value in names:
                 data.append((col1, col2, value))
-        data.append(('command', 'clTRID', params[0]))
+        data.append(('command', 'clTRID', self._dct.get(TAG_clTRID,[params[0]])[0]))
         self.__assemble_cmd__(data)
 
     #-------------------------------------------
@@ -454,7 +456,7 @@ class Message(eppdoc.Message):
             cols.append(('svcs', 'svcExtension'))
             for uri in params[1][2]:
                 cols.append(('svcExtension', 'extURI', uri))
-        cols.append(('command', 'clTRID', params[0]))
+        cols.append(('command', 'clTRID', self._dct.get(TAG_clTRID,[params[0]])[0]))
         self.__assemble_cmd__(cols)
 
     def assemble_logout(self, *params):
@@ -462,7 +464,7 @@ class Message(eppdoc.Message):
         self.__assemble_cmd__((
             ('epp', 'command'),
             ('command', 'logout'),
-            ('command', 'clTRID', params[0])
+            ('command', 'clTRID', self._dct.get(TAG_clTRID,[params[0]])[0])
         ))
 
     #-------------------------------------------
@@ -502,7 +504,7 @@ class Message(eppdoc.Message):
         self.__assemble_cmd__((
             ('epp', 'command'),
             ('command', 'poll', '', attr),
-            ('command', 'clTRID', params[0])
+            ('command', 'clTRID', self._dct.get(TAG_clTRID,[params[0]])[0])
         ))
 
     #-------------------------------------------
@@ -530,7 +532,7 @@ class Message(eppdoc.Message):
             ('%s:transfer'%names[0], '%s:%s'%names, self._dct['name'][0]),
             ('%s:transfer'%names[0], '%s:authInfo'%names[0]),
             ('%s:authInfo'%names[0], '%s:pw'%names[0], self._dct['passw'][0]),
-            ('command', 'clTRID', params[0])
+            ('command', 'clTRID', self._dct.get(TAG_clTRID,[params[0]])[0])
         ))
 
     def assemble_transfer_contact(self, *params):
@@ -617,7 +619,7 @@ class Message(eppdoc.Message):
             ssn = dct['ssn'][0]
             data.append(('contact:create','contact:ssn', ssn['number'][0], (('type',ssn['type'][0]),)))
         if __has_key__(dct,'notify_email'): data.append(('contact:create','contact:notifyEmail', dct['notify_email'][0]))
-        data.append(('command', 'clTRID', params[0]))
+        data.append(('command', 'clTRID', self._dct.get(TAG_clTRID,[params[0]])[0]))
         self.__assemble_cmd__(data)
 
     def assemble_create_domain(self, *params):
@@ -644,7 +646,7 @@ class Message(eppdoc.Message):
             ('domain:authInfo','domain:pw', dct['pw'][0])
         ))
         self.__enum_extensions__('create',data, params)
-        data.append(('command', 'clTRID', params[0]))
+        data.append(('command', 'clTRID', self._dct.get(TAG_clTRID,[params[0]])[0]))
         self.__assemble_cmd__(data)
 
     def __append_nsset__(self, tag_name, data, dct_ns):
@@ -678,7 +680,7 @@ class Message(eppdoc.Message):
             ('nsset:create','nsset:authInfo'),
             ('nsset:authInfo','nsset:pw', dct['pw'][0])
         ))
-        data.append(('command', 'clTRID', params[0]))
+        data.append(('command', 'clTRID', self._dct.get(TAG_clTRID,[params[0]])[0]))
         self.__assemble_cmd__(data)
 
     def assemble_renew_domain(self, *params):
@@ -701,7 +703,7 @@ class Message(eppdoc.Message):
             if not __has_key__(period,'unit'): period['unit']=('y',)
             data.append(('domain:renew','domain:period',period['num'][0], (('unit',period['unit'][0]),)))
         self.__enum_extensions__('renew',data, params)
-        data.append(('command', 'clTRID', params[0]))
+        data.append(('command', 'clTRID', self._dct.get(TAG_clTRID,[params[0]])[0]))
         self.__assemble_cmd__(data)
 
     def assemble_update_contact(self, *params):
@@ -755,7 +757,7 @@ class Message(eppdoc.Message):
                 ssn = chg['ssn'][0]
                 data.append(('contact:chg','contact:ssn', ssn['number'][0], (('type',ssn['type'][0]),)))
             if __has_key__(chg,'notify_email'): data.append(('contact:chg','contact:notifyEmail', chg['notify_email'][0]))
-        data.append(('command', 'clTRID', params[0]))
+        data.append(('command', 'clTRID', self._dct.get(TAG_clTRID,[params[0]])[0]))
         self.__assemble_cmd__(data)
 
     def assemble_update_domain(self, *params):
@@ -791,7 +793,7 @@ class Message(eppdoc.Message):
                 if __has_key__(authInfo,'pw'): data.append(('domain:authInfo','domain:pw', authInfo['pw'][0]))
                 #if __has_key__(authInfo,'ext'): data.append(('domain:authInfo','domain:ext', authInfo['ext'][0]))
         self.__enum_extensions__('update',data, params,'chg')
-        data.append(('command', 'clTRID', params[0]))
+        data.append(('command', 'clTRID', self._dct.get(TAG_clTRID,[params[0]])[0]))
         self.__assemble_cmd__(data)
 
     def assemble_update_nsset(self, *params):
@@ -834,7 +836,7 @@ class Message(eppdoc.Message):
             dct_chg = dct['chg'][0]
             if __has_key__(dct_chg, 'pw'): data.append(('nsset:authInfo','nsset:pw',dct_chg['pw'][0]))
             #if __has_key__(dct_chg, 'ext'): data.append(('nsset:authInfo','nsset:ext',dct_chg['ext'][0]))
-        data.append(('command', 'clTRID', params[0]))
+        data.append(('command', 'clTRID', self._dct.get(TAG_clTRID,[params[0]])[0]))
         self.__assemble_cmd__(data)
 
     #===========================================
@@ -892,7 +894,7 @@ def append_quotes(text):
         text = "'%s'"%escape(text)
     return text
 
-def __build_command_example__(columns, dct_data):
+def __build_command_example__(columns, dct_data, null_value):
     'Build command line from data (what was put in interactive mode).'
     body = []
     for row in columns:
@@ -904,12 +906,12 @@ def __build_command_example__(columns, dct_data):
                 if max is UNBOUNDED or max > 1:
                     scopes = []
                     for dct_item in dct_data[name]:
-                        text = __build_command_example__(children, dct_item)
+                        text = __build_command_example__(children, dct_item, null_value)
                         if len(text): scopes.append('(%s)'%text)
                     text = ', '.join(scopes)
                 else:
                     if len(dct_data[name]):
-                        text = __build_command_example__(children, dct_data[name][0])
+                        text = __build_command_example__(children, dct_data[name][0], null_value)
             body.append('(%s)'%text) # required bracket    
         else:
             values = dct_data.get(name,[])
@@ -939,9 +941,9 @@ def __build_command_example__(columns, dct_data):
                     else:
                         body.append(append_quotes(value))
             else:
-                text = {False:"''",True:"()"}[max is UNBOUNDED or max > 1]
+                text = {False:null_value, True:"()"}[max is UNBOUNDED or max > 1]
                 body.append(text)
-    while len(body) and body[-1] in ("''",'()'): body.pop()
+    while len(body) and body[-1] in (null_value,'()'): body.pop()
     return ' '.join(body)
     
 def print_info_listmax(max):
@@ -950,27 +952,19 @@ def print_info_listmax(max):
     elif max is UNBOUNDED:
         session_base.print_unicode(_T('(Value can be an unbouded list of values.)'))
 
-def remove_empty_keys(dct):
+def remove_empty_keys(dct, null_value):
     'Remove empty keys. dct is in format {key: [str, {key: [str, str]} ,str]}'
     retd = {}
     for key in dct.keys():
         value = dct[key]
-        if not (len(value)==1 and value[0]==''):
+        if not (len(value)==1 and value[0]==null_value):
             scope = []
             for item in value:
                 if type(item) is dict:
-                    dcit = remove_empty_keys(item)
+                    dcit = remove_empty_keys(item, null_value)
                     if len(dcit): scope.append(dcit)
                 else:
                     scope.append(item)
             if len(scope): retd[key] = scope
     return retd
 
-def __subtitute_symbol_empty__(dct):
-    'Replace SUBTITUTE_EMPTY to empty string'
-    for key, vals in dct.items():
-        for i in range(len(vals)):
-            if type(vals[i]) == dict:
-                __subtitute_symbol_empty__(vals[i])
-            else:
-                if vals[i] == cmd_parser.SUBTITUTE_EMPTY: dct[key][i]=''

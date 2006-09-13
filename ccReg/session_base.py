@@ -13,7 +13,7 @@ colored_output = terminal_controler.TerminalController()
 
 # názvy sloupců pro data sestavené při spojení se serverem
 ONLINE, CMD_ID, LANG, POLL_AUTOACK, CONFIRM_SEND_COMMAND, \
-    USERNAME, NAME, HOST, COLORS, VALIDATE, VERBOSE, SORT_BY_COLUMNS = range(12)
+    USERNAME, NAME, HOST, COLORS, VALIDATE, VERBOSE, SORT_BY_COLUMNS, NULL_VALUE = range(13)
 # názvy sloupců pro defaultní hodnoty
 DEFS_LENGTH = 4
 LANGS,objURI,extURI,PREFIX = range(DEFS_LENGTH)
@@ -42,6 +42,7 @@ class ManagerBase:
                 1,      # VALIDATE
                 1,      # VERBOSE 1,2,3
                 [],     # SORT_BY_COLUMNS - support for sotring received values (used by check_...)
+                'NULL', # NULL_VALUE
                 ]
         # defaults
         self.defs = ['']*DEFS_LENGTH
@@ -155,6 +156,17 @@ class ManagerBase:
         self._session[CMD_ID]+=1 
         return ('%s%03d#%s'%(self.defs[PREFIX],self._session[CMD_ID],time.strftime('%y-%m-%dat%H:%M:%S')))
 
+    def set_null_value(self, value):
+        'Set string what represents NULL value'
+        value = value.strip()
+        if len(value):
+            if re.search('[- \(\)]',value) or value in ('""',"''"):
+                self.append_error('%s null_value: %s. %s'%(_T('Invalid format of'),value,_T('See help for more.')), 'RED')
+            else:
+                self._session[NULL_VALUE] = value
+        else:
+            self.append_error('null_value %s. %s'%(_T('cannot be empty'),_T('See help for more.')), 'RED')
+        
     #---------------------------
     # config
     #---------------------------
@@ -308,7 +320,10 @@ class ManagerBase:
             self._session[COLORS] = (0,1)[colors.lower() == 'on']
             colored_output.set_mode(self._session[COLORS])
         self.__init_verbose__(self.get_config_value(section,'verbose',1))
-        # init vrom command line options
+        # set NULL value
+        value = self.get_config_value(section,'null_value',1)
+        if value: self.set_null_value(value)
+        # init from command line options
         self.init_options()
         return 1 # OK
 

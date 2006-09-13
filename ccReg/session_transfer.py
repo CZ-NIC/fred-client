@@ -33,6 +33,7 @@ class ManagerTransfer(ManagerBase):
             ('credits', (), _T('Display credits.'), ()),
             ('help', (), _T('Display this help or command details.'), ('help update_nsset',)),
             ('license', (), _T('Display license.'), ()),
+            ('null_value', (), '%s NULL_VALUE'%_T('Set'), ()),
             ('poll-ack', ('on','off'), _T('Send "poll ack" straight away after "poll req".'), ('poll-ack on',)),
             ('quit', (), _T('Quit the client. Same effect has "q" or "exit".'), ()),
             ('raw-answer', ('d','dict',), _T('Display XML source of the EPP answer.'), ('raw-a','raw-a d','src-a','src-a d')),
@@ -70,7 +71,7 @@ class ManagerTransfer(ManagerBase):
 
     def get_command_line(self):
         'Returns example of command built from parameters.'
-        return self._epp_cmd.get_command_line()
+        return self._epp_cmd.get_command_line(self._session[NULL_VALUE])
 
     #---------------------------------
     # funkce pro nastavení session
@@ -242,11 +243,11 @@ class ManagerTransfer(ManagerBase):
         if in_higher_verbose:
             report(colored_output.render('   ${WHITE}(${YELLOW}${BOLD}%d${NORMAL} ${WHITE}%s)${NORMAL}'%(in_higher_verbose,_TP('not displayed value','not displayed values',in_higher_verbose))))
         #--- INTERNAL USE ----
-##        if self._session[SORT_BY_COLUMNS]:
-##            # in mode SORT_BY_COLUMNS check if all names was used
-##            missing = [n for n in dct['data'].keys() if n not in used]
-##            if len(missing):
-##                report(colored_output.render('\n${BOLD}${RED}%s: %s${NORMAL}'%(_T('Not used'),'(%s)'%', '.join(missing))))
+        if self._session[SORT_BY_COLUMNS]:
+            # in mode SORT_BY_COLUMNS check if all names was used
+            missing = [n for n in dct['data'].keys() if n not in used]
+            if len(missing):
+                report(colored_output.render('\n${BOLD}${RED}%s: %s${NORMAL}'%(_T('Not used'),'(%s)'%', '.join(missing))))
         #---------------------
         report('-'*60)
         for n in range(len(body)):

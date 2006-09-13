@@ -15,7 +15,9 @@ import unitest_ccreg_share
 CCREG_CONTACT1 = 'CID:TDOMCONT01'
 CCREG_NSSET1 = 'NSSID:TDOMNSSET01'
 CCREG_DOMAIN1 = 'hokus-pokus.cz'
-CCREG_DOMAIN2 = '0.1.1.7.4.5.2.2.2.0.2.4.e164.arpa'
+CCREG_DOMAIN2 = '0.1.1.7.4.5.6.2.2.0.2.4.e164.arpa'
+CCREG_DOMAIN3 = '6.2.2.0.2.4.e164.arpa'
+VAL_EX_DATE = '2008-09-12'
 CCREG_DOMAIN_PASSW = 'heslicko'
 CCREG_DOMAIN_PASSW_NEW = 'noveheslo'
 #-----------------------
@@ -24,6 +26,14 @@ DOMAIN_1, DOMAIN_2, CHANGE_DOMAIN, DOMAIN_3  = range(4)
 CCREG_DATA = (
     { # DOMAIN_1
        'name':CCREG_DOMAIN1,
+       'pw':CCREG_DOMAIN_PASSW,
+       'nsset':CCREG_NSSET1,
+       'registrant':CCREG_CONTACT1,
+       'period': {'num':'3','unit':'y'},
+       'contact':(CCREG_CONTACT1,),
+    }, 
+    { # DOMAIN_2
+       'name':CCREG_DOMAIN2,
        'pw':CCREG_DOMAIN_PASSW,
        'nsset':CCREG_NSSET1,
        'registrant':CCREG_CONTACT1,
@@ -151,11 +161,27 @@ class Test(unittest.TestCase):
         epp_cli.create_domain('%s.cz'%('abc'*256), d['pw'], d['registrant'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
+    def test_170(self):
+        '4.16 (Ticket #250) Pokus o zalozeni domeny enum bez valExpDate'
+        d = CCREG_DATA[DOMAIN_2]
+        epp_cli.create_domain(d['name'], d['pw'], d['registrant'], d['nsset'], d['period'], d['contact'])
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+
+    def test_180(self):
+        '4.17  Zalozeni nove domeny enum'
+        d = CCREG_DATA[DOMAIN_2]
+        epp_cli.create_domain(d['name'], d['pw'], d['registrant'], d['nsset'], d['period'], d['contact'], VAL_EX_DATE)
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+
+##    def test_130(self):
+##        '4.13 Update vsech parametru domeny'
+##        epp_cli.update_domain(CCREG_DOMAIN1, None, None, CCREG_DATA[CHANGE_DOMAIN])
+##        self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+        
     # -------------------------------------
     # clean supported objects
     # -------------------------------------
-
-    def test_910(self):
+    def test_990(self):
         '4.LAST Smazani pomocneho kontaktu'
         epp_cli.delete_contact(CCREG_CONTACT1)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
