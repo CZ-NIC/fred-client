@@ -27,53 +27,46 @@
     <element name="domainTransferred" type="msg:transferType"/>
     <element name="contactTransferred" type="msg:transferType"/>
     <element name="nssetTransferred" type="msg:transferType"/>
+    <!-- Creates -->
+    <element name="domainCreated" type="msg:handleDateT"/>
+    <element name="contactCreated" type="msg:handleDateT"/>
+    <element name="nssetCreated" type="msg:handleDateT"/>
+    <!-- Deletes -->
+    <element name="domainDeleted" type="msg:handleDateT"/>
+    <element name="contactDeleted" type="msg:handleDateT"/>
+    <element name="nssetDeleted" type="msg:handleDateT"/>
+    <!-- Updates -->
+    <element name="domainUpdated" type="msg:handleDateT"/>
+    <element name="contactUpdated" type="msg:handleDateT"/>
+    <element name="nssetUpdated" type="msg:handleDateT"/>
+    <!-- Renew -->
+    <element name="domainRenewed" type="msg:handleDateT"/>
     <!-- Deleted because not used -->
-    <element name="DisusedContactDeleted" type="msg:disusedType"/>
-    <element name="DisusedNssetDeleted" type="msg:disusedType"/>
+    <element name="DisusedContactDeleted" type="msg:handleDateT"/>
+    <element name="DisusedNssetDeleted" type="msg:handleDateT"/>
     <!-- Outage of domain from zone -->
-    <element name="ZoneOutageDomain" type="msg:outageType"/>
+    <element name="ZoneOutageDomain" type="msg:handleDateT"/>
     <!-- Domain expiration -->
-    <element name="domainExpired" type="msg:expiredType"/>
+    <element name="domainExpired" type="msg:handleDateT"/>
     <!-- Domain will expire -->
-    <element name="domainWillExpire" type="msg:expiredType"/>
+    <element name="domainWillExpire" type="msg:handleDateT"/>
     <!-- Domain validation expired -->
-    <element name="domainValExpired" type="msg:valExpiredType"/>
+    <element name="domainValExpired" type="msg:handleDateT"/>
     <!-- Domain validation will expired -->
-    <element name="domainValWillExpire" type="msg:valExpiredType"/>
+    <element name="domainValWillExpire" type="msg:handleDateT"/>
 
     <complexType name="transferType">
       <sequence>
         <element name="handle" type="eppcom:labelType"/>
         <element name="trID" type="eppcom:clIDType"/>
-        <element name="trDate" type="dateTime"/>
+        <element name="date" type="dateTime"/>
       </sequence>
     </complexType>
 
-    <complexType name="disusedType">
+    <complexType name="handleDateT">
       <sequence>
         <element name="handle" type="eppcom:labelType"/>
-        <element name="dlDate" type="dateTime"/>
-      </sequence>
-    </complexType>
-
-    <complexType name="outageType">
-      <sequence>
-        <element name="handle" type="eppcom:labelType"/>
-        <element name="otDate" type="dateTime"/>
-      </sequence>
-    </complexType>
-
-    <complexType name="expiredType">
-      <sequence>
-        <element name="handle" type="eppcom:labelType"/>
-        <element name="exDate" type="dateTime"/>
-      </sequence>
-    </complexType>
-
-    <complexType name="valExpiredType">
-      <sequence>
-        <element name="handle" type="eppcom:labelType"/>
-        <element name="valExDate" type="dateTime"/>
+        <element name="date" type="dateTime"/>
       </sequence>
     </complexType>
 
