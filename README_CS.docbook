@@ -5,7 +5,7 @@
 
 <bookinfo>
     <title>Manuál pro ccRegClient konzoli a knihovnu ccReg</title>
-    <subtitle>Verze 1.1</subtitle>
+    <subtitle>Verze 1.2</subtitle>
     <copyright>
       <year>2006</year>
       <holder>CZ.NIC</holder>
@@ -15,6 +15,7 @@
     Revize:  18.8.2006;
     Revize:   1.9.2006;
     Revize:   4.9.2006;
+    Revize:  14.9.2006;
     </releaseinfo>
   </bookinfo>
 
@@ -220,6 +221,25 @@ V sekci <emphasis>session</emphasis> jsou tato nastavení:</para>
         Jazyková verze. Pokud není zadána žádná hodnota, tak se bere nastavení
         z proměnné LANG prostředí OS. Dostupné jsou zatím jen angličtina a čeština.
         Jazykovou verzi můžete nastavit i pomocí parametru při spuštění skriptu.
+    </para>
+    </listitem>
+    <listitem>
+    <para><emphasis role='bold' id="config_null_value">null_value</emphasis> = NULL</para>
+    <para>
+        Nastavení zástupce pro hodnotu nic (Nil), která vyjadřuje <quote>žádnou hodnotu</quote>.
+        Defaultně je nastaveno NULL.
+        Tuto hodnotu používáme, když chceme přeskočit některý z parametrů příkazu.
+        Zadání NULL znamená, že jsme nezadali žádnou hodnotu na rozdíl od '' nebo "",
+        kdy jsme zadali hodnotu nulové délky.
+    </para>
+    <para>
+        <emphasis role='bold'>Formát hodnoty NULL:</emphasis>
+        Zástupce může být libovolný, ale nesmí obsahovat <emphasis>spojovník</emphasis> (-), <emphasis>mezery</emphasis> a 
+        <emphasis>kulaté závorky</emphasis>.
+    </para>
+    <para>
+        Více se o této hodnotě dozvíte v části 
+        <quote><link linkend='null_or_empty' endterm="null_or_empty.title"/></quote>
     </para>
     </listitem>
 </itemizedlist>
@@ -500,7 +520,113 @@ Dvojka je index seznamu v tomto případě o max. devíti položkách
 </para>
 </section>
 
+<section>
+<title>Společný parametr cltrid</title>
+<para>
+Každý EPP příkaz, kromě příkazu <emphasis>hello</emphasis>, obsahuje 
+tag <emphasis role="bold">&lt;clTRID&gt;</emphasis>.
+Tato hodnota je identifikátor transakce. Ten si stanovuje klient a 
+může být libovolný v rámci formátovacích pravidel definovaných ve
+schematech pro tuto hodnotu. Identifikátor je nepovinný a pokud 
+není zadán, tak jej program automaticky doplní.
+</para>
+</section>
 
+
+<section id="null_or_empty">
+
+<title id="null_or_empty.title">Žádná hodnota / Prázdná hodnota</title>
+
+<section>
+<title>Žádná hodnota: NULL</title>
+
+<para>
+Výraz <emphasis>Žádná hodnota</emphasis> představuje hodnotu, kterou 
+jste nezadali. Slouží nám k tomu, abychom mohli přeskakovat parametry,
+které nechceme zadávat. Defaultě je výraz nastaven na NULL.
+</para>
+<para>
+Například, když v příkazu <emphasis>create_contact</emphasis> 
+chtece kromě povinných parametrů uvést už jen telefonní číslo 
+(parametr <emphasis>voice</emphasis>). Mezi posledním povinným parametrem
+<emphasis>pw</emphasis> a pořadovaným <emphasis>voice</emphasis> leží ještě další čtyři parametry:
+<emphasis>org, street, sp, cp</emphasis>. Místo nich zadáte "žádnou hodnotu" 
+- pokud jste nenastavili jinak, tak NULL. 
+Tím jste telefonní číslo umístili na správnou pozici v parametrech příkazu:
+
+<programlisting>
+   create_contact CID:ID01 'Jan Novak' info@mymail.cz Praha CZ mypassword NULL NULL NULL NULL +420.222745111
+</programlisting>
+
+Uvedený příkaz <emphasis role="bold">nebude</emphasis> v XML struktuře vytvářet tagy pro hodnoty
+<emphasis>org, street, sp, cp</emphasis>:
+
+<programlisting>
+&lt;contact:id&gt;CID:ID01&lt;/contact:id&gt;
+        &lt;contact:postalInfo&gt;
+          &lt;contact:name&gt;Jan Novak&lt;/contact:name&gt;
+          &lt;contact:addr&gt;
+            &lt;contact:city&gt;Praha&lt;/contact:city&gt;
+            &lt;contact:cc&gt;CZ&lt;/contact:cc&gt;
+          &lt;/contact:addr&gt;
+        &lt;/contact:postalInfo&gt;
+        &lt;contact:voice&gt;+420.222745111&lt;/contact:voice&gt;
+</programlisting>
+
+
+</para>
+
+<para>
+V <emphasis>interaktivním módu</emphasis> zadávání parametrů zadáte <quote>žádnou hodnotu</quote> prostě tak,
+že jenom stisknete ENTER.
+</para>
+
+<para>
+Definici <emphasis>žádné hodnoty</emphasis> lze v konzoli změnit příkazem 
+<link linkend='null_value'>null_value</link>
+a také je možné si ji definovat v <link linkend='config_null_value'>konfiguračním souboru</link>.
+</para>
+</section>
+
+<section>
+<title>Prázdná hodnota: '', ""</title>
+<para>
+Výraz <emphasis>Prázdná hodnota</emphasis> představuje hodnotu, která je prázdná.
+Je to tedy text o nulové délce. Ten zapisujeme práznými uvozovkami '' nebo "".
+Tato hodnota nám slouží k tomu, abychom mohli zadávat hodnoty nulové délky.
+Rozdíl mezi práznou hodnotou a žádnou je v tom, že tato hodnota generuje tag v XML
+dokumentu. Protože je prázdná, tak daný XML tag bude také prázdný.
+
+<programlisting>
+   create_contact CID:ID01 'Jan Novak' info@mymail.cz Praha CZ mypassword '' '' '' '' +420.222745111
+</programlisting>
+
+Příkaz vygeneruje XML, ve kterém budou u prázdných hodnot prázdné tagy:
+
+<programlisting>
+&lt;contact:id&gt;CID:ID01&lt;/contact:id&gt;
+        &lt;contact:postalInfo&gt;
+          &lt;contact:name&gt;Jan Novak&lt;/contact:name&gt;
+          <emphasis role="bold">&lt;contact:org/&gt;
+          &lt;contact:addr&gt;
+            &lt;contact:street/&gt;</emphasis>
+            &lt;contact:city&gt;Praha&lt;/contact:city&gt;
+           <emphasis role="bold">&lt;contact:sp/&gt;
+            &lt;contact:pc/&gt;</emphasis>
+            &lt;contact:cc&gt;CZ&lt;/contact:cc&gt;
+          &lt;/contact:addr&gt;
+        &lt;/contact:postalInfo&gt;
+        &lt;contact:voice>+420.222745111&lt;/contact:voice&gt;
+</programlisting>
+
+</para>
+
+<para>
+V <emphasis>interaktivním módu</emphasis> zadávání parametru zadáme <quote>prázdnou hodnotu</quote> tak,
+že zapíšeme prázdné uvozovky '' nebo "".
+</para>
+</section>
+</section>
 
 <section>
 <title>Příkazy relace (session)</title>
@@ -598,6 +724,14 @@ zapnout/vypnout barevný výstup
 </programlisting>
 nastavit mód výpisu: 1 - stručný (default); 2 - plný; 3 - plný &amp; XML zdroje
 </para>
+
+<programlisting id="null_value">
+&gt; null_value [nějaká_hodnota]
+</programlisting>
+
+Nastavení reprezentace <quote>žádné hodnoty</quote>. Viz <link linkend='null_or_empty' endterm="null_or_empty.title"/>
+a <link linkend='config_null_value'>Formát hodnoty NULL</link>.
+
 </section>
 
 </chapter>

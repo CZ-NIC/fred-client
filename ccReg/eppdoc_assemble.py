@@ -29,7 +29,7 @@ UNBOUNDED = None
 contact_disclose = ('name','org','addr','voice','fax','email')
 history_filename = os.path.join(os.path.expanduser('~'),'.ccreg_history') # compatibility s MS Win
 
-TAG_clTRID = 'clTRID' # Definition for --key-name = clTRID value.
+TAG_clTRID = 'cltrid' # Definition for --key-name = clTRID value.
 
 class Message(eppdoc.Message):
     "Client EPP commands."
@@ -259,6 +259,7 @@ class Message(eppdoc.Message):
                     stop=2
                     break
                 if param == '': param = null_value
+                # TODO: vypnuti kdyz max je unbouded
                 if autofill > 2 and param == null_value:
                     param = example
                     if not param: param = 'example' # value MUST be set
@@ -325,7 +326,6 @@ class Message(eppdoc.Message):
         if not vals[1]: return error # bez parametrů
         columns = [(command_name,(1,1),(),'','','',())]
         columns.extend(self._command_params[command_name][1])
-        columns.append((TAG_clTRID,(0,1),(),'','','',()))
         dct['command'] = [command_name]
         if interactive:
             session_base.print_unicode('${BOLD}${YELLOW}%s: ${NORMAL}${BOLD}!${NORMAL} %s'%(_T('Interactive input params mode. For BREAK type'),_T("If you don't fill item press ENTER.")))

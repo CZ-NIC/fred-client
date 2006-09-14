@@ -103,8 +103,10 @@ class Client:
     def close(self):
         'Close connection with server.'
         self._epp.close()
-        
-    def check_contact(self, name):
+
+    #==============================================================
+    
+    def check_contact(self, name, cltrid=None):
         """Usage: check_contact name [,name2]
     
     PARAMS:
@@ -122,9 +124,9 @@ class Client:
    using the "create" command as object provisioning requirements are
    ultimately a matter of server policy.
    """
-        return self._epp.api_command('check_contact',{'name':name})
+        return self._epp.api_command('check_contact',{'name':name, 'cltrid':cltrid})
 
-    def check_domain(self, name):
+    def check_domain(self, name, cltrid=None):
         """Usage: check_domain name [,name2]
 
     PARAMS:
@@ -142,9 +144,9 @@ class Client:
    using the "create" command as object provisioning requirements are
    ultimately a matter of server policy.
    """
-        return self._epp.api_command('check_domain',{'name':name})
+        return self._epp.api_command('check_domain',{'name':name, 'cltrid':cltrid})
 
-    def check_nsset(self, name):
+    def check_nsset(self, name, cltrid=None):
         """Usage: check_nsset name [,name2]
 
     PARAMS:
@@ -162,11 +164,12 @@ class Client:
    using the "create" command as object provisioning requirements are
    ultimately a matter of server policy.
    """
-        return self._epp.api_command('check_nsset',{'name':name})
+        return self._epp.api_command('check_nsset',{'name':name, 'cltrid':cltrid})
 
     def create_contact(self, contact_id, name, email, city, cc, pw,
             org=None, street=None, sp=None, pc=None, voice=None, fax=None, 
-            disclose=None, vat=None, ssn=None, notify_email=None):
+            disclose=None, vat=None, ssn=None, notify_email=None, 
+            cltrid=None):
         """Usage: create_contact contact-id name email city cc
 
     PARAMS:
@@ -206,9 +209,10 @@ class Client:
             'contact_id':contact_id, 'name':name, 'email':email, 'city':city, 'cc':cc, 'pw':pw,
             'org':org, 'street':street, 'sp':sp, 'pc':pc, 'voice':voice, 'fax':fax,
             'disclose':disclose, 'vat':vat, 'ssn':ssn, 
-            'notify_email':notify_email})
+            'notify_email':notify_email, 'cltrid':cltrid})
 
-    def create_domain(self, name, pw, registrant, nsset=None, period=None, admin=None, val_ex_date=None):
+    def create_domain(self, name, pw, registrant, nsset=None, period=None, admin=None, val_ex_date=None, 
+        cltrid=None):
         """Usage: create_domain name pw registrant
 
     PARAMS:
@@ -231,9 +235,9 @@ class Client:
     """
         return self._epp.api_command('create_domain',{'name':name,'pw':pw,
             'period':period,'registrant':registrant,'nsset':nsset,'admin':admin,
-            'val_ex_date':val_ex_date})
+            'val_ex_date':val_ex_date, 'cltrid':cltrid})
 
-    def create_nsset(self, nsset_id, pw, dns, tech=None):
+    def create_nsset(self, nsset_id, pw, dns, tech=None, cltrid=None):
         """Usage: create_nsset id pw
 
     PARAMS:
@@ -256,10 +260,10 @@ class Client:
     create_nsset example1 passw ((ns1.domain.net (217.31.207.130 217.31.207.129)),(ns2.domain.net (217.31.206.130 217.31.206.129)),(ns3.domain.net (217.31.205.130 217.31.205.129))) reg-id
 
         """
-        return self._epp.api_command('create_nsset',{'id':nsset_id, 'pw':pw, 'dns':dns, 'tech':tech})
+        return self._epp.api_command('create_nsset',{'id':nsset_id, 'pw':pw, 'dns':dns, 'tech':tech, 'cltrid':cltrid})
 
 
-    def delete_contact(self, nsset_id):
+    def delete_contact(self, contact_id, cltrid=None):
         """Usage: delete_contact id
 
     PARAMS:
@@ -271,10 +275,10 @@ class Client:
     The EPP "delete" command is used to remove an instance of an existing object.
 
         """
-        return self._epp.api_command('delete_contact',{'id':nsset_id})
+        return self._epp.api_command('delete_contact',{'id':contact_id, 'cltrid':cltrid})
 
 
-    def delete_domain(self, name):
+    def delete_domain(self, name, cltrid=None):
         """Usage: delete_domain name
 
     PARAMS:
@@ -285,10 +289,10 @@ class Client:
 
     The EPP "delete" command is used to remove an instance of an existing object.
         """
-        return self._epp.api_command('delete_domain',{'name':name})
+        return self._epp.api_command('delete_domain',{'name':name, 'cltrid':cltrid})
 
 
-    def delete_nsset(self, nsset_id):
+    def delete_nsset(self, nsset_id, cltrid=None):
         """Usage: delete_nsset id
 
     PARAMS:
@@ -299,7 +303,7 @@ class Client:
 
     The EPP "delete" command is used to remove an instance of an existing object.
         """
-        return self._epp.api_command('delete_nsset',{'id':nsset_id})
+        return self._epp.api_command('delete_nsset',{'id':nsset_id, 'cltrid':cltrid})
 
 
     def hello(self):
@@ -321,7 +325,7 @@ class Client:
         return self._epp.api_command('hello')
 
 
-    def info_contact(self, name):
+    def info_contact(self, name, cltrid=None):
         """Usage: info_contact name
 
     PARAMS:
@@ -341,10 +345,10 @@ class Client:
    object-specific, so the child elements of the <info> command are
    specified using the EPP extension framework.
         """
-        return self._epp.api_command('info_contact',{'name':name})
+        return self._epp.api_command('info_contact',{'name':name, 'cltrid':cltrid})
 
 
-    def info_domain(self, name):
+    def info_domain(self, name, cltrid=None):
         """Usage: info_domain name
 
     PARAMS:
@@ -376,10 +380,10 @@ class Client:
    object-specific, so the child elements of the <info> command are
    specified using the EPP extension framework.
         """
-        return self._epp.api_command('info_domain',{'name':name})
+        return self._epp.api_command('info_domain',{'name':name, 'cltrid':cltrid})
 
 
-    def info_nsset(self, name):
+    def info_nsset(self, name, cltrid=None):
         """Usage: info_nsset name
 
     PARAMS:
@@ -394,10 +398,10 @@ class Client:
    object-specific, so the child elements of the <info> command are
    specified using the EPP extension framework.
         """
-        return self._epp.api_command('info_nsset',{'name':name})
+        return self._epp.api_command('info_nsset',{'name':name, 'cltrid':cltrid})
 
 
-    def login(self, username, password, new_password=None):
+    def login(self, username, password, new_password=None, cltrid=None):
         """Usage: login username password
 
     PARAMS:
@@ -421,10 +425,10 @@ class Client:
    and authorization information during the duration of the session.
         """
         return self._epp.api_command('login',{'username':username, 
-            'password':password, 'new-password':new_password})
+            'password':password, 'new-password':new_password, 'cltrid':cltrid})
 
 
-    def logout(self):
+    def logout(self, cltrid=None):
         """Usage: logout
 
     PARAMS:
@@ -433,10 +437,10 @@ class Client:
 
     The EPP "logout" command is used to end a session with an EPP server.
         """
-        return self._epp.api_command('logout')
+        return self._epp.api_command('logout',{'cltrid':cltrid})
 
 
-    def poll(self, op, msg_id=None):
+    def poll(self, op, msg_id=None, cltrid=None):
         """Usage: poll op [msg_id]
 
     PARAMS:
@@ -453,10 +457,10 @@ class Client:
 
         """
         if not type(msg_id) in ('str','unicode'): msg_id = str(msg_id)
-        return self._epp.api_command('poll',{'op':op,'msg_id':msg_id})
+        return self._epp.api_command('poll',{'op':op,'msg_id':msg_id, 'cltrid':cltrid})
 
 
-    def renew_domain(self, name, cur_exp_date, period=None, val_ex_date=None):
+    def renew_domain(self, name, cur_exp_date, period=None, val_ex_date=None, cltrid=None):
         """Usage: renew_domain name cur_exp_date
 
     PARAMS:
@@ -473,10 +477,10 @@ class Client:
     The EPP "renew" command is used to extend validity of an existing object.
         """
         return self._epp.api_command('renew_domain',{'name':name, 'cur_exp_date':cur_exp_date, 
-            'period':period, 'val_ex_date':val_ex_date})
+            'period':period, 'val_ex_date':val_ex_date, 'cltrid':cltrid})
 
 
-    def transfer_contact(self, name, passw):
+    def transfer_contact(self, name, passw, cltrid=None):
         """Usage: transfer_contact name passw
 
     PARAMS:
@@ -494,9 +498,9 @@ class Client:
    request, cancel a transfer request, approve a transfer request, and
    reject a transfer request using the "op" command attribute.
         """
-        return self._epp.api_command('transfer_contact',{'name':name, 'passw':passw})
+        return self._epp.api_command('transfer_contact',{'name':name, 'passw':passw, 'cltrid':cltrid})
 
-    def transfer_domain(self, name, passw):
+    def transfer_domain(self, name, passw, cltrid=None):
         """Usage: transfer_domain name passw
 
     PARAMS:
@@ -514,9 +518,9 @@ class Client:
    request, cancel a transfer request, approve a transfer request, and
    reject a transfer request using the "op" command attribute.
         """
-        return self._epp.api_command('transfer_domain',{'name':name, 'passw':passw})
+        return self._epp.api_command('transfer_domain',{'name':name, 'passw':passw, 'cltrid':cltrid})
 
-    def transfer_nsset(self, name, passw):
+    def transfer_nsset(self, name, passw, cltrid=None):
         """Usage: transfer_nsset name passw
 
     PARAMS:
@@ -534,10 +538,10 @@ class Client:
    request, cancel a transfer request, approve a transfer request, and
    reject a transfer request using the "op" command attribute.
         """
-        return self._epp.api_command('transfer_nsset',{'name':name, 'passw':passw})
+        return self._epp.api_command('transfer_nsset',{'name':name, 'passw':passw, 'cltrid':cltrid})
 
 
-    def update_contact(self, contact_id, add=None, rem=None, chg=None):
+    def update_contact(self, contact_id, add=None, rem=None, chg=None, cltrid=None):
         """Usage: update_contact contact-id
 
     PARAMS:
@@ -572,10 +576,11 @@ class Client:
 
     The EPP "update" command is used to update an instance of an existing object.
         """
-        return self._epp.api_command('update_contact',{'contact_id':contact_id, 'add':add, 'rem':rem, 'chg':chg})
+        return self._epp.api_command('update_contact',{'contact_id':contact_id, 'add':add, 
+            'rem':rem, 'chg':chg, 'cltrid':cltrid})
 
 
-    def update_domain(self, name, add=None, rem=None, chg=None, val_ex_date=None):
+    def update_domain(self, name, add=None, rem=None, chg=None, val_ex_date=None, cltrid=None):
         """Usage: update_domain name
 
     PARAMS:
@@ -599,10 +604,10 @@ class Client:
     The EPP "update" command is used to update an instance of an existing object.
         """
         return self._epp.api_command('update_domain',{'name':name, 
-            'add':add, 'rem':rem, 'chg':chg, 'val_ex_date':val_ex_date})
+            'add':add, 'rem':rem, 'chg':chg, 'val_ex_date':val_ex_date, 'cltrid':cltrid})
 
 
-    def update_nsset(self, nsset_id, add=None, rem=None, chg=None):
+    def update_nsset(self, nsset_id, add=None, rem=None, chg=None, cltrid=None):
         """Usage: update_nsset id
 
     PARAMS:
@@ -629,9 +634,9 @@ class Client:
     update_nsset nic.cz
     update_nsset nsset-ID (((nsset1.name.cz 127.0.0.1),(nsset2.name.cz (127.0.2.1 127.0.2.2)),) tech-add-contact ok) ("My Name",("Tech contact 1","Tech contact 2"),(clientDeleteProhibited ok)) (password extension)
         """
-        return self._epp.api_command('update_nsset',{'id':nsset_id, 'add':add, 'rem':rem, 'chg':chg})
+        return self._epp.api_command('update_nsset',{'id':nsset_id, 'add':add, 'rem':rem, 'chg':chg, 'cltrid':cltrid})
 
-    def list_contact(self):
+    def list_contact(self, cltrid=None):
         """Usage: list_contact
 
     PARAMS:
@@ -642,9 +647,9 @@ class Client:
             }
     The EPP "list" command is used to list all ID of an existing object owning by registrant.
         """
-        return self._epp.api_command('list_contact')
+        return self._epp.api_command('list_contact',{'cltrid':cltrid})
         
-    def list_nsset(self):
+    def list_nsset(self, cltrid=None):
         """Usage: list_nsset
 
     PARAMS:
@@ -655,9 +660,9 @@ class Client:
             }
     The EPP "list" command is used to list all ID of an existing object owning by registrant.
         """
-        return self._epp.api_command('list_nsset')
+        return self._epp.api_command('list_nsset',{'cltrid':cltrid})
 
-    def list_domain(self):
+    def list_domain(self, cltrid=None):
         """Usage: list_domain
 
     PARAMS:
@@ -668,8 +673,9 @@ class Client:
             }
     The EPP "list" command is used to list all ID of an existing object owning by registrant.
         """
-        return self._epp.api_command('list_domain')
+        return self._epp.api_command('list_domain',{'cltrid':cltrid})
 
+    #==============================================================
         
     def get_answer_dct(self):
         """Returns dict object answer. Same as every function returns.

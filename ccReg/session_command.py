@@ -22,6 +22,44 @@ class ManagerCommand(ManagerTransfer):
     This class manage creations of the EPP documents.
     """
 
+    def __init__(self):
+        ManagerTransfer.__init__(self)
+        # SESSION_COMMANDS: (
+        #   (command_name,command_name,command_name)
+        #   function
+        #   (parameters,parameters)
+        #   'Description'
+        #   (example, example)
+        # )
+        self._session_commands = (
+            (('!',), None, ('EPP_command',), _T('Start the interactive mode of the input command params.'), ('!create_domain',)),
+            (('colors',), self.__session_colors__, ('on','off'), _T('Turn on/off colored output.'), ('colors on',)),
+            (('config',), self.manage_config, ('create',), _T('Display or create config file.'), ('config',)),
+            (('confirm',), self.__session_confirm__, ('on','off'), _T('Set on/off confirmation for sending editable commands to the server.'), ('confirm off',)),
+            #(('connect',), self.__session_connect__, (), _T('Make connection between client and server without login.'), ()),
+            #(('disconnect',), self.__session_disconnect__, (), _T('Disconnect from the EPP server.'), ()),
+            (('credits',), self.__session_credits__, (), _T('Display credits.'), ()),
+            (('help','h','?'), None, (), _T('Display this help or command details.'), ('help update_nsset',)),
+            (('license',), self.__session_license__, (), _T('Display license.'), ()),
+            (('null_value','null'), self.__session_null__, (), _T("""
+Set representation of the value what is used to mean nothing. Default is NULL.
+This value we use if we want to skip over any column in the command parameters. 
+Type NULL means we did not put any value in contrast to '' or "" where we put
+value of zero length. See help for more details."""), ('null None','null EMPTY',)),
+            (('poll-ack',), self.__session_poll_ack__, ('on','off'), _T('Send "poll ack" straight away after "poll req".'), ('poll-ack on',)),
+            (('quit','q','exit'), None, (), _T('Quit the client. Same effect has "q" or "exit".'), ()),
+            (('raw-answer','raw-a','src-answer','src-a'), self.__session_raw_answer__, ('d','dict',), _T('Display XML source of the EPP answer.'), ('raw-a','raw-a d','src-a','src-a d')),
+            (('raw-command','raw-c','src-command','src-c'), self.__session_raw_command__, ('d','dict',), _T('Display XML source of the EPP command.'), ('raw-c','raw-c d','src-c','src-c d')),
+            (('send',), self.__session_send__, ('filename',), _T('Send any file to the server. If filename missing command shows actual folder.'), ('send mydoc.xml',)),
+            (('validate',), self.__session_validate__, ('on','off'), _T('Set on/off external validation of the XML documents.'), ('validate off',)),
+            (('verbose',), self.__session_verbose__, ('1','2','3'), _T('Set verbose mode: 1 - brief (default); 2 - full; 3 - full & XML sources.'), ('verbose 2',)),
+        )
+        self._pattern_session_commands = [] # for recognize command
+        self._available_session_commands = [] # for display list of command names
+        for n,f,p,e,x in self._session_commands:
+            self._available_session_commands.append(n[0])
+            self._pattern_session_commands.extend(n)
+
     def __put_raw_into_note__(self, data):
         "Use pprint for displaying structured data (dict, XML-EPP)."
         if data is None:
@@ -59,10 +97,7 @@ class ManagerCommand(ManagerTransfer):
         if command_name:
             # help command
             type = ''
-            m = re.match('(raw|src)[-_](a|c)',command_name)
-            if m: command_name = 'raw-%s'%('command','answer')[m.group(2)=='a']
-            if command_name in ('q','exit'): command_name = 'quit'
-            if command_name in self._available_session_commands:
+            if command_name in self._pattern_session_commands:
                 type = 'session'
             else:
                 command_name = command_name.replace('-','_')
@@ -88,15 +123,15 @@ class ManagerCommand(ManagerTransfer):
         'Returns set of details of the session command.'
         command_line = command_help = notice = ''
         examples = ()
-        for name,params,explain,ex in self._session_commands:
-            if name == command_name:
+        for names,func,params,explain,ex in self._session_commands:
+            if command_name in names:
                 notice = explain
                 examples = ex
                 if len(params):
-                    command_line = '%s [param]'%name
+                    command_line = '%s [param]'%names[0]
                     command_help = '%s: (%s)'%(_T('Available values'),', '.join(params))
                 else:
-                    command_line = name
+                    command_line = names[0]
                 break
         return command_line, command_help, notice, examples
 
@@ -184,11 +219,15 @@ class ManagerCommand(ManagerTransfer):
     def create_eppdoc(self, command):
         "Dispatch command line from user and set internal variables or create EPP document."
         command_name = ''
+        command_params = ''
         self.reset_round()
-        cmd = EPP_command = command.strip()
+        cmd = EPP_command = session_command = command.strip()
         # Možnost zadání pomlčky místo podtržítka:
         m = re.match('(\S+)(.*)',cmd)
-        if m: EPP_command = '%s%s'%(m.group(1).replace('-','_'), m.group(2))
+        if m:
+            EPP_command = '%s%s'%(m.group(1).replace('-','_'), m.group(2))
+            session_command = m.group(1)
+            command_params = m.group(2)
         if cmd == '!': cmd = '? !'
         # help
         help, help_item = None,None
@@ -198,109 +237,19 @@ class ManagerCommand(ManagerTransfer):
         else:
             m = re.match('(\?)(?:$|\s*(\S+))',cmd)
             if m: help, help_item = m.groups()
+        # Resolve three command types: 1. help; 2. session command; 3. EPP command
         if help:
+            # 1. help
             self.display_help(help_item, command)
-        elif re.match('(raw|src)[-_]',cmd):
-            # Zobrazení 'surových' dat - zdrojová data
-            # raw-cmd; raw-a[nswer] e[pp]; raw-answ [dict]
-            m = re.match('(?:raw|src)[-_](\w+)(?:\s+(\w+))?',cmd)
-            if m:
-                self.append_note(SEPARATOR)
-                if m.group(1)[0]=='c' and self._raw_cmd:
-                    # zobrazit EPP příkaz, který se poslal serveru
-                    if m.group(2) and m.group(2)[0]=='d': # d dict
-                        self.append_note(_T('Interpreted command'),'BOLD')
-                        edoc = eppdoc_client.Message()
-                        edoc.parse_xml(self._raw_cmd)
-                        self.__put_raw_into_note__(edoc.create_data())
-                    else: # e epp
-                        self.append_note(_T('Command source'),'BOLD')
-                        self.append_note(human_readable(self._raw_cmd),'GREEN')
-                if m.group(1)[0]=='a' and (self._dict_answer or self._raw_answer): # a answer
-                    # zobrazit odpověd serveru
-                    if m.group(2) and m.group(2)[0]=='d': # d dict
-                        self.append_note(_T('Interpreted answer'),'BOLD')
-                        self.__put_raw_into_note__(self._dict_answer)
-                    else: # e epp
-                        self.append_note(_T('Answer source'),'BOLD')
-                        self.__put_raw_into_note__(human_readable(self._raw_answer))
-        elif re.match('send',cmd):
-            self._raw_cmd = ''
-            # Posílání již vytvořených souborů na server
-            filepath = '.'
-            m = re.match('send\s*(\S+)',command)
-            if m:
-                filepath = m.group(1)
-            if os.path.isdir(filepath):
-                # zobrazit adresář
-                self.append_note('%s: %s'%(_T('Dir list'),filepath))
-                try:
-                    stuff = dircache.listdir(filepath)
-                except OSError, (no, msg):
-                    stuff = 'OSError: [%d] %s'%(no, msg)
-                self.append_note(str(stuff))
-            else:
-                command_name, xmldoc = self.load_filename(filepath)
-                if command_name == 'login' and not self.is_connected():
-                    self.connect() # connect to the host
-        # DISABLED
-        #elif re.match('connect',cmd):
-        #    if self.is_connected():
-        #        self.append_note(_T('You are connected already. Type disconnect for close connection.'))
-        #    else:
-        #        self.connect() # připojení k serveru
-        #        command_name = 'connect'
-        #elif re.match('disconnect',cmd):
-        #    if self.is_connected():
-        #        if self.is_online(''):
-        #            self.send_logout()
-        #        else:
-        #            self.close()
-        #        self.append_note(_T("You has been disconnected."))
-        #    else:
-        #        self.append_note(_T("You are not connected."))
-        elif re.match('confirm',cmd):
-            m = re.match('confirm\s+(\S+)',cmd)
-            if m:
-                self.set_confirm(m.group(1))
-            self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('Confirm is'),{False:'OFF',True:'ON'}[self._session[CONFIRM_SEND_COMMAND]]))
-        elif re.match('null_value',cmd):
-            m = re.match('null_value\s+(\S+)',cmd)
-            if m: self.set_null_value(m.group(1))
-            self.append_note('null_value %s: ${BOLD}%s${NORMAL}'%(_T('is'),self._session[NULL_VALUE]))
-        elif re.match('config\s*(.*)',cmd):
-            self.manage_config(re.match('config\s*(.*)',cmd).groups())
-        elif re.match('validate',cmd):
-            m = re.match('validate\s+(\S+)',cmd)
-            if m:
-                self.set_validate((0,1)[m.group(1).lower()=='on'])
-            self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('Validation process is'),{False:'OFF',True:'ON'}[self._session[VALIDATE]]))
-        elif re.match('colors',cmd):
-            m = re.match('colors\s+(\S+)',cmd)
-            if m:
-                self._session[COLORS] = (0,1)[m.group(1).lower()=='on']
-                colored_output.set_mode(self._session[COLORS])
-            self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('Colors mode is'),{False:'OFF',True:'ON'}[self._session[COLORS]]))
-        elif re.match('verbose',cmd):
-            m = re.match('verbose\s+(\S+)',cmd)
-            if m:
-                self.__init_verbose__(m.group(1))
-            self.append_note('%s: ${BOLD}%d${NORMAL}'%(_T('Verbose mode is'),self._session[VERBOSE]))
-        elif re.match('license',cmd):
-            body, error = load_file(make_filepath('LICENSE'))
-            if error: self.append_error(error)
-            if body: self.append_note(self.convert_utf8(body))
-        elif re.match('credits',cmd):
-            body, error = load_file(make_filepath('CREDITS'))
-            if error: self.append_error(error)
-            if body: self.append_note(self.convert_utf8(body))
-        elif re.match('poll[-_]ack',cmd):
-            m = re.match('poll[-_]ack\s+(\S+)',cmd)
-            if m:
-                self._session[POLL_AUTOACK] = {False:0,True:1}[m.group(1) in ('on','ON')]
-            self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('poll ack is'),{False:'OFF',True:'ON'}[self._session[POLL_AUTOACK]]))
+        elif session_command in self._pattern_session_commands:
+            # 2. Session commands
+            for names,func,p,e,x in self._session_commands:
+                if session_command in names:
+                    if func:
+                        name = func(command_params.strip())
+                        if name is not None: command_name = name
         else:
-            # příkazy pro EPP
+            # 3. EPP commands
             cmd = EPP_command
             if type(cmd) != unicode:
                 try:
@@ -338,6 +287,117 @@ class ManagerCommand(ManagerTransfer):
 
     #==================================================
     #
+    #    Session commands
+    #
+    #==================================================
+    def __session_confirm__(self, param):
+        'Set confirm value'
+        if param:
+            self.set_confirm(param)
+        else:
+            self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('Confirm is'),{False:'OFF',True:'ON'}[self._session[CONFIRM_SEND_COMMAND]]))
+
+    def __session_null__(self, param):
+        'Set NULL value'
+        if param: self.set_null_value(param)
+        self.append_note('null_value %s: ${BOLD}%s${NORMAL}'%(_T('is'),self._session[NULL_VALUE]))
+
+    def __session_validate__(self, param):
+        'Set validate value'
+        if param: self.set_validate((0,1)[param.lower()=='on'])
+        self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('Validation process is'),{False:'OFF',True:'ON'}[self._session[VALIDATE]]))
+        
+    def __session_connect__(self, param):
+        'Run connection process'
+        if self.is_connected():
+            self.append_note(_T('You are connected already. Type disconnect for close connection.'))
+        else:
+            self.connect() # připojení k serveru
+        return 'connect' # Need for ccreg_console.py where must be displayed server answer.
+
+    def __session_disconnect__(self, param):
+        'Run connection process'
+        if self.is_connected():
+            if self.is_online(''):
+                self.send_logout()
+            else:
+                self.close()
+            self.append_note(_T("You has been disconnected."))
+        else:
+            self.append_note(_T("You are not connected."))
+
+    def __session_colors__(self, param):
+        'Set colors mode'
+        if param:
+            self._session[COLORS] = (0,1)[param.lower()=='on']
+            colored_output.set_mode(self._session[COLORS])
+        self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('Colors mode is'),{False:'OFF',True:'ON'}[self._session[COLORS]]))
+
+    def __session_verbose__(self, param):
+        'Set verbose mode'
+        if param: self.__init_verbose__(param)
+        self.append_note('%s: ${BOLD}%d${NORMAL}'%(_T('Verbose mode is'),self._session[VERBOSE]))
+
+    def __session_license__(self, param):
+        'Display license'
+        body, error = load_file(make_filepath('LICENSE'))
+        if error: self.append_error(error)
+        if body: self.append_note(self.convert_utf8(body))
+
+    def __session_credits__(self, param):
+        'Display credits'
+        body, error = load_file(make_filepath('CREDITS'))
+        if error: self.append_error(error)
+        if body: self.append_note(self.convert_utf8(body))
+
+    def __session_poll_ack__(self, param):
+        'Set poll acknowledge'
+        if param: self._session[POLL_AUTOACK] = {False:0,True:1}[param in ('on','ON')]
+        self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('poll ack is'),{False:'OFF',True:'ON'}[self._session[POLL_AUTOACK]]))
+
+    def __session_send__(self, param):
+        'Send any file to the EPP server.'
+        command_name = None
+        if not param: param = '.'
+        if os.path.isdir(param):
+            # zobrazit adresář
+            self.append_note('%s: %s'%(_T('Dir list'),param))
+            try:
+                stuff = dircache.listdir(param)
+            except OSError, (no, msg):
+                stuff = 'OSError: [%d] %s'%(no, msg)
+            self.append_note(str(stuff))
+        else:
+            command_name, xmldoc = self.load_filename(param)
+            if command_name == 'login' and not self.is_connected():
+                self.connect() # connect to the host
+        return command_name
+
+    def __session_raw_answer__(self, param):
+        'Display XML answer source.'
+        self.append_note(SEPARATOR)
+        if param and param[0]=='d': # d dict
+            self.append_note(_T('Interpreted answer'),'BOLD')
+            self.__put_raw_into_note__(self._dict_answer)
+        else: # e epp
+            self.append_note(_T('Answer source'),'BOLD')
+            self.__put_raw_into_note__(human_readable(self._raw_answer))
+
+    def __session_raw_command__(self, param):
+        'Display XML command source.'
+        self.append_note(SEPARATOR)
+        if param and param[0]=='d': # d dict
+            self.append_note(_T('Interpreted command'),'BOLD')
+            edoc = eppdoc_client.Message()
+            edoc.parse_xml(self._raw_cmd)
+            self.__put_raw_into_note__(edoc.create_data())
+        else: # e epp
+            self.append_note(_T('Command source'),'BOLD')
+            self.append_note(human_readable(self._raw_cmd),'GREEN')
+
+        
+    #==================================================
+    #
     #    EPP commands
     #
     #==================================================
@@ -364,6 +424,8 @@ class ManagerCommand(ManagerTransfer):
             self._epp_cmd.assemble_login(self.__next_clTRID__(), (eppdoc_nic_cz_version, self.defs[objURI], self.defs[extURI], self._session[LANG]))
             if self._epp_cmd._dct.has_key('username'):
                 self._session[USERNAME] = self._epp_cmd._dct['username'][0] # for prompt info
+
+    #==================================================
 
     def get_value_from_dict(self, names, dct = None):
         """Returns safetly value form dict (treat missing keys).

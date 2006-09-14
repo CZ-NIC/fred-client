@@ -147,7 +147,7 @@ class ManagerBase:
         return '%s\n%s'%(self.version(),_T('Type "help", "license" or "credits" for more information.'))
 
     def version(self):
-        return 'ccRegClient 1.1' # version of the client
+        return 'ccRegClient 1.2' # version of the client
 
     def __next_clTRID__(self):
         """Generate next clTRID value.
@@ -172,7 +172,7 @@ class ManagerBase:
     #---------------------------
     def manage_config(self, param):
         'Display config values or save config.'
-        if param[0] == 'create':
+        if param == 'create':
             if self.__create_default_conf__():
                 self.save_confing()
             else:
