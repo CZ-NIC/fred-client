@@ -62,7 +62,7 @@ def load_config(config_name):
         # ALLUSERSPROFILE = C:\Documents and Settings\All Users
         glob_conf = os.path.join(os.path.expandvars('$ALLUSERSPROFILE'),config_name)
     try:
-        names = config.read([glob_conf, modul_conf, os.path.join(os.path.expanduser('~'),config_name)])
+        names = config.read([modul_conf, glob_conf, os.path.join(os.path.expanduser('~'),config_name)])
     except (ConfigParser.MissingSectionHeaderError, ConfigParser.ParsingError), msg:
         error = 'ConfigParserError: %s'%str(msg)
         config = None

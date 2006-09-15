@@ -196,6 +196,84 @@ class Message(eppdoc.Message):
             parents.pop()
         if len(param) and param[0] == '!': param = param[1:]
         return errors,param,stop
+
+    def __ineractive_input_param__(self, name,min_max,allowed,example, null_value, prompt):
+        'Loop raw_input while any value is set.'
+        stop = 0
+        autofill = 0
+        while 1:
+            # param must not be NULL (except min == 0)
+            try:
+                param = raw_input(prompt.encode(encoding)).strip()
+            except (KeyboardInterrupt, EOFError):
+                stop=2 # STOP whole application
+                break
+            # autofill
+            if autofill > 2 and param == '':
+                param = example
+                if not param: param = 'example' # value MUST be set
+                if type(param) == unicode: param = param.encode(encoding)
+                session_base.print_unicode('${BOLD}${GREEN}%s, %s:${NORMAL} %s'%((_T("I'm fed up"),_T("It's boring"))[random.randint(0,1)],_T("example inserted"),param))
+                autofill = 0
+            # Resolve NULL, STOP, min==0 / parse input
+            if param == '':
+                param = null_value # handle NULL
+            elif re.match('!+',param):
+                stop = 1 # STOP interactive mode
+                param = null_value
+                break
+            else:
+                # parse input value
+                param,err = text_to_unicode(param)
+                if err: session_base.print_unicode('${BOLD}${RED}%s${NORMAL}'%err)
+                if param[0] != '(': param = append_quotes(param) # put text with blanks into quotes
+                dct = {}
+                err = cmd_parser.parse(dct, ((name,min_max,allowed,'','','',()),), param)
+                if err: session_base.print_unicode('${BOLD}${RED}%s${NORMAL}'%err)
+                param = dct
+                # TODO: osetreni výskytu () nebo (NULL, NULL, NULL, NULL) + required
+                break
+            #.. resolve if is need to continue loop ..........................
+            if min_max[0] == 0:
+                break # value not required
+            elif param == null_value:
+                # need to continue
+                session_base.print_unicode('${BOLD}${RED}%s${NORMAL}'%_T('Value is required. MUST be set:'))
+                autofill += 1
+            else:
+                break # value is set - stop input
+        return param, stop
+        
+    def __interactive_mode__(self, command_name, columns, dct, null_value, parents=[]):
+        'Loop interactive input rod all params of command.'
+        stop = 0
+        param_reqired_type = (_T('optional'),_T('required'),_T('required only if part is set'))
+        for row in columns:
+            name,min_max,allowed,msg_help,example,pattern,children = row
+            min,max = min_max
+            parents.append([name,0,max])
+            if len(children):
+                # not value but list of children
+                pass
+                print "TODO: children..."
+            else:
+                # single value or list of values
+                print_info_listmax(max) # (Value can be a list of max %d values.)
+                if self._verbose > 1:
+                    if len(allowed):
+                        session_base.print_unicode('${WHITE}%s:${NORMAL} (%s)'%(_T('Parameter MUST be a value from following list'),', '.join(allowed)))
+                    if len(example):
+                        if type(example) == unicode: example = example.encode(encoding)
+                        session_base.print_unicode('%s ${WHITE}(%s)${NORMAL} %s: %s'%(__scope_to_string__(parents),msg_help,_T('Example'),example))
+                cr = 0
+                # Type of parameter:
+                req = min
+                while max is UNBOUNDED or cr < max:
+                    parents[-1][1] = cr
+                    prompt = u'!%s:%s (%s) > '%(command_name,__scope_to_string__(parents), unicode(param_reqired_type[req],encoding))
+                    param, stop = self.__ineractive_input_param__(name,min_max,allowed,example, null_value, prompt)
+            parents.pop()
+        return stop
         
     def __interactive_params__(self, command_name, columns, dct, null_value, parents=[]):
         'Runs LOOP of interactive input of the command params.'
@@ -889,7 +967,7 @@ def escape(text):
     return ''.join(ret)
 
 def append_quotes(text):
-    'Function append quotes if in text is any space and text is not in quotes.'
+    'Function append quotes if in text is any blank character and text is not in quotes.'
     if len(text) and text[0] not in '\'"' and re.search('\s',text):
         text = "'%s'"%escape(text)
     return text
@@ -968,3 +1046,12 @@ def remove_empty_keys(dct, null_value):
             if len(scope): retd[key] = scope
     return retd
 
+def text_to_unicode(text):
+    error=''
+    if type(text) != unicode:
+        try:
+            text = unicode(text, encoding)
+        except UnicodeDecodeError, msg:
+            error='UnicodeDecodeError: %s'%msg
+            text = unicode(repr(text), encoding)
+    return text,error

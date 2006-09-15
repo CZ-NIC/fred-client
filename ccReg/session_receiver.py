@@ -58,13 +58,15 @@ class ManagerReceiver(ManagerCommand):
                         for key in item['value'].keys():
                             if item['value'][key].get('data',None):
                                 # join node value
-                                msg.append('%s:'%item['value'][key].get('data',item['value'][key]))
+                                name = (key+':').ljust(16)
+                                value = item['value'][key].get('data',item['value'][key]).ljust(16)
+                                msg.append('%s%s'%(name,value))
                             if item['value'][key].get('attr',None):
                                 # join node attributes
                                 for attr in item['value'][key]['attr']:
                                     msg_attr.append("%s='%s'"%attr)
                     if item.has_key('reason'):
-                        msg.append(item['reason'].get('data',item['reason']))
+                        if item['reason'].has_key('data'): msg.append(item['reason']['data'])
                     if len(msg_attr): msg.append('(%s)'%', '.join(msg_attr))
                     self._dct_answer['errors'].append(' '.join(msg))
         return data[ANSW_CODE] != 1000
@@ -501,4 +503,5 @@ if __name__ == '__main__':
         # TEST selected document:
         # Data item has format: ('command:name',"""<?xml ...XML document... >""")
         # For example: ('nsset:info',"""<?xml ...<epp ...><response> ... </epp>""")
-        test(test_incomming_messages.data[-1])
+        ##test(test_incomming_messages.data[-1])
+        map(test, test_incomming_messages.data)
