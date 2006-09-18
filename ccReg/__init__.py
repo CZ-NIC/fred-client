@@ -720,7 +720,7 @@ class Client:
 def check_python_version():
     'Check for needed Python version. Returns "" if OK anf "..." not valid.'
     if sys.version_info[:2] < (2,4):
-        invalid = _T('This program requires Python 2.4 or higher. Your version is'),sys.version
+        invalid = _T('This program requires Python 2.4 or higher. Your version is'),'.'.join([str(x) for x in sys.version_info[:3]])
     else:
         invalid = ''
     return invalid

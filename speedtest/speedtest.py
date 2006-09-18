@@ -54,11 +54,11 @@ import sys
 sys.path.insert(0, '../')
 
 # Pocet vlaken
-threads = 10
+threads = 4
 # Pocet objektu k vytvoreni
-targets = 1000
+targets = 100
 # Smazat objekty? # True / False, 0 / 1, 'cokoliv' / None
-delete_after_run = True
+delete_after_run = False
 
 ## ----------- SHOCK HAZARD ----------------------------------------
 ## ----------- NO USER SERVICEABLE PARTS INSIDE --------------------

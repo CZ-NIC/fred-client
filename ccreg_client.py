@@ -7,7 +7,7 @@ from ccReg.translate import _T, options, option_errors
 if __name__ == '__main__':
     msg_invalid = ccReg.check_python_version()
     if msg_invalid:
-        print msg_invalid
+        print "%s %s" % (msg_invalid)
     else:
         if options['help']:
             print '%s: %s [OPTIONS...]\n\n%s\n\n%s\n  %s\n\n  %s\n'%(_T('Usage'), 'ccreg_client',
