@@ -849,12 +849,15 @@ class Message(eppdoc.Message):
 
     def save_history(self):
         'Save history of command line.'
-        if history_write: history_write(history_filename) # save history
+        if history_write:
+            try:
+                history_write(history_filename) # save history
+            except IOError, msg:
+                print 'IOError:',msg
         
     def restore_history(self):
         'Restore history of command line.'
         if history_read: history_read(history_filename) # restore history (flush interactive params)
-
 
 def __has_key__(dct, key):
     'Check if key exists and if any value is set. (dct MUST be in format: dct[key] = [{...}, ...])'

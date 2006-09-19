@@ -61,7 +61,10 @@ def main(session_name):
                         if confirmation not in ('y','Y'): continue
                     epp.send(epp_doc)          # send to server
                     xml_answer = epp.receive()     # receive answer
-                    epp.process_answer(xml_answer) # process answer
+                    try:
+                        epp.process_answer(xml_answer) # process answer
+                    except (KeyboardInterrupt, EOFError):
+                        break # handle Ctrl+C or Ctrl+D from testy user
                     epp.display() # display errors or notes
                     epp.print_answer()
                 else:
