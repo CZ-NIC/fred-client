@@ -34,6 +34,8 @@ TAG_clTRID = 'cltrid' # Definition for --key-name = clTRID value.
 class Message(eppdoc.Message):
     "Client EPP commands."
 
+    param_reqired_type = (_T('optional'),_T('required'),_T('required only if part is set'))
+    
     def __get_help_scope__(self, params, deep=1):
         'Support for get_help(). IN: params, deep'
         msg=[]
@@ -44,8 +46,10 @@ class Message(eppdoc.Message):
             if min > 0:
                 color = {False:'YELLOW',True:'GREEN'}[deep==1]
                 required = '${%s}${BOLD}(%s)${NORMAL}'%(color,_T('required'))
+                min_size = _TP('minimum is %d item','minimum are %d items',min)%min
             else:
                 required = '${WHITE}(%s)${NORMAL}'%_T('optional')
+                min_size = ''
             text = '%s${BOLD}%s${NORMAL} %s'%(indent,name,required)
             if max is UNBOUNDED:
                 max_size = _T('unbounded list')
@@ -54,7 +58,7 @@ class Message(eppdoc.Message):
             else:
                 max_size = ''
             if max_size:
-                text = '%s%s%s'%(text,('\t','\t\t')[len(text)<42],max_size)
+                text = '%s%s%s %s'%(text,('\t','\t\t')[len(text)<42],max_size,min_size)
             if len(allowed):
                 txt = ','.join(allowed)
                 if len(txt)>37: txt = txt[:37]+'...' # shorter too long text
@@ -111,7 +115,7 @@ class Message(eppdoc.Message):
         columns.extend(self._command_params[command_name][1])
         self.__fill_empy_from_config__(config, dct, columns)
         return dct
-        
+
     def __check_required__(self, columns, dct_values, scopes=[]):
         'Check parsed values for required and allowed values.'
         errors = []
@@ -139,66 +143,9 @@ class Message(eppdoc.Message):
             scopes.pop()
         return errors
 
-    def __insist_on_required__(self, command_name, columns, dct, null_value, parents=[]):
-        'Ask again for required values. Used by Interactive params mode.'
-        errors = []
-        param = ''
-        stop=0
-        used=[]
-        for k,v in dct.items():
-            if len(v[0]): used.append(k)
-        if not len(used): return errors,param,stop # this scope was not set, so we dont neet required values
-        for row in columns:
-            name,min_max,allowed,msg_help,example,pattern,children = row
-            min,max = min_max
-            if not min: continue
-            if dct.has_key(name):
-                for value in dct[name]:
-                    if len(value): continue # one of values is set
-            else:
-                dct[name] = ['']
-            parents.append([name,0,max])
-            stop=0
-            autofill=0
-            while not len(dct[name][0]):
-                prompt = u'!%s:%s (%s) > '%(command_name,__scope_to_string__(parents), unicode(_T('required'),encoding))
-                try:
-                    param = raw_input(prompt.encode(encoding)).strip()
-                except (KeyboardInterrupt, EOFError):
-                    stop=2
-                    break
-                if param == '': param = null_value
-                if autofill > 2 and param == null_value:
-                    param = example
-                    if not param: param = 'example' # value MUST be set
-                    if type(param) == unicode: param = param.encode(encoding)
-                    session_base.print_unicode('${BOLD}${GREEN}%s, %s:${NORMAL} %s'%((_T("I'm fed up"),_T("It's boring"))[random.randint(0,1)],_T("example inserted"),param))
-                    autofill=0
-                if param == null_value:
-                    session_base.print_unicode('${BOLD}${RED}%s${NORMAL}'%_T('Value is required. MUST be set:'))
-                    autofill+=1
-                    continue
-                else:
-                    if type(param) != unicode:
-                        try:
-                            param = unicode(param, encoding)
-                        except UnicodeDecodeError, msg:
-                            errors.append('UnicodeDecodeError: %s'%msg)
-                            param = unicode(repr(param), encoding)
-                    if param[0] == '!':
-                        stop=1
-                        break
-                    if param[0] != '(': param = append_quotes(param)
-                    req_dct = {}
-                    err = cmd_parser.parse(req_dct, ((name,min_max,allowed,'','','',()),), param)
-                    dct[name][0] = req_dct[name][0]
-                    if err: errors.extend(err)
-            parents.pop()
-        if len(param) and param[0] == '!': param = param[1:]
-        return errors,param,stop
-
-    def __ineractive_input_param__(self, name,min_max,allowed,example, null_value, prompt):
+    def __ineractive_input_one_param__(self, name,min_max,allowed,example, null_value, prompt):
         'Loop raw_input while any value is set.'
+        ret_value = null_value
         stop = 0
         autofill = 0
         while 1:
@@ -208,7 +155,7 @@ class Message(eppdoc.Message):
             except (KeyboardInterrupt, EOFError):
                 stop=2 # STOP whole application
                 break
-            # autofill
+            # autofill required missing values
             if autofill > 2 and param == '':
                 param = example
                 if not param: param = 'example' # value MUST be set
@@ -217,163 +164,106 @@ class Message(eppdoc.Message):
                 autofill = 0
             # Resolve NULL, STOP, min==0 / parse input
             if param == '':
-                param = null_value # handle NULL
+                ret_value = null_value
             elif re.match('!+',param):
                 stop = 1 # STOP interactive mode
-                param = null_value
+                ret_value = null_value
                 break
             else:
-                # parse input value
-                param,err = text_to_unicode(param)
-                if err: session_base.print_unicode('${BOLD}${RED}%s${NORMAL}'%err)
-                if param[0] != '(': param = append_quotes(param) # put text with blanks into quotes
-                dct = {}
-                err = cmd_parser.parse(dct, ((name,min_max,allowed,'','','',()),), param)
-                if err: session_base.print_unicode('${BOLD}${RED}%s${NORMAL}'%err)
-                param = dct
-                # TODO: osetreni výskytu () nebo (NULL, NULL, NULL, NULL) + required
-                break
+                if param in ("''",'""'):
+                    ret_value = '' # empty string
+                else:
+                    # parse input value
+                    ret_value,err = text_to_unicode(param)
+                    if err: session_base.print_unicode('${BOLD}${RED}%s${NORMAL}'%err)
+                if allowed and ret_value not in allowed:
+                    # not allowed value, go to input again
+                    session_base.print_unicode('${BOLD}${RED}%s:${NORMAL} ${BOLD}${GREEN}(%s)${NORMAL}'%(_T('Value "%s" is not allowed. Valid is')%ret_value.encode(encoding),', '.join(allowed)))
+                    continue
             #.. resolve if is need to continue loop ..........................
             if min_max[0] == 0:
                 break # value not required
-            elif param == null_value:
+            elif ret_value == null_value:
                 # need to continue
                 session_base.print_unicode('${BOLD}${RED}%s${NORMAL}'%_T('Value is required. MUST be set:'))
                 autofill += 1
             else:
                 break # value is set - stop input
-        return param, stop
+        return ret_value, stop
+
+    def __interactive_mode_children_values__(self,dct,command_name,parents,name,min,max,children,null_value):
+        'Put children values (namespaces)'
+        print_info_listmax(min,max) # (Value can be a list of max %d values.)
+        dct[name] = []
+        current_pos = already_done = 0
+        while max is UNBOUNDED or current_pos < max:
+            parents[-1][3] = current_pos # name, min, max, counter = current_pos
+            dct_item = {}
+            user_typed_null, stop = self.__interactive_mode__(command_name, children, dct_item, null_value, parents, already_done)
+            if len(dct_item):
+                dct[name].append(dct_item)
+                user_typed_null = 0 # user typed at least one valid value
+            already_done = (0,1)[len(dct[name]) >= min]
+            if stop or (user_typed_null and already_done): break
+            current_pos += 1
+        if not len(dct[name]): dct.pop(name)
+        return user_typed_null, stop
+
+    def __interactive_mode_single_value__(self,dct,command_name,parents,name,min,max,allowed,msg_help,example,null_value,already_done,required_pos):
+        'Put single value'
+        # single value or list of values
+        print_info_listmax(min,max) # (Value can be a list of max %d values.)
+        if self._verbose > 1:
+            if len(allowed):
+                session_base.print_unicode('${WHITE}%s:${NORMAL} (%s)'%(_T('Parameter MUST be a value from following list'),', '.join(allowed)))
+            if len(example):
+                if type(example) == unicode: example = example.encode(encoding)
+                session_base.print_unicode('%s ${WHITE}(%s)${NORMAL} %s: %s'%(__scope_to_string__(parents),msg_help,_T('Example'),example))
+        current_pos = stop = 0
+        while max is UNBOUNDED or current_pos < max:
+            parents[-1][3] = current_pos # name, min, max, counter = current_pos
+            if dct.has_key(name) and len(dct[name]) >= min: min = required_pos = 0 # all needed values has been set
+            prompt = u'!%s:%s (%s) > '%(command_name,__scope_to_string__(parents), unicode(self.param_reqired_type[required_pos],encoding))
+            param, stop = self.__ineractive_input_one_param__(name,(min,max),allowed,example, null_value, prompt)
+            if stop: break
+            current_pos += 1
+            if param != null_value:
+                if dct.has_key(name):
+                    dct[name].append(param)
+                else:
+                    dct[name] = [param]
+            elif min == 0: break
+        return (dct.has_key(name) == False), stop
         
-    def __interactive_mode__(self, command_name, columns, dct, null_value, parents=[]):
+    def __interactive_mode__(self, command_name, columns, dct, null_value, parents=[], already_done=0):
         'Loop interactive input rod all params of command.'
-        stop = 0
-        param_reqired_type = (_T('optional'),_T('required'),_T('required only if part is set'))
+        stop = previous_value_is_set = 0
+        previous_min = [n[1]for n in parents]
         for row in columns:
             name,min_max,allowed,msg_help,example,pattern,children = row
             min,max = min_max
-            parents.append([name,0,max])
+            parents.append([name,min,max,0]) # name,min,max,counter
+            # Když je hodnota povinná jen v této sekci, tak se req=1 nastaví na req=2
+            # když je hodnota s req=2 zadána, tak se všechny ostatní req hodnoty nastaví na req=1
+            if already_done:
+                min = 0 # reset required values
+            if min:
+                required_pos = 1 # index of prompt message
+                if not previous_value_is_set and len(parents) > 1 and 0 in previous_min:
+                    required_pos = 2 # previous scope doesn't need this scope as required
+                    min = 0 # reset required values
+            else:
+                required_pos = 0 # index of prompt message
             if len(children):
                 # not value but list of children
-                pass
-                print "TODO: children..."
+                user_typed_null, stop = self.__interactive_mode_children_values__(dct,command_name,parents,name,min,max,children,null_value)
             else:
-                # single value or list of values
-                print_info_listmax(max) # (Value can be a list of max %d values.)
-                if self._verbose > 1:
-                    if len(allowed):
-                        session_base.print_unicode('${WHITE}%s:${NORMAL} (%s)'%(_T('Parameter MUST be a value from following list'),', '.join(allowed)))
-                    if len(example):
-                        if type(example) == unicode: example = example.encode(encoding)
-                        session_base.print_unicode('%s ${WHITE}(%s)${NORMAL} %s: %s'%(__scope_to_string__(parents),msg_help,_T('Example'),example))
-                cr = 0
-                # Type of parameter:
-                req = min
-                while max is UNBOUNDED or cr < max:
-                    parents[-1][1] = cr
-                    prompt = u'!%s:%s (%s) > '%(command_name,__scope_to_string__(parents), unicode(param_reqired_type[req],encoding))
-                    param, stop = self.__ineractive_input_param__(name,min_max,allowed,example, null_value, prompt)
+                user_typed_null, stop = self.__interactive_mode_single_value__(dct,command_name,parents,name,min,max,allowed,msg_help,example,null_value,already_done,required_pos)
             parents.pop()
-        return stop
-        
-    def __interactive_params__(self, command_name, columns, dct, null_value, parents=[]):
-        'Runs LOOP of interactive input of the command params.'
-        errors = []
-        param = ''
-        stop=0
-        is_child = len(parents)>0
-        min = 0
-        param_reqired_type = (_T('optional'),_T('required'),_T('required only if part is set'))
-        for row in columns:
-            if len(param) and param[0] == '!': break
-            if is_child and param == '' and min:
-                break
-            name,min_max,allowed,msg_help,example,pattern,children = row
-            min,max = min_max
-            parents.append([name,0,max])
-            if len(children):
-                print_info_listmax(max) # (Value can be a list of max %d values.)
-                dct[name] = []
-                idc=0
-                while max is UNBOUNDED or idc < max:
-                    dct[name].append({})
-                    parents[-1][1] = idc
-                    err, param, stop = self.__interactive_params__(command_name, children, dct[name][-1], null_value, parents)
-                    if err: errors.extend(err)
-                    if stop: break
-                    err, param, stop = self.__insist_on_required__(command_name, children, dct[name][-1], null_value, parents)
-                    if err: errors.extend(err)
-                    if stop: break
-                    if len(param) and param[0] == '!':
-                        if max is None or max > 1: 
-                            param = param[1:]
-                        break
-                    idc+=1
-                parents.pop()
-                if stop: break
-                continue
-            if name =='':
-                parents.pop()
-                continue
-            is_child = len(parents)>1
-            # Type of parameter:
-            req = min
-            if is_child and min: req = 2 # if param is child and required in this child part
-            print_info_listmax(max) # (Value can be a list of max %d values.)
-            if self._verbose > 1:
-                if len(allowed):
-                    session_base.print_unicode('${WHITE}%s:${NORMAL} (%s)'%(_T('Parameter MUST be a value from following list'),', '.join(allowed)))
-                if len(example):
-                    if type(example) == unicode: example = example.encode(encoding)
-                    session_base.print_unicode('%s ${WHITE}(%s)${NORMAL} %s: %s'%(__scope_to_string__(parents),msg_help,_T('Example'),example))
-            cr = 0
-            stop=0
-            autofill=0
-            while max is UNBOUNDED or cr < max:
-                parents[-1][1] = cr
-                prompt = u'!%s:%s (%s) > '%(command_name,__scope_to_string__(parents), unicode(param_reqired_type[req],encoding))
-                try:
-                    param = raw_input(prompt.encode(encoding)).strip()
-                except (KeyboardInterrupt, EOFError):
-                    stop=2
-                    break
-                if param == '': param = null_value
-                # TODO: vypnuti kdyz max je unbouded
-                if autofill > 2 and param == null_value:
-                    param = example
-                    if not param: param = 'example' # value MUST be set
-                    if type(param) == unicode: param = param.encode(encoding)
-                    session_base.print_unicode('${BOLD}${GREEN}%s, %s:${NORMAL} %s'%((_T("I'm fed up"),_T("It's boring"))[random.randint(0,1)],_T("example inserted"),param))
-                    autofill=0
-                if param == null_value:
-                    if req == 1: # require in first level only
-                        session_base.print_unicode('${BOLD}${RED}%s${NORMAL}'%_T('Value is required. MUST be set:'))
-                        autofill+=1
-                        continue
-                    if cr == 0:
-                        # one item MUST be set at minimum
-                        if dct.has_key(name):
-                            dct[name].append(null_value)
-                        else:
-                            dct[name] = [null_value]
-                    break
-                else:
-                    if type(param) != unicode:
-                        try:
-                            param = unicode(param, encoding)
-                        except UnicodeDecodeError, msg:
-                            errors.append('UnicodeDecodeError: %s'%msg)
-                            param = unicode(repr(param), encoding)
-                    if param[0] == '!':
-                        stop=1
-                        break
-                    if param[0] != '(': param = append_quotes(param)
-                    err = cmd_parser.parse(dct, ((name,min_max,allowed,'','','',()),), param)
-                    if err: errors.extend(err)
-                cr+=1
-            parents.pop()
-            if stop: break
-        if len(param) and param[0] == '!': param = param[1:]
-        return errors,param,stop
+            if user_typed_null and (already_done or required_pos == 2): break
+            if stop: break # Handle ! or Ctrl+C, Ctrl+D
+            if not user_typed_null: previous_value_is_set = 1
+        return user_typed_null, stop
 
     def get_command_line(self, null_value):
         'Returns example of command built from parameters.'
@@ -406,19 +296,22 @@ class Message(eppdoc.Message):
         columns.extend(self._command_params[command_name][1])
         dct['command'] = [command_name]
         if interactive:
-            session_base.print_unicode('${BOLD}${YELLOW}%s: ${NORMAL}${BOLD}!${NORMAL} %s'%(_T('Interactive input params mode. For BREAK type'),_T("If you don't fill item press ENTER.")))
             dct[command_name] = [command_name]
-            self.save_history()
-            errors, param, stop = self.__interactive_params__(command_name, vals[1], dct, null_value)
-            if not errors:
-                example = __build_command_example__(columns, dct, null_value)
-            if stop != 2: # user press Ctrl+C or Ctrl+D
-                # Note the interactive mode is closed.
-                try:
-                    raw_input(session_base.colored_output.render('${BOLD}${YELLOW}%s${NORMAL}'%_T('End of interactive input. [press enter]')))
-                except (KeyboardInterrupt, EOFError):
-                    pass
-            self.restore_history()
+            if len(vals[1]) > 1:
+                session_base.print_unicode('${BOLD}${YELLOW}%s: ${NORMAL}${BOLD}!${NORMAL} %s'%(_T('Interactive input params mode. For BREAK type'),_T("If you don't fill item press ENTER.")))
+                self.save_history()
+                user_typed_null, stop = self.__interactive_mode__(command_name, vals[1], dct, null_value)
+                if stop != 2: # user press Ctrl+C or Ctrl+D
+                    example = __build_command_example__(columns, dct, null_value)
+                    # Note the interactive mode is closed.
+                    try:
+                        raw_input(session_base.colored_output.render('${BOLD}${YELLOW}%s${NORMAL}'%_T('End of interactive input. [press enter]')))
+                    except (KeyboardInterrupt, EOFError):
+                        pass
+                self.restore_history()
+            else:
+                session_base.print_unicode('${BOLD}${YELLOW}%s${NORMAL}'%_T('No parameters. Skip interactive mode.'))
+            errors = []
         else:
             errors = cmd_parser.parse(dct, columns, cmd)
         if errors: error.extend(errors)
@@ -801,6 +694,7 @@ class Message(eppdoc.Message):
             ]
         if __has_key__(dct,'add'):
             data.append(('contact:update', 'contact:add'))
+            self.__parse_status_abrev__(dct,'add')
             self.__append_attr__(data, dct, 'add', 'contact:add', 'contact:status','s')
         if __has_key__(dct,'rem'):
             data.append(('contact:update', 'contact:rem'))
@@ -937,15 +831,15 @@ def __has_key_dict__(dct, key):
     return dct.has_key(key) and len(dct[key]) and len(dct[key][0])
 
 def __scope_to_string__(scopes):
-    'Assemble names into string. Scopes is in format: ((name, cr, max), ...)'
+    'Assemble names into string. Scopes is in format: ((name, min, max, counter), ...)'
     tokens=[]
-    for name,cr,max in scopes:
+    for name,min,max,counter in scopes:
         if max is UNBOUNDED or max > 1:
             if max is UNBOUNDED:
                 str_max = 'oo'
             else:
                 str_max = str(max)
-            tokens.append('%s[%d/%s]'%(name,cr+1,str_max))
+            tokens.append('%s[%d/%s]'%(name,counter+1,str_max))
         else:
             tokens.append(name)
     return '.'.join(tokens)
@@ -1024,11 +918,15 @@ def __build_command_example__(columns, dct_data, null_value):
     while len(body) and body[-1] in (null_value,'()'): body.pop()
     return ' '.join(body)
     
-def print_info_listmax(max):
+def print_info_listmax(min,max):
+    msg = []
     if max > 1:
-        session_base.print_unicode(_TP('(Value can be a list of max %d value.)','(Value can be a list of max %d values.)',max)%max)
+        msg.append(_TP('Value can be a list of max %d value.','Value can be a list of max %d values.',max)%max)
     elif max is UNBOUNDED:
-        session_base.print_unicode(_T('(Value can be an unbouded list of values.)'))
+        msg.append(_T('Value can be an unbouded list of values.'))
+    if len(msg) and min:
+        msg.append('%s %d.'%(_T('Minimum is'),min))
+    if len(msg): session_base.print_unicode('(%s)'%(' '.join(msg)))
 
 def remove_empty_keys(dct, null_value):
     'Remove empty keys. dct is in format {key: [str, {key: [str, str]} ,str]}'
@@ -1042,7 +940,7 @@ def remove_empty_keys(dct, null_value):
                     dcit = remove_empty_keys(item, null_value)
                     if len(dcit): scope.append(dcit)
                 else:
-                    scope.append(item)
+                    if item != null_value: scope.append(item)
             if len(scope): retd[key] = scope
     return retd
 

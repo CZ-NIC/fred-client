@@ -57,6 +57,10 @@ class Message(eppdoc_assemble.Message):
         #'serverDeleteProhibited', 'serverTransferProhibited', 'serverUpdateProhibited')
     # format:
     # command-name: (param-name, (min,max), (list of required), 'help', 'example', 'pattern', (list of children)
+    # For include new command you need do this steps:
+    #   1. add new item into command_params
+    #   2. add function assemble_...() into eppdoc_assemble.Message
+    #   3. [optional] add answer_response_...() in session_receiver.ManagerReceiver
     command_params = {
         'hello': (0, (('',(0,0),(),'','','',()),), _T('The EPP "hello" request a "greeting" response message from an EPP server at any time.'),()),
         'logout': (0, [('',(0,0),(),'','','',()),], _T('The EPP "logout" command is used to end a session with an EPP server.'),()),
@@ -198,11 +202,11 @@ class Message(eppdoc_assemble.Message):
                     ('name',(0,1),(),_T('name'),u'Jan Novák','',()),
                     ('org',(0,1),(),_T('organisation name'),'Firma s.r.o.','',()),
                     ('addr',(0,1),(),_T('address'),'','',(
-                        ('street',(0,3),(),_T('street'),u'Na národní 1234/14','',()),
                         ('city',(1,1),(),_T('city'),'Praha','',()),
+                        ('cc',(1,1),(),_T('cc'),'CZ','',()),
+                        ('street',(0,3),(),_T('street'),u'Na národní 1234/14','',()),
                         ('sp',(0,1),(),_T('sp'),'','',()),
                         ('pc',(0,1),(),_T('pc'),'12000','',()),
-                        ('cc',(1,1),(),_T('cc'),'CZ','',()),
                     )),
                 )),
                 ('voice',(0,1),(),_T('voice (phone number)'),'+420.222745111','',()),
@@ -406,7 +410,6 @@ class Message(eppdoc_assemble.Message):
             names = []
         return names
 
-    
     def __init__(self):
         eppdoc_assemble.Message.__init__(self)
         self._command_params = Message.command_params

@@ -34,9 +34,10 @@ def main(session_name):
                 is_online = 1
                 online = '%s@%s: '%epp.get_username_and_host()
         try:
-            command = raw_input(online)
+            command = raw_input(online).strip()
         except (KeyboardInterrupt, EOFError):
             break
+        if command == '': continue
         if command in ('q','quit','exit'):
             epp.send_logout()
             break

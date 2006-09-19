@@ -60,6 +60,8 @@ if __name__ == '__main__':
                 """
 ./ccreg_create.py info_domain nic.cz
 ./ccreg_create.py info_contact reg-id
+echo -en "check_domain nic.cz\\ninfo_domain nic.cz" | ./ccreg_create.py
+cat file-with-commands.txt | ./ccreg_create.py
 """,
                 _T('Eventual errors are return in XML format: <errors>... msg ...</errors>.'),
                 _T('For more information, see README.')
