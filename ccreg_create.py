@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
+# Example: echo -en "check_domain nic.cz\ninfo_domain nic.cz" | ./ccreg_create.py
 """Create EPP XML document from command line parameters.
 """
 import sys, re
@@ -29,8 +30,11 @@ if __name__ == '__main__':
     if msg_invalid:
         print msg_invalid
     else:
-        if not sys.stdin.isatty(): print sys.stdin.read() # keep previous output
-        if len(sys.argv) > 1:
+        if not sys.stdin.isatty():
+            for cmd in re.split('[\r\n]+',sys.stdin.read()):
+                command = cmd.strip()
+                if command: main(command)
+        elif len(sys.argv) > 1:
             command = ' '.join(option_args)
             if options['range']:
                 epp_doc = xml_error = ''
@@ -44,7 +48,7 @@ if __name__ == '__main__':
                         min = int(m.group(2))
                         max = int(m.group(3))
                     for n in range(min,max):
-                        main(re.sub(anchor,'%s:%d'%(anchor,n),command))
+                        main(re.sub(anchor,'%s%d'%(anchor,n),command))
                 else:
                     print "<?xml encoding='utf-8'?><errors>Invalid range pattern: %s</errors>"%options['range']
             else:
