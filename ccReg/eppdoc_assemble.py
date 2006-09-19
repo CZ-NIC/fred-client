@@ -60,7 +60,7 @@ class Message(eppdoc.Message):
             if max_size:
                 text = '%s%s%s %s'%(text,('\t','\t\t')[len(text)<42],max_size,min_size)
             if len(allowed):
-                txt = ','.join(allowed)
+                txt = ','.join(self.__make_abrev_help__(allowed))
                 if len(txt)>37: txt = txt[:37]+'...' # shorter too long text
                 text = '%s ${WHITE}%s: ${CYAN}(%s)${NORMAL}'%(text,_T('accepts only values'),txt)
             msg.append('%s %s'%(text,help))
@@ -68,6 +68,15 @@ class Message(eppdoc.Message):
                 msg.extend(self.__get_help_scope__(children, deep+1))
         return msg
 
+    def __make_abrev_help__(self, allowed):
+        'Join abreviations with main name.'
+        allowed_abrev = []
+        for n in allowed:
+            allowed_abrev.append(n[0])
+            if len(n)>1:
+                allowed_abrev[-1]+= ' (%s)'%n[1]
+        return allowed_abrev
+        
     def get_help(self, command_name):
         "Returns help for selected command: (command_line, complete help)."
         command_line = []
@@ -130,9 +139,11 @@ class Message(eppdoc.Message):
                     errors.append('%s: %s %d. %s'%(scope_name,_T('list of values overflow. Maximum is'),min_max[1],str(dct_values[name])))
                 if allowed:
                     # check allowed values
+                    allowed_abrev=[]
+                    map(allowed_abrev.extend, allowed)
                     for value in dct_values[name]:
-                        if value not in allowed:
-                            errors.append('%s: %s %s'%(scope_name,_T('Value "%s" is not allowed. Valid is:')%value.encode(encoding),str(allowed)))
+                        if value not in allowed_abrev:
+                            errors.append('%s: %s: (%s)'%(scope_name,_T('Value "%s" is not allowed. Valid is')%value.encode(encoding),', '.join(self.__make_abrev_help__(allowed))))
                 # walk throught descendants:
                 if children:
                     for dct in dct_values[name]:
@@ -148,6 +159,9 @@ class Message(eppdoc.Message):
         ret_value = null_value
         stop = 0
         autofill = 0
+        allowed_abrev=[]
+        map(allowed_abrev.extend, allowed)
+        allowed_help = self.__make_abrev_help__(allowed)
         while 1:
             # param must not be NULL (except min == 0)
             try:
@@ -176,9 +190,9 @@ class Message(eppdoc.Message):
                     # parse input value
                     ret_value,err = text_to_unicode(param)
                     if err: session_base.print_unicode('${BOLD}${RED}%s${NORMAL}'%err)
-                if allowed and ret_value not in allowed:
+                if allowed and ret_value not in allowed_abrev:
                     # not allowed value, go to input again
-                    session_base.print_unicode('${BOLD}${RED}%s:${NORMAL} ${BOLD}${GREEN}(%s)${NORMAL}'%(_T('Value "%s" is not allowed. Valid is')%ret_value.encode(encoding),', '.join(allowed)))
+                    session_base.print_unicode('${BOLD}${RED}%s:${NORMAL} ${BOLD}${GREEN}(%s)${NORMAL}'%(_T('Value "%s" is not allowed. Valid is')%ret_value.encode(encoding),', '.join(allowed_help)))
                     continue
             #.. resolve if is need to continue loop ..........................
             if min_max[0] == 0:
@@ -215,7 +229,7 @@ class Message(eppdoc.Message):
         print_info_listmax(min,max) # (Value can be a list of max %d values.)
         if self._verbose > 1:
             if len(allowed):
-                session_base.print_unicode('${WHITE}%s:${NORMAL} (%s)'%(_T('Parameter MUST be a value from following list'),', '.join(allowed)))
+                session_base.print_unicode('${WHITE}%s:${NORMAL} (%s)'%(_T('Parameter MUST be a value from following list'),', '.join(self.__make_abrev_help__(allowed))))
             if len(example):
                 if type(example) == unicode: example = example.encode(encoding)
                 session_base.print_unicode('%s ${WHITE}(%s)${NORMAL} %s: %s'%(__scope_to_string__(parents),msg_help,_T('Example'),example))
@@ -331,6 +345,22 @@ class Message(eppdoc.Message):
         'Return available client commands.'
         return [name[9:] for name in dir(self.__class__) if name[:9]=='assemble_']
 
+        
+    def __parse_status_abrev__(self, dct, key, allowed):
+        'Replace abreviations to the full names'
+        if not dct.has_key(key): return
+        dabrv = {}
+        for n in allowed:
+            if len(n)>1:
+                dabrv[n[1]] = n[0]
+        names = []
+        for name in dct[key]:
+            if dabrv.has_key(name):
+                names.append(dabrv[name])
+            else:
+                names.append(name)
+        dct[key] = names
+        
     #===========================================
     #
     # Process commands
@@ -694,10 +724,11 @@ class Message(eppdoc.Message):
             ]
         if __has_key__(dct,'add'):
             data.append(('contact:update', 'contact:add'))
-            self.__parse_status_abrev__(dct,'add')
+            self.__parse_status_abrev__(dct,'add',self.update_status)
             self.__append_attr__(data, dct, 'add', 'contact:add', 'contact:status','s')
         if __has_key__(dct,'rem'):
             data.append(('contact:update', 'contact:rem'))
+            self.__parse_status_abrev__(dct,'rem',self.update_status)
             self.__append_attr__(data, dct, 'rem', 'contact:rem', 'contact:status','s')
         if __has_key_dict__(dct,'chg'):
             chg = dct['chg'][0]
@@ -751,6 +782,7 @@ class Message(eppdoc.Message):
             if __has_key_dict__(dct,key):
                 data.append(('domain:update', 'domain:%s'%key))
                 dct_key = dct[key][0]
+                self.__parse_status_abrev__(dct_key,'status',self.update_status)
                 if __has_key__(dct_key,'admin'):
                     self.__append_values__(data, dct_key, 'admin', 'domain:%s'%key, 'domain:admin')
                 self.__append_attr__(data, dct_key, 'status', 'domain:%s'%key, 'domain:status','s')
@@ -793,11 +825,13 @@ class Message(eppdoc.Message):
                     data.append(('nsset:ns','nsset:name',dct_dns['name'][0]))
                     self.__append_values__(data, dct_dns, 'addr', 'nsset:ns', 'nsset:addr')
             self.__append_values__(data, dct_add, 'tech', 'nsset:add', 'nsset:tech')
+            self.__parse_status_abrev__(dct_add,'status',self.update_status)
             self.__append_attr__(data, dct_add, 'status', 'nsset:add', 'nsset:status','s')
 
         if __has_key_dict__(dct,'rem'):
             data.append(('nsset:update','nsset:rem'))
             dct_rem = dct['rem'][0]
+            self.__parse_status_abrev__(dct_rem,'status',self.update_status)
             self.__append_values__(data, dct_rem, 'name', 'nsset:rem', 'nsset:name')
             self.__append_values__(data, dct_rem, 'tech', 'nsset:rem', 'nsset:tech')
             self.__append_attr__(data, dct_rem, 'status', 'nsset:rem', 'nsset:status','s')
