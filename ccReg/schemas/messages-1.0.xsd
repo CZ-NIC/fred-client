@@ -57,6 +57,10 @@
 
     <complexType name="transferType">
       <sequence>
+        <!--
+	handle type (eppcom:labelType) is general enough to hold
+	domain, contact, nsset name.
+	-->
         <element name="handle" type="eppcom:labelType"/>
         <element name="trID" type="eppcom:clIDType"/>
         <element name="date" type="dateTime"/>

@@ -12,6 +12,8 @@
 	    schemaLocation="eppcom-1.0.xsd"/>
     <import namespace="urn:ietf:params:xml:ns:epp-1.0"
 	    schemaLocation="epp-1.0.xsd"/>
+    <import namespace="http://www.nic.cz/xml/epp/fredcom-1.0"
+	    schemaLocation="fredcom-1.0.xsd"/>
     <import namespace="http://www.nic.cz/xml/epp/contact-1.0"
 	    schemaLocation="contact-1.0.xsd"/>
     <import namespace="http://www.nic.cz/xml/epp/domain-1.0"

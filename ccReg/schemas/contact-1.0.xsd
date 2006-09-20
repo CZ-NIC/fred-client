@@ -3,6 +3,7 @@
   <schema targetNamespace="http://www.nic.cz/xml/epp/contact-1.0"
           xmlns:contact="http://www.nic.cz/xml/epp/contact-1.0"
           xmlns:eppcom="urn:ietf:params:xml:ns:eppcom-1.0"
+          xmlns:fredcom="http://www.nic.cz/xml/epp/fredcom-1.0"
           xmlns="http://www.w3.org/2001/XMLSchema"
           elementFormDefault="qualified">
 
@@ -11,10 +12,12 @@
   -->
     <import namespace="urn:ietf:params:xml:ns:eppcom-1.0"
             schemaLocation="eppcom-1.0.xsd"/>
+    <import namespace="http://www.nic.cz/xml/epp/fredcom-1.0"
+            schemaLocation="fredcom-1.0.xsd"/>
 
     <annotation>
       <documentation>
-        Extensible Provisioning Protocol v1.0
+        Extension to Extensible Provisioning Protocol v1.0
         contact provisioning schema.
       </documentation>
     </annotation>
@@ -71,7 +74,7 @@
   -->
     <complexType name="createType">
       <sequence>
-        <element name="id" type="eppcom:clIDType"/>
+        <element name="id" type="fredcom:objIDType"/>
         <element name="postalInfo" type="contact:postalInfoType"/>
         <element name="voice" type="contact:e164StringType"
          minOccurs="0"/>
@@ -135,7 +138,7 @@
   -->
     <complexType name="sIDType">
       <sequence>
-        <element name="id" type="eppcom:clIDType"/>
+        <element name="id" type="fredcom:objIDType"/>
       </sequence>
     </complexType>
 
@@ -144,7 +147,7 @@
   -->
     <complexType name="mIDType">
       <sequence>
-        <element name="id" type="eppcom:clIDType"
+        <element name="id" type="fredcom:objIDType"
          maxOccurs="unbounded"/>
       </sequence>
     </complexType>
@@ -194,7 +197,7 @@
   -->
     <complexType name="authIDType">
       <sequence>
-        <element name="id" type="eppcom:clIDType"/>
+        <element name="id" type="fredcom:objIDType"/>
         <element name="authInfo" type="contact:authInfoType"
          minOccurs="0"/>
       </sequence>
@@ -205,7 +208,7 @@
   -->
     <complexType name="updateType">
       <sequence>
-        <element name="id" type="eppcom:clIDType"/>
+        <element name="id" type="fredcom:objIDType"/>
         <element name="add" type="contact:addRemType"
          minOccurs="0"/>
         <element name="rem" type="contact:addRemType"
@@ -295,7 +298,7 @@
 
     <complexType name="checkIDType">
       <simpleContent>
-        <extension base="eppcom:clIDType">
+        <extension base="fredcom:objIDType">
           <attribute name="avail" type="boolean"
            use="required"/>
         </extension>
@@ -306,7 +309,7 @@
   -->
     <complexType name="creDataType">
       <sequence>
-        <element name="id" type="eppcom:clIDType"/>
+        <element name="id" type="fredcom:objIDType"/>
         <element name="crDate" type="dateTime"/>
       </sequence>
     </complexType>
@@ -316,7 +319,7 @@
   -->
     <complexType name="infDataType">
       <sequence>
-        <element name="id" type="eppcom:clIDType"/>
+        <element name="id" type="fredcom:objIDType"/>
         <element name="roid" type="eppcom:roidType"/>
         <element name="status" type="contact:statusType"
          maxOccurs="5"/>
@@ -383,47 +386,9 @@
       </restriction>
     </simpleType>
 
-  <!--
-  Pending action notification response elements.
-  -->
-  <!--
-    <complexType name="panDataType">
-      <sequence>
-        <element name="id" type="contact:paCLIDType"/>
-        <element name="paTRID" type="epp:trIDType"/>
-        <element name="paDate" type="dateTime"/>
-      </sequence>
-    </complexType>
-
-    <complexType name="paCLIDType">
-      <simpleContent>
-        <extension base="eppcom:clIDType">
-          <attribute name="paResult" type="boolean"
-           use="required"/>
-        </extension>
-      </simpleContent>
-    </complexType>
-    -->
-
-  <!--
-  <transfer> response elements.
-  -->
-  <!--
-    <complexType name="trnDataType">
-      <sequence>
-        <element name="id" type="eppcom:clIDType"/>
-        <element name="trStatus" type="eppcom:trStatusType"/>
-        <element name="reID" type="eppcom:clIDType"/>
-        <element name="reDate" type="dateTime"/>
-        <element name="acID" type="eppcom:clIDType"/>
-        <element name="acDate" type="dateTime"/>
-      </sequence>
-    </complexType>
-    -->
-
     <complexType name="listDataType">
       <sequence>
-        <element name="id" type="eppcom:clIDType"
+        <element name="id" type="fredcom:objIDType"
          minOccurs="0" maxOccurs="unbounded"/>
       </sequence>
     </complexType>

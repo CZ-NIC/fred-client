@@ -3,6 +3,7 @@
   <schema targetNamespace="http://www.nic.cz/xml/epp/domain-1.0"
           xmlns:domain="http://www.nic.cz/xml/epp/domain-1.0"
           xmlns:eppcom="urn:ietf:params:xml:ns:eppcom-1.0"
+          xmlns:fredcom="http://www.nic.cz/xml/epp/fredcom-1.0"
           xmlns="http://www.w3.org/2001/XMLSchema"
           elementFormDefault="qualified">
 
@@ -11,10 +12,12 @@
   -->
     <import namespace="urn:ietf:params:xml:ns:eppcom-1.0"
             schemaLocation="eppcom-1.0.xsd"/>
+    <import namespace="http://www.nic.cz/xml/epp/fredcom-1.0"
+            schemaLocation="fredcom-1.0.xsd"/>
 
     <annotation>
       <documentation>
-        Extensible Provisioning Protocol v1.0
+        Extension to Extensible Provisioning Protocol v1.0
         domain provisioning schema.
       </documentation>
     </annotation>
@@ -41,20 +44,12 @@
          minOccurs="0"/>
         <element name="nsset" type="eppcom:labelType"
          minOccurs="0"/>
-        <element name="registrant" type="eppcom:clIDType"/>
-        <element name="admin" type="eppcom:clIDType"
+        <element name="registrant" type="fredcom:objIDType"/>
+        <element name="admin" type="fredcom:objIDType"
          minOccurs="0" maxOccurs="unbounded"/>
         <element name="authInfo" type="domain:authInfoType"/>
       </sequence>
     </complexType>
-
-  <!-- Zavrhnuto
-    <simpleType name="domainOrEnumNameType">
-      <restriction base="token">
-		<pattern value="([a-z0-9\-]{1,61}\.cz)|(\+420\d{1,15})"/>
-      </restriction>
-    </simpleType>
-	-->
 
     <complexType name="periodType">
       <simpleContent>
@@ -78,28 +73,6 @@
         <enumeration value="m"/>
       </restriction>
     </simpleType>
-
-  <!--
-  If attributes, addresses are optional and follow the
-  structure defined in the host mapping.
-  -->
-
-  <!-- Does not have any meaning since we have only one contact type
-    <complexType name="contactType">
-      <simpleContent>
-        <extension base="eppcom:clIDType">
-          <attribute name="type" type="domain:contactAttrType"/>
-        </extension>
-      </simpleContent>
-    </complexType>
-
-    <simpleType name="contactAttrType">
-      <restriction base="token">
-        <enumeration value="admin"/>
-        <enumeration value="billing"/>
-      </restriction>
-    </simpleType>
-	-->
 
     <complexType name="authInfoType">
       <choice>
@@ -184,7 +157,7 @@
   -->
     <complexType name="addRemType">
       <sequence>
-        <element name="admin" type="eppcom:clIDType"
+        <element name="admin" type="fredcom:objIDType"
          minOccurs="0" maxOccurs="unbounded"/>
         <element name="status" type="domain:statusType"
          minOccurs="0" maxOccurs="8"/>
@@ -236,10 +209,6 @@
     <element name="creData" type="domain:creDataType"/>
     <element name="infData" type="domain:infDataType"/>
     <element name="renData" type="domain:renDataType"/>
-    <!--
-    <element name="panData" type="domain:panDataType"/>
-    <element name="trnData" type="domain:trnDataType"/>
-    -->
     <!-- list domains extension -->
     <element name="listData" type="domain:listDataType"/>
 
@@ -295,9 +264,9 @@
 	optional registrant is hack for hiding indentity of e164
 	number holder
 	-->
-        <element name="registrant" type="eppcom:clIDType"
+        <element name="registrant" type="fredcom:objIDType"
          minOccurs="0"/>
-        <element name="admin" type="eppcom:clIDType"
+        <element name="admin" type="fredcom:objIDType"
          minOccurs="0" maxOccurs="unbounded"/>
         <element name="nsset" type="eppcom:labelType"
          minOccurs="0"/>
@@ -341,44 +310,12 @@
         <enumeration value="clientTransferProhibited"/>
         <enumeration value="clientUpdateProhibited"/>
         <enumeration value="ok"/>
-	<!--
-        <enumeration value="clientHold"/>
-        <enumeration value="inactive"/>
-        <enumeration value="pendingCreate"/>
-        <enumeration value="pendingDelete"/>
-        <enumeration value="pendingRenew"/>
-        <enumeration value="pendingTransfer"/>
-        <enumeration value="pendingUpdate"/>
-        <enumeration value="serverHold"/>
-	-->
         <enumeration value="serverDeleteProhibited"/>
         <enumeration value="serverRenewProhibited"/>
         <enumeration value="serverTransferProhibited"/>
         <enumeration value="serverUpdateProhibited"/>
       </restriction>
     </simpleType>
-
-  <!--
-  Pending action notification response elements.
-  -->
-  <!--
-    <complexType name="panDataType">
-      <sequence>
-        <element name="name" type="domain:paNameType"/>
-        <element name="paTRID" type="epp:trIDType"/>
-        <element name="paDate" type="dateTime"/>
-      </sequence>
-    </complexType>
-
-    <complexType name="paNameType">
-      <simpleContent>
-        <extension base="eppcom:labelType">
-          <attribute name="paResult" type="boolean"
-           use="required"/>
-        </extension>
-      </simpleContent>
-    </complexType>
-    -->
 
   <!--
   <renew> response elements.
@@ -390,24 +327,6 @@
          minOccurs="0"/>
       </sequence>
     </complexType>
-
-  <!--
-  <transfer> response elements.
-  -->
-  <!--
-    <complexType name="trnDataType">
-      <sequence>
-        <element name="name" type="eppcom:labelType"/>
-        <element name="trStatus" type="eppcom:trStatusType"/>
-        <element name="reID" type="eppcom:clIDType"/>
-        <element name="reDate" type="dateTime"/>
-        <element name="acID" type="eppcom:clIDType"/>
-        <element name="acDate" type="dateTime"/>
-        <element name="exDate" type="dateTime"
-         minOccurs="0"/>
-      </sequence>
-    </complexType>
-    -->
 
     <complexType name="listDataType">
       <sequence>

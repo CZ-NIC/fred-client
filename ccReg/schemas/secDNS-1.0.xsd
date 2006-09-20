@@ -7,9 +7,8 @@
 
   <annotation>
     <documentation>
-      Extensible Provisioning Protocol v1.0
-      domain name extension schema for provisioning
-      DNS security (DNSSEC) extensions.
+      Extension to Extensible Provisioning Protocol v1.0
+      Domain extension for provisioning secure DNS (DNSSEC).
     </documentation>
   </annotation>
 

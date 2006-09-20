@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+  <schema targetNamespace="http://www.nic.cz/xml/epp/fredcom-1.0"
+          xmlns:eppcom="http://www.nic.cz/xml/epp/fredcom-1.0"
+          xmlns="http://www.w3.org/2001/XMLSchema"
+          elementFormDefault="qualified">
+
+    <annotation>
+      <documentation>
+        Extension to Extensible Provisioning Protocol v1.0
+        shared structures schema.
+      </documentation>
+    </annotation>
+
+  <!--
+  Abstract client and object identifier type.
+  -->
+    <simpleType name="objIDType">
+      <restriction base="token">
+        <minLength value="3"/>
+        <maxLength value="63"/>
+      </restriction>
+    </simpleType>
+
+  <!--
+  End of schema.
+  -->
+  </schema>
+
+
+
+
+
+
+

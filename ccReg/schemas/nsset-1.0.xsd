@@ -4,6 +4,7 @@
   <schema targetNamespace="http://www.nic.cz/xml/epp/nsset-1.0"
           xmlns:nsset="http://www.nic.cz/xml/epp/nsset-1.0"
           xmlns:eppcom="urn:ietf:params:xml:ns:eppcom-1.0"
+          xmlns:fredcom="http://www.nic.cz/xml/epp/fredcom-1.0"
           xmlns="http://www.w3.org/2001/XMLSchema"
           elementFormDefault="qualified">
 
@@ -12,10 +13,12 @@
   -->
     <import namespace="urn:ietf:params:xml:ns:eppcom-1.0"
             schemaLocation="eppcom-1.0.xsd"/>
+    <import namespace="http://www.nic.cz/xml/epp/fredcom-1.0"
+            schemaLocation="fredcom-1.0.xsd"/>
 
   <annotation>
     <documentation>
-      Extensible Provisioning Protocol v1.0
+      Extension to Extensible Provisioning Protocol v1.0
       nsset provisioning schema.
     </documentation>
   </annotation>
@@ -62,7 +65,7 @@
       <sequence>
         <element name="ns" type="nsset:nsT"
 		minOccurs="0" maxOccurs="9"/>
-        <element name="tech" type="eppcom:clIDType"
+        <element name="tech" type="fredcom:objIDType"
          minOccurs="0" maxOccurs="unbounded"/>
         <element name="status" type="nsset:statusType"
          minOccurs="0" maxOccurs="6"/>
@@ -73,7 +76,7 @@
       <sequence>
         <element name="name" type="eppcom:labelType"
 		minOccurs="0" maxOccurs="9"/>
-        <element name="tech" type="eppcom:clIDType"
+        <element name="tech" type="fredcom:objIDType"
          minOccurs="0" maxOccurs="unbounded"/>
         <element name="status" type="nsset:statusType"
          minOccurs="0" maxOccurs="6"/>
@@ -107,7 +110,7 @@
         <element name="id" type="nsset:nssT"/>
         <element name="ns" type="nsset:nsT"
 	 maxOccurs="9"/>
-        <element name="tech" type="eppcom:clIDType"
+        <element name="tech" type="fredcom:objIDType"
          minOccurs="0" maxOccurs="unbounded"/>
         <element name="authInfo" type="nsset:authInfoType"
          minOccurs="0"/>
@@ -157,15 +160,6 @@
         <enumeration value="clientTransferProhibited"/>
         <enumeration value="clientUpdateProhibited"/>
         <enumeration value="ok"/>
-	<!--
-        <enumeration value="inactive"/>
-        <enumeration value="clientHold"/>
-        <enumeration value="pendingCreate"/>
-        <enumeration value="pendingDelete"/>
-        <enumeration value="pendingTransfer"/>
-        <enumeration value="pendingUpdate"/>
-        <enumeration value="serverHold"/>
-	-->
         <enumeration value="serverDeleteProhibited"/>
         <enumeration value="serverTransferProhibited"/>
         <enumeration value="serverUpdateProhibited"/>
@@ -256,7 +250,7 @@
         <element name="authInfo" type="nsset:authInfoType"
          minOccurs="0"/>
         <element name="ns" type="nsset:nsT" minOccurs="0" maxOccurs="9"/>
-        <element name="tech" type="eppcom:clIDType"
+        <element name="tech" type="fredcom:objIDType"
          minOccurs="0" maxOccurs="unbounded"/>
       </sequence>
     </complexType>
