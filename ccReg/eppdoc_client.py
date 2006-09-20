@@ -195,7 +195,7 @@ class Message(eppdoc_assemble.Message):
                 ('num',(1,1),(),_T('number of months or years'),'3','',()),
                 ('unit',(1,1),('y','m'),_T('period unit (y year(default), m month)'),'','',()),
             )),
-            ('valExDate',(0,1),(),_T('valExDate'),'2008-12-03','',()),
+            ('val_ex_date',(0,1),(),_T('valExDate'),'2008-12-03','',()),
             ],notice['renew'],('renew_domain nic.cz 2008-06-02 (6 y)',)),
         #----------------------------------------------------
         'update_contact': (1,[
