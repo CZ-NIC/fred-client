@@ -1,0 +1,19 @@
+2006-09-20 Jan Kryl jan.kryl@nic.cz
+
+	* Zalozeni tohoto ChangeLogu pro ucely dokumentace zmen do schemat.
+
+	* Pridani souboru fredcom-1.0.xsd, ktery je urcen pro definice
+	typu vyuzivanych napric schematy. Obdoba eppcom-1.0.xsd, ktery
+	jsme ale nemohli vyuzit, protoze je soucasti EPP standardu a nemuzeme
+	jej tudiz modifikovat.
+
+	* Zmena typu handlu nssetu a kontaktu. Puvodni typ clIDType z eppcom
+	byl moc kratky. Byl nahrazen typem objIDType z fredcom. Nyni je
+	maximalni delka identifikatoru az 63 znaku. Ostatni schemata byla
+	pozmenena a prizpusobena teto zmene. Jako dusledek teto zmeny se
+	rozlisuje uz typ identifikatoru objektu (contact, nsset) a
+	identifikatoru klienta (clID, crID, trID, ...).
+
+	* Byly vycisteny zakomentovane nepouzivane useky ze schemat, aby
+	nematly ctenare.
+
