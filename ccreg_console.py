@@ -19,8 +19,9 @@ def display_profiler(label, indent, debug_time):
     for msg,t in debug_time[1:]:
         print indent,('%s:'%msg).ljust(30),'%02.4f sec.'%(t - prev_t)
         prev_t = t
-    print
-
+    print indent,'-'*43
+    print indent,'Total:'.ljust(30),'%02.4f sec.'%(t - debug_time[0][1])
+    
 def main(session_name):
     'Main console loop.'
     if ccReg.translate.warning:
