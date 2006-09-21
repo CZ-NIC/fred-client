@@ -104,6 +104,7 @@ optcols = (
     'p:password',
     'r colors',
     's:session',
+    't timer',
     'u:user',
     'v:verbose',
     'V version',

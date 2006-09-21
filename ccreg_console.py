@@ -5,12 +5,24 @@
 #
 # Your terminal should support unicode. Check locale to LANG=cs_CZ.UTF-8
 #
-import sys, re
+import sys, re, time
 import ccReg
 from ccReg.session_base import colored_output, VERBOSE
 from ccReg.translate import _T, options, option_errors
 
+def display_profiler(label, indent, debug_time):
+    'For test only.'
+    msg, prev_t = debug_time[0]
+    print '='*60
+    print indent,label
+    print '='*60
+    for msg,t in debug_time[1:]:
+        print indent,('%s:'%msg).ljust(30),'%02.4f sec.'%(t - prev_t)
+        prev_t = t
+    print
+
 def main(session_name):
+    'Main console loop.'
     if ccReg.translate.warning:
         print colored_output.render("${BOLD}${RED}%s${NORMAL}"%ccReg.translate.warning)
     epp = ccReg.ClientSession()
@@ -41,12 +53,15 @@ def main(session_name):
         if command in ('q','quit','exit'):
             epp.send_logout()
             break
+        debug_time = [('START',time.time())] # PROFILER
         command_name, epp_doc = epp.create_eppdoc(command)
+        debug_time.append(('Command created',time.time())) # PROFILER
         if command_name == 'q': # User press Ctrl+C or Ctrl+D in interactive mode.
             epp.send_logout()
             break
         if command_name and epp_doc: # if only command is EPP command
             invalid_epp = epp.is_epp_valid(epp_doc)
+            debug_time.append(('Validation',time.time())) # PROFILER
             if invalid_epp:
                 epp.append_error(_T('EPP document is not valid'),'BOLD')
                 v = epp.get_session(VERBOSE)
@@ -59,14 +74,24 @@ def main(session_name):
                         confirmation = raw_input('%s (y/n): '%_T('Do you want send this command to the server?'))
                         epp.restore_history()
                         if confirmation not in ('y','Y'): continue
+                    debug_time.append(('Save and restore history',time.time())) # PROFILER
                     epp.send(epp_doc)          # send to server
+                    debug_time.append(('SEND to server',time.time())) # PROFILER
                     xml_answer = epp.receive()     # receive answer
+                    debug_time.append(('RECEIVE from server',time.time())) # PROFILER
                     try:
-                        epp.process_answer(xml_answer) # process answer
+                        debug_time_answer = epp.process_answer(xml_answer) # process answer
+                        debug_time.append(('Parse answer',time.time())) # PROFILER
                     except (KeyboardInterrupt, EOFError):
+                        debug_time_answer = []
                         break # handle Ctrl+C or Ctrl+D from testy user
                     epp.display() # display errors or notes
+                    debug_time.append(('Prepare answer for display',time.time())) # PROFILER
                     epp.print_answer()
+                    debug_time.append(('Display answer',time.time())) # PROFILER
+                    if options['timer']:
+                        display_profiler('Main LOOP time profiler','',debug_time)
+                        display_profiler('From Main LOOP only "Parse answer"','\t',debug_time_answer)
                 else:
                     epp.append_note(_T('You are not connected! Type login for connection to the server.'),('BOLD','RED'))
         if command_name == 'connect': epp.print_answer()

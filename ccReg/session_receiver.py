@@ -104,18 +104,21 @@ class ManagerReceiver(ManagerCommand):
         'Main function. Process incomming EPP messages. This funcion is called by listen socket.'
         # Hlavní funkce pro zpracování odpovědi. Rozparsuje XML, provede validaci a pak pokračuje
         # funkcí answer_response().
+        debug_time = [('START',time.time())] # PROFILER
         self.reset_src()
         if epp_server_answer:
             self._raw_answer = epp_server_answer
             # create XML DOM tree:
             self._epp_response.reset()
             self._epp_response.parse_xml(eppdoc.correct_unbound_prefix(epp_server_answer))
+            debug_time.append(('Parse XML',time.time())) # PROFILER
             if self._epp_response.is_error():
                 # při parsování se vyskytly chyby
                 self.append_error(self._epp_response.get_errors())
             else:
                 # validace
                 invalid_epp = self.is_epp_valid(self._epp_response.get_xml())
+                debug_time.append(('Validation',time.time())) # PROFILER
                 if invalid_epp:
                     # když se odpověd serveru neplatná...
                     self.append_note(_T('Server reply is not valid!'),('RED','BOLD'))
@@ -124,16 +127,19 @@ class ManagerReceiver(ManagerCommand):
             if not self._epp_response.is_error():
                 # když přišla nějaká odpověd a podařilo se jí zparsovat:
                 self._dict_answer = self._epp_response.create_data()
+                debug_time.append(('Create data',time.time())) # PROFILER
                 if self._dict_answer.get('greeting',None):
                     self.answer_greeting()
                 elif self._dict_answer.get('response',None):
                     self.answer_response()
+                    debug_time.append(('Manage response',time.time())) # PROFILER
                 else:
                     self.append_note(_T('Unknown response type'),('RED','BOLD'))
                     self.__put_raw_into_note__(self._dict_answer)
         else:
             self.append_note(_T("No response from EPP server."))
             if not self.is_connected(): self.append_error(_T("Connection interrupted."))
+        return debug_time
 
     #==================================================
     #
