@@ -1,4 +1,10 @@
-2006-09-20 Jan Kryl jan.kryl@nic.cz
+2006-09-21 Jan Kryl <jan.kryl@nic.cz>
+
+	* Oficialni specifikace systemu rika ze v nssetu muze byt 1 az 10
+	nameserveru. Do ted to bylo 1 az 9. Nekonzistence opravena, pocet
+	zvysen o 1.
+
+2006-09-20 Jan Kryl <jan.kryl@nic.cz>
 
 	* Zalozeni tohoto ChangeLogu pro ucely dokumentace zmen do schemat.
 

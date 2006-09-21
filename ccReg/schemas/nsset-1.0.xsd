@@ -64,7 +64,7 @@
     <complexType name="addType">
       <sequence>
         <element name="ns" type="nsset:nsT"
-		minOccurs="0" maxOccurs="9"/>
+		minOccurs="0" maxOccurs="10"/>
         <element name="tech" type="fredcom:objIDType"
          minOccurs="0" maxOccurs="unbounded"/>
         <element name="status" type="nsset:statusType"
@@ -75,7 +75,7 @@
     <complexType name="remType">
       <sequence>
         <element name="name" type="eppcom:labelType"
-		minOccurs="0" maxOccurs="9"/>
+		minOccurs="0" maxOccurs="10"/>
         <element name="tech" type="fredcom:objIDType"
          minOccurs="0" maxOccurs="unbounded"/>
         <element name="status" type="nsset:statusType"
@@ -109,7 +109,7 @@
       <sequence>
         <element name="id" type="nsset:nssT"/>
         <element name="ns" type="nsset:nsT"
-	 maxOccurs="9"/>
+	 maxOccurs="10"/>
         <element name="tech" type="fredcom:objIDType"
          minOccurs="0" maxOccurs="unbounded"/>
         <element name="authInfo" type="nsset:authInfoType"
@@ -249,7 +249,7 @@
          minOccurs="0"/>
         <element name="authInfo" type="nsset:authInfoType"
          minOccurs="0"/>
-        <element name="ns" type="nsset:nsT" minOccurs="0" maxOccurs="9"/>
+        <element name="ns" type="nsset:nsT" minOccurs="0" maxOccurs="10"/>
         <element name="tech" type="fredcom:objIDType"
          minOccurs="0" maxOccurs="unbounded"/>
       </sequence>
