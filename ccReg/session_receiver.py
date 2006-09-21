@@ -161,6 +161,26 @@ class ManagerReceiver(ManagerCommand):
         if self.defs[extURI]:
             dct['extURI'] = self.defs[extURI]
         adjust_dct_keys(dct,('lang','objURI','extURI'))
+        # data collection policy, access
+        dcp = greeting.get('dcp',{})
+        dcp_access = dcp.get('access',{}).keys() # all, none, null, personal, personalAndOther, other
+        if 'all' in dcp_access:
+            access = 1
+            msg = _T('All data are disclosed.')
+        else:
+            access = 0
+            msg = _T('All data are hidden.')
+##        self._session[SERVER_POLICY] = access
+        self._epp_cmd.server_disclose_policy = access
+        dct['dcp'] = msg
+        # Turn OFF for the time being:
+        #dct['dcp'] = dcp.keys()
+        #dct['dcp.access'] = dcp_access
+        #statement = dcp.get('statement',{})
+        #dct['dcp.statement'] = statement.keys()
+        #dct['dcp.statement.purpose'] = statement.get('purpose',{}).keys() # admin, contact, prov, other
+        #dct['dcp.statement.recipient'] = statement.get('recipient',{}).keys() # public, other, ours, some, unrelated
+        #dct['dcp.statement.retention'] = statement.get('retention',{}).keys() # stated, business, indefinite, legal, none
 
     def answer_response_logout(self, data):
         "data=(response,result,code,msg)"
@@ -200,7 +220,7 @@ class ManagerReceiver(ManagerCommand):
             if contact_addr:
                 self.__append_note_from_dct__(contact_addr,('contact:sp','contact:cc',
                     'contact:city','contact:street','contact:pc',))
-            disclosed = list(contact_disclose) # eppdoc_assemble.contact_disclose
+            disclosed = [n[0]for n in contact_disclose] # eppdoc_assemble.contact_disclose
             not_disclosed = []
             condis = contact_infData.get('contact:disclose',None)
             if condis:
@@ -505,5 +525,6 @@ if __name__ == '__main__':
         # TEST selected document:
         # Data item has format: ('command:name',"""<?xml ...XML document... >""")
         # For example: ('nsset:info',"""<?xml ...<epp ...><response> ... </epp>""")
-        ##test(test_incomming_messages.data[-1])
-        map(test, test_incomming_messages.data)
+        test(test_incomming_messages.data[0])
+        #test(test_incomming_messages.data[-1])
+        #map(test, test_incomming_messages.data)

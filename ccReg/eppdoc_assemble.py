@@ -1,8 +1,6 @@
 # -*- coding: utf8 -*-
 #!/usr/bin/env python
 #
-# $Id$
-#
 # Tento modul obsahuje funkce a data, která jsou potřebná
 # na sestavení EPP dokumentu pro příkaz od klienta.
 #
@@ -26,7 +24,8 @@ except ImportError:
     history_read = None
 
 UNBOUNDED = None
-contact_disclose = ('name','org','addr','voice','fax','email')
+# ''contact_disclose'' must be same format as eppdoc_client.update_status.
+contact_disclose = map(lambda n: (n,), ('name','org','addr','voice','fax','email'))
 history_filename = os.path.join(os.path.expanduser('~'),'.ccreg_history') # compatibility s MS Win
 
 TAG_clTRID = 'cltrid' # Definition for --key-name = clTRID value.
@@ -566,21 +565,25 @@ class Message(eppdoc.Message):
 
     def __append_disclose__(self, data, node_name, ds):
         'Create disclose nodes'
+        explicit = [] # typed by user
+        implicit = [] # others not mentioned
         flag = {'n':0,'y':1}.get(ds.get('flag',['n'])[0], 'n')
         disit = ds.get('data',[])
         if len(disit):
-            if flag:
-                # 1 - list of disclosed -> invert other to hidden
-                disit = [key for key in contact_disclose if key not in disit]
+            for key in [n[0] for n in contact_disclose]:
+                if key in disit:
+                    explicit.append(key)
+                else:
+                    implicit.append(key)
+            if self.server_disclose_policy: # 0/1 (disclose/hidden)
+                disit = (explicit,implicit)[flag]
+                flag = 0 # server default is disclose - send always list of hidden
             else:
-                # 0 - list of hidden -> sort only (and remove duplicity)
-                disit = [key for key in contact_disclose if key in disit]
-            data.append(('contact:%s'%node_name,'contact:disclose','',(('flag','0'),)))
-            # create if only any set of names is to hide
-            for key in disit:
-                data.append(('contact:disclose','contact:%s'%key))
-        else:
-            data.append(('contact:%s'%node_name,'contact:disclose','',(('flag',str(flag)),)))
+                disit = (implicit,explicit)[flag]
+                flag = 1 # server default is hidden - send always list of disclosed
+        data.append(('contact:%s'%node_name,'contact:disclose','',(('flag',str(flag)),)))
+        for key in disit:
+            data.append(('contact:disclose','contact:%s'%key))
 
     def assemble_create_contact(self, *params):
         "Assemble XML EPP command."
@@ -791,11 +794,9 @@ class Message(eppdoc.Message):
             data.append(('domain:update', 'domain:chg'))
             if __has_key__(chg,'nsset'): data.append(('domain:chg','domain:nsset', chg['nsset'][0]))
             if __has_key__(chg,'registrant'): data.append(('domain:chg','domain:registrant', chg['registrant'][0]))
-            if __has_key_dict__(chg,'auth_info'):
+            if __has_key_dict__(chg,'pw'):
                 data.append(('domain:chg','domain:authInfo'))
-                authInfo = chg['auth_info'][0]
-                if __has_key__(authInfo,'pw'): data.append(('domain:authInfo','domain:pw', authInfo['pw'][0]))
-                #if __has_key__(authInfo,'ext'): data.append(('domain:authInfo','domain:ext', authInfo['ext'][0]))
+                data.append(('domain:authInfo','domain:pw', chg['pw'][0]))
         self.__enum_extensions__('update',data, params,'chg')
         data.append(('command', 'clTRID', self._dct.get(TAG_clTRID,[params[0]])[0]))
         self.__assemble_cmd__(data)

@@ -87,6 +87,8 @@ CCREG_CONTACT = [
     },
 ]
 
+## epp_cli._epp._dct_answer
+
 d = CCREG_CONTACT[2]
 CCREG_CONTACT.append({ # chg part to modify contact
             'postal_info': {
@@ -117,12 +119,12 @@ class Test(unittest.TestCase):
         if epp_cli: self.assert_(epp_cli.is_logon(),'client is offline')
 
     def tearDown(self):
-        unitest_ccreg_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription())
-        unitest_ccreg_share.reset_client(epp_cli)
+        unitest_ccreg_share.write_log(epp_cli_log, log_fp, log_step, self.id(),self.shortDescription())
+        unitest_ccreg_share.reset_client(epp_cli_log)
 
     def test_000(self):
         '2.0 Inicializace spojeni a definovani testovacich handlu'
-        global epp_cli, epp_cli_TRANSF, handle_contact, handle_nsset, log_fp
+        global epp_cli, epp_cli_TRANSF, epp_cli_log, handle_contact, handle_nsset, log_fp
         # Natvrdo definovany handle:
         handle_contact = CCREG_CONTACT[1]['id'] # 'neexist01'
         handle_nsset = 'NSSID:neexist01'
@@ -135,6 +137,7 @@ class Test(unittest.TestCase):
         dct = epp_cli._epp.get_default_params_from_config('login')
         epp_cli.login(dct['username'], dct['password'])
         epp_cli_TRANSF.login('REG-LRR2', dct['password'])
+        epp_cli_log = epp_cli
         # Tady se da nalezt prazdny handle (misto pevne definovaneho):
         # handle_contact = __find_available_handle__(epp_cli, 'contact','nexcon')
         # handle_nsset = __find_available_handle__(epp_cli, 'nsset','nexns')
@@ -272,6 +275,8 @@ class Test(unittest.TestCase):
         
     def test_150(self):
         '2.15 Druhy registrator: Trasfer s neplatnym heslem (Chyba oprávnění)'
+        global epp_cli_log
+        epp_cli_log = epp_cli_TRANSF
         epp_cli_TRANSF.transfer_contact(handle_contact, 'heslo neznam')
         self.assertNotEqual(epp_cli_TRANSF.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli_TRANSF))
         
@@ -279,6 +284,11 @@ class Test(unittest.TestCase):
         '2.16 Druhy registrator: Trasfer kontaktu'
         epp_cli_TRANSF.transfer_contact(handle_contact, CONTACT_PASSWORD_2)
         self.assertEqual(epp_cli_TRANSF.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli_TRANSF))
+
+    def test_161(self):
+        '2.16.1 Kontrola, ze se po stransferu automaticky zmenilo heslo.'
+        epp_cli_TRANSF.info_contact(handle_contact)
+        self.assertNotEqual(epp_cli_TRANSF.is_val(('data','contact:pw')), CONTACT_PASSWORD_2, 'Heslo po transferu zustalo puvodni.')
         
     def test_170(self):
         '2.17 Druhy registrator: Zmena hesla po prevodu domeny'
@@ -287,6 +297,8 @@ class Test(unittest.TestCase):
         
     def test_180(self):
         '2.18 Zmena hesla kontaktu, ktery registratorovi jiz nepatri'
+        global epp_cli_log
+        epp_cli_log = epp_cli
         epp_cli.update_contact(handle_contact, None, None, {'auth_info':{'pw':'moje-heslo2'}})
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
         
@@ -297,11 +309,15 @@ class Test(unittest.TestCase):
         
     def test_200(self):
         '2.20 Smazani kontaktu'
+        global epp_cli_log
+        epp_cli_log = epp_cli_TRANSF
         epp_cli_TRANSF.delete_contact(handle_contact)
         self.assertEqual(epp_cli_TRANSF.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli_TRANSF))
 
     def test_210(self):
         '2.21 Check na smazany kontakt'
+        global epp_cli_log
+        epp_cli_log = epp_cli
         epp_cli.check_contact(handle_contact)
         self.assertEqual(epp_cli.is_val(('data',handle_contact)), 1, '%s nelze smazat'%handle_contact)
 
@@ -384,7 +400,7 @@ def __info_contact__(prefix, cols, scope, key=None, pkeys=[]):
                 errors.append('Chybi klic %s'%key)
     return errors
 
-epp_cli, epp_cli_TRANSF, log_fp, log_step, handle_contact, handle_nsset = (None,)*6
+epp_cli, epp_cli_TRANSF, epp_cli_log, log_fp, log_step, handle_contact, handle_nsset = (None,)*7
 
 if __name__ == '__main__':
 ##if 0:

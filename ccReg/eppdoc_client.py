@@ -99,7 +99,7 @@ class Message(eppdoc_assemble.Message):
         ],notice['check'],('check_nsset nsset1 nsset2',)),
         #----------------------------------------------------
         'poll': (0,[
-            ('op',(0,1),('req','ack'),_T('query type'),'','',()),
+            ('op',(0,1),(('req',),('ack',)),_T('query type'),'','',()),
             ('msg_id',(0,1),(),_T('index of message, required with op=ack!'),'123','',()),
         ],_T('The EPP "poll" command is used to discover and retrieve service messages queued by a server for individual clients.'),('poll req','poll ack 4',)),
         #----------------------------------------------------
@@ -134,13 +134,13 @@ class Message(eppdoc_assemble.Message):
             ('voice',(0,1),(),_T('voice (phone number)'),'+420.222745111','',()),
             ('fax',(0,1),(),_T('fax number'),'+420.222745111','',()),
             ('disclose',(0,1),(),_T('disclose'),'','',(
-                ('flag',(1,1),('y','n'),_T('disclose flag (default y)'),'','',()),
+                ('flag',(1,1),(('y',),('n',)),_T('disclose flag (default y)'),'','',()),
 ##                data pro které se nastaví příznak, data for with is set flag of value
                 ('data',(0,len(eppdoc_assemble.contact_disclose)),eppdoc_assemble.contact_disclose,_T('data for with is set the flag value'),'','',()),
             )),
             ('vat',(0,1),(),_T('VAT (Value-added tax)'),'7035555556','',()), # daˇnový identifikátor
             ('ssn',(0,1),(),_T('SSN (Social security number)'),'','',( # mpsv: identifikátor Ministerstva práce a sociálních věcí
-                ('type',(1,1),('op','rc','passport','mpsv','ico'),_T('SSN type'),'op','',()),
+                ('type',(1,1),map(lambda n:(n,),('op','rc','passport','mpsv','ico')),_T('SSN type'),'op','',()),
                 ('number',(1,1),(),_T('SSN number'),'8888888856','',()),
             )),
             ('notify_email',(0,1),(),_T('notify email'),'info@mymail.cz','',()),
@@ -153,7 +153,7 @@ class Message(eppdoc_assemble.Message):
             ('nsset',(0,1),(),_T('nsset'),'NSSETID','',()),
             ('period',(0,1),(),_T('period'),'','',(
                 ('num',(1,1),(),_T('number of months or years'),'3','',()),
-                ('unit',(1,1),('y','m'),_T('period unit (y year(default), m month)'),'','',()),
+                ('unit',(1,1),(('y',),('m',)),_T('period unit (y year(default), m month)'),'','',()),
             )),
             ('admin',(0,UNBOUNDED),(),_T('admin'),'ADMIN_ID','',()),
             ('val_ex_date',(0,1),(),_T('valExDate'),'2008-12-03','',()),
@@ -193,7 +193,7 @@ class Message(eppdoc_assemble.Message):
             ('cur_exp_date',(1,1),(),_T('current expiration date'),'2006-12-03','',()),
             ('period',(0,1),(),_T('period'),'','',(
                 ('num',(1,1),(),_T('number of months or years'),'3','',()),
-                ('unit',(1,1),('y','m'),_T('period unit (y year(default), m month)'),'','',()),
+                ('unit',(1,1),(('y',),('m',)),_T('period unit (y year(default), m month)'),'','',()),
             )),
             ('val_ex_date',(0,1),(),_T('valExDate'),'2008-12-03','',()),
             ],notice['renew'],('renew_domain nic.cz 2008-06-02 (6 y)',)),
@@ -219,12 +219,12 @@ class Message(eppdoc_assemble.Message):
                 ('email',(0,1),(),_T('your email'),'info@mymail.cz','',()),
                 ('pw',(0,1),(),_T('password'),'mypassword','',()),
                 ('disclose',(0,1),(),_T('disclose'),'','',(
-                    ('flag',(1,1),('y','n'),_T('disclose flag (default y)'),'','',()),
+                    ('flag',(1,1),(('y',),('n',)),_T('disclose flag (default y)'),'','',()),
                     ('data',(0,len(eppdoc_assemble.contact_disclose)),eppdoc_assemble.contact_disclose,_T('data for with is set the flag value'),'','',()),
                 )),
                 ('vat',(0,1),(),_T('VAT'),'7035555556','',()),
                 ('ssn',(0,1),(),_T('SSN (Security social number)'),'','',(
-                    ('type',(1,1),('op','rc','passport','mpsv','ico'),_T('SSN type'),'op','',()),
+                    ('type',(1,1),map(lambda n:(n,),('op','rc','passport','mpsv','ico')),_T('SSN type'),'op','',()),
                     ('number',(1,1),(),_T('SSN number'),'8888888856','',()),
                 )),
                 ('notify_email',(0,1),(),_T('notify email'),'notify@mymail.cz','',()),
@@ -249,15 +249,12 @@ class Message(eppdoc_assemble.Message):
             ('chg',(0,1),(),_T('change status'),'','',(
                 ('nsset',(0,1),(),_T('nsset'),'NSSET_ID','',()),
                 ('registrant',(0,1),(),_T('registrant'),'CID:ID01','',()),
-                ('auth_info',(0,1),(),_T('authInfo'),'','',(
-                    ('pw',(0,1),(),_T('password'),'mypassword','',()),
-                    #('ext',(0,1),(),_T('ext'),'','',()),
-                )),
+                ('pw',(0,1),(),_T('password'),'mypassword','',()),
             )),
             ('val_ex_date',(0,1),(),_T('valExDate'),'2008-12-03','',()),
             ],notice['update'],(
-                'update_domain mydomain.cz ((CID:ID01, CID:ID02) clientTransferProhibited) (CID:ID03 clientDeleteProhibited) (NSSID:NSSET01 CID:ID04 (mypass))',
-                'update_domain 1.1.1.7.4.5.2.2.2.0.2.4.e164.arpa ((CID:ID01, CID:ID02) clientTransferProhibited) (CID:ID03 clientDeleteProhibited) (NSSID:NSSET01 CID:ID04 (mypass)) 2008-12-03',
+                'update_domain mydomain.cz ((CID:ID01, CID:ID02) clientTransferProhibited) (CID:ID03 clientDeleteProhibited) (NSSID:NSSET01 CID:ID04 mypass)',
+                'update_domain 1.1.1.7.4.5.2.2.2.0.2.4.e164.arpa ((CID:ID01, CID:ID02) clientTransferProhibited) (CID:ID03 clientDeleteProhibited) (NSSID:NSSET01 CID:ID04 mypass) 2008-12-03',
             )),
         #----------------------------------------------------
         'update_nsset': (1,[
@@ -378,6 +375,13 @@ class Message(eppdoc_assemble.Message):
          ('version',     2,  _T('Server version')),
          ('objURI',      2,  _T('Objects URI')),
          ('extURI',      2,  _T('Extensions URI')),
+         ('dcp',         2,  _T('Data Collection policy')), # Soubor zásad Pravidla přístupu
+         # Turn OFF for the time being:
+         #('dcp.access',  2,  _T('DCP: Access')), # přístup
+         #('dcp.statement',  2,  _T('DCP: Statement')), # specifikace, příkaz, zpráva, prohlášení
+         #('dcp.statement.purpose',  2,  _T('DCP: Statement: Purpose')), # účel,záměr
+         #('dcp.statement.recipient',  2,  _T('DCP: Statement: Recipient')), # příjemce
+         #('dcp.statement.retention',  2,  _T('DCP: Statement: Retention')), # uchování, zapamatování
          )),
 
        'domain:list': ('',(

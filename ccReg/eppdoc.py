@@ -42,6 +42,7 @@ class Message:
         self._dct = {}  # parsed parameters from command line
         self._command_params = {} # struct of command parameters
         self._verbose = 1  # verbose interactive params input
+        self.server_disclose_policy = 1 # Data collection policy: Access; default: 1 - disclosed
         
     def reset(self):
         self.__reset_dom__()

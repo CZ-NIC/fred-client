@@ -595,8 +595,7 @@ class Client:
     chg (optional)
         nsset (optional)
         registrant (optional)
-        auth_info (optional)
-            pw (optional)
+        pw (optional)
     val_ex_date (optional)
 
     RETURN data: {}

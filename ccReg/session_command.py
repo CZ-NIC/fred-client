@@ -229,6 +229,7 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
             session_command = m.group(1)
             command_params = m.group(2)
         if cmd == '!': cmd = '? !'
+        hidden_commands = ('answer-cols','hidden')
         # help
         help, help_item = None,None
         m = re.match('(h(?:elp)?)(?:$|\s+(\S+))',cmd)
@@ -248,6 +249,12 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
                     if func:
                         name = func(command_params.strip())
                         if name is not None: command_name = name
+        elif session_command in hidden_commands:
+            # undocumented hidden commands for TEST purpose
+            if session_command == 'answer-cols':
+                self.__session_translate_column_names__(command_params.strip())
+            elif session_command == 'hidden':
+                self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('Hidden commands are'),', '.join(hidden_commands)))
         else:
             # 3. EPP commands
             cmd = EPP_command
@@ -290,6 +297,16 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
     #    Session commands
     #
     #==================================================
+    def __session_translate_column_names__(self, param):
+        'Set translation of column names in server answer.'
+        # TEST only
+        if param:
+            if re.match('(y(es)?|on|1)',param,re.I):
+                self._session[TRANSLATE_ANSWER_COLUMN_NAMES] = 1
+            else:
+                self._session[TRANSLATE_ANSWER_COLUMN_NAMES] = 0
+        self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('Translation of answer column names is'),{False:'OFF',True:'ON'}[self._session[TRANSLATE_ANSWER_COLUMN_NAMES]]))
+
     def __session_confirm__(self, param):
         'Set confirm value'
         if param:
@@ -492,7 +509,11 @@ if __name__ == '__main__':
     # Test
     m = ManagerCommand()
     m._session[0]=1 # login simulation
-    command_name, xml = m.create_eppdoc('create_contact reg-id "John Doe" jon@mail.com "New York" US "Example Inc." ("Yellow harbor" "Blueberry hill") VA 20166-6503 +1.7035555555 +1.7035555556 (0 d-name "d org." "street number city" +21321313 +734321 info@buzz.com) vat-test ssn-test notify@here.net')
+##    command_name, xml = m.create_eppdoc('create_contact reg-id "John Doe" jon@mail.com "New York" US "Example Inc." ("Yellow harbor" "Blueberry hill") VA 20166-6503 +1.7035555555 +1.7035555556 (0 d-name "d org." "street number city" +21321313 +734321 info@buzz.com) vat-test ssn-test notify@here.net')
+    # Test na disclose
+    disclose = "(n (org fax email))"
+    print 'disclose:',disclose
+    command_name, xml = m.create_eppdoc("create_contact CID:ID01 'Jan Novak' info@mymail.cz Praha CZ mypassword 'Firma s.r.o.' 'Narodni trida 1230/12' '' 12000 +420.222745111 +420.222745111 %s"%disclose)
     print m.is_epp_valid(xml)
     print xml
     m.display()

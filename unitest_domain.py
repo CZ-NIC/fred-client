@@ -103,12 +103,12 @@ class Test(unittest.TestCase):
         if epp_cli: self.assert_(epp_cli.is_logon(),'client is offline')
 
     def tearDown(self):
-        unitest_ccreg_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription())
-        unitest_ccreg_share.reset_client(epp_cli)
+        unitest_ccreg_share.write_log(epp_cli_log, log_fp, log_step, self.id(),self.shortDescription())
+        unitest_ccreg_share.reset_client(epp_cli_log)
 
     def test_000(self):
         '3.0 Inicializace spojeni a definovani testovacich handlu'
-        global epp_cli, epp_cli_TRANSF, handle_contact, handle_nsset, log_fp
+        global epp_cli, epp_cli_TRANSF, epp_cli_log, handle_contact, handle_nsset, log_fp
         # create client object
         epp_cli = ccReg.Client()
         epp_cli._epp.load_config(ccReg.translate.options['session'])
@@ -118,6 +118,7 @@ class Test(unittest.TestCase):
         dct = epp_cli._epp.get_default_params_from_config('login')
         epp_cli.login(dct['username'], dct['password'])
         epp_cli_TRANSF.login('REG-LRR2', dct['password'])
+        epp_cli_log = epp_cli
         # kontrola:
         self.assert_(epp_cli.is_logon(), 'Nepodarilo se zalogovat.')
         self.assert_(epp_cli_TRANSF.is_logon(), 'Nepodarilo se zalogovat uzivatele "REG-LRR2" pro transfer.')
@@ -316,6 +317,8 @@ class Test(unittest.TestCase):
         
     def test_200(self):
         '4.20 Druhy registrator: Trasfer s neplatnym heslem (Chyba oprávnění)'
+        global epp_cli_log
+        epp_cli_log = epp_cli_TRANSF
         epp_cli_TRANSF.transfer_domain(CCREG_DOMAIN1, 'heslo neznam')
         self.assertNotEqual(epp_cli_TRANSF.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli_TRANSF))
         
@@ -331,6 +334,8 @@ class Test(unittest.TestCase):
         
     def test_230(self):
         '4.23 Zmena hesla domeny, ktera registratorovi jiz nepatri'
+        global epp_cli_log
+        epp_cli_log = epp_cli
         epp_cli.update_domain(CCREG_DOMAIN1, None, None, {'auth_info':{'pw':'moje-heslo'}})
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
         
@@ -341,11 +346,15 @@ class Test(unittest.TestCase):
         
     def test_250(self):
         '4.25.1 Druhy registrator: Smazani domeny'
+        global epp_cli_log
+        epp_cli_log = epp_cli_TRANSF
         epp_cli_TRANSF.delete_domain(CCREG_DOMAIN1)
         self.assertEqual(epp_cli_TRANSF.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli_TRANSF))
 
     def test_251(self):
         '4.25.2 Druhy registrator: Smazani domeny enum'
+        global epp_cli_log
+        epp_cli_log = epp_cli
         epp_cli.delete_domain(CCREG_DOMAIN2)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
         
@@ -419,7 +428,7 @@ def __check_equality__(cols, data):
         errors.append('Data domain:crDate nesouhlasi: jsou: %s a mely by byt: %s'%(data['domain:crDate'],actual_time))
     return errors
 
-epp_cli, epp_cli_TRANSF, log_fp, log_step = (None,)*4
+epp_cli, epp_cli_TRANSF, epp_cli_log, log_fp, log_step = (None,)*5
 
 if __name__ == '__main__':
     if ccReg.translate.option_errors:

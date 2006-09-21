@@ -89,6 +89,10 @@ def are_equal(val1,val2):
         else:
             retv = False
     else:
+        if re.match('(CID|NSSID):',val1,re.I):
+            # identificators compare case insensitive
+            val1 = val1.upper()
+            val2 = val2.upper()
         retv = val1 == val2
     return retv
 

@@ -33,11 +33,13 @@ class ManagerTransfer(ManagerBase):
         self._dict_answer = '' # dict - slovník vytvořený z XML EPP odpovědi
         self._dct_answer = {'code':0,'command':'',  'reason':'', 'errors':[], 'data':{}} # API response
         # Set output SORT BY and VEROBOSE names:
-        cols = self._epp_cmd.get_sort_by_names(self._command_sent)
-        if cols:
-            self._session[SORT_BY_COLUMNS] = cols
-        else:
-            self._session[SORT_BY_COLUMNS] = []
+        if self._session[TRANSLATE_ANSWER_COLUMN_NAMES]:
+            # Default is 1 (display column names). Zero is used for TEST (display column keys).
+            cols = self._epp_cmd.get_sort_by_names(self._command_sent)
+            if cols:
+                self._session[SORT_BY_COLUMNS] = cols
+            else:
+                self._session[SORT_BY_COLUMNS] = []
 
     def reset_round(self):
         'Prepare for next round. Reset internal dict with communication values.'

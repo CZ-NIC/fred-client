@@ -13,7 +13,8 @@ colored_output = terminal_controler.TerminalController()
 
 # názvy sloupců pro data sestavené při spojení se serverem
 ONLINE, CMD_ID, LANG, POLL_AUTOACK, CONFIRM_SEND_COMMAND, \
-    USERNAME, NAME, HOST, COLORS, VALIDATE, VERBOSE, SORT_BY_COLUMNS, NULL_VALUE = range(13)
+   USERNAME, NAME, HOST, COLORS, VALIDATE, VERBOSE, SORT_BY_COLUMNS, NULL_VALUE, \
+   TRANSLATE_ANSWER_COLUMN_NAMES = range(14)
 # názvy sloupců pro defaultní hodnoty
 DEFS_LENGTH = 4
 LANGS,objURI,extURI,PREFIX = range(DEFS_LENGTH)
@@ -43,6 +44,7 @@ class ManagerBase:
                 1,      # VERBOSE 1,2,3
                 [],     # SORT_BY_COLUMNS - support for sotring received values (used by check_...)
                 'NULL', # NULL_VALUE
+                1,      # TRANSLATE_ANSWER_COLUMN_NAMES, TEST only
                 ]
         # defaults
         self.defs = ['']*DEFS_LENGTH

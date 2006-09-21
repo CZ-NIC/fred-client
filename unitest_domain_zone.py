@@ -187,7 +187,7 @@ class Test(unittest.TestCase):
         self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
 
-epp_cli, epp_cli_TRANSF, log_fp, log_step = (None,)*4
+epp_cli, epp_cli_TRANSF, epp_cli_log, log_fp, log_step = (None,)*5
 
 if __name__ == '__main__':
     if ccReg.translate.option_errors:
