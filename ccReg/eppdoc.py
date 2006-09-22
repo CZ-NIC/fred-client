@@ -292,7 +292,6 @@ class Message:
 
     def create_list_data(self, prefix):
         'Hook for list commands.'
-        if not self.dom: return None
         anchor = '%s:%s'%(prefix,{'domain':'name'}.get(prefix,'id'))
         root = {'response': {
             'trID':{
@@ -310,20 +309,21 @@ class Message:
                 }
             },
         }
+        if not self.dom: return root
         response = self.dom.documentElement.getElementsByTagName('response')
-        if len(response):
-            node = response[0].getElementsByTagName('trID')
-            trID = root['response']['trID']
-            trID['clTRID'] = get_node_values(node, 'clTRID')
-            trID['svTRID'] = get_node_values(node, 'svTRID')
-            resData = response[0].getElementsByTagName('resData')
-            if len(resData):
-                key = '%s:listData'%prefix
-                listData = resData[0].getElementsByTagName(key)
-                root['response']['resData'][key][anchor] = get_node_values(listData, anchor)
-            node = response[0].getElementsByTagName('result')
-            root['response']['result']['msg'] = get_node_values(node, 'msg')
-            root['response']['result'] = get_node_attributes(node, 'result')
+        if not len(response): return root
+        node = response[0].getElementsByTagName('trID')
+        trID = root['response']['trID']
+        trID['clTRID'] = get_node_values(node, 'clTRID')
+        trID['svTRID'] = get_node_values(node, 'svTRID')
+        resData = response[0].getElementsByTagName('resData')
+        if len(resData):
+            key = '%s:listData'%prefix
+            listData = resData[0].getElementsByTagName(key)
+            root['response']['resData'][key][anchor] = get_node_values(listData, anchor)
+        node = response[0].getElementsByTagName('result')
+        root['response']['result']['msg'] = get_node_values(node, 'msg')
+        root['response']['result'] = get_node_attributes(node, 'result')
         return root
 
 #-------------------------------------------------

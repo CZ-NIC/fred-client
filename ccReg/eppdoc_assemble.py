@@ -852,15 +852,20 @@ class Message(eppdoc.Message):
 def save_history():
     'Save history of command line.'
     if readline_is_present:
+        # Set maximum to 100 lines
+        readline.set_history_length(100)
         try:
             readline.write_history_file(history_filename) # save history
         except IOError, msg:
-            print 'IOError:',msg
+            print 'IOError:',msg # some problem with history
 
 def restore_history():
     'Restore history of command line.'
     if readline_is_present:
-        readline.read_history_file(history_filename) # restore history (flush interactive params)
+        try:
+            readline.read_history_file(history_filename) # restore history (flush interactive params)
+        except IOError, msg:
+            pass # history doesn't exist, but no problem :-)
 
 def remove_from_history(count=1):
     'Remove count last commands from history.'

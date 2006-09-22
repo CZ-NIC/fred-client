@@ -52,7 +52,7 @@ CCREG_NSSET1 = 'NSSID:TDOMNSSET01'
 CCREG_NSSET2 = 'NSSID:TDOMNSSET02'
 CCREG_DOMAIN1 = 'hokus-pokus.cz' # hokus-pokus.cz sakra.cz
 CCREG_DOMAIN2 = '0.1.1.7.4.5.1.2.2.0.2.4.e164.arpa'
-VAL_EX_DATE = '2007-02-02'
+##VAL_EX_DATE = '2007-02-02'
 CCREG_DOMAIN_PASSW = 'heslicko'
 CCREG_DOMAIN_PASSW_NEW = 'noveheslo'
 INVALID_DOMAIN_NAME = 'myname.net'
@@ -202,11 +202,18 @@ class Test(unittest.TestCase):
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_092(self):
-        '4.9.2  Zalozeni nove domeny enum'
+        '4.9.2 Pokus o zalozeni domeny enum s nespravnym valExDate'
         d = CCREG_DATA[DOMAIN_2]
-        epp_cli.create_domain(d['name'], d['pw'], d['registrant'], d['nsset'], d['period'], d['contact'], VAL_EX_DATE)
-        self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+        val_ex_date = time.strftime("%Y-%m-%d",time.localtime(time.time()+60*60*24*30*7)) # sedm měsíců
+        epp_cli.create_domain(d['name'], d['pw'], d['registrant'], d['nsset'], d['period'], d['contact'], val_ex_date)
+        self.assertNotEqual(epp_cli.is_val(), 1000, 'Domena enum se vytvorila i kdyz valExDate byl neplatny')
         
+    def test_096(self):
+        '4.9.3  Zalozeni nove domeny enum'
+        d = CCREG_DATA[DOMAIN_2]
+        val_ex_date = time.strftime("%Y-%m-%d",time.localtime(time.time()+60*60*24*30*2)) # dva měsíce
+        epp_cli.create_domain(d['name'], d['pw'], d['registrant'], d['nsset'], d['period'], d['contact'], val_ex_date)
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
         
     def test_100(self):
         '4.10  Pokus o zalozeni jiz existujici domeny'
@@ -288,6 +295,20 @@ class Test(unittest.TestCase):
         '4.17 Pokus o Renew domain s nespravnym datumem'
         epp_cli.renew_domain(CCREG_DOMAIN1, '2000-01-01') # cur_exp_date
         self.assertNotEqual(epp_cli.is_val(), 1000, 'Proslo renew-domain prestoze byl zadan chybny datum cur_exp_date.')
+
+    def test_172(self):
+        '4.17.2 Pokus o Renew enum domain bez zadani valExDate'
+        # ziskani hodnoty cur_exp_date
+        epp_cli.info_domain(CCREG_DOMAIN2)
+        unitest_ccreg_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(1,3))
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+        # prodlozeni o nastavenou periodu
+        period = {'num':'2','unit':'y'}
+        renew = epp_cli.is_val(('data','domain:renew')) # cur_exp_date
+        unitest_ccreg_share.reset_client(epp_cli)
+        epp_cli.renew_domain(CCREG_DOMAIN2, renew, period)
+        unitest_ccreg_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(2,3))
+        self.assertNotEqual(epp_cli.is_val(), 1000, 'Proslo renew-domain na enum prestoze nebyl zadan valExDate.')
         
     def test_180(self):
         '4.18 Renew domain o tri roky'
