@@ -385,8 +385,8 @@ class Message(eppdoc_assemble.Message):
          )),
 
        'domain:list': ('',(
-         ('count',       1,  _T('Count')),
          ('list',        1,  _T('List')),
+         ('count',       1,  _T('Count')),
          )),
 
        'poll': ('',(

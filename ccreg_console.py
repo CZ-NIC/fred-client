@@ -35,6 +35,7 @@ def main(session_name):
     prompt = '> '
     online = prompt
     epp.automatic_login()
+    epp.restore_history()
     while 1:
         # change prompt status:
         if is_online:
@@ -52,6 +53,7 @@ def main(session_name):
             break
         if command == '': continue
         if command in ('q','quit','exit'):
+            epp.remove_from_history()
             epp.send_logout()
             break
         debug_time = [('START',time.time())] # PROFILER
@@ -71,9 +73,8 @@ def main(session_name):
             else:
                 if epp.is_online(command_name) and epp.is_connected(): # only if we are online
                     if epp.is_confirm_cmd_name(command_name):
-                        epp.save_history()
                         confirmation = raw_input('%s (y/n): '%_T('Do you want send this command to the server?'))
-                        epp.restore_history()
+                        epp.remove_from_history()
                         if confirmation not in ('y','Y'): continue
                     debug_time.append(('Save and restore history',time.time())) # PROFILER
                     epp.send(epp_doc)          # send to server
@@ -98,6 +99,7 @@ def main(session_name):
         if command_name == 'connect': epp.print_answer()
         epp.display() # display errors or notes
     epp.close()
+    epp.save_history()
     epp.display() # display logout messages
     print "[END]"
 

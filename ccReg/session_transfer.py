@@ -5,6 +5,7 @@ import client_socket
 from session_base import *
 from translate import _T, _TP, encoding
 
+
 class ManagerTransfer(ManagerBase):
     """EPP client support.
     This class take care about sending and receiving messages from/to server.
@@ -243,11 +244,15 @@ class ManagerTransfer(ManagerBase):
 
     def save_history(self):
         'Save history of command line.'
-        self._epp_cmd.save_history()
+        eppdoc_client.eppdoc_assemble.save_history()
+
     def restore_history(self):
         'Restore history of command line.'
-        self._epp_cmd.restore_history()
-        
+        eppdoc_client.eppdoc_assemble.restore_history()
+
+    def remove_from_history(self, count=1):
+        'Remove count last commands from history.'
+        eppdoc_client.eppdoc_assemble.remove_from_history(count)
         
 def __append_into_report__(body,k,v,explain):
     'Append value type(unicode|list|tuple) into report body.'

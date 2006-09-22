@@ -290,6 +290,65 @@ class Message:
         if is_class: root.__make_data_help__()
         return root
 
+    def create_list_data(self, prefix):
+        'Hook for list commands.'
+        if not self.dom: return None
+        anchor = '%s:%s'%(prefix,{'domain':'name'}.get(prefix,'id'))
+        root = {'response': {
+            'trID':{
+                'clTRID': {'data': ''},
+                'svTRID': {'data': ''}
+                },
+            'result': {
+                'attr': [],
+                'msg': {'data':''},
+                },
+            'resData': {
+                '%s:listData'%prefix: {
+                    anchor: {},
+                    },
+                }
+            },
+        }
+        response = self.dom.documentElement.getElementsByTagName('response')
+        if len(response):
+            node = response[0].getElementsByTagName('trID')
+            trID = root['response']['trID']
+            trID['clTRID'] = get_node_values(node, 'clTRID')
+            trID['svTRID'] = get_node_values(node, 'svTRID')
+            resData = response[0].getElementsByTagName('resData')
+            if len(resData):
+                key = '%s:listData'%prefix
+                listData = resData[0].getElementsByTagName(key)
+                root['response']['resData'][key][anchor] = get_node_values(listData, anchor)
+            node = response[0].getElementsByTagName('result')
+            root['response']['result']['msg'] = get_node_values(node, 'msg')
+            root['response']['result'] = get_node_attributes(node, 'result')
+        return root
+
+#-------------------------------------------------
+# Support for read XML.DOM nodes
+#-------------------------------------------------
+def get_node_values(nodes, name):
+    'Returns all values of nodes. Retval is in format [{"data":"value"},...]'
+    retval = []
+    for node in nodes:
+        for element in node.getElementsByTagName(name):
+            for e in element.childNodes:
+                if e.nodeType == Node.ELEMENT_NODE: continue
+                retval.append({'data':e.nodeValue.strip()})
+    return retval
+
+def get_node_attributes(nodes, name):
+    'Returns all attribudes of nodes. Retval is in format [{"attr":"value"},...]'
+    retval = []
+    for node in nodes:
+        for e in node.attributes.values():
+            retval.append((e.name, e.value.strip()))
+    return {'attr':retval}
+#-------------------------------------------------
+
+        
 class Data:
     """Data class. Have members along to a EPP DOM tree.
     Access to member values write member.data or member.attr.

@@ -112,21 +112,32 @@ class ManagerReceiver(ManagerCommand):
             self._epp_response.reset()
             self._epp_response.parse_xml(eppdoc.correct_unbound_prefix(epp_server_answer))
             debug_time.append(('Parse XML',time.time())) # PROFILER
+            # Exception for LIST commands.
+            try:
+                list_type = re.match('(\w+):list',self._command_sent).group(1)
+            except AttributeError:
+                list_type = ''
             if self._epp_response.is_error():
                 # při parsování se vyskytly chyby
                 self.append_error(self._epp_response.get_errors())
             else:
-                # validace
-                invalid_epp = self.is_epp_valid(self._epp_response.get_xml())
-                debug_time.append(('Validation',time.time())) # PROFILER
-                if invalid_epp:
-                    # když se odpověd serveru neplatná...
-                    self.append_note(_T('Server reply is not valid!'),('RED','BOLD'))
-                    if self._session[VERBOSE] > 1: self.append_note(invalid_epp)
-                    self.append_note(_T('Type %s to disable validator')%'${BOLD}validate off${NORMAL}')
+                if not list_type:
+                    # For LIST commands is validation turned off.
+                    invalid_epp = self.is_epp_valid(self._epp_response.get_xml())
+                    debug_time.append(('Validation',time.time())) # PROFILER
+                    if invalid_epp:
+                        # když se odpověd serveru neplatná...
+                        self.append_note(_T('Server reply is not valid!'),('RED','BOLD'))
+                        if self._session[VERBOSE] > 1: self.append_note(invalid_epp)
+                        self.append_note(_T('Type %s to disable validator')%'${BOLD}validate off${NORMAL}')
             if not self._epp_response.is_error():
                 # když přišla nějaká odpověd a podařilo se jí zparsovat:
-                self._dict_answer = self._epp_response.create_data()
+                # HOOK for contact:list, nsset:list, domain:list
+                if list_type:
+                    # TODO: Hook. Must be done over.
+                    self._dict_answer = self._epp_response.create_list_data(list_type)
+                else:
+                    self._dict_answer = self._epp_response.create_data()
                 debug_time.append(('Create data',time.time())) # PROFILER
                 if self._dict_answer.get('greeting',None):
                     self.answer_greeting()
@@ -176,7 +187,7 @@ class ManagerReceiver(ManagerCommand):
         else:
             access = 0
             msg = _T('All data are hidden.')
-##        self._session[SERVER_POLICY] = access
+        # Server Disclose Policy
         self._epp_cmd.server_disclose_policy = access
         dct['dcp'] = msg
         # Turn OFF for the time being:
@@ -531,6 +542,6 @@ if __name__ == '__main__':
         # TEST selected document:
         # Data item has format: ('command:name',"""<?xml ...XML document... >""")
         # For example: ('nsset:info',"""<?xml ...<epp ...><response> ... </epp>""")
-        test(test_incomming_messages.data[0])
-        #test(test_incomming_messages.data[-1])
+        #test(test_incomming_messages.data[0])
+        test(test_incomming_messages.data[-1])
         #map(test, test_incomming_messages.data)
