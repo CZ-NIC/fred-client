@@ -715,6 +715,10 @@ class Client:
     def load_config(self, session=''):
         'Load config file.'
         return self._epp.load_config(session)
+
+    def set_data_connect(self, dc):
+        'Set data for connection: dc = {host: str, port: str, priv_key: str, cert: str, timeout: str }'
+        return self._epp.set_data_connect(dc)
     
 def check_python_version():
     'Check for needed Python version. Returns "" if OK anf "..." not valid.'

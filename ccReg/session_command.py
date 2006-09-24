@@ -454,7 +454,7 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
     def automatic_login(self, no_outoupt=None):
         'Automatic login if all needed informations are known.'
         if self._session[ONLINE]: return # session is logged on already
-        data = self.__get_connect_defaults__()
+        data = self.get_connect_defaults()
         if self.get_config_value('session', 'auto_login',OMMIT_ERROR) in ('no','off'): return # prohibited in config
         section_epp_login = 'epp_login'
         data.append(self.get_config_value(section_epp_login, 'username',OMMIT_ERROR))

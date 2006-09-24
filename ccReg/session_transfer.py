@@ -83,7 +83,7 @@ class ManagerTransfer(ManagerBase):
     #    funkce pro komunikaci se socketem
     #
     #==================================================
-    def __get_connect_defaults__(self):
+    def get_connect_defaults(self):
         'Get connect defaults from config'
         if not self._conf: self.load_config() # load config, if was not been yet
         section = self.config_get_section_connect()
@@ -106,7 +106,7 @@ class ManagerTransfer(ManagerBase):
         self._lorry._errors = self._errors
         self._lorry.handler_message = self.process_answer
         if not data:
-            data = self.__get_connect_defaults__()
+            data = self.get_connect_defaults()
             if None in data:
                 self.append_error('%s: %s'%(_T('Can not create connection. Missing values'),str(data)))
                 return 0
@@ -184,6 +184,21 @@ class ManagerTransfer(ManagerBase):
         if self._session[VERBOSE]:
             print self.get_answer(dct) # verbose is not 0
 
+    def get_answer_udata(self, sep='\n'):
+        'Special for GUI output. Returns unicode.'
+        body=[]
+        report = body.append
+        dct = self._dct_answer
+        if self._session[SORT_BY_COLUMNS]:
+            keys = self._session[SORT_BY_COLUMNS] # sorted output (included in create command part)
+        else:
+            keys = map(lambda n:(n,1,''), dct['data'].keys()) # default (unsorted)
+        for key,verbose,explain in keys:
+            value = dct['data'].get(key,u'')
+            if value not in ('',[]): __append_into_report__(body,key,value,explain,'',1) # '' - indent; 1 - no terminal tags
+        return sep.join(body).decode(encoding)
+
+            
     def get_answer(self, dct=None, sep='\n'):
         'Show values parsed from the server answer.'
         body=[]
@@ -254,23 +269,26 @@ class ManagerTransfer(ManagerBase):
         'Remove count last commands from history.'
         eppdoc_client.eppdoc_assemble.remove_from_history(count)
         
-def __append_into_report__(body,k,v,explain):
+def __append_into_report__(body,k,v,explain, indent = '   ', no_terminal_tags=0):
     'Append value type(unicode|list|tuple) into report body.'
+    patt = (
+        ('%s${BOLD}%s${NORMAL} %s','%s${BOLD}%s${NORMAL}'),
+        ('%s%s %s','%s%s')
+    )[no_terminal_tags]
     if explain: k = explain # overwrite key by explain message
     if type(k) is str: k = k.decode(encoding)
     if type(v) is str: v = v.decode(encoding)
-    indent = '   '
     space = 20 # indent between names and values
     key = (k+':').ljust(space)
     if type(v) in (list,tuple):
         if len(v):
-            body.append(get_ltext(colored_output.render('%s${BOLD}%s${NORMAL} %s'%(indent,key,str_lists(v[0])))))
+            body.append(get_ltext(colored_output.render(patt[0]%(indent,key,str_lists(v[0])))))
             for text in v[1:]:
                 body.append(get_ltext('%s%s'%(''.ljust(space+len(indent)+1),str_lists(text))))
         else:
-            body.append(get_ltext(colored_output.render('%s${BOLD}%s${NORMAL}'%(indent,key))))
+            body.append(get_ltext(colored_output.render(patt[1]%(indent,key))))
     else:
-        body.append(get_ltext(colored_output.render('%s${BOLD}%s${NORMAL} %s'%(indent,key, v))))
+        body.append(get_ltext(colored_output.render(patt[0]%(indent,key, v))))
 
 def str_lists(text):
     """Prepare list or tuples for display. Same as str() but ommit u'...' symbols

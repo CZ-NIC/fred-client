@@ -329,6 +329,37 @@ class ManagerBase:
         self.init_options()
         return 1 # OK
 
+    def set_data_connect(self, dc):
+        'Set data for connection: dc = {host: str, port: str, priv_key: str, cert: str, timeout: str }'
+        errors = []
+        try:
+            timeout = float(dc.get('timeout','0.0'))
+        except ValueError, msg:
+            errors.append('Timeout ValueError: %s'%msg)
+        try:
+            port = int(dc.get('port','0'))
+        except ValueError, msg:
+            errors.append('Port ValueError: %s'%msg)
+        if not len(errors):
+            section = self.config_get_section_connect()
+            self._conf.set(section,'port',str(port))
+            self._conf.set(section,'timeout',str(timeout))
+            if dc.has_key('host'):
+                self._options['host'] = dc['host']
+            else:
+                errors.append(_T('Host name missing.'))
+            if not dc.has_key('port'):
+                errors.append(_T('Port number missing.'))
+            if dc.has_key('cert'):
+                self._conf.set(section,'ssl_cert', dc['cert'])
+            else:
+                errors.append(_T('SSL certificate path missing.'))
+            if dc.has_key('priv_key'):
+                self._conf.set(section,'ssl_key', dc['priv_key'])
+            else:
+                errors.append(_T('SSL private key path missing.'))
+        return errors
+        
     def __init_verbose__(self, verbose):
         'Init verbose mode.'
         if type(verbose) in (str,unicode):
