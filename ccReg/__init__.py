@@ -211,7 +211,7 @@ class Client:
             'disclose':disclose, 'vat':vat, 'ssn':ssn, 
             'notify_email':notify_email, 'cltrid':cltrid})
 
-    def create_domain(self, name, pw, registrant, nsset=None, period=None, admin=None, val_ex_date=None, 
+    def create_domain(self, name, registrant, pw=None, nsset=None, period=None, admin=None, val_ex_date=None, 
         cltrid=None):
         """Usage: create_domain name pw registrant
 
@@ -237,17 +237,17 @@ class Client:
             'period':period,'registrant':registrant,'nsset':nsset,'admin':admin,
             'val_ex_date':val_ex_date, 'cltrid':cltrid})
 
-    def create_nsset(self, nsset_id, pw, dns, tech=None, cltrid=None):
+    def create_nsset(self, nsset_id, dns, tech, pw=None, cltrid=None):
         """Usage: create_nsset id pw
 
     PARAMS:
 
     id (required)
-    pw (required)
     dns (required)               list with max 9 items.
         name (required)
         addr (optional)         unbounded list
-    tech (optional)             unbounded list
+    tech (required)             unbounded list
+    pw (optional)
 
     RETURN data: {nsset:id, nsset:crDate}
 

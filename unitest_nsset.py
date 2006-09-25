@@ -154,19 +154,19 @@ class Test(unittest.TestCase):
     def test_040(self):
         '3.4.1 Pokus o zalozeni nssetu bez tech kontaktu'
         d = CCREG_DATA[1]
-        epp_cli.create_nsset(d['id'], d['pw'], d['dns'])
+        epp_cli.create_nsset(d['id'], d['dns'], None)
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_042(self):
         '3.4.2 Pokus o zalozeni nssetu s neznámým tech kontaktem'
         d = CCREG_DATA[1]
-        epp_cli.create_nsset(d['id'], d['pw'], d['dns'], 'neznamycid')
+        epp_cli.create_nsset(d['id'], d['dns'], 'neznamycid', d['pw'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_043(self):
         '3.4.3 Pokus o zalozeni nssetu jen s jednim dns'
         d = CCREG_DATA[1]
-        epp_cli.create_nsset(CCREG_NSSET1, d['pw'], d['dns'][0], d['tech'])
+        epp_cli.create_nsset(CCREG_NSSET1, d['dns'][0], d['tech'], d['pw'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_044(self):
@@ -179,7 +179,7 @@ class Test(unittest.TestCase):
         d = CCREG_DATA[1]
         dns = list(d['dns'])
         dns.append({'name': 'ns.name1.net', 'addr': ('217.31.207.130','217.31.207.129','217.31.207.128') })
-        epp_cli.create_nsset(d['id'], d['pw'], dns, d['tech'])
+        epp_cli.create_nsset(d['id'], dns, d['tech'], d['pw'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_046(self):
@@ -187,7 +187,7 @@ class Test(unittest.TestCase):
         d = CCREG_DATA[1]
         dns = list(d['dns'])
         dns.append({'name': 'ns.myname1.cz', 'addr': ('217.31.207.130','127.0.0.1') })
-        epp_cli.create_nsset(d['id'], d['pw'], dns, d['tech'])
+        epp_cli.create_nsset(d['id'], dns, d['tech'], d['pw'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
     
     def test_047(self):
@@ -195,7 +195,7 @@ class Test(unittest.TestCase):
         d = CCREG_DATA[1]
         dns = list(d['dns'])
         dns.append({'name': 'ns.myname1.cz', 'addr': ('217.31.207.130','217.31.130.256') })
-        epp_cli.create_nsset(d['id'], d['pw'], dns, d['tech'])
+        epp_cli.create_nsset(d['id'], dns, d['tech'], d['pw'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
     
     #def test_048(self):
@@ -203,7 +203,7 @@ class Test(unittest.TestCase):
         #d = CCREG_DATA[1]
         #dns = list(d['dns'])
         #dns.append({'name': 'ns.myname1.cz', 'addr': ('217.31.207.130','0.0.0.0') })
-        #epp_cli.create_nsset(d['id'], d['pw'], dns, d['tech'])
+        #epp_cli.create_nsset(d['id'], dns, d['tech'], d['pw'])
         #self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     #def test_049(self):
@@ -211,7 +211,7 @@ class Test(unittest.TestCase):
         #d = CCREG_DATA[1]
         #dns = list(d['dns'])
         #dns.append({'name': 'ns.myname1.cz', 'addr': ('217.31.207.130','1.1.1.1') })
-        #epp_cli.create_nsset(d['id'], d['pw'], dns, d['tech'])
+        #epp_cli.create_nsset(d['id'], dns, d['tech'], d['pw'])
         #self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_051(self):
@@ -219,7 +219,7 @@ class Test(unittest.TestCase):
         d = CCREG_DATA[1]
         dns = list(d['dns'])
         dns.append({'name': 'ns.myname1.cz', 'addr': ('217.31.207.130','10.0.0.0') })
-        epp_cli.create_nsset(d['id'], d['pw'], dns, d['tech'])
+        epp_cli.create_nsset(d['id'], dns, d['tech'], d['pw'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_052(self):
@@ -227,7 +227,7 @@ class Test(unittest.TestCase):
         d = CCREG_DATA[1]
         dns = list(d['dns'])
         dns.append({'name': 'ns.myname1.cz', 'addr': ('217.31.207.130','172.16.0.0') })
-        epp_cli.create_nsset(d['id'], d['pw'], dns, d['tech'])
+        epp_cli.create_nsset(d['id'], dns, d['tech'], d['pw'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_053(self):
@@ -235,19 +235,19 @@ class Test(unittest.TestCase):
         d = CCREG_DATA[1]
         dns = list(d['dns'])
         dns.append({'name': 'ns.myname1.cz', 'addr': ('217.31.207.130','192.168.0.0') })
-        epp_cli.create_nsset(d['id'], d['pw'], dns, d['tech'])
+        epp_cli.create_nsset(d['id'], dns, d['tech'], d['pw'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
     
     def test_076(self):
         '3.5.6 Zalozeni neexistujiciho noveho nssetu'
         d = CCREG_DATA[1]
-        epp_cli.create_nsset(d['id'], d['pw'], d['dns'], d['tech'])
+        epp_cli.create_nsset(d['id'], d['dns'], d['tech'], d['pw'])
         self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_077(self):
         '3.5.7 Pokus o zalozeni existujiciho nssetu'
         d = CCREG_DATA[1]
-        epp_cli.create_nsset(d['id'], d['pw'], d['dns'], d['tech'])
+        epp_cli.create_nsset(d['id'], d['dns'], d['tech'], d['pw'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_078(self):
@@ -405,7 +405,7 @@ class Test(unittest.TestCase):
 
     def test_130(self):
         '3.12 Vytvoreni domeny napojene na nsset'
-        epp_cli.create_domain('test-nsset.cz', 'heslo', handle_contact, handle_nsset)
+        epp_cli.create_domain('test-nsset.cz', handle_contact, 'heslo', handle_nsset)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
         
     def test_135(self):

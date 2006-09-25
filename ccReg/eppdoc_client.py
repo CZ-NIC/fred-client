@@ -120,13 +120,13 @@ class Message(eppdoc_assemble.Message):
             ('passw',(1,1),(),_T('password'),'mypassword','',()),
         ],notice['transfer'],('transfer_domain name-domain password',)),
         #----------------------------------------------------
-        'create_contact': (6,[
+        'create_contact': (5,[
             ('contact_id',(1,1),(),_T('your contact ID'),'CID:ID01','',()),
             ('name',(1,1),(),_T('your name'),u'Jan Novák','',()), # odtud shoda s update contact
             ('email',(1,1),(),_T('your email'),'info@mymail.cz','',()),
             ('city',(1,1),(),_T('your city'),'Praha','',()),
             ('cc',(1,1),(),_T('country code'),'CZ',_T('country code'),()),
-            ('pw',(1,1),(),_T('password'),'mypassword',_T('password'),()), # required end
+            ('pw',(0,1),(),_T('password'),'mypassword',_T('password'),()), # required end
             ('org',(0,1),(),_T('organisation name'),'Firma s.r.o.','',()),
             ('street',(0,3),(),_T('street'),u'Národní třída 1230/12','',()),
             ('sp',(0,1),(),_T('state or province'),_T('state or province'),'',()),
@@ -146,10 +146,10 @@ class Message(eppdoc_assemble.Message):
             ('notify_email',(0,1),(),_T('notify email'),'info@mymail.cz','',()),
             ],'%s\n   %s\n%s'%(notice['create'],notice['disclose'],notice['ssn']),("create_contact CID:ID01 'Jan Novak' info@mymail.cz Praha CZ mypassword 'Firma s.r.o.' 'Narodni trida 1230/12' '' 12000 +420.222745111 +420.222745111 (y (org fax email)) 7035555556 (op 8888888856) info@mymail.cz",)),
         #----------------------------------------------------
-        'create_domain': (3,[
+        'create_domain': (2,[
             ('name',(1,1),(),_T('domain name'),'mydomain.cz','',()),
-            ('pw',(1,1),(),_T('password'),'mypassword','',()),
             ('registrant',(1,1),(),_T('registrant'),'REGID','',()),
+            ('pw',(0,1),(),_T('password'),'mypassword','',()),
             ('nsset',(0,1),(),_T('nsset'),'NSSETID','',()),
             ('period',(0,1),(),_T('period'),'','',(
                 ('num',(1,1),(),_T('number of months or years'),'3','',()),
@@ -158,22 +158,21 @@ class Message(eppdoc_assemble.Message):
             ('admin',(0,UNBOUNDED),(),_T('admin'),'ADMIN_ID','',()),
             ('val_ex_date',(0,1),(),_T('valExDate'),'2008-12-03','',()),
             ],notice['create'],(
-                'create_domain domain.cz password reg-id nsset1 (3 y) (handle1,handle2)',
-                'create_domain 1.1.1.7.4.5.2.2.2.0.2.4.e164.arpa password reg-id nsset1 (3 y) (handle1,handle2) 2006-06-08'
+                'create_domain domain.cz reg-id password nsset1 (3 y) (handle1,handle2)',
+                'create_domain 1.1.1.7.4.5.2.2.2.0.2.4.e164.arpa reg-id password nsset1 (3 y) (handle1,handle2) 2006-06-08'
             )),
         #----------------------------------------------------
-        'create_nsset': (4,[
+        'create_nsset': (3,[
             ('id',(1,1),(),_T('nsset ID'),'NSSETID','',()),
-            ('pw',(1,1),(),_T('password'),'mypassword','',()),
             ('dns',(1,9),(),_T('LIST of DNS'),'','',(
                 ('name',(1,1),(),_T('nsset name'),'my.dns1.cz','',()),
                 ('addr',(0,UNBOUNDED),(),_T('nsset address'),'217.31.207.130','',()),
             )),
             ('tech',(1,UNBOUNDED),(),_T('tech contact'),'CID:ID01','',()),
+            ('pw',(0,1),(),_T('password'),'mypassword','',()),
 
             ],notice['create'],(
-                'create_nsset nssid:example passw',
-                'create_nsset nssid:nsset1 passw ((ns1.domain.cz (217.31.207.130 217.31.207.129)),(ns2.domain.cz (217.31.206.130 217.31.206.129)),(ns3.domain.cz (217.31.205.130 217.31.205.129))) cid:reg-id'
+                'create_nsset nssid:nsset1 ((ns1.domain.cz (217.31.207.130 217.31.207.129)),(ns2.domain.cz (217.31.206.130 217.31.206.129)),(ns3.domain.cz (217.31.205.130 217.31.205.129))) cid:reg-id passw',
             )),
         #----------------------------------------------------
         'delete_contact': (1,[

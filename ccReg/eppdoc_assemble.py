@@ -609,9 +609,10 @@ class Message(eppdoc.Message):
         if __has_key__(dct,'voice'): data.append(('contact:create','contact:voice', dct['voice'][0]))
         if __has_key__(dct,'fax'): data.append(('contact:create','contact:fax', dct['fax'][0]))
         data.append(('contact:create','contact:email',dct['email'][0])) # required
-        # password required
-        data.append(('contact:create','contact:authInfo'))
-        data.append(('contact:authInfo','contact:pw',dct['pw'][0]))
+        if dct.has_key('pw'):
+            # password required
+            data.append(('contact:create','contact:authInfo'))
+            data.append(('contact:authInfo','contact:pw',dct['pw'][0]))
         # --- BEGIN disclose ------
         if __has_key_dict__(dct,'disclose'):
             self.__append_disclose__(data, 'create', dct['disclose'][0])
@@ -643,7 +644,8 @@ class Message(eppdoc.Message):
         if __has_key__(dct,'nsset'): data.append(('domain:create','domain:nsset',dct['nsset'][0]))
         if __has_key__(dct,'registrant'): data.append(('domain:create','domain:registrant',dct['registrant'][0]))
         self.__append_values__(data, dct, 'admin', 'domain:create', 'domain:admin')
-        data.extend((
+        if dct.has_key('pw'):
+            data.extend((
             ('domain:create','domain:authInfo'),
             ('domain:authInfo','domain:pw', dct['pw'][0])
         ))
@@ -678,7 +680,8 @@ class Message(eppdoc.Message):
                 self.__append_nsset__('create', data, dns)
         if __has_key__(dct,'tech'):
             self.__append_values__(data, dct, 'tech', 'nsset:create', 'nsset:tech')
-        data.extend((
+        if dct.has_key('pw'): 
+            data.extend((
             ('nsset:create','nsset:authInfo'),
             ('nsset:authInfo','nsset:pw', dct['pw'][0])
         ))

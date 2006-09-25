@@ -17,7 +17,6 @@ CCREG_NSSET1 = 'NSSID:TDOMNSSET01'
 CCREG_DOMAIN1 = 'hokus-pokus.cz'
 CCREG_DOMAIN2 = '0.1.1.7.4.5.6.2.2.0.2.4.e164.arpa'
 CCREG_DOMAIN3 = '6.2.2.0.2.4.e164.arpa'
-VAL_EX_DATE = '2008-09-12'
 CCREG_DOMAIN_PASSW = 'heslicko'
 CCREG_DOMAIN_PASSW_NEW = 'noveheslo'
 #-----------------------
@@ -42,6 +41,11 @@ CCREG_DATA = (
     }, 
     )
 
+NSSET_DNS = (
+            {'name': u'ns.pokus1.cz', 'addr': ('217.31.204.130','217.31.204.129')},
+            {'name': u'ns.pokus2.cz', 'addr': ('217.31.204.131','217.31.204.127')},
+        )
+    
 class Test(unittest.TestCase):
 
     def setUp(self):
@@ -79,6 +83,11 @@ class Test(unittest.TestCase):
         epp_cli.create_contact(CCREG_CONTACT1,'Pepa Zdepa','pepa@zdepa.cz','Praha','CZ','heslo')
         self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
+    def test_034(self):
+        '1.1 Zalozeni pomocneho nssetu'
+        epp_cli.create_nsset(CCREG_NSSET1, NSSET_DNS, CCREG_CONTACT1, 'heslo')
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+        
     # -------------------------------------
     # start test
     # -------------------------------------
@@ -86,93 +95,100 @@ class Test(unittest.TestCase):
     def test_050(self):
         '4.5 (Ticket #119) Pokus o zalozeni domeny tretiho radu www.pokus.cz'
         d = CCREG_DATA[DOMAIN_1]
-        epp_cli.create_domain('www.pokus.cz', d['pw'], d['registrant'])
+        epp_cli.create_domain('www.pokus.cz', d['registrant'], d['pw'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_060(self):
         '4.6 (Ticket #122) Pokus o zalozeni neplatne domeny www..cz'
         d = CCREG_DATA[DOMAIN_1]
-        epp_cli.create_domain('www..cz', d['pw'], d['registrant'])
+        epp_cli.create_domain('www..cz', d['registrant'], d['pw'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_070(self):
         '4.7 (Ticket #126) Pokus o zalozeni neplatne domeny -w.cz'
         d = CCREG_DATA[DOMAIN_1]
-        epp_cli.create_domain('-w.cz', d['pw'], d['registrant'])
+        epp_cli.create_domain('-w.cz', d['registrant'], d['pw'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_080(self):
         '4.8 (Ticket #126) Pokus o zalozeni neplatne domeny w-.cz'
         d = CCREG_DATA[DOMAIN_1]
-        epp_cli.create_domain('w-', d['pw'], d['registrant'])
+        epp_cli.create_domain('w-', d['registrant'], d['pw'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_090(self):
         '4.9 (Ticket #126) Pokus o zalozeni neplatne domeny w--w.cz'
         d = CCREG_DATA[DOMAIN_1]
-        epp_cli.create_domain('w--w.cz', d['pw'], d['registrant'])
+        epp_cli.create_domain('w--w.cz', d['registrant'], d['pw'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_100(self):
         '4.10  Pokus o zalozeni neplatne domeny päpa.cz'
         d = CCREG_DATA[DOMAIN_1]
-        epp_cli.create_domain('päpa.cz', d['pw'], d['registrant'])
+        epp_cli.create_domain('päpa.cz', d['registrant'], d['pw'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_101(self):
         '4.10.1  Pokus o zalozeni neplatne domeny $$$$$.cz'
         d = CCREG_DATA[DOMAIN_1]
-        epp_cli.create_domain('$$$$$.cz', d['pw'], d['registrant'])
+        epp_cli.create_domain('$$$$$.cz', d['registrant'], d['pw'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_110(self):
         '4.11  Pokus o zalozeni neplatne domeny .cz'
         d = CCREG_DATA[DOMAIN_1]
-        epp_cli.create_domain('.cz', d['pw'], d['registrant'])
+        epp_cli.create_domain('.cz', d['registrant'], d['pw'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_120(self):
         '4.12  Pokus o zalozeni neplatne domeny nic.cx'
         d = CCREG_DATA[DOMAIN_1]
-        epp_cli.create_domain('nic.cx', d['pw'], d['registrant'])
+        epp_cli.create_domain('nic.cx', d['registrant'], d['pw'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_130(self):
         '4.13  Pokus o zalozeni neplatne domeny nicnet'
         d = CCREG_DATA[DOMAIN_1]
-        epp_cli.create_domain('nicnet', d['pw'], d['registrant'])
+        epp_cli.create_domain('nicnet', d['registrant'], d['pw'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_140(self):
         '4.14  Pokus o zalozeni neplatne domeny test-nic.net'
         d = CCREG_DATA[DOMAIN_1]
-        epp_cli.create_domain('test-nic.net', d['pw'], d['registrant'])
+        epp_cli.create_domain('test-nic.net', d['registrant'], d['pw'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_150(self):
         '4.15  Pokus o zalozeni neplatne domeny "test nic.cz"'
         d = CCREG_DATA[DOMAIN_1]
-        epp_cli.create_domain('test nic.cz', d['pw'], d['registrant'])
+        epp_cli.create_domain('test nic.cz', d['registrant'], d['pw'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_160(self):
         '4.16  Pokus o zalozeni neplatne domeny "abc"*256 + ".cz" (presahuje maximalni delku)'
         d = CCREG_DATA[DOMAIN_1]
-        epp_cli.create_domain('%s.cz'%('abc'*256), d['pw'], d['registrant'])
+        epp_cli.create_domain('%s.cz'%('abc'*256), d['registrant'], d['pw'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_170(self):
-        '4.16 (Ticket #250) Pokus o zalozeni domeny enum bez valExpDate'
+        '4.17 (Ticket #250) Pokus o zalozeni domeny enum bez valExpDate'
         d = CCREG_DATA[DOMAIN_2]
-        epp_cli.create_domain(d['name'], d['pw'], d['registrant'], d['nsset'], d['period'], d['contact'])
+        epp_cli.create_domain(d['name'], d['registrant'], d['pw'], d['nsset'], d['period'], d['contact'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_180(self):
-        '4.17  Zalozeni nove domeny enum'
+        '4.18  Zalozeni nove domeny enum'
         d = CCREG_DATA[DOMAIN_2]
-        epp_cli.create_domain(d['name'], d['pw'], d['registrant'], d['nsset'], d['period'], d['contact'], VAL_EX_DATE)
+        val_ex_date = time.strftime("%Y-%m-%d",time.localtime(time.time()+60*60*24*30*2)) # dva měsíce
+        epp_cli.create_domain(d['name'], d['registrant'], d['pw'], d['nsset'], d['period'], d['contact'], val_ex_date)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
+    def test_190(self):
+        '4.19  Smazani domeny enum'
+        d = CCREG_DATA[DOMAIN_2]
+        epp_cli.delete_domain(d['name'])
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+        
 ##    def test_130(self):
 ##        '4.13 Update vsech parametru domeny'
 ##        epp_cli.update_domain(CCREG_DOMAIN1, None, None, CCREG_DATA[CHANGE_DOMAIN])
@@ -182,7 +198,12 @@ class Test(unittest.TestCase):
     # clean supported objects
     # -------------------------------------
     def test_990(self):
-        '4.LAST Smazani pomocneho kontaktu'
+        '4.LAST.1 Smazani pomocneho nssetu'
+        epp_cli.delete_nsset(CCREG_NSSET1)
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+    
+    def test_992(self):
+        '4.LAST.2 Smazani pomocneho kontaktu'
         epp_cli.delete_contact(CCREG_CONTACT1)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
