@@ -338,13 +338,13 @@ class Test(unittest.TestCase):
 def __compare_disclose__(cols, disclose, hide):
     'Compare disclose list.'
     c = {}
-    disclose_or_hide = [n for n in contact_disclose if n not in cols['data']]
+    disclose_or_hide = [n[0] for n in contact_disclose if n[0] not in cols['data']]
     if cols['flag'] == 'n':
         c['disclose'] = disclose_or_hide
-        c['hide'] = [n for n in contact_disclose if n not in disclose_or_hide]
+        c['hide'] = [n[0] for n in contact_disclose if n[0] not in disclose_or_hide]
     else:
         c['hide'] = disclose_or_hide
-        c['disclose'] = [n for n in contact_disclose if n not in disclose_or_hide]
+        c['disclose'] = [n[0] for n in contact_disclose if n[0] not in disclose_or_hide]
     is_error = not (unitest_ccreg_share.are_equal(c['disclose'],disclose) and
                 unitest_ccreg_share.are_equal(c['hide'],hide))
     return (is_error, 
