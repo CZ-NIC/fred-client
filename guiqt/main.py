@@ -3,6 +3,7 @@ import sys, re
 
 try:
     from qt import *
+    from qttable import *
     from dialog import main_dialog
 except ImportError, msg:
     print "ImportError:",msg
@@ -26,13 +27,16 @@ from ccReg.translate import _T, encoding, options, option_errors
 
 # prefix of translations
 translation_prefix = 'clientqt_'
+SPLIT_NAME = 1
 
-
-def append_key(dct, key, widget, method=0):
+def append_key(dct, key, widget):
     'Append value if has been typed.'
-    if type(widget) in (QLineEdit, QTextEdit):
+    wt = type(widget)
+    if wt in (QLineEdit, QTextEdit):
         value = ('%s'%widget.text().utf8()).strip()
         if value: dct[key] = value
+    elif wt == QRadioButton:
+        dct[key] = (0,1)[widget.isOn() == True]
     else:
         print "unknown type widget:",type(widget)
 
@@ -55,8 +59,11 @@ class CMainDialog(main_dialog):
         self.connect_timeout.setText(data[4])
         self.login_username.setText(self.epp._epp.get_config_value('epp_login', 'username',1))
         self.login_password.setText(self.epp._epp.get_config_value('epp_login', 'password',1))
-        
-        
+        # validators
+        self.connect_port.setValidator(QIntValidator(self.connect_port))
+        self.connect_timeout.setValidator(QDoubleValidator(0.0, 999.0, 2, self.connect_timeout))
+        self.poll_msg_id.setValidator(QIntValidator(self.poll_msg_id))
+
     def __check_required__(self, data, required):
         'Returns True if all required data were set. Othervise list of missing names.'
         self.missing_required = []
@@ -72,6 +79,7 @@ class CMainDialog(main_dialog):
         QMessageBox.critical(self, label, '<h2>%s:</h2>\n%s'%(label,'<br>\n'.join(map(lambda s: s.decode(encoding),messages))))
 
     def closeEvent(self,ce):
+        'Finalize when dialog is closed.'
         self.epp.logout()
         ce.accept() ## ce.ignore <qt.QCloseEvent>
 
@@ -109,7 +117,69 @@ class CMainDialog(main_dialog):
         ret = self.epp.is_logon()
         if not ret: self.display_error((_T('You are not logged. First do login.'),))
         return ret
-    
+
+    #----------------------------------
+    # Shared functions for handlers
+    #----------------------------------
+    def __share_list__(self, key, label):
+        'Shared for all check commands.'
+        if not self.check_is_online(): return
+        d = {}
+        append_key(d,'cltrid', getattr(self,'%s_cltrid'%key))
+        try:
+            self.answer = getattr(self.epp,key)(d.get('cltrid'))
+        except ccReg.ccRegError, msg:
+            self.display_error(msg, _T('Validation error'))
+        else:
+            wtab = getattr(self, '%s_table'%key)
+            data = self.answer.get('data',{})
+            header = wtab.horizontalHeader()
+            header.setLabel(0, label, 380) ## 416
+            wtab.setNumRows(int(data.get('count','0')))
+            r=0
+            for name in data.get('list',[]):
+                # enum EditType { Never, OnTyping, WhenCurrent, Always }
+                wtab.setItem(r, 0, QTableItem(wtab, QTableItem.OnTyping, name))
+                r+=1
+        # toggle widget to the response tab
+        getattr(self,'%s_response'%key).setCurrentPage(1)
+
+
+    def __share_transfer__(self, key):
+        'Shared for transfer commands.'
+        if not self.check_is_online(): return
+        d = {}
+        append_key(d,'name', getattr(self,'%s_name'%key))
+        append_key(d,'passw', getattr(self,'%s_password'%key))
+        append_key(d,'cltrid', getattr(self,'%s_cltrid'%key))
+        if self.__check_required__(d, ('name','passw')):
+            try:
+                self.answer = getattr(self.epp,key)(d['name'], d['passw'], d.get('cltrid'))
+            except ccReg.ccRegError, msg:
+                self.display_error(msg, _T('Validation error'))
+            else:
+                self.__display_answer__(key)
+        else:
+            self.display_error(self.missing_required)
+
+    def __share_command__(self, key, extends=0):
+        'Shared for some command handlers.'
+        if not self.check_is_online(): return
+        d = {}
+        append_key(d,'name', getattr(self,'%s_name'%key))
+        append_key(d,'cltrid', getattr(self,'%s_cltrid'%key))
+        if self.__check_required__(d, ('name',)):
+            if extends == SPLIT_NAME:
+                d['name'] = re.split('\s+',d['name']) # need for check commands
+            try:
+                self.answer = getattr(self.epp,key)(d['name'], d.get('cltrid'))
+            except ccReg.ccRegError, msg:
+                self.display_error(msg, _T('Validation error'))
+            else:
+                self.__display_answer__(key)
+        else:
+            self.display_error(self.missing_required)
+
     #==============================
     # Widgets handlers
     #==============================
@@ -158,6 +228,17 @@ class CMainDialog(main_dialog):
 
     def poll(self):
         if not self.check_is_online(): return
+        d = {}
+        append_key(d, 'op', self.poll_op_ack)
+        append_key(d, 'msg_id', self.poll_msg_id)
+        append_key(d,'cltrid',self.poll_cltrid)
+        d['op'] = ('req','ack')[d['op']]
+        try:
+            self.answer = self.epp.poll(d['op'], d.get('msg_id'), d.get('cltrid'))
+        except ccReg.ccRegError, msg:
+            self.display_error(msg, _T('Validation error'))
+        else:
+            self.__display_answer__('poll')
 
     def hello(self):
         try:
@@ -168,34 +249,22 @@ class CMainDialog(main_dialog):
             self.__display_answer__('hello')
 
     def check_contact(self):
-        if not self.check_is_online(): return
-        d = {}
-        append_key(d,'name',self.check_contact_names)
-        append_key(d,'cltrid',self.check_contact_cltrid)
-        if self.__check_required__(d, ('name',)):
-            try:
-                self.answer = self.epp.check_contact(re.split('\s+',d['name']), d.get('cltrid'))
-            except ccReg.ccRegError, msg:
-                self.display_error(msg, _T('Validation error'))
-            else:
-                self.__display_answer__('check_contact')
-        else:
-            self.display_error(self.missing_required)
+        self.__share_command__('check_contact',SPLIT_NAME)
 
     def check_nsset(self):
-        if not self.check_is_online(): return
+        self.__share_command__('check_nsset',SPLIT_NAME)
 
     def check_domain(self):
-        if not self.check_is_online(): return
+        self.__share_command__('check_domain',SPLIT_NAME)
 
     def info_contact(self):
-        if not self.check_is_online(): return
+        self.__share_command__('info_contact')
 
     def info_nsset(self):
-        if not self.check_is_online(): return
+        self.__share_command__('info_nsset')
 
     def info_domain(self):
-        if not self.check_is_online(): return
+        self.__share_command__('info_domain')
 
     def create_contact(self):
         if not self.check_is_online(): return
@@ -216,34 +285,31 @@ class CMainDialog(main_dialog):
         if not self.check_is_online(): return
 
     def delete_contact(self):
-        if not self.check_is_online(): return
+        self.__share_command__('delete_contact')
 
     def delete_nsset(self):
-        if not self.check_is_online(): return
+        self.__share_command__('delete_nsset')
 
     def delete_domain(self):
-        if not self.check_is_online(): return
+        self.__share_command__('delete_domain')
 
     def transfer_contact(self):
-        if not self.check_is_online(): return
+        self.__share_transfer__('transfer_contact')
 
     def transfer_domain(self):
-        if not self.check_is_online(): return
+        self.__share_transfer__('transfer_domain')
 
     def renew_domain(self):
         if not self.check_is_online(): return
 
     def list_contact(self):
-        if not self.check_is_online(): return
+        self.__share_list__('list_contact', _T('contact'))
 
     def list_nsset(self):
-        if not self.check_is_online(): return
+        self.__share_list__('list_nsset', _T('nsset'))
 
     def list_domain(self):
-        if not self.check_is_online(): return
-
-    def poll_op(self):
-        if not self.check_is_online(): return
+        self.__share_list__('list_domain', _T('domain'))
 
     #==============================
 

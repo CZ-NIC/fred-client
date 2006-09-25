@@ -76,10 +76,11 @@ CCREG_DATA = (
        'period': {'num':'3','unit':'y'},
        'contact':(CCREG_CONTACT1,),
     }, 
-    { # modify
+    { # modify CHANGE_DOMAIN
       'nsset': CCREG_NSSET2,
       'registrant': CCREG_CONTACT2,
-      'auth_info': {'pw': CCREG_DOMAIN_PASSW_NEW,},
+##      'auth_info': {'pw': CCREG_DOMAIN_PASSW_NEW,},
+      'pw': CCREG_DOMAIN_PASSW_NEW,
     },
     { # DOMAIN_3 - modified
        'name':CCREG_DOMAIN1,
@@ -107,7 +108,7 @@ class Test(unittest.TestCase):
         unitest_ccreg_share.reset_client(epp_cli_log)
 
     def test_000(self):
-        '3.0 Inicializace spojeni a definovani testovacich handlu'
+        '4.0 Inicializace spojeni a definovani testovacich handlu'
         global epp_cli, epp_cli_TRANSF, epp_cli_log, handle_contact, handle_nsset, log_fp
         # create client object
         epp_cli = ccReg.Client()

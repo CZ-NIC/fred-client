@@ -215,19 +215,6 @@ Parameters in &lt;b&gt;bold&lt;/b&gt; style are &lt;b&gt;required&lt;/b&gt;. Oth
                 </widget>
                 <widget class="QLineEdit">
                     <property name="name">
-                        <cstring>connect_port</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>210</x>
-                            <y>80</y>
-                            <width>410</width>
-                            <height>22</height>
-                        </rect>
-                    </property>
-                </widget>
-                <widget class="QLineEdit">
-                    <property name="name">
                         <cstring>connect_certificate</cstring>
                     </property>
                     <property name="geometry">
@@ -292,6 +279,19 @@ Parameters in &lt;b&gt;bold&lt;/b&gt; style are &lt;b&gt;required&lt;/b&gt;. Oth
                         <rect>
                             <x>210</x>
                             <y>200</y>
+                            <width>410</width>
+                            <height>22</height>
+                        </rect>
+                    </property>
+                </widget>
+                <widget class="QLineEdit">
+                    <property name="name">
+                        <cstring>connect_port</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>210</x>
+                            <y>80</y>
                             <width>410</width>
                             <height>22</height>
                         </rect>
@@ -894,19 +894,6 @@ The EPP "logout" command is used to end a session with an EPP server.</string>
                                     <string>clTRID</string>
                                 </property>
                             </widget>
-                            <widget class="QLineEdit">
-                                <property name="name">
-                                    <cstring>poll_cltrid</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>220</x>
-                                        <y>250</y>
-                                        <width>360</width>
-                                        <height>22</height>
-                                    </rect>
-                                </property>
-                            </widget>
                             <widget class="QLabel">
                                 <property name="name">
                                     <cstring>textLabel4_2</cstring>
@@ -956,6 +943,22 @@ The EPP "logout" command is used to end a session with an EPP server.</string>
                                 </property>
                                 <widget class="QRadioButton">
                                     <property name="name">
+                                        <cstring>poll_op_ack</cstring>
+                                    </property>
+                                    <property name="geometry">
+                                        <rect>
+                                            <x>200</x>
+                                            <y>20</y>
+                                            <width>140</width>
+                                            <height>20</height>
+                                        </rect>
+                                    </property>
+                                    <property name="text">
+                                        <string>acknowledge</string>
+                                    </property>
+                                </widget>
+                                <widget class="QRadioButton">
+                                    <property name="name">
                                         <cstring>poll_op_req</cstring>
                                     </property>
                                     <property name="geometry">
@@ -980,22 +983,6 @@ The EPP "logout" command is used to end a session with an EPP server.</string>
                                         <string>This options &lt;b&gt;requests&lt;/b&gt; server for message.</string>
                                     </property>
                                 </widget>
-                                <widget class="QRadioButton">
-                                    <property name="name">
-                                        <cstring>poll_op_ack</cstring>
-                                    </property>
-                                    <property name="geometry">
-                                        <rect>
-                                            <x>200</x>
-                                            <y>20</y>
-                                            <width>140</width>
-                                            <height>20</height>
-                                        </rect>
-                                    </property>
-                                    <property name="text">
-                                        <string>acknowledge</string>
-                                    </property>
-                                </widget>
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
@@ -1016,19 +1003,6 @@ The EPP "logout" command is used to end a session with an EPP server.</string>
                                     <set>WordBreak|AlignTop|AlignLeft</set>
                                 </property>
                             </widget>
-                            <widget class="QLineEdit">
-                                <property name="name">
-                                    <cstring>msg_id</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>220</x>
-                                        <y>210</y>
-                                        <width>360</width>
-                                        <height>22</height>
-                                    </rect>
-                                </property>
-                            </widget>
                             <widget class="QPushButton">
                                 <property name="name">
                                     <cstring>send_poll</cstring>
@@ -1043,6 +1017,32 @@ The EPP "logout" command is used to end a session with an EPP server.</string>
                                 </property>
                                 <property name="text">
                                     <string>Send command</string>
+                                </property>
+                            </widget>
+                            <widget class="QLineEdit">
+                                <property name="name">
+                                    <cstring>poll_cltrid</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>220</x>
+                                        <y>250</y>
+                                        <width>360</width>
+                                        <height>22</height>
+                                    </rect>
+                                </property>
+                            </widget>
+                            <widget class="QLineEdit">
+                                <property name="name">
+                                    <cstring>poll_msg_id</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>220</x>
+                                        <y>210</y>
+                                        <width>360</width>
+                                        <height>22</height>
+                                    </rect>
                                 </property>
                             </widget>
                         </widget>
@@ -1472,19 +1472,6 @@ Type one or more names (handles) of contacts what you want to check. One name to
                                     <string>clTRID</string>
                                 </property>
                             </widget>
-                            <widget class="QTextEdit">
-                                <property name="name">
-                                    <cstring>check_contact_names</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>220</x>
-                                        <y>150</y>
-                                        <width>360</width>
-                                        <height>90</height>
-                                    </rect>
-                                </property>
-                            </widget>
                             <widget class="QLineEdit">
                                 <property name="name">
                                     <cstring>check_contact_cltrid</cstring>
@@ -1512,6 +1499,19 @@ Type one or more names (handles) of contacts what you want to check. One name to
                                 </property>
                                 <property name="text">
                                     <string>Send command</string>
+                                </property>
+                            </widget>
+                            <widget class="QTextEdit">
+                                <property name="name">
+                                    <cstring>check_contact_name</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>220</x>
+                                        <y>150</y>
+                                        <width>360</width>
+                                        <height>90</height>
+                                    </rect>
                                 </property>
                             </widget>
                         </widget>
@@ -2230,19 +2230,6 @@ The EPP "delete" command is used to remove an instance of an existing object.</s
                                     <string>&lt;b&gt;name&lt;/b&gt;</string>
                                 </property>
                             </widget>
-                            <widget class="QLineEdit">
-                                <property name="name">
-                                    <cstring>delete_contact_name</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>220</x>
-                                        <y>210</y>
-                                        <width>360</width>
-                                        <height>22</height>
-                                    </rect>
-                                </property>
-                            </widget>
                             <widget class="QLabel">
                                 <property name="name">
                                     <cstring>textLabel5_5_4</cstring>
@@ -2286,6 +2273,19 @@ The EPP "delete" command is used to remove an instance of an existing object.</s
                                 </property>
                                 <property name="text">
                                     <string>Send command</string>
+                                </property>
+                            </widget>
+                            <widget class="QLineEdit">
+                                <property name="name">
+                                    <cstring>delete_contact_name</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>220</x>
+                                        <y>210</y>
+                                        <width>360</width>
+                                        <height>22</height>
+                                    </rect>
                                 </property>
                             </widget>
                         </widget>
@@ -2500,32 +2500,6 @@ reject a transfer request using the "op" command attribute.</string>
                             </widget>
                             <widget class="QLineEdit">
                                 <property name="name">
-                                    <cstring>transfer_contact_name</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>220</x>
-                                        <y>170</y>
-                                        <width>360</width>
-                                        <height>22</height>
-                                    </rect>
-                                </property>
-                            </widget>
-                            <widget class="QLineEdit">
-                                <property name="name">
-                                    <cstring>transfer_contact_password</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>220</x>
-                                        <y>210</y>
-                                        <width>360</width>
-                                        <height>22</height>
-                                    </rect>
-                                </property>
-                            </widget>
-                            <widget class="QLineEdit">
-                                <property name="name">
                                     <cstring>transfer_contact_cltrid</cstring>
                                 </property>
                                 <property name="geometry">
@@ -2551,6 +2525,32 @@ reject a transfer request using the "op" command attribute.</string>
                                 </property>
                                 <property name="text">
                                     <string>Send command</string>
+                                </property>
+                            </widget>
+                            <widget class="QLineEdit">
+                                <property name="name">
+                                    <cstring>transfer_contact_name</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>220</x>
+                                        <y>170</y>
+                                        <width>360</width>
+                                        <height>22</height>
+                                    </rect>
+                                </property>
+                            </widget>
+                            <widget class="QLineEdit">
+                                <property name="name">
+                                    <cstring>transfer_contact_password</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>220</x>
+                                        <y>210</y>
+                                        <width>360</width>
+                                        <height>22</height>
+                                    </rect>
                                 </property>
                             </widget>
                         </widget>
@@ -2780,22 +2780,6 @@ The EPP "list" command is used to list all ID of an existing object owning by re
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_2_2_10</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>7</x>
-                                        <y>132</y>
-                                        <width>110</width>
-                                        <height>20</height>
-                                    </rect>
-                                </property>
-                                <property name="text">
-                                    <string>data</string>
-                                </property>
-                            </widget>
-                            <widget class="QLabel">
-                                <property name="name">
                                     <cstring>textLabel1_2_3_7_3_3_3_3_3_3_2</cstring>
                                 </property>
                                 <property name="geometry">
@@ -2838,7 +2822,7 @@ The EPP "list" command is used to list all ID of an existing object owning by re
                                         <x>130</x>
                                         <y>40</y>
                                         <width>450</width>
-                                        <height>80</height>
+                                        <height>64</height>
                                     </rect>
                                 </property>
                                 <property name="text">
@@ -2848,17 +2832,47 @@ The EPP "list" command is used to list all ID of an existing object owning by re
                                     <enum>WidgetWidth</enum>
                                 </property>
                             </widget>
-                            <widget class="QTextEdit">
+                            <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>list_contact_data</cstring>
+                                    <cstring>textLabel2_5_2_2_10</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>10</x>
+                                        <y>120</y>
+                                        <width>110</width>
+                                        <height>20</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string>data</string>
+                                </property>
+                            </widget>
+                            <widget class="QTable">
+                                <column>
+                                    <property name="text">
+                                        <string>name</string>
+                                    </property>
+                                    <property name="pixmap">
+                                        <pixmap></pixmap>
+                                    </property>
+                                </column>
+                                <property name="name">
+                                    <cstring>list_contact_table</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
                                         <x>130</x>
-                                        <y>129</y>
+                                        <y>120</y>
                                         <width>450</width>
-                                        <height>190</height>
+                                        <height>210</height>
                                     </rect>
+                                </property>
+                                <property name="numRows">
+                                    <number>0</number>
+                                </property>
+                                <property name="numCols">
+                                    <number>1</number>
                                 </property>
                             </widget>
                         </widget>
@@ -3009,19 +3023,6 @@ Type one or more names (handles) of contacts what you want to check. One name to
                                     <string>clTRID</string>
                                 </property>
                             </widget>
-                            <widget class="QTextEdit">
-                                <property name="name">
-                                    <cstring>check_nsset_names</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>220</x>
-                                        <y>150</y>
-                                        <width>360</width>
-                                        <height>90</height>
-                                    </rect>
-                                </property>
-                            </widget>
                             <widget class="QLineEdit">
                                 <property name="name">
                                     <cstring>check_nsset_cltrid</cstring>
@@ -3049,6 +3050,19 @@ Type one or more names (handles) of contacts what you want to check. One name to
                                 </property>
                                 <property name="text">
                                     <string>Send command</string>
+                                </property>
+                            </widget>
+                            <widget class="QTextEdit">
+                                <property name="name">
+                                    <cstring>check_nsset_name</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>220</x>
+                                        <y>150</y>
+                                        <width>360</width>
+                                        <height>90</height>
+                                    </rect>
                                 </property>
                             </widget>
                         </widget>
@@ -3785,19 +3799,6 @@ The EPP "delete" command is used to remove an instance of an existing object.</s
                             </widget>
                             <widget class="QLineEdit">
                                 <property name="name">
-                                    <cstring>delete_nsset_name</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>220</x>
-                                        <y>210</y>
-                                        <width>360</width>
-                                        <height>22</height>
-                                    </rect>
-                                </property>
-                            </widget>
-                            <widget class="QLineEdit">
-                                <property name="name">
                                     <cstring>delete_nsset_cltrid</cstring>
                                 </property>
                                 <property name="geometry">
@@ -3823,6 +3824,19 @@ The EPP "delete" command is used to remove an instance of an existing object.</s
                                 </property>
                                 <property name="text">
                                     <string>Send command</string>
+                                </property>
+                            </widget>
+                            <widget class="QLineEdit">
+                                <property name="name">
+                                    <cstring>delete_nsset_name</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>220</x>
+                                        <y>210</y>
+                                        <width>360</width>
+                                        <height>22</height>
+                                    </rect>
                                 </property>
                             </widget>
                         </widget>
@@ -4036,22 +4050,6 @@ The EPP "list" command is used to list all ID of an existing object owning by re
                             </attribute>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_2_2_16</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>7</x>
-                                        <y>132</y>
-                                        <width>110</width>
-                                        <height>20</height>
-                                    </rect>
-                                </property>
-                                <property name="text">
-                                    <string>data</string>
-                                </property>
-                            </widget>
-                            <widget class="QLabel">
-                                <property name="name">
                                     <cstring>textLabel2_5_3_16</cstring>
                                 </property>
                                 <property name="geometry">
@@ -4110,7 +4108,7 @@ The EPP "list" command is used to list all ID of an existing object owning by re
                                         <x>130</x>
                                         <y>40</y>
                                         <width>450</width>
-                                        <height>80</height>
+                                        <height>64</height>
                                     </rect>
                                 </property>
                                 <property name="text">
@@ -4120,17 +4118,47 @@ The EPP "list" command is used to list all ID of an existing object owning by re
                                     <enum>WidgetWidth</enum>
                                 </property>
                             </widget>
-                            <widget class="QTextEdit">
+                            <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>list_nsset_data</cstring>
+                                    <cstring>textLabel2_5_2_2_16</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>10</x>
+                                        <y>120</y>
+                                        <width>110</width>
+                                        <height>20</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string>data</string>
+                                </property>
+                            </widget>
+                            <widget class="QTable">
+                                <column>
+                                    <property name="text">
+                                        <string>name</string>
+                                    </property>
+                                    <property name="pixmap">
+                                        <pixmap></pixmap>
+                                    </property>
+                                </column>
+                                <property name="name">
+                                    <cstring>list_nsset_table</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
                                         <x>130</x>
-                                        <y>129</y>
+                                        <y>120</y>
                                         <width>450</width>
-                                        <height>190</height>
+                                        <height>210</height>
                                     </rect>
+                                </property>
+                                <property name="numRows">
+                                    <number>0</number>
+                                </property>
+                                <property name="numCols">
+                                    <number>1</number>
                                 </property>
                             </widget>
                         </widget>
@@ -4281,19 +4309,6 @@ The EPP "check" command is used to determine if an object can be provisioned wit
                                     <set>WordBreak|AlignTop|AlignLeft</set>
                                 </property>
                             </widget>
-                            <widget class="QTextEdit">
-                                <property name="name">
-                                    <cstring>check_domain_names</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>220</x>
-                                        <y>150</y>
-                                        <width>360</width>
-                                        <height>90</height>
-                                    </rect>
-                                </property>
-                            </widget>
                             <widget class="QLineEdit">
                                 <property name="name">
                                     <cstring>check_domain_cltrid</cstring>
@@ -4321,6 +4336,19 @@ The EPP "check" command is used to determine if an object can be provisioned wit
                                 </property>
                                 <property name="text">
                                     <string>Send command</string>
+                                </property>
+                            </widget>
+                            <widget class="QTextEdit">
+                                <property name="name">
+                                    <cstring>check_domain_name</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>220</x>
+                                        <y>150</y>
+                                        <width>360</width>
+                                        <height>90</height>
+                                    </rect>
                                 </property>
                             </widget>
                         </widget>
@@ -5057,19 +5085,6 @@ The EPP "delete" command is used to remove an instance of an existing object.</s
                             </widget>
                             <widget class="QLineEdit">
                                 <property name="name">
-                                    <cstring>delete_domain_name</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>220</x>
-                                        <y>210</y>
-                                        <width>360</width>
-                                        <height>22</height>
-                                    </rect>
-                                </property>
-                            </widget>
-                            <widget class="QLineEdit">
-                                <property name="name">
                                     <cstring>delete_domain_cltrid</cstring>
                                 </property>
                                 <property name="geometry">
@@ -5095,6 +5110,19 @@ The EPP "delete" command is used to remove an instance of an existing object.</s
                                 </property>
                                 <property name="text">
                                     <string>Send command</string>
+                                </property>
+                            </widget>
+                            <widget class="QLineEdit">
+                                <property name="name">
+                                    <cstring>delete_domain_name</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>220</x>
+                                        <y>210</y>
+                                        <width>360</width>
+                                        <height>22</height>
+                                    </rect>
                                 </property>
                             </widget>
                         </widget>
@@ -5309,32 +5337,6 @@ reject a transfer request using the "op" command attribute.</string>
                             </widget>
                             <widget class="QLineEdit">
                                 <property name="name">
-                                    <cstring>transfer_domain_name</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>220</x>
-                                        <y>170</y>
-                                        <width>360</width>
-                                        <height>22</height>
-                                    </rect>
-                                </property>
-                            </widget>
-                            <widget class="QLineEdit">
-                                <property name="name">
-                                    <cstring>transfer_domain_password</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>220</x>
-                                        <y>210</y>
-                                        <width>360</width>
-                                        <height>22</height>
-                                    </rect>
-                                </property>
-                            </widget>
-                            <widget class="QLineEdit">
-                                <property name="name">
                                     <cstring>transfer_domain_cltrid</cstring>
                                 </property>
                                 <property name="geometry">
@@ -5360,6 +5362,32 @@ reject a transfer request using the "op" command attribute.</string>
                                 </property>
                                 <property name="text">
                                     <string>Send command</string>
+                                </property>
+                            </widget>
+                            <widget class="QLineEdit">
+                                <property name="name">
+                                    <cstring>transfer_domain_name</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>220</x>
+                                        <y>170</y>
+                                        <width>360</width>
+                                        <height>22</height>
+                                    </rect>
+                                </property>
+                            </widget>
+                            <widget class="QLineEdit">
+                                <property name="name">
+                                    <cstring>transfer_domain_password</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>220</x>
+                                        <y>210</y>
+                                        <width>360</width>
+                                        <height>22</height>
+                                    </rect>
                                 </property>
                             </widget>
                         </widget>
@@ -5728,22 +5756,6 @@ The EPP "list" command is used to list all ID of an existing object owning by re
                             </attribute>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_2_2_24</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>7</x>
-                                        <y>132</y>
-                                        <width>110</width>
-                                        <height>20</height>
-                                    </rect>
-                                </property>
-                                <property name="text">
-                                    <string>data</string>
-                                </property>
-                            </widget>
-                            <widget class="QLabel">
-                                <property name="name">
                                     <cstring>textLabel2_5_3_24</cstring>
                                 </property>
                                 <property name="geometry">
@@ -5802,7 +5814,7 @@ The EPP "list" command is used to list all ID of an existing object owning by re
                                         <x>130</x>
                                         <y>40</y>
                                         <width>450</width>
-                                        <height>80</height>
+                                        <height>64</height>
                                     </rect>
                                 </property>
                                 <property name="text">
@@ -5812,17 +5824,47 @@ The EPP "list" command is used to list all ID of an existing object owning by re
                                     <enum>WidgetWidth</enum>
                                 </property>
                             </widget>
-                            <widget class="QTextEdit">
+                            <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>list_domain_data</cstring>
+                                    <cstring>textLabel2_5_2_2_24</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>10</x>
+                                        <y>120</y>
+                                        <width>110</width>
+                                        <height>20</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string>data</string>
+                                </property>
+                            </widget>
+                            <widget class="QTable">
+                                <column>
+                                    <property name="text">
+                                        <string>name</string>
+                                    </property>
+                                    <property name="pixmap">
+                                        <pixmap></pixmap>
+                                    </property>
+                                </column>
+                                <property name="name">
+                                    <cstring>list_domain_table</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
                                         <x>130</x>
-                                        <y>129</y>
+                                        <y>120</y>
                                         <width>450</width>
-                                        <height>190</height>
+                                        <height>210</height>
                                     </rect>
+                                </property>
+                                <property name="numRows">
+                                    <number>0</number>
+                                </property>
+                                <property name="numCols">
+                                    <number>1</number>
                                 </property>
                             </widget>
                         </widget>
@@ -5857,6 +5899,84 @@ The EPP "list" command is used to list all ID of an existing object owning by re
         <slot>close()</slot>
     </connection>
     <connection>
+        <sender>send_delete_contact</sender>
+        <signal>clicked()</signal>
+        <receiver>main_dialog</receiver>
+        <slot>delete_contact()</slot>
+    </connection>
+    <connection>
+        <sender>send_delete_domain</sender>
+        <signal>clicked()</signal>
+        <receiver>main_dialog</receiver>
+        <slot>delete_domain()</slot>
+    </connection>
+    <connection>
+        <sender>send_delete_nsset</sender>
+        <signal>clicked()</signal>
+        <receiver>main_dialog</receiver>
+        <slot>delete_nsset()</slot>
+    </connection>
+    <connection>
+        <sender>send_hello</sender>
+        <signal>clicked()</signal>
+        <receiver>main_dialog</receiver>
+        <slot>hello()</slot>
+    </connection>
+    <connection>
+        <sender>send_check_contact</sender>
+        <signal>clicked()</signal>
+        <receiver>main_dialog</receiver>
+        <slot>check_contact()</slot>
+    </connection>
+    <connection>
+        <sender>send_check_domain</sender>
+        <signal>clicked()</signal>
+        <receiver>main_dialog</receiver>
+        <slot>check_domain()</slot>
+    </connection>
+    <connection>
+        <sender>send_check_nsset</sender>
+        <signal>clicked()</signal>
+        <receiver>main_dialog</receiver>
+        <slot>check_nsset()</slot>
+    </connection>
+    <connection>
+        <sender>send_info_contact</sender>
+        <signal>clicked()</signal>
+        <receiver>main_dialog</receiver>
+        <slot>info_contact()</slot>
+    </connection>
+    <connection>
+        <sender>send_info_domain</sender>
+        <signal>clicked()</signal>
+        <receiver>main_dialog</receiver>
+        <slot>info_domain()</slot>
+    </connection>
+    <connection>
+        <sender>send_info_nsset</sender>
+        <signal>clicked()</signal>
+        <receiver>main_dialog</receiver>
+        <slot>info_nsset()</slot>
+    </connection>
+    <connection>
+        <sender>send_list_contact</sender>
+        <signal>clicked()</signal>
+        <receiver>main_dialog</receiver>
+        <slot>list_contact()</slot>
+    </connection>
+    <connection>
+        <sender>send_list_domain</sender>
+        <signal>clicked()</signal>
+        <receiver>main_dialog</receiver>
+        <slot>list_domain()</slot>
+    </connection>
+    <connection>
+        <sender>send_list_nsset</sender>
+        <signal>clicked()</signal>
+        <receiver>main_dialog</receiver>
+        <slot>list_nsset()</slot>
+    </connection>
+    <connection>
         <sender>send_login</sender>
         <signal>clicked()</signal>
         <receiver>main_dialog</receiver>
@@ -5873,84 +5993,6 @@ The EPP "list" command is used to list all ID of an existing object owning by re
         <signal>clicked()</signal>
         <receiver>main_dialog</receiver>
         <slot>poll()</slot>
-    </connection>
-    <connection>
-        <sender>send_hello</sender>
-        <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
-        <slot>hello()</slot>
-    </connection>
-    <connection>
-        <sender>send_check_contact</sender>
-        <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
-        <slot>check_contact()</slot>
-    </connection>
-    <connection>
-        <sender>send_check_nsset</sender>
-        <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
-        <slot>check_nsset()</slot>
-    </connection>
-    <connection>
-        <sender>send_check_domain</sender>
-        <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
-        <slot>check_domain()</slot>
-    </connection>
-    <connection>
-        <sender>send_info_contact</sender>
-        <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
-        <slot>info_contact()</slot>
-    </connection>
-    <connection>
-        <sender>send_info_nsset</sender>
-        <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
-        <slot>info_nsset()</slot>
-    </connection>
-    <connection>
-        <sender>send_check_domain</sender>
-        <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
-        <slot>info_domain()</slot>
-    </connection>
-    <connection>
-        <sender>send_delete_contact</sender>
-        <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
-        <slot>delete_contact()</slot>
-    </connection>
-    <connection>
-        <sender>send_check_nsset</sender>
-        <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
-        <slot>delete_nsset()</slot>
-    </connection>
-    <connection>
-        <sender>send_check_domain</sender>
-        <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
-        <slot>delete_domain()</slot>
-    </connection>
-    <connection>
-        <sender>send_list_contact</sender>
-        <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
-        <slot>list_contact()</slot>
-    </connection>
-    <connection>
-        <sender>send_list_nsset</sender>
-        <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
-        <slot>list_nsset()</slot>
-    </connection>
-    <connection>
-        <sender>send_check_domain</sender>
-        <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
-        <slot>list_domain()</slot>
     </connection>
     <connection>
         <sender>send_transfer_contact</sender>

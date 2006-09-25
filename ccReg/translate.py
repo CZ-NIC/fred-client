@@ -108,6 +108,7 @@ optcols = (
     'u:user',
     'v:verbose',
     'V version',
+    '  gui',
     )
 options = {}
 for key in optcols:

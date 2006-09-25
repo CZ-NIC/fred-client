@@ -37,6 +37,8 @@ _T("""Connection options:
                    load config from filename"""),
    _T("""-d COMMAND, --command=COMMAND
                    send command to server and exit"""),
+   _T(""" --gui
+                   run client in grafical user interface"""),
    _T('For more information, see README.'))
         elif options['version']:
             epp = ccReg.ClientSession()
@@ -55,6 +57,9 @@ _T("""Connection options:
                         ccreg_sender.send_docs(((1,epp_doc),))
                     else:
                         print 'Internal error: epp_doc, xml_error = ccreg_create.main(options[command])'
+            elif options['gui']=='qt':
+                from guiqt.main import main
+                main([],options['lang'])
             else:
                 import ccreg_console
                 ccreg_console.main(options['session'])
