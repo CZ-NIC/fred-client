@@ -163,7 +163,7 @@ class CMainDialog(main_dialog):
             self.display_error(self.missing_required)
 
     def __share_command__(self, key, extends=0):
-        'Shared for some command handlers.'
+        'Shared for command handlers check, info, delete.'
         if not self.check_is_online(): return
         d = {}
         append_key(d,'name', getattr(self,'%s_name'%key))

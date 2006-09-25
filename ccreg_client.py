@@ -10,7 +10,7 @@ if __name__ == '__main__':
         print "%s %s" % (msg_invalid)
     else:
         if options['help']:
-            print '%s: %s [OPTIONS...]\n\n%s\n\n%s\n  %s\n\n  %s\n'%(_T('Usage'), 'ccreg_client',
+            print '%s: %s [OPTIONS...]\n\n%s\n\n%s\n  %s\n  %s\n\n  %s\n'%(_T('Usage'), 'ccreg_client',
 _T('Client for communication with EPP server.'),
 _T("""Connection options:
   -?, --help       show this help and exit
@@ -37,7 +37,7 @@ _T("""Connection options:
                    load config from filename"""),
    _T("""-d COMMAND, --command=COMMAND
                    send command to server and exit"""),
-   _T(""" --gui
+   _T("""-x --gui
                    run client in grafical user interface"""),
    _T('For more information, see README.'))
         elif options['version']:
@@ -57,7 +57,7 @@ _T("""Connection options:
                         ccreg_sender.send_docs(((1,epp_doc),))
                     else:
                         print 'Internal error: epp_doc, xml_error = ccreg_create.main(options[command])'
-            elif options['gui']=='qt':
+            elif options['gui']:
                 from guiqt.main import main
                 main([],options['lang'])
             else:
