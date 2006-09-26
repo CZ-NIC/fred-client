@@ -5,6 +5,7 @@ try:
     from qt import *
     from qttable import *
     from dialog import main_dialog
+    import create_contact
 except ImportError, msg:
     print "ImportError:",msg
     print 'For runnig this application you need install qt module. See PyQt and Qt pages.'
@@ -37,9 +38,13 @@ def append_key(dct, key, widget):
         if value: dct[key] = value
     elif wt == QRadioButton:
         dct[key] = (0,1)[widget.isOn() == True]
+    elif wt == QDateEdit:
+        dct[key] = '%s'%widget.date().toString(Qt.ISODate) # QDate; Qt.ISODate='YYYY-MM-DD'
+    elif wt == QComboBox:
+        dct[key] = '%s'%widget.currentText()
     else:
         print "unknown type widget:",type(widget)
-
+        
 
 class CMainDialog(main_dialog):
     'Main frame dialog.'
@@ -63,7 +68,26 @@ class CMainDialog(main_dialog):
         self.connect_port.setValidator(QIntValidator(self.connect_port))
         self.connect_timeout.setValidator(QDoubleValidator(0.0, 999.0, 2, self.connect_timeout))
         self.poll_msg_id.setValidator(QIntValidator(self.poll_msg_id))
+        self.renew_domain_period_num.setValidator(QIntValidator(self.renew_domain_period_num))
+        # scrolled windows:
+        self.panel_create_contact = self.__add_scroll__(self.frame_create_contact, create_contact, 'create_contact')
+        self.panel_create_contact.create_contact_street.horizontalHeader().setLabel(0, _T('street'), 320)
+        # current date
+        curd = QDate().currentDate()
+        self.renew_domain_cur_exp_date.setDate(curd)
+        self.renew_domain_val_ex_date.setDate(curd)
 
+    def __add_scroll__(self, parent_frame, module, name):
+        'Add scrolled view panel. Module must have class panel.'
+        scroll = QScrollView(parent_frame, 'scroll_%s'%name)
+        scroll.setFrameShape(QFrame.NoFrame)
+        scroll.setFrameShadow(QFrame.Raised)
+        scroll.setGeometry(parent_frame.geometry())
+        panel = module.panel(scroll)
+        scroll.addChild(panel)
+        scroll.show()
+        return panel
+        
     def __check_required__(self, data, required):
         'Returns True if all required data were set. Othervise list of missing names.'
         self.missing_required = []
@@ -301,6 +325,27 @@ class CMainDialog(main_dialog):
 
     def renew_domain(self):
         if not self.check_is_online(): return
+        d = {}
+        append_key(d,'name', self.renew_domain_name)
+        append_key(d,'cur_exp_date', self.renew_domain_cur_exp_date)
+        append_key(d,'val_ex_date', self.renew_domain_val_ex_date)
+        append_key(d,'cltrid', self.renew_domain_cltrid)
+        period = {}
+        append_key(period,'num', self.renew_domain_period_num)
+        append_key(period,'unit', self.renew_domain_period_unit)
+        if self.__check_required__(d, ('name','cur_exp_date')):
+            if period.has_key('num'):
+                period['unit'] = {'year':'y'}.get(period['unit'],'m')
+            else:
+                period = None
+            try:
+                self.answer = self.epp.renew_domain(d['name'], d['cur_exp_date'], period, d.get('val_ex_date'), d.get('cltrid'))
+            except ccReg.ccRegError, msg:
+                self.display_error(msg, _T('Validation error'))
+            else:
+                self.__display_answer__('renew_domain')
+        else:
+            self.display_error(self.missing_required)
 
     def list_contact(self):
         self.__share_list__('list_contact', _T('contact'))
