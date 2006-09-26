@@ -13,12 +13,22 @@
     </annotation>
 
   <!--
-  Abstract client and object identifier type.
+  Abstract object identifier type.
   -->
     <simpleType name="objIDType">
       <restriction base="token">
         <minLength value="3"/>
         <maxLength value="63"/>
+      </restriction>
+    </simpleType>
+
+  <!--
+  Object authorization information type.
+  -->
+    <simpleType name="pwAuthInfoType">
+      <restriction base="normalizedString">
+        <minLength value="0"/>
+        <maxLength value="300"/>
       </restriction>
     </simpleType>
 

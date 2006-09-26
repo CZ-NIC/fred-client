@@ -1,3 +1,10 @@
+2006-09-26 Jan Kryl <jan.kryl@nic.cz>
+
+	* pwAuthInfoType ma nyni omezenou delku (300 znaku). Toho bylo
+	docileno novou definici typu ve fredcom a zmenou referenci v ostatnich
+	schematech tak, aby neukazovaly do eppcom, ale na novy typ ve fredcom.
+	Pro uzivatele schemat se nic nemeni.
+
 2006-09-21 Jan Kryl <jan.kryl@nic.cz>
 
 	* Oficialni specifikace systemu rika ze v nssetu muze byt 1 az 10

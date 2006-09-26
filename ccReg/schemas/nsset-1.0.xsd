@@ -96,7 +96,7 @@
   -->
     <complexType name="authInfoChgType">
       <choice>
-        <element name="pw" type="eppcom:pwAuthInfoType"/>
+        <element name="pw" type="fredcom:pwAuthInfoType"/>
         <element name="ext" type="eppcom:extAuthInfoType"/>
         <element name="null"/>
       </choice>
@@ -257,7 +257,7 @@
 
     <complexType name="authInfoType">
       <choice>
-        <element name="pw" type="eppcom:pwAuthInfoType"/>
+        <element name="pw" type="fredcom:pwAuthInfoType"/>
         <element name="ext" type="eppcom:extAuthInfoType"/>
       </choice>
     </complexType>
