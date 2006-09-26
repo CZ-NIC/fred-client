@@ -66,10 +66,10 @@
             </rect>
         </property>
         <property name="text">
-            <string>Exit client</string>
+            <string>E&amp;xit client</string>
         </property>
         <property name="accel">
-            <string></string>
+            <string>Alt+X</string>
         </property>
         <property name="autoDefault">
             <bool>false</bool>
@@ -95,7 +95,7 @@
                 <cstring>TabPage</cstring>
             </property>
             <attribute name="title">
-                <string>Welcome</string>
+                <string>&amp;Welcome</string>
             </attribute>
             <widget class="QLabel">
                 <property name="name">
@@ -114,27 +114,6 @@
                 </property>
                 <property name="scaledContents">
                     <bool>true</bool>
-                </property>
-            </widget>
-            <widget class="QLabel">
-                <property name="name">
-                    <cstring>textLabel1</cstring>
-                </property>
-                <property name="geometry">
-                    <rect>
-                        <x>30</x>
-                        <y>160</y>
-                        <width>611</width>
-                        <height>100</height>
-                    </rect>
-                </property>
-                <property name="text">
-                    <string>Welcome on the &lt;b&gt;ccRegClient&lt;/b&gt; GUI interface.&lt;br&gt;&lt;br&gt;
-
-Parameters in &lt;b&gt;bold&lt;/b&gt; style are &lt;b&gt;required&lt;/b&gt;. Others are optionals.</string>
-                </property>
-                <property name="alignment">
-                    <set>WordBreak|AlignTop|AlignHCenter</set>
                 </property>
             </widget>
             <widget class="QGroupBox">
@@ -298,13 +277,35 @@ Parameters in &lt;b&gt;bold&lt;/b&gt; style are &lt;b&gt;required&lt;/b&gt;. Oth
                     </property>
                 </widget>
             </widget>
+            <widget class="QLabel">
+                <property name="name">
+                    <cstring>textLabel1</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>30</x>
+                        <y>160</y>
+                        <width>611</width>
+                        <height>100</height>
+                    </rect>
+                </property>
+                <property name="text">
+                    <string>Welcome on the &lt;b&gt;ccRegClient&lt;/b&gt; GUI interface.&lt;br&gt;
+Version 1.0; (Needs &lt;b&gt;ccReg module&lt;/b&gt; version 1.2)&lt;br&gt;
+&lt;br&gt;
+Parameters in &lt;b&gt;bold&lt;/b&gt; style are &lt;b&gt;required&lt;/b&gt;. Others are optionals.</string>
+                </property>
+                <property name="alignment">
+                    <set>WordBreak|AlignTop|AlignHCenter</set>
+                </property>
+            </widget>
         </widget>
         <widget class="QWidget">
             <property name="name">
                 <cstring>Widget8</cstring>
             </property>
             <attribute name="title">
-                <string>connect</string>
+                <string>&amp;connect</string>
             </attribute>
             <widget class="QLabel">
                 <property name="name">
@@ -1337,7 +1338,7 @@ This part use to connect and disconnect to the EPP server. You need defined path
                 <cstring>Widget9</cstring>
             </property>
             <attribute name="title">
-                <string>contact</string>
+                <string>c&amp;ontact</string>
             </attribute>
             <widget class="QLabel">
                 <property name="name">
@@ -2917,7 +2918,7 @@ The EPP "list" command is used to list all ID of an existing object owning by re
                 <cstring>TabPage</cstring>
             </property>
             <attribute name="title">
-                <string>nsset</string>
+                <string>&amp;nsset</string>
             </attribute>
             <widget class="QLabel">
                 <property name="name">
@@ -4232,7 +4233,7 @@ Nsset is set of informations about domain name servers and their address and adm
                 <cstring>TabPage</cstring>
             </property>
             <attribute name="title">
-                <string>domain</string>
+                <string>&amp;domain</string>
             </attribute>
             <widget class="QLabel">
                 <property name="name">
@@ -6373,6 +6374,12 @@ The EPP "list" command is used to list all ID of an existing object owning by re
         <signal>clicked()</signal>
         <receiver>main_dialog</receiver>
         <slot>renew_domain()</slot>
+    </connection>
+    <connection>
+        <sender>renew_domain_use_exdate</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>renew_domain_val_ex_date</receiver>
+        <slot>setEnabled(bool)</slot>
     </connection>
 </connections>
 <includes>

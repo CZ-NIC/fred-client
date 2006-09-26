@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'create_contact.ui'
 #
-# Created: Út zář 26 15:36:44 2006
+# Created: Út zář 26 20:19:11 2006
 #      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -27,10 +27,6 @@ class panel(QWidget):
         self.textLabel3_2_6 = QLabel(self,"textLabel3_2_6")
         self.textLabel3_2_6.setGeometry(QRect(10,110,160,20))
 
-        self.textLabel1_2_3_7_3_3 = QLabel(self,"textLabel1_2_3_7_3_3")
-        self.textLabel1_2_3_7_3_3.setGeometry(QRect(10,10,530,90))
-        self.textLabel1_2_3_7_3_3.setAlignment(QLabel.WordBreak | QLabel.AlignTop | QLabel.AlignLeft)
-
         self.textLabel3_2_6_3 = QLabel(self,"textLabel3_2_6_3")
         self.textLabel3_2_6_3.setGeometry(QRect(10,170,160,20))
 
@@ -51,9 +47,6 @@ class panel(QWidget):
 
         self.create_contact_org = QLineEdit(self,"create_contact_org")
         self.create_contact_org.setGeometry(QRect(180,290,360,22))
-
-        self.create_contact_id = QLineEdit(self,"create_contact_id")
-        self.create_contact_id.setGeometry(QRect(180,110,360,22))
 
         self.textLabel3_2_6_6_2_4 = QLabel(self,"textLabel3_2_6_6_2_4")
         self.textLabel3_2_6_6_2_4.setGeometry(QRect(10,450,160,20))
@@ -142,9 +135,6 @@ class panel(QWidget):
         self.create_contact_notify_email = QLineEdit(self,"create_contact_notify_email")
         self.create_contact_notify_email.setGeometry(QRect(180,820,360,22))
 
-        self.create_contact_vax = QLineEdit(self,"create_contact_vax")
-        self.create_contact_vax.setGeometry(QRect(180,690,360,22))
-
         self.textLabel3_2_6_4 = QLabel(self,"textLabel3_2_6_4")
         self.textLabel3_2_6_4.setGeometry(QRect(10,200,160,20))
 
@@ -164,36 +154,59 @@ class panel(QWidget):
         self.create_contact_street = QTable(self,"create_contact_street")
         self.create_contact_street.setNumCols(self.create_contact_street.numCols() + 1)
         self.create_contact_street.horizontalHeader().setLabel(self.create_contact_street.numCols() - 1,self.__tr("street"))
-        self.create_contact_street.setNumRows(self.create_contact_street.numRows() + 1)
-        self.create_contact_street.verticalHeader().setLabel(self.create_contact_street.numRows() - 1,self.__tr("1"))
-        self.create_contact_street.setNumRows(self.create_contact_street.numRows() + 1)
-        self.create_contact_street.verticalHeader().setLabel(self.create_contact_street.numRows() - 1,self.__tr("2"))
-        self.create_contact_street.setNumRows(self.create_contact_street.numRows() + 1)
-        self.create_contact_street.verticalHeader().setLabel(self.create_contact_street.numRows() - 1,self.__tr("3"))
         self.create_contact_street.setGeometry(QRect(180,320,360,87))
         self.create_contact_street.setNumRows(3)
         self.create_contact_street.setNumCols(1)
         self.create_contact_street.setShowGrid(1)
         self.create_contact_street.setFocusStyle(QTable.SpreadSheet)
 
+        self.create_contact_id = QLineEdit(self,"create_contact_id")
+        self.create_contact_id.setGeometry(QRect(180,110,360,22))
+
+        self.textLabel1_2_3_7_3_3 = QLabel(self,"textLabel1_2_3_7_3_3")
+        self.textLabel1_2_3_7_3_3.setGeometry(QRect(10,10,530,90))
+        self.textLabel1_2_3_7_3_3.setAlignment(QLabel.WordBreak | QLabel.AlignTop | QLabel.AlignLeft)
+
+        self.create_contact_vat = QLineEdit(self,"create_contact_vat")
+        self.create_contact_vat.setGeometry(QRect(180,690,360,22))
+
         self.languageChange()
 
         self.resize(QSize(574,892).expandedTo(self.minimumSizeHint()))
         self.clearWState(Qt.WState_Polished)
+
+        self.setTabOrder(self.create_contact_id,self.create_contact_name)
+        self.setTabOrder(self.create_contact_name,self.create_contact_email)
+        self.setTabOrder(self.create_contact_email,self.create_contact_city)
+        self.setTabOrder(self.create_contact_city,self.create_contact_cc)
+        self.setTabOrder(self.create_contact_cc,self.create_contact_pw)
+        self.setTabOrder(self.create_contact_pw,self.create_contact_org)
+        self.setTabOrder(self.create_contact_org,self.create_contact_street)
+        self.setTabOrder(self.create_contact_street,self.create_contact_sp)
+        self.setTabOrder(self.create_contact_sp,self.create_contact_pc)
+        self.setTabOrder(self.create_contact_pc,self.create_contact_voice)
+        self.setTabOrder(self.create_contact_voice,self.create_contact_fax)
+        self.setTabOrder(self.create_contact_fax,self.create_contact_disclose_flag)
+        self.setTabOrder(self.create_contact_disclose_flag,self.create_contact_disclose_name)
+        self.setTabOrder(self.create_contact_disclose_name,self.create_contact_disclose_addr)
+        self.setTabOrder(self.create_contact_disclose_addr,self.create_contact_disclose_fax)
+        self.setTabOrder(self.create_contact_disclose_fax,self.create_contact_disclose_org)
+        self.setTabOrder(self.create_contact_disclose_org,self.create_contact_disclose_voice)
+        self.setTabOrder(self.create_contact_disclose_voice,self.create_contact_disclose_email)
+        self.setTabOrder(self.create_contact_disclose_email,self.create_contact_vat)
+        self.setTabOrder(self.create_contact_vat,self.create_contact_ssn_type)
+        self.setTabOrder(self.create_contact_ssn_type,self.create_contact_ssn_number)
+        self.setTabOrder(self.create_contact_ssn_number,self.create_contact_notify_email)
+        self.setTabOrder(self.create_contact_notify_email,self.create_contact_cltrid)
 
 
     def languageChange(self):
         self.setCaption(self.__tr("Create Contact panel"))
         self.textLabel3_2_6_5.setText(self.__tr("<b>country code</b>"))
         self.textLabel3_2_6.setText(self.__tr("<b>contact ID</b>"))
-        self.textLabel1_2_3_7_3_3.setText(self.__tr("<h2>create_contact</h2>\n"
-"The EPP \"create\" command is used to create an instance of an object.\n"
-"An object can be created for an indefinite period of time, or an\n"
-"object can be created for a specific validity period."))
         self.textLabel3_2_6_3.setText(self.__tr("<b>email</b>"))
         self.textLabel3_2_6_6_2.setText(self.__tr("organisation name"))
         self.textLabel3_2_6_6_2_2.setText(self.__tr("street"))
-        self.create_contact_id.setText(QString.null)
         self.textLabel3_2_6_6_2_4.setText(self.__tr("postal code"))
         self.textLabel3_2_6_6_2_6_3.setText(self.__tr("value-added tax"))
         self.textLabel3_2_6_6_2_5.setText(self.__tr("voice (phone number)"))
@@ -227,9 +240,11 @@ class panel(QWidget):
         self.textLabel3_2_6_6.setText(self.__tr("password"))
         self.textLabel3_2_6_2.setText(self.__tr("<b>name</b>"))
         self.create_contact_street.horizontalHeader().setLabel(0,self.__tr("street"))
-        self.create_contact_street.verticalHeader().setLabel(0,self.__tr("1"))
-        self.create_contact_street.verticalHeader().setLabel(1,self.__tr("2"))
-        self.create_contact_street.verticalHeader().setLabel(2,self.__tr("3"))
+        self.create_contact_id.setText(QString.null)
+        self.textLabel1_2_3_7_3_3.setText(self.__tr("<h2>create_contact</h2>\n"
+"The EPP \"create\" command is used to create an instance of an object.\n"
+"An object can be created for an indefinite period of time, or an\n"
+"object can be created for a specific validity period."))
 
 
     def __tr(self,s,c = None):

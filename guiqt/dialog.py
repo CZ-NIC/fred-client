@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'dialog.ui'
 #
-# Created: Út zář 26 16:53:57 2006
+# Created: Út zář 26 20:16:30 2006
 #      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -1942,10 +1942,6 @@ class main_dialog(QDialog):
         self.pixmapLabel3.setPixmap(self.image0)
         self.pixmapLabel3.setScaledContents(1)
 
-        self.textLabel1 = QLabel(self.TabPage,"textLabel1")
-        self.textLabel1.setGeometry(QRect(30,160,611,100))
-        self.textLabel1.setAlignment(QLabel.WordBreak | QLabel.AlignTop | QLabel.AlignHCenter)
-
         self.groupBox1 = QGroupBox(self.TabPage,"groupBox1")
         self.groupBox1.setGeometry(QRect(20,270,630,260))
 
@@ -1978,6 +1974,10 @@ class main_dialog(QDialog):
 
         self.connect_timeout = QLineEdit(self.groupBox1,"connect_timeout")
         self.connect_timeout.setGeometry(QRect(210,200,400,22))
+
+        self.textLabel1 = QLabel(self.TabPage,"textLabel1")
+        self.textLabel1.setGeometry(QRect(30,160,611,100))
+        self.textLabel1.setAlignment(QLabel.WordBreak | QLabel.AlignTop | QLabel.AlignHCenter)
         self.tabWidget.insertTab(self.TabPage,QString.fromLatin1(""))
 
         self.Widget8 = QWidget(self.tabWidget,"Widget8")
@@ -3333,24 +3333,26 @@ class main_dialog(QDialog):
         self.connect(self.send_update_domain,SIGNAL("clicked()"),self.update_domain)
         self.connect(self.send_update_nsset,SIGNAL("clicked()"),self.update_nsset)
         self.connect(self.send_renew_domain,SIGNAL("clicked()"),self.renew_domain)
+        self.connect(self.renew_domain_use_exdate,SIGNAL("toggled(bool)"),self.renew_domain_val_ex_date.setEnabled)
 
 
     def languageChange(self):
         self.setCaption(self.__tr("ccRegClient"))
         self.textLabel2_4.setText(self.__tr("<b>Status:</b>"))
         self.status.setText(self.__tr("<span style=\"color:red\">disconnect</span>"))
-        self.buttonOk.setText(self.__tr("Exit client"))
-        self.buttonOk.setAccel(QString.null)
-        self.textLabel1.setText(self.__tr("Welcome on the <b>ccRegClient</b> GUI interface.<br><br>\n"
-"\n"
-"Parameters in <b>bold</b> style are <b>required</b>. Others are optionals."))
+        self.buttonOk.setText(self.__tr("E&xit client"))
+        self.buttonOk.setAccel(self.__tr("Alt+X"))
         self.groupBox1.setTitle(self.__tr("Client to EPP server"))
         self.textLabel10.setText(self.__tr("<b>certificate</b>"))
         self.textLabel8.setText(self.__tr("<b>host</b>"))
         self.textLabel9.setText(self.__tr("<b>port</b>"))
         self.textLabel11.setText(self.__tr("<b>private key</b>"))
         self.textLabel11_2.setText(self.__tr("timeout"))
-        self.tabWidget.changeTab(self.TabPage,self.__tr("Welcome"))
+        self.textLabel1.setText(self.__tr("Welcome on the <b>ccRegClient</b> GUI interface.<br>\n"
+"Version 1.0; (Needs <b>ccReg module</b> version 1.2)<br>\n"
+"<br>\n"
+"Parameters in <b>bold</b> style are <b>required</b>. Others are optionals."))
+        self.tabWidget.changeTab(self.TabPage,self.__tr("&Welcome"))
         self.textLabel4.setText(self.__tr("new password"))
         self.textLabel2_3.setText(self.__tr("<b>username</b>"))
         self.textLabel3.setText(self.__tr("<b>password</b>"))
@@ -3409,7 +3411,7 @@ class main_dialog(QDialog):
         self.tabWidget6.changeTab(self.TabPage_7,self.__tr("hello"))
         self.textLabel2.setText(self.__tr("<h2>Connect</h2>\n"
 "This part use to connect and disconnect to the EPP server. You need defined path to the certificates in your configuration file."))
-        self.tabWidget.changeTab(self.Widget8,self.__tr("connect"))
+        self.tabWidget.changeTab(self.Widget8,self.__tr("&connect"))
         self.textLabel2_2.setText(self.__tr("<h2>Contact</h2>\n"
 "Contact represents person. This preson can be domain owner or administrator or registrant."))
         self.textLabel1_2_3_7_2.setText(self.__tr("<h2>check_contact</h2>\n"
@@ -3507,7 +3509,7 @@ class main_dialog(QDialog):
         self.list_contact_table.horizontalHeader().setLabel(0,self.__tr("name"))
         self.list_contact_response.changeTab(self.TabPage_21,self.__tr("response"))
         self.tabWidget6_2.changeTab(self.TabPage_20,self.__tr("list"))
-        self.tabWidget.changeTab(self.Widget9,self.__tr("contact"))
+        self.tabWidget.changeTab(self.Widget9,self.__tr("c&ontact"))
         self.textLabel1_2_3_7_2_2.setText(self.__tr("<h2>check_nsset</h2>\n"
 "The EPP \"check\" command is used to determine if an object can be provisioned within a repository.  It provides a hint that allows a client to anticipate the success or failure of provisioning an object using the \"create\" command as object provisioning requirements are ultimately a matter of server policy."))
         self.textLabel2_3_2_2.setText(self.__tr("<b>names</b><br>\n"
@@ -3585,7 +3587,7 @@ class main_dialog(QDialog):
         self.tabWidget6_2_2.changeTab(self.TabPage_32,self.__tr("list"))
         self.textLabel2_2_2.setText(self.__tr("<h2>Nsset</h2>\n"
 "Nsset is set of informations about domain name servers and their address and administrators."))
-        self.tabWidget.changeTab(self.TabPage_22,self.__tr("nsset"))
+        self.tabWidget.changeTab(self.TabPage_22,self.__tr("&nsset"))
         self.textLabel2_2_2_2.setText(self.__tr("<h2>Domain</h2>\n"
 "Domain is name whitch is associates nsset and contacts."))
         self.textLabel2_3_2_2_2.setText(self.__tr("<b>names</b><br>\n"
@@ -3705,7 +3707,7 @@ class main_dialog(QDialog):
         self.list_domain_table.horizontalHeader().setLabel(0,self.__tr("name"))
         self.list_domain_response.changeTab(self.TabPage_49,self.__tr("response"))
         self.tabWidget6_2_2_2.changeTab(self.TabPage_48,self.__tr("list"))
-        self.tabWidget.changeTab(self.TabPage_34,self.__tr("domain"))
+        self.tabWidget.changeTab(self.TabPage_34,self.__tr("&domain"))
 
 
     def login(self):

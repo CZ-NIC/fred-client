@@ -49,28 +49,6 @@
     </widget>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel1_2_3_7_3_3</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>10</x>
-                <y>10</y>
-                <width>530</width>
-                <height>90</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string>&lt;h2&gt;create_contact&lt;/h2&gt;
-The EPP "create" command is used to create an instance of an object.
-An object can be created for an indefinite period of time, or an
-object can be created for a specific validity period.</string>
-        </property>
-        <property name="alignment">
-            <set>WordBreak|AlignTop|AlignLeft</set>
-        </property>
-    </widget>
-    <widget class="QLabel">
-        <property name="name">
             <cstring>textLabel3_2_6_3</cstring>
         </property>
         <property name="geometry">
@@ -167,22 +145,6 @@ object can be created for a specific validity period.</string>
                 <width>360</width>
                 <height>22</height>
             </rect>
-        </property>
-    </widget>
-    <widget class="QLineEdit">
-        <property name="name">
-            <cstring>create_contact_id</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>180</x>
-                <y>110</y>
-                <width>360</width>
-                <height>22</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string></string>
         </property>
     </widget>
     <widget class="QLabel">
@@ -657,19 +619,6 @@ object can be created for a specific validity period.</string>
             </rect>
         </property>
     </widget>
-    <widget class="QLineEdit">
-        <property name="name">
-            <cstring>create_contact_vax</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>180</x>
-                <y>690</y>
-                <width>360</width>
-                <height>22</height>
-            </rect>
-        </property>
-    </widget>
     <widget class="QLabel">
         <property name="name">
             <cstring>textLabel3_2_6_4</cstring>
@@ -752,34 +701,7 @@ object can be created for a specific validity period.</string>
             <property name="text">
                 <string>street</string>
             </property>
-            <property name="pixmap">
-                <pixmap></pixmap>
-            </property>
         </column>
-        <row>
-            <property name="text">
-                <string>1</string>
-            </property>
-            <property name="pixmap">
-                <pixmap></pixmap>
-            </property>
-        </row>
-        <row>
-            <property name="text">
-                <string>2</string>
-            </property>
-            <property name="pixmap">
-                <pixmap></pixmap>
-            </property>
-        </row>
-        <row>
-            <property name="text">
-                <string>3</string>
-            </property>
-            <property name="pixmap">
-                <pixmap></pixmap>
-            </property>
-        </row>
         <property name="name">
             <cstring>create_contact_street</cstring>
         </property>
@@ -804,6 +726,83 @@ object can be created for a specific validity period.</string>
             <enum>SpreadSheet</enum>
         </property>
     </widget>
+    <widget class="QLineEdit">
+        <property name="name">
+            <cstring>create_contact_id</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>180</x>
+                <y>110</y>
+                <width>360</width>
+                <height>22</height>
+            </rect>
+        </property>
+        <property name="text">
+            <string></string>
+        </property>
+    </widget>
+    <widget class="QLabel">
+        <property name="name">
+            <cstring>textLabel1_2_3_7_3_3</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>10</x>
+                <y>10</y>
+                <width>530</width>
+                <height>90</height>
+            </rect>
+        </property>
+        <property name="text">
+            <string>&lt;h2&gt;create_contact&lt;/h2&gt;
+The EPP "create" command is used to create an instance of an object.
+An object can be created for an indefinite period of time, or an
+object can be created for a specific validity period.</string>
+        </property>
+        <property name="alignment">
+            <set>WordBreak|AlignTop|AlignLeft</set>
+        </property>
+    </widget>
+    <widget class="QLineEdit">
+        <property name="name">
+            <cstring>create_contact_vat</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>180</x>
+                <y>690</y>
+                <width>360</width>
+                <height>22</height>
+            </rect>
+        </property>
+    </widget>
 </widget>
+<tabstops>
+    <tabstop>create_contact_id</tabstop>
+    <tabstop>create_contact_name</tabstop>
+    <tabstop>create_contact_email</tabstop>
+    <tabstop>create_contact_city</tabstop>
+    <tabstop>create_contact_cc</tabstop>
+    <tabstop>create_contact_pw</tabstop>
+    <tabstop>create_contact_org</tabstop>
+    <tabstop>create_contact_street</tabstop>
+    <tabstop>create_contact_sp</tabstop>
+    <tabstop>create_contact_pc</tabstop>
+    <tabstop>create_contact_voice</tabstop>
+    <tabstop>create_contact_fax</tabstop>
+    <tabstop>create_contact_disclose_flag</tabstop>
+    <tabstop>create_contact_disclose_name</tabstop>
+    <tabstop>create_contact_disclose_addr</tabstop>
+    <tabstop>create_contact_disclose_fax</tabstop>
+    <tabstop>create_contact_disclose_org</tabstop>
+    <tabstop>create_contact_disclose_voice</tabstop>
+    <tabstop>create_contact_disclose_email</tabstop>
+    <tabstop>create_contact_vat</tabstop>
+    <tabstop>create_contact_ssn_type</tabstop>
+    <tabstop>create_contact_ssn_number</tabstop>
+    <tabstop>create_contact_notify_email</tabstop>
+    <tabstop>create_contact_cltrid</tabstop>
+</tabstops>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

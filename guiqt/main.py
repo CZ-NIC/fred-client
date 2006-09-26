@@ -291,7 +291,16 @@ class CMainDialog(main_dialog):
         self.__share_command__('info_domain')
 
     def create_contact(self):
-        if not self.check_is_online(): return
+##        if not self.check_is_online(): return
+        d = {}
+        p = self.panel_create_contact
+##        street
+##        disclose
+##        ssn
+        for key in ('id', 'name', 'email', 'city', 'cc', 'pw','org','sp', 
+                        'pc', 'voice', 'fax', 'vat', 'notify_email', 'cltrid'):
+            append_key(d, key, getattr(p,'create_contact_%s'%key))
+        print "!!! d:",d
 
     def create_nsset(self):
         if not self.check_is_online(): return
@@ -328,7 +337,8 @@ class CMainDialog(main_dialog):
         d = {}
         append_key(d,'name', self.renew_domain_name)
         append_key(d,'cur_exp_date', self.renew_domain_cur_exp_date)
-        append_key(d,'val_ex_date', self.renew_domain_val_ex_date)
+        if self.renew_domain_val_ex_date.isEnabled():
+            append_key(d,'val_ex_date', self.renew_domain_val_ex_date)
         append_key(d,'cltrid', self.renew_domain_cltrid)
         period = {}
         append_key(period,'num', self.renew_domain_period_num)
