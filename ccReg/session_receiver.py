@@ -268,7 +268,7 @@ class ManagerReceiver(ManagerCommand):
                  'domain:contact','domain:contact type','domain:nsset',
                  'domain:crID','domain:clID','domain:upID',
                  'domain:crDate','domain:trDate','domain:upDate','domain:exDate'))
-            self._dct_answer['data']['domain:pw'] = eppdoc.get_dct_value(domain_infData, ('domain:authInfo','domain:pw')) ## , '\n', '', u'******'
+            self._dct_answer['data']['domain:pw'] = eppdoc.get_dct_value(domain_infData, ('domain:authInfo','domain:pw'))
             exDate = self.get_value_from_dict(('data','domain:exDate'))
             if exDate:
                 m = re.match('\d{4}-\d{2}-\d{2}', exDate)
@@ -299,7 +299,7 @@ class ManagerReceiver(ManagerCommand):
                     addr = eppdoc.get_dct_value(ns, 'nsset:addr').split('\n')
                     dns.append([name,addr])
                 self._dct_answer['data']['nsset:ns'] = dns
-            self._dct_answer['data']['nsset:pw'] = eppdoc.get_dct_value(nsset_infData, ('nsset:authInfo','nsset:pw')) ## , '\n', '', '******'
+            self._dct_answer['data']['nsset:pw'] = eppdoc.get_dct_value(nsset_infData, ('nsset:authInfo','nsset:pw'))
 
 
     #-------------------------------------
