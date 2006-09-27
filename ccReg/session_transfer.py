@@ -95,6 +95,7 @@ class ManagerTransfer(ManagerBase):
                 self.get_config_value(section,'ssl_key'),
                 self.get_config_value(section,'ssl_cert'),
                 self.get_config_value(section,'timeout'),
+                self.get_config_value(section,'socket',1),
                 ]
         # command options
         if self._options['host']: data[0] = self._options['host']
@@ -110,7 +111,7 @@ class ManagerTransfer(ManagerBase):
         self._lorry.handler_message = self.process_answer
         if not data:
             data = self.get_connect_defaults()
-            if None in data:
+            if None in data[:5]:
                 self.append_error('%s: %s'%(_T('Can not create connection. Missing values'),str(data)))
                 return 0
         if self._lorry.connect(data, self._session[VERBOSE]):

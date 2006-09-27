@@ -1,44 +1,27 @@
-# Tento konfig je urcen jen pro interni pouziti!
-# Nemel by byt predan registratorum, protoze obsahuje testovaci loginy.
+# Ukazka konfiguracniho souboru
 # Prepiste si cesty k souborum dir=... a ulozte tento soubor
-# do vaseho home pod nazvem .ccReg.conf
+# do vaseho home pod nazvem .ccreg_client.conf
+# Konfiguracni soubor lze take vytvorit z klienta prikazem 'config create'.
 #
 
 [connect]
-dir=/home/username/enum/trunk/epp_client/certificates
+dir=/home/username/certificates
 host = epp-test.ccreg.nic.cz
 port = 700
 ssl_cert = %(dir)s/epp_test_ccreg_nic_cz_cert.pem
 ssl_key  = %(dir)s/epp_test_ccreg_nic_cz_key.pem
-username = REG-LRR
-password = Misai7ei
-
-[connect_curlew]
-dir=/home/username/enum/trunk/epp_client/certificates
-host = curlew
-port = 700
-ssl_cert = %(dir)s/curlew_cert.pem
-ssl_key  = %(dir)s/curlew_key.pem
-username = REG-LRR
-password = 123456789
-
-[connect_unittest]
-# pouzivaji unittesty pro test logovani s neplatnym certifikatem
-dir=/home/username/enum/trunk/epp_client/certificates
-host = curlew
-port = 700
-ssl_cert = %(dir)s/epp_test_ccreg_nic_cz_cert.pem
-ssl_key  = %(dir)s/epp_test_ccreg_nic_cz_key.pem
-username = REG-LRR
+username = MYUSERNAME
+password = MYPASSWORD
+# socket = IPv6     # paltne hodnoty jsou IPv4 a IPv6
 
 [session]
 poll_ack = off
 confirm_send_commands = on
 validate = on
-schema = /home/username/enum/trunk/epp_client/ccReg/schemas/all-1.0.xsd
+schema = /home/username/epp_client/ccReg/schemas/all-1.0.xsd
 colors = yes
 verbose = 2
-# pokud lang není zadán, tak se vezme hodnota z os.environ.LANG
-lang = en
-# null_value = None
-# auto_login = off
+# pokud lang neni zadan, tak se vezme hodnota z os.environ.LANG
+# lang = en
+# null_value = None   # zastupce pro nezadanou hodnotu
+# auto_login = off    # automaticke zalogovani pri spusteni konzole

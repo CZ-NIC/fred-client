@@ -25,16 +25,26 @@ class Lorry:
         return self._conn and self._conn_ssl
 
     def connect(self, DATA, verbose=1):
-        "DATA = ('host', PORT, 'file.key', 'file.crt', timeout)"
+        "DATA = ('host', PORT, 'file.key', 'file.crt', timeout, 'socket_family')"
+        family = {socket.AF_INET:'IPv4', socket.AF_INET6: 'IPv6'}
         ok = 0
         self._conn = None
         try:
             self._timeout = float(DATA[4])
         except ValueError:
             pass
+        if DATA[5]:
+            socket_family = {'ipv4':socket.AF_INET,'ipv6':socket.AF_INET6}.get(DATA[5].lower(),socket.AF_INET)
+        else:
+            try:
+                tc = socket.getaddrinfo(DATA[0], DATA[1])
+                socket_family = tc[0][0]
+            except socket.error, (no,msg):
+                self._errors.append('getaddrinfo() socket.error [%d] %s'%(no,msg))
+                socket_family = socket.AF_INET
+        if verbose > 1: self._notes.append('%s: ${BOLD}%s${NORMAL}.'%(_T('Used socket type'),family[socket_family]))
         try:
-            tc = socket.getaddrinfo(DATA[0], DATA[1])
-            self._conn = socket.socket(tc[0][0], socket.SOCK_STREAM)
+            self._conn = socket.socket(socket_family, socket.SOCK_STREAM)
             ok = 1
         except socket.error, (no,msg):
             self._errors.append('Create socket.error [%d] %s'%(no,msg))

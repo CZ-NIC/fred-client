@@ -297,19 +297,39 @@ class Test(unittest.TestCase):
         epp_cli.renew_domain(CCREG_DOMAIN1, '2000-01-01') # cur_exp_date
         self.assertNotEqual(epp_cli.is_val(), 1000, 'Proslo renew-domain prestoze byl zadan chybny datum cur_exp_date.')
 
-    def test_172(self):
-        '4.17.2 Pokus o Renew enum domain bez zadani valExDate'
+    def test_171(self):
+        '4.17.1 Ziskani hodnoty domain_renew pro prikazy renew'
+        global domain_renew
         # ziskani hodnoty cur_exp_date
         epp_cli.info_domain(CCREG_DOMAIN2)
-        unitest_ccreg_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(1,3))
+        domain_renew = epp_cli.is_val(('data','domain:renew')) # cur_exp_date
         self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
-        # prodlozeni o nastavenou periodu
+
+    def test_172(self):
+        '4.17.2 Pokus o nastaveni valExDate na 7 mesicu v Renew enum domain'
         period = {'num':'2','unit':'y'}
-        renew = epp_cli.is_val(('data','domain:renew')) # cur_exp_date
-        unitest_ccreg_share.reset_client(epp_cli)
-        epp_cli.renew_domain(CCREG_DOMAIN2, renew, period)
-        unitest_ccreg_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(2,3))
-        self.assertNotEqual(epp_cli.is_val(), 1000, 'Proslo renew-domain na enum prestoze nebyl zadan valExDate.')
+        val_ex_date = time.strftime("%Y-%m-%d",time.localtime(time.time()+60*60*24*30*7)) # sedm měsíců
+        epp_cli.renew_domain(CCREG_DOMAIN2, domain_renew, period, val_ex_date)
+        self.assertNotEqual(epp_cli.is_val(), 1000, 'Proslo renew-domain prestoze bylo valExDate zadano na 7 mesicu.')
+        
+    def test_173(self):
+        '4.17.3 Nastaveni valExDate na dva mesice v Renew enum domain'
+        period = {'num':'2','unit':'y'}
+        val_ex_date = time.strftime("%Y-%m-%d",time.localtime(time.time()+60*60*24*30*2)) # dva měsíce
+        epp_cli.renew_domain(CCREG_DOMAIN2, domain_renew, period, val_ex_date)
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+
+    def test_174(self):
+        '4.17.4 Pokus o update enum domeny na neplatny valExDate'
+        val_ex_date = time.strftime("%Y-%m-%d",time.localtime(time.time()+60*60*24*30*7)) # sedm měsíců
+        epp_cli.update_domain(CCREG_DOMAIN2, None, None, None, val_ex_date)
+        self.assertNotEqual(epp_cli.is_val(), 1000, 'Proslo renew-domain prestoze bylo valExDate zadano na 7 mesicu.')
+
+    def test_175(self):
+        '4.17.5 Update enum domeny s valExDate na 5 mesicu.'
+        val_ex_date = time.strftime("%Y-%m-%d",time.localtime(time.time()+60*60*24*30*5)) # pět měsíců
+        epp_cli.update_domain(CCREG_DOMAIN2, None, None, None, val_ex_date)
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
         
     def test_180(self):
         '4.18 Renew domain o tri roky'
@@ -451,6 +471,7 @@ def __check_equality__(cols, data):
     return errors
 
 epp_cli, epp_cli_TRANSF, epp_cli_log, log_fp, log_step = (None,)*5
+domain_renew = ''
 
 if __name__ == '__main__':
     if ccReg.translate.option_errors:

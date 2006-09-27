@@ -6,6 +6,7 @@ try:
     from qttable import *
     from dialog import main_dialog
     import create_contact
+    import sources
 except ImportError, msg:
     print "ImportError:",msg
     print 'For runnig this application you need install qt module. See PyQt and Qt pages.'
@@ -36,12 +37,17 @@ def append_key(dct, key, widget):
     if wt in (QLineEdit, QTextEdit):
         value = ('%s'%widget.text().utf8()).strip()
         if value: dct[key] = value
-    elif wt == QRadioButton:
+    elif wt in (QRadioButton, QCheckBox):
         dct[key] = (0,1)[widget.isOn() == True]
     elif wt == QDateEdit:
         dct[key] = '%s'%widget.date().toString(Qt.ISODate) # QDate; Qt.ISODate='YYYY-MM-DD'
     elif wt == QComboBox:
         dct[key] = '%s'%widget.currentText()
+    elif wt == QTable:
+        data = []
+        for r in range(widget.numRows()):
+            data.append(('%s'%widget.text(r,0).utf8()).strip())
+        dct[key] = data
     else:
         print "unknown type widget:",type(widget)
         
@@ -55,9 +61,10 @@ class CMainDialog(main_dialog):
         self.epp.load_config(options['session'])
         self.missing_required = []
         self.answer = {}
+        self.src = {} # {'command_name':['command line','XML source','XML response'], ...}
         # load data for connection
         data = self.epp._epp.get_connect_defaults()
-        self.connect_host.setText(data[0]) 
+        self.connect_host.setText(data[0])
         self.connect_port.setText(str(data[1]))
         self.connect_private_key.setText(data[2])
         self.connect_certificate.setText(data[3])
@@ -100,6 +107,8 @@ class CMainDialog(main_dialog):
         'Display Warning dialog.'
         # about, warning, critical
         if not label: label = _T('Missing required').decode(encoding)
+        if type(messages) not in (list,tuple): messages = (messages,)
+        print "!!! messages:",type(messages),messages
         QMessageBox.critical(self, label, '<h2>%s:</h2>\n%s'%(label,'<br>\n'.join(map(lambda s: s.decode(encoding),messages))))
 
     def closeEvent(self,ce):
@@ -125,6 +134,8 @@ class CMainDialog(main_dialog):
         getattr(self,'%s_code'%prefix).setText(code)
         getattr(self,'%s_msg'%prefix).setText(reason)
         getattr(self,'%s_data'%prefix).setText('<pre>%s</pre>'%self.epp._epp.get_answer_udata())
+        # save sources
+        self.src[prefix] = (self.epp._epp.get_command_line(),self.epp._epp._raw_cmd,self.epp._epp._raw_answer)
         # toggle widget to the response tab
         getattr(self,'%s_response'%prefix).setCurrentPage(1)
 
@@ -155,6 +166,9 @@ class CMainDialog(main_dialog):
         except ccReg.ccRegError, msg:
             self.display_error(msg, _T('Validation error'))
         else:
+            # TODO: mela by se asi omezit velikost raw_answer (???)
+            self.src[key] = (self.epp._epp.get_command_line(),self.epp._epp._raw_cmd,self.epp._epp._raw_answer)
+            # náhrada za __display_answer__()
             wtab = getattr(self, '%s_table'%key)
             data = self.answer.get('data',{})
             header = wtab.horizontalHeader()
@@ -291,16 +305,41 @@ class CMainDialog(main_dialog):
         self.__share_command__('info_domain')
 
     def create_contact(self):
-##        if not self.check_is_online(): return
+        if not self.check_is_online(): return
         d = {}
         p = self.panel_create_contact
-##        street
-##        disclose
-##        ssn
-        for key in ('id', 'name', 'email', 'city', 'cc', 'pw','org','sp', 
+        for key in ('id', 'name', 'email', 'city', 'cc', 'pw','org','sp', 'street',
                         'pc', 'voice', 'fax', 'vat', 'notify_email', 'cltrid'):
             append_key(d, key, getattr(p,'create_contact_%s'%key))
-        print "!!! d:",d
+        #... disclose ................
+        disclose = {}
+        for key in ('flag','name','org','addr','voice','fax','email'):
+            append_key(disclose, key, getattr(p,'create_contact_disclose_%s'%key))
+        d['disclose'] = {
+            'flag': {'yes':'y'}.get(disclose['flag'],'n'),
+            'data': [k for k,v in disclose.items() if v == 1]}
+        #.... ssn .........................
+        ssn={}
+        for key in ('type','number'):
+            append_key(ssn, key, getattr(p,'create_contact_ssn_%s'%key))
+        if ssn.has_key('number'): d['ssn'] = ssn
+        if self.__check_required__(d, ('id', 'name', 'email', 'city', 'cc')):
+            try:
+                self.answer = self.epp.create_contact(d['id'], d['name'], d['email'], 
+                    d['city'], d['cc'], d.get('pw'),
+                    d.get('org'), d.get('street'), d.get('sp'), d.get('pc'), 
+                    d.get('voice'), d.get('fax'), d.get('disclose'), d.get('vat'), 
+                    d.get('ssn'), d.get('notify_email'), d.get('cltrid'))
+            except ccReg.ccRegError, msg:
+                pass
+##                print "!!!???",msg
+##                print dir(msg)
+##                self.display_error(msg.args, _T('Validation error'))
+##            else:
+            self.__display_answer__('create_contact')
+        else:
+            self.display_error(self.missing_required)
+        
 
     def create_nsset(self):
         if not self.check_is_online(): return
@@ -367,6 +406,70 @@ class CMainDialog(main_dialog):
         self.__share_list__('list_domain', _T('domain'))
 
     #==============================
+    # Sources
+    #==============================
+    def __display_sources__(self, command_name):
+        'Display sources of command'
+        wnd = sources.panel(self)
+        if self.src.has_key(command_name):
+            src = self.src[command_name]
+            wnd.command_line.setText(ccReg.session_base.get_unicode(src[0]))
+            wnd.command.setText(ccReg.session_transfer.human_readable(ccReg.session_base.get_unicode(src[1])))
+            wnd.response.setText(ccReg.session_transfer.human_readable(ccReg.session_base.get_unicode(src[2])))
+        else:
+            wnd.command_line.setText(_T('Sources are not available now. Run command at first.'))
+        wnd.show()
+        
+    def source_login(self):
+        self.__display_sources__('login')
+    def source_logout(self):
+        self.__display_sources__('logout')
+    def source_poll(self):
+        self.__display_sources__('poll')
+    def source_hello(self):
+        self.__display_sources__('hello')
+    def source_check_contact(self):
+        self.__display_sources__('check_contact')
+    def source_info_contact(self):
+        self.__display_sources__('info_contact')
+    def source_create_contact(self):
+        self.__display_sources__('create_contact')
+    def source_update_contact(self):
+        self.__display_sources__('update_contact')
+    def source_delete_contact(self):
+        self.__display_sources__('delete_contact')
+    def source_transfer_contact(self):
+        self.__display_sources__('transfer_contact')
+    def source_list_contact(self):
+        self.__display_sources__('list_contact')
+    def source_check_nsset(self):
+        self.__display_sources__('check_nsset')
+    def source_info_nsset(self):
+        self.__display_sources__('info_nsset')
+    def source_create_nsset(self):
+        self.__display_sources__('create_nsset')
+    def source_update_nsset(self):
+        self.__display_sources__('update_nsset')
+    def source_delete_nsset(self):
+        self.__display_sources__('delete_nsset')
+    def source_list_nsset(self):
+        self.__display_sources__('list_nsset')
+    def source_check_domain(self):
+        self.__display_sources__('check_domain')
+    def source_info_domain(self):
+        self.__display_sources__('info_domain')
+    def source_create_domain(self):
+        self.__display_sources__('create_domain')
+    def source_update_domain(self):
+        self.__display_sources__('update_domain')
+    def source_delete_domain(self):
+        self.__display_sources__('delete_domain')
+    def source_transfer_domain(self):
+        self.__display_sources__('transfer_domain')
+    def source_renew_domain(self):
+        self.__display_sources__('renew_domain')
+    def source_list_domain(self):
+        self.__display_sources__('list_domain')
 
 
 def main(argv, lang):

@@ -8,9 +8,16 @@ timeout = 10.0
 # registrant:
 # username = regname
 # password = regpass
+# socket = IPv6     # paltne hodnoty jsou IPv4 a IPv6
 
 [session]
 validate = on
 schema = all-1.0.xsd
 poll_ack = off
 confirm_send_commands = on
+# colors = yes
+# verbose = 2
+# pokud lang neni zadan, tak se vezme hodnota z os.environ.LANG
+# lang = en
+# null_value = None   # zastupce pro nezadanou hodnotu
+# auto_login = off    # automaticke zalogovani pri spusteni konzole

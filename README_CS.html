@@ -6,23 +6,24 @@
     Revize:   1.9.2006;
     Revize:   4.9.2006;
     Revize:  14.9.2006;
-    </p></div><div><p class="copyright">Copyright © 2006 CZ.NIC</p></div></div><hr /></div><div class="toc"><p><b>Obsah</b></p><dl><dt><span class="preface"><a href="#id2489580">CO JE ccRegClient:</a></span></dt><dt><span class="chapter"><a href="#id2489599">1. Licence</a></span></dt><dt><span class="chapter"><a href="#id2489609">2. Požadavky na systém a instalace</a></span></dt><dt><span class="chapter"><a href="#id2489620">3. 
+    Revize:  27.9.2006;
+    </p></div><div><p class="copyright">Copyright © 2006 CZ.NIC</p></div></div><hr /></div><div class="toc"><p><b>Obsah</b></p><dl><dt><span class="preface"><a href="#id2489580">Co je ccRegClient:</a></span></dt><dt><span class="chapter"><a href="#id2489600">1. Licence</a></span></dt><dt><span class="chapter"><a href="#id2489610">2. Požadavky na systém a instalace</a></span></dt><dt><span class="chapter"><a href="#id2489620">3. 
     Popis jednotlivých programů,
        parametry a config
     </a></span></dt><dd><dl><dt><span class="section"><a href="#id2451655">
     Parametry (OPTIONS)
     </a></span></dt><dt><span class="section"><a href="#id2451700">
     Config
-    </a></span></dt></dl></dd><dt><span class="chapter"><a href="#id2451391">4. 
+    </a></span></dt></dl></dd><dt><span class="chapter"><a href="#id2451438">4. 
     Program ccreg_console.py
-    </a></span></dt><dd><dl><dt><span class="section"><a href="#id2451423">Zobrazení helpu</a></span></dt><dt><span class="section"><a href="#id2451466">EPP příkazy</a></span></dt><dt><span class="section"><a href="#id2452030">Typy paramerů příkazu</a></span></dt><dt><span class="section"><a href="#id2450628">Společný parametr cltrid</a></span></dt><dt><span class="section"><a href="#null_or_empty">Žádná hodnota / Prázdná hodnota</a></span></dt><dd><dl><dt><span class="section"><a href="#id2499265">Žádná hodnota: NULL</a></span></dt><dt><span class="section"><a href="#id2499391">Prázdná hodnota: '', ""</a></span></dt></dl></dd><dt><span class="section"><a href="#id2499469">Příkazy relace (session)</a></span></dt></dl></dd><dt><span class="chapter"><a href="#id2499699">5. 
+    </a></span></dt><dd><dl><dt><span class="section"><a href="#id2451471">Zobrazení helpu</a></span></dt><dt><span class="section"><a href="#id2452037">EPP příkazy</a></span></dt><dt><span class="section"><a href="#id2452078">Typy paramerů příkazu</a></span></dt><dt><span class="section"><a href="#id2450664">Společný parametr cltrid</a></span></dt><dt><span class="section"><a href="#null_or_empty">Žádná hodnota / Prázdná hodnota</a></span></dt><dd><dl><dt><span class="section"><a href="#id2499313">Žádná hodnota: NULL</a></span></dt><dt><span class="section"><a href="#id2499439">Prázdná hodnota: '', ""</a></span></dt></dl></dd><dt><span class="section"><a href="#id2499517">Příkazy relace (session)</a></span></dt></dl></dd><dt><span class="chapter"><a href="#id2499747">5. 
     Skripty ccreg_create.py a ccreg_sender.py
-    </a></span></dt><dt><span class="chapter"><a href="#id2499821">6. 
+    </a></span></dt><dt><span class="chapter"><a href="#id2499869">6. 
     Knihovna ccReg a popis API
-    </a></span></dt><dd><dl><dt><span class="section"><a href="#id2499838">Online dokumentace:</a></span></dt><dt><span class="section"><a href="#id2499893">Příklady práce s knihovnou</a></span></dt></dl></dd></dl></div><div class="preface" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2489580"></a>CO JE ccRegClient:</h2></div></div></div><p>
+    </a></span></dt><dd><dl><dt><span class="section"><a href="#id2499887">Online dokumentace:</a></span></dt><dt><span class="section"><a href="#id2499941">Příklady práce s knihovnou</a></span></dt></dl></dd></dl></div><div class="preface" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2489580"></a>Co je ccRegClient:</h2></div></div></div><p>
     ccRegClient je sada scriptů v jazyce Python postavených na ccReg knihovně
     a určených ke komunikaci s EPP serverem.
-    </p><p>Sada obsahuje EPP konzoli a skripty určené pro použití v shellu.</p></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2489599"></a>Kapitola 1. Licence</h2></div></div></div><p>Licence je v souboru ccReg/LICENSE.</p></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2489609"></a>Kapitola 2. Požadavky na systém a instalace</h2></div></div></div><p>Pokyny k instalaci jsou v souboru INSTALL.</p></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2489620"></a>Kapitola 3. 
+    </p><p>Sada obsahuje EPP konzoli a skripty určené pro použití v shellu.</p></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2489600"></a>Kapitola 1. Licence</h2></div></div></div><p>Licence je v souboru ccReg/LICENSE.</p></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2489610"></a>Kapitola 2. Požadavky na systém a instalace</h2></div></div></div><p>Pokyny k instalaci jsou v souboru INSTALL.</p></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2489620"></a>Kapitola 3. 
     Popis jednotlivých programů,
        parametry a config
     </h2></div></div></div><div class="toc"><p><b>Obsah</b></p><dl><dt><span class="section"><a href="#id2451655">
@@ -58,6 +59,8 @@ OPTIONS s hodnotami:
                   3 - plný &amp; XML zdroje
     -c --command  odeslání příkatu na EPP server
                   příklad: --command='info_domain nic.cz'
+    -x --gui
+                  klient se spustí v grafickém režimu (na platformě Qt)
 
 OPTIONS:
     -r --colors   zapnutí barevného výstupu
@@ -155,9 +158,15 @@ V sekci <span class="emphasis"><em>session</em></span> jsou tato nastavení:</p>
     </p><p>
         Více se o této hodnotě dozvíte v části 
         „<span class="quote"><a href="#null_or_empty" title="Žádná hodnota / Prázdná hodnota">Žádná hodnota / Prázdná hodnota</a></span>“
-    </p></li></ul></div></div></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2451391"></a>Kapitola 4. 
+    </p></li><li><p><span class="bold"><strong>socket</strong></span> = IPv4/IPv6</p><p>
+        Nastavení typu soketu na IPv4 nebo IPv6. Pokud není tato hodnota zadána,
+        tak se použije typ soketu, který nabízí server.
+    </p></li><li><p><span class="bold"><strong>auto_login</strong></span> = on/off</p><p>
+        Při nastavení hodnoty auto_login na <span class="bold"><strong>on</strong></span> se po skuštění
+        konzole automaticky provede i příakz <span class="emphasis"><em>login</em></span>.
+    </p></li></ul></div></div></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2451438"></a>Kapitola 4. 
     Program ccreg_console.py
-    </h2></div></div></div><div class="toc"><p><b>Obsah</b></p><dl><dt><span class="section"><a href="#id2451423">Zobrazení helpu</a></span></dt><dt><span class="section"><a href="#id2451466">EPP příkazy</a></span></dt><dt><span class="section"><a href="#id2452030">Typy paramerů příkazu</a></span></dt><dt><span class="section"><a href="#id2450628">Společný parametr cltrid</a></span></dt><dt><span class="section"><a href="#null_or_empty">Žádná hodnota / Prázdná hodnota</a></span></dt><dd><dl><dt><span class="section"><a href="#id2499265">Žádná hodnota: NULL</a></span></dt><dt><span class="section"><a href="#id2499391">Prázdná hodnota: '', ""</a></span></dt></dl></dd><dt><span class="section"><a href="#id2499469">Příkazy relace (session)</a></span></dt></dl></div><p>
+    </h2></div></div></div><div class="toc"><p><b>Obsah</b></p><dl><dt><span class="section"><a href="#id2451471">Zobrazení helpu</a></span></dt><dt><span class="section"><a href="#id2452037">EPP příkazy</a></span></dt><dt><span class="section"><a href="#id2452078">Typy paramerů příkazu</a></span></dt><dt><span class="section"><a href="#id2450664">Společný parametr cltrid</a></span></dt><dt><span class="section"><a href="#null_or_empty">Žádná hodnota / Prázdná hodnota</a></span></dt><dd><dl><dt><span class="section"><a href="#id2499313">Žádná hodnota: NULL</a></span></dt><dt><span class="section"><a href="#id2499439">Prázdná hodnota: '', ""</a></span></dt></dl></dd><dt><span class="section"><a href="#id2499517">Příkazy relace (session)</a></span></dt></dl></div><p>
 ccreg_console.py je konzole, která komunikuje s EPP serverem. Konzoli spustíte
 příkazem:
 </p><pre class="programlisting">
@@ -166,20 +175,20 @@ příkazem:
 Pokud máte v configu správně nadefinovánu cestu k certifikátům a uložené login a heslo, 
 tak můžete jednoduše zadat <span class="emphasis"><em>login</em></span> a tím se spojíte s EPP serverem.
 Konzole se ukončuje příkazem "quit" nebo jen krátce "q".
-</p><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2451423"></a>Zobrazení helpu</h2></div></div></div><p>
+</p><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2451471"></a>Zobrazení helpu</h2></div></div></div><p>
 Jaké příkazy máte k dispozici zjistíte zadáním příkazu "help" (nebo h, ?).
 </p><pre class="programlisting">
     ccReg client verze 1.1 Zadejte "help", "license" nebo "credits" pro zobrazení více informací.
     &gt; help
 </pre><p>Help vypíše dvě části nápovědy:</p><table class="simplelist" border="0" summary="Simple list"><tr><td>1) Dostupné EPP příkazy</td></tr><tr><td>2) Příkazy relace (session) pro nastavení vnitřních proměnných 
-       konzole</td></tr></table></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2451466"></a>EPP příkazy</h2></div></div></div><p>
+       konzole</td></tr></table></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2452037"></a>EPP příkazy</h2></div></div></div><p>
 EPP příkaz zadáváte společně s jeho parametry. Jaké parametry příkaz
 požaduje zjistíte, když zadáte "help příkaz" nebo zkráceně "h příkaz"
 nebo také "? příkaz".
 </p><p>Například:</p><pre class="programlisting">&gt; ?login</pre><p>
 Vypíšou se podrobnosti o jednotlivých parametrech daného příkazu. 
 Samotný příkaz zadáte tak, že napíšete název příkazu a za ním jeho parametry:
-</p><pre class="programlisting">&gt; login moje-ID moje-heslo</pre></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2452030"></a>Typy paramerů příkazu</h2></div></div></div><p><span class="emphasis"><em>INSTRUKCE:</em></span></p><table class="simplelist" border="0" summary="Simple list"><tr><td>parametry zadávejte v pořadí, v jakém jsou vypsané v helpu</td></tr><tr><td>hodnoty s mezerami dejte do uvozovek</td></tr><tr><td>seznamy se definují pomocí závorek, položky seznamu můžou 
+</p><pre class="programlisting">&gt; login moje-ID moje-heslo</pre></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2452078"></a>Typy paramerů příkazu</h2></div></div></div><p><span class="emphasis"><em>INSTRUKCE:</em></span></p><table class="simplelist" border="0" summary="Simple list"><tr><td>parametry zadávejte v pořadí, v jakém jsou vypsané v helpu</td></tr><tr><td>hodnoty s mezerami dejte do uvozovek</td></tr><tr><td>seznamy se definují pomocí závorek, položky seznamu můžou 
       (ale nemusí) být odděleny čárkami</td></tr><tr><td>pokud je v seznamu jen jedna položka, nemusí se závorky zadávat</td></tr><tr><td>jmenné prostory se také jako seznamy definují pomocí závorek</td></tr><tr><td>chcete-li seznam nebo jmenný porostor vynechat, zadejte jen
       prázdné závorky</td></tr><tr><td>hodnoty mimo pořadí zadávejte pomocí klíče</td></tr></table><p><span class="emphasis"><em>VYSVĚTLENÍ:</em></span></p><table class="simplelist" border="0" summary="Simple list"><tr><td>jednoduchá hodnota:  my-value01</td></tr><tr><td>hodnota s mezerou:   'lorem ipsum'   "some value"</td></tr><tr><td>seznam:              (one two three)</td></tr><tr><td>jmenný prostor:      ((one two three) my-value01 'lorem ipsum' (enyky benyky) end-value)</td></tr></table><p>
 Pokud hodnota parametru obsahuje mezeru, tak ji napište do uvozovek. 
@@ -359,14 +368,14 @@ hodnotu například do třetí položky seznamu "ns", tak zadejte:
 
 Dvojka je index seznamu v tomto případě o max. devíti položkách
 (indexy 0 - 8).
-</p></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2450628"></a>Společný parametr cltrid</h2></div></div></div><p>
+</p></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2450664"></a>Společný parametr cltrid</h2></div></div></div><p>
 Každý EPP příkaz, kromě příkazu <span class="emphasis"><em>hello</em></span>, obsahuje 
 tag <span class="bold"><strong>&lt;clTRID&gt;</strong></span>.
 Tato hodnota je identifikátor transakce. Ten si stanovuje klient a 
 může být libovolný v rámci formátovacích pravidel definovaných ve
 schematech pro tuto hodnotu. Identifikátor je nepovinný a pokud 
 není zadán, tak jej program automaticky doplní.
-</p></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="null_or_empty"></a>Žádná hodnota / Prázdná hodnota</h2></div></div></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h3 class="title"><a id="id2499265"></a>Žádná hodnota: NULL</h3></div></div></div><p>
+</p></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="null_or_empty"></a>Žádná hodnota / Prázdná hodnota</h2></div></div></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h3 class="title"><a id="id2499313"></a>Žádná hodnota: NULL</h3></div></div></div><p>
 Výraz <span class="emphasis"><em>Žádná hodnota</em></span> představuje hodnotu, kterou 
 jste nezadali. Slouží nám k tomu, abychom mohli přeskakovat parametry,
 které nechceme zadávat. Defaultě je výraz nastaven na NULL.
@@ -406,7 +415,7 @@ V <span class="emphasis"><em>interaktivním módu</em></span> zadávání parame
 Definici <span class="emphasis"><em>žádné hodnoty</em></span> lze v konzoli změnit příkazem 
 <a href="#null_value">null_value</a>
 a také je možné si ji definovat v <a href="#config_null_value">konfiguračním souboru</a>.
-</p></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h3 class="title"><a id="id2499391"></a>Prázdná hodnota: '', ""</h3></div></div></div><p>
+</p></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h3 class="title"><a id="id2499439"></a>Prázdná hodnota: '', ""</h3></div></div></div><p>
 Výraz <span class="emphasis"><em>Prázdná hodnota</em></span> představuje hodnotu, která je prázdná.
 Je to tedy text o nulové délce. Ten zapisujeme práznými uvozovkami '' nebo "".
 Tato hodnota nám slouží k tomu, abychom mohli zadávat hodnoty nulové délky.
@@ -438,7 +447,7 @@ Příkaz vygeneruje XML, ve kterém budou u prázdných hodnot prázdné tagy:
 </p><p>
 V <span class="emphasis"><em>interaktivním módu</em></span> zadávání parametru zadáme „<span class="quote">prázdnou hodnotu</span>“ tak,
 že zapíšeme prázdné uvozovky '' nebo "".
-</p></div></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2499469"></a>Příkazy relace (session)</h2></div></div></div><p>
+</p></div></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2499517"></a>Příkazy relace (session)</h2></div></div></div><p>
 Konzole má svá vnitřní nastavení, která můžete nastavit. Pokud zadáte
 příkaz bez parametrů, tak se pouze vypíše aktuální stav.
 
@@ -537,7 +546,7 @@ nastavit mód výpisu: 1 - stručný (default); 2 - plný; 3 - plný &amp; XML z
 Nastavení reprezentace „<span class="quote">žádné hodnoty</span>“. Viz <a href="#null_or_empty" title="Žádná hodnota / Prázdná hodnota">Žádná hodnota / Prázdná hodnota</a>
 a <a href="#config_null_value">Formát hodnoty NULL</a>.
 
-</div></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2499699"></a>Kapitola 5. 
+</div></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2499747"></a>Kapitola 5. 
     Skripty ccreg_create.py a ccreg_sender.py
     </h2></div></div></div><p>
 
@@ -580,14 +589,14 @@ Skript může odesílat dokumenty dvěma způsoby:
     $ ./ccreg_create.py check_domain cosi.cz nic.cz | ./ccreg_create.py info_domain nic.cz | ./ccreg_sender.py
 </pre><p>
 
-</p></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2499821"></a>Kapitola 6. 
+</p></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2499869"></a>Kapitola 6. 
     Knihovna ccReg a popis API
-    </h2></div></div></div><div class="toc"><p><b>Obsah</b></p><dl><dt><span class="section"><a href="#id2499838">Online dokumentace:</a></span></dt><dt><span class="section"><a href="#id2499893">Příklady práce s knihovnou</a></span></dt></dl></div><p>
+    </h2></div></div></div><div class="toc"><p><b>Obsah</b></p><dl><dt><span class="section"><a href="#id2499887">Online dokumentace:</a></span></dt><dt><span class="section"><a href="#id2499941">Příklady práce s knihovnou</a></span></dt></dl></div><p>
 
 Knihovna ccReg vám umoňuje implmentovat API rozhraní do vašich aplikací. Knihova i jednotlivé funkce
 obsahují komentáře, podle kterých se můžete při implementaci řídit. V části __init__.py naleznete
 i ukázky kódu.
-</p><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2499838"></a>Online dokumentace:</h2></div></div></div><p>
+</p><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2499887"></a>Online dokumentace:</h2></div></div></div><p>
 Pokud si chcete projít jednotlivé třídy a funkce knihovny, tak k tomu můžete využít generátor
 dokumentace, který je standardní součástí pythonu: Zadejte na příkazové řádce příkaz:
 
@@ -610,7 +619,7 @@ spustíte z adresáře, kde máte tyto skripty uložené. Pak se v helpu zobraz�
 </pre><p>
 
 Server ukončíte stiskem Ctrl+C.
-</p></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2499893"></a>Příklady práce s knihovnou</h2></div></div></div><p>
+</p></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2499941"></a>Příklady práce s knihovnou</h2></div></div></div><p>
 Import knihovny provedete příkazem:
 
 </p><pre class="programlisting">

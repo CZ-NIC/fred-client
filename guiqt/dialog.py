@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'dialog.ui'
 #
-# Created: Út zář 26 20:16:30 2006
+# Created: St zář 27 12:41:03 2006
 #      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -524,6 +524,96 @@ image1_data = \
     "\x00\x49\x45\x4e\x44\xae\x42\x60\x82"
 image2_data = \
     "\x89\x50\x4e\x47\x0d\x0a\x1a\x0a\x00\x00\x00\x0d" \
+    "\x49\x48\x44\x52\x00\x00\x00\x1e\x00\x00\x00\x21" \
+    "\x08\x06\x00\x00\x00\xce\x1c\x1b\xda\x00\x00\x03" \
+    "\xf1\x49\x44\x41\x54\x48\x89\xe5\x97\x6b\x4b\x32" \
+    "\x4d\x1c\xc6\xaf\x39\xec\xae\x68\x56\xa2\x49\x66" \
+    "\x10\x14\x79\x2a\x3a\x13\xf4\xae\x0f\xd1\x07\xe8" \
+    "\x33\xf4\x05\x83\x20\x02\xcb\x28\x3a\x88\x25\x14" \
+    "\xbd\xc8\x17\x5a\x2c\x5a\x3b\xba\xee\xe1\x7e\xd1" \
+    "\xb3\xc3\xaa\x6b\x5a\x37\xcf\xf3\xe6\xb9\x60\xd8" \
+    "\x39\xc0\xfc\xe6\xfa\xcf\x7f\x66\x14\xf8\xbf\x89" \
+    "\x78\x95\xeb\xeb\x6b\xb7\x54\x2a\xc1\xb6\x6d\x50" \
+    "\x4a\x41\x29\x85\xe3\x38\x70\x1c\x07\x96\x65\xc1" \
+    "\xb6\xed\xc0\xef\xa8\x3e\x4d\xd3\x70\x70\x70\x80" \
+    "\xfd\xfd\x7d\xe2\x07\x73\xaf\x72\x71\x71\x81\xc3" \
+    "\xc3\x43\x10\xf2\x35\x6e\x59\x16\x38\xff\x1a\x76" \
+    "\x5d\xb7\x67\xb5\xfe\xf6\x38\x63\x47\x47\x47\x03" \
+    "\x8e\x25\x58\x08\x01\x42\x08\x9e\x9e\x9e\x40\x08" \
+    "\x81\x6d\xdb\x88\x44\x22\x30\x4d\x53\x2e\xa6\xff" \
+    "\x2b\xc3\xd6\xd7\xf6\x83\x93\xc9\x24\x5a\xad\xd6" \
+    "\x70\xb0\xb7\x3a\x42\x88\x2c\xfe\xf6\x6f\xc0\xc3" \
+    "\xfa\x7b\xc0\x8e\xe3\x04\x82\x08\x21\xa8\x56\xab" \
+    "\xb0\x6d\x3b\x70\xa2\xa0\x3e\xc6\x18\x32\x99\xcc" \
+    "\x50\xe8\x50\xb0\x1f\x4a\x08\xc1\xf2\xf2\x72\xa0" \
+    "\xf3\x51\xae\x3c\xf5\xe7\xc1\x00\x38\x28\xdc\x84" \
+    "\x10\x3c\x3e\x3e\xc2\xb6\xed\x40\xd0\x30\xc7\xd9" \
+    "\x6c\x76\x3c\xb0\x7f\xe2\xfe\x7d\xce\x64\x32\x3d" \
+    "\x6e\x75\x5d\xc7\xed\xed\x2d\x1c\xc7\x41\x24\x12" \
+    "\x41\x3a\x9d\x46\x2a\x95\xfa\x36\xc9\x7e\x04\xf6" \
+    "\xda\xfd\x8e\x2d\xcb\x82\x10\x02\x96\x65\xc1\x30" \
+    "\x0c\x34\x1a\x0d\x54\xab\x55\xc4\xe3\x71\x10\x42" \
+    "\xc0\x18\x43\x2e\x97\xfb\x39\xf8\xf2\xf2\x12\x1b" \
+    "\x1b\x1b\xb2\x9d\xcd\x66\x07\xf6\x37\x9b\xcd\xe2" \
+    "\xec\xec\x0c\x42\x08\x50\x4a\xd1\xed\x76\x91\x48" \
+    "\x24\x90\x4a\xa5\x7e\xe7\x18\x00\x76\x77\x77\xe5" \
+    "\xf9\x25\x84\xe0\xe1\xe1\x21\x70\x8f\xe3\xf1\x38" \
+    "\x9e\x9f\x9f\xe1\x38\x0e\x6c\xdb\xc6\xdd\xdd\x1d" \
+    "\xde\xde\xde\xc0\x39\x47\x3e\x9f\x1f\x1f\xec\xba" \
+    "\x2e\x08\x21\x03\x47\x2b\x93\xc9\x80\x52\x1a\x78" \
+    "\xb6\x5f\x5e\x5e\x00\x7c\x25\x14\x21\x04\x6b\x6b" \
+    "\x6b\x03\x10\x6f\xbe\x91\x8e\xfd\x32\x0c\x03\xe7" \
+    "\xe7\xe7\x88\xc5\x62\x50\x14\x45\xf6\x13\x42\xe0" \
+    "\xba\xae\x2c\x96\x65\xc1\x71\x1c\xdc\xdc\xdc\x80" \
+    "\x73\x8e\x42\xa1\x30\xbe\x63\xbf\x1b\xaf\x7c\x7c" \
+    "\x7c\x80\x73\x8e\x56\xab\x85\xad\xad\x2d\x44\xa3" \
+    "\x51\x99\x60\xc7\xc7\xc7\x68\xb7\xdb\xd0\x34\x0d" \
+    "\x94\x52\xcc\xcc\xcc\x60\x7d\x7d\xfd\x77\x8e\xfb" \
+    "\xb3\x3a\x14\x0a\x41\x08\x01\xdb\xb6\x71\x72\x72" \
+    "\x02\x55\x55\xc1\x18\x83\x61\x18\x10\x42\xc8\x28" \
+    "\x38\x8e\x03\x5d\xd7\x71\x75\x75\x05\x55\x55\xb1" \
+    "\xb2\xb2\x22\xdd\x8e\x04\x07\x85\x64\x72\x72\x12" \
+    "\xb1\x58\x0c\x9f\x9f\x9f\xe8\x76\xbb\x30\x4d\x13" \
+    "\xdd\x6e\x57\x5e\xa1\x84\x10\x28\x8a\x02\xce\x39" \
+    "\x54\x55\x85\x6d\xdb\xc8\xe5\x72\x3d\x49\x18\x34" \
+    "\x2f\xf5\x2a\x96\x65\xf5\x0c\x78\x93\x52\x4a\xb1" \
+    "\xb4\xb4\x24\xdf\x68\x4a\x29\x38\xe7\x50\x14\x05" \
+    "\xaa\xaa\xca\x08\x70\xce\x41\x29\x85\x10\x02\x95" \
+    "\x4a\x45\xce\xf1\xe3\x50\xfb\x17\x50\xaf\xd7\x11" \
+    "\x0e\x87\xf1\xfe\xfe\x2e\xaf\x56\xff\x96\x38\x8e" \
+    "\x23\xa3\x60\x9a\x26\x84\x10\x08\x87\xc3\x58\x5c" \
+    "\x5c\x1c\x1f\x0c\x00\xc5\x62\x11\x3b\x3b\x3b\xb2" \
+    "\x9d\xcf\xe7\xe5\x1b\xad\xeb\x3a\x84\x10\xd0\x34" \
+    "\x0d\xc9\x64\x12\x86\x61\xa0\x54\x2a\xc1\x75\x5d" \
+    "\x19\x72\x45\x51\xd0\x6c\x36\x51\xab\xd5\xb0\xb0" \
+    "\xb0\x30\x00\xed\x01\x5b\x96\x25\xf7\x62\x6f\x6f" \
+    "\x0f\xa6\x69\x4a\xc7\xe5\x72\xb9\xe7\x59\xf4\xbe" \
+    "\xf5\x7a\x1d\x00\x30\x31\x31\x81\x7a\xbd\x8e\x76" \
+    "\xbb\x0d\xc6\x18\x18\x63\x98\x9d\x9d\x45\xb3\xd9" \
+    "\x0c\x84\x0e\x0d\x75\xff\x13\x59\x28\x14\x06\x8e" \
+    "\x99\x77\xa1\x78\x45\xd7\x75\x54\x2a\x15\x30\xc6" \
+    "\xa4\x73\xc6\xd8\xf8\xe0\x20\xdd\xdf\xdf\xf7\x64" \
+    "\xb1\x7f\x51\xfe\xba\x77\xa4\x18\x63\x98\x9f\x9f" \
+    "\x1f\x0f\xec\x0f\x75\xbf\x3c\xc7\xfd\x2e\x83\xdc" \
+    "\xeb\xba\x8e\xd7\xd7\x57\x99\xfd\xff\xaa\x63\x45" \
+    "\x51\xe4\x6b\x36\x3d\x3d\x0d\x00\x68\x34\x1a\x7f" \
+    "\x0f\x1e\xe5\xd8\xbb\xb7\x3d\x4d\x4d\x4d\x81\x10" \
+    "\xf2\xb3\xe4\xfa\x4e\xfe\x9f\x46\xdf\x8d\x03\x5f" \
+    "\x99\xfe\x9d\x24\x38\x1c\x0e\xc3\x75\x5d\x4c\x4e" \
+    "\x4e\xca\x33\xcb\x39\x1f\xba\xef\xa3\x44\x08\x41" \
+    "\x34\x1a\x05\x00\x44\xa3\x51\x94\xcb\x65\x37\x9f" \
+    "\xcf\xcb\x15\x13\x00\x28\x95\x4a\x6e\xb1\x58\xc4" \
+    "\xe9\xe9\xe9\xc0\xd5\xf9\xb7\xe2\x9c\x63\x7b\x7b" \
+    "\x1b\x9b\x9b\x9b\x48\x24\x12\x58\x5d\x5d\x25\xc0" \
+    "\x3f\x8e\x15\x45\x41\xa1\x50\x40\x3a\x9d\x46\xa7" \
+    "\xd3\x19\x2b\xec\xe3\x28\x14\x0a\xc1\xb2\x2c\x84" \
+    "\xc3\x61\x68\x9a\x26\xa1\x80\xef\x4f\x5b\xad\x56" \
+    "\x73\x3b\x9d\x0e\x3a\x9d\xce\xaf\xc3\xdb\x2f\xef" \
+    "\x32\x51\x55\x15\x73\x73\x73\xa3\x7f\x80\xff\x17" \
+    "\xfa\x03\x9e\x54\x40\x6a\x63\xd2\x4e\xf2\x00\x00" \
+    "\x00\x00\x49\x45\x4e\x44\xae\x42\x60\x82"
+image3_data = \
+    "\x89\x50\x4e\x47\x0d\x0a\x1a\x0a\x00\x00\x00\x0d" \
     "\x49\x48\x44\x52\x00\x00\x00\x78\x00\x00\x00\x78" \
     "\x08\x06\x00\x00\x00\x39\x64\x36\xd2\x00\x00\x17" \
     "\x29\x49\x44\x41\x54\x78\x9c\xed\x5d\x3b\x72\xea" \
@@ -1022,7 +1112,7 @@ image2_data = \
     "\x2f\x4d\xf0\x0f\x3e\xc6\x4d\x2f\x3e\xfb\xc1\xe7" \
     "\xf1\xff\xf8\xdc\x6f\xbc\xd7\x2e\x32\x28\x00\x00" \
     "\x00\x00\x49\x45\x4e\x44\xae\x42\x60\x82"
-image3_data = \
+image4_data = \
     "\x89\x50\x4e\x47\x0d\x0a\x1a\x0a\x00\x00\x00\x0d" \
     "\x49\x48\x44\x52\x00\x00\x00\x78\x00\x00\x00\x78" \
     "\x08\x06\x00\x00\x00\x39\x64\x36\xd2\x00\x00\x16" \
@@ -1508,7 +1598,7 @@ image3_data = \
     "\x2b\x81\xbf\x38\xae\x04\xfe\xe2\xb8\x12\xf8\x8b" \
     "\xe3\xff\x01\x5e\xe2\xc1\x44\x99\xdd\xf5\xcd\x00" \
     "\x00\x00\x00\x49\x45\x4e\x44\xae\x42\x60\x82"
-image4_data = \
+image5_data = \
     "\x89\x50\x4e\x47\x0d\x0a\x1a\x0a\x00\x00\x00\x0d" \
     "\x49\x48\x44\x52\x00\x00\x00\x78\x00\x00\x00\x78" \
     "\x08\x06\x00\x00\x00\x39\x64\x36\xd2\x00\x00\x12" \
@@ -1914,6 +2004,8 @@ class main_dialog(QDialog):
         self.image3.loadFromData(image3_data,"PNG")
         self.image4 = QPixmap()
         self.image4.loadFromData(image4_data,"PNG")
+        self.image5 = QPixmap()
+        self.image5.loadFromData(image5_data,"PNG")
         if not name:
             self.setName("main_dialog")
 
@@ -1987,6 +2079,11 @@ class main_dialog(QDialog):
         self.pixmapLabel2.setPixmap(self.image1)
         self.pixmapLabel2.setScaledContents(1)
 
+        self.textLabel2 = QLabel(self.Widget8,"textLabel2")
+        self.textLabel2.setGeometry(QRect(158,13,490,110))
+        self.textLabel2.setTextFormat(QLabel.RichText)
+        self.textLabel2.setAlignment(QLabel.WordBreak | QLabel.AlignTop | QLabel.AlignLeft)
+
         self.tabWidget6 = QTabWidget(self.Widget8,"tabWidget6")
         self.tabWidget6.setGeometry(QRect(20,130,630,420))
 
@@ -2022,13 +2119,13 @@ class main_dialog(QDialog):
         self.textLabel1_2.setGeometry(QRect(10,10,570,100))
         self.textLabel1_2.setAlignment(QLabel.WordBreak | QLabel.AlignTop | QLabel.AlignLeft)
 
-        self.login_password = QLineEdit(self.tab_2,"login_password")
-        self.login_password.setGeometry(QRect(210,160,360,22))
-        self.login_password.setEchoMode(QLineEdit.Password)
-
         self.login_new_password = QLineEdit(self.tab_2,"login_new_password")
         self.login_new_password.setGeometry(QRect(210,200,360,22))
-        self.login_new_password.setEchoMode(QLineEdit.Password)
+        self.login_new_password.setEchoMode(QLineEdit.Normal)
+
+        self.login_password = QLineEdit(self.tab_2,"login_password")
+        self.login_password.setGeometry(QRect(210,160,360,22))
+        self.login_password.setEchoMode(QLineEdit.Normal)
         self.login_response.insertTab(self.tab_2,QString.fromLatin1(""))
 
         self.TabPage_2 = QWidget(self.login_response,"TabPage_2")
@@ -2052,6 +2149,10 @@ class main_dialog(QDialog):
         self.login_msg = QTextEdit(self.TabPage_2,"login_msg")
         self.login_msg.setGeometry(QRect(130,40,450,80))
         self.login_msg.setWordWrap(QTextEdit.WidgetWidth)
+
+        self.btn_source_login = QPushButton(self.TabPage_2,"btn_source_login")
+        self.btn_source_login.setGeometry(QRect(10,280,50,50))
+        self.btn_source_login.setPixmap(self.image2)
         self.login_response.insertTab(self.TabPage_2,QString.fromLatin1(""))
         self.tabWidget6.insertTab(self.tab,QString.fromLatin1(""))
 
@@ -2097,6 +2198,10 @@ class main_dialog(QDialog):
 
         self.logout_data = QTextEdit(self.TabPage_4,"logout_data")
         self.logout_data.setGeometry(QRect(130,129,450,190))
+
+        self.btn_source_logout = QPushButton(self.TabPage_4,"btn_source_logout")
+        self.btn_source_logout.setGeometry(QRect(10,270,50,50))
+        self.btn_source_logout.setPixmap(self.image2)
         self.logout_response.insertTab(self.TabPage_4,QString.fromLatin1(""))
         self.tabWidget6.insertTab(self.TabPage_3,QString.fromLatin1(""))
 
@@ -2161,6 +2266,10 @@ class main_dialog(QDialog):
 
         self.poll_data = QTextEdit(self.TabPage_6,"poll_data")
         self.poll_data.setGeometry(QRect(130,130,450,190))
+
+        self.btn_source_poll = QPushButton(self.TabPage_6,"btn_source_poll")
+        self.btn_source_poll.setGeometry(QRect(10,280,50,50))
+        self.btn_source_poll.setPixmap(self.image2)
         self.poll_response.insertTab(self.TabPage_6,QString.fromLatin1(""))
         self.tabWidget6.insertTab(self.TabPage_5,QString.fromLatin1(""))
 
@@ -2200,20 +2309,19 @@ class main_dialog(QDialog):
 
         self.hello_data = QTextEdit(self.TabPage_8,"hello_data")
         self.hello_data.setGeometry(QRect(130,129,450,190))
+
+        self.btn_source_hello = QPushButton(self.TabPage_8,"btn_source_hello")
+        self.btn_source_hello.setGeometry(QRect(10,270,50,50))
+        self.btn_source_hello.setPixmap(self.image2)
         self.hello_response.insertTab(self.TabPage_8,QString.fromLatin1(""))
         self.tabWidget6.insertTab(self.TabPage_7,QString.fromLatin1(""))
-
-        self.textLabel2 = QLabel(self.Widget8,"textLabel2")
-        self.textLabel2.setGeometry(QRect(158,13,490,110))
-        self.textLabel2.setTextFormat(QLabel.RichText)
-        self.textLabel2.setAlignment(QLabel.WordBreak | QLabel.AlignTop | QLabel.AlignLeft)
         self.tabWidget.insertTab(self.Widget8,QString.fromLatin1(""))
 
         self.Widget9 = QWidget(self.tabWidget,"Widget9")
 
         self.pixmapLabel2_2 = QLabel(self.Widget9,"pixmapLabel2_2")
         self.pixmapLabel2_2.setGeometry(QRect(20,10,120,120))
-        self.pixmapLabel2_2.setPixmap(self.image2)
+        self.pixmapLabel2_2.setPixmap(self.image3)
         self.pixmapLabel2_2.setScaledContents(1)
 
         self.textLabel2_2 = QLabel(self.Widget9,"textLabel2_2")
@@ -2235,10 +2343,6 @@ class main_dialog(QDialog):
         self.textLabel1_2_3_7_2.setGeometry(QRect(10,10,580,130))
         self.textLabel1_2_3_7_2.setAlignment(QLabel.WordBreak | QLabel.AlignTop | QLabel.AlignLeft)
 
-        self.textLabel2_3_2 = QLabel(self.tab_6,"textLabel2_3_2")
-        self.textLabel2_3_2.setGeometry(QRect(20,150,180,100))
-        self.textLabel2_3_2.setAlignment(QLabel.WordBreak | QLabel.AlignTop)
-
         self.textLabel5_4 = QLabel(self.tab_6,"textLabel5_4")
         self.textLabel5_4.setGeometry(QRect(20,250,190,20))
 
@@ -2250,6 +2354,10 @@ class main_dialog(QDialog):
 
         self.check_contact_name = QTextEdit(self.tab_6,"check_contact_name")
         self.check_contact_name.setGeometry(QRect(220,150,360,90))
+
+        self.textLabel2_3_2 = QLabel(self.tab_6,"textLabel2_3_2")
+        self.textLabel2_3_2.setGeometry(QRect(20,150,180,100))
+        self.textLabel2_3_2.setAlignment(QLabel.WordBreak | QLabel.AlignTop)
         self.check_contact_response.insertTab(self.tab_6,QString.fromLatin1(""))
 
         self.TabPage_10 = QWidget(self.check_contact_response,"TabPage_10")
@@ -2273,6 +2381,10 @@ class main_dialog(QDialog):
 
         self.check_contact_data = QTextEdit(self.TabPage_10,"check_contact_data")
         self.check_contact_data.setGeometry(QRect(140,129,450,190))
+
+        self.btn_source_check_contact = QPushButton(self.TabPage_10,"btn_source_check_contact")
+        self.btn_source_check_contact.setGeometry(QRect(10,270,50,50))
+        self.btn_source_check_contact.setPixmap(self.image2)
         self.check_contact_response.insertTab(self.TabPage_10,QString.fromLatin1(""))
         self.tabWidget6_2.insertTab(self.TabPage_9,QString.fromLatin1(""))
 
@@ -2324,6 +2436,10 @@ class main_dialog(QDialog):
 
         self.info_contact_data = QTextEdit(self.TabPage_12,"info_contact_data")
         self.info_contact_data.setGeometry(QRect(130,129,450,190))
+
+        self.btn_source_info_contact = QPushButton(self.TabPage_12,"btn_source_info_contact")
+        self.btn_source_info_contact.setGeometry(QRect(10,270,50,50))
+        self.btn_source_info_contact.setPixmap(self.image2)
         self.info_contact_response.insertTab(self.TabPage_12,QString.fromLatin1(""))
         self.tabWidget6_2.insertTab(self.TabPage_11,QString.fromLatin1(""))
 
@@ -2364,6 +2480,10 @@ class main_dialog(QDialog):
 
         self.create_contact_data = QTextEdit(self.TabPage_13,"create_contact_data")
         self.create_contact_data.setGeometry(QRect(130,129,450,190))
+
+        self.btn_source_create_contact = QPushButton(self.TabPage_13,"btn_source_create_contact")
+        self.btn_source_create_contact.setGeometry(QRect(10,270,50,50))
+        self.btn_source_create_contact.setPixmap(self.image2)
         self.create_contact_response.insertTab(self.TabPage_13,QString.fromLatin1(""))
         self.tabWidget6_2.insertTab(self.tab_8,QString.fromLatin1(""))
 
@@ -2404,6 +2524,10 @@ class main_dialog(QDialog):
 
         self.update_contact_data = QTextEdit(self.TabPage_15,"update_contact_data")
         self.update_contact_data.setGeometry(QRect(130,129,450,190))
+
+        self.btn_source_update_contact = QPushButton(self.TabPage_15,"btn_source_update_contact")
+        self.btn_source_update_contact.setGeometry(QRect(10,270,50,50))
+        self.btn_source_update_contact.setPixmap(self.image2)
         self.update_contact_response.insertTab(self.TabPage_15,QString.fromLatin1(""))
         self.tabWidget6_2.insertTab(self.TabPage_14,QString.fromLatin1(""))
 
@@ -2455,6 +2579,10 @@ class main_dialog(QDialog):
 
         self.delete_contact_data = QTextEdit(self.TabPage_17,"delete_contact_data")
         self.delete_contact_data.setGeometry(QRect(130,129,450,190))
+
+        self.btn_source_delete_contact = QPushButton(self.TabPage_17,"btn_source_delete_contact")
+        self.btn_source_delete_contact.setGeometry(QRect(10,270,50,50))
+        self.btn_source_delete_contact.setPixmap(self.image2)
         self.delete_contact_response.insertTab(self.TabPage_17,QString.fromLatin1(""))
         self.tabWidget6_2.insertTab(self.TabPage_16,QString.fromLatin1(""))
 
@@ -2512,6 +2640,10 @@ class main_dialog(QDialog):
 
         self.transfer_contact_data = QTextEdit(self.TabPage_19,"transfer_contact_data")
         self.transfer_contact_data.setGeometry(QRect(130,129,450,190))
+
+        self.btn_source_transfer_contact = QPushButton(self.TabPage_19,"btn_source_transfer_contact")
+        self.btn_source_transfer_contact.setGeometry(QRect(10,270,50,50))
+        self.btn_source_transfer_contact.setPixmap(self.image2)
         self.transfer_contact_response.insertTab(self.TabPage_19,QString.fromLatin1(""))
         self.tabWidget6_2.insertTab(self.TabPage_18,QString.fromLatin1(""))
 
@@ -2561,6 +2693,10 @@ class main_dialog(QDialog):
         self.list_contact_table.setGeometry(QRect(130,120,450,210))
         self.list_contact_table.setNumRows(0)
         self.list_contact_table.setNumCols(1)
+
+        self.btn_source_list_contact = QPushButton(self.TabPage_21,"btn_source_list_contact")
+        self.btn_source_list_contact.setGeometry(QRect(10,280,50,50))
+        self.btn_source_list_contact.setPixmap(self.image2)
         self.list_contact_response.insertTab(self.TabPage_21,QString.fromLatin1(""))
         self.tabWidget6_2.insertTab(self.TabPage_20,QString.fromLatin1(""))
         self.tabWidget.insertTab(self.Widget9,QString.fromLatin1(""))
@@ -2569,8 +2705,13 @@ class main_dialog(QDialog):
 
         self.pixmapLabel2_2_2 = QLabel(self.TabPage_22,"pixmapLabel2_2_2")
         self.pixmapLabel2_2_2.setGeometry(QRect(20,10,120,120))
-        self.pixmapLabel2_2_2.setPixmap(self.image3)
+        self.pixmapLabel2_2_2.setPixmap(self.image4)
         self.pixmapLabel2_2_2.setScaledContents(1)
+
+        self.textLabel2_2_2 = QLabel(self.TabPage_22,"textLabel2_2_2")
+        self.textLabel2_2_2.setGeometry(QRect(150,20,490,110))
+        self.textLabel2_2_2.setTextFormat(QLabel.RichText)
+        self.textLabel2_2_2.setAlignment(QLabel.WordBreak | QLabel.AlignTop | QLabel.AlignLeft)
 
         self.tabWidget6_2_2 = QTabWidget(self.TabPage_22,"tabWidget6_2_2")
         self.tabWidget6_2_2.setGeometry(QRect(20,130,630,420))
@@ -2586,10 +2727,6 @@ class main_dialog(QDialog):
         self.textLabel1_2_3_7_2_2.setGeometry(QRect(10,10,580,130))
         self.textLabel1_2_3_7_2_2.setAlignment(QLabel.WordBreak | QLabel.AlignTop | QLabel.AlignLeft)
 
-        self.textLabel2_3_2_2 = QLabel(self.tab_15,"textLabel2_3_2_2")
-        self.textLabel2_3_2_2.setGeometry(QRect(20,150,180,100))
-        self.textLabel2_3_2_2.setAlignment(QLabel.WordBreak | QLabel.AlignTop)
-
         self.textLabel5_4_2 = QLabel(self.tab_15,"textLabel5_4_2")
         self.textLabel5_4_2.setGeometry(QRect(20,250,190,20))
 
@@ -2601,6 +2738,10 @@ class main_dialog(QDialog):
 
         self.check_nsset_name = QTextEdit(self.tab_15,"check_nsset_name")
         self.check_nsset_name.setGeometry(QRect(220,150,360,90))
+
+        self.textLabel2_3_2_2 = QLabel(self.tab_15,"textLabel2_3_2_2")
+        self.textLabel2_3_2_2.setGeometry(QRect(20,150,180,100))
+        self.textLabel2_3_2_2.setAlignment(QLabel.WordBreak | QLabel.AlignTop)
         self.check_nsset_response.insertTab(self.tab_15,QString.fromLatin1(""))
 
         self.TabPage_23 = QWidget(self.check_nsset_response,"TabPage_23")
@@ -2624,6 +2765,10 @@ class main_dialog(QDialog):
 
         self.check_nsset_data = QTextEdit(self.TabPage_23,"check_nsset_data")
         self.check_nsset_data.setGeometry(QRect(130,129,450,190))
+
+        self.btn_source_check_nsset = QPushButton(self.TabPage_23,"btn_source_check_nsset")
+        self.btn_source_check_nsset.setGeometry(QRect(10,270,50,50))
+        self.btn_source_check_nsset.setPixmap(self.image2)
         self.check_nsset_response.insertTab(self.TabPage_23,QString.fromLatin1(""))
         self.tabWidget6_2_2.insertTab(self.tab_14,QString.fromLatin1(""))
 
@@ -2675,6 +2820,10 @@ class main_dialog(QDialog):
 
         self.info_nsset_data = QTextEdit(self.TabPage_25,"info_nsset_data")
         self.info_nsset_data.setGeometry(QRect(130,129,450,190))
+
+        self.btn_source_info_nsset = QPushButton(self.TabPage_25,"btn_source_info_nsset")
+        self.btn_source_info_nsset.setGeometry(QRect(10,270,50,50))
+        self.btn_source_info_nsset.setPixmap(self.image2)
         self.info_nsset_response.insertTab(self.TabPage_25,QString.fromLatin1(""))
         self.tabWidget6_2_2.insertTab(self.TabPage_24,QString.fromLatin1(""))
 
@@ -2715,6 +2864,10 @@ class main_dialog(QDialog):
 
         self.create_nsset_data = QTextEdit(self.TabPage_27,"create_nsset_data")
         self.create_nsset_data.setGeometry(QRect(130,129,450,190))
+
+        self.btn_source_create_nsset = QPushButton(self.TabPage_27,"btn_source_create_nsset")
+        self.btn_source_create_nsset.setGeometry(QRect(10,270,50,50))
+        self.btn_source_create_nsset.setPixmap(self.image2)
         self.create_nsset_response.insertTab(self.TabPage_27,QString.fromLatin1(""))
         self.tabWidget6_2_2.insertTab(self.TabPage_26,QString.fromLatin1(""))
 
@@ -2755,6 +2908,10 @@ class main_dialog(QDialog):
 
         self.update_nsset_data = QTextEdit(self.TabPage_29,"update_nsset_data")
         self.update_nsset_data.setGeometry(QRect(130,129,450,190))
+
+        self.btn_source_update_nsset = QPushButton(self.TabPage_29,"btn_source_update_nsset")
+        self.btn_source_update_nsset.setGeometry(QRect(10,270,50,50))
+        self.btn_source_update_nsset.setPixmap(self.image2)
         self.update_nsset_response.insertTab(self.TabPage_29,QString.fromLatin1(""))
         self.tabWidget6_2_2.insertTab(self.TabPage_28,QString.fromLatin1(""))
 
@@ -2806,6 +2963,10 @@ class main_dialog(QDialog):
 
         self.delete_nsset_data = QTextEdit(self.TabPage_31,"delete_nsset_data")
         self.delete_nsset_data.setGeometry(QRect(130,129,450,190))
+
+        self.btn_source_delete_nsset = QPushButton(self.TabPage_31,"btn_source_delete_nsset")
+        self.btn_source_delete_nsset.setGeometry(QRect(10,270,50,50))
+        self.btn_source_delete_nsset.setPixmap(self.image2)
         self.delete_nsset_response.insertTab(self.TabPage_31,QString.fromLatin1(""))
         self.tabWidget6_2_2.insertTab(self.TabPage_30,QString.fromLatin1(""))
 
@@ -2855,20 +3016,19 @@ class main_dialog(QDialog):
         self.list_nsset_table.setGeometry(QRect(130,120,450,210))
         self.list_nsset_table.setNumRows(0)
         self.list_nsset_table.setNumCols(1)
+
+        self.btn_source_list_nsset = QPushButton(self.TabPage_33,"btn_source_list_nsset")
+        self.btn_source_list_nsset.setGeometry(QRect(10,280,50,50))
+        self.btn_source_list_nsset.setPixmap(self.image2)
         self.list_nsset_response.insertTab(self.TabPage_33,QString.fromLatin1(""))
         self.tabWidget6_2_2.insertTab(self.TabPage_32,QString.fromLatin1(""))
-
-        self.textLabel2_2_2 = QLabel(self.TabPage_22,"textLabel2_2_2")
-        self.textLabel2_2_2.setGeometry(QRect(150,20,490,110))
-        self.textLabel2_2_2.setTextFormat(QLabel.RichText)
-        self.textLabel2_2_2.setAlignment(QLabel.WordBreak | QLabel.AlignTop | QLabel.AlignLeft)
         self.tabWidget.insertTab(self.TabPage_22,QString.fromLatin1(""))
 
         self.TabPage_34 = QWidget(self.tabWidget,"TabPage_34")
 
         self.pixmapLabel2_2_2_2 = QLabel(self.TabPage_34,"pixmapLabel2_2_2_2")
         self.pixmapLabel2_2_2_2.setGeometry(QRect(20,10,120,120))
-        self.pixmapLabel2_2_2_2.setPixmap(self.image4)
+        self.pixmapLabel2_2_2_2.setPixmap(self.image5)
         self.pixmapLabel2_2_2_2.setScaledContents(1)
 
         self.textLabel2_2_2_2 = QLabel(self.TabPage_34,"textLabel2_2_2_2")
@@ -2886,10 +3046,6 @@ class main_dialog(QDialog):
 
         self.tab_22 = QWidget(self.check_domain_response,"tab_22")
 
-        self.textLabel2_3_2_2_2 = QLabel(self.tab_22,"textLabel2_3_2_2_2")
-        self.textLabel2_3_2_2_2.setGeometry(QRect(20,150,180,100))
-        self.textLabel2_3_2_2_2.setAlignment(QLabel.WordBreak | QLabel.AlignTop)
-
         self.textLabel5_4_2_2 = QLabel(self.tab_22,"textLabel5_4_2_2")
         self.textLabel5_4_2_2.setGeometry(QRect(20,250,190,20))
 
@@ -2905,6 +3061,10 @@ class main_dialog(QDialog):
 
         self.check_domain_name = QTextEdit(self.tab_22,"check_domain_name")
         self.check_domain_name.setGeometry(QRect(220,150,360,90))
+
+        self.textLabel2_3_2_2_2 = QLabel(self.tab_22,"textLabel2_3_2_2_2")
+        self.textLabel2_3_2_2_2.setGeometry(QRect(20,150,180,100))
+        self.textLabel2_3_2_2_2.setAlignment(QLabel.WordBreak | QLabel.AlignTop)
         self.check_domain_response.insertTab(self.tab_22,QString.fromLatin1(""))
 
         self.TabPage_35 = QWidget(self.check_domain_response,"TabPage_35")
@@ -2928,6 +3088,10 @@ class main_dialog(QDialog):
 
         self.check_domain_data = QTextEdit(self.TabPage_35,"check_domain_data")
         self.check_domain_data.setGeometry(QRect(130,129,450,190))
+
+        self.btn_source_check_domain = QPushButton(self.TabPage_35,"btn_source_check_domain")
+        self.btn_source_check_domain.setGeometry(QRect(10,270,50,50))
+        self.btn_source_check_domain.setPixmap(self.image2)
         self.check_domain_response.insertTab(self.TabPage_35,QString.fromLatin1(""))
         self.tabWidget6_2_2_2.insertTab(self.tab_21,QString.fromLatin1(""))
 
@@ -2979,6 +3143,10 @@ class main_dialog(QDialog):
 
         self.info_domain_data = QTextEdit(self.TabPage_37,"info_domain_data")
         self.info_domain_data.setGeometry(QRect(130,129,450,190))
+
+        self.btn_source_info_domain = QPushButton(self.TabPage_37,"btn_source_info_domain")
+        self.btn_source_info_domain.setGeometry(QRect(10,270,50,50))
+        self.btn_source_info_domain.setPixmap(self.image2)
         self.info_domain_response.insertTab(self.TabPage_37,QString.fromLatin1(""))
         self.tabWidget6_2_2_2.insertTab(self.TabPage_36,QString.fromLatin1(""))
 
@@ -3019,6 +3187,10 @@ class main_dialog(QDialog):
 
         self.create_domain_data = QTextEdit(self.TabPage_39,"create_domain_data")
         self.create_domain_data.setGeometry(QRect(130,129,450,190))
+
+        self.btn_source_create_domain = QPushButton(self.TabPage_39,"btn_source_create_domain")
+        self.btn_source_create_domain.setGeometry(QRect(10,270,50,50))
+        self.btn_source_create_domain.setPixmap(self.image2)
         self.create_domain__response.insertTab(self.TabPage_39,QString.fromLatin1(""))
         self.tabWidget6_2_2_2.insertTab(self.TabPage_38,QString.fromLatin1(""))
 
@@ -3059,6 +3231,10 @@ class main_dialog(QDialog):
 
         self.update_domain_data = QTextEdit(self.TabPage_41,"update_domain_data")
         self.update_domain_data.setGeometry(QRect(130,129,450,190))
+
+        self.btn_source_update_domain = QPushButton(self.TabPage_41,"btn_source_update_domain")
+        self.btn_source_update_domain.setGeometry(QRect(10,270,50,50))
+        self.btn_source_update_domain.setPixmap(self.image2)
         self.update_domain_response.insertTab(self.TabPage_41,QString.fromLatin1(""))
         self.tabWidget6_2_2_2.insertTab(self.TabPage_40,QString.fromLatin1(""))
 
@@ -3110,6 +3286,10 @@ class main_dialog(QDialog):
 
         self.delete_domain_data = QTextEdit(self.TabPage_43,"delete_domain_data")
         self.delete_domain_data.setGeometry(QRect(130,129,450,190))
+
+        self.btn_source_delete_domain = QPushButton(self.TabPage_43,"btn_source_delete_domain")
+        self.btn_source_delete_domain.setGeometry(QRect(10,270,50,50))
+        self.btn_source_delete_domain.setPixmap(self.image2)
         self.delete_domain_response.insertTab(self.TabPage_43,QString.fromLatin1(""))
         self.tabWidget6_2_2_2.insertTab(self.TabPage_42,QString.fromLatin1(""))
 
@@ -3129,10 +3309,6 @@ class main_dialog(QDialog):
         self.textLabel3_2_5_2_2 = QLabel(self.tab_27,"textLabel3_2_5_2_2")
         self.textLabel3_2_5_2_2.setGeometry(QRect(20,170,190,20))
 
-        self.textLabel1_2_3_7_3_7_2 = QLabel(self.tab_27,"textLabel1_2_3_7_3_7_2")
-        self.textLabel1_2_3_7_3_7_2.setGeometry(QRect(10,10,570,150))
-        self.textLabel1_2_3_7_3_7_2.setAlignment(QLabel.WordBreak | QLabel.AlignTop | QLabel.AlignLeft)
-
         self.transfer_domain_cltrid = QLineEdit(self.tab_27,"transfer_domain_cltrid")
         self.transfer_domain_cltrid.setGeometry(QRect(220,250,360,22))
 
@@ -3144,6 +3320,10 @@ class main_dialog(QDialog):
 
         self.transfer_domain_password = QLineEdit(self.tab_27,"transfer_domain_password")
         self.transfer_domain_password.setGeometry(QRect(220,210,360,22))
+
+        self.textLabel1_2_3_7_3_7_2 = QLabel(self.tab_27,"textLabel1_2_3_7_3_7_2")
+        self.textLabel1_2_3_7_3_7_2.setGeometry(QRect(10,10,570,150))
+        self.textLabel1_2_3_7_3_7_2.setAlignment(QLabel.WordBreak | QLabel.AlignTop | QLabel.AlignLeft)
         self.transfer_domain_response.insertTab(self.tab_27,QString.fromLatin1(""))
 
         self.TabPage_45 = QWidget(self.transfer_domain_response,"TabPage_45")
@@ -3167,6 +3347,10 @@ class main_dialog(QDialog):
 
         self.transfer_domain_data = QTextEdit(self.TabPage_45,"transfer_domain_data")
         self.transfer_domain_data.setGeometry(QRect(130,129,450,190))
+
+        self.btn_source_transfer_domain = QPushButton(self.TabPage_45,"btn_source_transfer_domain")
+        self.btn_source_transfer_domain.setGeometry(QRect(10,270,50,50))
+        self.btn_source_transfer_domain.setPixmap(self.image2)
         self.transfer_domain_response.insertTab(self.TabPage_45,QString.fromLatin1(""))
         self.tabWidget6_2_2_2.insertTab(self.TabPage_44,QString.fromLatin1(""))
 
@@ -3249,6 +3433,10 @@ class main_dialog(QDialog):
 
         self.renew_domain_data = QTextEdit(self.TabPage_47,"renew_domain_data")
         self.renew_domain_data.setGeometry(QRect(130,129,450,190))
+
+        self.btn_source_renew_domain = QPushButton(self.TabPage_47,"btn_source_renew_domain")
+        self.btn_source_renew_domain.setGeometry(QRect(10,270,50,50))
+        self.btn_source_renew_domain.setPixmap(self.image2)
         self.renew_domain_response.insertTab(self.TabPage_47,QString.fromLatin1(""))
         self.tabWidget6_2_2_2.insertTab(self.TabPage_46,QString.fromLatin1(""))
 
@@ -3298,6 +3486,10 @@ class main_dialog(QDialog):
         self.list_domain_table.setGeometry(QRect(130,120,450,210))
         self.list_domain_table.setNumRows(0)
         self.list_domain_table.setNumCols(1)
+
+        self.btn_source_list_domain = QPushButton(self.TabPage_49,"btn_source_list_domain")
+        self.btn_source_list_domain.setGeometry(QRect(10,270,50,50))
+        self.btn_source_list_domain.setPixmap(self.image2)
         self.list_domain_response.insertTab(self.TabPage_49,QString.fromLatin1(""))
         self.tabWidget6_2_2_2.insertTab(self.TabPage_48,QString.fromLatin1(""))
         self.tabWidget.insertTab(self.TabPage_34,QString.fromLatin1(""))
@@ -3334,6 +3526,31 @@ class main_dialog(QDialog):
         self.connect(self.send_update_nsset,SIGNAL("clicked()"),self.update_nsset)
         self.connect(self.send_renew_domain,SIGNAL("clicked()"),self.renew_domain)
         self.connect(self.renew_domain_use_exdate,SIGNAL("toggled(bool)"),self.renew_domain_val_ex_date.setEnabled)
+        self.connect(self.btn_source_login,SIGNAL("clicked()"),self.source_login)
+        self.connect(self.btn_source_logout,SIGNAL("clicked()"),self.source_logout)
+        self.connect(self.btn_source_poll,SIGNAL("clicked()"),self.source_poll)
+        self.connect(self.btn_source_hello,SIGNAL("clicked()"),self.source_hello)
+        self.connect(self.btn_source_check_contact,SIGNAL("clicked()"),self.source_check_contact)
+        self.connect(self.btn_source_info_contact,SIGNAL("clicked()"),self.source_info_contact)
+        self.connect(self.btn_source_create_contact,SIGNAL("clicked()"),self.source_create_contact)
+        self.connect(self.btn_source_update_contact,SIGNAL("clicked()"),self.source_update_contact)
+        self.connect(self.btn_source_delete_contact,SIGNAL("clicked()"),self.source_delete_contact)
+        self.connect(self.btn_source_transfer_contact,SIGNAL("clicked()"),self.source_transfer_contact)
+        self.connect(self.btn_source_list_contact,SIGNAL("clicked()"),self.source_list_contact)
+        self.connect(self.btn_source_check_nsset,SIGNAL("clicked()"),self.source_check_nsset)
+        self.connect(self.btn_source_info_nsset,SIGNAL("clicked()"),self.source_info_nsset)
+        self.connect(self.btn_source_create_nsset,SIGNAL("clicked()"),self.source_create_nsset)
+        self.connect(self.btn_source_update_nsset,SIGNAL("clicked()"),self.source_update_nsset)
+        self.connect(self.btn_source_delete_nsset,SIGNAL("clicked()"),self.source_delete_nsset)
+        self.connect(self.btn_source_list_nsset,SIGNAL("clicked()"),self.source_list_nsset)
+        self.connect(self.btn_source_check_domain,SIGNAL("clicked()"),self.source_check_domain)
+        self.connect(self.btn_source_info_domain,SIGNAL("clicked()"),self.source_info_domain)
+        self.connect(self.btn_source_create_domain,SIGNAL("clicked()"),self.source_create_domain)
+        self.connect(self.btn_source_update_domain,SIGNAL("clicked()"),self.source_update_domain)
+        self.connect(self.btn_source_delete_domain,SIGNAL("clicked()"),self.source_delete_domain)
+        self.connect(self.btn_source_transfer_domain,SIGNAL("clicked()"),self.source_transfer_domain)
+        self.connect(self.btn_source_renew_domain,SIGNAL("clicked()"),self.source_renew_domain)
+        self.connect(self.btn_source_list_domain,SIGNAL("clicked()"),self.source_list_domain)
 
 
     def languageChange(self):
@@ -3353,6 +3570,8 @@ class main_dialog(QDialog):
 "<br>\n"
 "Parameters in <b>bold</b> style are <b>required</b>. Others are optionals."))
         self.tabWidget.changeTab(self.TabPage,self.__tr("&Welcome"))
+        self.textLabel2.setText(self.__tr("<h2>Connect</h2>\n"
+"This part use to connect and disconnect to the EPP server. You need defined path to the certificates in your configuration file."))
         self.textLabel4.setText(self.__tr("new password"))
         self.textLabel2_3.setText(self.__tr("<b>username</b>"))
         self.textLabel3.setText(self.__tr("<b>password</b>"))
@@ -3366,6 +3585,8 @@ class main_dialog(QDialog):
         self.textLabel2_5.setText(self.__tr("message"))
         self.textLabel2_5_2.setText(self.__tr("data"))
         self.login_msg.setText(QString.null)
+        self.btn_source_login.setText(QString.null)
+        QToolTip.add(self.btn_source_login,QString.null)
         self.login_response.changeTab(self.TabPage_2,self.__tr("response"))
         self.tabWidget6.changeTab(self.tab,self.__tr("login"))
         self.textLabel5_2.setText(self.__tr("clTRID"))
@@ -3378,6 +3599,8 @@ class main_dialog(QDialog):
         self.textLabel2_5_2_2.setText(self.__tr("data"))
         self.logout_code.setText(self.__tr("code"))
         self.logout_msg.setText(QString.null)
+        self.btn_source_logout.setText(QString.null)
+        QToolTip.add(self.btn_source_logout,QString.null)
         self.logout_response.changeTab(self.TabPage_4,self.__tr("response"))
         self.tabWidget6.changeTab(self.TabPage_3,self.__tr("logout"))
         self.textLabel5_3.setText(self.__tr("clTRID"))
@@ -3396,6 +3619,8 @@ class main_dialog(QDialog):
         self.textLabel1_2_3_4.setText(self.__tr("<b>poll</b>"))
         self.poll_code.setText(self.__tr("code"))
         self.poll_msg.setText(QString.null)
+        self.btn_source_poll.setText(QString.null)
+        QToolTip.add(self.btn_source_poll,QString.null)
         self.poll_response.changeTab(self.TabPage_6,self.__tr("response"))
         self.tabWidget6.changeTab(self.TabPage_5,self.__tr("poll"))
         self.textLabel1_2_3_5.setText(self.__tr("<h2>hello</h2>\n"
@@ -3407,25 +3632,27 @@ class main_dialog(QDialog):
         self.textLabel1_2_3_6.setText(self.__tr("<b>hello</b>"))
         self.hello_code.setText(self.__tr("code"))
         self.hello_msg.setText(QString.null)
+        self.btn_source_hello.setText(QString.null)
+        QToolTip.add(self.btn_source_hello,QString.null)
         self.hello_response.changeTab(self.TabPage_8,self.__tr("response"))
         self.tabWidget6.changeTab(self.TabPage_7,self.__tr("hello"))
-        self.textLabel2.setText(self.__tr("<h2>Connect</h2>\n"
-"This part use to connect and disconnect to the EPP server. You need defined path to the certificates in your configuration file."))
         self.tabWidget.changeTab(self.Widget8,self.__tr("&connect"))
         self.textLabel2_2.setText(self.__tr("<h2>Contact</h2>\n"
 "Contact represents person. This preson can be domain owner or administrator or registrant."))
         self.textLabel1_2_3_7_2.setText(self.__tr("<h2>check_contact</h2>\n"
 "The EPP \"check\" command is used to determine if an object can be provisioned within a repository.  It provides a hint that allows a client to anticipate the success or failure of provisioning an object using the \"create\" command as object provisioning requirements are ultimately a matter of server policy."))
-        self.textLabel2_3_2.setText(self.__tr("<b>names</b><br>\n"
-"Type one or more names (handles) of contacts what you want to check. One name to one line."))
         self.textLabel5_4.setText(self.__tr("clTRID"))
         self.send_check_contact.setText(self.__tr("Send command"))
+        self.textLabel2_3_2.setText(self.__tr("<b>names</b><br>\n"
+"Type one or more names (handles) what you want to check. Separate names by spaces or new lines."))
         self.check_contact_response.changeTab(self.tab_6,self.__tr("command"))
         self.textLabel2_5_2_2_4.setText(self.__tr("data"))
         self.textLabel2_5_3_4.setText(self.__tr("message"))
         self.textLabel1_2_3_7.setText(self.__tr("<b>check_contact</b>"))
         self.check_contact_code.setText(self.__tr("code"))
         self.check_contact_msg.setText(QString.null)
+        self.btn_source_check_contact.setText(QString.null)
+        QToolTip.add(self.btn_source_check_contact,QString.null)
         self.check_contact_response.changeTab(self.TabPage_10,self.__tr("response"))
         self.tabWidget6_2.changeTab(self.TabPage_9,self.__tr("check"))
         self.textLabel1_2_3_7_3.setText(self.__tr("<h2>info_contact</h2>\n"
@@ -3443,6 +3670,8 @@ class main_dialog(QDialog):
         self.textLabel1_2_3_7_3_2.setText(self.__tr("<b>info_contact</b>"))
         self.info_contact_code.setText(self.__tr("code"))
         self.info_contact_msg.setText(QString.null)
+        self.btn_source_info_contact.setText(QString.null)
+        QToolTip.add(self.btn_source_info_contact,QString.null)
         self.info_contact_response.changeTab(self.TabPage_12,self.__tr("response"))
         self.tabWidget6_2.changeTab(self.TabPage_11,self.__tr("info"))
         self.send_create_contact.setText(self.__tr("Send command"))
@@ -3452,6 +3681,8 @@ class main_dialog(QDialog):
         self.textLabel1_2_3_7_3_3_2.setText(self.__tr("<b>create_contact</b>"))
         self.create_contact_code.setText(self.__tr("code"))
         self.create_contact_msg.setText(QString.null)
+        self.btn_source_create_contact.setText(QString.null)
+        QToolTip.add(self.btn_source_create_contact,QString.null)
         self.create_contact_response.changeTab(self.TabPage_13,self.__tr("response"))
         self.tabWidget6_2.changeTab(self.tab_8,self.__tr("create"))
         self.send_update_contact.setText(self.__tr("Send command"))
@@ -3461,6 +3692,8 @@ class main_dialog(QDialog):
         self.textLabel1_2_3_7_3_3_3_2.setText(self.__tr("<b>update_contact</b>"))
         self.update_contact_code.setText(self.__tr("code"))
         self.update_contact_msg.setText(QString.null)
+        self.btn_source_update_contact.setText(QString.null)
+        QToolTip.add(self.btn_source_update_contact,QString.null)
         self.update_contact_response.changeTab(self.TabPage_15,self.__tr("response"))
         self.tabWidget6_2.changeTab(self.TabPage_14,self.__tr("update"))
         self.textLabel1_2_3_7_3_6.setText(self.__tr("<h2>delete_contact</h2>\n"
@@ -3474,6 +3707,8 @@ class main_dialog(QDialog):
         self.textLabel1_2_3_7_3_3_3_3_2.setText(self.__tr("<b>delete_contact</b>"))
         self.delete_contact_code.setText(self.__tr("code"))
         self.delete_contact_msg.setText(QString.null)
+        self.btn_source_delete_contact.setText(QString.null)
+        QToolTip.add(self.btn_source_delete_contact,QString.null)
         self.delete_contact_response.changeTab(self.TabPage_17,self.__tr("response"))
         self.tabWidget6_2.changeTab(self.TabPage_16,self.__tr("delete"))
         self.textLabel1_2_3_7_3_7.setText(self.__tr("<h2>transfer_contact</h2>\n"
@@ -3494,6 +3729,8 @@ class main_dialog(QDialog):
         self.textLabel1_2_3_7_3_3_3_3_3_2.setText(self.__tr("<b>transfer_contact</b>"))
         self.transfer_contact_code.setText(self.__tr("code"))
         self.transfer_contact_msg.setText(QString.null)
+        self.btn_source_transfer_contact.setText(QString.null)
+        QToolTip.add(self.btn_source_transfer_contact,QString.null)
         self.transfer_contact_response.changeTab(self.TabPage_19,self.__tr("response"))
         self.tabWidget6_2.changeTab(self.TabPage_18,self.__tr("transfer"))
         self.textLabel1_2_3_7_3_6_4.setText(self.__tr("<h2>list_contact</h2>\n"
@@ -3507,21 +3744,27 @@ class main_dialog(QDialog):
         self.list_contact_msg.setText(QString.null)
         self.textLabel2_5_2_2_10.setText(self.__tr("data"))
         self.list_contact_table.horizontalHeader().setLabel(0,self.__tr("name"))
+        self.btn_source_list_contact.setText(QString.null)
+        QToolTip.add(self.btn_source_list_contact,QString.null)
         self.list_contact_response.changeTab(self.TabPage_21,self.__tr("response"))
         self.tabWidget6_2.changeTab(self.TabPage_20,self.__tr("list"))
         self.tabWidget.changeTab(self.Widget9,self.__tr("c&ontact"))
+        self.textLabel2_2_2.setText(self.__tr("<h2>Nsset</h2>\n"
+"Nsset is set of informations about domain name servers and their address and administrators."))
         self.textLabel1_2_3_7_2_2.setText(self.__tr("<h2>check_nsset</h2>\n"
 "The EPP \"check\" command is used to determine if an object can be provisioned within a repository.  It provides a hint that allows a client to anticipate the success or failure of provisioning an object using the \"create\" command as object provisioning requirements are ultimately a matter of server policy."))
-        self.textLabel2_3_2_2.setText(self.__tr("<b>names</b><br>\n"
-"Type one or more names (handles) of contacts what you want to check. One name to one line."))
         self.textLabel5_4_2.setText(self.__tr("clTRID"))
         self.send_check_nsset.setText(self.__tr("Send command"))
+        self.textLabel2_3_2_2.setText(self.__tr("<b>names</b><br>\n"
+"Type one or more names (handles) what you want to check. Separate names by spaces or new lines."))
         self.check_nsset_response.changeTab(self.tab_15,self.__tr("command"))
         self.textLabel2_5_3_11.setText(self.__tr("message"))
         self.textLabel2_5_2_2_11.setText(self.__tr("data"))
         self.textLabel1_2_3_7_3_3_3_3_3_3_3_2.setText(self.__tr("<b>check_nsset</b>"))
         self.check_nsset_code.setText(self.__tr("code"))
         self.check_nsset_msg.setText(QString.null)
+        self.btn_source_check_nsset.setText(QString.null)
+        QToolTip.add(self.btn_source_check_nsset,QString.null)
         self.check_nsset_response.changeTab(self.TabPage_23,self.__tr("response"))
         self.tabWidget6_2_2.changeTab(self.tab_14,self.__tr("check"))
         self.textLabel5_5_2.setText(self.__tr("clTRID"))
@@ -3539,6 +3782,8 @@ class main_dialog(QDialog):
         self.textLabel1_2_3_7_3_3_3_3_3_3_3_3_2.setText(self.__tr("<b>info_nsset</b>"))
         self.info_nsset_code.setText(self.__tr("code"))
         self.info_nsset_msg.setText(QString.null)
+        self.btn_source_info_nsset.setText(QString.null)
+        QToolTip.add(self.btn_source_info_nsset,QString.null)
         self.info_nsset_response.changeTab(self.TabPage_25,self.__tr("response"))
         self.tabWidget6_2_2.changeTab(self.TabPage_24,self.__tr("info"))
         self.send_create_nsset.setText(self.__tr("Send command"))
@@ -3548,6 +3793,8 @@ class main_dialog(QDialog):
         self.textLabel1_2_3_7_3_3_3_3_3_3_3_3_3_2.setText(self.__tr("<b>create_nsset</b>"))
         self.create_nsset_code.setText(self.__tr("code"))
         self.create_nsset_msg.setText(QString.null)
+        self.btn_source_create_nsset.setText(QString.null)
+        QToolTip.add(self.btn_source_create_nsset,QString.null)
         self.create_nsset_response.changeTab(self.TabPage_27,self.__tr("response"))
         self.tabWidget6_2_2.changeTab(self.TabPage_26,self.__tr("create"))
         self.send_update_nsset.setText(self.__tr("Send command"))
@@ -3557,6 +3804,8 @@ class main_dialog(QDialog):
         self.textLabel1_2_3_7_3_3_3_3_3_3_3_3_3_3_2.setText(self.__tr("<b>update_nsset</b>"))
         self.update_nsset_code.setText(self.__tr("code"))
         self.update_nsset_msg.setText(QString.null)
+        self.btn_source_update_nsset.setText(QString.null)
+        QToolTip.add(self.btn_source_update_nsset,QString.null)
         self.update_nsset_response.changeTab(self.TabPage_29,self.__tr("response"))
         self.tabWidget6_2_2.changeTab(self.TabPage_28,self.__tr("update"))
         self.textLabel3_2_4_2.setText(self.__tr("<b>name</b>"))
@@ -3570,6 +3819,8 @@ class main_dialog(QDialog):
         self.textLabel1_2_3_7_3_3_3_3_3_3_3_3_3_3_3_2.setText(self.__tr("<b>delete_nsset</b>"))
         self.delete_nsset_code.setText(self.__tr("code"))
         self.delete_nsset_msg.setText(QString.null)
+        self.btn_source_delete_nsset.setText(QString.null)
+        QToolTip.add(self.btn_source_delete_nsset,QString.null)
         self.delete_nsset_response.changeTab(self.TabPage_31,self.__tr("response"))
         self.tabWidget6_2_2.changeTab(self.TabPage_30,self.__tr("delete"))
         self.textLabel5_5_4_4_2.setText(self.__tr("clTRID"))
@@ -3583,25 +3834,27 @@ class main_dialog(QDialog):
         self.list_nsset_msg.setText(QString.null)
         self.textLabel2_5_2_2_16.setText(self.__tr("data"))
         self.list_nsset_table.horizontalHeader().setLabel(0,self.__tr("name"))
+        self.btn_source_list_nsset.setText(QString.null)
+        QToolTip.add(self.btn_source_list_nsset,QString.null)
         self.list_nsset_response.changeTab(self.TabPage_33,self.__tr("response"))
         self.tabWidget6_2_2.changeTab(self.TabPage_32,self.__tr("list"))
-        self.textLabel2_2_2.setText(self.__tr("<h2>Nsset</h2>\n"
-"Nsset is set of informations about domain name servers and their address and administrators."))
         self.tabWidget.changeTab(self.TabPage_22,self.__tr("&nsset"))
         self.textLabel2_2_2_2.setText(self.__tr("<h2>Domain</h2>\n"
 "Domain is name whitch is associates nsset and contacts."))
-        self.textLabel2_3_2_2_2.setText(self.__tr("<b>names</b><br>\n"
-"Type one or more names (handles) of contacts what you want to check. One name to one line."))
         self.textLabel5_4_2_2.setText(self.__tr("clTRID"))
         self.textLabel1_2_3_7_2_2_2.setText(self.__tr("<h2>check_domain</h2>\n"
 "The EPP \"check\" command is used to determine if an object can be provisioned within a repository.  It provides a hint that allows a client to anticipate the success or failure of provisioning an object using the \"create\" command as object provisioning requirements are ultimately a matter of server policy."))
         self.send_check_domain.setText(self.__tr("Send command"))
+        self.textLabel2_3_2_2_2.setText(self.__tr("<b>names</b><br>\n"
+"Type one or more names what you want to check. Separate names by spaces or new lines."))
         self.check_domain_response.changeTab(self.tab_22,self.__tr("command"))
         self.textLabel2_5_2_2_17.setText(self.__tr("data"))
         self.textLabel2_5_3_17.setText(self.__tr("message"))
         self.textLabel1_2_3_7_3_3_3_3_3_3_3_3_3_3_3_3_3_2.setText(self.__tr("<b>check_domain</b>"))
         self.check_domain_code.setText(self.__tr("code"))
         self.check_domain_msg.setText(QString.null)
+        self.btn_source_check_domain.setText(QString.null)
+        QToolTip.add(self.btn_source_check_domain,QString.null)
         self.check_domain_response.changeTab(self.TabPage_35,self.__tr("response"))
         self.tabWidget6_2_2_2.changeTab(self.tab_21,self.__tr("check"))
         self.textLabel5_5_3.setText(self.__tr("clTRID"))
@@ -3619,6 +3872,8 @@ class main_dialog(QDialog):
         self.textLabel1_2_3_7_3_3_3_3_3_3_3_3_3_3_3_3_3_3_2.setText(self.__tr("<b>info_domain</b>"))
         self.info_domain_code.setText(self.__tr("code"))
         self.info_domain_msg.setText(QString.null)
+        self.btn_source_info_domain.setText(QString.null)
+        QToolTip.add(self.btn_source_info_domain,QString.null)
         self.info_domain_response.changeTab(self.TabPage_37,self.__tr("response"))
         self.tabWidget6_2_2_2.changeTab(self.TabPage_36,self.__tr("info"))
         self.send_create_domain.setText(self.__tr("Send command"))
@@ -3628,6 +3883,8 @@ class main_dialog(QDialog):
         self.textLabel1_2_3_7_3_3_3_3_3_3_3_3_3_3_3_3_3_3_3_2.setText(self.__tr("<b>create_domain</b>"))
         self.create_domain_code.setText(self.__tr("code"))
         self.create_domain_msg.setText(QString.null)
+        self.btn_source_create_domain.setText(QString.null)
+        QToolTip.add(self.btn_source_create_domain,QString.null)
         self.create_domain__response.changeTab(self.TabPage_39,self.__tr("response"))
         self.tabWidget6_2_2_2.changeTab(self.TabPage_38,self.__tr("create"))
         self.send_update_domain.setText(self.__tr("Send command"))
@@ -3637,6 +3894,8 @@ class main_dialog(QDialog):
         self.textLabel1_2_3_7_3_3_3_3_3_3_3_3_3_3_3_3_3_3_3_3_2.setText(self.__tr("<b>update_domain</b>"))
         self.update_domain_code.setText(self.__tr("code"))
         self.update_domain_msg.setText(QString.null)
+        self.btn_source_update_domain.setText(QString.null)
+        QToolTip.add(self.btn_source_update_domain,QString.null)
         self.update_domain_response.changeTab(self.TabPage_41,self.__tr("response"))
         self.tabWidget6_2_2_2.changeTab(self.TabPage_40,self.__tr("update"))
         self.textLabel5_5_4_3.setText(self.__tr("clTRID"))
@@ -3650,11 +3909,14 @@ class main_dialog(QDialog):
         self.textLabel1_2_3_7_3_3_3_3_3_3_3_3_3_3_3_3_3_3_3_3_3_2.setText(self.__tr("<b>delete_domain</b>"))
         self.delete_domain_code.setText(self.__tr("code"))
         self.delete_domain_msg.setText(QString.null)
+        self.btn_source_delete_domain.setText(QString.null)
+        QToolTip.add(self.btn_source_delete_domain,QString.null)
         self.delete_domain_response.changeTab(self.TabPage_43,self.__tr("response"))
         self.tabWidget6_2_2_2.changeTab(self.TabPage_42,self.__tr("delete"))
         self.textLabel3_2_5_3.setText(self.__tr("<b>password</b>"))
         self.textLabel5_5_5_2.setText(self.__tr("clTRID"))
         self.textLabel3_2_5_2_2.setText(self.__tr("<b>name</b>"))
+        self.send_transfer_domain.setText(self.__tr("Send command"))
         self.textLabel1_2_3_7_3_7_2.setText(self.__tr("<h2>transfer_domain</h2>\n"
 "The EPP \"transfer\" command provides a query operation that allows a\n"
 "client to determine real-time status of pending and completed\n"
@@ -3663,13 +3925,14 @@ class main_dialog(QDialog):
 "sponsorship of an existing object.  Clients can initiate a transfer\n"
 "request, cancel a transfer request, approve a transfer request, and\n"
 "reject a transfer request using the \"op\" command attribute."))
-        self.send_transfer_domain.setText(self.__tr("Send command"))
         self.transfer_domain_response.changeTab(self.tab_27,self.__tr("command"))
         self.textLabel2_5_2_2_22.setText(self.__tr("data"))
         self.textLabel2_5_3_22.setText(self.__tr("message"))
         self.textLabel1_2_3_7_3_3_3_3_3_3_3_3_3_3_3_3_3_3_3_3_3_3_2.setText(self.__tr("<b>transfer_domain</b>"))
         self.transfer_domain_code.setText(self.__tr("code"))
         self.transfer_domain_msg.setText(QString.null)
+        self.btn_source_transfer_domain.setText(QString.null)
+        QToolTip.add(self.btn_source_transfer_domain,QString.null)
         self.transfer_domain_response.changeTab(self.TabPage_45,self.__tr("response"))
         self.tabWidget6_2_2_2.changeTab(self.TabPage_44,self.__tr("transfer"))
         self.send_renew_domain.setText(self.__tr("Send command"))
@@ -3692,6 +3955,8 @@ class main_dialog(QDialog):
         self.textLabel1_2_3_7_3_3_3_3_3_3_3_3_3_3_3_3_3_3_3_3_3_3_3_2.setText(self.__tr("<b>renew_domain</b>"))
         self.renew_domain_code.setText(self.__tr("code"))
         self.renew_domain_msg.setText(QString.null)
+        self.btn_source_renew_domain.setText(QString.null)
+        QToolTip.add(self.btn_source_renew_domain,QString.null)
         self.renew_domain_response.changeTab(self.TabPage_47,self.__tr("response"))
         self.tabWidget6_2_2_2.changeTab(self.TabPage_46,self.__tr("renew"))
         self.textLabel5_5_4_4_3.setText(self.__tr("clTRID"))
@@ -3705,6 +3970,8 @@ class main_dialog(QDialog):
         self.list_domain_msg.setText(QString.null)
         self.textLabel2_5_2_2_24.setText(self.__tr("data"))
         self.list_domain_table.horizontalHeader().setLabel(0,self.__tr("name"))
+        self.btn_source_list_domain.setText(QString.null)
+        QToolTip.add(self.btn_source_list_domain,QString.null)
         self.list_domain_response.changeTab(self.TabPage_49,self.__tr("response"))
         self.tabWidget6_2_2_2.changeTab(self.TabPage_48,self.__tr("list"))
         self.tabWidget.changeTab(self.TabPage_34,self.__tr("&domain"))
@@ -3784,6 +4051,81 @@ class main_dialog(QDialog):
 
     def poll(self):
         print "main_dialog.poll(): Not implemented yet"
+
+    def source_login(self):
+        print "main_dialog.source_login(): Not implemented yet"
+
+    def source_logout(self):
+        print "main_dialog.source_logout(): Not implemented yet"
+
+    def source_poll(self):
+        print "main_dialog.source_poll(): Not implemented yet"
+
+    def source_hello(self):
+        print "main_dialog.source_hello(): Not implemented yet"
+
+    def source_check_contact(self):
+        print "main_dialog.source_check_contact(): Not implemented yet"
+
+    def source_info_contact(self):
+        print "main_dialog.source_info_contact(): Not implemented yet"
+
+    def source_create_contact(self):
+        print "main_dialog.source_create_contact(): Not implemented yet"
+
+    def source_update_contact(self):
+        print "main_dialog.source_update_contact(): Not implemented yet"
+
+    def source_delete_contact(self):
+        print "main_dialog.source_delete_contact(): Not implemented yet"
+
+    def source_transfer_contact(self):
+        print "main_dialog.source_transfer_contact(): Not implemented yet"
+
+    def source_list_contact(self):
+        print "main_dialog.source_list_contact(): Not implemented yet"
+
+    def source_check_nsset(self):
+        print "main_dialog.source_check_nsset(): Not implemented yet"
+
+    def source_info_nsset(self):
+        print "main_dialog.source_info_nsset(): Not implemented yet"
+
+    def source_create_nsset(self):
+        print "main_dialog.source_create_nsset(): Not implemented yet"
+
+    def source_update_nsset(self):
+        print "main_dialog.source_update_nsset(): Not implemented yet"
+
+    def source_delete_nsset(self):
+        print "main_dialog.source_delete_nsset(): Not implemented yet"
+
+    def source_list_nsset(self):
+        print "main_dialog.source_list_nsset(): Not implemented yet"
+
+    def source_check_domain(self):
+        print "main_dialog.source_check_domain(): Not implemented yet"
+
+    def source_info_domain(self):
+        print "main_dialog.source_info_domain(): Not implemented yet"
+
+    def source_create_domain(self):
+        print "main_dialog.source_create_domain(): Not implemented yet"
+
+    def source_update_domain(self):
+        print "main_dialog.source_update_domain(): Not implemented yet"
+
+    def source_delete_domain(self):
+        print "main_dialog.source_delete_domain(): Not implemented yet"
+
+    def source_transfer_domain(self):
+        print "main_dialog.source_transfer_domain(): Not implemented yet"
+
+    def source_renew_domain(self):
+        print "main_dialog.source_renew_domain(): Not implemented yet"
+
+    def source_list_domain(self):
+        print "main_dialog.source_list_domain(): Not implemented yet"
 
     def __tr(self,s,c = None):
         return qApp.translate("main_dialog",s,c)

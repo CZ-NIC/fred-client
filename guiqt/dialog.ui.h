@@ -166,3 +166,153 @@ void main_dialog::poll()
 {
 
 }
+
+
+void main_dialog::source_login()
+{
+
+}
+
+
+void main_dialog::source_logout()
+{
+
+}
+
+
+void main_dialog::source_poll()
+{
+
+}
+
+
+void main_dialog::source_hello()
+{
+
+}
+
+
+void main_dialog::source_check_contact()
+{
+
+}
+
+
+void main_dialog::source_info_contact()
+{
+
+}
+
+
+void main_dialog::source_create_contact()
+{
+
+}
+
+
+void main_dialog::source_update_contact()
+{
+
+}
+
+
+void main_dialog::source_delete_contact()
+{
+
+}
+
+
+void main_dialog::source_transfer_contact()
+{
+
+}
+
+
+void main_dialog::source_list_contact()
+{
+
+}
+
+
+void main_dialog::source_check_nsset()
+{
+
+}
+
+
+void main_dialog::source_info_nsset()
+{
+
+}
+
+
+void main_dialog::source_create_nsset()
+{
+
+}
+
+
+void main_dialog::source_update_nsset()
+{
+
+}
+
+
+void main_dialog::source_delete_nsset()
+{
+
+}
+
+
+void main_dialog::source_list_nsset()
+{
+
+}
+
+
+void main_dialog::source_check_domain()
+{
+
+}
+
+
+void main_dialog::source_info_domain()
+{
+
+}
+
+
+void main_dialog::source_create_domain()
+{
+
+}
+
+
+void main_dialog::source_update_domain()
+{
+
+}
+
+
+void main_dialog::source_delete_domain()
+{
+
+}
+
+
+void main_dialog::source_transfer_domain()
+{
+
+}
+
+
+void main_dialog::source_renew_domain()
+{
+
+}
+
+
+void main_dialog::source_list_domain()
+{
+
+}

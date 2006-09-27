@@ -4,14 +4,14 @@ Manual pro ccRegClient konzoli a knihovnu ccReg
 Verze 1.2
 
    Vzniklo: 11.7.2006; Revize: 18.8.2006; Revize: 1.9.2006; Revize: 4.9.2006;
-   Revize: 14.9.2006;
+   Revize: 14.9.2006; Revize: 27.9.2006;
 
    Copyright (c) 2006 CZ.NIC
      _________________________________________________________________
 
    Obsah
 
-   CO JE ccRegClient:
+   Co je ccRegClient:
    1. Licence
    2. Pozadavky na system a instalace
    3. Popis jednotlivych programu, parametry a config 
@@ -38,7 +38,7 @@ Verze 1.2
         Online dokumentace:
         Priklady prace s knihovnou
 
-CO JE ccRegClient:
+Co je ccRegClient:
 
    ccRegClient je sada scriptu v jazyce Python postavenych na ccReg knihovne a
    urcenych ke komunikaci s EPP serverem.
@@ -92,6 +92,8 @@ at
                   3 - plny & XML zdroje
     -c --command  odeslani prikatu na EPP server
                   priklad: --command='info_domain nic.cz'
+    -x --gui
+                  klient se spusti v grafickem rezimu (na platforme Qt)
 
 OPTIONS:
     -r --colors   zapnuti barevneho vystupu
@@ -174,15 +176,21 @@ Config
        cestina. Jazykovou verzi muzete nastavit i pomoci parametru pri
        spusteni skriptu.
      * null_value = NULL
-       Nastaveni zastupce pro hodnotu nic (Nil), ktera vyjadruje ?zadnou
-       hodnotu?. Defaultne je nastaveno NULL. Tuto hodnotu pouzivame, kdyz
+       Nastaveni zastupce pro hodnotu nic (Nil), ktera vyjadruje """zadnou
+       hodnotu""". Defaultne je nastaveno NULL. Tuto hodnotu pouzivame, kdyz
        chceme preskocit nektery z parametru prikazu. Zadani NULL znamena, ze
        jsme nezadali zadnou hodnotu na rozdil od '' nebo "", kdy jsme zadali
        hodnotu nulove delky.
        Format hodnoty NULL: Zastupce muze byt libovolny, ale nesmi obsahovat
        spojovnik (-), mezery a kulate zavorky.
-       Vice se o teto hodnote dozvite v casti ?Zadna hodnota / Prazdna
-       hodnota?
+       Vice se o teto hodnote dozvite v casti """Zadna hodnota / Prazdna
+       hodnota"""
+     * socket = IPv4/IPv6
+       Nastaveni typu soketu na IPv4 nebo IPv6. Pokud neni tato hodnota zadana,
+       tak se pouzije typ soketu, ktery nabizi server.
+     * auto_login = on/off
+       Pri nastaveni hodnoty auto_login na on se po skusteni konzole
+       automaticky provede i priakz login.
 
 Kapitola 4. Program ccreg_console.py
 
@@ -431,7 +439,7 @@ NULL NULL NULL +420.222745111
         </contact:postalInfo>
         <contact:voice>+420.222745111</contact:voice>
 
-   V interaktivnim modu zadavani parametru zadate ?zadnou hodnotu? proste tak,
+   V interaktivnim modu zadavani parametru zadate """zadnou hodnotu""" proste tak,
    ze jenom stisknete ENTER.
 
    Definici zadne hodnoty lze v konzoli zmenit prikazem null_value a take je
@@ -462,7 +470,7 @@ Prazdna hodnota: '', ""
         </contact:postalInfo>
         <contact:voice>+420.222745111</contact:voice>
 
-   V interaktivnim modu zadavani parametru zadame ?prazdnou hodnotu? tak, ze
+   V interaktivnim modu zadavani parametru zadame """prazdnou hodnotu""" tak, ze
    zapiseme prazdne uvozovky '' nebo "".
 
 Prikazy relace (session)
@@ -542,7 +550,7 @@ Prikazy relace (session)
    nastavit mod vypisu: 1 - strucny (default); 2 - plny; 3 - plny & XML zdroje
 > null_value [nejaka_hodnota]
 
-   Nastaveni reprezentace ?zadne hodnoty?. Viz Zadna hodnota / Prazdna hodnota
+   Nastaveni reprezentace """zadne hodnoty""". Viz Zadna hodnota / Prazdna hodnota
    a Format hodnoty NULL.
 
 Kapitola 5. Skripty ccreg_create.py a ccreg_sender.py

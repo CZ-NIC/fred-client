@@ -16,11 +16,12 @@
     Revize:   1.9.2006;
     Revize:   4.9.2006;
     Revize:  14.9.2006;
+    Revize:  27.9.2006;
     </releaseinfo>
   </bookinfo>
 
   <preface>
-    <title>CO JE ccRegClient:</title>
+    <title>Co je ccRegClient:</title>
     <para>
     ccRegClient je sada scriptů v jazyce Python postavených na ccReg knihovně
     a určených ke komunikaci s EPP serverem.
@@ -96,6 +97,8 @@ OPTIONS s hodnotami:
                   3 - plný &amp; XML zdroje
     -c --command  odeslání příkatu na EPP server
                   příklad: --command='info_domain nic.cz'
+    -x --gui
+                  klient se spustí v grafickém režimu (na platformě Qt)
 
 OPTIONS:
     -r --colors   zapnutí barevného výstupu
@@ -240,6 +243,20 @@ V sekci <emphasis>session</emphasis> jsou tato nastavení:</para>
     <para>
         Více se o této hodnotě dozvíte v části 
         <quote><link linkend='null_or_empty' endterm="null_or_empty.title"/></quote>
+    </para>
+    </listitem>
+    <listitem>
+    <para><emphasis role='bold'>socket</emphasis> = IPv4/IPv6</para>
+    <para>
+        Nastavení typu soketu na IPv4 nebo IPv6. Pokud není tato hodnota zadána,
+        tak se použije typ soketu, který nabízí server.
+    </para>
+    </listitem>
+    <listitem>
+    <para><emphasis role='bold'>auto_login</emphasis> = on/off</para>
+    <para>
+        Při nastavení hodnoty auto_login na <emphasis role='bold'>on</emphasis> se po skuštění
+        konzole automaticky provede i příakz <emphasis>login</emphasis>.
     </para>
     </listitem>
 </itemizedlist>
