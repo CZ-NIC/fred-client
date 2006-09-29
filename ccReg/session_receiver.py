@@ -479,6 +479,8 @@ class ccRegError(StandardError):
         # Encode unicode message into the local encoding. session_base.get_unicode()
         self.args = (get_ltext(message),)
 
+##    def __str__(self):
+##        return '\n'.join(self.args) ## repr(self.args)
     
 def append_dct(dct,key,multiline):
     'Appends value at the dict key.'

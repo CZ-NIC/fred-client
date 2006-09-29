@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'dialog.ui'
 #
-# Created: St zář 27 12:41:03 2006
+# Created: Pá zář 29 12:22:43 2006
 #      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -2430,16 +2430,22 @@ class main_dialog(QDialog):
         self.info_contact_code = QLabel(self.TabPage_12,"info_contact_code")
         self.info_contact_code.setGeometry(QRect(130,10,450,20))
 
-        self.info_contact_msg = QTextEdit(self.TabPage_12,"info_contact_msg")
-        self.info_contact_msg.setGeometry(QRect(130,40,450,80))
-        self.info_contact_msg.setWordWrap(QTextEdit.WidgetWidth)
-
-        self.info_contact_data = QTextEdit(self.TabPage_12,"info_contact_data")
-        self.info_contact_data.setGeometry(QRect(130,129,450,190))
-
         self.btn_source_info_contact = QPushButton(self.TabPage_12,"btn_source_info_contact")
         self.btn_source_info_contact.setGeometry(QRect(10,270,50,50))
         self.btn_source_info_contact.setPixmap(self.image2)
+
+        self.info_contact_msg = QTextEdit(self.TabPage_12,"info_contact_msg")
+        self.info_contact_msg.setGeometry(QRect(130,40,450,70))
+        self.info_contact_msg.setWordWrap(QTextEdit.WidgetWidth)
+
+        self.info_contact_table = QTable(self.TabPage_12,"info_contact_table")
+        self.info_contact_table.setNumCols(self.info_contact_table.numCols() + 1)
+        self.info_contact_table.horizontalHeader().setLabel(self.info_contact_table.numCols() - 1,self.__tr("name"))
+        self.info_contact_table.setNumCols(self.info_contact_table.numCols() + 1)
+        self.info_contact_table.horizontalHeader().setLabel(self.info_contact_table.numCols() - 1,self.__tr("value"))
+        self.info_contact_table.setGeometry(QRect(130,120,450,210))
+        self.info_contact_table.setNumRows(0)
+        self.info_contact_table.setNumCols(2)
         self.info_contact_response.insertTab(self.TabPage_12,QString.fromLatin1(""))
         self.tabWidget6_2.insertTab(self.TabPage_11,QString.fromLatin1(""))
 
@@ -2687,16 +2693,16 @@ class main_dialog(QDialog):
         self.textLabel2_5_2_2_10 = QLabel(self.TabPage_21,"textLabel2_5_2_2_10")
         self.textLabel2_5_2_2_10.setGeometry(QRect(10,120,110,20))
 
+        self.btn_source_list_contact = QPushButton(self.TabPage_21,"btn_source_list_contact")
+        self.btn_source_list_contact.setGeometry(QRect(10,280,50,50))
+        self.btn_source_list_contact.setPixmap(self.image2)
+
         self.list_contact_table = QTable(self.TabPage_21,"list_contact_table")
         self.list_contact_table.setNumCols(self.list_contact_table.numCols() + 1)
         self.list_contact_table.horizontalHeader().setLabel(self.list_contact_table.numCols() - 1,self.__tr("name"))
         self.list_contact_table.setGeometry(QRect(130,120,450,210))
         self.list_contact_table.setNumRows(0)
         self.list_contact_table.setNumCols(1)
-
-        self.btn_source_list_contact = QPushButton(self.TabPage_21,"btn_source_list_contact")
-        self.btn_source_list_contact.setGeometry(QRect(10,280,50,50))
-        self.btn_source_list_contact.setPixmap(self.image2)
         self.list_contact_response.insertTab(self.TabPage_21,QString.fromLatin1(""))
         self.tabWidget6_2.insertTab(self.TabPage_20,QString.fromLatin1(""))
         self.tabWidget.insertTab(self.Widget9,QString.fromLatin1(""))
@@ -3669,9 +3675,11 @@ class main_dialog(QDialog):
         self.textLabel2_5_3_5.setText(self.__tr("message"))
         self.textLabel1_2_3_7_3_2.setText(self.__tr("<b>info_contact</b>"))
         self.info_contact_code.setText(self.__tr("code"))
-        self.info_contact_msg.setText(QString.null)
         self.btn_source_info_contact.setText(QString.null)
         QToolTip.add(self.btn_source_info_contact,QString.null)
+        self.info_contact_msg.setText(QString.null)
+        self.info_contact_table.horizontalHeader().setLabel(0,self.__tr("name"))
+        self.info_contact_table.horizontalHeader().setLabel(1,self.__tr("value"))
         self.info_contact_response.changeTab(self.TabPage_12,self.__tr("response"))
         self.tabWidget6_2.changeTab(self.TabPage_11,self.__tr("info"))
         self.send_create_contact.setText(self.__tr("Send command"))
@@ -3743,9 +3751,9 @@ class main_dialog(QDialog):
         self.list_contact_code.setText(self.__tr("code"))
         self.list_contact_msg.setText(QString.null)
         self.textLabel2_5_2_2_10.setText(self.__tr("data"))
-        self.list_contact_table.horizontalHeader().setLabel(0,self.__tr("name"))
         self.btn_source_list_contact.setText(QString.null)
         QToolTip.add(self.btn_source_list_contact,QString.null)
+        self.list_contact_table.horizontalHeader().setLabel(0,self.__tr("name"))
         self.list_contact_response.changeTab(self.TabPage_21,self.__tr("response"))
         self.tabWidget6_2.changeTab(self.TabPage_20,self.__tr("list"))
         self.tabWidget.changeTab(self.Widget9,self.__tr("c&ontact"))

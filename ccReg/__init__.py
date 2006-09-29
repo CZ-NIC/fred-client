@@ -166,7 +166,7 @@ class Client:
    """
         return self._epp.api_command('check_nsset',{'name':name, 'cltrid':cltrid})
 
-    def create_contact(self, contact_id, name, email, city, cc, pw,
+    def create_contact(self, contact_id, name, email, city, cc, pw=None,
             org=None, street=None, sp=None, pc=None, voice=None, fax=None, 
             disclose=None, vat=None, ssn=None, notify_email=None, 
             cltrid=None):

@@ -4,9 +4,6 @@ import sys, re
 try:
     from qt import *
     from qttable import *
-    from dialog import main_dialog
-    import create_contact
-    import sources
 except ImportError, msg:
     print "ImportError:",msg
     print 'For runnig this application you need install qt module. See PyQt and Qt pages.'
@@ -25,6 +22,9 @@ except ImportError:
         print 'For runnig this application you need install ccReg module. See help.'
         sys.exit(0)
 
+from dialog import main_dialog
+import create_contact
+import sources
 from ccReg.translate import _T, encoding, options, option_errors
 
 # prefix of translations
@@ -51,7 +51,16 @@ def append_key(dct, key, widget):
     else:
         print "unknown type widget:",type(widget)
         
+def count_data_rows(dct):
+    size = 0
+    for v in dct.values():
+        if type(v) in (list,tuple):
+            size += len(v)
+        else:
+            size += 1
+    return size
 
+        
 class CMainDialog(main_dialog):
     'Main frame dialog.'
     
@@ -60,7 +69,6 @@ class CMainDialog(main_dialog):
         self.epp = ccReg.Client()
         self.epp.load_config(options['session'])
         self.missing_required = []
-        self.answer = {}
         self.src = {} # {'command_name':['command line','XML source','XML response'], ...}
         # load data for connection
         data = self.epp._epp.get_connect_defaults()
@@ -87,6 +95,7 @@ class CMainDialog(main_dialog):
     def __add_scroll__(self, parent_frame, module, name):
         'Add scrolled view panel. Module must have class panel.'
         scroll = QScrollView(parent_frame, 'scroll_%s'%name)
+        scroll.enableClipper(True)
         scroll.setFrameShape(QFrame.NoFrame)
         scroll.setFrameShadow(QFrame.Raised)
         scroll.setGeometry(parent_frame.geometry())
@@ -108,7 +117,6 @@ class CMainDialog(main_dialog):
         # about, warning, critical
         if not label: label = _T('Missing required').decode(encoding)
         if type(messages) not in (list,tuple): messages = (messages,)
-        print "!!! messages:",type(messages),messages
         QMessageBox.critical(self, label, '<h2>%s:</h2>\n%s'%(label,'<br>\n'.join(map(lambda s: s.decode(encoding),messages))))
 
     def closeEvent(self,ce):
@@ -116,35 +124,77 @@ class CMainDialog(main_dialog):
         self.epp.logout()
         ce.accept() ## ce.ignore <qt.QCloseEvent>
 
-    def __display_answer__(self, prefix):
+    def __display_answer__(self, prefix, table=None):
         'Display answer from EPP server.'
-        # self.answer {
+        # self.epp._epp._dct_answer {
         #    'code': int
         #    'command': unicode
         #    'reason': unicode
         #    'errors': [str, str, ...]
         #    'data': { key: str }
         # }
-        code = '<b>code:</b> %d'%self.answer.get('code',0)
-        reason = self.answer.get('reason','')
-        if type(reason) is str: reason = reason.decode(encoding)
-        errors = self.answer.get('errors',[])
+        dct_answer = self.epp._epp._dct_answer
+        errors = self.epp._epp.fetch_errors()
+        code = '<b>code:</b> %d'%dct_answer.get('code',0)
+        msg = []
+        reason = dct_answer.get('reason','')
+        if reason:
+            if type(reason) is str: reason = reason.decode(encoding)
+            msg.append(reason)
         if len(errors):
-            reason += '<br>\n<b style="color:red">%s</b>'%'<br>\n'.join(errors)
+            msg.append('<b style="color:red">%s</b>'%errors)
         getattr(self,'%s_code'%prefix).setText(code)
-        getattr(self,'%s_msg'%prefix).setText(reason)
-        getattr(self,'%s_data'%prefix).setText('<pre>%s</pre>'%self.epp._epp.get_answer_udata())
+        getattr(self,'%s_msg'%prefix).setText('<br>\n'.join(msg))
+        if not table and getattr(self, '%s_table'%prefix, None):
+            table = (2,(_T('name'),_T('value')),(140,260),None,None)
+        if table:
+            columns, labels, col_sizes, only_key, count_rows = table
+            col_labels = map(lambda s: s.decode('utf8'), labels)
+            wtab = getattr(self, '%s_table'%prefix)
+            data = dct_answer.get('data',{})
+            header = wtab.horizontalHeader()
+            header.setLabel(0, col_labels[0], col_sizes[0])
+            if columns > 1:
+                header.setLabel(1, col_labels[1], col_sizes[1])
+            if count_rows:
+                wtab.setNumRows(int(data.get(count_rows,'0')))
+            else:
+                wtab.setNumRows(count_data_rows(data))
+            r=0
+            for key, value in data.items():
+                if only_key and key != only_key: continue
+                # enum EditType { Never, OnTyping, WhenCurrent, Always }
+                if columns > 1:
+                    wtab.setItem(r, 0, QTableItem(wtab, QTableItem.OnTyping, key))
+                    r = self.__inset_into_table__(wtab, value, 1, r)
+                else:
+                    r = self.__inset_into_table__(wtab, value, 0, r)
+                r+=1
+        else:
+            getattr(self,'%s_data'%prefix).setText('<pre>%s</pre>'%self.epp._epp.get_answer_udata())
         # save sources
         self.src[prefix] = (self.epp._epp.get_command_line(),self.epp._epp._raw_cmd,self.epp._epp._raw_answer)
         # toggle widget to the response tab
         getattr(self,'%s_response'%prefix).setCurrentPage(1)
 
+    def __inset_into_table__(self, wtab, value, c, r):
+        'Used by __display_answer__()'
+        if type(value) in (list,tuple):
+            if len(value):
+                wtab.setItem(r, c, QTableItem(wtab, QTableItem.OnTyping, value[0]))
+                for v in value[1:]:
+                    r+=1
+                    wtab.setItem(r, c, QTableItem(wtab, QTableItem.OnTyping, v))
+        else:
+            wtab.setItem(r, c, QTableItem(wtab, QTableItem.OnTyping, value))
+        return r
+        
     def __set_status__(self):
         'Refresh status after login and logout.'
         if self.epp.is_logon():
             status = '<b style="color:darkgreen">ONLINE: %s@%s</b>'%self.epp._epp.get_username_and_host()
         else:
-            status = '<b style="color:red">%s</b>'%_T('disconnect')
+            status = ('<b style="color:red">%s</b>'%_T('disconnect')).decode('utf8') # stranslation is saved in utf8
         self.status.setText(status)
     
     def check_is_online(self):
@@ -162,26 +212,10 @@ class CMainDialog(main_dialog):
         d = {}
         append_key(d,'cltrid', getattr(self,'%s_cltrid'%key))
         try:
-            self.answer = getattr(self.epp,key)(d.get('cltrid'))
-        except ccReg.ccRegError, msg:
-            self.display_error(msg, _T('Validation error'))
-        else:
-            # TODO: mela by se asi omezit velikost raw_answer (???)
-            self.src[key] = (self.epp._epp.get_command_line(),self.epp._epp._raw_cmd,self.epp._epp._raw_answer)
-            # náhrada za __display_answer__()
-            wtab = getattr(self, '%s_table'%key)
-            data = self.answer.get('data',{})
-            header = wtab.horizontalHeader()
-            header.setLabel(0, label, 380) ## 416
-            wtab.setNumRows(int(data.get('count','0')))
-            r=0
-            for name in data.get('list',[]):
-                # enum EditType { Never, OnTyping, WhenCurrent, Always }
-                wtab.setItem(r, 0, QTableItem(wtab, QTableItem.OnTyping, name))
-                r+=1
-        # toggle widget to the response tab
-        getattr(self,'%s_response'%key).setCurrentPage(1)
-
+            getattr(self.epp,key)(d.get('cltrid'))
+        except ccReg.ccRegError, err:
+            self.epp._epp._errors.extend(err.args)
+        self.__display_answer__(key,(1,(label,),(380,),'list','count'))
 
     def __share_transfer__(self, key):
         'Shared for transfer commands.'
@@ -192,11 +226,10 @@ class CMainDialog(main_dialog):
         append_key(d,'cltrid', getattr(self,'%s_cltrid'%key))
         if self.__check_required__(d, ('name','passw')):
             try:
-                self.answer = getattr(self.epp,key)(d['name'], d['passw'], d.get('cltrid'))
-            except ccReg.ccRegError, msg:
-                self.display_error(msg, _T('Validation error'))
-            else:
-                self.__display_answer__(key)
+                getattr(self.epp,key)(d['name'], d['passw'], d.get('cltrid'))
+            except ccReg.ccRegError, err:
+                self.epp._epp._errors.extend(err.args)
+            self.__display_answer__(key)
         else:
             self.display_error(self.missing_required)
 
@@ -210,11 +243,10 @@ class CMainDialog(main_dialog):
             if extends == SPLIT_NAME:
                 d['name'] = re.split('\s+',d['name']) # need for check commands
             try:
-                self.answer = getattr(self.epp,key)(d['name'], d.get('cltrid'))
-            except ccReg.ccRegError, msg:
-                self.display_error(msg, _T('Validation error'))
-            else:
-                self.__display_answer__(key)
+                getattr(self.epp,key)(d['name'], d.get('cltrid'))
+            except ccReg.ccRegError, err:
+                self.epp._epp._errors.extend(err.args)
+            self.__display_answer__(key)
         else:
             self.display_error(self.missing_required)
 
@@ -243,12 +275,12 @@ class CMainDialog(main_dialog):
                 self.display_error(errors,_T('Invalid connection input'))
             else:
                 try:
-                    self.answer = self.epp.login(d['username'], d['password'], d.get('new-password'), d.get('cltrid'))
-                except ccReg.ccRegError, msg:
-                    self.display_error(msg, _T('Validation error'))
-                else:
-                    self.__display_answer__('login')
-                    self.__set_status__()
+                    self.epp.login(d['username'], d['password'], d.get('new-password'), d.get('cltrid'))
+                except ccReg.ccRegError, err:
+                    self.epp._epp._errors.extend(err.args)
+                    self.epp._epp._errors.append(_T('Process login failed.'))
+                self.__display_answer__('login')
+                self.__set_status__()
         else:
             self.display_error(self.missing_required)
 
@@ -257,12 +289,11 @@ class CMainDialog(main_dialog):
         d = {}
         append_key(d,'cltrid',self.logout_cltrid)
         try:
-            self.answer = self.epp.logout(d.get('cltrid'))
-        except ccReg.ccRegError, msg:
-            self.display_error(msg, _T('Validation error'))
-        else:
-            self.__display_answer__('logout')
-            self.__set_status__()
+            self.epp.logout(d.get('cltrid'))
+        except ccReg.ccRegError, err:
+            self.epp._epp._errors.extend(err.args)
+        self.__display_answer__('logout')
+        self.__set_status__()
 
     def poll(self):
         if not self.check_is_online(): return
@@ -272,19 +303,17 @@ class CMainDialog(main_dialog):
         append_key(d,'cltrid',self.poll_cltrid)
         d['op'] = ('req','ack')[d['op']]
         try:
-            self.answer = self.epp.poll(d['op'], d.get('msg_id'), d.get('cltrid'))
-        except ccReg.ccRegError, msg:
-            self.display_error(msg, _T('Validation error'))
-        else:
-            self.__display_answer__('poll')
+            self.epp.poll(d['op'], d.get('msg_id'), d.get('cltrid'))
+        except ccReg.ccRegError, err:
+            self.epp._epp._errors.extend(err.args)
+        self.__display_answer__('poll')
 
     def hello(self):
         try:
-            self.answer = self.epp.hello()
-        except ccReg.ccRegError, msg:
-            self.display_error(msg, _T('Validation error'))
-        else:
-            self.__display_answer__('hello')
+            self.epp.hello()
+        except ccReg.ccRegError, err:
+            self.epp._epp._errors.extend(err.args)
+        self.__display_answer__('hello')
 
     def check_contact(self):
         self.__share_command__('check_contact',SPLIT_NAME)
@@ -325,17 +354,13 @@ class CMainDialog(main_dialog):
         if ssn.has_key('number'): d['ssn'] = ssn
         if self.__check_required__(d, ('id', 'name', 'email', 'city', 'cc')):
             try:
-                self.answer = self.epp.create_contact(d['id'], d['name'], d['email'], 
+                self.epp.create_contact(d['id'], d['name'], d['email'], 
                     d['city'], d['cc'], d.get('pw'),
                     d.get('org'), d.get('street'), d.get('sp'), d.get('pc'), 
                     d.get('voice'), d.get('fax'), d.get('disclose'), d.get('vat'), 
                     d.get('ssn'), d.get('notify_email'), d.get('cltrid'))
-            except ccReg.ccRegError, msg:
-                pass
-##                print "!!!???",msg
-##                print dir(msg)
-##                self.display_error(msg.args, _T('Validation error'))
-##            else:
+            except ccReg.ccRegError, err:
+                self.epp._epp._errors.extend(err.args)
             self.__display_answer__('create_contact')
         else:
             self.display_error(self.missing_required)
@@ -388,11 +413,10 @@ class CMainDialog(main_dialog):
             else:
                 period = None
             try:
-                self.answer = self.epp.renew_domain(d['name'], d['cur_exp_date'], period, d.get('val_ex_date'), d.get('cltrid'))
-            except ccReg.ccRegError, msg:
-                self.display_error(msg, _T('Validation error'))
-            else:
-                self.__display_answer__('renew_domain')
+                self.epp.renew_domain(d['name'], d['cur_exp_date'], period, d.get('val_ex_date'), d.get('cltrid'))
+            except ccReg.ccRegError, err:
+                self.epp._epp._errors.extend(err.args)
+            self.__display_answer__('renew_domain')
         else:
             self.display_error(self.missing_required)
 
