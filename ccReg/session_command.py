@@ -458,19 +458,20 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
         data = self.get_connect_defaults()
         if self.get_config_value('session', 'auto_login',OMMIT_ERROR) in ('no','off'): return # prohibited in config
         section_epp_login = 'epp_login'
-        data.append(self.get_config_value(section_epp_login, 'username',OMMIT_ERROR))
-        data.append(self.get_config_value(section_epp_login, 'password',OMMIT_ERROR))
+        username = self.get_config_value(section_epp_login, 'username',OMMIT_ERROR)
+        password = self.get_config_value(section_epp_login, 'password',OMMIT_ERROR)
         # Check if all values are present:
         if not (data[0] # host
             and data[1] # port
             and data[2] # privkey
             and data[3] # cert
             # 4 timeout
-            and data[5] # username
-            and data[6] # password
+            # 5 socket type
+            and username
+            and password
             ):
             return # no automatic login, some data missing
-        self._epp_cmd.set_params({'username':[data[5]],'password':[data[6]]})
+        self._epp_cmd.set_params({'username':[username],'password':[password]})
         self.reset_round()
         self.create_login()
         epp_doc = self._epp_cmd.get_xml()

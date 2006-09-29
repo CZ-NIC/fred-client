@@ -26,7 +26,15 @@ class Lorry:
 
     def connect(self, DATA, verbose=1):
         "DATA = ('host', PORT, 'file.key', 'file.crt', timeout, 'socket_family')"
-        family = {socket.AF_INET:'IPv4', socket.AF_INET6: 'IPv6'}
+        family = {}
+        family[socket.AF_INET] = 'IPv4'
+        if getattr(socket,'AF_INET6',None):
+            family[socket.AF_INET6] = 'IPv6'
+        elif verbose > 1:
+            self._notes.append(_T('Socket type IPv6 (AF_INET6) is not present in socket module.'))
+        family_rev = {}
+        for k,v in family.items():
+            family_rev[v.lower()] = k
         ok = 0
         self._conn = None
         try:
@@ -34,7 +42,7 @@ class Lorry:
         except ValueError:
             pass
         if DATA[5]:
-            socket_family = {'ipv4':socket.AF_INET,'ipv6':socket.AF_INET6}.get(DATA[5].lower(),socket.AF_INET)
+            socket_family = family_rev.get(DATA[5].lower(),socket.AF_INET)
         else:
             try:
                 tc = socket.getaddrinfo(DATA[0], DATA[1])
@@ -48,6 +56,7 @@ class Lorry:
             ok = 1
         except socket.error, (no,msg):
             self._errors.append('Create socket.error [%d] %s'%(no,msg))
+            # WinXP IPv6: [10047] Address family not supported
         except TypeError, msg:
             self._errors.append('Create socket.error (socket.getaddrinfo): %s'%msg)
         if self._conn is None: return 0
