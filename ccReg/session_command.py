@@ -187,9 +187,6 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
                 if stop == 2: return 'q' # User press Ctrl+C or Ctrl+D
                 if all_is_OK:
                     cmd_params = self._epp_cmd.get_params()
-                    if re.match('check_',cmd_params.get('command',[''])[0]):
-                        # Save order of names for sorting answer (check_...).
-                        self._session[SORT_BY_COLUMNS] = cmd_params.get('name',[])
                     self.create_command_with_params(command_name, cmd_params)
                 else:
                     self.append_error(self._epp_cmd.get_errors()) # any problems on the command line occurrs
@@ -209,6 +206,10 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
         dct_params['command'] = [command_name]
         dct_params[command_name] = [command_name]
         self._epp_cmd.set_params(dct_params) # set params from API (or one's own)
+        # Exception for check commands where are columns corted by list of input names
+        if re.match('check_',command_name):
+            # Save order of names for sorting answer (check_...).
+            self._session[SORT_BY_COLUMNS] = dct_params.get('name',[])
         self._raw_cmd = ''
         if command_name in ('login','hello'):
             getattr(self,'create_%s'%command_name)()

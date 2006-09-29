@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'create_contact.ui'
 #
-# Created: St zář 27 10:49:19 2006
+# Created: Pá zář 29 13:47:12 2006
 #      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -50,9 +50,6 @@ class panel(QWidget):
 
         self.textLabel3_2_6_6_2_6 = QLabel(self,"textLabel3_2_6_6_2_6")
         self.textLabel3_2_6_6_2_6.setGeometry(QRect(10,510,160,20))
-
-        self.textLabel3_2_6_6_2_6_2 = QLabel(self,"textLabel3_2_6_6_2_6_2")
-        self.textLabel3_2_6_6_2_6_2.setGeometry(QRect(10,540,160,20))
 
         self.create_contact_cltrid = QLineEdit(self,"create_contact_cltrid")
         self.create_contact_cltrid.setGeometry(QRect(180,850,360,22))
@@ -150,6 +147,7 @@ class panel(QWidget):
         self.create_contact_fax.setGeometry(QRect(180,510,180,22))
 
         self.groupBox2 = QGroupBox(self,"groupBox2")
+        self.groupBox2.setEnabled(0)
         self.groupBox2.setGeometry(QRect(180,540,360,140))
 
         self.create_contact_disclose_voice = QCheckBox(self.groupBox2,"create_contact_disclose_voice")
@@ -160,9 +158,6 @@ class panel(QWidget):
 
         self.create_contact_disclose_email = QCheckBox(self.groupBox2,"create_contact_disclose_email")
         self.create_contact_disclose_email.setGeometry(QRect(190,110,160,20))
-
-        self.create_contact_disclose_flag = QComboBox(0,self.groupBox2,"create_contact_disclose_flag")
-        self.create_contact_disclose_flag.setGeometry(QRect(190,20,85,22))
 
         self.create_contact_disclose_name = QCheckBox(self.groupBox2,"create_contact_disclose_name")
         self.create_contact_disclose_name.setGeometry(QRect(10,50,160,20))
@@ -176,10 +171,18 @@ class panel(QWidget):
         self.textLabel3_2_6_6_2_6_2_2 = QLabel(self.groupBox2,"textLabel3_2_6_6_2_6_2_2")
         self.textLabel3_2_6_6_2_6_2_2.setGeometry(QRect(10,20,160,20))
 
+        self.create_contact_disclose_flag = QComboBox(0,self.groupBox2,"create_contact_disclose_flag")
+        self.create_contact_disclose_flag.setGeometry(QRect(190,20,85,22))
+
+        self.checkBox8 = QCheckBox(self,"checkBox8")
+        self.checkBox8.setGeometry(QRect(10,540,160,20))
+
         self.languageChange()
 
         self.resize(QSize(574,892).expandedTo(self.minimumSizeHint()))
         self.clearWState(Qt.WState_Polished)
+
+        self.connect(self.checkBox8,SIGNAL("toggled(bool)"),self.groupBox2.setEnabled)
 
         self.setTabOrder(self.create_contact_id,self.create_contact_name)
         self.setTabOrder(self.create_contact_name,self.create_contact_email)
@@ -215,7 +218,6 @@ class panel(QWidget):
         self.textLabel3_2_6_6_2_4.setText(self.__tr("postal code"))
         self.textLabel3_2_6_6_2_6_3.setText(self.__tr("value-added tax"))
         self.textLabel3_2_6_6_2_6.setText(self.__tr("fax"))
-        self.textLabel3_2_6_6_2_6_2.setText(self.__tr("disclose"))
         self.textLabel3_2_6_6_2_6_4.setText(self.__tr("notify email"))
         self.textLabel3_2_6_6_2_6_2_3.setText(self.__tr("social security number"))
         self.textLabel3_2_6_6_2_3.setText(self.__tr("state or province"))
@@ -252,13 +254,14 @@ class panel(QWidget):
         self.create_contact_disclose_voice.setText(self.__tr("voice"))
         self.create_contact_disclose_fax.setText(self.__tr("fax"))
         self.create_contact_disclose_email.setText(self.__tr("email"))
-        self.create_contact_disclose_flag.clear()
-        self.create_contact_disclose_flag.insertItem(self.__tr("yes"))
-        self.create_contact_disclose_flag.insertItem(self.__tr("no"))
         self.create_contact_disclose_name.setText(self.__tr("name"))
         self.create_contact_disclose_addr.setText(self.__tr("address"))
         self.create_contact_disclose_org.setText(self.__tr("organisation"))
         self.textLabel3_2_6_6_2_6_2_2.setText(self.__tr("disclose"))
+        self.create_contact_disclose_flag.clear()
+        self.create_contact_disclose_flag.insertItem(self.__tr("yes"))
+        self.create_contact_disclose_flag.insertItem(self.__tr("no"))
+        self.checkBox8.setText(self.__tr("disclose"))
 
 
     def __tr(self,s,c = None):

@@ -166,22 +166,6 @@
             <string>fax</string>
         </property>
     </widget>
-    <widget class="QLabel">
-        <property name="name">
-            <cstring>textLabel3_2_6_6_2_6_2</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>10</x>
-                <y>540</y>
-                <width>160</width>
-                <height>20</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string>disclose</string>
-        </property>
-    </widget>
     <widget class="QLineEdit">
         <property name="name">
             <cstring>create_contact_cltrid</cstring>
@@ -680,6 +664,9 @@ object can be created for a specific validity period.</string>
         <property name="name">
             <cstring>groupBox2</cstring>
         </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
         <property name="geometry">
             <rect>
                 <x>180</x>
@@ -737,29 +724,6 @@ object can be created for a specific validity period.</string>
             </property>
             <property name="text">
                 <string>email</string>
-            </property>
-        </widget>
-        <widget class="QComboBox">
-            <item>
-                <property name="text">
-                    <string>yes</string>
-                </property>
-            </item>
-            <item>
-                <property name="text">
-                    <string>no</string>
-                </property>
-            </item>
-            <property name="name">
-                <cstring>create_contact_disclose_flag</cstring>
-            </property>
-            <property name="geometry">
-                <rect>
-                    <x>190</x>
-                    <y>20</y>
-                    <width>85</width>
-                    <height>22</height>
-                </rect>
             </property>
         </widget>
         <widget class="QCheckBox">
@@ -826,8 +790,55 @@ object can be created for a specific validity period.</string>
                 <string>disclose</string>
             </property>
         </widget>
+        <widget class="QComboBox">
+            <item>
+                <property name="text">
+                    <string>yes</string>
+                </property>
+            </item>
+            <item>
+                <property name="text">
+                    <string>no</string>
+                </property>
+            </item>
+            <property name="name">
+                <cstring>create_contact_disclose_flag</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>190</x>
+                    <y>20</y>
+                    <width>85</width>
+                    <height>22</height>
+                </rect>
+            </property>
+        </widget>
+    </widget>
+    <widget class="QCheckBox">
+        <property name="name">
+            <cstring>checkBox8</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>10</x>
+                <y>540</y>
+                <width>160</width>
+                <height>20</height>
+            </rect>
+        </property>
+        <property name="text">
+            <string>disclose</string>
+        </property>
     </widget>
 </widget>
+<connections>
+    <connection>
+        <sender>checkBox8</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>groupBox2</receiver>
+        <slot>setEnabled(bool)</slot>
+    </connection>
+</connections>
 <tabstops>
     <tabstop>create_contact_id</tabstop>
     <tabstop>create_contact_name</tabstop>

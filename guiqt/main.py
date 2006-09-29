@@ -23,8 +23,10 @@ except ImportError:
         sys.exit(0)
 
 from dialog import main_dialog
-import create_contact
-import sources
+import sources  # dialog Sources
+import create_contact # dialog Create Contact
+import update_contact # dialog Update Contact
+import create_domain_dialog
 from ccReg.translate import _T, encoding, options, option_errors
 
 # prefix of translations
@@ -46,8 +48,9 @@ def append_key(dct, key, widget):
     elif wt == QTable:
         data = []
         for r in range(widget.numRows()):
-            data.append(('%s'%widget.text(r,0).utf8()).strip())
-        dct[key] = data
+            value = ('%s'%widget.text(r,0).utf8()).strip()
+            if len(value): data.append(value)
+        if len(data): dct[key] = data
     else:
         print "unknown type widget:",type(widget)
         
@@ -70,7 +73,9 @@ class CMainDialog(main_dialog):
         self.epp.load_config(options['session'])
         self.missing_required = []
         self.src = {} # {'command_name':['command line','XML source','XML response'], ...}
+        #--------------------------------------        
         # load data for connection
+        #--------------------------------------        
         data = self.epp._epp.get_connect_defaults()
         self.connect_host.setText(data[0])
         self.connect_port.setText(str(data[1]))
@@ -79,18 +84,33 @@ class CMainDialog(main_dialog):
         self.connect_timeout.setText(data[4])
         self.login_username.setText(self.epp._epp.get_config_value('epp_login', 'username',1))
         self.login_password.setText(self.epp._epp.get_config_value('epp_login', 'password',1))
+        #--------------------------------------        
+        # scrolled windows
+        #--------------------------------------        
+        # contact
+        self.panel_create_contact = self.__add_scroll__(self.frame_create_contact, create_contact, 'create_contact')
+        self.panel_create_contact.create_contact_street.horizontalHeader().setLabel(0, _T('street'), 320)
+        self.panel_update_contact = self.__add_scroll__(self.frame_update_contact, update_contact, 'update_contact')
+        self.panel_update_contact.update_contact_street.horizontalHeader().setLabel(0, _T('street'), 290)
+        # domain
+        self.panel_create_domain = self.__add_scroll__(self.frame_create_domain, create_domain_dialog, 'create_domain')
+
+        #--------------------------------------        
         # validators
+        #--------------------------------------        
         self.connect_port.setValidator(QIntValidator(self.connect_port))
         self.connect_timeout.setValidator(QDoubleValidator(0.0, 999.0, 2, self.connect_timeout))
         self.poll_msg_id.setValidator(QIntValidator(self.poll_msg_id))
         self.renew_domain_period_num.setValidator(QIntValidator(self.renew_domain_period_num))
-        # scrolled windows:
-        self.panel_create_contact = self.__add_scroll__(self.frame_create_contact, create_contact, 'create_contact')
-        self.panel_create_contact.create_contact_street.horizontalHeader().setLabel(0, _T('street'), 320)
+        w=self.panel_create_domain.period_num
+        w.setValidator(QIntValidator(w))
+        #--------------------------------------        
         # current date
+        #--------------------------------------        
         curd = QDate().currentDate()
         self.renew_domain_cur_exp_date.setDate(curd)
         self.renew_domain_val_ex_date.setDate(curd)
+        self.panel_create_domain.val_ex_date.setDate(curd)
 
     def __add_scroll__(self, parent_frame, module, name):
         'Add scrolled view panel. Module must have class panel.'
@@ -176,6 +196,7 @@ class CMainDialog(main_dialog):
         self.src[prefix] = (self.epp._epp.get_command_line(),self.epp._epp._raw_cmd,self.epp._epp._raw_answer)
         # toggle widget to the response tab
         getattr(self,'%s_response'%prefix).setCurrentPage(1)
+        self.__set_status__()
 
     def __inset_into_table__(self, wtab, value, c, r):
         'Used by __display_answer__()'
@@ -280,7 +301,6 @@ class CMainDialog(main_dialog):
                     self.epp._epp._errors.extend(err.args)
                     self.epp._epp._errors.append(_T('Process login failed.'))
                 self.__display_answer__('login')
-                self.__set_status__()
         else:
             self.display_error(self.missing_required)
 
@@ -293,7 +313,6 @@ class CMainDialog(main_dialog):
         except ccReg.ccRegError, err:
             self.epp._epp._errors.extend(err.args)
         self.__display_answer__('logout')
-        self.__set_status__()
 
     def poll(self):
         if not self.check_is_online(): return
@@ -341,12 +360,13 @@ class CMainDialog(main_dialog):
                         'pc', 'voice', 'fax', 'vat', 'notify_email', 'cltrid'):
             append_key(d, key, getattr(p,'create_contact_%s'%key))
         #... disclose ................
-        disclose = {}
-        for key in ('flag','name','org','addr','voice','fax','email'):
-            append_key(disclose, key, getattr(p,'create_contact_disclose_%s'%key))
-        d['disclose'] = {
-            'flag': {'yes':'y'}.get(disclose['flag'],'n'),
-            'data': [k for k,v in disclose.items() if v == 1]}
+        if p.create_contact_disclose_flag.isEnabled():
+            disclose = {}
+            for key in ('flag','name','org','addr','voice','fax','email'):
+                append_key(disclose, key, getattr(p,'create_contact_disclose_%s'%key))
+            d['disclose'] = {
+                'flag': {'yes':'y'}.get(disclose['flag'],'n'),
+                'data': [k for k,v in disclose.items() if v == 1]}
         #.... ssn .........................
         ssn={}
         for key in ('type','number'):
@@ -371,9 +391,66 @@ class CMainDialog(main_dialog):
 
     def create_domain(self):
         if not self.check_is_online(): return
+        self.display_error('Here are lions!','Not implemented yet!')
 
+    def __append_update_status__(self, p, d, status, wnd_name):
+        'Used by update_contact()'
+        wnd = getattr(p,'%s_ok'%wnd_name,None)
+        if wnd and wnd.isEnabled():
+            dct = {}
+            for key in (map(lambda s: '%s_%s'%(wnd_name,s), status)):
+                append_key(dct, key, getattr(p,key))
+            data = [k[4:] for k,v in dct.items() if v == 1]
+            if len(data): d[wnd_name] = data
+        
     def update_contact(self):
         if not self.check_is_online(): return
+        d = {}
+        p = self.panel_update_contact
+        status = [n[0]for n in self.epp._epp._epp_cmd.update_status]
+        self.__append_update_status__(p, d, status, 'add')
+        self.__append_update_status__(p, d, status, 'rem')
+        for key in ('id', 'cltrid'):
+            append_key(d, key, getattr(p,'update_contact_%s'%key))
+        chg={}
+        for key in ('voice', 'fax', 'email', 'pw', 'vat', 'notify_email'):
+            append_key(chg, key, getattr(p,'update_contact_%s'%key))
+        postal_info = {}
+        for key in ('name', 'org'):
+            append_key(postal_info, key, getattr(p,'update_contact_%s'%key))
+        #... address ................
+        addr = {}
+        for key in ('city', 'cc', 'street', 'sp', 'pc'):
+            append_key(addr, key, getattr(p,'update_contact_%s'%key))
+        if addr.has_key('city') and addr.has_key('cc'):
+            postal_info['addr'] = addr
+        else:
+            self.epp._epp._errors.append(_T('In a part of address must be set both city and country code. For disabled this part leave both empty.'))
+        if len(postal_info): chg['postal_info'] = postal_info
+        #... disclose ................
+        if p.update_contact_disclose_flag.isEnabled():
+            disclose = {}
+            for key in ('flag','name','org','addr','voice','fax','email'):
+                append_key(disclose, key, getattr(p,'update_contact_disclose_%s'%key))
+            chg['disclose'] = {
+                'flag': {'yes':'y'}.get(disclose['flag'],'n'),
+                'data': [k for k,v in disclose.items() if v == 1]}
+        #.... ssn .........................
+        ssn={}
+        for key in ('type','number'):
+            append_key(ssn, key, getattr(p,'update_contact_ssn_%s'%key))
+        if ssn.has_key('number'): chg['ssn'] = ssn
+        if len(chg): d['chg'] = chg
+        if self.__check_required__(d, ('id',)) and len(d) > 1:
+            try:
+                self.epp.update_contact(d['id'], d.get('add'), d.get('rem'), d.get('chg'), d.get('cltrid'))
+            except ccReg.ccRegError, err:
+                self.epp._epp._errors.extend(err.args)
+            self.__display_answer__('update_contact')
+        else:
+            if len(d) == 1:
+                self.missing_required.append(_T('No values to update.'))
+            self.display_error(self.missing_required)
 
     def update_nsset(self):
         if not self.check_is_online(): return
