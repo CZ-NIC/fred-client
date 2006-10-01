@@ -33,22 +33,32 @@ from ccReg.translate import _T, encoding, options, option_errors
 translation_prefix = 'clientqt_'
 SPLIT_NAME = 1
 
+# The encoding in MS Windows is different from GUI to console.
+gui_encoding = {'cp852':'cp1250'}.get(encoding,encoding)
+
+def get_str(qtstr):
+    'Translate QString. Trip whitespaces at the begining and end. Returns string in local charset.'
+    text = ('%s'%qtstr.local8Bit()).strip()
+    if gui_encoding != encoding:
+        text = text.decode(gui_encoding).encode(encoding)
+    return text
+
 def append_key(dct, key, widget):
     'Append value if has been typed.'
     wt = type(widget)
     if wt in (QLineEdit, QTextEdit):
-        value = ('%s'%widget.text().utf8()).strip()
+        value = get_str(widget.text())
         if value: dct[key] = value
     elif wt in (QRadioButton, QCheckBox):
         dct[key] = (0,1)[widget.isOn() == True]
     elif wt == QDateEdit:
         dct[key] = '%s'%widget.date().toString(Qt.ISODate) # QDate; Qt.ISODate='YYYY-MM-DD'
     elif wt == QComboBox:
-        dct[key] = '%s'%widget.currentText()
+        dct[key] = get_str(widget.currentText())
     elif wt == QTable:
         data = []
         for r in range(widget.numRows()):
-            value = ('%s'%widget.text(r,0).utf8()).strip()
+            value = get_str(widget.text(r,0))
             if len(value): data.append(value)
         if len(data): dct[key] = data
     else:
@@ -139,10 +149,11 @@ class CMainDialog(main_dialog):
         if type(messages) not in (list,tuple): messages = (messages,)
         QMessageBox.critical(self, label, '<h2>%s:</h2>\n%s'%(label,'<br>\n'.join(map(lambda s: s.decode(encoding),messages))))
 
-    def closeEvent(self,ce):
+    def closeEvent(self, e):
         'Finalize when dialog is closed.'
         self.epp.logout()
-        ce.accept() ## ce.ignore <qt.QCloseEvent>
+##        e.accept() ## ce.ignore <qt.QCloseEvent>
+        main_dialog.closeEvent(self, e)
 
     def __display_answer__(self, prefix, table=None):
         'Display answer from EPP server.'
@@ -193,7 +204,11 @@ class CMainDialog(main_dialog):
         else:
             getattr(self,'%s_data'%prefix).setText('<pre>%s</pre>'%self.epp._epp.get_answer_udata())
         # save sources
-        self.src[prefix] = (self.epp._epp.get_command_line(),self.epp._epp._raw_cmd,self.epp._epp._raw_answer)
+        self.src[prefix] = (
+            self.epp._epp.get_command_line().decode(encoding),
+            self.epp._epp._raw_cmd.decode(self.epp._epp._epp_cmd.encoding),
+            self.epp._epp._raw_answer.decode(self.epp._epp._epp_response.encoding),
+            )
         # toggle widget to the response tab
         getattr(self,'%s_response'%prefix).setCurrentPage(1)
         self.__set_status__()
@@ -514,9 +529,9 @@ class CMainDialog(main_dialog):
         wnd = sources.panel(self)
         if self.src.has_key(command_name):
             src = self.src[command_name]
-            wnd.command_line.setText(ccReg.session_base.get_unicode(src[0]))
-            wnd.command.setText(ccReg.session_transfer.human_readable(ccReg.session_base.get_unicode(src[1])))
-            wnd.response.setText(ccReg.session_transfer.human_readable(ccReg.session_base.get_unicode(src[2])))
+            wnd.command_line.setText(src[0])
+            wnd.command.setText(ccReg.session_transfer.human_readable(src[1]))
+            wnd.response.setText(ccReg.session_transfer.human_readable(src[2]))
         else:
             wnd.command_line.setText(_T('Sources are not available now. Run command at first.'))
         wnd.show()
