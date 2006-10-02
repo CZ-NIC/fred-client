@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'dialog.ui'
 #
-# Created: Pá zář 29 12:22:43 2006
+# Created: Po říj 2 16:04:24 2006
 #      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -2013,11 +2013,8 @@ class main_dialog(QDialog):
         self.setModal(0)
 
 
-        self.textLabel2_4 = QLabel(self,"textLabel2_4")
-        self.textLabel2_4.setGeometry(QRect(10,610,120,30))
-
         self.status = QLabel(self,"status")
-        self.status.setGeometry(QRect(140,610,400,30))
+        self.status.setGeometry(QRect(10,600,530,30))
 
         self.buttonOk = QPushButton(self,"buttonOk")
         self.buttonOk.setGeometry(QRect(550,610,130,30))
@@ -2030,46 +2027,52 @@ class main_dialog(QDialog):
         self.TabPage = QWidget(self.tabWidget,"TabPage")
 
         self.pixmapLabel3 = QLabel(self.TabPage,"pixmapLabel3")
-        self.pixmapLabel3.setGeometry(QRect(260,40,143,76))
+        self.pixmapLabel3.setGeometry(QRect(260,20,143,76))
         self.pixmapLabel3.setPixmap(self.image0)
         self.pixmapLabel3.setScaledContents(1)
 
+        self.textLabel1 = QLabel(self.TabPage,"textLabel1")
+        self.textLabel1.setGeometry(QRect(21,110,630,100))
+        self.textLabel1.setAlignment(QLabel.WordBreak | QLabel.AlignTop | QLabel.AlignHCenter)
+
+        self.btn_about_client = QPushButton(self.TabPage,"btn_about_client")
+        self.btn_about_client.setGeometry(QRect(20,510,120,30))
+
+        self.btn_about_qt = QPushButton(self.TabPage,"btn_about_qt")
+        self.btn_about_qt.setGeometry(QRect(160,510,120,30))
+
         self.groupBox1 = QGroupBox(self.TabPage,"groupBox1")
-        self.groupBox1.setGeometry(QRect(20,270,630,260))
-
-        self.textLabel10 = QLabel(self.groupBox1,"textLabel10")
-        self.textLabel10.setGeometry(QRect(20,120,180,20))
-
-        self.textLabel8 = QLabel(self.groupBox1,"textLabel8")
-        self.textLabel8.setGeometry(QRect(20,40,180,20))
+        self.groupBox1.setGeometry(QRect(20,210,630,240))
 
         self.textLabel9 = QLabel(self.groupBox1,"textLabel9")
-        self.textLabel9.setGeometry(QRect(20,80,180,20))
-
-        self.textLabel11 = QLabel(self.groupBox1,"textLabel11")
-        self.textLabel11.setGeometry(QRect(20,160,180,20))
-
-        self.textLabel11_2 = QLabel(self.groupBox1,"textLabel11_2")
-        self.textLabel11_2.setGeometry(QRect(20,200,180,20))
-
-        self.connect_host = QLineEdit(self.groupBox1,"connect_host")
-        self.connect_host.setGeometry(QRect(210,40,400,22))
-
-        self.connect_port = QLineEdit(self.groupBox1,"connect_port")
-        self.connect_port.setGeometry(QRect(210,80,400,22))
+        self.textLabel9.setGeometry(QRect(20,70,180,20))
 
         self.connect_certificate = QLineEdit(self.groupBox1,"connect_certificate")
-        self.connect_certificate.setGeometry(QRect(210,120,400,22))
+        self.connect_certificate.setGeometry(QRect(210,110,400,22))
+
+        self.textLabel11_2 = QLabel(self.groupBox1,"textLabel11_2")
+        self.textLabel11_2.setGeometry(QRect(20,190,180,20))
 
         self.connect_private_key = QLineEdit(self.groupBox1,"connect_private_key")
-        self.connect_private_key.setGeometry(QRect(210,160,400,22))
+        self.connect_private_key.setGeometry(QRect(210,150,400,22))
+
+        self.connect_port = QLineEdit(self.groupBox1,"connect_port")
+        self.connect_port.setGeometry(QRect(210,70,400,22))
+
+        self.textLabel10 = QLabel(self.groupBox1,"textLabel10")
+        self.textLabel10.setGeometry(QRect(20,110,180,20))
+
+        self.connect_host = QLineEdit(self.groupBox1,"connect_host")
+        self.connect_host.setGeometry(QRect(210,30,400,22))
+
+        self.textLabel8 = QLabel(self.groupBox1,"textLabel8")
+        self.textLabel8.setGeometry(QRect(20,30,180,20))
+
+        self.textLabel11 = QLabel(self.groupBox1,"textLabel11")
+        self.textLabel11.setGeometry(QRect(20,150,180,20))
 
         self.connect_timeout = QLineEdit(self.groupBox1,"connect_timeout")
-        self.connect_timeout.setGeometry(QRect(210,200,400,22))
-
-        self.textLabel1 = QLabel(self.TabPage,"textLabel1")
-        self.textLabel1.setGeometry(QRect(30,160,611,100))
-        self.textLabel1.setAlignment(QLabel.WordBreak | QLabel.AlignTop | QLabel.AlignHCenter)
+        self.connect_timeout.setGeometry(QRect(210,190,400,22))
         self.tabWidget.insertTab(self.TabPage,QString.fromLatin1(""))
 
         self.Widget8 = QWidget(self.tabWidget,"Widget8")
@@ -3158,10 +3161,10 @@ class main_dialog(QDialog):
 
         self.TabPage_38 = QWidget(self.tabWidget6_2_2_2,"TabPage_38")
 
-        self.create_domain__response = QTabWidget(self.TabPage_38,"create_domain__response")
-        self.create_domain__response.setGeometry(QRect(10,10,600,370))
+        self.create_domain_response = QTabWidget(self.TabPage_38,"create_domain_response")
+        self.create_domain_response.setGeometry(QRect(10,10,600,370))
 
-        self.tab_24 = QWidget(self.create_domain__response,"tab_24")
+        self.tab_24 = QWidget(self.create_domain_response,"tab_24")
 
         self.frame_create_domain = QFrame(self.tab_24,"frame_create_domain")
         self.frame_create_domain.setGeometry(QRect(0,0,590,290))
@@ -3170,9 +3173,9 @@ class main_dialog(QDialog):
 
         self.send_create_domain = QPushButton(self.tab_24,"send_create_domain")
         self.send_create_domain.setGeometry(QRect(220,290,170,40))
-        self.create_domain__response.insertTab(self.tab_24,QString.fromLatin1(""))
+        self.create_domain_response.insertTab(self.tab_24,QString.fromLatin1(""))
 
-        self.TabPage_39 = QWidget(self.create_domain__response,"TabPage_39")
+        self.TabPage_39 = QWidget(self.create_domain_response,"TabPage_39")
 
         self.textLabel2_5_2_2_19 = QLabel(self.TabPage_39,"textLabel2_5_2_2_19")
         self.textLabel2_5_2_2_19.setGeometry(QRect(7,132,110,20))
@@ -3184,8 +3187,9 @@ class main_dialog(QDialog):
         self.textLabel1_2_3_7_3_3_3_3_3_3_3_3_3_3_3_3_3_3_3_2.setGeometry(QRect(10,10,112,20))
         self.textLabel1_2_3_7_3_3_3_3_3_3_3_3_3_3_3_3_3_3_3_2.setAlignment(QLabel.WordBreak | QLabel.AlignTop | QLabel.AlignLeft)
 
-        self.create_domain_code = QLabel(self.TabPage_39,"create_domain_code")
-        self.create_domain_code.setGeometry(QRect(130,10,450,20))
+        self.btn_source_create_domain = QPushButton(self.TabPage_39,"btn_source_create_domain")
+        self.btn_source_create_domain.setGeometry(QRect(10,270,50,50))
+        self.btn_source_create_domain.setPixmap(self.image2)
 
         self.create_domain_msg = QTextEdit(self.TabPage_39,"create_domain_msg")
         self.create_domain_msg.setGeometry(QRect(130,40,450,80))
@@ -3194,10 +3198,9 @@ class main_dialog(QDialog):
         self.create_domain_data = QTextEdit(self.TabPage_39,"create_domain_data")
         self.create_domain_data.setGeometry(QRect(130,129,450,190))
 
-        self.btn_source_create_domain = QPushButton(self.TabPage_39,"btn_source_create_domain")
-        self.btn_source_create_domain.setGeometry(QRect(10,270,50,50))
-        self.btn_source_create_domain.setPixmap(self.image2)
-        self.create_domain__response.insertTab(self.TabPage_39,QString.fromLatin1(""))
+        self.create_domain_code = QLabel(self.TabPage_39,"create_domain_code")
+        self.create_domain_code.setGeometry(QRect(130,10,450,20))
+        self.create_domain_response.insertTab(self.TabPage_39,QString.fromLatin1(""))
         self.tabWidget6_2_2_2.insertTab(self.TabPage_38,QString.fromLatin1(""))
 
         self.TabPage_40 = QWidget(self.tabWidget6_2_2_2,"TabPage_40")
@@ -3502,10 +3505,9 @@ class main_dialog(QDialog):
 
         self.languageChange()
 
-        self.resize(QSize(698,656).expandedTo(self.minimumSizeHint()))
+        self.resize(QSize(694,656).expandedTo(self.minimumSizeHint()))
         self.clearWState(Qt.WState_Polished)
 
-        self.connect(self.buttonOk,SIGNAL("clicked()"),self.close)
         self.connect(self.send_delete_contact,SIGNAL("clicked()"),self.delete_contact)
         self.connect(self.send_delete_domain,SIGNAL("clicked()"),self.delete_domain)
         self.connect(self.send_delete_nsset,SIGNAL("clicked()"),self.delete_nsset)
@@ -3557,24 +3559,26 @@ class main_dialog(QDialog):
         self.connect(self.btn_source_transfer_domain,SIGNAL("clicked()"),self.source_transfer_domain)
         self.connect(self.btn_source_renew_domain,SIGNAL("clicked()"),self.source_renew_domain)
         self.connect(self.btn_source_list_domain,SIGNAL("clicked()"),self.source_list_domain)
+        self.connect(self.buttonOk,SIGNAL("clicked()"),self.btn_close)
 
 
     def languageChange(self):
         self.setCaption(self.__tr("ccRegClient"))
-        self.textLabel2_4.setText(self.__tr("<b>Status:</b>"))
-        self.status.setText(self.__tr("<span style=\"color:red\">disconnect</span>"))
+        self.status.setText(self.__tr("<b>Status:</b> <span style=\"color:red\">disconnect</span>"))
         self.buttonOk.setText(self.__tr("E&xit client"))
         self.buttonOk.setAccel(self.__tr("Alt+X"))
-        self.groupBox1.setTitle(self.__tr("Client to EPP server"))
-        self.textLabel10.setText(self.__tr("<b>certificate</b>"))
-        self.textLabel8.setText(self.__tr("<b>host</b>"))
-        self.textLabel9.setText(self.__tr("<b>port</b>"))
-        self.textLabel11.setText(self.__tr("<b>private key</b>"))
-        self.textLabel11_2.setText(self.__tr("timeout"))
         self.textLabel1.setText(self.__tr("Welcome on the <b>ccRegClient</b> GUI interface.<br>\n"
 "Version 1.0; (Needs <b>ccReg module</b> version 1.2)<br>\n"
 "<br>\n"
 "Parameters in <b>bold</b> style are <b>required</b>. Others are optionals."))
+        self.btn_about_client.setText(self.__tr("About Client"))
+        self.btn_about_qt.setText(self.__tr("About Qt"))
+        self.groupBox1.setTitle(self.__tr("Client to EPP server"))
+        self.textLabel9.setText(self.__tr("<b>port</b>"))
+        self.textLabel11_2.setText(self.__tr("timeout"))
+        self.textLabel10.setText(self.__tr("<b>certificate</b>"))
+        self.textLabel8.setText(self.__tr("<b>host</b>"))
+        self.textLabel11.setText(self.__tr("<b>private key</b>"))
         self.tabWidget.changeTab(self.TabPage,self.__tr("&Welcome"))
         self.textLabel2.setText(self.__tr("<h2>Connect</h2>\n"
 "This part use to connect and disconnect to the EPP server. You need defined path to the certificates in your configuration file."))
@@ -3885,15 +3889,15 @@ class main_dialog(QDialog):
         self.info_domain_response.changeTab(self.TabPage_37,self.__tr("response"))
         self.tabWidget6_2_2_2.changeTab(self.TabPage_36,self.__tr("info"))
         self.send_create_domain.setText(self.__tr("Send command"))
-        self.create_domain__response.changeTab(self.tab_24,self.__tr("command"))
+        self.create_domain_response.changeTab(self.tab_24,self.__tr("command"))
         self.textLabel2_5_2_2_19.setText(self.__tr("data"))
         self.textLabel2_5_3_19.setText(self.__tr("message"))
         self.textLabel1_2_3_7_3_3_3_3_3_3_3_3_3_3_3_3_3_3_3_2.setText(self.__tr("<b>create_domain</b>"))
-        self.create_domain_code.setText(self.__tr("code"))
-        self.create_domain_msg.setText(QString.null)
         self.btn_source_create_domain.setText(QString.null)
         QToolTip.add(self.btn_source_create_domain,QString.null)
-        self.create_domain__response.changeTab(self.TabPage_39,self.__tr("response"))
+        self.create_domain_msg.setText(QString.null)
+        self.create_domain_code.setText(self.__tr("code"))
+        self.create_domain_response.changeTab(self.TabPage_39,self.__tr("response"))
         self.tabWidget6_2_2_2.changeTab(self.TabPage_38,self.__tr("create"))
         self.send_update_domain.setText(self.__tr("Send command"))
         self.update_domain_response.changeTab(self.tab_25,self.__tr("command"))
@@ -4134,6 +4138,9 @@ class main_dialog(QDialog):
 
     def source_list_domain(self):
         print "main_dialog.source_list_domain(): Not implemented yet"
+
+    def btn_close(self):
+        print "main_dialog.btn_close(): Not implemented yet"
 
     def __tr(self,s,c = None):
         return qApp.translate("main_dialog",s,c)

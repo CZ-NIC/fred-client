@@ -1,12 +1,16 @@
 # -*- coding: utf-8 -*-
 import sys, re
 
+# TODO: poll req None
+# error, values
+# 
+
 try:
     from qt import *
     from qttable import *
 except ImportError, msg:
     print "ImportError:",msg
-    print 'For runnig this application you need install qt module. See PyQt and Qt pages.'
+    print 'For runnig this application you need install PyQt and Qt modules. For more see help.'
     sys.exit(0)
 
 # first try import from standard library path
@@ -27,6 +31,9 @@ import sources  # dialog Sources
 import create_contact # dialog Create Contact
 import update_contact # dialog Update Contact
 import create_domain_dialog
+import create_nsset_frame
+import update_nsset_frame
+import update_domain_frame
 from ccReg.translate import _T, encoding, options, option_errors
 
 # prefix of translations
@@ -99,11 +106,15 @@ class CMainDialog(main_dialog):
         #--------------------------------------        
         # contact
         self.panel_create_contact = self.__add_scroll__(self.frame_create_contact, create_contact, 'create_contact')
-        self.panel_create_contact.create_contact_street.horizontalHeader().setLabel(0, _T('street'), 320)
+        self.panel_create_contact.create_contact_street.horizontalHeader().resizeSection(0, 320)
         self.panel_update_contact = self.__add_scroll__(self.frame_update_contact, update_contact, 'update_contact')
-        self.panel_update_contact.update_contact_street.horizontalHeader().setLabel(0, _T('street'), 290)
+        self.panel_update_contact.update_contact_street.horizontalHeader().resizeSection(0, 290)
         # domain
         self.panel_create_domain = self.__add_scroll__(self.frame_create_domain, create_domain_dialog, 'create_domain')
+        self.panel_update_domain = self.__add_scroll__(self.frame_update_domain, update_domain_frame, 'update_domain')
+        # nsset
+        self.panel_create_nsset = self.__add_scroll__(self.frame_create_nsset, create_nsset_frame, 'create_nsset')
+        self.panel_update_nsset = self.__add_scroll__(self.frame_update_nsset, update_nsset_frame, 'update_nsset')
 
         #--------------------------------------        
         # validators
@@ -149,6 +160,13 @@ class CMainDialog(main_dialog):
         if type(messages) not in (list,tuple): messages = (messages,)
         QMessageBox.critical(self, label, '<h2>%s:</h2>\n%s'%(label,'<br>\n'.join(map(lambda s: s.decode(encoding),messages))))
 
+    def btn_close(self):
+        'Handle click on button Close'
+        label = _T('Close client')
+        msg = _T('Do you wand realy close client?')
+        if QMessageBox.warning(self, label, msg, QMessageBox.Yes | QMessageBox.Default, QMessageBox.No) == QMessageBox.Yes:
+            main_dialog.close(self)
+        
     def closeEvent(self, e):
         'Finalize when dialog is closed.'
         self.epp.logout()
@@ -228,9 +246,10 @@ class CMainDialog(main_dialog):
     def __set_status__(self):
         'Refresh status after login and logout.'
         if self.epp.is_logon():
-            status = '<b style="color:darkgreen">ONLINE: %s@%s</b>'%self.epp._epp.get_username_and_host()
+            user, host = self.epp._epp.get_username_and_host()
+            status = '<b>%s</b> <b style="color:darkgreen">ONLINE: %s@%s</b>'%(_T('status').decode('utf8'), user, host)
         else:
-            status = ('<b style="color:red">%s</b>'%_T('disconnect')).decode('utf8') # stranslation is saved in utf8
+            status = ('<b>%s</b> <b style="color:red">%s</b>'%(_T('status'),_T('disconnect'))).decode('utf8') # stranslation is saved in utf8
         self.status.setText(status)
     
     def check_is_online(self):
@@ -403,10 +422,52 @@ class CMainDialog(main_dialog):
 
     def create_nsset(self):
         if not self.check_is_online(): return
+        d = {}
+        p = self.panel_create_nsset
+        for key in ('id', 'tech', 'pw', 'cltrid'):
+            append_key(d, key, getattr(p,key))
+        dns = []
+        for wnd in p.dns_sets:
+            dset = {}
+            for key in ('name','addr'):
+                append_key(dset, key, getattr(wnd,key))
+            if dset.has_key('name'): dns.append(dset)
+        d['dns'] = dns
+        if self.__check_required__(d, ('id', 'dns', 'tech')):
+            try:
+                self.epp.create_nsset(d['id'], d['dns'], d['tech'], d.get('pw'), d.get('cltrid'))
+            except ccReg.ccRegError, err:
+                self.epp._epp._errors.extend(err.args)
+            self.__display_answer__('create_nsset')
+        else:
+            self.display_error(self.missing_required)
+
 
     def create_domain(self):
         if not self.check_is_online(): return
-        self.display_error('Here are lions!','Not implemented yet!')
+        d = {}
+        p = self.panel_create_domain
+        for key in ('name', 'registrant', 'pw', 'nsset', 'admin','cltrid'):
+            append_key(d, key, getattr(p,key))
+        #... period ....................
+        period = {}
+        append_key(period,'num', p.period_num)
+        append_key(period,'unit', p.period_unit)
+        if period.has_key('num'): d['period'] = period
+        #...............................
+        if p.val_ex_date.isEnabled():
+            append_key(d,'val_ex_date', self.renew_domain_val_ex_date)
+        if self.__check_required__(d, ('name', 'registrant')):
+            try:
+                self.epp.create_domain(d['name'], d['registrant'], 
+                    d.get('pw'), d.get('nsset'), d.get('period'), d.get('admin'), 
+                    d.get('val_ex_date'), d.get('cltrid'))
+            except ccReg.ccRegError, err:
+                self.epp._epp._errors.extend(err.args)
+            self.__display_answer__('create_domain')
+        else:
+            self.display_error(self.missing_required)
+
 
     def __append_update_status__(self, p, d, status, wnd_name):
         'Used by update_contact()'

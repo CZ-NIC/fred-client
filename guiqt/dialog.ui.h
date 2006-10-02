@@ -316,3 +316,9 @@ void main_dialog::source_list_domain()
 {
 
 }
+
+
+void main_dialog::btn_close()
+{
+
+}

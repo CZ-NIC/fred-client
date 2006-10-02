@@ -2,30 +2,21 @@
 from qt import *
 from qttable import *
 from create_domain import dialog
+from shared_fnc import *
 
 class panel(dialog):
     'Create domain dialog.'
 
     def __init__(self,parent = None,name = None,fl = 0):
         dialog.__init__(self,parent,name,fl)
-        self.admin.horizontalHeader().setLabel(0, 'admin', 320)
+        self.admin.horizontalHeader().resizeSection(0,320)
         self._admin_item = None
 
     def admin_value_changed(self,r,c):
-        w = self.admin
-        qs = w.text(r,c).stripWhiteSpace()
-        if qs.isEmpty():
-            if w.numRows() > 1:
-                w.removeRow(r)
-        else:
-            if self._admin_item:
-                if self._admin_item.isEmpty() or w.numRows() < 2:
-                    w.insertRows(w.numRows())
-            else:
-                w.insertRows(w.numRows())
+        table_value_changed(self.admin, self._admin_item, r, c)
 
     def admin_current_changed(self,r,c):
-        self._admin_item = self.admin.text(r,c).stripWhiteSpace()
+        self._admin_item = table_current_changed(self.admin, r, c)
 
 
 if __name__ == '__main__':
