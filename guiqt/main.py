@@ -670,14 +670,15 @@ class ccregMainWindow(_main.ccregWindow):
     #==============================
     def __display_sources__(self, command_name):
         'Display sources of command'
-        wnd = sources.panel(self)
+        wnd = _sources.ccregWindow(self)
         if self.src.has_key(command_name):
+            wnd.message.setText('<b>%s</b> %s'%(command_name,_T('sources')))
             src = self.src[command_name]
             wnd.command_line.setText(src[0])
             wnd.command.setText(ccReg.session_transfer.human_readable(src[1]))
             wnd.response.setText(ccReg.session_transfer.human_readable(src[2]))
         else:
-            wnd.command_line.setText(_T('Sources are not available now. Run command at first.'))
+            wnd.message.setText(u'<b>%s</b> %s'%(command_name,_T('Sources are not available now. Run command at first.')))
         wnd.show()
         
     def source_login(self):
