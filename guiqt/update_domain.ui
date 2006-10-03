@@ -2,7 +2,7 @@
 <class>ccregWindow</class>
 <widget class="QWidget">
     <property name="name">
-	    <cstring>ccregWindow</cstring>
+        <cstring>ccregWindow</cstring>
     </property>
     <property name="geometry">
         <rect>
@@ -15,38 +15,6 @@
     <property name="caption">
         <string>Update domain panel</string>
     </property>
-    <widget class="QLabel">
-        <property name="name">
-            <cstring>textLabel1</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>330</x>
-                <y>820</y>
-                <width>210</width>
-                <height>20</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string>(required for &lt;b&gt;enum&lt;/b&gt; domains)</string>
-        </property>
-    </widget>
-    <widget class="QLineEdit">
-        <property name="name">
-            <cstring>name</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>180</x>
-                <y>110</y>
-                <width>360</width>
-                <height>22</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string></string>
-        </property>
-    </widget>
     <widget class="QTable">
         <column>
             <property name="text">
@@ -81,90 +49,6 @@
         </property>
         <property name="focusStyle">
             <enum>SpreadSheet</enum>
-        </property>
-    </widget>
-    <widget class="QLineEdit">
-        <property name="name">
-            <cstring>nsset</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>180</x>
-                <y>730</y>
-                <width>360</width>
-                <height>22</height>
-            </rect>
-        </property>
-    </widget>
-    <widget class="QLineEdit">
-        <property name="name">
-            <cstring>registrant</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>180</x>
-                <y>760</y>
-                <width>360</width>
-                <height>22</height>
-            </rect>
-        </property>
-    </widget>
-    <widget class="QLineEdit">
-        <property name="name">
-            <cstring>pw</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>180</x>
-                <y>790</y>
-                <width>360</width>
-                <height>22</height>
-            </rect>
-        </property>
-    </widget>
-    <widget class="QCheckBox">
-        <property name="name">
-            <cstring>check_val_ex_date</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>180</x>
-                <y>820</y>
-                <width>30</width>
-                <height>20</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string></string>
-        </property>
-    </widget>
-    <widget class="QDateEdit">
-        <property name="name">
-            <cstring>val_ex_date</cstring>
-        </property>
-        <property name="enabled">
-            <bool>false</bool>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>220</x>
-                <y>820</y>
-                <width>97</width>
-                <height>22</height>
-            </rect>
-        </property>
-    </widget>
-    <widget class="QLineEdit">
-        <property name="name">
-            <cstring>cltrid</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>180</x>
-                <y>870</y>
-                <width>360</width>
-                <height>22</height>
-            </rect>
         </property>
     </widget>
     <widget class="QLabel">
@@ -286,22 +170,6 @@ The EPP "update" command is used to update an instance of an existing object.
     </widget>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel9</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>10</x>
-                <y>820</y>
-                <width>160</width>
-                <height>20</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string>valExDate</string>
-        </property>
-    </widget>
-    <widget class="QLabel">
-        <property name="name">
             <cstring>textLabel10</cstring>
         </property>
         <property name="geometry">
@@ -314,101 +182,6 @@ The EPP "update" command is used to update an instance of an existing object.
         </property>
         <property name="text">
             <string>clTRID</string>
-        </property>
-    </widget>
-    <widget class="QLabel">
-        <property name="name">
-            <cstring>textLabel11</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>10</x>
-                <y>730</y>
-                <width>160</width>
-                <height>20</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string>nsset</string>
-        </property>
-    </widget>
-    <widget class="QLabel">
-        <property name="name">
-            <cstring>textLabel12</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>10</x>
-                <y>760</y>
-                <width>160</width>
-                <height>20</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string>registrant</string>
-        </property>
-    </widget>
-    <widget class="QLabel">
-        <property name="name">
-            <cstring>textLabel13</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>10</x>
-                <y>790</y>
-                <width>160</width>
-                <height>20</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string>pasword</string>
-        </property>
-    </widget>
-    <widget class="QTable">
-        <column>
-            <property name="text">
-                <string>admin</string>
-            </property>
-            <property name="pixmap">
-                <pixmap></pixmap>
-            </property>
-        </column>
-        <row>
-            <property name="text">
-                <string>1</string>
-            </property>
-            <property name="pixmap">
-                <pixmap></pixmap>
-            </property>
-        </row>
-        <property name="name">
-            <cstring>add_admin</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>180</x>
-                <y>190</y>
-                <width>360</width>
-                <height>110</height>
-            </rect>
-        </property>
-        <property name="frameShape">
-            <enum>StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-            <enum>Sunken</enum>
-        </property>
-        <property name="numRows">
-            <number>1</number>
-        </property>
-        <property name="numCols">
-            <number>1</number>
-        </property>
-        <property name="showGrid">
-            <bool>true</bool>
-        </property>
-        <property name="focusStyle">
-            <enum>SpreadSheet</enum>
         </property>
     </widget>
     <widget class="QCheckBox">
@@ -442,105 +215,6 @@ The EPP "update" command is used to update an instance of an existing object.
         <property name="text">
             <string>status</string>
         </property>
-    </widget>
-    <widget class="QButtonGroup">
-        <property name="name">
-            <cstring>grp_add_status</cstring>
-        </property>
-        <property name="enabled">
-            <bool>false</bool>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>180</x>
-                <y>310</y>
-                <width>360</width>
-                <height>90</height>
-            </rect>
-        </property>
-        <property name="title">
-            <string>status</string>
-        </property>
-        <widget class="QCheckBox">
-            <property name="name">
-                <cstring>add_ok</cstring>
-            </property>
-            <property name="geometry">
-                <rect>
-                    <x>10</x>
-                    <y>40</y>
-                    <width>70</width>
-                    <height>20</height>
-                </rect>
-            </property>
-            <property name="text">
-                <string>ok</string>
-            </property>
-        </widget>
-        <widget class="QCheckBox">
-            <property name="name">
-                <cstring>add_clientUpdateProhibited</cstring>
-            </property>
-            <property name="geometry">
-                <rect>
-                    <x>140</x>
-                    <y>20</y>
-                    <width>210</width>
-                    <height>20</height>
-                </rect>
-            </property>
-            <property name="text">
-                <string>clientUpdateProhibited</string>
-            </property>
-        </widget>
-        <widget class="QCheckBox">
-            <property name="name">
-                <cstring>add_clientDeleteProhibited</cstring>
-            </property>
-            <property name="geometry">
-                <rect>
-                    <x>140</x>
-                    <y>40</y>
-                    <width>210</width>
-                    <height>20</height>
-                </rect>
-            </property>
-            <property name="text">
-                <string>clientDeleteProhibited</string>
-            </property>
-        </widget>
-        <widget class="QCheckBox">
-            <property name="name">
-                <cstring>add_clientTransferProhibited</cstring>
-            </property>
-            <property name="geometry">
-                <rect>
-                    <x>140</x>
-                    <y>60</y>
-                    <width>210</width>
-                    <height>20</height>
-                </rect>
-            </property>
-            <property name="text">
-                <string>clientTransferProhibited</string>
-            </property>
-        </widget>
-        <widget class="QCheckBox">
-            <property name="name">
-                <cstring>add_linked</cstring>
-            </property>
-            <property name="geometry">
-                <rect>
-                    <x>10</x>
-                    <y>20</y>
-                    <width>70</width>
-                    <height>20</height>
-                </rect>
-            </property>
-            <property name="text">
-                <string>linked</string>
-            </property>
-        </widget>
     </widget>
     <widget class="QButtonGroup">
         <property name="name">
@@ -687,28 +361,6 @@ The EPP "update" command is used to update an instance of an existing object.
     </widget>
     <widget class="Line">
         <property name="name">
-            <cstring>line4</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>10</x>
-                <y>850</y>
-                <width>530</width>
-                <height>20</height>
-            </rect>
-        </property>
-        <property name="frameShape">
-            <enum>HLine</enum>
-        </property>
-        <property name="frameShadow">
-            <enum>Sunken</enum>
-        </property>
-        <property name="orientation">
-            <enum>Horizontal</enum>
-        </property>
-    </widget>
-    <widget class="Line">
-        <property name="name">
             <cstring>line1</cstring>
         </property>
         <property name="geometry">
@@ -729,6 +381,343 @@ The EPP "update" command is used to update an instance of an existing object.
             <enum>Horizontal</enum>
         </property>
     </widget>
+    <widget class="QLineEdit">
+        <property name="name">
+            <cstring>name</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>180</x>
+                <y>110</y>
+                <width>360</width>
+                <height>22</height>
+            </rect>
+        </property>
+        <property name="text">
+            <string></string>
+        </property>
+    </widget>
+    <widget class="QTable">
+        <column>
+            <property name="text">
+                <string>admin</string>
+            </property>
+        </column>
+        <property name="name">
+            <cstring>add_admin</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>180</x>
+                <y>190</y>
+                <width>360</width>
+                <height>110</height>
+            </rect>
+        </property>
+        <property name="frameShape">
+            <enum>StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+            <enum>Sunken</enum>
+        </property>
+        <property name="numRows">
+            <number>1</number>
+        </property>
+        <property name="numCols">
+            <number>1</number>
+        </property>
+        <property name="showGrid">
+            <bool>true</bool>
+        </property>
+        <property name="focusStyle">
+            <enum>SpreadSheet</enum>
+        </property>
+    </widget>
+    <widget class="QButtonGroup">
+        <property name="name">
+            <cstring>grp_add_status</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>180</x>
+                <y>310</y>
+                <width>360</width>
+                <height>90</height>
+            </rect>
+        </property>
+        <property name="title">
+            <string>status</string>
+        </property>
+        <widget class="QCheckBox">
+            <property name="name">
+                <cstring>add_ok</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>10</x>
+                    <y>40</y>
+                    <width>70</width>
+                    <height>20</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>ok</string>
+            </property>
+        </widget>
+        <widget class="QCheckBox">
+            <property name="name">
+                <cstring>add_clientUpdateProhibited</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>140</x>
+                    <y>20</y>
+                    <width>210</width>
+                    <height>20</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>clientUpdateProhibited</string>
+            </property>
+        </widget>
+        <widget class="QCheckBox">
+            <property name="name">
+                <cstring>add_clientDeleteProhibited</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>140</x>
+                    <y>40</y>
+                    <width>210</width>
+                    <height>20</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>clientDeleteProhibited</string>
+            </property>
+        </widget>
+        <widget class="QCheckBox">
+            <property name="name">
+                <cstring>add_clientTransferProhibited</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>140</x>
+                    <y>60</y>
+                    <width>210</width>
+                    <height>20</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>clientTransferProhibited</string>
+            </property>
+        </widget>
+        <widget class="QCheckBox">
+            <property name="name">
+                <cstring>add_linked</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>10</x>
+                    <y>20</y>
+                    <width>70</width>
+                    <height>20</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>linked</string>
+            </property>
+        </widget>
+    </widget>
+    <widget class="QLineEdit">
+        <property name="name">
+            <cstring>cltrid</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>180</x>
+                <y>870</y>
+                <width>360</width>
+                <height>22</height>
+            </rect>
+        </property>
+    </widget>
+    <widget class="QLabel">
+        <property name="name">
+            <cstring>textLabel1</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>330</x>
+                <y>840</y>
+                <width>210</width>
+                <height>20</height>
+            </rect>
+        </property>
+        <property name="text">
+            <string>(required for &lt;b&gt;enum&lt;/b&gt; domains)</string>
+        </property>
+    </widget>
+    <widget class="QLabel">
+        <property name="name">
+            <cstring>textLabel9</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>10</x>
+                <y>840</y>
+                <width>160</width>
+                <height>20</height>
+            </rect>
+        </property>
+        <property name="text">
+            <string>valExDate</string>
+        </property>
+    </widget>
+    <widget class="QDateEdit">
+        <property name="name">
+            <cstring>val_ex_date</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>220</x>
+                <y>840</y>
+                <width>97</width>
+                <height>22</height>
+            </rect>
+        </property>
+    </widget>
+    <widget class="QCheckBox">
+        <property name="name">
+            <cstring>check_val_ex_date</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>180</x>
+                <y>840</y>
+                <width>30</width>
+                <height>20</height>
+            </rect>
+        </property>
+        <property name="text">
+            <string></string>
+        </property>
+    </widget>
+    <widget class="Line">
+        <property name="name">
+            <cstring>line4</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>10</x>
+                <y>820</y>
+                <width>530</width>
+                <height>20</height>
+            </rect>
+        </property>
+        <property name="frameShape">
+            <enum>HLine</enum>
+        </property>
+        <property name="frameShadow">
+            <enum>Sunken</enum>
+        </property>
+        <property name="orientation">
+            <enum>Horizontal</enum>
+        </property>
+    </widget>
+    <widget class="QLineEdit">
+        <property name="name">
+            <cstring>chg_registrant</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>180</x>
+                <y>760</y>
+                <width>360</width>
+                <height>22</height>
+            </rect>
+        </property>
+    </widget>
+    <widget class="QLineEdit">
+        <property name="name">
+            <cstring>chg_pw</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>180</x>
+                <y>790</y>
+                <width>360</width>
+                <height>22</height>
+            </rect>
+        </property>
+    </widget>
+    <widget class="QLabel">
+        <property name="name">
+            <cstring>textLabel12</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>10</x>
+                <y>760</y>
+                <width>160</width>
+                <height>20</height>
+            </rect>
+        </property>
+        <property name="text">
+            <string>registrant</string>
+        </property>
+    </widget>
+    <widget class="QLabel">
+        <property name="name">
+            <cstring>textLabel13</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>10</x>
+                <y>790</y>
+                <width>160</width>
+                <height>20</height>
+            </rect>
+        </property>
+        <property name="text">
+            <string>pasword</string>
+        </property>
+    </widget>
+    <widget class="QLabel">
+        <property name="name">
+            <cstring>textLabel11</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>10</x>
+                <y>730</y>
+                <width>160</width>
+                <height>20</height>
+            </rect>
+        </property>
+        <property name="text">
+            <string>nsset</string>
+        </property>
+    </widget>
+    <widget class="QLineEdit">
+        <property name="name">
+            <cstring>chg_nsset</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>180</x>
+                <y>730</y>
+                <width>360</width>
+                <height>22</height>
+            </rect>
+        </property>
+    </widget>
 </widget>
 <connections>
     <connection>
@@ -746,25 +735,25 @@ The EPP "update" command is used to update an instance of an existing object.
     <connection>
         <sender>add_admin</sender>
         <signal>valueChanged(int,int)</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>add_admin_value_changed(int,int)</slot>
     </connection>
     <connection>
         <sender>add_admin</sender>
         <signal>currentChanged(int,int)</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>add_admin_current_changed(int,int)</slot>
     </connection>
     <connection>
         <sender>rem_admin</sender>
         <signal>currentChanged(int,int)</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>rem_admin_current_changed(int,int)</slot>
     </connection>
     <connection>
         <sender>rem_admin</sender>
         <signal>valueChanged(int,int)</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>rem_admin_value_changed(int,int)</slot>
     </connection>
     <connection>
@@ -790,9 +779,9 @@ The EPP "update" command is used to update an instance of an existing object.
     <tabstop>rem_clientUpdateProhibited</tabstop>
     <tabstop>rem_clientDeleteProhibited</tabstop>
     <tabstop>rem_clientTransferProhibited</tabstop>
-    <tabstop>nsset</tabstop>
-    <tabstop>registrant</tabstop>
-    <tabstop>pw</tabstop>
+    <tabstop>chg_nsset</tabstop>
+    <tabstop>chg_registrant</tabstop>
+    <tabstop>chg_pw</tabstop>
     <tabstop>check_val_ex_date</tabstop>
     <tabstop>val_ex_date</tabstop>
     <tabstop>cltrid</tabstop>

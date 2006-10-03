@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'update_domain.ui'
 #
-# Created: Út říj 3 10:15:00 2006
+# Created: Út říj 3 12:38:38 2006
 #      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -21,12 +21,6 @@ class ccregWindow(QWidget):
 
 
 
-        self.textLabel1 = QLabel(self,"textLabel1")
-        self.textLabel1.setGeometry(QRect(330,820,210,20))
-
-        self.name = QLineEdit(self,"name")
-        self.name.setGeometry(QRect(180,110,360,22))
-
         self.rem_admin = QTable(self,"rem_admin")
         self.rem_admin.setNumCols(self.rem_admin.numCols() + 1)
         self.rem_admin.horizontalHeader().setLabel(self.rem_admin.numCols() - 1,self.__tr("admin"))
@@ -37,25 +31,6 @@ class ccregWindow(QWidget):
         self.rem_admin.setNumCols(1)
         self.rem_admin.setShowGrid(1)
         self.rem_admin.setFocusStyle(QTable.SpreadSheet)
-
-        self.nsset = QLineEdit(self,"nsset")
-        self.nsset.setGeometry(QRect(180,730,360,22))
-
-        self.registrant = QLineEdit(self,"registrant")
-        self.registrant.setGeometry(QRect(180,760,360,22))
-
-        self.pw = QLineEdit(self,"pw")
-        self.pw.setGeometry(QRect(180,790,360,22))
-
-        self.check_val_ex_date = QCheckBox(self,"check_val_ex_date")
-        self.check_val_ex_date.setGeometry(QRect(180,820,30,20))
-
-        self.val_ex_date = QDateEdit(self,"val_ex_date")
-        self.val_ex_date.setEnabled(0)
-        self.val_ex_date.setGeometry(QRect(220,820,97,22))
-
-        self.cltrid = QLineEdit(self,"cltrid")
-        self.cltrid.setGeometry(QRect(180,870,360,22))
 
         self.textLabel2 = QLabel(self,"textLabel2")
         self.textLabel2.setGeometry(QRect(10,10,530,90))
@@ -79,58 +54,14 @@ class ccregWindow(QWidget):
         self.textLabel8 = QLabel(self,"textLabel8")
         self.textLabel8.setGeometry(QRect(10,700,530,21))
 
-        self.textLabel9 = QLabel(self,"textLabel9")
-        self.textLabel9.setGeometry(QRect(10,820,160,20))
-
         self.textLabel10 = QLabel(self,"textLabel10")
         self.textLabel10.setGeometry(QRect(10,870,160,20))
-
-        self.textLabel11 = QLabel(self,"textLabel11")
-        self.textLabel11.setGeometry(QRect(10,730,160,20))
-
-        self.textLabel12 = QLabel(self,"textLabel12")
-        self.textLabel12.setGeometry(QRect(10,760,160,20))
-
-        self.textLabel13 = QLabel(self,"textLabel13")
-        self.textLabel13.setGeometry(QRect(10,790,160,20))
-
-        self.add_admin = QTable(self,"add_admin")
-        self.add_admin.setNumCols(self.add_admin.numCols() + 1)
-        self.add_admin.horizontalHeader().setLabel(self.add_admin.numCols() - 1,self.__tr("admin"))
-        self.add_admin.setNumRows(self.add_admin.numRows() + 1)
-        self.add_admin.verticalHeader().setLabel(self.add_admin.numRows() - 1,self.__tr("1"))
-        self.add_admin.setGeometry(QRect(180,190,360,110))
-        self.add_admin.setFrameShape(QTable.StyledPanel)
-        self.add_admin.setFrameShadow(QTable.Sunken)
-        self.add_admin.setNumRows(1)
-        self.add_admin.setNumCols(1)
-        self.add_admin.setShowGrid(1)
-        self.add_admin.setFocusStyle(QTable.SpreadSheet)
 
         self.rem_status = QCheckBox(self,"rem_status")
         self.rem_status.setGeometry(QRect(10,590,150,20))
 
         self.add_status = QCheckBox(self,"add_status")
         self.add_status.setGeometry(QRect(10,320,150,20))
-
-        self.grp_add_status = QButtonGroup(self,"grp_add_status")
-        self.grp_add_status.setEnabled(0)
-        self.grp_add_status.setGeometry(QRect(180,310,360,90))
-
-        self.add_ok = QCheckBox(self.grp_add_status,"add_ok")
-        self.add_ok.setGeometry(QRect(10,40,70,20))
-
-        self.add_clientUpdateProhibited = QCheckBox(self.grp_add_status,"add_clientUpdateProhibited")
-        self.add_clientUpdateProhibited.setGeometry(QRect(140,20,210,20))
-
-        self.add_clientDeleteProhibited = QCheckBox(self.grp_add_status,"add_clientDeleteProhibited")
-        self.add_clientDeleteProhibited.setGeometry(QRect(140,40,210,20))
-
-        self.add_clientTransferProhibited = QCheckBox(self.grp_add_status,"add_clientTransferProhibited")
-        self.add_clientTransferProhibited.setGeometry(QRect(140,60,210,20))
-
-        self.add_linked = QCheckBox(self.grp_add_status,"add_linked")
-        self.add_linked.setGeometry(QRect(10,20,70,20))
 
         self.grp_rem_status = QButtonGroup(self,"grp_rem_status")
         self.grp_rem_status.setEnabled(0)
@@ -163,17 +94,84 @@ class ccregWindow(QWidget):
         self.line3.setFrameShadow(QFrame.Sunken)
         self.line3.setFrameShape(QFrame.HLine)
 
-        self.line4 = QFrame(self,"line4")
-        self.line4.setGeometry(QRect(10,850,530,20))
-        self.line4.setFrameShape(QFrame.HLine)
-        self.line4.setFrameShadow(QFrame.Sunken)
-        self.line4.setFrameShape(QFrame.HLine)
-
         self.line1 = QFrame(self,"line1")
         self.line1.setGeometry(QRect(10,140,530,20))
         self.line1.setFrameShape(QFrame.HLine)
         self.line1.setFrameShadow(QFrame.Sunken)
         self.line1.setFrameShape(QFrame.HLine)
+
+        self.name = QLineEdit(self,"name")
+        self.name.setGeometry(QRect(180,110,360,22))
+
+        self.add_admin = QTable(self,"add_admin")
+        self.add_admin.setNumCols(self.add_admin.numCols() + 1)
+        self.add_admin.horizontalHeader().setLabel(self.add_admin.numCols() - 1,self.__tr("admin"))
+        self.add_admin.setGeometry(QRect(180,190,360,110))
+        self.add_admin.setFrameShape(QTable.StyledPanel)
+        self.add_admin.setFrameShadow(QTable.Sunken)
+        self.add_admin.setNumRows(1)
+        self.add_admin.setNumCols(1)
+        self.add_admin.setShowGrid(1)
+        self.add_admin.setFocusStyle(QTable.SpreadSheet)
+
+        self.grp_add_status = QButtonGroup(self,"grp_add_status")
+        self.grp_add_status.setEnabled(0)
+        self.grp_add_status.setGeometry(QRect(180,310,360,90))
+
+        self.add_ok = QCheckBox(self.grp_add_status,"add_ok")
+        self.add_ok.setGeometry(QRect(10,40,70,20))
+
+        self.add_clientUpdateProhibited = QCheckBox(self.grp_add_status,"add_clientUpdateProhibited")
+        self.add_clientUpdateProhibited.setGeometry(QRect(140,20,210,20))
+
+        self.add_clientDeleteProhibited = QCheckBox(self.grp_add_status,"add_clientDeleteProhibited")
+        self.add_clientDeleteProhibited.setGeometry(QRect(140,40,210,20))
+
+        self.add_clientTransferProhibited = QCheckBox(self.grp_add_status,"add_clientTransferProhibited")
+        self.add_clientTransferProhibited.setGeometry(QRect(140,60,210,20))
+
+        self.add_linked = QCheckBox(self.grp_add_status,"add_linked")
+        self.add_linked.setGeometry(QRect(10,20,70,20))
+
+        self.cltrid = QLineEdit(self,"cltrid")
+        self.cltrid.setGeometry(QRect(180,870,360,22))
+
+        self.textLabel1 = QLabel(self,"textLabel1")
+        self.textLabel1.setGeometry(QRect(330,840,210,20))
+
+        self.textLabel9 = QLabel(self,"textLabel9")
+        self.textLabel9.setGeometry(QRect(10,840,160,20))
+
+        self.val_ex_date = QDateEdit(self,"val_ex_date")
+        self.val_ex_date.setEnabled(0)
+        self.val_ex_date.setGeometry(QRect(220,840,97,22))
+
+        self.check_val_ex_date = QCheckBox(self,"check_val_ex_date")
+        self.check_val_ex_date.setGeometry(QRect(180,840,30,20))
+
+        self.line4 = QFrame(self,"line4")
+        self.line4.setGeometry(QRect(10,820,530,20))
+        self.line4.setFrameShape(QFrame.HLine)
+        self.line4.setFrameShadow(QFrame.Sunken)
+        self.line4.setFrameShape(QFrame.HLine)
+
+        self.chg_registrant = QLineEdit(self,"chg_registrant")
+        self.chg_registrant.setGeometry(QRect(180,760,360,22))
+
+        self.chg_pw = QLineEdit(self,"chg_pw")
+        self.chg_pw.setGeometry(QRect(180,790,360,22))
+
+        self.textLabel12 = QLabel(self,"textLabel12")
+        self.textLabel12.setGeometry(QRect(10,760,160,20))
+
+        self.textLabel13 = QLabel(self,"textLabel13")
+        self.textLabel13.setGeometry(QRect(10,790,160,20))
+
+        self.textLabel11 = QLabel(self,"textLabel11")
+        self.textLabel11.setGeometry(QRect(10,730,160,20))
+
+        self.chg_nsset = QLineEdit(self,"chg_nsset")
+        self.chg_nsset.setGeometry(QRect(180,730,360,22))
 
         self.languageChange()
 
@@ -202,20 +200,17 @@ class ccregWindow(QWidget):
         self.setTabOrder(self.rem_ok,self.rem_clientUpdateProhibited)
         self.setTabOrder(self.rem_clientUpdateProhibited,self.rem_clientDeleteProhibited)
         self.setTabOrder(self.rem_clientDeleteProhibited,self.rem_clientTransferProhibited)
-        self.setTabOrder(self.rem_clientTransferProhibited,self.nsset)
-        self.setTabOrder(self.nsset,self.registrant)
-        self.setTabOrder(self.registrant,self.pw)
-        self.setTabOrder(self.pw,self.check_val_ex_date)
+        self.setTabOrder(self.rem_clientTransferProhibited,self.chg_nsset)
+        self.setTabOrder(self.chg_nsset,self.chg_registrant)
+        self.setTabOrder(self.chg_registrant,self.chg_pw)
+        self.setTabOrder(self.chg_pw,self.check_val_ex_date)
         self.setTabOrder(self.check_val_ex_date,self.val_ex_date)
         self.setTabOrder(self.val_ex_date,self.cltrid)
 
 
     def languageChange(self):
         self.setCaption(self.__tr("Update domain panel"))
-        self.textLabel1.setText(self.__tr("(required for <b>enum</b> domains)"))
-        self.name.setText(QString.null)
         self.rem_admin.horizontalHeader().setLabel(0,self.__tr("admin"))
-        self.check_val_ex_date.setText(QString.null)
         self.textLabel2.setText(self.__tr("<h2>update_domain</h2>\n"
 "The EPP \"update\" command is used to update an instance of an existing object.\n"
 "   Names what are not included into disclose list are set to opposite value of the disclose flag value."))
@@ -225,27 +220,29 @@ class ccregWindow(QWidget):
         self.textLabel6.setText(self.__tr("<h3>Remove</h3>"))
         self.textLabel7.setText(self.__tr("admin handle"))
         self.textLabel8.setText(self.__tr("<h3>Change</h3>"))
-        self.textLabel9.setText(self.__tr("valExDate"))
         self.textLabel10.setText(self.__tr("clTRID"))
-        self.textLabel11.setText(self.__tr("nsset"))
-        self.textLabel12.setText(self.__tr("registrant"))
-        self.textLabel13.setText(self.__tr("pasword"))
-        self.add_admin.horizontalHeader().setLabel(0,self.__tr("admin"))
-        self.add_admin.verticalHeader().setLabel(0,self.__tr("1"))
         self.rem_status.setText(self.__tr("status"))
         self.add_status.setText(self.__tr("status"))
-        self.grp_add_status.setTitle(self.__tr("status"))
-        self.add_ok.setText(self.__tr("ok"))
-        self.add_clientUpdateProhibited.setText(self.__tr("clientUpdateProhibited"))
-        self.add_clientDeleteProhibited.setText(self.__tr("clientDeleteProhibited"))
-        self.add_clientTransferProhibited.setText(self.__tr("clientTransferProhibited"))
-        self.add_linked.setText(self.__tr("linked"))
         self.grp_rem_status.setTitle(self.__tr("status"))
         self.rem_linked.setText(self.__tr("linked"))
         self.rem_ok.setText(self.__tr("ok"))
         self.rem_clientUpdateProhibited.setText(self.__tr("clientUpdateProhibited"))
         self.rem_clientDeleteProhibited.setText(self.__tr("clientDeleteProhibited"))
         self.rem_clientTransferProhibited.setText(self.__tr("clientTransferProhibited"))
+        self.name.setText(QString.null)
+        self.add_admin.horizontalHeader().setLabel(0,self.__tr("admin"))
+        self.grp_add_status.setTitle(self.__tr("status"))
+        self.add_ok.setText(self.__tr("ok"))
+        self.add_clientUpdateProhibited.setText(self.__tr("clientUpdateProhibited"))
+        self.add_clientDeleteProhibited.setText(self.__tr("clientDeleteProhibited"))
+        self.add_clientTransferProhibited.setText(self.__tr("clientTransferProhibited"))
+        self.add_linked.setText(self.__tr("linked"))
+        self.textLabel1.setText(self.__tr("(required for <b>enum</b> domains)"))
+        self.textLabel9.setText(self.__tr("valExDate"))
+        self.check_val_ex_date.setText(QString.null)
+        self.textLabel12.setText(self.__tr("registrant"))
+        self.textLabel13.setText(self.__tr("pasword"))
+        self.textLabel11.setText(self.__tr("nsset"))
 
 
     def add_admin_current_changed(self,a0,a1):

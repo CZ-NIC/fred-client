@@ -2,7 +2,7 @@
 <class>ccregWindow</class>
 <widget class="QWidget">
     <property name="name">
-	    <cstring>ccregWindow</cstring>
+        <cstring>ccregWindow</cstring>
     </property>
     <property name="geometry">
         <rect>
@@ -36,121 +36,6 @@
         <property name="orientation">
             <enum>Horizontal</enum>
         </property>
-    </widget>
-    <widget class="QLineEdit">
-        <property name="name">
-            <cstring>id</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>180</x>
-                <y>110</y>
-                <width>360</width>
-                <height>22</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string></string>
-        </property>
-    </widget>
-    <widget class="QButtonGroup">
-        <property name="name">
-            <cstring>grp_add_status</cstring>
-        </property>
-        <property name="enabled">
-            <bool>false</bool>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>180</x>
-                <y>590</y>
-                <width>360</width>
-                <height>90</height>
-            </rect>
-        </property>
-        <property name="title">
-            <string>status</string>
-        </property>
-        <widget class="QCheckBox">
-            <property name="name">
-                <cstring>add_linked</cstring>
-            </property>
-            <property name="geometry">
-                <rect>
-                    <x>10</x>
-                    <y>20</y>
-                    <width>70</width>
-                    <height>20</height>
-                </rect>
-            </property>
-            <property name="text">
-                <string>linked</string>
-            </property>
-        </widget>
-        <widget class="QCheckBox">
-            <property name="name">
-                <cstring>add_ok</cstring>
-            </property>
-            <property name="geometry">
-                <rect>
-                    <x>10</x>
-                    <y>40</y>
-                    <width>70</width>
-                    <height>20</height>
-                </rect>
-            </property>
-            <property name="text">
-                <string>ok</string>
-            </property>
-        </widget>
-        <widget class="QCheckBox">
-            <property name="name">
-                <cstring>add_clientUpdateProhibited</cstring>
-            </property>
-            <property name="geometry">
-                <rect>
-                    <x>140</x>
-                    <y>20</y>
-                    <width>210</width>
-                    <height>20</height>
-                </rect>
-            </property>
-            <property name="text">
-                <string>clientUpdateProhibited</string>
-            </property>
-        </widget>
-        <widget class="QCheckBox">
-            <property name="name">
-                <cstring>add_clientDeleteProhibited</cstring>
-            </property>
-            <property name="geometry">
-                <rect>
-                    <x>140</x>
-                    <y>40</y>
-                    <width>210</width>
-                    <height>20</height>
-                </rect>
-            </property>
-            <property name="text">
-                <string>clientDeleteProhibited</string>
-            </property>
-        </widget>
-        <widget class="QCheckBox">
-            <property name="name">
-                <cstring>add_clientTransferProhibited</cstring>
-            </property>
-            <property name="geometry">
-                <rect>
-                    <x>140</x>
-                    <y>60</y>
-                    <width>210</width>
-                    <height>20</height>
-                </rect>
-            </property>
-            <property name="text">
-                <string>clientTransferProhibited</string>
-            </property>
-        </widget>
     </widget>
     <widget class="QButtonGroup">
         <property name="name">
@@ -283,22 +168,6 @@
             <string>technical contact</string>
         </property>
     </widget>
-    <widget class="QCheckBox">
-        <property name="name">
-            <cstring>add_status</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>10</x>
-                <y>600</y>
-                <width>150</width>
-                <height>20</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string>status</string>
-        </property>
-    </widget>
     <widget class="QLabel">
         <property name="name">
             <cstring>textLabel3</cstring>
@@ -334,22 +203,6 @@
             <set>WordBreak|AlignTop</set>
         </property>
     </widget>
-    <widget class="QCheckBox">
-        <property name="name">
-            <cstring>rem_status</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>10</x>
-                <y>990</y>
-                <width>150</width>
-                <height>20</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string>status</string>
-        </property>
-    </widget>
     <widget class="QFrame">
         <property name="name">
             <cstring>frame_add_dns</cstring>
@@ -367,166 +220,6 @@
         </property>
         <property name="frameShadow">
             <enum>Raised</enum>
-        </property>
-    </widget>
-    <widget class="QTable">
-        <column>
-            <property name="text">
-                <string>technical contact</string>
-            </property>
-            <property name="pixmap">
-                <pixmap></pixmap>
-            </property>
-        </column>
-        <row>
-            <property name="text">
-                <string>1</string>
-            </property>
-            <property name="pixmap">
-                <pixmap></pixmap>
-            </property>
-        </row>
-        <property name="name">
-            <cstring>add_tech</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>180</x>
-                <y>470</y>
-                <width>360</width>
-                <height>110</height>
-            </rect>
-        </property>
-        <property name="frameShape">
-            <enum>StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-            <enum>Sunken</enum>
-        </property>
-        <property name="numRows">
-            <number>1</number>
-        </property>
-        <property name="numCols">
-            <number>1</number>
-        </property>
-        <property name="showGrid">
-            <bool>true</bool>
-        </property>
-        <property name="focusStyle">
-            <enum>SpreadSheet</enum>
-        </property>
-    </widget>
-    <widget class="QTable">
-        <column>
-            <property name="text">
-                <string>technical contact</string>
-            </property>
-            <property name="pixmap">
-                <pixmap></pixmap>
-            </property>
-        </column>
-        <row>
-            <property name="text">
-                <string>1</string>
-            </property>
-            <property name="pixmap">
-                <pixmap></pixmap>
-            </property>
-        </row>
-        <property name="name">
-            <cstring>rem_tech</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>180</x>
-                <y>860</y>
-                <width>360</width>
-                <height>110</height>
-            </rect>
-        </property>
-        <property name="frameShape">
-            <enum>StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-            <enum>Sunken</enum>
-        </property>
-        <property name="numRows">
-            <number>1</number>
-        </property>
-        <property name="numCols">
-            <number>1</number>
-        </property>
-        <property name="showGrid">
-            <bool>true</bool>
-        </property>
-        <property name="focusStyle">
-            <enum>SpreadSheet</enum>
-        </property>
-    </widget>
-    <widget class="QTable">
-        <column>
-            <property name="text">
-                <string>dns name</string>
-            </property>
-            <property name="pixmap">
-                <pixmap></pixmap>
-            </property>
-        </column>
-        <row>
-            <property name="text">
-                <string>1</string>
-            </property>
-            <property name="pixmap">
-                <pixmap></pixmap>
-            </property>
-        </row>
-        <property name="name">
-            <cstring>rem_dns_name</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>180</x>
-                <y>740</y>
-                <width>360</width>
-                <height>110</height>
-            </rect>
-        </property>
-        <property name="frameShape">
-            <enum>StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-            <enum>Sunken</enum>
-        </property>
-        <property name="numRows">
-            <number>1</number>
-        </property>
-        <property name="numCols">
-            <number>1</number>
-        </property>
-        <property name="showGrid">
-            <bool>true</bool>
-        </property>
-        <property name="focusStyle">
-            <enum>SpreadSheet</enum>
-        </property>
-    </widget>
-    <widget class="QLabel">
-        <property name="name">
-            <cstring>textLabel5</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>10</x>
-                <y>740</y>
-                <width>160</width>
-                <height>100</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string>dns name&lt;br&gt;(max 9 names)</string>
-        </property>
-        <property name="alignment">
-            <set>WordBreak|AlignTop</set>
         </property>
     </widget>
     <widget class="Line">
@@ -549,19 +242,6 @@
         </property>
         <property name="orientation">
             <enum>Horizontal</enum>
-        </property>
-    </widget>
-    <widget class="QLineEdit">
-        <property name="name">
-            <cstring>pw</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>180</x>
-                <y>1130</y>
-                <width>360</width>
-                <height>22</height>
-            </rect>
         </property>
     </widget>
     <widget class="QLabel">
@@ -706,6 +386,293 @@ The EPP "update" command is used to update an instance of an existing object.
             <string>&lt;h3&gt;Add&lt;/h3&gt;</string>
         </property>
     </widget>
+    <widget class="QLineEdit">
+        <property name="name">
+            <cstring>id</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>180</x>
+                <y>110</y>
+                <width>360</width>
+                <height>22</height>
+            </rect>
+        </property>
+        <property name="text">
+            <string></string>
+        </property>
+    </widget>
+    <widget class="QLineEdit">
+        <property name="name">
+            <cstring>pw</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>180</x>
+                <y>1130</y>
+                <width>360</width>
+                <height>22</height>
+            </rect>
+        </property>
+    </widget>
+    <widget class="QButtonGroup">
+        <property name="name">
+            <cstring>grp_add_status</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>180</x>
+                <y>590</y>
+                <width>360</width>
+                <height>90</height>
+            </rect>
+        </property>
+        <property name="title">
+            <string>status</string>
+        </property>
+        <widget class="QCheckBox">
+            <property name="name">
+                <cstring>add_clientDeleteProhibited</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>140</x>
+                    <y>40</y>
+                    <width>210</width>
+                    <height>20</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>clientDeleteProhibited</string>
+            </property>
+        </widget>
+        <widget class="QCheckBox">
+            <property name="name">
+                <cstring>add_clientTransferProhibited</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>140</x>
+                    <y>60</y>
+                    <width>210</width>
+                    <height>20</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>clientTransferProhibited</string>
+            </property>
+        </widget>
+        <widget class="QCheckBox">
+            <property name="name">
+                <cstring>add_clientUpdateProhibited</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>140</x>
+                    <y>20</y>
+                    <width>210</width>
+                    <height>20</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>clientUpdateProhibited</string>
+            </property>
+        </widget>
+        <widget class="QCheckBox">
+            <property name="name">
+                <cstring>add_linked</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>10</x>
+                    <y>20</y>
+                    <width>70</width>
+                    <height>20</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>linked</string>
+            </property>
+        </widget>
+        <widget class="QCheckBox">
+            <property name="name">
+                <cstring>add_ok</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>10</x>
+                    <y>40</y>
+                    <width>70</width>
+                    <height>20</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>ok</string>
+            </property>
+        </widget>
+    </widget>
+    <widget class="QCheckBox">
+        <property name="name">
+            <cstring>add_status</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>10</x>
+                <y>600</y>
+                <width>150</width>
+                <height>20</height>
+            </rect>
+        </property>
+        <property name="text">
+            <string>status</string>
+        </property>
+    </widget>
+    <widget class="QCheckBox">
+        <property name="name">
+            <cstring>rem_status</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>10</x>
+                <y>990</y>
+                <width>150</width>
+                <height>20</height>
+            </rect>
+        </property>
+        <property name="text">
+            <string>status</string>
+        </property>
+    </widget>
+    <widget class="QTable">
+        <column>
+            <property name="text">
+                <string>technical contact</string>
+            </property>
+        </column>
+        <property name="name">
+            <cstring>add_tech</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>180</x>
+                <y>470</y>
+                <width>360</width>
+                <height>110</height>
+            </rect>
+        </property>
+        <property name="frameShape">
+            <enum>StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+            <enum>Sunken</enum>
+        </property>
+        <property name="numRows">
+            <number>1</number>
+        </property>
+        <property name="numCols">
+            <number>1</number>
+        </property>
+        <property name="showGrid">
+            <bool>true</bool>
+        </property>
+        <property name="focusStyle">
+            <enum>SpreadSheet</enum>
+        </property>
+    </widget>
+    <widget class="QTable">
+        <column>
+            <property name="text">
+                <string>technical contact</string>
+            </property>
+        </column>
+        <property name="name">
+            <cstring>rem_tech</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>180</x>
+                <y>860</y>
+                <width>360</width>
+                <height>110</height>
+            </rect>
+        </property>
+        <property name="frameShape">
+            <enum>StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+            <enum>Sunken</enum>
+        </property>
+        <property name="numRows">
+            <number>1</number>
+        </property>
+        <property name="numCols">
+            <number>1</number>
+        </property>
+        <property name="showGrid">
+            <bool>true</bool>
+        </property>
+        <property name="focusStyle">
+            <enum>SpreadSheet</enum>
+        </property>
+    </widget>
+    <widget class="QTable">
+        <column>
+            <property name="text">
+                <string>dns name</string>
+            </property>
+        </column>
+        <property name="name">
+            <cstring>rem_name</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>180</x>
+                <y>740</y>
+                <width>360</width>
+                <height>110</height>
+            </rect>
+        </property>
+        <property name="frameShape">
+            <enum>StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+            <enum>Sunken</enum>
+        </property>
+        <property name="numRows">
+            <number>1</number>
+        </property>
+        <property name="numCols">
+            <number>1</number>
+        </property>
+        <property name="showGrid">
+            <bool>true</bool>
+        </property>
+        <property name="focusStyle">
+            <enum>SpreadSheet</enum>
+        </property>
+    </widget>
+    <widget class="QLabel">
+        <property name="name">
+            <cstring>textLabel5</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>10</x>
+                <y>740</y>
+                <width>160</width>
+                <height>100</height>
+            </rect>
+        </property>
+        <property name="text">
+            <string>dns name&lt;br&gt;(max 9 names)</string>
+        </property>
+        <property name="alignment">
+            <set>WordBreak|AlignTop</set>
+        </property>
+    </widget>
 </widget>
 <connections>
     <connection>
@@ -723,37 +690,37 @@ The EPP "update" command is used to update an instance of an existing object.
     <connection>
         <sender>add_tech</sender>
         <signal>currentChanged(int,int)</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>add_tech_current_changed(int,int)</slot>
     </connection>
     <connection>
         <sender>add_tech</sender>
         <signal>valueChanged(int,int)</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>add_tech_value_changed(int,int)</slot>
     </connection>
     <connection>
-        <sender>rem_dns_name</sender>
+        <sender>rem_name</sender>
         <signal>currentChanged(int,int)</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>rem_dns_name_current_changed(int,int)</slot>
     </connection>
     <connection>
-        <sender>rem_dns_name</sender>
+        <sender>rem_name</sender>
         <signal>valueChanged(int,int)</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>rem_dns_name_value_changed(int,int)</slot>
     </connection>
     <connection>
         <sender>rem_tech</sender>
         <signal>currentChanged(int,int)</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>rem_tech_current_changed(int,int)</slot>
     </connection>
     <connection>
         <sender>rem_tech</sender>
         <signal>valueChanged(int,int)</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>rem_tech_value_changed(int,int)</slot>
     </connection>
 </connections>
@@ -766,7 +733,7 @@ The EPP "update" command is used to update an instance of an existing object.
     <tabstop>add_clientUpdateProhibited</tabstop>
     <tabstop>add_clientDeleteProhibited</tabstop>
     <tabstop>add_clientTransferProhibited</tabstop>
-    <tabstop>rem_dns_name</tabstop>
+    <tabstop>rem_name</tabstop>
     <tabstop>rem_tech</tabstop>
     <tabstop>rem_status</tabstop>
     <tabstop>rem_linked</tabstop>

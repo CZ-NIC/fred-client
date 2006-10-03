@@ -92,13 +92,14 @@ def count_data_rows(dct):
         
 class ccregMainWindow(_main.ccregWindow):
     'Main frame dialog.'
-    
+
     def __init__(self):
         _main.ccregWindow.__init__(self)
         self.epp = ccReg.Client()
         self.epp.load_config(options['session'])
         self.missing_required = []
         self.src = {} # {'command_name':['command line','XML source','XML response'], ...}
+        self.epp_status = [n[0]for n in self.epp._epp._epp_cmd.update_status]
         #--------------------------------------        
         # load data for connection
         #--------------------------------------        
@@ -141,6 +142,7 @@ class ccregMainWindow(_main.ccregWindow):
         self.renew_domain_cur_exp_date.setDate(curd)
         self.renew_domain_val_ex_date.setDate(curd)
         self.panel_create_domain.val_ex_date.setDate(curd)
+        self.panel_update_domain.val_ex_date.setDate(curd)
 
     def __add_scroll__(self, parent_frame, module, name):
         'Add scrolled view window. Module must have class ccregWindow.'
@@ -179,7 +181,6 @@ class ccregMainWindow(_main.ccregWindow):
     def closeEvent(self, e):
         'Finalize when dialog is closed.'
         self.epp.logout()
-##        e.accept() ## ce.ignore <qt.QCloseEvent>
         _main.ccregWindow.closeEvent(self, e)
 
     def __display_answer__(self, prefix, table=None):
@@ -314,8 +315,34 @@ class ccregMainWindow(_main.ccregWindow):
         else:
             self.display_error(self.missing_required)
 
+    def __append_update_status__(self, p, d, wnd_name, key_name=''):
+        'Used by update_contact()'
+        wnd = getattr(p,'%s_ok'%wnd_name,None)
+        if wnd and wnd.isEnabled():
+            dct = {}
+            for key in (map(lambda s: '%s_%s'%(wnd_name,s), self.epp_status)):
+                append_key(dct, key, getattr(p,key))
+            data = [k[4:] for k,v in dct.items() if v == 1]
+            if len(data):
+                if key_name:
+                    d[key_name] = data
+                else:
+                    d[wnd_name] = data
+
+    def __disclose__(self, dct, flag, wnd, prefix='%s'):
+        'Save checked checkboxes into dct.'
+        if flag.isEnabled():
+            disclose = {}
+            for key in ('flag','name','org','addr','voice','fax','email'):
+                append_key(disclose, key, getattr(wnd, prefix%key))
+            dct['disclose'] = {
+                'flag': {'yes':'y'}.get(disclose['flag'],'n'),
+                'data': [k for k,v in disclose.items() if v == 1]}
+            
     #==============================
-    # Widgets handlers
+    #
+    #   Widgets handlers
+    #
     #==============================
     def login(self):
         if self.epp.is_logon():
@@ -403,13 +430,7 @@ class ccregMainWindow(_main.ccregWindow):
                         'pc', 'voice', 'fax', 'vat', 'notify_email', 'cltrid'):
             append_key(d, key, getattr(p,'create_contact_%s'%key))
         #... disclose ................
-        if p.create_contact_disclose_flag.isEnabled():
-            disclose = {}
-            for key in ('flag','name','org','addr','voice','fax','email'):
-                append_key(disclose, key, getattr(p,'create_contact_disclose_%s'%key))
-            d['disclose'] = {
-                'flag': {'yes':'y'}.get(disclose['flag'],'n'),
-                'data': [k for k,v in disclose.items() if v == 1]}
+        self.__disclose__(d, p.create_contact_disclose_flag, p, 'create_contact_disclose_%s')
         #.... ssn .........................
         ssn={}
         for key in ('type','number'):
@@ -477,24 +498,12 @@ class ccregMainWindow(_main.ccregWindow):
         else:
             self.display_error(self.missing_required)
 
-
-    def __append_update_status__(self, p, d, status, wnd_name):
-        'Used by update_contact()'
-        wnd = getattr(p,'%s_ok'%wnd_name,None)
-        if wnd and wnd.isEnabled():
-            dct = {}
-            for key in (map(lambda s: '%s_%s'%(wnd_name,s), status)):
-                append_key(dct, key, getattr(p,key))
-            data = [k[4:] for k,v in dct.items() if v == 1]
-            if len(data): d[wnd_name] = data
-        
     def update_contact(self):
         if not self.check_is_online(): return
         d = {}
         p = self.panel_update_contact
-        status = [n[0]for n in self.epp._epp._epp_cmd.update_status]
-        self.__append_update_status__(p, d, status, 'add')
-        self.__append_update_status__(p, d, status, 'rem')
+        self.__append_update_status__(p, d, 'add')
+        self.__append_update_status__(p, d, 'rem')
         for key in ('id', 'cltrid'):
             append_key(d, key, getattr(p,'update_contact_%s'%key))
         chg={}
@@ -513,13 +522,7 @@ class ccregMainWindow(_main.ccregWindow):
             self.epp._epp._errors.append(_T('In a part of address must be set both city and country code. For disabled this part leave both empty.'))
         if len(postal_info): chg['postal_info'] = postal_info
         #... disclose ................
-        if p.update_contact_disclose_flag.isEnabled():
-            disclose = {}
-            for key in ('flag','name','org','addr','voice','fax','email'):
-                append_key(disclose, key, getattr(p,'update_contact_disclose_%s'%key))
-            chg['disclose'] = {
-                'flag': {'yes':'y'}.get(disclose['flag'],'n'),
-                'data': [k for k,v in disclose.items() if v == 1]}
+        self.__disclose__(chg, p.update_contact_disclose_flag, p, 'update_contact_disclose_%s')
         #.... ssn .........................
         ssn={}
         for key in ('type','number'):
@@ -539,9 +542,80 @@ class ccregMainWindow(_main.ccregWindow):
 
     def update_nsset(self):
         if not self.check_is_online(): return
+        d = {}
+        p = self.panel_update_nsset
+        for key in ('id', 'cltrid'):
+            append_key(d, key, getattr(p, key))
+        #................................
+        add = {}
+        dns = []
+        for wnd in p.dns_sets:
+            dset = {}
+            for key in ('name','addr'):
+                append_key(dset, key, getattr(wnd,key))
+            if dset.has_key('name'): dns.append(dset)
+        if len(dns): add['dns'] = dns
+        for key in ('tech',):
+            append_key(add, key, getattr(p, 'add_%s'%key))
+        self.__append_update_status__(p, add, 'add', 'status')
+        if len(add): d['add'] = add
+        #................................
+        rem = {}
+        for key in ('name','tech'):
+            append_key(rem, key, getattr(p, 'rem_%s'%key))
+        self.__append_update_status__(p, rem, 'rem', 'status')
+        if len(rem): d['rem'] = rem
+        #................................
+        chg = {}
+        append_key(chg, 'pw', getattr(p, 'pw'))
+        if len(chg): d['chg'] = chg
+        if self.__check_required__(d, ('id',)) and len(d) > 1:
+            try:
+                self.epp.update_nsset(d['id'], d.get('add'), d.get('rem'), d.get('chg'), d.get('cltrid'))
+            except ccReg.ccRegError, err:
+                self.epp._epp._errors.extend(err.args)
+            self.__display_answer__('update_nsset')
+        else:
+            if len(d) == 1:
+                self.missing_required.append(_T('No values to update.'))
+            self.display_error(self.missing_required)
 
     def update_domain(self):
         if not self.check_is_online(): return
+        d = {}
+        p = self.panel_update_domain
+        for key in ('name', 'cltrid'):
+            append_key(d, key, getattr(p, key))
+        #................................
+        add = {}
+        for key in ('admin',):
+            append_key(add, key, getattr(p, 'add_%s'%key))
+        self.__append_update_status__(p, add, 'add', 'status')
+        if len(add): d['add'] = add
+        #................................
+        rem = {}
+        for key in ('admin',):
+            append_key(rem, key, getattr(p, 'rem_%s'%key))
+        self.__append_update_status__(p, rem, 'rem', 'status')
+        if len(rem): d['rem'] = rem
+        #................................
+        chg = {}
+        for key in ('nsset','registrant','pw'):
+            append_key(chg, key, getattr(p, 'chg_%s'%key))
+        if len(chg): d['chg'] = chg
+        #................................
+        if p.val_ex_date.isEnabled():
+            append_key(d, 'val_ex_date', p.val_ex_date)
+        if self.__check_required__(d, ('name',)) and len(d) > 1:
+            try:
+                self.epp.update_domain(d['name'], d.get('add'), d.get('rem'), d.get('chg'), d.get('val_ex_date'), d.get('cltrid'))
+            except ccReg.ccRegError, err:
+                self.epp._epp._errors.extend(err.args)
+            self.__display_answer__('update_domain')
+        else:
+            if len(d) == 1:
+                self.missing_required.append(_T('No values to update.'))
+            self.display_error(self.missing_required)
 
     def delete_contact(self):
         self.__share_command__('delete_contact')
