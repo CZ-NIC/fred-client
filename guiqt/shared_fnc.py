@@ -21,7 +21,7 @@ def table_current_changed(wndQTable, r, c):
     return wndQTable.text(r,c).stripWhiteSpace()
 
 def add_dns_sets(dns_sets, parent_frame, module, name):
-    'Add scrolled view panel. Module must have class panel.'
+    'Add scrolled view window. Module must have class ccregWindow.'
     scroll = QScrollView(parent_frame, 'scroll_%s'%name)
     scroll.enableClipper(True)
     g = parent_frame.geometry()
@@ -32,18 +32,18 @@ def add_dns_sets(dns_sets, parent_frame, module, name):
     height = 0
     max = 9
     for i in range(max):
-        panel = module.panel(frm,'dns%d'%i)
-        label = u'%s (%d/%d)'%(panel.label_dns_name.text(),i+1,max)
+        wnd = module.ccregWindow(frm,'dns%d'%i)
+        label = u'%s (%d/%d)'%(wnd.label_dns_name.text(),i+1,max)
         if i == 0:
             label = u'<b>%s</b>'%label
-            width = panel.geometry().width()
-        panel.label_dns_name.setText(label)
-        height += panel.geometry().height()
-        layout.addWidget(panel)
-        dns_sets.append(panel)
+            width = wnd.geometry().width()
+        wnd.label_dns_name.setText(label)
+        height += wnd.geometry().height()
+        layout.addWidget(wnd)
+        dns_sets.append(wnd)
     frm.setMinimumWidth(width)
     frm.setMinimumHeight(height)
     scroll.addChild(frm)
     frm.show()
     scroll.show()
-    return panel
+    return wnd

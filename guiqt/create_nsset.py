@@ -1,19 +1,18 @@
 # -*- coding: utf-8 -*-
 
 from qt import *
-from create_nsset import frame
 from shared_fnc import *
-import dns_frame
+import dns
+import _create_nsset
 
-
-class panel(frame):
+class ccregWindow(_create_nsset.ccregWindow):
 
     def __init__(self,parent = None,name = None,fl = 0):
-        frame.__init__(self,parent,name,fl)
+        _create_nsset.ccregWindow.__init__(self,parent,name,fl)
         self.tech.horizontalHeader().resizeSection(0,320)
         self._tech_item = None
         self.dns_sets = []
-        self.panel_dns = add_dns_sets(self.dns_sets, self.frame_dns, dns_frame, 'dns')
+        self.panel_dns = add_dns_sets(self.dns_sets, self.frame_dns, dns, 'dns')
 
     def tech_current_changed(self,r,c):
         self._tech_item = table_current_changed(self.tech, r, c)
@@ -24,7 +23,7 @@ class panel(frame):
         
 if __name__ == '__main__':
     app = QApplication([])
-    form = panel()
+    form = ccregWindow()
     form.show()
     app.setMainWidget(form)
     app.exec_loop()

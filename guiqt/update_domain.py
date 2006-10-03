@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
 
 from qt import *
-from update_domain import frame
 from shared_fnc import *
+import _update_domain
 
-
-class panel(frame):
+class ccregWindow(_update_domain.ccregWindow):
 
     def __init__(self,parent = None,name = None,fl = 0):
-        frame.__init__(self,parent,name,fl)
+        _update_domain.ccregWindow.__init__(self,parent,name,fl)
         self.add_admin.horizontalHeader().resizeSection(0,320)
         self._add_admin_item = None
         self.rem_admin.horizontalHeader().resizeSection(0,320)

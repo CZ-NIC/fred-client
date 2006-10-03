@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 
 from qt import *
-from dns import frame
 from shared_fnc import *
+import _dns
 
-class panel(frame):
+class ccregWindow(_dns.ccregWindow):
 
     def __init__(self,parent = None,name = None,fl = 0):
-        frame.__init__(self,parent,name,fl)
+        _dns.ccregWindow.__init__(self,parent,name,fl)
         self.addr.horizontalHeader().resizeSection(0,300)
         self._addr_item = None
 
@@ -20,7 +20,7 @@ class panel(frame):
 
 if __name__ == '__main__':
     app = QApplication([])
-    form = panel()
+    form = ccregWindow()
     form.show()
     app.setMainWidget(form)
     app.exec_loop()

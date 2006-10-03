@@ -1,8 +1,8 @@
 <!DOCTYPE UI><UI version="3.3" stdsetdef="1">
-<class>main_dialog</class>
+<class>ccregWindow</class>
 <widget class="QDialog">
     <property name="name">
-        <cstring>main_dialog</cstring>
+	<cstring>ccregWindow</cstring>
     </property>
     <property name="geometry">
         <rect>
@@ -171,7 +171,7 @@ Parameters in &lt;b&gt;bold&lt;/b&gt; style are &lt;b&gt;required&lt;/b&gt;. Oth
                 </property>
                 <widget class="QLabel">
                     <property name="name">
-                        <cstring>textLabel9</cstring>
+                        <cstring>textLabel2</cstring>
                     </property>
                     <property name="geometry">
                         <rect>
@@ -200,7 +200,7 @@ Parameters in &lt;b&gt;bold&lt;/b&gt; style are &lt;b&gt;required&lt;/b&gt;. Oth
                 </widget>
                 <widget class="QLabel">
                     <property name="name">
-                        <cstring>textLabel11_2</cstring>
+                        <cstring>textLabel3</cstring>
                     </property>
                     <property name="geometry">
                         <rect>
@@ -242,7 +242,7 @@ Parameters in &lt;b&gt;bold&lt;/b&gt; style are &lt;b&gt;required&lt;/b&gt;. Oth
                 </widget>
                 <widget class="QLabel">
                     <property name="name">
-                        <cstring>textLabel10</cstring>
+                        <cstring>textLabel4</cstring>
                     </property>
                     <property name="geometry">
                         <rect>
@@ -271,7 +271,7 @@ Parameters in &lt;b&gt;bold&lt;/b&gt; style are &lt;b&gt;required&lt;/b&gt;. Oth
                 </widget>
                 <widget class="QLabel">
                     <property name="name">
-                        <cstring>textLabel8</cstring>
+                        <cstring>textLabel5</cstring>
                     </property>
                     <property name="geometry">
                         <rect>
@@ -287,7 +287,7 @@ Parameters in &lt;b&gt;bold&lt;/b&gt; style are &lt;b&gt;required&lt;/b&gt;. Oth
                 </widget>
                 <widget class="QLabel">
                     <property name="name">
-                        <cstring>textLabel11</cstring>
+                        <cstring>textLabel6</cstring>
                     </property>
                     <property name="geometry">
                         <rect>
@@ -344,7 +344,7 @@ Parameters in &lt;b&gt;bold&lt;/b&gt; style are &lt;b&gt;required&lt;/b&gt;. Oth
             </widget>
             <widget class="QLabel">
                 <property name="name">
-                    <cstring>textLabel2</cstring>
+                    <cstring>textLabel7</cstring>
                 </property>
                 <property name="geometry">
                     <rect>
@@ -405,7 +405,7 @@ This part use to connect and disconnect to the EPP server. You need defined path
                             </attribute>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel4</cstring>
+                                    <cstring>textLabel8</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -421,7 +421,7 @@ This part use to connect and disconnect to the EPP server. You need defined path
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_3</cstring>
+                                    <cstring>textLabel9</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -437,7 +437,7 @@ This part use to connect and disconnect to the EPP server. You need defined path
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel3</cstring>
+                                    <cstring>textLabel10</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -453,7 +453,7 @@ This part use to connect and disconnect to the EPP server. You need defined path
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel5</cstring>
+                                    <cstring>textLabel11</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -511,7 +511,7 @@ This part use to connect and disconnect to the EPP server. You need defined path
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel1_2</cstring>
+                                    <cstring>textLabel12</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -571,7 +571,7 @@ The "login" command establishes an ongoing server session that preserves client 
                             </attribute>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel1_2_2</cstring>
+                                    <cstring>textLabel13</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -606,7 +606,7 @@ The "login" command establishes an ongoing server session that preserves client 
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5</cstring>
+                                    <cstring>textLabel14</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -622,7 +622,7 @@ The "login" command establishes an ongoing server session that preserves client 
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_2</cstring>
+                                    <cstring>textLabel15</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -721,7 +721,7 @@ The "login" command establishes an ongoing server session that preserves client 
                             </attribute>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel5_2</cstring>
+                                    <cstring>textLabel16</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -750,7 +750,7 @@ The "login" command establishes an ongoing server session that preserves client 
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel1_2_3</cstring>
+                                    <cstring>textLabel17</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -794,7 +794,7 @@ The EPP "logout" command is used to end a session with an EPP server.</string>
                             </attribute>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel1_2_3_2</cstring>
+                                    <cstring>textLabel18</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -813,7 +813,7 @@ The EPP "logout" command is used to end a session with an EPP server.</string>
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_3</cstring>
+                                    <cstring>textLabel19</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -829,7 +829,7 @@ The EPP "logout" command is used to end a session with an EPP server.</string>
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_2_2</cstring>
+                                    <cstring>textLabel20</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -944,7 +944,7 @@ The EPP "logout" command is used to end a session with an EPP server.</string>
                             </attribute>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel5_3</cstring>
+                                    <cstring>textLabel21</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -960,7 +960,7 @@ The EPP "logout" command is used to end a session with an EPP server.</string>
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel4_2</cstring>
+                                    <cstring>textLabel22</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -976,7 +976,7 @@ The EPP "logout" command is used to end a session with an EPP server.</string>
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel6</cstring>
+                                    <cstring>textLabel23</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -1050,7 +1050,7 @@ The EPP "logout" command is used to end a session with an EPP server.</string>
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel1_2_3_3</cstring>
+                                    <cstring>textLabel24</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -1119,7 +1119,7 @@ The EPP "logout" command is used to end a session with an EPP server.</string>
                             </attribute>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_2_2_2</cstring>
+                                    <cstring>textLabel25</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -1135,7 +1135,7 @@ The EPP "logout" command is used to end a session with an EPP server.</string>
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_3_2</cstring>
+                                    <cstring>textLabel26</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -1151,7 +1151,7 @@ The EPP "logout" command is used to end a session with an EPP server.</string>
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel1_2_3_4</cstring>
+                                    <cstring>textLabel27</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -1269,7 +1269,7 @@ The EPP "logout" command is used to end a session with an EPP server.</string>
                             </attribute>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel1_2_3_5</cstring>
+                                    <cstring>textLabel28</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -1313,7 +1313,7 @@ The EPP "hello" request a "greeting" response message from an EPP server at any 
                             </attribute>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_2_2_3</cstring>
+                                    <cstring>textLabel29</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -1329,7 +1329,7 @@ The EPP "hello" request a "greeting" response message from an EPP server at any 
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_3_3</cstring>
+                                    <cstring>textLabel30</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -1345,7 +1345,7 @@ The EPP "hello" request a "greeting" response message from an EPP server at any 
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel1_2_3_6</cstring>
+                                    <cstring>textLabel31</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -1465,7 +1465,7 @@ The EPP "hello" request a "greeting" response message from an EPP server at any 
             </widget>
             <widget class="QLabel">
                 <property name="name">
-                    <cstring>textLabel2_2</cstring>
+                    <cstring>textLabel32</cstring>
                 </property>
                 <property name="geometry">
                     <rect>
@@ -1526,7 +1526,7 @@ Contact represents person. This preson can be domain owner or administrator or r
                             </attribute>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel1_2_3_7_2</cstring>
+                                    <cstring>textLabel33</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -1546,7 +1546,7 @@ The EPP "check" command is used to determine if an object can be provisioned wit
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel5_4</cstring>
+                                    <cstring>textLabel34</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -1604,7 +1604,7 @@ The EPP "check" command is used to determine if an object can be provisioned wit
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_3_2</cstring>
+                                    <cstring>textLabel35</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -1632,7 +1632,7 @@ Type one or more names (handles) what you want to check. Separate names by space
                             </attribute>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_2_2_4</cstring>
+                                    <cstring>textLabel36</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -1648,7 +1648,7 @@ Type one or more names (handles) what you want to check. Separate names by space
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_3_4</cstring>
+                                    <cstring>textLabel37</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -1664,7 +1664,7 @@ Type one or more names (handles) what you want to check. Separate names by space
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel1_2_3_7</cstring>
+                                    <cstring>textLabel38</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -1782,7 +1782,7 @@ Type one or more names (handles) what you want to check. Separate names by space
                             </attribute>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel1_2_3_7_3</cstring>
+                                    <cstring>textLabel39</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -1806,7 +1806,7 @@ specified using the EPP extension framework.</string>
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel3_2</cstring>
+                                    <cstring>textLabel40</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -1835,7 +1835,7 @@ specified using the EPP extension framework.</string>
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel5_5</cstring>
+                                    <cstring>textLabel41</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -1888,7 +1888,7 @@ specified using the EPP extension framework.</string>
                             </attribute>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_2_2_5</cstring>
+                                    <cstring>textLabel42</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -1904,7 +1904,7 @@ specified using the EPP extension framework.</string>
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_3_5</cstring>
+                                    <cstring>textLabel43</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -1920,7 +1920,7 @@ specified using the EPP extension framework.</string>
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel1_2_3_7_3_2</cstring>
+                                    <cstring>textLabel44</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -2097,7 +2097,7 @@ specified using the EPP extension framework.</string>
                             </attribute>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_3_6</cstring>
+                                    <cstring>textLabel45</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -2113,7 +2113,7 @@ specified using the EPP extension framework.</string>
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_2_2_6</cstring>
+                                    <cstring>textLabel46</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -2129,7 +2129,7 @@ specified using the EPP extension framework.</string>
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel1_2_3_7_3_3_2</cstring>
+                                    <cstring>textLabel47</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -2290,7 +2290,7 @@ specified using the EPP extension framework.</string>
                             </attribute>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_2_2_7</cstring>
+                                    <cstring>textLabel48</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -2306,7 +2306,7 @@ specified using the EPP extension framework.</string>
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_3_7</cstring>
+                                    <cstring>textLabel49</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -2322,7 +2322,7 @@ specified using the EPP extension framework.</string>
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel1_2_3_7_3_3_3_2</cstring>
+                                    <cstring>textLabel50</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -2440,7 +2440,7 @@ specified using the EPP extension framework.</string>
                             </attribute>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel1_2_3_7_3_6</cstring>
+                                    <cstring>textLabel51</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -2460,7 +2460,7 @@ The EPP "delete" command is used to remove an instance of an existing object.</s
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel3_2_4</cstring>
+                                    <cstring>textLabel52</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -2476,7 +2476,7 @@ The EPP "delete" command is used to remove an instance of an existing object.</s
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel5_5_4</cstring>
+                                    <cstring>textLabel53</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -2542,7 +2542,7 @@ The EPP "delete" command is used to remove an instance of an existing object.</s
                             </attribute>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_3_8</cstring>
+                                    <cstring>textLabel54</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -2558,7 +2558,7 @@ The EPP "delete" command is used to remove an instance of an existing object.</s
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_2_2_8</cstring>
+                                    <cstring>textLabel55</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -2574,7 +2574,7 @@ The EPP "delete" command is used to remove an instance of an existing object.</s
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel1_2_3_7_3_3_3_3_2</cstring>
+                                    <cstring>textLabel56</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -2692,7 +2692,7 @@ The EPP "delete" command is used to remove an instance of an existing object.</s
                             </attribute>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel1_2_3_7_3_7</cstring>
+                                    <cstring>textLabel57</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -2718,7 +2718,7 @@ reject a transfer request using the "op" command attribute.</string>
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel3_2_5_2</cstring>
+                                    <cstring>textLabel58</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -2734,7 +2734,7 @@ reject a transfer request using the "op" command attribute.</string>
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel3_2_5</cstring>
+                                    <cstring>textLabel59</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -2750,7 +2750,7 @@ reject a transfer request using the "op" command attribute.</string>
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel5_5_5</cstring>
+                                    <cstring>textLabel60</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -2829,7 +2829,7 @@ reject a transfer request using the "op" command attribute.</string>
                             </attribute>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_2_2_9</cstring>
+                                    <cstring>textLabel61</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -2845,7 +2845,7 @@ reject a transfer request using the "op" command attribute.</string>
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_3_9</cstring>
+                                    <cstring>textLabel62</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -2861,7 +2861,7 @@ reject a transfer request using the "op" command attribute.</string>
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel1_2_3_7_3_3_3_3_3_2</cstring>
+                                    <cstring>textLabel63</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -2979,7 +2979,7 @@ reject a transfer request using the "op" command attribute.</string>
                             </attribute>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel1_2_3_7_3_6_4</cstring>
+                                    <cstring>textLabel64</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -2999,7 +2999,7 @@ The EPP "list" command is used to list all ID of an existing object owning by re
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel5_5_4_4</cstring>
+                                    <cstring>textLabel63</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -3052,7 +3052,7 @@ The EPP "list" command is used to list all ID of an existing object owning by re
                             </attribute>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_3_10</cstring>
+                                    <cstring>textLabel66</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -3068,7 +3068,7 @@ The EPP "list" command is used to list all ID of an existing object owning by re
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel1_2_3_7_3_3_3_3_3_3_2</cstring>
+                                    <cstring>textLabel67</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -3122,7 +3122,7 @@ The EPP "list" command is used to list all ID of an existing object owning by re
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_2_2_10</cstring>
+                                    <cstring>textLabel68</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -3215,7 +3215,7 @@ The EPP "list" command is used to list all ID of an existing object owning by re
             </widget>
             <widget class="QLabel">
                 <property name="name">
-                    <cstring>textLabel2_2_2</cstring>
+                    <cstring>textLabel69</cstring>
                 </property>
                 <property name="geometry">
                     <rect>
@@ -3276,7 +3276,7 @@ Nsset is set of informations about domain name servers and their address and adm
                             </attribute>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel1_2_3_7_2_2</cstring>
+                                    <cstring>textLabel70</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -3296,7 +3296,7 @@ The EPP "check" command is used to determine if an object can be provisioned wit
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel5_4_2</cstring>
+                                    <cstring>textLabel71</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -3354,7 +3354,7 @@ The EPP "check" command is used to determine if an object can be provisioned wit
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_3_2_2</cstring>
+                                    <cstring>textLabel72</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -3382,7 +3382,7 @@ Type one or more names (handles) what you want to check. Separate names by space
                             </attribute>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_3_11</cstring>
+                                    <cstring>textLabel73</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -3398,7 +3398,7 @@ Type one or more names (handles) what you want to check. Separate names by space
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_2_2_11</cstring>
+                                    <cstring>textLabel74</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -3414,7 +3414,7 @@ Type one or more names (handles) what you want to check. Separate names by space
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel1_2_3_7_3_3_3_3_3_3_3_2</cstring>
+                                    <cstring>textLabel75</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -3532,7 +3532,7 @@ Type one or more names (handles) what you want to check. Separate names by space
                             </attribute>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel5_5_2</cstring>
+                                    <cstring>textLabel76</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -3548,7 +3548,7 @@ Type one or more names (handles) what you want to check. Separate names by space
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel3_2_2</cstring>
+                                    <cstring>textLabel77</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -3606,7 +3606,7 @@ Type one or more names (handles) what you want to check. Separate names by space
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel1_2_3_7_3_4</cstring>
+                                    <cstring>textLabel78</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -3638,7 +3638,7 @@ specified using the EPP extension framework.</string>
                             </attribute>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_3_12</cstring>
+                                    <cstring>textLabel79</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -3654,7 +3654,7 @@ specified using the EPP extension framework.</string>
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_2_2_12</cstring>
+                                    <cstring>textLabel80</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -3670,7 +3670,7 @@ specified using the EPP extension framework.</string>
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel1_2_3_7_3_3_3_3_3_3_3_3_2</cstring>
+                                    <cstring>textLabel81</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -3831,7 +3831,7 @@ specified using the EPP extension framework.</string>
                             </attribute>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_2_2_13</cstring>
+                                    <cstring>textLabel82</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -3847,7 +3847,7 @@ specified using the EPP extension framework.</string>
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_3_13</cstring>
+                                    <cstring>textLabel83</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -3863,7 +3863,7 @@ specified using the EPP extension framework.</string>
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel1_2_3_7_3_3_3_3_3_3_3_3_3_2</cstring>
+                                    <cstring>textLabel84</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -4024,7 +4024,7 @@ specified using the EPP extension framework.</string>
                             </attribute>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_3_14</cstring>
+                                    <cstring>textLabel85</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -4040,7 +4040,7 @@ specified using the EPP extension framework.</string>
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_2_2_14</cstring>
+                                    <cstring>textLabel86</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -4056,7 +4056,7 @@ specified using the EPP extension framework.</string>
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel1_2_3_7_3_3_3_3_3_3_3_3_3_3_2</cstring>
+                                    <cstring>textLabel87</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -4174,7 +4174,7 @@ specified using the EPP extension framework.</string>
                             </attribute>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel3_2_4_2</cstring>
+                                    <cstring>textLabel88</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -4190,7 +4190,7 @@ specified using the EPP extension framework.</string>
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel5_5_4_2</cstring>
+                                    <cstring>textLabel89</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -4206,7 +4206,7 @@ specified using the EPP extension framework.</string>
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel1_2_3_7_3_6_2</cstring>
+                                    <cstring>textLabel90</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -4276,7 +4276,7 @@ The EPP "delete" command is used to remove an instance of an existing object.</s
                             </attribute>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_2_2_15</cstring>
+                                    <cstring>textLabel91</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -4292,7 +4292,7 @@ The EPP "delete" command is used to remove an instance of an existing object.</s
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_3_15</cstring>
+                                    <cstring>textLabel92</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -4308,7 +4308,7 @@ The EPP "delete" command is used to remove an instance of an existing object.</s
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel1_2_3_7_3_3_3_3_3_3_3_3_3_3_3_2</cstring>
+                                    <cstring>textLabel93</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -4426,7 +4426,7 @@ The EPP "delete" command is used to remove an instance of an existing object.</s
                             </attribute>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel5_5_4_4_2</cstring>
+                                    <cstring>textLabel94</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -4442,7 +4442,7 @@ The EPP "delete" command is used to remove an instance of an existing object.</s
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel1_2_3_7_3_6_4_2</cstring>
+                                    <cstring>textLabel95</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -4499,7 +4499,7 @@ The EPP "list" command is used to list all ID of an existing object owning by re
                             </attribute>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_3_16</cstring>
+                                    <cstring>textLabel96</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -4515,7 +4515,7 @@ The EPP "list" command is used to list all ID of an existing object owning by re
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel1_2_3_7_3_3_3_3_3_3_3_3_3_3_3_3_2</cstring>
+                                    <cstring>textLabel97</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -4569,7 +4569,7 @@ The EPP "list" command is used to list all ID of an existing object owning by re
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_2_2_16</cstring>
+                                    <cstring>textLabel98</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -4662,7 +4662,7 @@ The EPP "list" command is used to list all ID of an existing object owning by re
             </widget>
             <widget class="QLabel">
                 <property name="name">
-                    <cstring>textLabel2_2_2_2</cstring>
+                    <cstring>textLabel99</cstring>
                 </property>
                 <property name="geometry">
                     <rect>
@@ -4723,7 +4723,7 @@ Domain is name whitch is associates nsset and contacts.</string>
                             </attribute>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel5_4_2_2</cstring>
+                                    <cstring>textLabel100</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -4739,7 +4739,7 @@ Domain is name whitch is associates nsset and contacts.</string>
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel1_2_3_7_2_2_2</cstring>
+                                    <cstring>textLabel101</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -4801,7 +4801,7 @@ The EPP "check" command is used to determine if an object can be provisioned wit
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_3_2_2_2</cstring>
+                                    <cstring>textLabel102</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -4829,7 +4829,7 @@ Type one or more names what you want to check. Separate names by spaces or new l
                             </attribute>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_2_2_17</cstring>
+                                    <cstring>textLabel103</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -4845,7 +4845,7 @@ Type one or more names what you want to check. Separate names by spaces or new l
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_3_17</cstring>
+                                    <cstring>textLabel104</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -4861,7 +4861,7 @@ Type one or more names what you want to check. Separate names by spaces or new l
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel1_2_3_7_3_3_3_3_3_3_3_3_3_3_3_3_3_2</cstring>
+                                    <cstring>textLabel105</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -4979,7 +4979,7 @@ Type one or more names what you want to check. Separate names by spaces or new l
                             </attribute>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel5_5_3</cstring>
+                                    <cstring>textLabel106</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -4995,7 +4995,7 @@ Type one or more names what you want to check. Separate names by spaces or new l
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel3_2_3</cstring>
+                                    <cstring>textLabel107</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -5053,7 +5053,7 @@ Type one or more names what you want to check. Separate names by spaces or new l
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel1_2_3_7_3_5</cstring>
+                                    <cstring>textLabel108</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -5085,7 +5085,7 @@ specified using the EPP extension framework.</string>
                             </attribute>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_3_18</cstring>
+                                    <cstring>textLabel109</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -5101,7 +5101,7 @@ specified using the EPP extension framework.</string>
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_2_2_18</cstring>
+                                    <cstring>textLabel110</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -5117,7 +5117,7 @@ specified using the EPP extension framework.</string>
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel1_2_3_7_3_3_3_3_3_3_3_3_3_3_3_3_3_3_2</cstring>
+                                    <cstring>textLabel111</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -5278,7 +5278,7 @@ specified using the EPP extension framework.</string>
                             </attribute>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_2_2_19</cstring>
+                                    <cstring>textLabel112</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -5294,7 +5294,7 @@ specified using the EPP extension framework.</string>
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_3_19</cstring>
+                                    <cstring>textLabel113</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -5310,7 +5310,7 @@ specified using the EPP extension framework.</string>
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel1_2_3_7_3_3_3_3_3_3_3_3_3_3_3_3_3_3_3_2</cstring>
+                                    <cstring>textLabel114</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -5471,7 +5471,7 @@ specified using the EPP extension framework.</string>
                             </attribute>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_2_2_20</cstring>
+                                    <cstring>textLabel115</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -5487,7 +5487,7 @@ specified using the EPP extension framework.</string>
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_3_20</cstring>
+                                    <cstring>textLabel116</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -5503,7 +5503,7 @@ specified using the EPP extension framework.</string>
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel1_2_3_7_3_3_3_3_3_3_3_3_3_3_3_3_3_3_3_3_2</cstring>
+                                    <cstring>textLabel117</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -5621,7 +5621,7 @@ specified using the EPP extension framework.</string>
                             </attribute>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel5_5_4_3</cstring>
+                                    <cstring>textLabel118</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -5637,7 +5637,7 @@ specified using the EPP extension framework.</string>
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel3_2_4_3</cstring>
+                                    <cstring>textLabel119</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -5653,7 +5653,7 @@ specified using the EPP extension framework.</string>
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel1_2_3_7_3_6_3</cstring>
+                                    <cstring>textLabel120</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -5723,7 +5723,7 @@ The EPP "delete" command is used to remove an instance of an existing object.</s
                             </attribute>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_2_2_21</cstring>
+                                    <cstring>textLabel121</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -5739,7 +5739,7 @@ The EPP "delete" command is used to remove an instance of an existing object.</s
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_3_21</cstring>
+                                    <cstring>textLabel122</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -5755,7 +5755,7 @@ The EPP "delete" command is used to remove an instance of an existing object.</s
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel1_2_3_7_3_3_3_3_3_3_3_3_3_3_3_3_3_3_3_3_3_2</cstring>
+                                    <cstring>textLabel123</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -5873,7 +5873,7 @@ The EPP "delete" command is used to remove an instance of an existing object.</s
                             </attribute>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel3_2_5_3</cstring>
+                                    <cstring>textLabel124</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -5889,7 +5889,7 @@ The EPP "delete" command is used to remove an instance of an existing object.</s
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel5_5_5_2</cstring>
+                                    <cstring>textLabel125</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -5905,7 +5905,7 @@ The EPP "delete" command is used to remove an instance of an existing object.</s
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel3_2_5_2_2</cstring>
+                                    <cstring>textLabel126</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -5976,7 +5976,7 @@ The EPP "delete" command is used to remove an instance of an existing object.</s
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel1_2_3_7_3_7_2</cstring>
+                                    <cstring>textLabel127</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -6010,7 +6010,7 @@ reject a transfer request using the "op" command attribute.</string>
                             </attribute>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_2_2_22</cstring>
+                                    <cstring>textLabel128</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -6026,7 +6026,7 @@ reject a transfer request using the "op" command attribute.</string>
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_3_22</cstring>
+                                    <cstring>textLabel129</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -6042,7 +6042,7 @@ reject a transfer request using the "op" command attribute.</string>
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel1_2_3_7_3_3_3_3_3_3_3_3_3_3_3_3_3_3_3_3_3_3_2</cstring>
+                                    <cstring>textLabel130</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -6189,7 +6189,7 @@ reject a transfer request using the "op" command attribute.</string>
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel5_5_6</cstring>
+                                    <cstring>textLabel131</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -6205,7 +6205,7 @@ reject a transfer request using the "op" command attribute.</string>
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel5_5_6_4</cstring>
+                                    <cstring>textLabel132</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -6259,7 +6259,7 @@ reject a transfer request using the "op" command attribute.</string>
                                 </widget>
                                 <widget class="QLabel">
                                     <property name="name">
-                                        <cstring>textLabel1_3</cstring>
+                                        <cstring>textLabel133</cstring>
                                     </property>
                                     <property name="geometry">
                                         <rect>
@@ -6289,7 +6289,7 @@ reject a transfer request using the "op" command attribute.</string>
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel5_5_6_3</cstring>
+                                    <cstring>textLabel134</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -6318,7 +6318,7 @@ reject a transfer request using the "op" command attribute.</string>
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel3_2_6</cstring>
+                                    <cstring>textLabel135</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -6334,7 +6334,7 @@ reject a transfer request using the "op" command attribute.</string>
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel5_5_6_2</cstring>
+                                    <cstring>textLabel136</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -6350,7 +6350,7 @@ reject a transfer request using the "op" command attribute.</string>
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel1_2_3_7_3_3</cstring>
+                                    <cstring>textLabel137</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -6423,7 +6423,7 @@ The EPP "renew" command is used to extend validity of an existing object.</strin
                             </attribute>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_3_23</cstring>
+                                    <cstring>textLabel138</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -6439,7 +6439,7 @@ The EPP "renew" command is used to extend validity of an existing object.</strin
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_2_2_23</cstring>
+                                    <cstring>textLabel139</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -6455,7 +6455,7 @@ The EPP "renew" command is used to extend validity of an existing object.</strin
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel1_2_3_7_3_3_3_3_3_3_3_3_3_3_3_3_3_3_3_3_3_3_3_2</cstring>
+                                    <cstring>textLabel140</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -6573,7 +6573,7 @@ The EPP "renew" command is used to extend validity of an existing object.</strin
                             </attribute>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel5_5_4_4_3</cstring>
+                                    <cstring>textLabel141</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -6589,7 +6589,7 @@ The EPP "renew" command is used to extend validity of an existing object.</strin
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel1_2_3_7_3_6_4_3</cstring>
+                                    <cstring>textLabel142</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -6646,7 +6646,7 @@ The EPP "list" command is used to list all ID of an existing object owning by re
                             </attribute>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_3_24</cstring>
+                                    <cstring>textLabel143</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -6662,7 +6662,7 @@ The EPP "list" command is used to list all ID of an existing object owning by re
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel1_2_3_7_3_3_3_3_3_3_3_3_3_3_3_3_3_3_3_3_3_3_3_3_2</cstring>
+                                    <cstring>textLabel144</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -6716,7 +6716,7 @@ The EPP "list" command is used to list all ID of an existing object owning by re
                             </widget>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel2_5_2_2_24</cstring>
+                                    <cstring>textLabel145</cstring>
                                 </property>
                                 <property name="geometry">
                                     <rect>
@@ -6807,151 +6807,151 @@ The EPP "list" command is used to list all ID of an existing object owning by re
     <connection>
         <sender>send_delete_contact</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>delete_contact()</slot>
     </connection>
     <connection>
         <sender>send_delete_domain</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>delete_domain()</slot>
     </connection>
     <connection>
         <sender>send_delete_nsset</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>delete_nsset()</slot>
     </connection>
     <connection>
         <sender>send_hello</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>hello()</slot>
     </connection>
     <connection>
         <sender>send_check_contact</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>check_contact()</slot>
     </connection>
     <connection>
         <sender>send_check_domain</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>check_domain()</slot>
     </connection>
     <connection>
         <sender>send_check_nsset</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>check_nsset()</slot>
     </connection>
     <connection>
         <sender>send_info_contact</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>info_contact()</slot>
     </connection>
     <connection>
         <sender>send_info_domain</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>info_domain()</slot>
     </connection>
     <connection>
         <sender>send_info_nsset</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>info_nsset()</slot>
     </connection>
     <connection>
         <sender>send_list_contact</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>list_contact()</slot>
     </connection>
     <connection>
         <sender>send_list_domain</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>list_domain()</slot>
     </connection>
     <connection>
         <sender>send_list_nsset</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>list_nsset()</slot>
     </connection>
     <connection>
         <sender>send_login</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>login()</slot>
     </connection>
     <connection>
         <sender>send_logout</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>logout()</slot>
     </connection>
     <connection>
         <sender>send_poll</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>poll()</slot>
     </connection>
     <connection>
         <sender>send_transfer_contact</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>transfer_contact()</slot>
     </connection>
     <connection>
         <sender>send_transfer_domain</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>transfer_domain()</slot>
     </connection>
     <connection>
         <sender>send_create_contact</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>create_contact()</slot>
     </connection>
     <connection>
         <sender>send_create_domain</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>create_domain()</slot>
     </connection>
     <connection>
         <sender>send_create_nsset</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>create_nsset()</slot>
     </connection>
     <connection>
         <sender>send_update_contact</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>update_contact()</slot>
     </connection>
     <connection>
         <sender>send_update_domain</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>update_domain()</slot>
     </connection>
     <connection>
         <sender>send_update_nsset</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>update_nsset()</slot>
     </connection>
     <connection>
         <sender>send_renew_domain</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>renew_domain()</slot>
     </connection>
     <connection>
@@ -6963,157 +6963,157 @@ The EPP "list" command is used to list all ID of an existing object owning by re
     <connection>
         <sender>btn_source_login</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>source_login()</slot>
     </connection>
     <connection>
         <sender>btn_source_logout</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>source_logout()</slot>
     </connection>
     <connection>
         <sender>btn_source_poll</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>source_poll()</slot>
     </connection>
     <connection>
         <sender>btn_source_hello</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>source_hello()</slot>
     </connection>
     <connection>
         <sender>btn_source_check_contact</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>source_check_contact()</slot>
     </connection>
     <connection>
         <sender>btn_source_info_contact</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>source_info_contact()</slot>
     </connection>
     <connection>
         <sender>btn_source_create_contact</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>source_create_contact()</slot>
     </connection>
     <connection>
         <sender>btn_source_update_contact</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>source_update_contact()</slot>
     </connection>
     <connection>
         <sender>btn_source_delete_contact</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>source_delete_contact()</slot>
     </connection>
     <connection>
         <sender>btn_source_transfer_contact</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>source_transfer_contact()</slot>
     </connection>
     <connection>
         <sender>btn_source_list_contact</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>source_list_contact()</slot>
     </connection>
     <connection>
         <sender>btn_source_check_nsset</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>source_check_nsset()</slot>
     </connection>
     <connection>
         <sender>btn_source_info_nsset</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>source_info_nsset()</slot>
     </connection>
     <connection>
         <sender>btn_source_create_nsset</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>source_create_nsset()</slot>
     </connection>
     <connection>
         <sender>btn_source_update_nsset</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>source_update_nsset()</slot>
     </connection>
     <connection>
         <sender>btn_source_delete_nsset</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>source_delete_nsset()</slot>
     </connection>
     <connection>
         <sender>btn_source_list_nsset</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>source_list_nsset()</slot>
     </connection>
     <connection>
         <sender>btn_source_check_domain</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>source_check_domain()</slot>
     </connection>
     <connection>
         <sender>btn_source_info_domain</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>source_info_domain()</slot>
     </connection>
     <connection>
         <sender>btn_source_create_domain</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>source_create_domain()</slot>
     </connection>
     <connection>
         <sender>btn_source_update_domain</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>source_update_domain()</slot>
     </connection>
     <connection>
         <sender>btn_source_delete_domain</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>source_delete_domain()</slot>
     </connection>
     <connection>
         <sender>btn_source_transfer_domain</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>source_transfer_domain()</slot>
     </connection>
     <connection>
         <sender>btn_source_renew_domain</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>source_renew_domain()</slot>
     </connection>
     <connection>
         <sender>btn_source_list_domain</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>source_list_domain()</slot>
     </connection>
     <connection>
         <sender>buttonOk</sender>
         <signal>clicked()</signal>
-        <receiver>main_dialog</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>btn_close()</slot>
     </connection>
 </connections>

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'create_domain.ui'
 #
-# Created: Pá zář 29 17:45:39 2006
+# Created: Út říj 3 10:10:44 2006
 #      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,44 +12,44 @@ from qt import *
 from qttable import QTable
 
 
-class dialog(QWidget):
+class ccregWindow(QWidget):
     def __init__(self,parent = None,name = None,fl = 0):
         QWidget.__init__(self,parent,name,fl)
 
         if not name:
-            self.setName("dialog")
+            self.setName("ccregWindow")
 
 
 
-        self.textLabel3_2_6 = QLabel(self,"textLabel3_2_6")
-        self.textLabel3_2_6.setGeometry(QRect(10,110,160,20))
+        self.textLabel1 = QLabel(self,"textLabel1")
+        self.textLabel1.setGeometry(QRect(10,110,160,20))
 
-        self.textLabel3_2_6_2 = QLabel(self,"textLabel3_2_6_2")
-        self.textLabel3_2_6_2.setGeometry(QRect(10,140,160,20))
+        self.textLabel2 = QLabel(self,"textLabel2")
+        self.textLabel2.setGeometry(QRect(10,140,160,20))
 
-        self.textLabel3_2_6_6 = QLabel(self,"textLabel3_2_6_6")
-        self.textLabel3_2_6_6.setGeometry(QRect(10,170,160,20))
+        self.textLabel3 = QLabel(self,"textLabel3")
+        self.textLabel3.setGeometry(QRect(10,170,160,20))
 
-        self.textLabel3_2_6_6_2 = QLabel(self,"textLabel3_2_6_6_2")
-        self.textLabel3_2_6_6_2.setGeometry(QRect(10,200,160,20))
+        self.textLabel4 = QLabel(self,"textLabel4")
+        self.textLabel4.setGeometry(QRect(10,200,160,20))
 
-        self.textLabel3_2_6_6_2_6_2_3 = QLabel(self,"textLabel3_2_6_6_2_6_2_3")
-        self.textLabel3_2_6_6_2_6_2_3.setGeometry(QRect(10,230,160,20))
+        self.textLabel5 = QLabel(self,"textLabel5")
+        self.textLabel5.setGeometry(QRect(10,230,160,20))
 
-        self.textLabel3_2_6_6_2_3 = QLabel(self,"textLabel3_2_6_6_2_3")
-        self.textLabel3_2_6_6_2_3.setGeometry(QRect(10,330,160,20))
+        self.textLabel6 = QLabel(self,"textLabel6")
+        self.textLabel6.setGeometry(QRect(10,330,160,20))
 
-        self.textLabel3_2_6_6_2_6_5 = QLabel(self,"textLabel3_2_6_6_2_6_5")
-        self.textLabel3_2_6_6_2_6_5.setGeometry(QRect(10,480,160,20))
+        self.textLabel7 = QLabel(self,"textLabel7")
+        self.textLabel7.setGeometry(QRect(10,480,160,20))
 
         self.groupBox2_2 = QGroupBox(self,"groupBox2_2")
         self.groupBox2_2.setGeometry(QRect(180,230,360,90))
 
-        self.textLabel3_2_6_6_2_6_2_2_2 = QLabel(self.groupBox2_2,"textLabel3_2_6_6_2_6_2_2_2")
-        self.textLabel3_2_6_6_2_6_2_2_2.setGeometry(QRect(10,20,130,20))
+        self.textLabel8 = QLabel(self.groupBox2_2,"textLabel8")
+        self.textLabel8.setGeometry(QRect(10,20,130,20))
 
-        self.textLabel3_2_6_6_2_6_2_2_2_2 = QLabel(self.groupBox2_2,"textLabel3_2_6_6_2_6_2_2_2_2")
-        self.textLabel3_2_6_6_2_6_2_2_2_2.setGeometry(QRect(10,50,130,20))
+        self.textLabel9 = QLabel(self.groupBox2_2,"textLabel9")
+        self.textLabel9.setGeometry(QRect(10,50,130,20))
 
         self.period_unit = QComboBox(0,self.groupBox2_2,"period_unit")
         self.period_unit.setGeometry(QRect(150,20,85,22))
@@ -57,12 +57,12 @@ class dialog(QWidget):
         self.period_num = QLineEdit(self.groupBox2_2,"period_num")
         self.period_num.setGeometry(QRect(150,50,200,22))
 
-        self.textLabel3_2_6_6_2_5 = QLabel(self,"textLabel3_2_6_6_2_5")
-        self.textLabel3_2_6_6_2_5.setGeometry(QRect(10,450,160,20))
+        self.textLabel10 = QLabel(self,"textLabel10")
+        self.textLabel10.setGeometry(QRect(10,450,160,20))
 
-        self.textLabel1_2_3_7_3_3 = QLabel(self,"textLabel1_2_3_7_3_3")
-        self.textLabel1_2_3_7_3_3.setGeometry(QRect(10,10,530,90))
-        self.textLabel1_2_3_7_3_3.setAlignment(QLabel.WordBreak | QLabel.AlignTop | QLabel.AlignLeft)
+        self.textLabel11 = QLabel(self,"textLabel11")
+        self.textLabel11.setGeometry(QRect(10,10,530,90))
+        self.textLabel11.setAlignment(QLabel.WordBreak | QLabel.AlignTop | QLabel.AlignLeft)
 
         self.name = QLineEdit(self,"name")
         self.name.setGeometry(QRect(180,110,360,22))
@@ -96,8 +96,8 @@ class dialog(QWidget):
         self.cltrid = QLineEdit(self,"cltrid")
         self.cltrid.setGeometry(QRect(180,480,360,22))
 
-        self.textLabel1 = QLabel(self,"textLabel1")
-        self.textLabel1.setGeometry(QRect(330,450,210,20))
+        self.textLabel12 = QLabel(self,"textLabel12")
+        self.textLabel12.setGeometry(QRect(330,450,210,20))
 
         self.languageChange()
 
@@ -121,21 +121,21 @@ class dialog(QWidget):
 
     def languageChange(self):
         self.setCaption(self.__tr("Create Domain panel"))
-        self.textLabel3_2_6.setText(self.__tr("<b>domain name</b>"))
-        self.textLabel3_2_6_2.setText(self.__tr("<b>registrant</b>"))
-        self.textLabel3_2_6_6.setText(self.__tr("password"))
-        self.textLabel3_2_6_6_2.setText(self.__tr("nsset"))
-        self.textLabel3_2_6_6_2_6_2_3.setText(self.__tr("period"))
-        self.textLabel3_2_6_6_2_3.setText(self.__tr("admin"))
-        self.textLabel3_2_6_6_2_6_5.setText(self.__tr("clTRID"))
+        self.textLabel1.setText(self.__tr("<b>domain name</b>"))
+        self.textLabel2.setText(self.__tr("<b>registrant</b>"))
+        self.textLabel3.setText(self.__tr("password"))
+        self.textLabel4.setText(self.__tr("nsset"))
+        self.textLabel5.setText(self.__tr("period"))
+        self.textLabel6.setText(self.__tr("admin"))
+        self.textLabel7.setText(self.__tr("clTRID"))
         self.groupBox2_2.setTitle(self.__tr("period"))
-        self.textLabel3_2_6_6_2_6_2_2_2.setText(self.__tr("<b>unit</b>"))
-        self.textLabel3_2_6_6_2_6_2_2_2_2.setText(self.__tr("<b>number</b>"))
+        self.textLabel8.setText(self.__tr("<b>unit</b>"))
+        self.textLabel9.setText(self.__tr("<b>number</b>"))
         self.period_unit.clear()
         self.period_unit.insertItem(self.__tr("year"))
         self.period_unit.insertItem(self.__tr("month"))
-        self.textLabel3_2_6_6_2_5.setText(self.__tr("valExDate"))
-        self.textLabel1_2_3_7_3_3.setText(self.__tr("<h2>create_domain</h2>\n"
+        self.textLabel10.setText(self.__tr("valExDate"))
+        self.textLabel11.setText(self.__tr("<h2>create_domain</h2>\n"
 "The EPP \"create\" command is used to create an instance of an object.\n"
 "An object can be created for an indefinite period of time, or an\n"
 "object can be created for a specific validity period."))
@@ -145,14 +145,14 @@ class dialog(QWidget):
         self.admin.horizontalHeader().setLabel(0,self.__tr("admin"))
         self.admin.verticalHeader().setLabel(0,self.__tr("1"))
         self.check_val_ex_date.setText(QString.null)
-        self.textLabel1.setText(self.__tr("(required for <b>enum</b> domains)"))
+        self.textLabel12.setText(self.__tr("(required for <b>enum</b> domains)"))
 
 
     def admin_value_changed(self,a0,a1):
-        print "dialog.admin_value_changed(int,int): Not implemented yet"
+        print "ccregWindow.admin_value_changed(int,int): Not implemented yet"
 
     def admin_current_changed(self,a0,a1):
-        print "dialog.admin_current_changed(int,int): Not implemented yet"
+        print "ccregWindow.admin_current_changed(int,int): Not implemented yet"
 
     def __tr(self,s,c = None):
-        return qApp.translate("dialog",s,c)
+        return qApp.translate("ccregWindow",s,c)

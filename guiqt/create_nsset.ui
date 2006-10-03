@@ -1,8 +1,8 @@
 <!DOCTYPE UI><UI version="3.3" stdsetdef="1">
-<class>frame</class>
+<class>ccregWindow</class>
 <widget class="QWidget">
     <property name="name">
-        <cstring>frame</cstring>
+	<cstring>ccregWindow</cstring>
     </property>
     <property name="geometry">
         <rect>
@@ -128,7 +128,7 @@ object can be created for a specific validity period.</string>
     </widget>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel3_2</cstring>
+            <cstring>textLabel4</cstring>
         </property>
         <property name="geometry">
             <rect>
@@ -173,7 +173,7 @@ object can be created for a specific validity period.</string>
     </widget>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel4</cstring>
+            <cstring>textLabel6</cstring>
         </property>
         <property name="geometry">
             <rect>
@@ -224,13 +224,13 @@ object can be created for a specific validity period.</string>
     <connection>
         <sender>tech</sender>
         <signal>currentChanged(int,int)</signal>
-        <receiver>frame</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>tech_current_changed(int,int)</slot>
     </connection>
     <connection>
         <sender>tech</sender>
         <signal>valueChanged(int,int)</signal>
-        <receiver>frame</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>tech_value_changed(int,int)</slot>
     </connection>
 </connections>

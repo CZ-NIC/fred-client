@@ -1,8 +1,8 @@
 <!DOCTYPE UI><UI version="3.3" stdsetdef="1">
-<class>frame</class>
+<class>ccregWindow</class>
 <widget class="QWidget">
     <property name="name">
-        <cstring>frame</cstring>
+	    <cstring>ccregWindow</cstring>
     </property>
     <property name="geometry">
         <rect>
@@ -253,7 +253,7 @@
     </widget>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel2</cstring>
+            <cstring>textLabel1</cstring>
         </property>
         <property name="geometry">
             <rect>
@@ -269,7 +269,7 @@
     </widget>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel4</cstring>
+            <cstring>textLabel2</cstring>
         </property>
         <property name="geometry">
             <rect>
@@ -301,7 +301,7 @@
     </widget>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel5</cstring>
+            <cstring>textLabel3</cstring>
         </property>
         <property name="geometry">
             <rect>
@@ -317,7 +317,7 @@
     </widget>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel7</cstring>
+            <cstring>textLabel4</cstring>
         </property>
         <property name="geometry">
             <rect>
@@ -512,7 +512,7 @@
     </widget>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel6</cstring>
+            <cstring>textLabel5</cstring>
         </property>
         <property name="geometry">
             <rect>
@@ -566,7 +566,7 @@
     </widget>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel9</cstring>
+            <cstring>textLabel6</cstring>
         </property>
         <property name="geometry">
             <rect>
@@ -617,7 +617,7 @@
     </widget>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel3_2</cstring>
+            <cstring>textLabel7</cstring>
         </property>
         <property name="geometry">
             <rect>
@@ -671,7 +671,7 @@
     </widget>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel1</cstring>
+            <cstring>textLabel9</cstring>
         </property>
         <property name="geometry">
             <rect>
@@ -692,7 +692,7 @@ The EPP "update" command is used to update an instance of an existing object.
     </widget>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel3</cstring>
+            <cstring>textLabel10</cstring>
         </property>
         <property name="geometry">
             <rect>
@@ -723,37 +723,37 @@ The EPP "update" command is used to update an instance of an existing object.
     <connection>
         <sender>add_tech</sender>
         <signal>currentChanged(int,int)</signal>
-        <receiver>frame</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>add_tech_current_changed(int,int)</slot>
     </connection>
     <connection>
         <sender>add_tech</sender>
         <signal>valueChanged(int,int)</signal>
-        <receiver>frame</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>add_tech_value_changed(int,int)</slot>
     </connection>
     <connection>
         <sender>rem_dns_name</sender>
         <signal>currentChanged(int,int)</signal>
-        <receiver>frame</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>rem_dns_name_current_changed(int,int)</slot>
     </connection>
     <connection>
         <sender>rem_dns_name</sender>
         <signal>valueChanged(int,int)</signal>
-        <receiver>frame</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>rem_dns_name_value_changed(int,int)</slot>
     </connection>
     <connection>
         <sender>rem_tech</sender>
         <signal>currentChanged(int,int)</signal>
-        <receiver>frame</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>rem_tech_current_changed(int,int)</slot>
     </connection>
     <connection>
         <sender>rem_tech</sender>
         <signal>valueChanged(int,int)</signal>
-        <receiver>frame</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>rem_tech_value_changed(int,int)</slot>
     </connection>
 </connections>

@@ -5,14 +5,9 @@ import sys, re
 # error, values
 # 
 
-try:
-    from qt import *
-    from qttable import *
-except ImportError, msg:
-    print "ImportError:",msg
-    print 'For runnig this application you need install PyQt and Qt modules. For more see help.'
-    sys.exit(0)
-
+#====================================
+# ccReg
+#====================================
 # first try import from standard library path
 try:
     import ccReg
@@ -25,16 +20,30 @@ except ImportError:
         print "ImportError:",msg
         print 'For runnig this application you need install ccReg module. See help.'
         sys.exit(0)
-
-from dialog import main_dialog
-import sources  # dialog Sources
-import create_contact # dialog Create Contact
-import update_contact # dialog Update Contact
-import create_domain_dialog
-import create_nsset_frame
-import update_nsset_frame
-import update_domain_frame
 from ccReg.translate import _T, encoding, options, option_errors
+
+#====================================
+# Qt
+#====================================
+try:
+    from qt import *
+    from qttable import *
+except ImportError, msg:
+    print "ImportError:",msg
+    print _T('For runnig this application you need install PyQt and Qt modules. For more see help.')
+    sys.exit(0)
+
+#====================================
+# Dialogs
+#====================================
+import _main
+import _sources
+import _create_contact
+import _update_contact
+import create_domain
+import update_domain
+import create_nsset
+import update_nsset
 
 # prefix of translations
 translation_prefix = 'clientqt_'
@@ -81,11 +90,11 @@ def count_data_rows(dct):
     return size
 
         
-class CMainDialog(main_dialog):
+class ccregMainWindow(_main.ccregWindow):
     'Main frame dialog.'
     
     def __init__(self):
-        main_dialog.__init__(self)
+        _main.ccregWindow.__init__(self)
         self.epp = ccReg.Client()
         self.epp.load_config(options['session'])
         self.missing_required = []
@@ -105,16 +114,16 @@ class CMainDialog(main_dialog):
         # scrolled windows
         #--------------------------------------        
         # contact
-        self.panel_create_contact = self.__add_scroll__(self.frame_create_contact, create_contact, 'create_contact')
+        self.panel_create_contact = self.__add_scroll__(self.frame_create_contact, _create_contact, 'create_contact')
         self.panel_create_contact.create_contact_street.horizontalHeader().resizeSection(0, 320)
-        self.panel_update_contact = self.__add_scroll__(self.frame_update_contact, update_contact, 'update_contact')
+        self.panel_update_contact = self.__add_scroll__(self.frame_update_contact, _update_contact, 'update_contact')
         self.panel_update_contact.update_contact_street.horizontalHeader().resizeSection(0, 290)
         # domain
-        self.panel_create_domain = self.__add_scroll__(self.frame_create_domain, create_domain_dialog, 'create_domain')
-        self.panel_update_domain = self.__add_scroll__(self.frame_update_domain, update_domain_frame, 'update_domain')
+        self.panel_create_domain = self.__add_scroll__(self.frame_create_domain, create_domain, 'create_domain')
+        self.panel_update_domain = self.__add_scroll__(self.frame_update_domain, update_domain, 'update_domain')
         # nsset
-        self.panel_create_nsset = self.__add_scroll__(self.frame_create_nsset, create_nsset_frame, 'create_nsset')
-        self.panel_update_nsset = self.__add_scroll__(self.frame_update_nsset, update_nsset_frame, 'update_nsset')
+        self.panel_create_nsset = self.__add_scroll__(self.frame_create_nsset, create_nsset, 'create_nsset')
+        self.panel_update_nsset = self.__add_scroll__(self.frame_update_nsset, update_nsset, 'update_nsset')
 
         #--------------------------------------        
         # validators
@@ -134,13 +143,13 @@ class CMainDialog(main_dialog):
         self.panel_create_domain.val_ex_date.setDate(curd)
 
     def __add_scroll__(self, parent_frame, module, name):
-        'Add scrolled view panel. Module must have class panel.'
+        'Add scrolled view window. Module must have class ccregWindow.'
         scroll = QScrollView(parent_frame, 'scroll_%s'%name)
         scroll.enableClipper(True)
         scroll.setFrameShape(QFrame.NoFrame)
         scroll.setFrameShadow(QFrame.Raised)
         scroll.setGeometry(parent_frame.geometry())
-        panel = module.panel(scroll)
+        panel = module.ccregWindow(scroll)
         scroll.addChild(panel)
         scroll.show()
         return panel
@@ -165,13 +174,13 @@ class CMainDialog(main_dialog):
         label = _T('Close client')
         msg = _T('Do you wand realy close client?')
         if QMessageBox.warning(self, label, msg, QMessageBox.Yes | QMessageBox.Default, QMessageBox.No) == QMessageBox.Yes:
-            main_dialog.close(self)
+            _main.ccregWindow.close(self)
         
     def closeEvent(self, e):
         'Finalize when dialog is closed.'
         self.epp.logout()
 ##        e.accept() ## ce.ignore <qt.QCloseEvent>
-        main_dialog.closeEvent(self, e)
+        _main.ccregWindow.closeEvent(self, e)
 
     def __display_answer__(self, prefix, table=None):
         'Display answer from EPP server.'
@@ -654,7 +663,7 @@ def main(argv, lang):
     tr = QTranslator()
     if tr.load(translation_prefix+lang):
         app.installTranslator(tr)
-    form = CMainDialog()
+    form = ccregMainWindow()
     form.show()
     app.setMainWidget(form)
     app.exec_loop()

@@ -1,8 +1,8 @@
 <!DOCTYPE UI><UI version="3.3" stdsetdef="1">
-<class>frame</class>
+<class>ccregWindow</class>
 <widget class="QWidget">
     <property name="name">
-        <cstring>frame</cstring>
+	    <cstring>ccregWindow</cstring>
     </property>
     <property name="geometry">
         <rect>
@@ -17,7 +17,7 @@
     </property>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel1_2</cstring>
+            <cstring>textLabel1</cstring>
         </property>
         <property name="geometry">
             <rect>
@@ -169,7 +169,7 @@
     </widget>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel1</cstring>
+            <cstring>textLabel2</cstring>
         </property>
         <property name="geometry">
             <rect>
@@ -190,7 +190,7 @@ The EPP "update" command is used to update an instance of an existing object.
     </widget>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel2</cstring>
+            <cstring>textLabel3</cstring>
         </property>
         <property name="geometry">
             <rect>
@@ -206,7 +206,7 @@ The EPP "update" command is used to update an instance of an existing object.
     </widget>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel3</cstring>
+            <cstring>textLabel4</cstring>
         </property>
         <property name="geometry">
             <rect>
@@ -222,7 +222,7 @@ The EPP "update" command is used to update an instance of an existing object.
     </widget>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel4</cstring>
+            <cstring>textLabel5</cstring>
         </property>
         <property name="geometry">
             <rect>
@@ -238,7 +238,7 @@ The EPP "update" command is used to update an instance of an existing object.
     </widget>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel5</cstring>
+            <cstring>textLabel6</cstring>
         </property>
         <property name="geometry">
             <rect>
@@ -254,7 +254,7 @@ The EPP "update" command is used to update an instance of an existing object.
     </widget>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel4_2</cstring>
+            <cstring>textLabel7</cstring>
         </property>
         <property name="geometry">
             <rect>
@@ -270,7 +270,7 @@ The EPP "update" command is used to update an instance of an existing object.
     </widget>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel3_2</cstring>
+            <cstring>textLabel8</cstring>
         </property>
         <property name="geometry">
             <rect>
@@ -286,7 +286,7 @@ The EPP "update" command is used to update an instance of an existing object.
     </widget>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel11</cstring>
+            <cstring>textLabel9</cstring>
         </property>
         <property name="geometry">
             <rect>
@@ -302,7 +302,7 @@ The EPP "update" command is used to update an instance of an existing object.
     </widget>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel12</cstring>
+            <cstring>textLabel10</cstring>
         </property>
         <property name="geometry">
             <rect>
@@ -318,7 +318,7 @@ The EPP "update" command is used to update an instance of an existing object.
     </widget>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel8</cstring>
+            <cstring>textLabel11</cstring>
         </property>
         <property name="geometry">
             <rect>
@@ -334,7 +334,7 @@ The EPP "update" command is used to update an instance of an existing object.
     </widget>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel9</cstring>
+            <cstring>textLabel12</cstring>
         </property>
         <property name="geometry">
             <rect>
@@ -350,7 +350,7 @@ The EPP "update" command is used to update an instance of an existing object.
     </widget>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel10</cstring>
+            <cstring>textLabel13</cstring>
         </property>
         <property name="geometry">
             <rect>
@@ -746,25 +746,25 @@ The EPP "update" command is used to update an instance of an existing object.
     <connection>
         <sender>add_admin</sender>
         <signal>valueChanged(int,int)</signal>
-        <receiver>frame</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>add_admin_value_changed(int,int)</slot>
     </connection>
     <connection>
         <sender>add_admin</sender>
         <signal>currentChanged(int,int)</signal>
-        <receiver>frame</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>add_admin_current_changed(int,int)</slot>
     </connection>
     <connection>
         <sender>rem_admin</sender>
         <signal>currentChanged(int,int)</signal>
-        <receiver>frame</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>rem_admin_current_changed(int,int)</slot>
     </connection>
     <connection>
         <sender>rem_admin</sender>
         <signal>valueChanged(int,int)</signal>
-        <receiver>frame</receiver>
+	<receiver>ccregWindow</receiver>
         <slot>rem_admin_value_changed(int,int)</slot>
     </connection>
     <connection>

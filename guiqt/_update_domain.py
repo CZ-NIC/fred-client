@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'update_domain.ui'
 #
-# Created: Po říj 2 16:48:07 2006
+# Created: Út říj 3 10:15:00 2006
 #      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,17 +12,17 @@ from qt import *
 from qttable import QTable
 
 
-class frame(QWidget):
+class ccregWindow(QWidget):
     def __init__(self,parent = None,name = None,fl = 0):
         QWidget.__init__(self,parent,name,fl)
 
         if not name:
-            self.setName("frame")
+            self.setName("ccregWindow")
 
 
 
-        self.textLabel1_2 = QLabel(self,"textLabel1_2")
-        self.textLabel1_2.setGeometry(QRect(330,820,210,20))
+        self.textLabel1 = QLabel(self,"textLabel1")
+        self.textLabel1.setGeometry(QRect(330,820,210,20))
 
         self.name = QLineEdit(self,"name")
         self.name.setGeometry(QRect(180,110,360,22))
@@ -57,42 +57,42 @@ class frame(QWidget):
         self.cltrid = QLineEdit(self,"cltrid")
         self.cltrid.setGeometry(QRect(180,870,360,22))
 
-        self.textLabel1 = QLabel(self,"textLabel1")
-        self.textLabel1.setGeometry(QRect(10,10,530,90))
-        self.textLabel1.setAlignment(QLabel.WordBreak | QLabel.AlignTop | QLabel.AlignLeft)
-
         self.textLabel2 = QLabel(self,"textLabel2")
-        self.textLabel2.setGeometry(QRect(10,110,160,20))
+        self.textLabel2.setGeometry(QRect(10,10,530,90))
+        self.textLabel2.setAlignment(QLabel.WordBreak | QLabel.AlignTop | QLabel.AlignLeft)
 
         self.textLabel3 = QLabel(self,"textLabel3")
-        self.textLabel3.setGeometry(QRect(10,160,530,21))
+        self.textLabel3.setGeometry(QRect(10,110,160,20))
 
         self.textLabel4 = QLabel(self,"textLabel4")
-        self.textLabel4.setGeometry(QRect(10,190,160,20))
+        self.textLabel4.setGeometry(QRect(10,160,530,21))
 
         self.textLabel5 = QLabel(self,"textLabel5")
-        self.textLabel5.setGeometry(QRect(10,430,530,30))
+        self.textLabel5.setGeometry(QRect(10,190,160,20))
 
-        self.textLabel4_2 = QLabel(self,"textLabel4_2")
-        self.textLabel4_2.setGeometry(QRect(10,460,160,20))
+        self.textLabel6 = QLabel(self,"textLabel6")
+        self.textLabel6.setGeometry(QRect(10,430,530,30))
 
-        self.textLabel3_2 = QLabel(self,"textLabel3_2")
-        self.textLabel3_2.setGeometry(QRect(10,700,530,21))
-
-        self.textLabel11 = QLabel(self,"textLabel11")
-        self.textLabel11.setGeometry(QRect(10,820,160,20))
-
-        self.textLabel12 = QLabel(self,"textLabel12")
-        self.textLabel12.setGeometry(QRect(10,870,160,20))
+        self.textLabel7 = QLabel(self,"textLabel7")
+        self.textLabel7.setGeometry(QRect(10,460,160,20))
 
         self.textLabel8 = QLabel(self,"textLabel8")
-        self.textLabel8.setGeometry(QRect(10,730,160,20))
+        self.textLabel8.setGeometry(QRect(10,700,530,21))
 
         self.textLabel9 = QLabel(self,"textLabel9")
-        self.textLabel9.setGeometry(QRect(10,760,160,20))
+        self.textLabel9.setGeometry(QRect(10,820,160,20))
 
         self.textLabel10 = QLabel(self,"textLabel10")
-        self.textLabel10.setGeometry(QRect(10,790,160,20))
+        self.textLabel10.setGeometry(QRect(10,870,160,20))
+
+        self.textLabel11 = QLabel(self,"textLabel11")
+        self.textLabel11.setGeometry(QRect(10,730,160,20))
+
+        self.textLabel12 = QLabel(self,"textLabel12")
+        self.textLabel12.setGeometry(QRect(10,760,160,20))
+
+        self.textLabel13 = QLabel(self,"textLabel13")
+        self.textLabel13.setGeometry(QRect(10,790,160,20))
 
         self.add_admin = QTable(self,"add_admin")
         self.add_admin.setNumCols(self.add_admin.numCols() + 1)
@@ -212,24 +212,24 @@ class frame(QWidget):
 
     def languageChange(self):
         self.setCaption(self.__tr("Update domain panel"))
-        self.textLabel1_2.setText(self.__tr("(required for <b>enum</b> domains)"))
+        self.textLabel1.setText(self.__tr("(required for <b>enum</b> domains)"))
         self.name.setText(QString.null)
         self.rem_admin.horizontalHeader().setLabel(0,self.__tr("admin"))
         self.check_val_ex_date.setText(QString.null)
-        self.textLabel1.setText(self.__tr("<h2>update_domain</h2>\n"
+        self.textLabel2.setText(self.__tr("<h2>update_domain</h2>\n"
 "The EPP \"update\" command is used to update an instance of an existing object.\n"
 "   Names what are not included into disclose list are set to opposite value of the disclose flag value."))
-        self.textLabel2.setText(self.__tr("<b>domain name</b>"))
-        self.textLabel3.setText(self.__tr("<h3>Add</h3>"))
-        self.textLabel4.setText(self.__tr("admin handle"))
-        self.textLabel5.setText(self.__tr("<h3>Remove</h3>"))
-        self.textLabel4_2.setText(self.__tr("admin handle"))
-        self.textLabel3_2.setText(self.__tr("<h3>Change</h3>"))
-        self.textLabel11.setText(self.__tr("valExDate"))
-        self.textLabel12.setText(self.__tr("clTRID"))
-        self.textLabel8.setText(self.__tr("nsset"))
-        self.textLabel9.setText(self.__tr("registrant"))
-        self.textLabel10.setText(self.__tr("pasword"))
+        self.textLabel3.setText(self.__tr("<b>domain name</b>"))
+        self.textLabel4.setText(self.__tr("<h3>Add</h3>"))
+        self.textLabel5.setText(self.__tr("admin handle"))
+        self.textLabel6.setText(self.__tr("<h3>Remove</h3>"))
+        self.textLabel7.setText(self.__tr("admin handle"))
+        self.textLabel8.setText(self.__tr("<h3>Change</h3>"))
+        self.textLabel9.setText(self.__tr("valExDate"))
+        self.textLabel10.setText(self.__tr("clTRID"))
+        self.textLabel11.setText(self.__tr("nsset"))
+        self.textLabel12.setText(self.__tr("registrant"))
+        self.textLabel13.setText(self.__tr("pasword"))
         self.add_admin.horizontalHeader().setLabel(0,self.__tr("admin"))
         self.add_admin.verticalHeader().setLabel(0,self.__tr("1"))
         self.rem_status.setText(self.__tr("status"))
@@ -249,16 +249,16 @@ class frame(QWidget):
 
 
     def add_admin_current_changed(self,a0,a1):
-        print "frame.add_admin_current_changed(int,int): Not implemented yet"
+        print "ccregWindow.add_admin_current_changed(int,int): Not implemented yet"
 
     def add_admin_value_changed(self,a0,a1):
-        print "frame.add_admin_value_changed(int,int): Not implemented yet"
+        print "ccregWindow.add_admin_value_changed(int,int): Not implemented yet"
 
     def rem_admin_current_changed(self,a0,a1):
-        print "frame.rem_admin_current_changed(int,int): Not implemented yet"
+        print "ccregWindow.rem_admin_current_changed(int,int): Not implemented yet"
 
     def rem_admin_value_changed(self,a0,a1):
-        print "frame.rem_admin_value_changed(int,int): Not implemented yet"
+        print "ccregWindow.rem_admin_value_changed(int,int): Not implemented yet"
 
     def __tr(self,s,c = None):
-        return qApp.translate("frame",s,c)
+        return qApp.translate("ccregWindow",s,c)

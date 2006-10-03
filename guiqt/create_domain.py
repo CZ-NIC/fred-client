@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
 from qt import *
-from qttable import *
-from create_domain import dialog
 from shared_fnc import *
+import _create_domain
 
-class panel(dialog):
-    'Create domain dialog.'
+class ccregWindow(_create_domain.ccregWindow):
+    'Create domain frame.'
 
     def __init__(self,parent = None,name = None,fl = 0):
-        dialog.__init__(self,parent,name,fl)
+        _create_domain.ccregWindow.__init__(self,parent,name,fl)
         self.admin.horizontalHeader().resizeSection(0,320)
         self._admin_item = None
 
@@ -21,7 +20,7 @@ class panel(dialog):
 
 if __name__ == '__main__':
     app = QApplication([])
-    form = panel()
+    form = ccregWindow()
     form.show()
     app.setMainWidget(form)
     app.exec_loop()

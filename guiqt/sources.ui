@@ -1,58 +1,95 @@
 <!DOCTYPE UI><UI version="3.3" stdsetdef="1">
-<class>panel</class>
+<class>ccregWindow</class>
 <widget class="QDialog">
     <property name="name">
-        <cstring>panel</cstring>
+        <cstring>ccregWindow</cstring>
     </property>
     <property name="geometry">
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>600</width>
-            <height>661</height>
+            <width>613</width>
+            <height>431</height>
         </rect>
     </property>
     <property name="caption">
         <string>Sources</string>
     </property>
-    <widget class="QTextEdit">
+    <widget class="QTabWidget">
         <property name="name">
-            <cstring>response</cstring>
+            <cstring>tabWidget</cstring>
         </property>
         <property name="geometry">
             <rect>
-                <x>20</x>
-                <y>390</y>
-                <width>560</width>
-                <height>250</height>
+                <x>10</x>
+                <y>50</y>
+                <width>590</width>
+                <height>360</height>
             </rect>
         </property>
-    </widget>
-    <widget class="QTextEdit">
-        <property name="name">
-            <cstring>command</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>20</x>
-                <y>110</y>
-                <width>560</width>
-                <height>240</height>
-            </rect>
-        </property>
-    </widget>
-    <widget class="QLineEdit">
-        <property name="name">
-            <cstring>command_line</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>20</x>
-                <y>60</y>
-                <width>560</width>
-                <height>22</height>
-            </rect>
-        </property>
+        <widget class="QWidget">
+            <property name="name">
+                <cstring>tab</cstring>
+            </property>
+            <attribute name="title">
+                <string>Command XML</string>
+            </attribute>
+            <widget class="QTextEdit">
+                <property name="name">
+                    <cstring>command</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>10</x>
+                        <y>10</y>
+                        <width>570</width>
+                        <height>310</height>
+                    </rect>
+                </property>
+            </widget>
+        </widget>
+        <widget class="QWidget">
+            <property name="name">
+                <cstring>tab</cstring>
+            </property>
+            <attribute name="title">
+                <string>Response XML</string>
+            </attribute>
+            <widget class="QTextEdit">
+                <property name="name">
+                    <cstring>response</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>8</x>
+                        <y>13</y>
+                        <width>570</width>
+                        <height>300</height>
+                    </rect>
+                </property>
+            </widget>
+        </widget>
+        <widget class="QWidget">
+            <property name="name">
+                <cstring>TabPage</cstring>
+            </property>
+            <attribute name="title">
+                <string>Command line</string>
+            </attribute>
+            <widget class="QLineEdit">
+                <property name="name">
+                    <cstring>command_line</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>10</x>
+                        <y>20</y>
+                        <width>560</width>
+                        <height>22</height>
+                    </rect>
+                </property>
+            </widget>
+        </widget>
     </widget>
     <widget class="QPushButton">
         <property name="name">
@@ -60,7 +97,7 @@
         </property>
         <property name="geometry">
             <rect>
-                <x>470</x>
+                <x>480</x>
                 <y>10</y>
                 <width>112</width>
                 <height>30</height>
@@ -73,62 +110,6 @@
             <string>Alt+C</string>
         </property>
     </widget>
-    <widget class="QLabel">
-        <property name="name">
-            <cstring>textLabel3_2</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>20</x>
-                <y>90</y>
-                <width>150</width>
-                <height>20</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string>Command XML</string>
-        </property>
-    </widget>
-    <widget class="QLabel">
-        <property name="name">
-            <cstring>textLabel3_2_2</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>20</x>
-                <y>370</y>
-                <width>150</width>
-                <height>20</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string>Response XML</string>
-        </property>
-    </widget>
-    <widget class="QLabel">
-        <property name="name">
-            <cstring>textLabel3</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>20</x>
-                <y>40</y>
-                <width>150</width>
-                <height>20</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string>Command line</string>
-        </property>
-    </widget>
 </widget>
-<connections>
-    <connection>
-        <sender>btn_close</sender>
-        <signal>clicked()</signal>
-        <receiver>panel</receiver>
-        <slot>close()</slot>
-    </connection>
-</connections>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

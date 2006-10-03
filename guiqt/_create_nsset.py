@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'create_nsset.ui'
 #
-# Created: Po říj 2 14:26:00 2006
+# Created: Út říj 3 10:10:08 2006
 #      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,12 +12,12 @@ from qt import *
 from qttable import QTable
 
 
-class frame(QWidget):
+class ccregWindow(QWidget):
     def __init__(self,parent = None,name = None,fl = 0):
         QWidget.__init__(self,parent,name,fl)
 
         if not name:
-            self.setName("frame")
+            self.setName("ccregWindow")
 
 
 
@@ -45,8 +45,8 @@ class frame(QWidget):
         self.textLabel3 = QLabel(self,"textLabel3")
         self.textLabel3.setGeometry(QRect(10,140,160,20))
 
-        self.textLabel3_2 = QLabel(self,"textLabel3_2")
-        self.textLabel3_2.setGeometry(QRect(10,250,160,20))
+        self.textLabel4 = QLabel(self,"textLabel4")
+        self.textLabel4.setGeometry(QRect(10,250,160,20))
 
         self.textLabel5 = QLabel(self,"textLabel5")
         self.textLabel5.setGeometry(QRect(10,590,160,20))
@@ -54,8 +54,8 @@ class frame(QWidget):
         self.cltrid = QLineEdit(self,"cltrid")
         self.cltrid.setGeometry(QRect(180,590,360,22))
 
-        self.textLabel4 = QLabel(self,"textLabel4")
-        self.textLabel4.setGeometry(QRect(10,560,160,20))
+        self.textLabel6 = QLabel(self,"textLabel6")
+        self.textLabel6.setGeometry(QRect(10,560,160,20))
 
         self.pw = QLineEdit(self,"pw")
         self.pw.setGeometry(QRect(180,560,360,22))
@@ -89,16 +89,16 @@ class frame(QWidget):
 "An object can be created for an indefinite period of time, or an\n"
 "object can be created for a specific validity period."))
         self.textLabel3.setText(self.__tr("<b>tech. contact</b>"))
-        self.textLabel3_2.setText(self.__tr("<b>dns</b>"))
+        self.textLabel4.setText(self.__tr("<b>dns</b>"))
         self.textLabel5.setText(self.__tr("clTRID"))
-        self.textLabel4.setText(self.__tr("password"))
+        self.textLabel6.setText(self.__tr("password"))
 
 
     def tech_current_changed(self,a0,a1):
-        print "frame.tech_current_changed(int,int): Not implemented yet"
+        print "ccregWindow.tech_current_changed(int,int): Not implemented yet"
 
     def tech_value_changed(self,a0,a1):
-        print "frame.tech_value_changed(int,int): Not implemented yet"
+        print "ccregWindow.tech_value_changed(int,int): Not implemented yet"
 
     def __tr(self,s,c = None):
-        return qApp.translate("frame",s,c)
+        return qApp.translate("ccregWindow",s,c)

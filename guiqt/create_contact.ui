@@ -1,8 +1,8 @@
 <!DOCTYPE UI><UI version="3.3" stdsetdef="1">
-<class>panel</class>
+<class>ccregWindow</class>
 <widget class="QWidget">
     <property name="name">
-        <cstring>panel</cstring>
+        <cstring>ccregWindow</cstring>
     </property>
     <property name="geometry">
         <rect>
@@ -17,7 +17,7 @@
     </property>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel3_2_6_5</cstring>
+            <cstring>textLabel1</cstring>
         </property>
         <property name="geometry">
             <rect>
@@ -33,7 +33,7 @@
     </widget>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel3_2_6</cstring>
+            <cstring>textLabel2</cstring>
         </property>
         <property name="geometry">
             <rect>
@@ -49,7 +49,7 @@
     </widget>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel3_2_6_3</cstring>
+            <cstring>textLabel3</cstring>
         </property>
         <property name="geometry">
             <rect>
@@ -65,7 +65,7 @@
     </widget>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel3_2_6_6_2_2</cstring>
+            <cstring>textLabel4</cstring>
         </property>
         <property name="geometry">
             <rect>
@@ -107,7 +107,7 @@
     </widget>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel3_2_6_6_2_4</cstring>
+            <cstring>textLabel5</cstring>
         </property>
         <property name="geometry">
             <rect>
@@ -123,7 +123,7 @@
     </widget>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel3_2_6_6_2_6_3</cstring>
+            <cstring>textLabel6</cstring>
         </property>
         <property name="geometry">
             <rect>
@@ -152,7 +152,7 @@
     </widget>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel3_2_6_6_2_6</cstring>
+            <cstring>textLabel7</cstring>
         </property>
         <property name="geometry">
             <rect>
@@ -181,7 +181,7 @@
     </widget>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel3_2_6_6_2_6_4</cstring>
+            <cstring>textLabel8</cstring>
         </property>
         <property name="geometry">
             <rect>
@@ -197,7 +197,7 @@
     </widget>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel3_2_6_6_2_6_2_3</cstring>
+            <cstring>textLabel9</cstring>
         </property>
         <property name="geometry">
             <rect>
@@ -213,7 +213,7 @@
     </widget>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel3_2_6_6_2_3</cstring>
+            <cstring>textLabel10</cstring>
         </property>
         <property name="geometry">
             <rect>
@@ -229,7 +229,7 @@
     </widget>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel3_2_6_6_2_6_5</cstring>
+            <cstring>textLabel11</cstring>
         </property>
         <property name="geometry">
             <rect>
@@ -260,7 +260,7 @@
         </property>
         <widget class="QLabel">
             <property name="name">
-                <cstring>textLabel3_2_6_6_2_6_2_2_2_2</cstring>
+                <cstring>textLabel12</cstring>
             </property>
             <property name="geometry">
                 <rect>
@@ -276,7 +276,7 @@
         </widget>
         <widget class="QLabel">
             <property name="name">
-                <cstring>textLabel3_2_6_6_2_6_2_2_2</cstring>
+                <cstring>textLabel13</cstring>
             </property>
             <property name="geometry">
                 <rect>
@@ -357,7 +357,7 @@
     </widget>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel3_2_6_4</cstring>
+            <cstring>textLabel14</cstring>
         </property>
         <property name="geometry">
             <rect>
@@ -386,7 +386,7 @@
     </widget>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel3_2_6_6</cstring>
+            <cstring>textLabel15</cstring>
         </property>
         <property name="geometry">
             <rect>
@@ -402,7 +402,7 @@
     </widget>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel3_2_6_2</cstring>
+            <cstring>textLabel16</cstring>
         </property>
         <property name="geometry">
             <rect>
@@ -448,7 +448,7 @@
     </widget>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel1_2_3_7_3_3</cstring>
+            <cstring>textLabel17</cstring>
         </property>
         <property name="geometry">
             <rect>
@@ -515,7 +515,7 @@ object can be created for a specific validity period.</string>
     </widget>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel3_2_6_6_2</cstring>
+            <cstring>textLabel18</cstring>
         </property>
         <property name="geometry">
             <rect>
@@ -563,7 +563,7 @@ object can be created for a specific validity period.</string>
     </widget>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel3_2_6_6_2_5</cstring>
+            <cstring>textLabel19</cstring>
         </property>
         <property name="geometry">
             <rect>
@@ -598,7 +598,7 @@ object can be created for a specific validity period.</string>
     </widget>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel2</cstring>
+            <cstring>textLabel20</cstring>
         </property>
         <property name="geometry">
             <rect>
@@ -614,7 +614,7 @@ object can be created for a specific validity period.</string>
     </widget>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel2_2</cstring>
+            <cstring>textLabel21</cstring>
         </property>
         <property name="geometry">
             <rect>
@@ -776,7 +776,7 @@ object can be created for a specific validity period.</string>
         </widget>
         <widget class="QLabel">
             <property name="name">
-                <cstring>textLabel3_2_6_6_2_6_2_2</cstring>
+                <cstring>textLabel22</cstring>
             </property>
             <property name="geometry">
                 <rect>
