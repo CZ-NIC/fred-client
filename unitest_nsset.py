@@ -107,10 +107,10 @@ class Test(unittest.TestCase):
         handle_contact = CCREG_CONTACT1
         # create client object
         epp_cli = ccReg.Client()
-        epp_cli._epp.load_config(ccReg.translate.options['session'])
+        epp_cli._epp.load_config(ccReg.translate.options)
         epp_cli._epp.set_validate(0)
         epp_cli_TRANSF = ccReg.Client()
-        epp_cli_TRANSF._epp.load_config(ccReg.translate.options['session'])
+        epp_cli_TRANSF._epp.load_config(ccReg.translate.options)
         
         # login
         dct = epp_cli._epp.get_default_params_from_config('login')

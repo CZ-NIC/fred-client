@@ -9,7 +9,7 @@ from ccReg.translate import _T, options, option_args, config_error, encoding
 
 def main(command):
     epp = ccReg.ClientSession()
-    epp.load_config(options['session'])
+    epp.load_config(options)
     epp.set_auto_connect(0) # set OFF auto connection
     command_name, epp_doc = epp.create_eppdoc(command)
     errors = epp.fetch_errors()

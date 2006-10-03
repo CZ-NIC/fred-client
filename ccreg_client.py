@@ -62,4 +62,4 @@ _T("""Connection options:
                 main([],options['lang'])
             else:
                 import ccreg_console
-                ccreg_console.main(options['session'])
+                ccreg_console.main(options)

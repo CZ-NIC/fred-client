@@ -98,7 +98,6 @@ class ManagerTransfer(ManagerBase):
                 self.get_config_value(section,'socket',1),
                 ]
         # command options
-        if self._options['host']: data[0] = self._options['host']
         self._session[HOST] = data[0] # for prompt info
         return data
 

@@ -712,9 +712,9 @@ class Client:
         'Check if client is login on the server.'
         return self._epp.is_logon()
 
-    def load_config(self, session=''):
+    def load_config(self, options=[]):
         'Load config file.'
-        return self._epp.load_config(session)
+        return self._epp.load_config(options)
 
     def set_data_connect(self, dc):
         'Set data for connection: dc = {host: str, port: str, priv_key: str, cert: str, timeout: str }'

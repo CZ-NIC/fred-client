@@ -40,7 +40,7 @@ def send_docs(display_bar, docs=[]):
     # Inicializace klienta
     #-------------------------------------------------
     epp = ccReg.ClientSession()
-    if not epp.load_config(options['session']): return
+    if not epp.load_config(options): return
     
     if len(options['verbose']):
         verbose = epp.set_verbose(options['verbose'])

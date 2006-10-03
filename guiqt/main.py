@@ -96,7 +96,7 @@ class ccregMainWindow(_main.ccregWindow):
     def __init__(self):
         _main.ccregWindow.__init__(self)
         self.epp = ccReg.Client()
-        self.epp.load_config(options['session'])
+        self.epp.load_config(options)
         self.missing_required = []
         self.src = {} # {'command_name':['command line','XML source','XML response'], ...}
         self.epp_status = [n[0]for n in self.epp._epp._epp_cmd.update_status]

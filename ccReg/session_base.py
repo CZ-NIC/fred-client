@@ -13,7 +13,7 @@ colored_output = terminal_controler.TerminalController()
 
 # názvy sloupců pro data sestavené při spojení se serverem
 ONLINE, CMD_ID, LANG, POLL_AUTOACK, CONFIRM_SEND_COMMAND, \
-   USERNAME, NAME, HOST, COLORS, VALIDATE, VERBOSE, SORT_BY_COLUMNS, NULL_VALUE, \
+   USERNAME, SESSION, HOST, COLORS, VALIDATE, VERBOSE, SORT_BY_COLUMNS, NULL_VALUE, \
    TRANSLATE_ANSWER_COLUMN_NAMES = range(14)
 # názvy sloupců pro defaultní hodnoty
 DEFS_LENGTH = 4
@@ -37,7 +37,7 @@ class ManagerBase:
                 0,      # POLL_AUTOACK
                 1,      # CONFIRM_SEND_COMMAND
                 '',     # USERNAME (for prompt info)
-                '',     # NAME
+                '',     # SESSION
                 '',     # HOST (for prompt info)
                 0,      # COLORS 0/1
                 1,      # VALIDATE
@@ -274,8 +274,8 @@ class ManagerBase:
 
     def config_get_section_connect(self):
         'Set section name "connect" in config.'
-        if self._session[NAME]:
-            section = 'connect_%s'%self._session[NAME]
+        if self._session[SESSION]:
+            section = 'connect_%s'%self._session[SESSION]
         else:
             section = 'connect'
         return section
@@ -287,13 +287,14 @@ class ManagerBase:
             if not self.__is_config_option__(section, 'timeout'):
                 self._conf.set(section, 'timeout','10.0')
         
-    def load_config(self, session=''):
+    def load_config(self, options):
         "Load config file and init internal variables. Returns 0 if fatal error occured."
+        self._options = options
         if not self._conf:
             self.append_error(translate.config_error)
             self.display() # display errors or notes
             return 0 # fatal error
-        if session: self._session[NAME] = session # API definition of --session parameter.
+        self._session[SESSION] = self._options.get('session','') # API definition of --session parameter.
         # set session variables
         section = 'session'
         if not self._conf.has_section(section):
@@ -312,6 +313,9 @@ class ManagerBase:
         if self._conf.has_section(section_epp_login):
             if self._options['user']: self._conf.set(section_epp_login,'username',self._options['user'])
             if self._options['password']: self._conf.set(section_epp_login,'password',self._options['password'])
+        if options['host']: self._conf.set(section,'host',options['host'])
+        if options['user']: self._conf.set(section,'username',options['user'])
+        if options['password']: self._conf.set(section,'password',options['password'])
         # session
         section = 'session'
         self._session[POLL_AUTOACK] = {False:0,True:1}[self.get_config_value(section,'poll_ack').lower() == 'on']
