@@ -1,3 +1,6 @@
+# -*- coding: utf8 -*-
+#!/usr/bin/env python
+config = """
 [connect]
 dir = ~
 # host = epp-test.ccreg.nic.cz
@@ -21,3 +24,4 @@ confirm_send_commands = on
 # lang = en
 # null_value = None   # zastupce pro nezadanou hodnotu
 # auto_login = off    # automaticke zalogovani pri spusteni konzole
+"""

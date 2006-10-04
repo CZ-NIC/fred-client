@@ -46,7 +46,7 @@ Set representation of the value what is used to mean nothing. Default is NULL.
 This value we use if we want to skip over any column in the command parameters. 
 Type NULL means we did not put any value in contrast to '' or "" where we put
 value of zero length. See help for more details."""), ('null None','null EMPTY',)),
-            (('poll-ack',), self.__session_poll_ack__, ('on','off'), _T('Send "poll ack" straight away after "poll req".'), ('poll-ack on',)),
+            (('poll-autoack',), self.__session_poll_ack__, ('on','off'), _T('Send "poll ack" straight away after "poll req".'), ('poll-autoack on',)),
             (('quit','q','exit'), None, (), _T('Quit the client. Same effect has "q" or "exit".'), ()),
             (('raw-answer','raw-a','src-answer','src-a'), self.__session_raw_answer__, ('d','dict',), _T('Display XML source of the EPP answer.'), ('raw-a','raw-a d','src-a','src-a d')),
             (('raw-command','raw-c','src-command','src-c'), self.__session_raw_command__, ('d','dict',), _T('Display XML source of the EPP command.'), ('raw-c','raw-c d','src-c','src-c d')),
@@ -223,13 +223,17 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
         command_params = ''
         self.reset_round()
         cmd = EPP_command = session_command = command.strip()
+        match = re.match('!+\s+(.+)',cmd)
+        if match: cmd = '!%s'%match.group(1) # removing whitespaces after exclamation
         # Možnost zadání pomlčky místo podtržítka:
         m = re.match('(\S+)(.*)',cmd)
         if m:
             EPP_command = '%s%s'%(m.group(1).replace('-','_'), m.group(2))
             session_command = m.group(1)
             command_params = m.group(2)
-        if cmd == '!': cmd = '? !'
+        if cmd == '!':
+            self.append_note(_T('Missing command name. For start interactive mode type command name after exclamation.'))
+            return command_name, self._raw_cmd
         hidden_commands = ('answer-cols','hidden')
         # help
         help, help_item = None,None
@@ -371,7 +375,7 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
     def __session_poll_ack__(self, param):
         'Set poll acknowledge'
         if param: self._session[POLL_AUTOACK] = {False:0,True:1}[param in ('on','ON')]
-        self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('poll ack is'),{False:'OFF',True:'ON'}[self._session[POLL_AUTOACK]]))
+        self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('poll-autoack is'),{False:'OFF',True:'ON'}[self._session[POLL_AUTOACK]]))
 
     def __session_send__(self, param):
         'Send any file to the EPP server.'

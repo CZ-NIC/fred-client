@@ -1,10 +1,11 @@
 # -*- coding: utf8 -*-
 #!/usr/bin/env python
 import re, time
-import sys, os
+import sys, os, StringIO
 import ConfigParser
 import terminal_controler
 import translate
+import internal_variables
 
 _T = translate._T
 
@@ -57,6 +58,8 @@ class ManagerBase:
         self._conf = translate.config # <ConfigParser object> from translate module
         self._auto_connect = 1 # auto connection during login or hello
         self._options = translate.options # parameters from command line
+        if type(self._options) is not dict:
+            self._options = {'lang':'en','colors':'off','verbose':'1','user':'','password':'','host':'',}
         self._email_reports_bug = 'info@nic.cz'
 
     def get_session(self, offset):
@@ -207,9 +210,8 @@ class ManagerBase:
         ok = 0
         modul_path,fn = os.path.split(__file__)
         root_path = os.path.normpath(os.path.join(modul_path,'..'))
-        filepath = os.path.join(modul_path, 'default-config.txt')
         try:
-            self._conf.read(filepath)
+            self._conf.readfp(StringIO.StringIO(internal_variables.config))
             ok = 1
         except ConfigParser.ParsingError, msg:
             self.append_error(msg)
@@ -217,6 +219,9 @@ class ManagerBase:
             # schema = all-1.0.xsd
             seop = ('session','schema')
             name = self.get_config_value(seop[0], seop[1])
+            if not name:
+                self.append_error(_T('Schema in session missing. Thi is invalid instalation. Reinstall or restore default-config.txt file.'))
+                return 0
             self._conf.set(seop[0], seop[1], os.path.join(modul_path,'schemas',name))
             # make copy if need
             new_section = ''
@@ -289,7 +294,7 @@ class ManagerBase:
         
     def load_config(self, options):
         "Load config file and init internal variables. Returns 0 if fatal error occured."
-        self._options = options
+        if type(options) is dict: self._options = options
         if not self._conf:
             self.append_error(translate.config_error)
             self.display() # display errors or notes

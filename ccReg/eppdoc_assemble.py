@@ -234,7 +234,7 @@ class Message(eppdoc.Message):
         while max is UNBOUNDED or current_pos < max:
             parents[-1][3] = current_pos # name, min, max, counter = current_pos
             if dct.has_key(name) and len(dct[name]) >= min: min = required_pos = 0 # all needed values has been set
-            prompt = u'!%s:%s (%s) > '%(command_name,__scope_to_string__(parents), unicode(self.param_reqired_type[required_pos],encoding))
+            prompt = u'%s (%s) > '%(__scope_to_string__(parents), unicode(self.param_reqired_type[required_pos],encoding))
             param, stop = self.__ineractive_input_one_param__(name,(min,max),allowed,example, null_value, prompt)
             if stop: break
             current_pos += 1
