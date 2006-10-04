@@ -39,7 +39,7 @@ class ManagerCommand(ManagerTransfer):
             #(('connect',), self.__session_connect__, (), _T('Make connection between client and server without login.'), ()),
             #(('disconnect',), self.__session_disconnect__, (), _T('Disconnect from the EPP server.'), ()),
             (('credits',), self.__session_credits__, (), _T('Display credits.'), ()),
-            (('help','h','?'), None, (), _T('Display this help or command details.'), ('help update_nsset',)),
+            (('help','h','?'), None, (), _T('Display this help or command details.'), ('help update_nsset','? update_nsset','h update_nsset')),
             (('license',), self.__session_license__, (), _T('Display license.'), ()),
             (('null_value','null'), self.__session_null__, (), _T("""
 Set representation of the value what is used to mean nothing. Default is NULL.
@@ -80,7 +80,7 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
         "Check if parameters are valid. Params save into dict for use to assembling EPP document."
         errors, example, stop = self._epp_cmd.parse_cmd(command_name, cmdline, self._conf, interactive, self._session[VERBOSE], self._session[NULL_VALUE])
         if errors: self._errors.extend(errors)
-        if example: self.append_note('${BOLD}%s:${NORMAL}\n%s'%(_T('Example of input'),example.encode(encoding)))
+        if example: self.append_note('${BOLD}%s:${NORMAL}\n%s'%(_T('Command to issue'),example.encode(encoding)))
         return (len(errors) == 0), stop
 
     def get_default_params_from_config(self, command_name):
@@ -179,6 +179,7 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
     def epp_command(self, cmdline):
         'Find EPP command in input and check if is known.'
         command_name = cmdline
+        stop = 0
         m=re.match('(!)?\s*(\S+)',cmdline)
         if m:
             if m.group(2) in self._available_commands:
@@ -186,15 +187,17 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
                 all_is_OK, stop = self.__parse_command_params__(command_name, cmdline, m.group(1))
                 if stop == 2: return 'q' # User press Ctrl+C or Ctrl+D
                 if all_is_OK:
-                    cmd_params = self._epp_cmd.get_params()
-                    self.create_command_with_params(command_name, cmd_params)
+                    if not stop:
+                        # create document if only 'stop' was not occured.
+                        cmd_params = self._epp_cmd.get_params()
+                        self.create_command_with_params(command_name, cmd_params)
                 else:
                     self.append_error(self._epp_cmd.get_errors()) # any problems on the command line occurrs
             else:
                 self.append_note('%s: %s'%(_T("Unknown command"),cmdline.encode(encoding)))
                 self.append_note('(%s: ${BOLD}help${NORMAL})'%_T('For list all commands type'))
                 self._epp_cmd.help_check_name(self._notes, cmdline)
-        return command_name
+        return command_name, stop
 
     def is_online(self, command_name):
         'Check if session is online.'
@@ -221,6 +224,7 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
         "Dispatch command line from user and set internal variables or create EPP document."
         command_name = ''
         command_params = ''
+        stop = 0
         self.reset_round()
         cmd = EPP_command = session_command = command.strip()
         match = re.match('!+\s+(.+)',cmd)
@@ -233,7 +237,7 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
             command_params = m.group(2)
         if cmd == '!':
             self.append_note(_T('Missing command name. For start interactive mode type command name after exclamation.'))
-            return command_name, self._raw_cmd
+            return command_name, self._raw_cmd, 0
         hidden_commands = ('answer-cols','hidden')
         # help
         help, help_item = None,None
@@ -269,11 +273,11 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
                 except UnicodeDecodeError, msg:
                     self.append_error('UnicodeDecodeError: %s'%msg)
                     cmd = unicode(repr(cmd), encoding)
-            command_name = self.epp_command(cmd)
+            command_name, stop = self.epp_command(cmd)
             if command_name != 'q': # User press Ctrl+C or Ctrl+D in interactive mode.
                 self._raw_cmd = self._epp_cmd.get_xml()
                 self.append_error(self._epp_cmd.fetch_errors()) # any problems on the command line occurrs
-        return command_name, self._raw_cmd
+        return command_name, self._raw_cmd, stop
 
     def load_filename(self, filepath):
         'Load file and returs name of EPP command.'
@@ -515,11 +519,11 @@ if __name__ == '__main__':
     # Test
     m = ManagerCommand()
     m._session[0]=1 # login simulation
-##    command_name, xml = m.create_eppdoc('create_contact reg-id "John Doe" jon@mail.com "New York" US "Example Inc." ("Yellow harbor" "Blueberry hill") VA 20166-6503 +1.7035555555 +1.7035555556 (0 d-name "d org." "street number city" +21321313 +734321 info@buzz.com) vat-test ssn-test notify@here.net')
+##    command_name, xml, stop = m.create_eppdoc('create_contact reg-id "John Doe" jon@mail.com "New York" US "Example Inc." ("Yellow harbor" "Blueberry hill") VA 20166-6503 +1.7035555555 +1.7035555556 (0 d-name "d org." "street number city" +21321313 +734321 info@buzz.com) vat-test ssn-test notify@here.net')
     # Test na disclose
     disclose = "(n (org fax email))"
     print 'disclose:',disclose
-    command_name, xml = m.create_eppdoc("create_contact CID:ID01 'Jan Novak' info@mymail.cz Praha CZ mypassword 'Firma s.r.o.' 'Narodni trida 1230/12' '' 12000 +420.222745111 +420.222745111 %s"%disclose)
+    command_name, xml, stop = m.create_eppdoc("create_contact CID:ID01 'Jan Novak' info@mymail.cz Praha CZ mypassword 'Firma s.r.o.' 'Narodni trida 1230/12' '' 12000 +420.222745111 +420.222745111 %s"%disclose)
     print m.is_epp_valid(xml)
     print xml
     m.display()

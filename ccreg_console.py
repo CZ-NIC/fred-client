@@ -57,13 +57,16 @@ def main(options):
             epp.send_logout()
             break
         debug_time = [('START',time.time())] # PROFILER
-        command_name, epp_doc = epp.create_eppdoc(command)
+        command_name, epp_doc, stop_interactive_mode = epp.create_eppdoc(command)
         debug_time.append(('Command created',time.time())) # PROFILER
         if command_name == 'q': # User press Ctrl+C or Ctrl+D in interactive mode.
             epp.send_logout()
             break
+        if stop_interactive_mode:
+            epp.display() # display errors or notes
+            continue
         if command_name and epp_doc: # if only command is EPP command
-            invalid_epp = epp.is_epp_valid(epp_doc)
+            invalid_epp = epp.is_epp_valid(epp_doc) # make validation on the XML document
             debug_time.append(('Validation',time.time())) # PROFILER
             if invalid_epp:
                 epp.append_error(_T('EPP document is not valid'),'BOLD')
@@ -72,8 +75,9 @@ def main(options):
                 if v > 2: epp.append_error(epp_doc)
             else:
                 if epp.is_online(command_name) and epp.is_connected(): # only if we are online
+                    epp.display() # display errors or notes
                     if epp.is_confirm_cmd_name(command_name):
-                        confirmation = raw_input('%s (y/n): '%_T('Do you want send this command to the server?'))
+                        confirmation = raw_input('%s (y/N): '%_T('Do you really want to send this command to the server?'))
                         epp.remove_from_history()
                         if confirmation not in ('y','Y'): continue
                     debug_time.append(('Save and restore history',time.time())) # PROFILER

@@ -164,7 +164,7 @@ class Message(eppdoc_assemble.Message):
         #----------------------------------------------------
         'create_nsset': (3,[
             ('id',(1,1),(),_T('nsset ID'),'NSSETID','',()),
-            ('dns',(1,9),(),_T('LIST of DNS'),'','',(
+            ('dns',(2,9),(),_T('LIST of DNS'),'','',(
                 ('name',(1,1),(),_T('nsset name'),'my.dns1.cz','',()),
                 ('addr',(0,UNBOUNDED),(),_T('nsset address'),'217.31.207.130','',()),
             )),
@@ -358,13 +358,19 @@ class Message(eppdoc_assemble.Message):
          ('pw',          1,  _T('Password')),
          ('status.s',    1,  _T('Status')),
          ('tech',        1,  _T('Technical contact')),
-         ('ns',          1,  'NSSET'),
+         ('ns',          1,  _T('Name servers')),
          )),
 
        'nsset:create': ('nsset',(
          ('crDate',      1,  _T('Created on')),
          ('exDate',      1,  _T('Expiration date')),
          ('id',          1,  'ID'),
+         )),
+
+       'domain:create': ('domain',(
+         ('crDate',      1,  _T('Created on')),
+         ('exDate',      1,  _T('Expiration date')),
+         ('name',        1,  _T('name')),
          )),
 
        'hello': ('',(
@@ -402,7 +408,7 @@ class Message(eppdoc_assemble.Message):
     }
     # append similar objects
     sort_by_names['contact:create'] = ('contact', sort_by_names['nsset:create'][1])
-    sort_by_names['domain:create']  = ('domain', sort_by_names['nsset:create'][1])
+##    sort_by_names['domain:create']  = ('domain', sort_by_names['nsset:create'][1])
     sort_by_names['contact:list']   = sort_by_names['domain:list']
     sort_by_names['nsset:list']     = sort_by_names['domain:list']
     

@@ -168,15 +168,17 @@ class Message(eppdoc.Message):
                 break
             # autofill required missing values
             if autofill > 2 and param == '':
-                param = example
-                if not param: param = 'example' # value MUST be set
-                if type(param) == unicode: param = param.encode(encoding)
-                session_base.print_unicode('${BOLD}${GREEN}%s, %s:${NORMAL} %s'%((_T("I'm fed up"),_T("It's boring"))[random.randint(0,1)],_T("example inserted"),param))
-                autofill = 0
+                #param = example
+                #if not param: param = 'example' # value MUST be set
+                #if type(param) == unicode: param = param.encode(encoding)
+                #session_base.print_unicode('${BOLD}${GREEN}%s, %s:${NORMAL} %s'%((_T("I'm fed up"),_T("It's boring"))[random.randint(0,1)],_T("example inserted"),param))
+                #autofill = 0
+                param = '!' # go to STOP case
             # Resolve NULL, STOP, min==0 / parse input
             if param == '':
                 ret_value = null_value
             elif re.match('!+',param):
+                session_base.print_unicode('${BOLD}${RED}%s${NORMAL}'%_T('Interactive mode has been interrupted.'))
                 stop = 1 # STOP interactive mode
                 ret_value = null_value
                 break
@@ -312,7 +314,7 @@ class Message(eppdoc.Message):
                 session_base.print_unicode('${BOLD}${YELLOW}%s: ${NORMAL}${BOLD}!${NORMAL} %s'%(_T('Interactive input params mode. For BREAK type'),_T("If you don't fill item press ENTER.")))
                 history_length = get_history_length()
                 user_typed_null, stop = self.__interactive_mode__(command_name, vals[1], dct, null_value)
-                if stop != 2: # user press Ctrl+C or Ctrl+D
+                if not stop: # user press ! or Ctrl+C or Ctrl+D
                     example = __build_command_example__(columns, dct, null_value)
                     # Note the interactive mode is closed.
                     try:
@@ -328,13 +330,15 @@ class Message(eppdoc.Message):
         if errors: error.extend(errors)
         dct = remove_empty_keys(dct, null_value) # remove empty for better recognition of missing values
         self.__fill_empy_from_config__(config, dct, columns) # fill missing values from config
-        errors = self.__check_required__(columns, dct) # check list and allowed values
-        if errors: error.extend(errors)
-        if len(dct) < vals[0]+1: # počet parametrů plus název příkazu
-            # build command_line example
-            error.append('%s %d.'%(_T('Missing values. Required minimum is'),vals[0]))
-            error.append('%s: %s'%(_T('Type'),self.get_help(command_name)[0]))
-            error.append('(%s: ${BOLD}help %s${NORMAL})'%(_T('For more type'),command_name.encode(encoding)))
+        if not stop:
+            # check list and allowed values if only 'stop' was not set
+            errors = self.__check_required__(columns, dct)
+            if errors: error.extend(errors)
+            if len(dct) < vals[0]+1: # počet parametrů plus název příkazu
+                # build command_line example
+                error.append('%s %d.'%(_T('Missing values. Required minimum is'),vals[0]))
+                error.append('%s: %s'%(_T('Type'),self.get_help(command_name)[0]))
+                error.append('(%s: ${BOLD}help %s${NORMAL})'%(_T('For more type'),command_name.encode(encoding)))
         self._dct = dct
         return error, example, stop
 
@@ -644,7 +648,7 @@ class Message(eppdoc.Message):
         if __has_key__(dct,'nsset'): data.append(('domain:create','domain:nsset',dct['nsset'][0]))
         if __has_key__(dct,'registrant'): data.append(('domain:create','domain:registrant',dct['registrant'][0]))
         self.__append_values__(data, dct, 'admin', 'domain:create', 'domain:admin')
-        if dct.has_key('pw'):
+        if dct.has_key('pw'): ## data.append(('domain:authInfo','domain:pw', dct['pw'][0]))
             data.extend((
             ('domain:create','domain:authInfo'),
             ('domain:authInfo','domain:pw', dct['pw'][0])

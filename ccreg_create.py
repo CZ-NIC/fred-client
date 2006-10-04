@@ -11,7 +11,7 @@ def main(command):
     epp = ccReg.ClientSession()
     epp.load_config(options)
     epp.set_auto_connect(0) # set OFF auto connection
-    command_name, epp_doc = epp.create_eppdoc(command)
+    command_name, epp_doc, stop = epp.create_eppdoc(command)
     errors = epp.fetch_errors()
     if not epp_doc and not errors: errors = _T('Unknown command')
     xml_error = ''

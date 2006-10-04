@@ -47,7 +47,8 @@
         <element name="registrant" type="fredcom:objIDType"/>
         <element name="admin" type="fredcom:objIDType"
          minOccurs="0" maxOccurs="unbounded"/>
-        <element name="authInfo" type="domain:authInfoType"/>
+        <element name="authInfo" type="domain:authInfoType"
+	minOccurs="0"/>
       </sequence>
     </complexType>
 

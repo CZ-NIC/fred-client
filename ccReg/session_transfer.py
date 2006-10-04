@@ -207,30 +207,37 @@ class ManagerTransfer(ManagerBase):
         body=[]
         report = body.append
         if not dct: dct = self._dct_answer
+        report('')
+        #... code and reason .............................
         code = dct['code']
         if self._session[VERBOSE] < 2:
             # brief
-            report(get_ltext(colored_output.render('${BOLD}%d${NORMAL}: ${%s}%s${NORMAL}'%(code,{False:'NORMAL',True:'GREEN'}[code==1000],dct['reason']))))
+            report(get_ltext(colored_output.render('${%s}%s${NORMAL}'%({False:'NORMAL',True:'GREEN'}[code==1000],dct['reason']))))
         else:
             # full
-            report('-'*60)
             report(colored_output.render('${BOLD}code:${NORMAL} %d'%code))
             report(colored_output.render('${BOLD}command:${NORMAL} %s'%dct['command']))
             report('%s%s'%(
                 colored_output.render('${BOLD}reason:${NORMAL} '),
                 get_ltext(colored_output.render('${%s}%s${NORMAL}'%({False:'NORMAL',True:'GREEN'}[code==1000],dct['reason']))))
                 )
-            report(colored_output.render('${BOLD}errors:${NORMAL}'))
+        #... errors .............................
         if len(dct['errors']):
+            report(colored_output.render('${BOLD}errors:${NORMAL}'))
             report(colored_output.render('${BOLD}${RED}'))
             for error in dct['errors']:
                 report(get_ltext('  %s'%error))
             report(colored_output.render('${NORMAL}'))
-        if self._session[VERBOSE] > 1: report(colored_output.render('${BOLD}data:${NORMAL}'))
+        #... init sorting .............................
+        data_indent = ''
+        if self._session[VERBOSE] > 1:
+            data_indent = '   '
         if self._session[SORT_BY_COLUMNS]:
             keys = self._session[SORT_BY_COLUMNS] # sorted output (included in create command part)
         else:
             keys = map(lambda n:(n,1,''), dct['data'].keys()) # default (unsorted)
+        #... data .............................
+        data = []
         in_higher_verbose = 0
         used = []
         for key,verbose,explain in keys:
@@ -238,18 +245,25 @@ class ManagerTransfer(ManagerBase):
                 in_higher_verbose += 1
                 continue
             value = dct['data'].get(key,u'')
-            if value not in ('',[]): __append_into_report__(body,key,value,explain)
+            if value not in ('',[]): __append_into_report__(data,key,value,explain,data_indent)
             used.append(key)
-        if in_higher_verbose:
-            report(colored_output.render('   ${WHITE}(${YELLOW}${BOLD}%d${NORMAL} ${WHITE}%s)${NORMAL}'%(in_higher_verbose,_TP('not displayed value','not displayed values',in_higher_verbose))))
+        if len(data):
+            body.append('')
+            if self._session[VERBOSE] > 1:
+                body.append(colored_output.render('${BOLD}data:${NORMAL}'))
+            body.extend(data)
+        #if in_higher_verbose:
+        #    report(colored_output.render('   ${WHITE}(${YELLOW}${BOLD}%d${NORMAL} ${WHITE}%s)${NORMAL}'%(in_higher_verbose,_TP('not displayed value','not displayed values',in_higher_verbose))))
         #--- INTERNAL USE ----
+        # POZOR!!! V ostré verzi musí být deaktivováno!!!
         if self._session[SORT_BY_COLUMNS]:
             # in mode SORT_BY_COLUMNS check if all names was used
             missing = [n for n in dct['data'].keys() if n not in used]
             if len(missing):
-                report(colored_output.render('\n${BOLD}${RED}%s: %s${NORMAL}'%(_T('Not used'),'(%s)'%', '.join(missing))))
+                report(colored_output.render('\n${BOLD}${RED}Here needs FIX code: %s${NORMAL}'%'(%s)'%', '.join(missing)))
         #---------------------
-        report('-'*60)
+        #... third verbose level .............................
+        report('') # empty row ## '-'*60
         for n in range(len(body)):
             if type(body[n]) == unicode: body[n] = body[n].encode(encoding)
         if self._session[VERBOSE] == 3:
@@ -258,6 +272,7 @@ class ManagerTransfer(ManagerBase):
             report(colored_output.render('${NORMAL}${BOLD}ANSWER:${NORMAL}${GREEN}'))
             report(human_readable(self._raw_answer))
             report(colored_output.render('${NORMAL}'))
+            report('')
         return sep.join(body)
 
     def save_history(self):
@@ -272,7 +287,7 @@ class ManagerTransfer(ManagerBase):
         'Remove count last commands from history.'
         eppdoc_client.eppdoc_assemble.remove_from_history(count)
         
-def __append_into_report__(body,k,v,explain, indent = '   ', no_terminal_tags=0):
+def __append_into_report__(body,k,v,explain, indent = '', no_terminal_tags=0):
     'Append value type(unicode|list|tuple) into report body.'
     patt = (
         ('%s${BOLD}%s${NORMAL} %s','%s${BOLD}%s${NORMAL}'),
@@ -281,7 +296,7 @@ def __append_into_report__(body,k,v,explain, indent = '   ', no_terminal_tags=0)
     if explain: k = explain # overwrite key by explain message
     if type(k) is str: k = k.decode(encoding)
     if type(v) is str: v = v.decode(encoding)
-    space = 20 # indent between names and values
+    space = 23 # indent between names and values
     key = (k+':').ljust(space)
     if type(v) in (list,tuple):
         if len(v):
@@ -297,11 +312,23 @@ def str_lists(text):
     """Prepare list or tuples for display. Same as str() but ommit u'...' symbols
     and put all values into brackets.
     """
+    tmp = text
     if type(text) in (list,tuple):
         body = []
         for item in text:
-            body.append(str_lists(item))
-        text = '(%s)'%', '.join(body)
+            if item == '': continue
+            str_item = str_lists(item)
+            if str_item:
+                if type(item) in (list,tuple):
+                    str_item = '(%s)'%str_item
+                body.append(str_item)
+        if len(body):
+            if len(body) > 1:
+                text = ', '.join(body)
+            else:
+                text = body[0]
+        else:
+            text = ''
     return text
 
 def human_readable(body):
