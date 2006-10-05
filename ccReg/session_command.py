@@ -15,7 +15,6 @@ from eppdoc import nic_cz_version as eppdoc_nic_cz_version
 
 COLOR = 1
 SEPARATOR = '-'*60
-OMMIT_ERROR = 1
 
 class ManagerCommand(ManagerTransfer):
     """EPP client support.
@@ -32,10 +31,10 @@ class ManagerCommand(ManagerTransfer):
         #   (example, example)
         # )
         self._session_commands = (
-            (('!',), None, ('EPP_command',), _T('Start the interactive mode of the input command params.'), ('!create_domain',)),
-            (('colors',), self.__session_colors__, ('on','off'), _T('Turn on/off colored output.'), ('colors on',)),
-            (('config',), self.manage_config, ('create',), _T('Display or create config file.'), ('config',)),
-            (('confirm',), self.__session_confirm__, ('on','off'), _T('Set on/off confirmation for sending editable commands to the server.'), ('confirm off',)),
+            (('!',), None, (_T('command'),'any command, EPP or session type',), _T('Start the interactive mode of the input command params.'), ('!create_domain',)),
+            (('colors',), self.__session_colors__, (_T('switch'),'on','off'), _T('Turn on/off colored output.'), ('colors on',)),
+            (('config',), self.manage_config, (_T('command'),'create',), _T('Display or create config file.'), ('config',)),
+            (('confirm',), self.__session_confirm__, (_T('switch'),'on','off'), _T('Set on/off confirmation for sending editable commands to the server.'), ('confirm off',)),
             #(('connect',), self.__session_connect__, (), _T('Make connection between client and server without login.'), ()),
             #(('disconnect',), self.__session_disconnect__, (), _T('Disconnect from the EPP server.'), ()),
             (('credits',), self.__session_credits__, (), _T('Display credits.'), ()),
@@ -46,18 +45,23 @@ Set representation of the value what is used to mean nothing. Default is NULL.
 This value we use if we want to skip over any column in the command parameters. 
 Type NULL means we did not put any value in contrast to '' or "" where we put
 value of zero length. See help for more details."""), ('null None','null EMPTY',)),
-            (('poll-autoack',), self.__session_poll_ack__, ('on','off'), _T('Send "poll ack" straight away after "poll req".'), ('poll-autoack on',)),
+            (('poll-autoack',), self.__session_poll_ack__, (_T('switch'),'on','off'), _T('Send "poll ack" straight away after "poll req".'), ('poll-autoack on',)),
             (('quit','q','exit'), None, (), _T('Quit the client. Same effect has "q" or "exit".'), ()),
-            (('raw-answer','raw-a','src-answer','src-a'), self.__session_raw_answer__, ('d','dict',), _T('Display XML source of the EPP answer.'), ('raw-a','raw-a d','src-a','src-a d')),
-            (('raw-command','raw-c','src-command','src-c'), self.__session_raw_command__, ('d','dict',), _T('Display XML source of the EPP command.'), ('raw-c','raw-c d','src-c','src-c d')),
-            (('send',), self.__session_send__, ('filename',), _T('Send any file to the server. If filename missing command shows actual folder.'), ('send mydoc.xml',)),
-            (('validate',), self.__session_validate__, ('on','off'), _T('Set on/off external validation of the XML documents.'), ('validate off',)),
-            (('verbose',), self.__session_verbose__, ('1','2','3'), _T('Set verbose mode: 1 - brief (default); 2 - full; 3 - full & XML sources.'), ('verbose 2',)),
+            (('raw-answer','raw-a','src-answer','src-a'), self.__session_raw_answer__, (_T('switch'),'d','dict',), _T('Display XML source of the EPP answer.'), ('raw-a','raw-a d','src-a','src-a d')),
+            (('raw-command','raw-c','src-command','src-c'), self.__session_raw_command__, (_T('switch'),'d','dict',), _T('Display XML source of the EPP command.'), ('raw-c','raw-c d','src-c','src-c d')),
+            (('send',), self.__session_send__, (_T('filename'),_T('any filename'),), _T('Send any file to the server. If filename missing command shows actual folder.'), ('send mydoc.xml',)),
+            (('validate',), self.__session_validate__, (_T('switch'),'on','off'), _T('Set on/off external validation of the XML documents.'), ('validate off',)),
+            (('verbose',), self.__session_verbose__, (_T('switch'),'1','2','3'), _T('Set verbose mode: 1 - brief (default); 2 - full; 3 - full & XML sources.'), ('verbose 2',)),
         )
+        # Here is definition of commands  what will not be displayed in the help
+        # because we don't make panic to common user.
+        # They are used for test or debug only.
+        self._hidden_commands = ('answer-cols','hidden','colors','config','null_value','raw-command','raw-answer','send')
         self._pattern_session_commands = [] # for recognize command
         self._available_session_commands = [] # for display list of command names
         for n,f,p,e,x in self._session_commands:
-            self._available_session_commands.append(n[0])
+            if n[0] not in self._hidden_commands:
+                self._available_session_commands.append(n[0])
             self._pattern_session_commands.extend(n)
 
     def __put_raw_into_note__(self, data):
@@ -127,11 +131,12 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
             if command_name in names:
                 notice = explain
                 examples = ex
+                command_line = names[0]
+                if len(names)>1:
+                    command_line += ' (${BOLD}%s:${NORMAL} %s)'%(_T('synonyms'),', '.join(names[1:]))
                 if len(params):
-                    command_line = '%s [param]'%names[0]
-                    command_help = '%s: (%s)'%(_T('Available values'),', '.join(params))
-                else:
-                    command_line = names[0]
+                    command_line += ' [%s]'%params[0]
+                    command_help = '%s:  %s'%(params[0],', '.join(params[1:]))
                 break
         return command_line, command_help, notice, examples
 
@@ -236,9 +241,8 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
             session_command = m.group(1)
             command_params = m.group(2)
         if cmd == '!':
-            self.append_note(_T('Missing command name. For start interactive mode type command name after exclamation.'))
+            self.append_note(_T('Missing command name. For start interactive mode type command name after exclamation. For mode type help !.'))
             return command_name, self._raw_cmd, 0
-        hidden_commands = ('answer-cols','hidden')
         # help
         help, help_item = None,None
         m = re.match('(h(?:elp)?)(?:$|\s+(\S+))',cmd)
@@ -258,12 +262,12 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
                     if func:
                         name = func(command_params.strip())
                         if name is not None: command_name = name
-        elif session_command in hidden_commands:
+        elif session_command in self._hidden_commands:
             # undocumented hidden commands for TEST purpose
             if session_command == 'answer-cols':
                 self.__session_translate_column_names__(command_params.strip())
             elif session_command == 'hidden':
-                self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('Hidden commands are'),', '.join(hidden_commands)))
+                self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('Hidden commands are'),', '.join(self._hidden_commands)))
         else:
             # 3. EPP commands
             cmd = EPP_command
@@ -469,22 +473,23 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
         username = self.get_config_value(section_epp_login, 'username',OMMIT_ERROR)
         password = self.get_config_value(section_epp_login, 'password',OMMIT_ERROR)
         # Check if all values are present:
-        if not (data[0] # host
-            and data[1] # port
-            and data[2] # privkey
-            and data[3] # cert
-            # 4 timeout
-            # 5 socket type
-            and username
-            and password
-            ):
-            return # no automatic login, some data missing
+        missing = []
+        if not data[0]: missing.append(_T('host missing'))
+        if not data[1]: missing.append(_T('port missing'))
+        if not data[2]: missing.append(_T('private key missing'))
+        if not data[3]: missing.append(_T('certificate missing'))
+        if not username: missing.append(_T('username missing'))
+        if not password: missing.append(_T('password missing'))
+        if len(missing):
+            self.append_note('%s:'%_T('Automatic login stopped'))
+            map(self.append_note, missing)
+            return
         self._epp_cmd.set_params({'username':[username],'password':[password]})
         self.reset_round()
         self.create_login()
         epp_doc = self._epp_cmd.get_xml()
         if epp_doc and self.is_connected():
-            self.append_note(_T('Login command sent to server'))
+            if self._session[VERBOSE] > 1: self.append_note(_T('Login command sent to the server'))
             self.send(epp_doc)          # odeslání dokumentu na server
             answer = self.receive()     # příjem odpovědi
             self.process_answer(answer) # zpracování odpovědi

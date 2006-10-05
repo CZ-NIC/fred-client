@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'main.ui'
 #
-# Created: Út říj 3 10:13:15 2006
+# Created: Čt říj 5 08:58:18 2006
 #      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -2146,16 +2146,22 @@ class ccregWindow(QDialog):
         self.textLabel15 = QLabel(self.TabPage_2,"textLabel15")
         self.textLabel15.setGeometry(QRect(7,132,110,20))
 
-        self.login_data = QTextEdit(self.TabPage_2,"login_data")
-        self.login_data.setGeometry(QRect(130,130,450,200))
-
-        self.login_msg = QTextEdit(self.TabPage_2,"login_msg")
-        self.login_msg.setGeometry(QRect(130,40,450,80))
-        self.login_msg.setWordWrap(QTextEdit.WidgetWidth)
-
         self.btn_source_login = QPushButton(self.TabPage_2,"btn_source_login")
         self.btn_source_login.setGeometry(QRect(10,280,50,50))
         self.btn_source_login.setPixmap(self.image2)
+
+        self.login_msg = QTextEdit(self.TabPage_2,"login_msg")
+        self.login_msg.setGeometry(QRect(130,40,450,70))
+        self.login_msg.setWordWrap(QTextEdit.WidgetWidth)
+
+        self.login_table = QTable(self.TabPage_2,"login_table")
+        self.login_table.setNumCols(self.login_table.numCols() + 1)
+        self.login_table.horizontalHeader().setLabel(self.login_table.numCols() - 1,self.__tr("name"))
+        self.login_table.setNumCols(self.login_table.numCols() + 1)
+        self.login_table.horizontalHeader().setLabel(self.login_table.numCols() - 1,self.__tr("value"))
+        self.login_table.setGeometry(QRect(130,120,450,210))
+        self.login_table.setNumRows(0)
+        self.login_table.setNumCols(2)
         self.login_response.insertTab(self.TabPage_2,QString.fromLatin1(""))
         self.tabWidget6.insertTab(self.tab,QString.fromLatin1(""))
 
@@ -2195,16 +2201,16 @@ class ccregWindow(QDialog):
         self.logout_code = QLabel(self.TabPage_4,"logout_code")
         self.logout_code.setGeometry(QRect(130,10,450,20))
 
-        self.logout_msg = QTextEdit(self.TabPage_4,"logout_msg")
-        self.logout_msg.setGeometry(QRect(130,40,450,80))
-        self.logout_msg.setWordWrap(QTextEdit.WidgetWidth)
-
-        self.logout_data = QTextEdit(self.TabPage_4,"logout_data")
-        self.logout_data.setGeometry(QRect(130,129,450,190))
-
         self.btn_source_logout = QPushButton(self.TabPage_4,"btn_source_logout")
         self.btn_source_logout.setGeometry(QRect(10,270,50,50))
         self.btn_source_logout.setPixmap(self.image2)
+
+        self.logout_msg = QTextEdit(self.TabPage_4,"logout_msg")
+        self.logout_msg.setGeometry(QRect(130,40,450,70))
+        self.logout_msg.setWordWrap(QTextEdit.WidgetWidth)
+
+        self.logout_data = QTextEdit(self.TabPage_4,"logout_data")
+        self.logout_data.setGeometry(QRect(130,119,450,200))
         self.logout_response.insertTab(self.TabPage_4,QString.fromLatin1(""))
         self.tabWidget6.insertTab(self.TabPage_3,QString.fromLatin1(""))
 
@@ -2263,16 +2269,22 @@ class ccregWindow(QDialog):
         self.poll_code = QLabel(self.TabPage_6,"poll_code")
         self.poll_code.setGeometry(QRect(130,11,450,20))
 
-        self.poll_msg = QTextEdit(self.TabPage_6,"poll_msg")
-        self.poll_msg.setGeometry(QRect(130,41,450,80))
-        self.poll_msg.setWordWrap(QTextEdit.WidgetWidth)
-
-        self.poll_data = QTextEdit(self.TabPage_6,"poll_data")
-        self.poll_data.setGeometry(QRect(130,130,450,190))
-
         self.btn_source_poll = QPushButton(self.TabPage_6,"btn_source_poll")
         self.btn_source_poll.setGeometry(QRect(10,280,50,50))
         self.btn_source_poll.setPixmap(self.image2)
+
+        self.poll_table = QTable(self.TabPage_6,"poll_table")
+        self.poll_table.setNumCols(self.poll_table.numCols() + 1)
+        self.poll_table.horizontalHeader().setLabel(self.poll_table.numCols() - 1,self.__tr("name"))
+        self.poll_table.setNumCols(self.poll_table.numCols() + 1)
+        self.poll_table.horizontalHeader().setLabel(self.poll_table.numCols() - 1,self.__tr("value"))
+        self.poll_table.setGeometry(QRect(130,120,450,210))
+        self.poll_table.setNumRows(0)
+        self.poll_table.setNumCols(2)
+
+        self.poll_msg = QTextEdit(self.TabPage_6,"poll_msg")
+        self.poll_msg.setGeometry(QRect(130,41,450,70))
+        self.poll_msg.setWordWrap(QTextEdit.WidgetWidth)
         self.poll_response.insertTab(self.TabPage_6,QString.fromLatin1(""))
         self.tabWidget6.insertTab(self.TabPage_5,QString.fromLatin1(""))
 
@@ -2306,16 +2318,22 @@ class ccregWindow(QDialog):
         self.hello_code = QLabel(self.TabPage_8,"hello_code")
         self.hello_code.setGeometry(QRect(130,10,450,20))
 
-        self.hello_msg = QTextEdit(self.TabPage_8,"hello_msg")
-        self.hello_msg.setGeometry(QRect(130,40,450,80))
-        self.hello_msg.setWordWrap(QTextEdit.WidgetWidth)
-
-        self.hello_data = QTextEdit(self.TabPage_8,"hello_data")
-        self.hello_data.setGeometry(QRect(130,129,450,190))
-
         self.btn_source_hello = QPushButton(self.TabPage_8,"btn_source_hello")
         self.btn_source_hello.setGeometry(QRect(10,270,50,50))
         self.btn_source_hello.setPixmap(self.image2)
+
+        self.hello_table = QTable(self.TabPage_8,"hello_table")
+        self.hello_table.setNumCols(self.hello_table.numCols() + 1)
+        self.hello_table.horizontalHeader().setLabel(self.hello_table.numCols() - 1,self.__tr("name"))
+        self.hello_table.setNumCols(self.hello_table.numCols() + 1)
+        self.hello_table.horizontalHeader().setLabel(self.hello_table.numCols() - 1,self.__tr("value"))
+        self.hello_table.setGeometry(QRect(130,120,450,210))
+        self.hello_table.setNumRows(0)
+        self.hello_table.setNumCols(2)
+
+        self.hello_msg = QTextEdit(self.TabPage_8,"hello_msg")
+        self.hello_msg.setGeometry(QRect(130,40,450,70))
+        self.hello_msg.setWordWrap(QTextEdit.WidgetWidth)
         self.hello_response.insertTab(self.TabPage_8,QString.fromLatin1(""))
         self.tabWidget6.insertTab(self.TabPage_7,QString.fromLatin1(""))
         self.tabWidget.insertTab(self.Widget8,QString.fromLatin1(""))
@@ -2378,16 +2396,22 @@ class ccregWindow(QDialog):
         self.check_contact_code = QLabel(self.TabPage_10,"check_contact_code")
         self.check_contact_code.setGeometry(QRect(140,10,450,20))
 
-        self.check_contact_msg = QTextEdit(self.TabPage_10,"check_contact_msg")
-        self.check_contact_msg.setGeometry(QRect(140,40,450,80))
-        self.check_contact_msg.setWordWrap(QTextEdit.WidgetWidth)
-
-        self.check_contact_data = QTextEdit(self.TabPage_10,"check_contact_data")
-        self.check_contact_data.setGeometry(QRect(140,129,450,190))
-
         self.btn_source_check_contact = QPushButton(self.TabPage_10,"btn_source_check_contact")
         self.btn_source_check_contact.setGeometry(QRect(10,270,50,50))
         self.btn_source_check_contact.setPixmap(self.image2)
+
+        self.check_contact_msg = QTextEdit(self.TabPage_10,"check_contact_msg")
+        self.check_contact_msg.setGeometry(QRect(130,40,450,70))
+        self.check_contact_msg.setWordWrap(QTextEdit.WidgetWidth)
+
+        self.check_contact_table = QTable(self.TabPage_10,"check_contact_table")
+        self.check_contact_table.setNumCols(self.check_contact_table.numCols() + 1)
+        self.check_contact_table.horizontalHeader().setLabel(self.check_contact_table.numCols() - 1,self.__tr("name"))
+        self.check_contact_table.setNumCols(self.check_contact_table.numCols() + 1)
+        self.check_contact_table.horizontalHeader().setLabel(self.check_contact_table.numCols() - 1,self.__tr("value"))
+        self.check_contact_table.setGeometry(QRect(130,120,450,210))
+        self.check_contact_table.setNumRows(0)
+        self.check_contact_table.setNumCols(2)
         self.check_contact_response.insertTab(self.TabPage_10,QString.fromLatin1(""))
         self.tabWidget6_2.insertTab(self.TabPage_9,QString.fromLatin1(""))
 
@@ -2483,16 +2507,22 @@ class ccregWindow(QDialog):
         self.create_contact_code = QLabel(self.TabPage_13,"create_contact_code")
         self.create_contact_code.setGeometry(QRect(130,10,450,20))
 
-        self.create_contact_msg = QTextEdit(self.TabPage_13,"create_contact_msg")
-        self.create_contact_msg.setGeometry(QRect(130,40,450,80))
-        self.create_contact_msg.setWordWrap(QTextEdit.WidgetWidth)
-
-        self.create_contact_data = QTextEdit(self.TabPage_13,"create_contact_data")
-        self.create_contact_data.setGeometry(QRect(130,129,450,190))
-
         self.btn_source_create_contact = QPushButton(self.TabPage_13,"btn_source_create_contact")
         self.btn_source_create_contact.setGeometry(QRect(10,270,50,50))
         self.btn_source_create_contact.setPixmap(self.image2)
+
+        self.create_contact_table = QTable(self.TabPage_13,"create_contact_table")
+        self.create_contact_table.setNumCols(self.create_contact_table.numCols() + 1)
+        self.create_contact_table.horizontalHeader().setLabel(self.create_contact_table.numCols() - 1,self.__tr("name"))
+        self.create_contact_table.setNumCols(self.create_contact_table.numCols() + 1)
+        self.create_contact_table.horizontalHeader().setLabel(self.create_contact_table.numCols() - 1,self.__tr("value"))
+        self.create_contact_table.setGeometry(QRect(130,120,450,210))
+        self.create_contact_table.setNumRows(0)
+        self.create_contact_table.setNumCols(2)
+
+        self.create_contact_msg = QTextEdit(self.TabPage_13,"create_contact_msg")
+        self.create_contact_msg.setGeometry(QRect(130,40,450,70))
+        self.create_contact_msg.setWordWrap(QTextEdit.WidgetWidth)
         self.create_contact_response.insertTab(self.TabPage_13,QString.fromLatin1(""))
         self.tabWidget6_2.insertTab(self.tab_8,QString.fromLatin1(""))
 
@@ -2527,16 +2557,22 @@ class ccregWindow(QDialog):
         self.update_contact_code = QLabel(self.TabPage_15,"update_contact_code")
         self.update_contact_code.setGeometry(QRect(130,10,450,20))
 
-        self.update_contact_msg = QTextEdit(self.TabPage_15,"update_contact_msg")
-        self.update_contact_msg.setGeometry(QRect(130,40,450,80))
-        self.update_contact_msg.setWordWrap(QTextEdit.WidgetWidth)
-
-        self.update_contact_data = QTextEdit(self.TabPage_15,"update_contact_data")
-        self.update_contact_data.setGeometry(QRect(130,129,450,190))
-
         self.btn_source_update_contact = QPushButton(self.TabPage_15,"btn_source_update_contact")
         self.btn_source_update_contact.setGeometry(QRect(10,270,50,50))
         self.btn_source_update_contact.setPixmap(self.image2)
+
+        self.update_contact_table = QTable(self.TabPage_15,"update_contact_table")
+        self.update_contact_table.setNumCols(self.update_contact_table.numCols() + 1)
+        self.update_contact_table.horizontalHeader().setLabel(self.update_contact_table.numCols() - 1,self.__tr("name"))
+        self.update_contact_table.setNumCols(self.update_contact_table.numCols() + 1)
+        self.update_contact_table.horizontalHeader().setLabel(self.update_contact_table.numCols() - 1,self.__tr("value"))
+        self.update_contact_table.setGeometry(QRect(130,120,450,210))
+        self.update_contact_table.setNumRows(0)
+        self.update_contact_table.setNumCols(2)
+
+        self.update_contact_msg = QTextEdit(self.TabPage_15,"update_contact_msg")
+        self.update_contact_msg.setGeometry(QRect(130,40,450,70))
+        self.update_contact_msg.setWordWrap(QTextEdit.WidgetWidth)
         self.update_contact_response.insertTab(self.TabPage_15,QString.fromLatin1(""))
         self.tabWidget6_2.insertTab(self.TabPage_14,QString.fromLatin1(""))
 
@@ -2582,16 +2618,22 @@ class ccregWindow(QDialog):
         self.delete_contact_code = QLabel(self.TabPage_17,"delete_contact_code")
         self.delete_contact_code.setGeometry(QRect(130,10,450,20))
 
-        self.delete_contact_msg = QTextEdit(self.TabPage_17,"delete_contact_msg")
-        self.delete_contact_msg.setGeometry(QRect(130,40,450,80))
-        self.delete_contact_msg.setWordWrap(QTextEdit.WidgetWidth)
-
-        self.delete_contact_data = QTextEdit(self.TabPage_17,"delete_contact_data")
-        self.delete_contact_data.setGeometry(QRect(130,129,450,190))
-
         self.btn_source_delete_contact = QPushButton(self.TabPage_17,"btn_source_delete_contact")
         self.btn_source_delete_contact.setGeometry(QRect(10,270,50,50))
         self.btn_source_delete_contact.setPixmap(self.image2)
+
+        self.delete_contact_msg = QTextEdit(self.TabPage_17,"delete_contact_msg")
+        self.delete_contact_msg.setGeometry(QRect(130,40,450,70))
+        self.delete_contact_msg.setWordWrap(QTextEdit.WidgetWidth)
+
+        self.delete_contact_table = QTable(self.TabPage_17,"delete_contact_table")
+        self.delete_contact_table.setNumCols(self.delete_contact_table.numCols() + 1)
+        self.delete_contact_table.horizontalHeader().setLabel(self.delete_contact_table.numCols() - 1,self.__tr("name"))
+        self.delete_contact_table.setNumCols(self.delete_contact_table.numCols() + 1)
+        self.delete_contact_table.horizontalHeader().setLabel(self.delete_contact_table.numCols() - 1,self.__tr("value"))
+        self.delete_contact_table.setGeometry(QRect(130,120,450,210))
+        self.delete_contact_table.setNumRows(0)
+        self.delete_contact_table.setNumCols(2)
         self.delete_contact_response.insertTab(self.TabPage_17,QString.fromLatin1(""))
         self.tabWidget6_2.insertTab(self.TabPage_16,QString.fromLatin1(""))
 
@@ -2630,29 +2672,35 @@ class ccregWindow(QDialog):
 
         self.TabPage_19 = QWidget(self.transfer_contact_response,"TabPage_19")
 
-        self.textLabel61 = QLabel(self.TabPage_19,"textLabel61")
-        self.textLabel61.setGeometry(QRect(7,132,110,20))
-
         self.textLabel62 = QLabel(self.TabPage_19,"textLabel62")
         self.textLabel62.setGeometry(QRect(7,42,110,20))
-
-        self.textLabel63 = QLabel(self.TabPage_19,"textLabel63")
-        self.textLabel63.setGeometry(QRect(0,10,125,20))
-        self.textLabel63.setAlignment(QLabel.WordBreak | QLabel.AlignTop | QLabel.AlignLeft)
-
-        self.transfer_contact_code = QLabel(self.TabPage_19,"transfer_contact_code")
-        self.transfer_contact_code.setGeometry(QRect(130,10,450,20))
-
-        self.transfer_contact_msg = QTextEdit(self.TabPage_19,"transfer_contact_msg")
-        self.transfer_contact_msg.setGeometry(QRect(130,40,450,80))
-        self.transfer_contact_msg.setWordWrap(QTextEdit.WidgetWidth)
-
-        self.transfer_contact_data = QTextEdit(self.TabPage_19,"transfer_contact_data")
-        self.transfer_contact_data.setGeometry(QRect(130,129,450,190))
 
         self.btn_source_transfer_contact = QPushButton(self.TabPage_19,"btn_source_transfer_contact")
         self.btn_source_transfer_contact.setGeometry(QRect(10,270,50,50))
         self.btn_source_transfer_contact.setPixmap(self.image2)
+
+        self.transfer_contact_table = QTable(self.TabPage_19,"transfer_contact_table")
+        self.transfer_contact_table.setNumCols(self.transfer_contact_table.numCols() + 1)
+        self.transfer_contact_table.horizontalHeader().setLabel(self.transfer_contact_table.numCols() - 1,self.__tr("name"))
+        self.transfer_contact_table.setNumCols(self.transfer_contact_table.numCols() + 1)
+        self.transfer_contact_table.horizontalHeader().setLabel(self.transfer_contact_table.numCols() - 1,self.__tr("value"))
+        self.transfer_contact_table.setGeometry(QRect(130,120,450,210))
+        self.transfer_contact_table.setNumRows(0)
+        self.transfer_contact_table.setNumCols(2)
+
+        self.transfer_contact_msg = QTextEdit(self.TabPage_19,"transfer_contact_msg")
+        self.transfer_contact_msg.setGeometry(QRect(130,40,450,70))
+        self.transfer_contact_msg.setWordWrap(QTextEdit.WidgetWidth)
+
+        self.textLabel63 = QLabel(self.TabPage_19,"textLabel63")
+        self.textLabel63.setGeometry(QRect(10,10,125,20))
+        self.textLabel63.setAlignment(QLabel.WordBreak | QLabel.AlignTop | QLabel.AlignLeft)
+
+        self.transfer_contact_code = QLabel(self.TabPage_19,"transfer_contact_code")
+        self.transfer_contact_code.setGeometry(QRect(140,10,440,20))
+
+        self.textLabel61 = QLabel(self.TabPage_19,"textLabel61")
+        self.textLabel61.setGeometry(QRect(7,132,110,20))
         self.transfer_contact_response.insertTab(self.TabPage_19,QString.fromLatin1(""))
         self.tabWidget6_2.insertTab(self.TabPage_18,QString.fromLatin1(""))
 
@@ -2768,16 +2816,22 @@ class ccregWindow(QDialog):
         self.check_nsset_code = QLabel(self.TabPage_23,"check_nsset_code")
         self.check_nsset_code.setGeometry(QRect(130,10,450,20))
 
-        self.check_nsset_msg = QTextEdit(self.TabPage_23,"check_nsset_msg")
-        self.check_nsset_msg.setGeometry(QRect(130,40,450,80))
-        self.check_nsset_msg.setWordWrap(QTextEdit.WidgetWidth)
-
-        self.check_nsset_data = QTextEdit(self.TabPage_23,"check_nsset_data")
-        self.check_nsset_data.setGeometry(QRect(130,129,450,190))
-
         self.btn_source_check_nsset = QPushButton(self.TabPage_23,"btn_source_check_nsset")
         self.btn_source_check_nsset.setGeometry(QRect(10,270,50,50))
         self.btn_source_check_nsset.setPixmap(self.image2)
+
+        self.check_nsset_msg = QTextEdit(self.TabPage_23,"check_nsset_msg")
+        self.check_nsset_msg.setGeometry(QRect(130,40,450,70))
+        self.check_nsset_msg.setWordWrap(QTextEdit.WidgetWidth)
+
+        self.check_nsset_table = QTable(self.TabPage_23,"check_nsset_table")
+        self.check_nsset_table.setNumCols(self.check_nsset_table.numCols() + 1)
+        self.check_nsset_table.horizontalHeader().setLabel(self.check_nsset_table.numCols() - 1,self.__tr("name"))
+        self.check_nsset_table.setNumCols(self.check_nsset_table.numCols() + 1)
+        self.check_nsset_table.horizontalHeader().setLabel(self.check_nsset_table.numCols() - 1,self.__tr("value"))
+        self.check_nsset_table.setGeometry(QRect(130,120,450,210))
+        self.check_nsset_table.setNumRows(0)
+        self.check_nsset_table.setNumCols(2)
         self.check_nsset_response.insertTab(self.TabPage_23,QString.fromLatin1(""))
         self.tabWidget6_2_2.insertTab(self.tab_14,QString.fromLatin1(""))
 
@@ -2823,16 +2877,22 @@ class ccregWindow(QDialog):
         self.info_nsset_code = QLabel(self.TabPage_25,"info_nsset_code")
         self.info_nsset_code.setGeometry(QRect(130,10,450,20))
 
-        self.info_nsset_msg = QTextEdit(self.TabPage_25,"info_nsset_msg")
-        self.info_nsset_msg.setGeometry(QRect(130,40,450,80))
-        self.info_nsset_msg.setWordWrap(QTextEdit.WidgetWidth)
-
-        self.info_nsset_data = QTextEdit(self.TabPage_25,"info_nsset_data")
-        self.info_nsset_data.setGeometry(QRect(130,129,450,190))
-
         self.btn_source_info_nsset = QPushButton(self.TabPage_25,"btn_source_info_nsset")
         self.btn_source_info_nsset.setGeometry(QRect(10,270,50,50))
         self.btn_source_info_nsset.setPixmap(self.image2)
+
+        self.info_nsset_msg = QTextEdit(self.TabPage_25,"info_nsset_msg")
+        self.info_nsset_msg.setGeometry(QRect(130,40,450,70))
+        self.info_nsset_msg.setWordWrap(QTextEdit.WidgetWidth)
+
+        self.info_nsset_table = QTable(self.TabPage_25,"info_nsset_table")
+        self.info_nsset_table.setNumCols(self.info_nsset_table.numCols() + 1)
+        self.info_nsset_table.horizontalHeader().setLabel(self.info_nsset_table.numCols() - 1,self.__tr("name"))
+        self.info_nsset_table.setNumCols(self.info_nsset_table.numCols() + 1)
+        self.info_nsset_table.horizontalHeader().setLabel(self.info_nsset_table.numCols() - 1,self.__tr("value"))
+        self.info_nsset_table.setGeometry(QRect(130,120,450,210))
+        self.info_nsset_table.setNumRows(0)
+        self.info_nsset_table.setNumCols(2)
         self.info_nsset_response.insertTab(self.TabPage_25,QString.fromLatin1(""))
         self.tabWidget6_2_2.insertTab(self.TabPage_24,QString.fromLatin1(""))
 
@@ -2867,16 +2927,22 @@ class ccregWindow(QDialog):
         self.create_nsset_code = QLabel(self.TabPage_27,"create_nsset_code")
         self.create_nsset_code.setGeometry(QRect(130,10,450,20))
 
-        self.create_nsset_msg = QTextEdit(self.TabPage_27,"create_nsset_msg")
-        self.create_nsset_msg.setGeometry(QRect(130,40,450,80))
-        self.create_nsset_msg.setWordWrap(QTextEdit.WidgetWidth)
-
-        self.create_nsset_data = QTextEdit(self.TabPage_27,"create_nsset_data")
-        self.create_nsset_data.setGeometry(QRect(130,129,450,190))
-
         self.btn_source_create_nsset = QPushButton(self.TabPage_27,"btn_source_create_nsset")
         self.btn_source_create_nsset.setGeometry(QRect(10,270,50,50))
         self.btn_source_create_nsset.setPixmap(self.image2)
+
+        self.create_nsset_msg = QTextEdit(self.TabPage_27,"create_nsset_msg")
+        self.create_nsset_msg.setGeometry(QRect(130,40,450,70))
+        self.create_nsset_msg.setWordWrap(QTextEdit.WidgetWidth)
+
+        self.create_nsset_table = QTable(self.TabPage_27,"create_nsset_table")
+        self.create_nsset_table.setNumCols(self.create_nsset_table.numCols() + 1)
+        self.create_nsset_table.horizontalHeader().setLabel(self.create_nsset_table.numCols() - 1,self.__tr("name"))
+        self.create_nsset_table.setNumCols(self.create_nsset_table.numCols() + 1)
+        self.create_nsset_table.horizontalHeader().setLabel(self.create_nsset_table.numCols() - 1,self.__tr("value"))
+        self.create_nsset_table.setGeometry(QRect(130,120,450,210))
+        self.create_nsset_table.setNumRows(0)
+        self.create_nsset_table.setNumCols(2)
         self.create_nsset_response.insertTab(self.TabPage_27,QString.fromLatin1(""))
         self.tabWidget6_2_2.insertTab(self.TabPage_26,QString.fromLatin1(""))
 
@@ -2911,16 +2977,22 @@ class ccregWindow(QDialog):
         self.update_nsset_code = QLabel(self.TabPage_29,"update_nsset_code")
         self.update_nsset_code.setGeometry(QRect(130,10,450,20))
 
-        self.update_nsset_msg = QTextEdit(self.TabPage_29,"update_nsset_msg")
-        self.update_nsset_msg.setGeometry(QRect(130,40,450,80))
-        self.update_nsset_msg.setWordWrap(QTextEdit.WidgetWidth)
-
-        self.update_nsset_data = QTextEdit(self.TabPage_29,"update_nsset_data")
-        self.update_nsset_data.setGeometry(QRect(130,129,450,190))
-
         self.btn_source_update_nsset = QPushButton(self.TabPage_29,"btn_source_update_nsset")
         self.btn_source_update_nsset.setGeometry(QRect(10,270,50,50))
         self.btn_source_update_nsset.setPixmap(self.image2)
+
+        self.update_nsset_table = QTable(self.TabPage_29,"update_nsset_table")
+        self.update_nsset_table.setNumCols(self.update_nsset_table.numCols() + 1)
+        self.update_nsset_table.horizontalHeader().setLabel(self.update_nsset_table.numCols() - 1,self.__tr("name"))
+        self.update_nsset_table.setNumCols(self.update_nsset_table.numCols() + 1)
+        self.update_nsset_table.horizontalHeader().setLabel(self.update_nsset_table.numCols() - 1,self.__tr("value"))
+        self.update_nsset_table.setGeometry(QRect(130,120,450,210))
+        self.update_nsset_table.setNumRows(0)
+        self.update_nsset_table.setNumCols(2)
+
+        self.update_nsset_msg = QTextEdit(self.TabPage_29,"update_nsset_msg")
+        self.update_nsset_msg.setGeometry(QRect(130,40,450,70))
+        self.update_nsset_msg.setWordWrap(QTextEdit.WidgetWidth)
         self.update_nsset_response.insertTab(self.TabPage_29,QString.fromLatin1(""))
         self.tabWidget6_2_2.insertTab(self.TabPage_28,QString.fromLatin1(""))
 
@@ -2966,16 +3038,22 @@ class ccregWindow(QDialog):
         self.delete_nsset_code = QLabel(self.TabPage_31,"delete_nsset_code")
         self.delete_nsset_code.setGeometry(QRect(130,10,450,20))
 
-        self.delete_nsset_msg = QTextEdit(self.TabPage_31,"delete_nsset_msg")
-        self.delete_nsset_msg.setGeometry(QRect(130,40,450,80))
-        self.delete_nsset_msg.setWordWrap(QTextEdit.WidgetWidth)
-
-        self.delete_nsset_data = QTextEdit(self.TabPage_31,"delete_nsset_data")
-        self.delete_nsset_data.setGeometry(QRect(130,129,450,190))
-
         self.btn_source_delete_nsset = QPushButton(self.TabPage_31,"btn_source_delete_nsset")
         self.btn_source_delete_nsset.setGeometry(QRect(10,270,50,50))
         self.btn_source_delete_nsset.setPixmap(self.image2)
+
+        self.delete_nsset_msg = QTextEdit(self.TabPage_31,"delete_nsset_msg")
+        self.delete_nsset_msg.setGeometry(QRect(130,40,450,70))
+        self.delete_nsset_msg.setWordWrap(QTextEdit.WidgetWidth)
+
+        self.delete_nsset_table = QTable(self.TabPage_31,"delete_nsset_table")
+        self.delete_nsset_table.setNumCols(self.delete_nsset_table.numCols() + 1)
+        self.delete_nsset_table.horizontalHeader().setLabel(self.delete_nsset_table.numCols() - 1,self.__tr("name"))
+        self.delete_nsset_table.setNumCols(self.delete_nsset_table.numCols() + 1)
+        self.delete_nsset_table.horizontalHeader().setLabel(self.delete_nsset_table.numCols() - 1,self.__tr("value"))
+        self.delete_nsset_table.setGeometry(QRect(130,120,450,210))
+        self.delete_nsset_table.setNumRows(0)
+        self.delete_nsset_table.setNumCols(2)
         self.delete_nsset_response.insertTab(self.TabPage_31,QString.fromLatin1(""))
         self.tabWidget6_2_2.insertTab(self.TabPage_30,QString.fromLatin1(""))
 
@@ -3091,16 +3169,22 @@ class ccregWindow(QDialog):
         self.check_domain_code = QLabel(self.TabPage_35,"check_domain_code")
         self.check_domain_code.setGeometry(QRect(130,10,450,20))
 
-        self.check_domain_msg = QTextEdit(self.TabPage_35,"check_domain_msg")
-        self.check_domain_msg.setGeometry(QRect(130,40,450,80))
-        self.check_domain_msg.setWordWrap(QTextEdit.WidgetWidth)
-
-        self.check_domain_data = QTextEdit(self.TabPage_35,"check_domain_data")
-        self.check_domain_data.setGeometry(QRect(130,129,450,190))
-
         self.btn_source_check_domain = QPushButton(self.TabPage_35,"btn_source_check_domain")
         self.btn_source_check_domain.setGeometry(QRect(10,270,50,50))
         self.btn_source_check_domain.setPixmap(self.image2)
+
+        self.check_domain_msg = QTextEdit(self.TabPage_35,"check_domain_msg")
+        self.check_domain_msg.setGeometry(QRect(130,40,450,70))
+        self.check_domain_msg.setWordWrap(QTextEdit.WidgetWidth)
+
+        self.check_domain_table = QTable(self.TabPage_35,"check_domain_table")
+        self.check_domain_table.setNumCols(self.check_domain_table.numCols() + 1)
+        self.check_domain_table.horizontalHeader().setLabel(self.check_domain_table.numCols() - 1,self.__tr("name"))
+        self.check_domain_table.setNumCols(self.check_domain_table.numCols() + 1)
+        self.check_domain_table.horizontalHeader().setLabel(self.check_domain_table.numCols() - 1,self.__tr("value"))
+        self.check_domain_table.setGeometry(QRect(130,120,450,210))
+        self.check_domain_table.setNumRows(0)
+        self.check_domain_table.setNumCols(2)
         self.check_domain_response.insertTab(self.TabPage_35,QString.fromLatin1(""))
         self.tabWidget6_2_2_2.insertTab(self.tab_21,QString.fromLatin1(""))
 
@@ -3146,16 +3230,22 @@ class ccregWindow(QDialog):
         self.info_domain_code = QLabel(self.TabPage_37,"info_domain_code")
         self.info_domain_code.setGeometry(QRect(130,10,450,20))
 
-        self.info_domain_msg = QTextEdit(self.TabPage_37,"info_domain_msg")
-        self.info_domain_msg.setGeometry(QRect(130,40,450,80))
-        self.info_domain_msg.setWordWrap(QTextEdit.WidgetWidth)
-
-        self.info_domain_data = QTextEdit(self.TabPage_37,"info_domain_data")
-        self.info_domain_data.setGeometry(QRect(130,129,450,190))
-
         self.btn_source_info_domain = QPushButton(self.TabPage_37,"btn_source_info_domain")
         self.btn_source_info_domain.setGeometry(QRect(10,270,50,50))
         self.btn_source_info_domain.setPixmap(self.image2)
+
+        self.info_domain_msg = QTextEdit(self.TabPage_37,"info_domain_msg")
+        self.info_domain_msg.setGeometry(QRect(130,40,450,70))
+        self.info_domain_msg.setWordWrap(QTextEdit.WidgetWidth)
+
+        self.info_domain_table = QTable(self.TabPage_37,"info_domain_table")
+        self.info_domain_table.setNumCols(self.info_domain_table.numCols() + 1)
+        self.info_domain_table.horizontalHeader().setLabel(self.info_domain_table.numCols() - 1,self.__tr("name"))
+        self.info_domain_table.setNumCols(self.info_domain_table.numCols() + 1)
+        self.info_domain_table.horizontalHeader().setLabel(self.info_domain_table.numCols() - 1,self.__tr("value"))
+        self.info_domain_table.setGeometry(QRect(130,120,450,210))
+        self.info_domain_table.setNumRows(0)
+        self.info_domain_table.setNumCols(2)
         self.info_domain_response.insertTab(self.TabPage_37,QString.fromLatin1(""))
         self.tabWidget6_2_2_2.insertTab(self.TabPage_36,QString.fromLatin1(""))
 
@@ -3191,15 +3281,21 @@ class ccregWindow(QDialog):
         self.btn_source_create_domain.setGeometry(QRect(10,270,50,50))
         self.btn_source_create_domain.setPixmap(self.image2)
 
-        self.create_domain_msg = QTextEdit(self.TabPage_39,"create_domain_msg")
-        self.create_domain_msg.setGeometry(QRect(130,40,450,80))
-        self.create_domain_msg.setWordWrap(QTextEdit.WidgetWidth)
-
-        self.create_domain_data = QTextEdit(self.TabPage_39,"create_domain_data")
-        self.create_domain_data.setGeometry(QRect(130,129,450,190))
-
         self.create_domain_code = QLabel(self.TabPage_39,"create_domain_code")
         self.create_domain_code.setGeometry(QRect(130,10,450,20))
+
+        self.create_domain_msg = QTextEdit(self.TabPage_39,"create_domain_msg")
+        self.create_domain_msg.setGeometry(QRect(130,40,450,70))
+        self.create_domain_msg.setWordWrap(QTextEdit.WidgetWidth)
+
+        self.create_domain_table = QTable(self.TabPage_39,"create_domain_table")
+        self.create_domain_table.setNumCols(self.create_domain_table.numCols() + 1)
+        self.create_domain_table.horizontalHeader().setLabel(self.create_domain_table.numCols() - 1,self.__tr("name"))
+        self.create_domain_table.setNumCols(self.create_domain_table.numCols() + 1)
+        self.create_domain_table.horizontalHeader().setLabel(self.create_domain_table.numCols() - 1,self.__tr("value"))
+        self.create_domain_table.setGeometry(QRect(130,120,450,210))
+        self.create_domain_table.setNumRows(0)
+        self.create_domain_table.setNumCols(2)
         self.create_domain_response.insertTab(self.TabPage_39,QString.fromLatin1(""))
         self.tabWidget6_2_2_2.insertTab(self.TabPage_38,QString.fromLatin1(""))
 
@@ -3234,16 +3330,22 @@ class ccregWindow(QDialog):
         self.update_domain_code = QLabel(self.TabPage_41,"update_domain_code")
         self.update_domain_code.setGeometry(QRect(130,10,450,20))
 
-        self.update_domain_msg = QTextEdit(self.TabPage_41,"update_domain_msg")
-        self.update_domain_msg.setGeometry(QRect(130,40,450,80))
-        self.update_domain_msg.setWordWrap(QTextEdit.WidgetWidth)
-
-        self.update_domain_data = QTextEdit(self.TabPage_41,"update_domain_data")
-        self.update_domain_data.setGeometry(QRect(130,129,450,190))
-
         self.btn_source_update_domain = QPushButton(self.TabPage_41,"btn_source_update_domain")
         self.btn_source_update_domain.setGeometry(QRect(10,270,50,50))
         self.btn_source_update_domain.setPixmap(self.image2)
+
+        self.update_domain_table = QTable(self.TabPage_41,"update_domain_table")
+        self.update_domain_table.setNumCols(self.update_domain_table.numCols() + 1)
+        self.update_domain_table.horizontalHeader().setLabel(self.update_domain_table.numCols() - 1,self.__tr("name"))
+        self.update_domain_table.setNumCols(self.update_domain_table.numCols() + 1)
+        self.update_domain_table.horizontalHeader().setLabel(self.update_domain_table.numCols() - 1,self.__tr("value"))
+        self.update_domain_table.setGeometry(QRect(130,120,450,210))
+        self.update_domain_table.setNumRows(0)
+        self.update_domain_table.setNumCols(2)
+
+        self.update_domain_msg = QTextEdit(self.TabPage_41,"update_domain_msg")
+        self.update_domain_msg.setGeometry(QRect(130,40,450,70))
+        self.update_domain_msg.setWordWrap(QTextEdit.WidgetWidth)
         self.update_domain_response.insertTab(self.TabPage_41,QString.fromLatin1(""))
         self.tabWidget6_2_2_2.insertTab(self.TabPage_40,QString.fromLatin1(""))
 
@@ -3289,16 +3391,22 @@ class ccregWindow(QDialog):
         self.delete_domain_code = QLabel(self.TabPage_43,"delete_domain_code")
         self.delete_domain_code.setGeometry(QRect(130,10,450,20))
 
-        self.delete_domain_msg = QTextEdit(self.TabPage_43,"delete_domain_msg")
-        self.delete_domain_msg.setGeometry(QRect(130,40,450,80))
-        self.delete_domain_msg.setWordWrap(QTextEdit.WidgetWidth)
-
-        self.delete_domain_data = QTextEdit(self.TabPage_43,"delete_domain_data")
-        self.delete_domain_data.setGeometry(QRect(130,129,450,190))
-
         self.btn_source_delete_domain = QPushButton(self.TabPage_43,"btn_source_delete_domain")
         self.btn_source_delete_domain.setGeometry(QRect(10,270,50,50))
         self.btn_source_delete_domain.setPixmap(self.image2)
+
+        self.delete_domain_table = QTable(self.TabPage_43,"delete_domain_table")
+        self.delete_domain_table.setNumCols(self.delete_domain_table.numCols() + 1)
+        self.delete_domain_table.horizontalHeader().setLabel(self.delete_domain_table.numCols() - 1,self.__tr("name"))
+        self.delete_domain_table.setNumCols(self.delete_domain_table.numCols() + 1)
+        self.delete_domain_table.horizontalHeader().setLabel(self.delete_domain_table.numCols() - 1,self.__tr("value"))
+        self.delete_domain_table.setGeometry(QRect(130,120,450,210))
+        self.delete_domain_table.setNumRows(0)
+        self.delete_domain_table.setNumCols(2)
+
+        self.delete_domain_msg = QTextEdit(self.TabPage_43,"delete_domain_msg")
+        self.delete_domain_msg.setGeometry(QRect(130,40,450,70))
+        self.delete_domain_msg.setWordWrap(QTextEdit.WidgetWidth)
         self.delete_domain_response.insertTab(self.TabPage_43,QString.fromLatin1(""))
         self.tabWidget6_2_2_2.insertTab(self.TabPage_42,QString.fromLatin1(""))
 
@@ -3350,16 +3458,22 @@ class ccregWindow(QDialog):
         self.transfer_domain_code = QLabel(self.TabPage_45,"transfer_domain_code")
         self.transfer_domain_code.setGeometry(QRect(130,10,450,20))
 
-        self.transfer_domain_msg = QTextEdit(self.TabPage_45,"transfer_domain_msg")
-        self.transfer_domain_msg.setGeometry(QRect(130,40,450,80))
-        self.transfer_domain_msg.setWordWrap(QTextEdit.WidgetWidth)
-
-        self.transfer_domain_data = QTextEdit(self.TabPage_45,"transfer_domain_data")
-        self.transfer_domain_data.setGeometry(QRect(130,129,450,190))
-
         self.btn_source_transfer_domain = QPushButton(self.TabPage_45,"btn_source_transfer_domain")
         self.btn_source_transfer_domain.setGeometry(QRect(10,270,50,50))
         self.btn_source_transfer_domain.setPixmap(self.image2)
+
+        self.transfer_domain_table = QTable(self.TabPage_45,"transfer_domain_table")
+        self.transfer_domain_table.setNumCols(self.transfer_domain_table.numCols() + 1)
+        self.transfer_domain_table.horizontalHeader().setLabel(self.transfer_domain_table.numCols() - 1,self.__tr("name"))
+        self.transfer_domain_table.setNumCols(self.transfer_domain_table.numCols() + 1)
+        self.transfer_domain_table.horizontalHeader().setLabel(self.transfer_domain_table.numCols() - 1,self.__tr("value"))
+        self.transfer_domain_table.setGeometry(QRect(130,120,450,210))
+        self.transfer_domain_table.setNumRows(0)
+        self.transfer_domain_table.setNumCols(2)
+
+        self.transfer_domain_msg = QTextEdit(self.TabPage_45,"transfer_domain_msg")
+        self.transfer_domain_msg.setGeometry(QRect(130,40,450,70))
+        self.transfer_domain_msg.setWordWrap(QTextEdit.WidgetWidth)
         self.transfer_domain_response.insertTab(self.TabPage_45,QString.fromLatin1(""))
         self.tabWidget6_2_2_2.insertTab(self.TabPage_44,QString.fromLatin1(""))
 
@@ -3436,16 +3550,22 @@ class ccregWindow(QDialog):
         self.renew_domain_code = QLabel(self.TabPage_47,"renew_domain_code")
         self.renew_domain_code.setGeometry(QRect(130,10,450,20))
 
-        self.renew_domain_msg = QTextEdit(self.TabPage_47,"renew_domain_msg")
-        self.renew_domain_msg.setGeometry(QRect(130,40,450,80))
-        self.renew_domain_msg.setWordWrap(QTextEdit.WidgetWidth)
-
-        self.renew_domain_data = QTextEdit(self.TabPage_47,"renew_domain_data")
-        self.renew_domain_data.setGeometry(QRect(130,129,450,190))
-
         self.btn_source_renew_domain = QPushButton(self.TabPage_47,"btn_source_renew_domain")
         self.btn_source_renew_domain.setGeometry(QRect(10,270,50,50))
         self.btn_source_renew_domain.setPixmap(self.image2)
+
+        self.renew_domain_table = QTable(self.TabPage_47,"renew_domain_table")
+        self.renew_domain_table.setNumCols(self.renew_domain_table.numCols() + 1)
+        self.renew_domain_table.horizontalHeader().setLabel(self.renew_domain_table.numCols() - 1,self.__tr("name"))
+        self.renew_domain_table.setNumCols(self.renew_domain_table.numCols() + 1)
+        self.renew_domain_table.horizontalHeader().setLabel(self.renew_domain_table.numCols() - 1,self.__tr("value"))
+        self.renew_domain_table.setGeometry(QRect(130,120,450,210))
+        self.renew_domain_table.setNumRows(0)
+        self.renew_domain_table.setNumCols(2)
+
+        self.renew_domain_msg = QTextEdit(self.TabPage_47,"renew_domain_msg")
+        self.renew_domain_msg.setGeometry(QRect(130,40,450,70))
+        self.renew_domain_msg.setWordWrap(QTextEdit.WidgetWidth)
         self.renew_domain_response.insertTab(self.TabPage_47,QString.fromLatin1(""))
         self.tabWidget6_2_2_2.insertTab(self.TabPage_46,QString.fromLatin1(""))
 
@@ -3594,9 +3714,11 @@ class ccregWindow(QDialog):
         self.login_code.setText(self.__tr("code"))
         self.textLabel14.setText(self.__tr("message"))
         self.textLabel15.setText(self.__tr("data"))
-        self.login_msg.setText(QString.null)
         self.btn_source_login.setText(QString.null)
         QToolTip.add(self.btn_source_login,QString.null)
+        self.login_msg.setText(QString.null)
+        self.login_table.horizontalHeader().setLabel(0,self.__tr("name"))
+        self.login_table.horizontalHeader().setLabel(1,self.__tr("value"))
         self.login_response.changeTab(self.TabPage_2,self.__tr("response"))
         self.tabWidget6.changeTab(self.tab,self.__tr("login"))
         self.textLabel16.setText(self.__tr("clTRID"))
@@ -3608,9 +3730,9 @@ class ccregWindow(QDialog):
         self.textLabel19.setText(self.__tr("message"))
         self.textLabel20.setText(self.__tr("data"))
         self.logout_code.setText(self.__tr("code"))
-        self.logout_msg.setText(QString.null)
         self.btn_source_logout.setText(QString.null)
         QToolTip.add(self.btn_source_logout,QString.null)
+        self.logout_msg.setText(QString.null)
         self.logout_response.changeTab(self.TabPage_4,self.__tr("response"))
         self.tabWidget6.changeTab(self.TabPage_3,self.__tr("logout"))
         self.textLabel21.setText(self.__tr("clTRID"))
@@ -3628,9 +3750,11 @@ class ccregWindow(QDialog):
         self.textLabel26.setText(self.__tr("message"))
         self.textLabel27.setText(self.__tr("<b>poll</b>"))
         self.poll_code.setText(self.__tr("code"))
-        self.poll_msg.setText(QString.null)
         self.btn_source_poll.setText(QString.null)
         QToolTip.add(self.btn_source_poll,QString.null)
+        self.poll_table.horizontalHeader().setLabel(0,self.__tr("name"))
+        self.poll_table.horizontalHeader().setLabel(1,self.__tr("value"))
+        self.poll_msg.setText(QString.null)
         self.poll_response.changeTab(self.TabPage_6,self.__tr("response"))
         self.tabWidget6.changeTab(self.TabPage_5,self.__tr("poll"))
         self.textLabel28.setText(self.__tr("<h2>hello</h2>\n"
@@ -3641,9 +3765,11 @@ class ccregWindow(QDialog):
         self.textLabel30.setText(self.__tr("message"))
         self.textLabel31.setText(self.__tr("<b>hello</b>"))
         self.hello_code.setText(self.__tr("code"))
-        self.hello_msg.setText(QString.null)
         self.btn_source_hello.setText(QString.null)
         QToolTip.add(self.btn_source_hello,QString.null)
+        self.hello_table.horizontalHeader().setLabel(0,self.__tr("name"))
+        self.hello_table.horizontalHeader().setLabel(1,self.__tr("value"))
+        self.hello_msg.setText(QString.null)
         self.hello_response.changeTab(self.TabPage_8,self.__tr("response"))
         self.tabWidget6.changeTab(self.TabPage_7,self.__tr("hello"))
         self.tabWidget.changeTab(self.Widget8,self.__tr("&connect"))
@@ -3660,9 +3786,11 @@ class ccregWindow(QDialog):
         self.textLabel37.setText(self.__tr("message"))
         self.textLabel38.setText(self.__tr("<b>check_contact</b>"))
         self.check_contact_code.setText(self.__tr("code"))
-        self.check_contact_msg.setText(QString.null)
         self.btn_source_check_contact.setText(QString.null)
         QToolTip.add(self.btn_source_check_contact,QString.null)
+        self.check_contact_msg.setText(QString.null)
+        self.check_contact_table.horizontalHeader().setLabel(0,self.__tr("name"))
+        self.check_contact_table.horizontalHeader().setLabel(1,self.__tr("value"))
         self.check_contact_response.changeTab(self.TabPage_10,self.__tr("response"))
         self.tabWidget6_2.changeTab(self.TabPage_9,self.__tr("check"))
         self.textLabel39.setText(self.__tr("<h2>info_contact</h2>\n"
@@ -3692,9 +3820,11 @@ class ccregWindow(QDialog):
         self.textLabel46.setText(self.__tr("data"))
         self.textLabel47.setText(self.__tr("<b>create_contact</b>"))
         self.create_contact_code.setText(self.__tr("code"))
-        self.create_contact_msg.setText(QString.null)
         self.btn_source_create_contact.setText(QString.null)
         QToolTip.add(self.btn_source_create_contact,QString.null)
+        self.create_contact_table.horizontalHeader().setLabel(0,self.__tr("name"))
+        self.create_contact_table.horizontalHeader().setLabel(1,self.__tr("value"))
+        self.create_contact_msg.setText(QString.null)
         self.create_contact_response.changeTab(self.TabPage_13,self.__tr("response"))
         self.tabWidget6_2.changeTab(self.tab_8,self.__tr("create"))
         self.send_update_contact.setText(self.__tr("Send command"))
@@ -3703,9 +3833,11 @@ class ccregWindow(QDialog):
         self.textLabel49.setText(self.__tr("message"))
         self.textLabel50.setText(self.__tr("<b>update_contact</b>"))
         self.update_contact_code.setText(self.__tr("code"))
-        self.update_contact_msg.setText(QString.null)
         self.btn_source_update_contact.setText(QString.null)
         QToolTip.add(self.btn_source_update_contact,QString.null)
+        self.update_contact_table.horizontalHeader().setLabel(0,self.__tr("name"))
+        self.update_contact_table.horizontalHeader().setLabel(1,self.__tr("value"))
+        self.update_contact_msg.setText(QString.null)
         self.update_contact_response.changeTab(self.TabPage_15,self.__tr("response"))
         self.tabWidget6_2.changeTab(self.TabPage_14,self.__tr("update"))
         self.textLabel51.setText(self.__tr("<h2>delete_contact</h2>\n"
@@ -3718,9 +3850,11 @@ class ccregWindow(QDialog):
         self.textLabel55.setText(self.__tr("data"))
         self.textLabel56.setText(self.__tr("<b>delete_contact</b>"))
         self.delete_contact_code.setText(self.__tr("code"))
-        self.delete_contact_msg.setText(QString.null)
         self.btn_source_delete_contact.setText(QString.null)
         QToolTip.add(self.btn_source_delete_contact,QString.null)
+        self.delete_contact_msg.setText(QString.null)
+        self.delete_contact_table.horizontalHeader().setLabel(0,self.__tr("name"))
+        self.delete_contact_table.horizontalHeader().setLabel(1,self.__tr("value"))
         self.delete_contact_response.changeTab(self.TabPage_17,self.__tr("response"))
         self.tabWidget6_2.changeTab(self.TabPage_16,self.__tr("delete"))
         self.textLabel57.setText(self.__tr("<h2>transfer_contact</h2>\n"
@@ -3736,13 +3870,15 @@ class ccregWindow(QDialog):
         self.textLabel60.setText(self.__tr("clTRID"))
         self.send_transfer_contact.setText(self.__tr("Send command"))
         self.transfer_contact_response.changeTab(self.tab_12,self.__tr("command"))
-        self.textLabel61.setText(self.__tr("data"))
         self.textLabel62.setText(self.__tr("message"))
-        self.textLabel63.setText(self.__tr("<b>transfer_contact</b>"))
-        self.transfer_contact_code.setText(self.__tr("code"))
-        self.transfer_contact_msg.setText(QString.null)
         self.btn_source_transfer_contact.setText(QString.null)
         QToolTip.add(self.btn_source_transfer_contact,QString.null)
+        self.transfer_contact_table.horizontalHeader().setLabel(0,self.__tr("name"))
+        self.transfer_contact_table.horizontalHeader().setLabel(1,self.__tr("value"))
+        self.transfer_contact_msg.setText(QString.null)
+        self.textLabel63.setText(self.__tr("<b>transfer_contact</b>"))
+        self.transfer_contact_code.setText(self.__tr("code"))
+        self.textLabel61.setText(self.__tr("data"))
         self.transfer_contact_response.changeTab(self.TabPage_19,self.__tr("response"))
         self.tabWidget6_2.changeTab(self.TabPage_18,self.__tr("transfer"))
         self.textLabel64.setText(self.__tr("<h2>list_contact</h2>\n"
@@ -3774,9 +3910,11 @@ class ccregWindow(QDialog):
         self.textLabel74.setText(self.__tr("data"))
         self.textLabel75.setText(self.__tr("<b>check_nsset</b>"))
         self.check_nsset_code.setText(self.__tr("code"))
-        self.check_nsset_msg.setText(QString.null)
         self.btn_source_check_nsset.setText(QString.null)
         QToolTip.add(self.btn_source_check_nsset,QString.null)
+        self.check_nsset_msg.setText(QString.null)
+        self.check_nsset_table.horizontalHeader().setLabel(0,self.__tr("name"))
+        self.check_nsset_table.horizontalHeader().setLabel(1,self.__tr("value"))
         self.check_nsset_response.changeTab(self.TabPage_23,self.__tr("response"))
         self.tabWidget6_2_2.changeTab(self.tab_14,self.__tr("check"))
         self.textLabel76.setText(self.__tr("clTRID"))
@@ -3793,9 +3931,11 @@ class ccregWindow(QDialog):
         self.textLabel80.setText(self.__tr("data"))
         self.textLabel81.setText(self.__tr("<b>info_nsset</b>"))
         self.info_nsset_code.setText(self.__tr("code"))
-        self.info_nsset_msg.setText(QString.null)
         self.btn_source_info_nsset.setText(QString.null)
         QToolTip.add(self.btn_source_info_nsset,QString.null)
+        self.info_nsset_msg.setText(QString.null)
+        self.info_nsset_table.horizontalHeader().setLabel(0,self.__tr("name"))
+        self.info_nsset_table.horizontalHeader().setLabel(1,self.__tr("value"))
         self.info_nsset_response.changeTab(self.TabPage_25,self.__tr("response"))
         self.tabWidget6_2_2.changeTab(self.TabPage_24,self.__tr("info"))
         self.send_create_nsset.setText(self.__tr("Send command"))
@@ -3804,9 +3944,11 @@ class ccregWindow(QDialog):
         self.textLabel83.setText(self.__tr("message"))
         self.textLabel84.setText(self.__tr("<b>create_nsset</b>"))
         self.create_nsset_code.setText(self.__tr("code"))
-        self.create_nsset_msg.setText(QString.null)
         self.btn_source_create_nsset.setText(QString.null)
         QToolTip.add(self.btn_source_create_nsset,QString.null)
+        self.create_nsset_msg.setText(QString.null)
+        self.create_nsset_table.horizontalHeader().setLabel(0,self.__tr("name"))
+        self.create_nsset_table.horizontalHeader().setLabel(1,self.__tr("value"))
         self.create_nsset_response.changeTab(self.TabPage_27,self.__tr("response"))
         self.tabWidget6_2_2.changeTab(self.TabPage_26,self.__tr("create"))
         self.send_update_nsset.setText(self.__tr("Send command"))
@@ -3815,9 +3957,11 @@ class ccregWindow(QDialog):
         self.textLabel86.setText(self.__tr("data"))
         self.textLabel87.setText(self.__tr("<b>update_nsset</b>"))
         self.update_nsset_code.setText(self.__tr("code"))
-        self.update_nsset_msg.setText(QString.null)
         self.btn_source_update_nsset.setText(QString.null)
         QToolTip.add(self.btn_source_update_nsset,QString.null)
+        self.update_nsset_table.horizontalHeader().setLabel(0,self.__tr("name"))
+        self.update_nsset_table.horizontalHeader().setLabel(1,self.__tr("value"))
+        self.update_nsset_msg.setText(QString.null)
         self.update_nsset_response.changeTab(self.TabPage_29,self.__tr("response"))
         self.tabWidget6_2_2.changeTab(self.TabPage_28,self.__tr("update"))
         self.textLabel88.setText(self.__tr("<b>name</b>"))
@@ -3830,9 +3974,11 @@ class ccregWindow(QDialog):
         self.textLabel92.setText(self.__tr("message"))
         self.textLabel93.setText(self.__tr("<b>delete_nsset</b>"))
         self.delete_nsset_code.setText(self.__tr("code"))
-        self.delete_nsset_msg.setText(QString.null)
         self.btn_source_delete_nsset.setText(QString.null)
         QToolTip.add(self.btn_source_delete_nsset,QString.null)
+        self.delete_nsset_msg.setText(QString.null)
+        self.delete_nsset_table.horizontalHeader().setLabel(0,self.__tr("name"))
+        self.delete_nsset_table.horizontalHeader().setLabel(1,self.__tr("value"))
         self.delete_nsset_response.changeTab(self.TabPage_31,self.__tr("response"))
         self.tabWidget6_2_2.changeTab(self.TabPage_30,self.__tr("delete"))
         self.textLabel94.setText(self.__tr("clTRID"))
@@ -3864,9 +4010,11 @@ class ccregWindow(QDialog):
         self.textLabel104.setText(self.__tr("message"))
         self.textLabel105.setText(self.__tr("<b>check_domain</b>"))
         self.check_domain_code.setText(self.__tr("code"))
-        self.check_domain_msg.setText(QString.null)
         self.btn_source_check_domain.setText(QString.null)
         QToolTip.add(self.btn_source_check_domain,QString.null)
+        self.check_domain_msg.setText(QString.null)
+        self.check_domain_table.horizontalHeader().setLabel(0,self.__tr("name"))
+        self.check_domain_table.horizontalHeader().setLabel(1,self.__tr("value"))
         self.check_domain_response.changeTab(self.TabPage_35,self.__tr("response"))
         self.tabWidget6_2_2_2.changeTab(self.tab_21,self.__tr("check"))
         self.textLabel106.setText(self.__tr("clTRID"))
@@ -3883,9 +4031,11 @@ class ccregWindow(QDialog):
         self.textLabel110.setText(self.__tr("data"))
         self.textLabel111.setText(self.__tr("<b>info_domain</b>"))
         self.info_domain_code.setText(self.__tr("code"))
-        self.info_domain_msg.setText(QString.null)
         self.btn_source_info_domain.setText(QString.null)
         QToolTip.add(self.btn_source_info_domain,QString.null)
+        self.info_domain_msg.setText(QString.null)
+        self.info_domain_table.horizontalHeader().setLabel(0,self.__tr("name"))
+        self.info_domain_table.horizontalHeader().setLabel(1,self.__tr("value"))
         self.info_domain_response.changeTab(self.TabPage_37,self.__tr("response"))
         self.tabWidget6_2_2_2.changeTab(self.TabPage_36,self.__tr("info"))
         self.send_create_domain.setText(self.__tr("Send command"))
@@ -3895,8 +4045,10 @@ class ccregWindow(QDialog):
         self.textLabel114.setText(self.__tr("<b>create_domain</b>"))
         self.btn_source_create_domain.setText(QString.null)
         QToolTip.add(self.btn_source_create_domain,QString.null)
-        self.create_domain_msg.setText(QString.null)
         self.create_domain_code.setText(self.__tr("code"))
+        self.create_domain_msg.setText(QString.null)
+        self.create_domain_table.horizontalHeader().setLabel(0,self.__tr("name"))
+        self.create_domain_table.horizontalHeader().setLabel(1,self.__tr("value"))
         self.create_domain_response.changeTab(self.TabPage_39,self.__tr("response"))
         self.tabWidget6_2_2_2.changeTab(self.TabPage_38,self.__tr("create"))
         self.send_update_domain.setText(self.__tr("Send command"))
@@ -3905,9 +4057,11 @@ class ccregWindow(QDialog):
         self.textLabel116.setText(self.__tr("message"))
         self.textLabel117.setText(self.__tr("<b>update_domain</b>"))
         self.update_domain_code.setText(self.__tr("code"))
-        self.update_domain_msg.setText(QString.null)
         self.btn_source_update_domain.setText(QString.null)
         QToolTip.add(self.btn_source_update_domain,QString.null)
+        self.update_domain_table.horizontalHeader().setLabel(0,self.__tr("name"))
+        self.update_domain_table.horizontalHeader().setLabel(1,self.__tr("value"))
+        self.update_domain_msg.setText(QString.null)
         self.update_domain_response.changeTab(self.TabPage_41,self.__tr("response"))
         self.tabWidget6_2_2_2.changeTab(self.TabPage_40,self.__tr("update"))
         self.textLabel118.setText(self.__tr("clTRID"))
@@ -3920,9 +4074,11 @@ class ccregWindow(QDialog):
         self.textLabel122.setText(self.__tr("message"))
         self.textLabel123.setText(self.__tr("<b>delete_domain</b>"))
         self.delete_domain_code.setText(self.__tr("code"))
-        self.delete_domain_msg.setText(QString.null)
         self.btn_source_delete_domain.setText(QString.null)
         QToolTip.add(self.btn_source_delete_domain,QString.null)
+        self.delete_domain_table.horizontalHeader().setLabel(0,self.__tr("name"))
+        self.delete_domain_table.horizontalHeader().setLabel(1,self.__tr("value"))
+        self.delete_domain_msg.setText(QString.null)
         self.delete_domain_response.changeTab(self.TabPage_43,self.__tr("response"))
         self.tabWidget6_2_2_2.changeTab(self.TabPage_42,self.__tr("delete"))
         self.textLabel124.setText(self.__tr("<b>password</b>"))
@@ -3942,9 +4098,11 @@ class ccregWindow(QDialog):
         self.textLabel129.setText(self.__tr("message"))
         self.textLabel130.setText(self.__tr("<b>transfer_domain</b>"))
         self.transfer_domain_code.setText(self.__tr("code"))
-        self.transfer_domain_msg.setText(QString.null)
         self.btn_source_transfer_domain.setText(QString.null)
         QToolTip.add(self.btn_source_transfer_domain,QString.null)
+        self.transfer_domain_table.horizontalHeader().setLabel(0,self.__tr("name"))
+        self.transfer_domain_table.horizontalHeader().setLabel(1,self.__tr("value"))
+        self.transfer_domain_msg.setText(QString.null)
         self.transfer_domain_response.changeTab(self.TabPage_45,self.__tr("response"))
         self.tabWidget6_2_2_2.changeTab(self.TabPage_44,self.__tr("transfer"))
         self.send_renew_domain.setText(self.__tr("Send command"))
@@ -3966,9 +4124,11 @@ class ccregWindow(QDialog):
         self.textLabel139.setText(self.__tr("data"))
         self.textLabel140.setText(self.__tr("<b>renew_domain</b>"))
         self.renew_domain_code.setText(self.__tr("code"))
-        self.renew_domain_msg.setText(QString.null)
         self.btn_source_renew_domain.setText(QString.null)
         QToolTip.add(self.btn_source_renew_domain,QString.null)
+        self.renew_domain_table.horizontalHeader().setLabel(0,self.__tr("name"))
+        self.renew_domain_table.horizontalHeader().setLabel(1,self.__tr("value"))
+        self.renew_domain_msg.setText(QString.null)
         self.renew_domain_response.changeTab(self.TabPage_47,self.__tr("response"))
         self.tabWidget6_2_2_2.changeTab(self.TabPage_46,self.__tr("renew"))
         self.textLabel141.setText(self.__tr("clTRID"))

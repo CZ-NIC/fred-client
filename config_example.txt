@@ -1,7 +1,8 @@
-# Ukazka konfiguracniho souboru
-# Prepiste si cesty k souborum dir=... a ulozte tento soubor
-# do vaseho home pod nazvem .ccreg_client.conf
-# Konfiguracni soubor lze take vytvorit z klienta prikazem 'config create'.
+# Example of configuration file.
+# Modify all values dir= to real path of your fiels 
+# and save into /etc/.ccreg_client.conf.
+# Default config file is also possible create from ccreg_client
+# by command 'config create'.
 #
 
 [connect]
@@ -12,7 +13,7 @@ ssl_cert = %(dir)s/epp_test_ccreg_nic_cz_cert.pem
 ssl_key  = %(dir)s/epp_test_ccreg_nic_cz_key.pem
 username = MYUSERNAME
 password = MYPASSWORD
-# socket = IPv6     # paltne hodnoty jsou IPv4 a IPv6
+# socket = IPv6     # valid values are: IPv4 and IPv6
 
 [session]
 poll_ack = off
@@ -21,7 +22,7 @@ validate = on
 schema = /home/username/epp_client/ccReg/schemas/all-1.0.xsd
 colors = yes
 verbose = 2
-# pokud lang neni zadan, tak se vezme hodnota z os.environ.LANG
+# If lang is not set, ti used value from os.environ.LANG
 # lang = en
-# null_value = None   # zastupce pro nezadanou hodnotu
-# auto_login = off    # automaticke zalogovani pri spusteni konzole
+# null_value = None   # substitution of NULL value
+# auto_login = off    # automatic login after start client (default is ON)

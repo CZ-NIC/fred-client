@@ -5,7 +5,6 @@ import client_socket
 from session_base import *
 from translate import _T, _TP, encoding
 
-
 class ManagerTransfer(ManagerBase):
     """EPP client support.
     This class take care about sending and receiving messages from/to server.
@@ -65,7 +64,8 @@ class ManagerTransfer(ManagerBase):
         "Control if you are still connected."
         if self._lorry and not self._lorry.is_connected():
             # spojení spadlo
-            if self._session[ONLINE]: self.append_note('--- %s ---'%_T('Connection broken'))
+            if self._session[ONLINE]:
+                self.append_note(_T('ERROR: Connection to %s interrupted.')%self._session[HOST])
             self.close()
 
     def grab_command_name_from_xml(self, message):
@@ -90,12 +90,12 @@ class ManagerTransfer(ManagerBase):
         'Get connect defaults from config'
         if not self._conf: self.load_config() # load config, if was not been yet
         section = self.config_get_section_connect()
-        data = [self.get_config_value(section,'host'),
-                self.get_config_value(section,'port',0,'int'),
-                self.get_config_value(section,'ssl_key'),
-                self.get_config_value(section,'ssl_cert'),
-                self.get_config_value(section,'timeout'),
-                self.get_config_value(section,'socket',1),
+        data = [self.get_config_value(section,'host',OMMIT_ERROR),
+                self.get_config_value(section,'port',OMMIT_ERROR,'int'),
+                self.get_config_value(section,'ssl_key',OMMIT_ERROR),
+                self.get_config_value(section,'ssl_cert',OMMIT_ERROR),
+                self.get_config_value(section,'timeout',OMMIT_ERROR),
+                self.get_config_value(section,'socket',OMMIT_ERROR),
                 ]
         # command options
         self._session[HOST] = data[0] # for prompt info
@@ -164,7 +164,9 @@ class ManagerTransfer(ManagerBase):
             self.send(epp_doc)          # odeslání dokumentu na server
             answer = self.receive()     # příjem odpovědi
             self.process_answer(answer) # zpracování odpovědi
-            if not no_outoupt: self.print_answer() # 2. departure from the rule to print answers
+            if not no_outoupt:
+                self.display() # display errors or notes
+                self.print_answer() # 2. departure from the rule to print answers
         else:
             self.append_error(self._epp_cmd.get_errors())
 
@@ -184,8 +186,13 @@ class ManagerTransfer(ManagerBase):
 
     def print_answer(self, dct=None):
         "Returns str of dict object."
-        if self._session[VERBOSE]:
-            print self.get_answer(dct) # verbose is not 0
+        if not dct: dct = self._dct_answer
+        if self._session[VERBOSE] and dct.get('command'):
+            # Print in only any command was sent.
+            if self._session[OUTPUT_TYPE] == 'html':
+                print self.get_answer_html(dct) # verbose is not 0
+            else:
+                print self.get_answer(dct) # verbose is not 0
 
     def get_answer_udata(self, sep='\n'):
         'Special for GUI output. Returns unicode.'
@@ -201,7 +208,6 @@ class ManagerTransfer(ManagerBase):
             if value not in ('',[]): __append_into_report__(body,key,value,explain,'',1) # '' - indent; 1 - no terminal tags
         return sep.join(body).decode(encoding)
 
-            
     def get_answer(self, dct=None, sep='\n'):
         'Show values parsed from the server answer.'
         body=[]
@@ -211,8 +217,12 @@ class ManagerTransfer(ManagerBase):
         #... code and reason .............................
         code = dct['code']
         if self._session[VERBOSE] < 2:
-            # brief
-            report(get_ltext(colored_output.render('${%s}%s${NORMAL}'%({False:'NORMAL',True:'GREEN'}[code==1000],dct['reason']))))
+            # brief output mode
+            # exception on the command login and hello:
+            if dct['command'] in ('login','hello'):
+                body.pop() # remove previous empty line
+            else:
+                report(get_ltext(colored_output.render('${%s}%s${NORMAL}'%({False:'NORMAL',True:'GREEN'}[code==1000],dct['reason']))))
         else:
             # full
             report(colored_output.render('${BOLD}code:${NORMAL} %d'%code))
@@ -233,16 +243,17 @@ class ManagerTransfer(ManagerBase):
         if self._session[VERBOSE] > 1:
             data_indent = '   '
         if self._session[SORT_BY_COLUMNS]:
-            keys = self._session[SORT_BY_COLUMNS] # sorted output (included in create command part)
+            sorted_columns = self._session[SORT_BY_COLUMNS] # sorted output (included in create command part)
         else:
-            keys = map(lambda n:(n,1,''), dct['data'].keys()) # default (unsorted)
+            sorted_columns = map(lambda n:(n,1,''), dct['data'].keys()) # default (unsorted)
         #... data .............................
         data = []
         in_higher_verbose = 0
         used = []
-        for key,verbose,explain in keys:
+        for key,verbose,explain in sorted_columns:
             if verbose > self._session[VERBOSE]:
                 in_higher_verbose += 1
+                used.append(key)
                 continue
             value = dct['data'].get(key,u'')
             if value not in ('',[]): __append_into_report__(data,key,value,explain,data_indent)
@@ -258,12 +269,12 @@ class ManagerTransfer(ManagerBase):
         # POZOR!!! V ostré verzi musí být deaktivováno!!!
         if self._session[SORT_BY_COLUMNS]:
             # in mode SORT_BY_COLUMNS check if all names was used
-            missing = [n for n in dct['data'].keys() if n not in used]
+            missing = [k for k in dct['data'].keys() if k not in used and dct['data'][k][0] >= self._session[VERBOSE]]
             if len(missing):
                 report(colored_output.render('\n${BOLD}${RED}Here needs FIX code: %s${NORMAL}'%'(%s)'%', '.join(missing)))
         #---------------------
         #... third verbose level .............................
-        report('') # empty row ## '-'*60
+        report('') # empty row
         for n in range(len(body)):
             if type(body[n]) == unicode: body[n] = body[n].encode(encoding)
         if self._session[VERBOSE] == 3:
@@ -275,6 +286,14 @@ class ManagerTransfer(ManagerBase):
             report('')
         return sep.join(body)
 
+    def get_answer_html(self, dct=None):
+        'Returns data in HTML format'
+        body=[]
+        report = body.append
+        if not dct: dct = self._dct_answer
+        report('TODO: Not implented yet.')
+        return '\n'.join(body)
+        
     def save_history(self):
         'Save history of command line.'
         eppdoc_client.eppdoc_assemble.save_history()

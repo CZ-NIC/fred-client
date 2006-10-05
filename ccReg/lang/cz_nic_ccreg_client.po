@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-25 11:47+0200\n"
+"POT-Creation-Date: 2006-10-05 15:56+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Zdeněk Böhm <zdenek.bohm@nic.cz>\n"
 "Language-Team: CS <info@nic.cz>\n"
@@ -16,45 +16,57 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3;  plural=n==1 ? 0 : n>=2 && n<=4 ? 1 : 2;\n"
 
-#: ccReg/client_socket.py:49
+#: ccReg/client_socket.py:34
+msgid "Socket type IPv6 (AF_INET6) is not present in socket module."
+msgstr "Soket typu IPv6 (AF_INET6) není v modulu socket dostupný."
+
+#: ccReg/client_socket.py:53
+msgid "Used socket type"
+msgstr "Použitý typ soketu"
+
+#: ccReg/client_socket.py:68
 msgid "Opened connection to"
 msgstr "Navázáno spojení na"
 
-#: ccReg/client_socket.py:53 ccReg/client_socket.py:86
-#: ccReg/client_socket.py:113 ccReg/client_socket.py:146
-#: ccReg/client_socket.py:180 ccReg/client_socket.py:192
+#: ccReg/client_socket.py:70
+msgid "I cannot connect to the server"
+msgstr "Nemohu se připojit k serveru."
+
+#: ccReg/client_socket.py:73 ccReg/client_socket.py:107
+#: ccReg/client_socket.py:134 ccReg/client_socket.py:167
+#: ccReg/client_socket.py:201 ccReg/client_socket.py:213
 msgid "Interrupted by user"
 msgstr "Přerušeno uživatelem"
 
-#: ccReg/client_socket.py:55
+#: ccReg/client_socket.py:75
 msgid "SSL connection initiated"
 msgstr "Aktivováno SSL spojení"
 
-#: ccReg/client_socket.py:57
+#: ccReg/client_socket.py:77
 msgid "Certificate names not set."
 msgstr "Jména certifikátů nejsou zadána."
 
-#: ccReg/client_socket.py:59
+#: ccReg/client_socket.py:79
 msgid "Private key file not found."
 msgstr "Privátní klíč nebyl nalezen"
 
-#: ccReg/client_socket.py:62
+#: ccReg/client_socket.py:82
 msgid "Certificate key file not found."
 msgstr "Soubor s certifikátem nebyl nalezen"
 
-#: ccReg/client_socket.py:69
+#: ccReg/client_socket.py:90
 msgid "Certificates missing. Trying to connect without SSL!"
 msgstr "Certifikát chybí. Zkouším spojení bez SSL!"
 
-#: ccReg/client_socket.py:76
+#: ccReg/client_socket.py:97
 msgid "Certificate not signed by verified certificate authority."
 msgstr "Použitý certifikát není podepsán uznávanou certifikační autoritou."
 
-#: ccReg/client_socket.py:77
+#: ccReg/client_socket.py:98
 msgid "Server configuration is not valid. Contact administrator."
 msgstr "Server není správně nakonfigurován. Obraťte se na správce serveru."
 
-#: ccReg/client_socket.py:78
+#: ccReg/client_socket.py:99
 msgid ""
 "If this client runs under MS Windows and timeout is not zero, it is probably "
 "SLL bug! Set timeout back to zero."
@@ -62,7 +74,7 @@ msgstr ""
 "Jestliže tento klient běží v MS Windows a timeout není nula, tak se "
 "pravděpodobně jedná o SSL bug! Nastavte timeout zpět na nulu."
 
-#: ccReg/client_socket.py:193
+#: ccReg/client_socket.py:214
 msgid "Connection closed"
 msgstr "Spojení uzavřeno"
 
@@ -132,94 +144,89 @@ msgstr[2] "seznam o maximálně %d položkách."
 msgid "accepts only values"
 msgstr "povoleny pouze hodnoty"
 
-#: ccReg/eppdoc_assemble.py:96
+#: ccReg/eppdoc_assemble.py:66
+msgid "no options"
+msgstr "žádné parametry"
+
+#: ccReg/eppdoc_assemble.py:99
 msgid "Unknown EPP command. Select one from EPP commands list (Type help)."
 msgstr ""
 "Neznámý EPP příkaz. Vyberte jeden ze seznamu EPP příkazů (zadejte help)."
 
-#: ccReg/eppdoc_assemble.py:103
+#: ccReg/eppdoc_assemble.py:106
 msgid "Try"
 msgstr "Zkuste"
 
-#: ccReg/eppdoc_assemble.py:129
+#: ccReg/eppdoc_assemble.py:132
 msgid "Invalid input format."
 msgstr "Neplatný vstupní formát"
 
-#: ccReg/eppdoc_assemble.py:136
+#: ccReg/eppdoc_assemble.py:139
 msgid "list of values overflow. Maximum is"
 msgstr "Počet položek v seznamu je překročen. Maximum je"
 
-#: ccReg/eppdoc_assemble.py:143 ccReg/eppdoc_assemble.py:192
+#: ccReg/eppdoc_assemble.py:146 ccReg/eppdoc_assemble.py:197
 #, python-format
 msgid "Value \"%s\" is not allowed. Valid is"
 msgstr "Hodnota \"%s\" není povolena. Platná je"
 
-#: ccReg/eppdoc_assemble.py:150
-msgid "ERROR"
-msgstr "CHYBA"
-
-#: ccReg/eppdoc_assemble.py:150
+#: ccReg/eppdoc_assemble.py:153
 msgid "missing"
 msgstr "chybí"
 
-#: ccReg/eppdoc_assemble.py:174
-msgid "I'm fed up"
-msgstr "Mám toho dost"
+#: ccReg/eppdoc_assemble.py:184
+msgid "Interactive mode has been interrupted."
+msgstr "Interaktivní mód byl přerušen."
 
-#: ccReg/eppdoc_assemble.py:174
-msgid "It's boring"
-msgstr "Už mě to nudí"
-
-#: ccReg/eppdoc_assemble.py:174
-msgid "example inserted"
-msgstr "vložen příklad"
-
-#: ccReg/eppdoc_assemble.py:199
+#: ccReg/eppdoc_assemble.py:204
 msgid "Value is required. MUST be set:"
 msgstr "Údaj je povinný. MUSÍ být zadán:"
 
-#: ccReg/eppdoc_assemble.py:229
+#: ccReg/eppdoc_assemble.py:234
 msgid "Parameter MUST be a value from following list"
 msgstr "Parametr MUSÍ být hodnota z následujícího seznamu"
 
-#: ccReg/eppdoc_assemble.py:232
+#: ccReg/eppdoc_assemble.py:237
 msgid "Example"
 msgstr "Příklad"
 
-#: ccReg/eppdoc_assemble.py:302 ccReg/session_command.py:197
-#: ccreg_create.py:16
+#: ccReg/eppdoc_assemble.py:307 ccReg/session_command.py:202
+#: ccreg_create.py:20
 msgid "Unknown command"
 msgstr "Neznámý příkaz"
 
-#: ccReg/eppdoc_assemble.py:303 ccReg/eppdoc_assemble.py:337
+#: ccReg/eppdoc_assemble.py:308
 msgid "For more type"
 msgstr "Pro více informací zadejte"
 
-#: ccReg/eppdoc_assemble.py:312
+#: ccReg/eppdoc_assemble.py:317
 msgid "Interactive input params mode. For BREAK type"
 msgstr "Mód interaktivního zadávání parametrů. Pro přerušení zadejte"
 
-#: ccReg/eppdoc_assemble.py:312
+#: ccReg/eppdoc_assemble.py:317
 msgid "If you don't fill item press ENTER."
 msgstr "Pokud nechcete položku zadat stiskněte ENTER."
 
-#: ccReg/eppdoc_assemble.py:319
+#: ccReg/eppdoc_assemble.py:324
 msgid "End of interactive input. [press enter]"
 msgstr "Konec interaktivního zadání parametrů. [stiskněte enter]"
 
-#: ccReg/eppdoc_assemble.py:324
+#: ccReg/eppdoc_assemble.py:329
 msgid "No parameters. Skip interactive mode."
 msgstr "Žádné parametery. Interaktivní mód přeskočen."
 
-#: ccReg/eppdoc_assemble.py:335
-msgid "Missing values. Required minimum is"
-msgstr "Chybí parametry. Požadované minimum je"
+#: ccReg/eppdoc_assemble.py:340
+msgid "ERROR: Missing required value."
+msgid_plural "ERROR: Missing required values."
+msgstr[0] "chybí povinný parametr"
+msgstr[1] "chybí povinné parametry"
+msgstr[2] "chybí povinné parametry"
 
-#: ccReg/eppdoc_assemble.py:336
-msgid "Type"
-msgstr "Zadejte"
+#: ccReg/eppdoc_assemble.py:343
+msgid "Type '%s' for more information."
+msgstr "Pro více informací zadejte '%s'."
 
-#: ccReg/eppdoc_assemble.py:981
+#: ccReg/eppdoc_assemble.py:990
 #, python-format
 msgid "Value can be a list of max %d value."
 msgid_plural "Value can be a list of max %d values."
@@ -227,11 +234,11 @@ msgstr[0] "Hodnota může být seznam o max. velikosti %d položky."
 msgstr[1] "Hodnota může být seznam o max. velikosti %d položek."
 msgstr[2] "Hodnota může být seznam o max. velikosti %d položek."
 
-#: ccReg/eppdoc_assemble.py:983
+#: ccReg/eppdoc_assemble.py:992
 msgid "Value can be an unbouded list of values."
 msgstr "Hodnota může být libovolně velký seznam."
 
-#: ccReg/eppdoc_assemble.py:985
+#: ccReg/eppdoc_assemble.py:994
 msgid "Minimum is"
 msgstr "Minimum je"
 
@@ -387,14 +394,14 @@ msgstr "jméno kontaktu"
 
 #: ccReg/eppdoc_client.py:85 ccReg/eppdoc_client.py:95
 #: ccReg/eppdoc_client.py:118 ccReg/eppdoc_client.py:150
-#: ccReg/eppdoc_client.py:184 ccReg/eppdoc_client.py:192
-#: ccReg/eppdoc_client.py:240
+#: ccReg/eppdoc_client.py:183 ccReg/eppdoc_client.py:191
+#: ccReg/eppdoc_client.py:239
 msgid "domain name"
 msgstr "jméno domény"
 
 #: ccReg/eppdoc_client.py:88 ccReg/eppdoc_client.py:98
-#: ccReg/eppdoc_client.py:112 ccReg/eppdoc_client.py:169
-#: ccReg/eppdoc_client.py:264
+#: ccReg/eppdoc_client.py:112 ccReg/eppdoc_client.py:168
+#: ccReg/eppdoc_client.py:263
 msgid "nsset name"
 msgstr "jméno nssetu"
 
@@ -420,13 +427,13 @@ msgstr "kontakt id"
 
 #: ccReg/eppdoc_client.py:108 ccReg/eppdoc_client.py:114
 #: ccReg/eppdoc_client.py:120 ccReg/eppdoc_client.py:129
-#: ccReg/eppdoc_client.py:151 ccReg/eppdoc_client.py:167
-#: ccReg/eppdoc_client.py:220 ccReg/eppdoc_client.py:252
-#: ccReg/eppdoc_client.py:276
+#: ccReg/eppdoc_client.py:152 ccReg/eppdoc_client.py:172
+#: ccReg/eppdoc_client.py:219 ccReg/eppdoc_client.py:251
+#: ccReg/eppdoc_client.py:275
 msgid "password"
 msgstr "heslo"
 
-#: ccReg/eppdoc_client.py:124 ccReg/eppdoc_client.py:202
+#: ccReg/eppdoc_client.py:124 ccReg/eppdoc_client.py:201
 msgid "your contact ID"
 msgstr "vaše kontaktní ID"
 
@@ -434,7 +441,7 @@ msgstr "vaše kontaktní ID"
 msgid "your name"
 msgstr "vaše jméno"
 
-#: ccReg/eppdoc_client.py:126 ccReg/eppdoc_client.py:219
+#: ccReg/eppdoc_client.py:126 ccReg/eppdoc_client.py:218
 msgid "your email"
 msgstr "váš email"
 
@@ -446,11 +453,11 @@ msgstr "město"
 msgid "country code"
 msgstr "kód země"
 
-#: ccReg/eppdoc_client.py:130 ccReg/eppdoc_client.py:208
+#: ccReg/eppdoc_client.py:130 ccReg/eppdoc_client.py:207
 msgid "organisation name"
 msgstr "název organizace"
 
-#: ccReg/eppdoc_client.py:131 ccReg/eppdoc_client.py:212
+#: ccReg/eppdoc_client.py:131 ccReg/eppdoc_client.py:211
 msgid "street"
 msgstr "ulice"
 
@@ -462,23 +469,23 @@ msgstr "stát nebo kraj"
 msgid "postal code"
 msgstr "PSČ"
 
-#: ccReg/eppdoc_client.py:134 ccReg/eppdoc_client.py:217
+#: ccReg/eppdoc_client.py:134 ccReg/eppdoc_client.py:216
 msgid "voice (phone number)"
 msgstr "telefon"
 
-#: ccReg/eppdoc_client.py:135 ccReg/eppdoc_client.py:218
+#: ccReg/eppdoc_client.py:135 ccReg/eppdoc_client.py:217
 msgid "fax number"
 msgstr "fax"
 
-#: ccReg/eppdoc_client.py:136 ccReg/eppdoc_client.py:221
+#: ccReg/eppdoc_client.py:136 ccReg/eppdoc_client.py:220
 msgid "disclose"
 msgstr "zveřejnit"
 
-#: ccReg/eppdoc_client.py:137 ccReg/eppdoc_client.py:222
+#: ccReg/eppdoc_client.py:137 ccReg/eppdoc_client.py:221
 msgid "disclose flag (default y)"
 msgstr "přepínač zveřejnit (default y)"
 
-#: ccReg/eppdoc_client.py:139 ccReg/eppdoc_client.py:223
+#: ccReg/eppdoc_client.py:139 ccReg/eppdoc_client.py:222
 msgid "data for with is set the flag value"
 msgstr "data, pro které se nastaví příznak"
 
@@ -490,337 +497,344 @@ msgstr "VAT (daňový identifikátor)"
 msgid "SSN (Social security number)"
 msgstr "SSN číslo dokladu"
 
-#: ccReg/eppdoc_client.py:143 ccReg/eppdoc_client.py:227
-#: ccReg/eppdoc_client.py:327
+#: ccReg/eppdoc_client.py:143 ccReg/eppdoc_client.py:226
+#: ccReg/eppdoc_client.py:326
 msgid "SSN type"
 msgstr "SSN typ čísla dokladu"
 
-#: ccReg/eppdoc_client.py:144 ccReg/eppdoc_client.py:228
+#: ccReg/eppdoc_client.py:144 ccReg/eppdoc_client.py:227
 msgid "SSN number"
 msgstr "SSN číslo (Security social number)"
 
-#: ccReg/eppdoc_client.py:146 ccReg/eppdoc_client.py:230
+#: ccReg/eppdoc_client.py:146 ccReg/eppdoc_client.py:229
 msgid "notify email"
 msgstr "oznámení na email"
 
-#: ccReg/eppdoc_client.py:152 ccReg/eppdoc_client.py:251
+#: ccReg/eppdoc_client.py:151 ccReg/eppdoc_client.py:250
 msgid "registrant"
 msgstr "vlastník domény"
 
-#: ccReg/eppdoc_client.py:153 ccReg/eppdoc_client.py:250 guiqt/main.py:309
+#: ccReg/eppdoc_client.py:153 ccReg/eppdoc_client.py:249 guiqt/main.py:669
 msgid "nsset"
 msgstr ""
 
-#: ccReg/eppdoc_client.py:154 ccReg/eppdoc_client.py:194
+#: ccReg/eppdoc_client.py:154 ccReg/eppdoc_client.py:193
 msgid "period"
 msgstr "období"
 
-#: ccReg/eppdoc_client.py:155 ccReg/eppdoc_client.py:195
+#: ccReg/eppdoc_client.py:155 ccReg/eppdoc_client.py:194
 msgid "number of months or years"
 msgstr "počet měsíců nebo roků"
 
-#: ccReg/eppdoc_client.py:156 ccReg/eppdoc_client.py:196
+#: ccReg/eppdoc_client.py:156 ccReg/eppdoc_client.py:195
 msgid "period unit (y year(default), m month)"
 msgstr "jednotka období (y rok(default), m měsíc)"
 
-#: ccReg/eppdoc_client.py:158 ccReg/eppdoc_client.py:242
-#: ccReg/eppdoc_client.py:246
+#: ccReg/eppdoc_client.py:158 ccReg/eppdoc_client.py:241
+#: ccReg/eppdoc_client.py:245
 msgid "admin"
 msgstr ""
 
-#: ccReg/eppdoc_client.py:159 ccReg/eppdoc_client.py:198
-#: ccReg/eppdoc_client.py:254
+#: ccReg/eppdoc_client.py:159 ccReg/eppdoc_client.py:197
+#: ccReg/eppdoc_client.py:253
 msgid "valExDate"
 msgstr ""
 
-#: ccReg/eppdoc_client.py:166 ccReg/eppdoc_client.py:188
-#: ccReg/eppdoc_client.py:261
+#: ccReg/eppdoc_client.py:166 ccReg/eppdoc_client.py:187
+#: ccReg/eppdoc_client.py:260
 msgid "nsset ID"
 msgstr ""
 
-#: ccReg/eppdoc_client.py:168
+#: ccReg/eppdoc_client.py:167
 msgid "LIST of DNS"
 msgstr "Seznam DNS"
 
-#: ccReg/eppdoc_client.py:170
+#: ccReg/eppdoc_client.py:169
 msgid "nsset address"
 msgstr "nsset adresa"
 
-#: ccReg/eppdoc_client.py:172
+#: ccReg/eppdoc_client.py:171
 msgid "tech contact"
 msgstr "tech. kontakt"
 
-#: ccReg/eppdoc_client.py:180
+#: ccReg/eppdoc_client.py:179
 msgid "contact ID"
 msgstr "kontakt ID"
 
-#: ccReg/eppdoc_client.py:193
+#: ccReg/eppdoc_client.py:192
 msgid "current expiration date"
 msgstr "aktuální datum expirace"
 
-#: ccReg/eppdoc_client.py:203 ccReg/eppdoc_client.py:241
+#: ccReg/eppdoc_client.py:202 ccReg/eppdoc_client.py:240
 msgid "add status"
-msgstr ""
+msgstr "přidat status"
 
-#: ccReg/eppdoc_client.py:204 ccReg/eppdoc_client.py:245
+#: ccReg/eppdoc_client.py:203 ccReg/eppdoc_client.py:244
 msgid "remove status"
-msgstr ""
+msgstr "odebrat status"
 
-#: ccReg/eppdoc_client.py:205 ccReg/eppdoc_client.py:249
-msgid "change status"
-msgstr ""
+#: ccReg/eppdoc_client.py:204 ccReg/eppdoc_client.py:248
+msgid "change values"
+msgstr "změna hodnot"
 
-#: ccReg/eppdoc_client.py:206
+#: ccReg/eppdoc_client.py:205
 msgid "postal informations"
 msgstr "poštovní informace"
 
-#: ccReg/eppdoc_client.py:207 ccReg/eppdoc_client.py:271
+#: ccReg/eppdoc_client.py:206 ccReg/eppdoc_client.py:270
+#: ccReg/eppdoc_client.py:373 guiqt/main.py:208
 msgid "name"
 msgstr "jméno"
 
-#: ccReg/eppdoc_client.py:209
+#: ccReg/eppdoc_client.py:208
 msgid "address"
 msgstr "adresa"
 
-#: ccReg/eppdoc_client.py:210
+#: ccReg/eppdoc_client.py:209
 msgid "city"
 msgstr "město"
 
-#: ccReg/eppdoc_client.py:211
+#: ccReg/eppdoc_client.py:210
 msgid "cc"
 msgstr ""
 
-#: ccReg/eppdoc_client.py:213
+#: ccReg/eppdoc_client.py:212
 msgid "sp"
 msgstr "č.p."
 
-#: ccReg/eppdoc_client.py:214
+#: ccReg/eppdoc_client.py:213
 msgid "pc"
 msgstr ""
 
-#: ccReg/eppdoc_client.py:225 ccReg/eppdoc_client.py:326
+#: ccReg/eppdoc_client.py:224 ccReg/eppdoc_client.py:325
 msgid "VAT"
 msgstr "DPH"
 
-#: ccReg/eppdoc_client.py:226
+#: ccReg/eppdoc_client.py:225
 msgid "SSN (Security social number)"
 msgstr "SSN (číslo sociálního pojištění)"
 
-#: ccReg/eppdoc_client.py:243 ccReg/eppdoc_client.py:247
-#: ccReg/eppdoc_client.py:268 ccReg/eppdoc_client.py:273
+#: ccReg/eppdoc_client.py:242 ccReg/eppdoc_client.py:246
+#: ccReg/eppdoc_client.py:267 ccReg/eppdoc_client.py:272 guiqt/main.py:266
+#: guiqt/main.py:268
 msgid "status"
 msgstr ""
 
-#: ccReg/eppdoc_client.py:262
+#: ccReg/eppdoc_client.py:261
 msgid "add part"
 msgstr "část add"
 
-#: ccReg/eppdoc_client.py:263
+#: ccReg/eppdoc_client.py:262
 msgid "list of DNS"
 msgstr "seznam DNS"
 
-#: ccReg/eppdoc_client.py:265
+#: ccReg/eppdoc_client.py:264
 msgid "IP address"
 msgstr "IP adresa"
 
-#: ccReg/eppdoc_client.py:267 ccReg/eppdoc_client.py:272
+#: ccReg/eppdoc_client.py:266 ccReg/eppdoc_client.py:271
 msgid "technical contact"
 msgstr "technický kontakt"
 
-#: ccReg/eppdoc_client.py:270
+#: ccReg/eppdoc_client.py:269
 msgid "remove part"
 msgstr "část remove"
 
-#: ccReg/eppdoc_client.py:275
+#: ccReg/eppdoc_client.py:274
 msgid "change part"
 msgstr "část change"
 
-#: ccReg/eppdoc_client.py:291
+#: ccReg/eppdoc_client.py:290
 msgid "client transaction ID"
 msgstr ""
 
-#: ccReg/eppdoc_client.py:303
+#: ccReg/eppdoc_client.py:302
 msgid "Contact ID"
 msgstr "Kontakt ID"
 
-#: ccReg/eppdoc_client.py:304 ccReg/eppdoc_client.py:333
-#: ccReg/eppdoc_client.py:352
+#: ccReg/eppdoc_client.py:303 ccReg/eppdoc_client.py:332
+#: ccReg/eppdoc_client.py:351
 msgid "Repository object ID"
 msgstr "ID objektu v rep."
 
-#: ccReg/eppdoc_client.py:305 ccReg/eppdoc_client.py:334
-#: ccReg/eppdoc_client.py:353
+#: ccReg/eppdoc_client.py:304 ccReg/eppdoc_client.py:333
+#: ccReg/eppdoc_client.py:352
 msgid "Created by"
 msgstr "Vytvořil"
 
-#: ccReg/eppdoc_client.py:306 ccReg/eppdoc_client.py:335
-#: ccReg/eppdoc_client.py:354
+#: ccReg/eppdoc_client.py:305 ccReg/eppdoc_client.py:334
+#: ccReg/eppdoc_client.py:353
 msgid "Designated registrar"
 msgstr "Určený registrátor"
 
-#: ccReg/eppdoc_client.py:307 ccReg/eppdoc_client.py:336
-#: ccReg/eppdoc_client.py:355
+#: ccReg/eppdoc_client.py:306 ccReg/eppdoc_client.py:335
+#: ccReg/eppdoc_client.py:354
 msgid "Updated by"
 msgstr "Změnil"
 
-#: ccReg/eppdoc_client.py:308 ccReg/eppdoc_client.py:337
-#: ccReg/eppdoc_client.py:356 ccReg/eppdoc_client.py:366
+#: ccReg/eppdoc_client.py:307 ccReg/eppdoc_client.py:336
+#: ccReg/eppdoc_client.py:355 ccReg/eppdoc_client.py:365
+#: ccReg/eppdoc_client.py:371
 msgid "Created on"
 msgstr "Vytvořeno dne"
 
-#: ccReg/eppdoc_client.py:309 ccReg/eppdoc_client.py:338
-#: ccReg/eppdoc_client.py:357
+#: ccReg/eppdoc_client.py:308 ccReg/eppdoc_client.py:337
+#: ccReg/eppdoc_client.py:356
 msgid "Last transfer on"
 msgstr "Poslední transfer dne"
 
-#: ccReg/eppdoc_client.py:310 ccReg/eppdoc_client.py:339
+#: ccReg/eppdoc_client.py:309 ccReg/eppdoc_client.py:338
 msgid "Last update on"
 msgstr "Poslední změna dne"
 
-#: ccReg/eppdoc_client.py:311
+#: ccReg/eppdoc_client.py:310
 msgid "Name"
 msgstr "Jméno"
 
-#: ccReg/eppdoc_client.py:312
+#: ccReg/eppdoc_client.py:311
 msgid "Organisation"
 msgstr "Název organizace"
 
-#: ccReg/eppdoc_client.py:313
+#: ccReg/eppdoc_client.py:312
 msgid "Street"
 msgstr "Ulice"
 
-#: ccReg/eppdoc_client.py:314
+#: ccReg/eppdoc_client.py:313
 msgid "City"
 msgstr "Město"
 
-#: ccReg/eppdoc_client.py:315
+#: ccReg/eppdoc_client.py:314
 msgid "State or province"
 msgstr "Stát nebo kraj"
 
-#: ccReg/eppdoc_client.py:316
+#: ccReg/eppdoc_client.py:315
 msgid "Postal code"
 msgstr "PSČ"
 
-#: ccReg/eppdoc_client.py:317
+#: ccReg/eppdoc_client.py:316
 msgid "Country code"
 msgstr "Kód země"
 
-#: ccReg/eppdoc_client.py:318 ccReg/eppdoc_client.py:344
-#: ccReg/eppdoc_client.py:359
+#: ccReg/eppdoc_client.py:317 ccReg/eppdoc_client.py:343
+#: ccReg/eppdoc_client.py:358
 msgid "Password"
 msgstr "Heslo"
 
-#: ccReg/eppdoc_client.py:319
+#: ccReg/eppdoc_client.py:318
 msgid "Phone"
 msgstr "Telefon"
 
-#: ccReg/eppdoc_client.py:322
+#: ccReg/eppdoc_client.py:321
 msgid "Notification email"
 msgstr "Oznámení na email"
 
-#: ccReg/eppdoc_client.py:323 ccReg/eppdoc_client.py:345
-#: ccReg/eppdoc_client.py:360
+#: ccReg/eppdoc_client.py:322 ccReg/eppdoc_client.py:344
+#: ccReg/eppdoc_client.py:359
 msgid "Status"
 msgstr "Stav"
 
-#: ccReg/eppdoc_client.py:324
+#: ccReg/eppdoc_client.py:323
 msgid "Disclose"
 msgstr "Zveřejnit"
 
-#: ccReg/eppdoc_client.py:325
+#: ccReg/eppdoc_client.py:324
 msgid "Hide"
 msgstr "Skrýt"
 
-#: ccReg/eppdoc_client.py:328
+#: ccReg/eppdoc_client.py:327
 msgid "SSN"
 msgstr "SSN číslo dokladu"
 
-#: ccReg/eppdoc_client.py:332 ccReg/eppdoc_client.py:400
+#: ccReg/eppdoc_client.py:331 ccReg/eppdoc_client.py:405
 msgid "Domain name"
 msgstr "Název domény"
 
-#: ccReg/eppdoc_client.py:340 ccReg/eppdoc_client.py:367
-#: ccReg/eppdoc_client.py:401
+#: ccReg/eppdoc_client.py:339 ccReg/eppdoc_client.py:366
+#: ccReg/eppdoc_client.py:372 ccReg/eppdoc_client.py:406
 msgid "Expiration date"
 msgstr "Datum expirace"
 
-#: ccReg/eppdoc_client.py:341
+#: ccReg/eppdoc_client.py:340
 msgid "Validation expires at"
 msgstr "Validace platná do"
 
-#: ccReg/eppdoc_client.py:342
+#: ccReg/eppdoc_client.py:341
 msgid "Last renew on"
 msgstr "Poslední prodloužení dne"
 
-#: ccReg/eppdoc_client.py:343 ccReg/eppdoc_client.py:351
+#: ccReg/eppdoc_client.py:342 ccReg/eppdoc_client.py:350
 msgid "NSSET ID"
 msgstr "NSSET ID"
 
-#: ccReg/eppdoc_client.py:346
+#: ccReg/eppdoc_client.py:345
 msgid "Registrant ID"
 msgstr "ID registrátora"
 
-#: ccReg/eppdoc_client.py:347
+#: ccReg/eppdoc_client.py:346
 msgid "Administrative contact"
 msgstr "Administrativní kontakt"
 
-#: ccReg/eppdoc_client.py:358
+#: ccReg/eppdoc_client.py:357
 msgid "Last updated on"
 msgstr "Poslední změna dne"
 
-#: ccReg/eppdoc_client.py:361
+#: ccReg/eppdoc_client.py:360
 msgid "Technical contact"
 msgstr "Technický kontakt"
 
-#: ccReg/eppdoc_client.py:372
+#: ccReg/eppdoc_client.py:361
+msgid "Name servers"
+msgstr "Jmenné servery"
+
+#: ccReg/eppdoc_client.py:377
 msgid "Available languages"
 msgstr "Podporované jazyky"
 
-#: ccReg/eppdoc_client.py:373
+#: ccReg/eppdoc_client.py:378
 msgid "Server ID"
 msgstr "ID serveru"
 
-#: ccReg/eppdoc_client.py:374
+#: ccReg/eppdoc_client.py:379
 msgid "Server date"
 msgstr "Datum serveru"
 
-#: ccReg/eppdoc_client.py:375
+#: ccReg/eppdoc_client.py:380
 msgid "Server version"
 msgstr "Verze serveru"
 
-#: ccReg/eppdoc_client.py:376
+#: ccReg/eppdoc_client.py:381
 msgid "Objects URI"
 msgstr "URI objekt"
 
-#: ccReg/eppdoc_client.py:377
+#: ccReg/eppdoc_client.py:382
 msgid "Extensions URI"
 msgstr "URI rozšíření"
 
-#: ccReg/eppdoc_client.py:378
+#: ccReg/eppdoc_client.py:383
 msgid "Data Collection policy"
 msgstr ""
 
-#: ccReg/eppdoc_client.py:388
+#: ccReg/eppdoc_client.py:393
 msgid "List"
 msgstr "Seznam"
 
-#: ccReg/eppdoc_client.py:389
+#: ccReg/eppdoc_client.py:394
 msgid "Count"
 msgstr "Počet"
 
-#: ccReg/eppdoc_client.py:393
+#: ccReg/eppdoc_client.py:398
 msgid "Queue size"
 msgstr "Počet zpráv"
 
-#: ccReg/eppdoc_client.py:394
+#: ccReg/eppdoc_client.py:399
 msgid "Message ID"
 msgstr "ID zprávy"
 
-#: ccReg/eppdoc_client.py:395
+#: ccReg/eppdoc_client.py:400
 msgid "Message date"
 msgstr "Zpráva vložena"
 
-#: ccReg/eppdoc_client.py:396
+#: ccReg/eppdoc_client.py:401
 msgid "Message content"
 msgstr "Text zprávy"
 
@@ -843,119 +857,135 @@ msgstr "Interní chyba: Nadřazený uzel '%s' neexistuje."
 msgid "This program requires Python 2.4 or higher. Your version is"
 msgstr "Tento program vyžaduje Python 2.4 nebo vyšší. Vaše verze je"
 
-#: ccReg/session_base.py:93
+#: ccReg/session_base.py:106
 msgid "Confirm has been set to"
 msgstr "Potvrzení bylo nastaveno na"
 
-#: ccReg/session_base.py:149
+#: ccReg/session_base.py:162
 msgid "Type \"help\", \"license\" or \"credits\" for more information."
 msgstr ""
 "Zadejte \"help\", \"license\" or \"credits\" pro zobrazení více informací."
 
-#: ccReg/session_base.py:166
+#: ccReg/session_base.py:179
 msgid "Invalid format of"
 msgstr "Neplatný formát"
 
-#: ccReg/session_base.py:166 ccReg/session_base.py:170
+#: ccReg/session_base.py:179 ccReg/session_base.py:183
 msgid "See help for more."
 msgstr "Více informací najdete v helpu."
 
-#: ccReg/session_base.py:170
+#: ccReg/session_base.py:183
 msgid "cannot be empty"
 msgstr "nemůže být prázdné"
 
-#: ccReg/session_base.py:181
+#: ccReg/session_base.py:194
 msgid "Create default config failed."
 msgstr "Vytvoření defaultního config souboru selhalo."
 
-#: ccReg/session_base.py:183
+#: ccReg/session_base.py:196
 msgid "Actual config builded from files"
 msgstr "Aktuální config sestavený ze souborů"
 
-#: ccReg/session_base.py:185
+#: ccReg/session_base.py:198
 msgid "No config"
 msgstr "Žádný config"
 
-#: ccReg/session_base.py:191
+#: ccReg/session_base.py:204
 msgid "Actual connection HERE"
 msgstr "Aktuální spojení ZDE"
 
-#: ccReg/session_base.py:270
+#: ccReg/session_base.py:233
+msgid "Schema in session missing. Thi is invalid instalation."
+
+msgstr "Chybí schema v session. Tato instalace je neplatná."
+
+#: ccReg/session_base.py:285
 msgid "Default config file saved. See help for more."
 msgstr ""
 "Defaultní konfigurační soubor byl uložen. Další informace naleznete v "
 "nápovědě."
 
-#: ccReg/session_base.py:273
+#: ccReg/session_base.py:288
 msgid "Can not save config file. Reason"
 msgstr "Není možné uložit konfigurační soubor. Důvod"
 
-#: ccReg/session_base.py:301
+#: ccReg/session_base.py:317
 msgid "Fatal error: Default config create failed."
 msgstr "Fatální chyba: Vytvoření defaultního konfiguračního souboru selhalo."
 
-#: ccReg/session_base.py:350
+#: ccReg/session_base.py:369
 msgid "Host name missing."
 msgstr "Chybí jméno hosta"
 
-#: ccReg/session_base.py:352
+#: ccReg/session_base.py:371
 msgid "Port number missing."
 msgstr "Chybí číslo portu"
 
-#: ccReg/session_base.py:356
+#: ccReg/session_base.py:375
 msgid "SSL certificate path missing."
 msgstr "Cesta k SSL certifikátu chybí."
 
-#: ccReg/session_base.py:360
+#: ccReg/session_base.py:379
 msgid "SSL private key path missing."
 msgstr "Cesta k SSL privátnímu klíči chybí."
 
-#: ccReg/session_base.py:371
+#: ccReg/session_base.py:390
 msgid "Available verbose modes: 1, 2r 3."
 msgstr "Mód výstupu může být nastaven jen na hodnoty 1, 2 nebo 3."
 
-#: ccReg/session_base.py:407 ccReg/session_base.py:423
-#: ccReg/session_base.py:444
+#: ccReg/session_base.py:426 ccReg/session_base.py:442
+#: ccReg/session_base.py:463
 #, python-format
 msgid "Validator has been disabled. Type %s to enable it."
 msgstr "Validátor byl deaktivován. Opětná aktivace se provede zadáním %s."
 
-#: ccReg/session_base.py:422
+#: ccReg/session_base.py:441
 msgid ""
 "Temporary file for XML EPP validity verification can not been created. Reason"
 msgstr ""
 "Dočasný soubor pro ověření XML EPP validity se nepodařilo vytvořit. Důvod"
 
-#: ccReg/session_command.py:35
+#: ccReg/session_command.py:34 ccReg/session_command.py:36
+msgid "command"
+msgstr "příkaz"
+
+#: ccReg/session_command.py:34
 msgid "Start the interactive mode of the input command params."
 msgstr "Start režimu interaktivního vkládání parametrů."
 
-#: ccReg/session_command.py:36
+#: ccReg/session_command.py:35 ccReg/session_command.py:37
+#: ccReg/session_command.py:48 ccReg/session_command.py:50
+#: ccReg/session_command.py:51 ccReg/session_command.py:53
+#: ccReg/session_command.py:54
+msgid "switch"
+msgstr "přepínač"
+
+#: ccReg/session_command.py:35
 msgid "Turn on/off colored output."
 msgstr "Zapnout/vypnout barevný výstup."
 
-#: ccReg/session_command.py:37
+#: ccReg/session_command.py:36
 msgid "Display or create config file."
 msgstr "Zobrazení nebo vytvoření konfiguračního souboru."
 
-#: ccReg/session_command.py:38
+#: ccReg/session_command.py:37
 msgid "Set on/off confirmation for sending editable commands to the server."
 msgstr ""
 "Zapnout/vypnout potvrzení procesu odeslání editačních příkazů na server."
 
-#: ccReg/session_command.py:41
+#: ccReg/session_command.py:40
 msgid "Display credits."
 msgstr "Zobrazit credits."
 
-#: ccReg/session_command.py:42
+#: ccReg/session_command.py:41
 msgid "Display this help or command details."
 msgstr "Zobrazit tento help nebo detaily příkazu."
 
-#: ccReg/session_command.py:43
+#: ccReg/session_command.py:42
 msgid "Display license."
 msgstr "Zobrazit licenci."
 
-#: ccReg/session_command.py:44
+#: ccReg/session_command.py:43
 msgid ""
 "\n"
 "Set representation of the value what is used to mean nothing. Default is "
@@ -974,177 +1004,220 @@ msgstr ""
 "\"\",\n"
 "kdy jsme zadali hodnotu nulové délky. Více informací naleznete v helpu."
 
-#: ccReg/session_command.py:49
+#: ccReg/session_command.py:48
 msgid "Send \"poll ack\" straight away after \"poll req\"."
 msgstr "Poslat \"poll ack\" ihned po odeslání \"poll req\"."
 
-#: ccReg/session_command.py:50
+#: ccReg/session_command.py:49
 msgid "Quit the client. Same effect has \"q\" or \"exit\"."
 msgstr "Ukončit klienta. Stený význam má i \"q\" nebo \"exit\"."
 
-#: ccReg/session_command.py:51
+#: ccReg/session_command.py:50
 msgid "Display XML source of the EPP answer."
 msgstr "Zobrazit XML zdroj EPP odpovědi."
 
-#: ccReg/session_command.py:52
+#: ccReg/session_command.py:51
 msgid "Display XML source of the EPP command."
 msgstr "Zobrazit XML zdroj EPP příkazu."
 
-#: ccReg/session_command.py:53
+#: ccReg/session_command.py:52
+msgid "filename"
+msgstr "název souboru"
+
+#: ccReg/session_command.py:52
+msgid "any filename"
+msgstr "nějaký název souboru"
+
+#: ccReg/session_command.py:52
 msgid ""
 "Send any file to the server. If filename missing command shows actual folder."
 msgstr ""
 "Odeslat soubor na server. Pokud jméno souboru není zadáno zobrazí se "
 "aktuální adresář."
 
-#: ccReg/session_command.py:54
+#: ccReg/session_command.py:53
 msgid "Set on/off external validation of the XML documents."
 msgstr "Zapnutí/vypnutí externího validátoru XML dokumentů."
 
-#: ccReg/session_command.py:55
+#: ccReg/session_command.py:54
 msgid ""
 "Set verbose mode: 1 - brief (default); 2 - full; 3 - full & XML sources."
 msgstr ""
 "Nastavení módu výpisu: 1 - stručný (default); 2 - plný; 3 - plný & XML "
 "zdroje."
 
-#: ccReg/session_command.py:66
+#: ccReg/session_command.py:70
 msgid "No data"
 msgstr "Žádná data"
 
-#: ccReg/session_command.py:83
-msgid "Example of input"
-msgstr "Příklad zadání"
+#: ccReg/session_command.py:87
+msgid "Command to issue"
+msgstr "Příkaz k odeslání"
 
-#: ccReg/session_command.py:109
+#: ccReg/session_command.py:113
 msgid "No help available for"
 msgstr "Help nebyl nalezen pro"
 
-#: ccReg/session_command.py:114
+#: ccReg/session_command.py:118
 msgid "Type \"help command\" to get help on particular command."
 msgstr "Zadejte \"help command\" pro zobrazení detailů příkazu."
 
-#: ccReg/session_command.py:115
+#: ccReg/session_command.py:119
 msgid "Available session commands"
 msgstr "Dostupné session příkazy"
 
-#: ccReg/session_command.py:117
+#: ccReg/session_command.py:121
 msgid "Available EPP commands"
 msgstr "Dostupné EPP příkazy"
 
-#: ccReg/session_command.py:119
+#: ccReg/session_command.py:123
 msgid "Report bugs to"
 msgstr "Poruchy zasílejte na"
 
-#: ccReg/session_command.py:132
-msgid "Available values"
-msgstr "Povolené hodnoty"
+#: ccReg/session_command.py:136
+msgid "synonyms"
+msgstr "synonyma"
 
-#: ccReg/session_command.py:155
+#: ccReg/session_command.py:160
 msgid "Help for command"
 msgstr "Nápověda pro příkaz"
 
-#: ccReg/session_command.py:164
+#: ccReg/session_command.py:169
 msgid "DESCRIPTION"
 msgstr "POPIS"
 
-#: ccReg/session_command.py:167
+#: ccReg/session_command.py:172
 msgid "SYNTAX"
 msgstr "SYNTAXE"
 
-#: ccReg/session_command.py:170
+#: ccReg/session_command.py:175
 msgid "OPTIONS"
 msgstr "PARAMETRY"
 
-#: ccReg/session_command.py:173 ccreg_create.py:59 ccreg_sender.py:150
-#: ccreg_sender_work.py:176
+#: ccReg/session_command.py:178 ccreg_create.py:71 ccreg_sender.py:126
 msgid "EXAMPLES"
 msgstr "PŘÍKLADY"
 
-#: ccReg/session_command.py:198
+#: ccReg/session_command.py:203
 msgid "For list all commands type"
 msgstr "Pro výpis celého seznamu příkazů zadejte"
 
-#: ccReg/session_command.py:257
+#: ccReg/session_command.py:244
+msgid ""
+"Missing command name. For start interactive mode type command name after "
+"exclamation. For mode type help !."
+msgstr ""
+"Jméno příkazu chybí. Zadejte za vykřičník jméno EPP přiazu. Tím spustíte intaraktivní režim."
+"Příkaz help ! zobrazí podrobnosti."
+
+#: ccReg/session_command.py:270
 msgid "Hidden commands are"
 msgstr "Skryté příkazy jsou"
 
-#: ccReg/session_command.py:276
+#: ccReg/session_command.py:289
 msgid "Load file"
 msgstr "Načíst soubor"
 
-#: ccReg/session_command.py:282
+#: ccReg/session_command.py:295
 msgid "Not found"
 msgstr "Nenalezen"
 
-#: ccReg/session_command.py:308
+#: ccReg/session_command.py:321
 msgid "Translation of answer column names is"
 msgstr "Překlad jmen sloupců odpovědi je"
 
-#: ccReg/session_command.py:315
+#: ccReg/session_command.py:328
 msgid "Confirm is"
 msgstr "Potvrzení je nastaveno na"
 
-#: ccReg/session_command.py:320
+#: ccReg/session_command.py:333
 msgid "is"
 msgstr "je"
 
-#: ccReg/session_command.py:325
+#: ccReg/session_command.py:338
 msgid "Validation process is"
 msgstr "Validace je nastavena na"
 
-#: ccReg/session_command.py:330
+#: ccReg/session_command.py:343
 msgid "You are connected already. Type disconnect for close connection."
 msgstr "Již jste připojeni. Pro uzavření spojení zadejte disconnect."
 
-#: ccReg/session_command.py:342
+#: ccReg/session_command.py:355
 msgid "You has been disconnected."
 msgstr "Byli jste odpojeni."
 
-#: ccReg/session_command.py:344 ccReg/session_transfer.py:150
-#: ccReg/session_transfer.py:175
+#: ccReg/session_command.py:357 ccReg/session_transfer.py:153
+#: ccReg/session_transfer.py:180 ccreg_console.py:137
 msgid "You are not connected."
 msgstr "Nejste připojeni."
 
-#: ccReg/session_command.py:351
+#: ccReg/session_command.py:364
 msgid "Colors mode is"
 msgstr "Mód barevnosti je"
 
-#: ccReg/session_command.py:356
+#: ccReg/session_command.py:369
 msgid "Verbose mode is"
 msgstr "Mód rozsahu výpisu je"
 
-#: ccReg/session_command.py:373
-msgid "poll ack is"
-msgstr "poll ack je"
+#: ccReg/session_command.py:386
+msgid "poll-autoack is"
+msgstr "poll-autoack je"
 
-#: ccReg/session_command.py:381
+#: ccReg/session_command.py:394
 msgid "Dir list"
 msgstr "Výpis adresáře"
 
-#: ccReg/session_command.py:397
+#: ccReg/session_command.py:410
 msgid "Interpreted answer"
 msgstr "Přeložená odpověď"
 
-#: ccReg/session_command.py:400
+#: ccReg/session_command.py:413
 msgid "Answer source"
 msgstr "Zdrojová odpověď"
 
-#: ccReg/session_command.py:407
+#: ccReg/session_command.py:420
 msgid "Interpreted command"
 msgstr "Přeložený příkaz"
 
-#: ccReg/session_command.py:412
+#: ccReg/session_command.py:425
 msgid "Command source"
 msgstr "Zdrojový příkaz"
 
-#: ccReg/session_command.py:431 guiqt/main.py:188
+#: ccReg/session_command.py:444 guiqt/main.py:355
 msgid "You are logged already."
 msgstr "Jste již zalogován"
 
 #: ccReg/session_command.py:477
-msgid "Login command sent to server"
-msgstr "Odeslán login"
+msgid "host missing"
+msgstr "chybí host"
+
+#: ccReg/session_command.py:478
+msgid "port missing"
+msgstr "chybí port"
+
+#: ccReg/session_command.py:479
+msgid "private key missing"
+msgstr "chybí privátní klíč"
+
+#: ccReg/session_command.py:480
+msgid "certificate missing"
+msgstr "chybí certifikát"
+
+#: ccReg/session_command.py:481
+msgid "username missing"
+msgstr "chybí username"
+
+#: ccReg/session_command.py:482
+msgid "password missing"
+msgstr "chybí heslo"
+
+#: ccReg/session_command.py:484
+msgid "Automatic login stopped"
+msgstr "Automatický login byl zastaven"
+
+#: ccReg/session_command.py:492
+msgid "Login command sent to the server"
+msgstr "Příkaz login byl odeslán na server"
 
 #: ccReg/session_receiver.py:86
 msgid "Invalid response code"
@@ -1167,142 +1240,77 @@ msgstr "Odpověď serveru není validní!"
 msgid "Type %s to disable validator"
 msgstr "Pro deaktivaci validátoru zadejte %s"
 
-#: ccReg/session_receiver.py:148
+#: ccReg/session_receiver.py:149
 msgid "Unknown response type"
 msgstr "Neznámý typ části response"
 
-#: ccReg/session_receiver.py:151
+#: ccReg/session_receiver.py:152
 msgid "No response from EPP server."
 msgstr "Žádná odpověď. EPP server neodpovídá."
 
-#: ccReg/session_receiver.py:152
-msgid "Connection interrupted."
-msgstr "Spojení bylo přerušeno."
-
-#: ccReg/session_receiver.py:165
+#: ccReg/session_receiver.py:166
 msgid "Incoming greeting message"
 msgstr "Přišla Greeting zpráva"
 
-#: ccReg/session_receiver.py:186
+#: ccReg/session_receiver.py:187
 msgid "All data are disclosed."
 msgstr "Všechna data jsou veřejná."
 
-#: ccReg/session_receiver.py:189
+#: ccReg/session_receiver.py:190
 msgid "All data are hidden."
 msgstr "Všechna data jsou skrytá."
 
-#: ccReg/session_receiver.py:211
-msgid "Session started"
-msgstr "Relace zahájena"
-
 #: ccReg/session_receiver.py:213
-msgid "Login failed"
-msgstr "Login se nezdařil"
+msgid "Login OK. Session started."
+msgstr "Login OK. Relace zahájena."
 
-#: ccReg/session_receiver.py:319
+#: ccReg/session_receiver.py:215
+msgid "Login failed."
+msgstr "Login se nezdařil."
+
+#: ccReg/session_receiver.py:321
 msgid "Not in registry: Object is available."
 msgstr "Není v registru: Objekt je dostupný."
 
-#: ccReg/session_receiver.py:466
+#: ccReg/session_receiver.py:468
 msgid "You are not logged. First type login."
 msgstr "Nejste zalogováni. Nejdříve zadejte login."
 
-#: ccReg/session_receiver.py:469
+#: ccReg/session_receiver.py:471
 msgid "You are not logged. You must call login() before working on the server."
 msgstr "Nejste zalogováni. Nejdříve musíte zadat login()."
 
-#: ccReg/session_transfer.py:65
-msgid "Connection broken"
-msgstr "Spojení přerušeno"
+#: ccReg/session_transfer.py:68
+#, python-format
+msgid "ERROR: Connection to %s interrupted."
+msgstr "Chyba: Spojení s %s bylo přerušeno."
 
-#: ccReg/session_transfer.py:111
+#: ccReg/session_transfer.py:114
 msgid "Can not create connection. Missing values"
 msgstr "Není možné vytvořit spojení. Chybí hodnoty"
 
-#: ccReg/session_transfer.py:120
+#: ccReg/session_transfer.py:123
 msgid "Server didn't return Greeting message. Contact server administrator."
 msgstr "Server nevrátil Greeting odpověď. Kontaktujte správce serveru."
 
-#: ccReg/session_transfer.py:147
+#: ccReg/session_transfer.py:150
 msgid "Command sent to EPP server."
 msgstr "Příkaz byl odeslán na EPP server."
 
-#: ccReg/session_transfer.py:160
+#: ccReg/session_transfer.py:163
 msgid "Logout command sent to server"
 msgstr "Odeslán logout"
 
-#: ccReg/session_transfer.py:241
-msgid "not displayed value"
-msgid_plural "not displayed values"
-msgstr[0] "nezobrazený údaj"
-msgstr[1] "nezobrazené údaje"
-msgstr[2] "nezobrazených údajů"
-
-#: ccReg/session_transfer.py:247
-msgid "Not used"
-msgstr "Nepoužito"
-
-#: ccreg_client.py:13 ccreg_console.py:113 ccreg_create.py:57
-#: ccreg_sender.py:125 ccreg_sender_work.py:151
+#: ccreg_client.py:14 ccreg_console.py:152 ccreg_create.py:69
+#: ccreg_sender.py:123
 msgid "Usage"
 msgstr "Použití"
 
-#: ccreg_client.py:14
+#: ccreg_client.py:15
 msgid "Client for communication with EPP server."
 msgstr "Klient pro komunikaci s EPP serverem."
 
-#: ccreg_client.py:15 ccreg_console.py:115 ccreg_sender.py:127
-#: ccreg_sender_work.py:153
-msgid ""
-"Connection options:\n"
-"  -?, --help       show this help and exit\n"
-"  -V, --version    Display program version information\n"
-"\n"
-"  -l LANGUAGE, --lang=LANGUAGE\n"
-"                   set user interface language\n"
-"  -r, --colors     turn on colored output\n"
-"  -v LEVEL, --verbose=LEVEL\n"
-"                   set verbose level\n"
-"                   1 - normal operation\n"
-"                   2 - print more details\n"
-"                   3 - print more details and display XML sources\n"
-"  -h HOSTNAME, --host=HOSTNAME\n"
-"                   ccReg server to connect \n"
-"  -u USERNAME, --user=USERNAME\n"
-"                   authenticate to server as user\n"
-"  -p PASSWORD, --password=PASSWORD\n"
-"                   authenticate to server with password\n"
-"  -s SESSION, --session=SESSION\n"
-"                   read session name  used for connect to the EPP server\n"
-"                   session values are read from config file\n"
-"  -c CONFIG, --config=CONFIG\n"
-"                   load config from filename"
-msgstr ""
-"Parametry spojení:\n"
-"  -?, --help       zobrazit tuto nápovědu a skončit\n"
-"  -V, --version    zobrazit verzi programu\n"
-"\n"
-"  -l LANGUAGE, --lang=LANGUAGE\n"
-"                   nastavení jazykové verze\n"
-"  -r, --colors     zapnout barevný výstiup\n"
-"  -v LEVEL, --verbose=LEVEL\n"
-"                   nastavení módu výpisu\n"
-"                   1 - normální výstup\n"
-"                   2 - zobrazit více detailů\n"
-"                   3 - zobrazit více detailů a XML zdroje\n"
-"  -h HOSTNAME, --host=HOSTNAME\n"
-"                   ccReg server, na který se má navázat spojení\n"
-"  -u USERNAME, --user=USERNAME\n"
-"                   přihlašovací jméno\n"
-"  -p PASSWORD, --password=PASSWORD\n"
-"                   přihlašovací heslo\n"
-"  -s SESSION, --session=SESSION\n"
-"                   kolekce přihlašovacích hodnot z vybrané sekce v "
-"konfiguračním souboru\n"
-"  -c CONFIG, --config=CONFIG\n"
-"                   načtení konfiguračního soboru ze souboru"
-
-#: ccreg_client.py:38
+#: ccreg_client.py:17
 msgid ""
 "-d COMMAND, --command=COMMAND\n"
 "                   send command to server and exit"
@@ -1310,99 +1318,188 @@ msgstr ""
 "-d COMMAND, --command=COMMAND\n"
 "                   odeslat příkaz na server a skončit"
 
-#: ccreg_client.py:40
+#: ccreg_client.py:19
 msgid ""
-"-x --gui\n"
+"-q,  --qt\n"
 "                   run client in grafical user interface"
 msgstr ""
-"-x --gui\n"
+"-q --qt\n"
 "                   spustit klineta v grafickém režimu"
 
-#: ccreg_client.py:42 ccreg_console.py:138 ccreg_create.py:67
-#: ccreg_sender.py:158 ccreg_sender_work.py:184
+#: ccreg_client.py:21 ccreg_console.py:155 ccreg_create.py:79
+#: ccreg_sender.py:134
 msgid "For more information, see README."
 msgstr "Více informací v README."
 
-#: ccreg_console.py:69
+#: ccreg_console.py:13
+msgid ""
+"Connection options:\n"
+"  -?, --help       show this help and exit\n"
+"  -V, --version    Display program version information\n"
+"\n"
+"  -l LANGUAGE, --lang=LANGUAGE\n"
+"                   set user interface language\n"
+"  -v LEVEL, --verbose=LEVEL\n"
+"                   set verbose level\n"
+"                   1 - normal operation\n"
+"                   2 - print more details\n"
+"                   3 - print more details and display XML sources\n"
+"  -x,   --no_validate\n"
+"                   disable client-side XML validation\n"
+"\n"
+"  -f CONFIG, --config=CONFIG\n"
+"                   load config from filename\n"
+"\n"
+"  -h HOSTNAME, --host=HOSTNAME\n"
+"                   ccReg server to connect \n"
+"  -p PORT, --port=PORT\n"
+"                   server port\n"
+"  -u USERNAME, --user=USERNAME\n"
+"                   authenticate to server as user\n"
+"  -w PASSWORD, --password=PASSWORD\n"
+"                   authenticate to server with password\n"
+"  -c CERTIFICATE --cert=CERTIFICATE\n"
+"                   filepath of your certificate\n"
+"  -k PRIVATEKEY --privkey=PRIVATEKEY\n"
+"                   filepath of your private key\n"
+"  -s SESSION, --session=SESSION\n"
+"                   read session name used for connect to the EPP server\n"
+"                   session values are read from config file\n"
+"  -o OUTPUT_TYPE, --output=OUTPUT_TYPE\n"
+"                   display output as: text (default), html"
+msgstr ""
+"Parametry spojení:\n"
+"  -?, --help       zobrazit tuto nápovědu a skončit\n"
+"  -V, --version    zobrazit verzi programu\n"
+"\n"
+"  -l LANGUAGE, --lang=LANGUAGE\n"
+"                   nastavení jazykové verze\n"
+"  -v LEVEL, --verbose=LEVEL\n"
+"                   nastavení módu výpisu\n"
+"                   1 - normální výstup\n"
+"                   2 - zobrazit více detailů\n"
+"                   3 - zobrazit více detailů a XML zdroje\n"
+"  -x,   --no_validate\n"
+"                   deaktivovat XML validaci na straně klienta\n"
+"\n"
+"  -f CONFIG, --config=CONFIG\n"
+"                   načtení konfigurace ze souboru\n"
+"\n"
+"  -h HOSTNAME, --host=HOSTNAME\n"
+"                   ccReg server, na který se má navázat spojení\n"
+"  -p PORT, --port=PORT\n"
+"                   port serveru\n"
+"  -u USERNAME, --user=USERNAME\n"
+"                   přihlašovací jméno\n"
+"  -w PASSWORD, --password=PASSWORD\n"
+"                   přihlašovací heslo\n"
+"  -c CERTIFICATE --cert=CERTIFICATE\n"
+"                   jméno a cesta k certifikátu\n"
+"  -k PRIVATEKEY --privkey=PRIVATEKEY\n"
+"                   jméno a cesta k soukromému klíči\n"
+"  -s SESSION, --session=SESSION\n"
+"                   kolekce přihlašovacích hodnot z vybrané sekce v "
+"konfiguračním souboru\n"
+"  -o OUTPUT_TYPE, --output=OUTPUT_TYPE\n"
+"                   zobrazit výstup jako: text (default), html"
+
+#: ccreg_console.py:107
 msgid "EPP document is not valid"
 msgstr "EPP dokument není validní"
 
-#: ccreg_console.py:76
-msgid "Do you want send this command to the server?"
-msgstr "Chcete odeslat tento poříkaz na server?"
+#: ccreg_console.py:115
+msgid "Do you really want to send this command to the server?"
+msgstr "Opravdu chcete odeslat tento poříkaz na server?"
 
-#: ccreg_console.py:98
-msgid "You are not connected! Type login for connection to the server."
-msgstr "Nejste připojeni! Pro připojení k serveru zadejte login."
-
-#: ccreg_console.py:114
+#: ccreg_console.py:153
 msgid "Console for communication with EPP server."
 msgstr "Konzole pro komunikaci s EPP serverem."
 
-#: ccreg_create.py:58
+#: ccreg_create.py:70
 msgid "Create EPP XML document from command line parameters."
 msgstr "Vytvoří EPP XML dokument ze zadaných parametrů."
 
-#: ccreg_create.py:66
+#: ccreg_create.py:78
 msgid "Eventual errors are return in XML format: <errors>... msg ...</errors>."
 msgstr ""
 "Případné chyby jsou vráceny ve formátu XML: <errors>... msg ...</errors>."
 
-#: ccreg_sender.py:68 ccreg_sender_work.py:51 ccreg_sender_work.py:88
+#: ccreg_sender.py:67
 msgid "Send files"
 msgstr "Odeslat soubory"
 
-#: ccreg_sender.py:96 ccreg_sender_work.py:116
+#: ccreg_sender.py:93
 msgid "sending..."
 msgstr "posílám..."
 
-#: ccreg_sender.py:126 ccreg_sender_work.py:152
+#: ccreg_sender.py:124
 msgid "Module for sending files to the EPP server."
 msgstr "Modul pro odeslání souborů na EPP server."
 
-#: guiqt/main.py:78
+#: guiqt/main.py:33
+msgid ""
+"For runnig this application you need install PyQt and Qt modules. For more "
+"see help."
+msgstr ""
+"Pro běh této aplikace potřebujete mít nainstalován PyQt a Qt."
+"Více informací nalezente v helpu."
+
+#: guiqt/main.py:170
 msgid "Missing required"
 msgstr "chybí povinný parametr"
 
-#: guiqt/main.py:112
+#: guiqt/main.py:176
+msgid "Close client"
+msgstr "Zavřít klienta"
+
+#: guiqt/main.py:177
+msgid "Do you wand realy close client?"
+msgstr "Opravdu chcete ukončit klienta?"
+
+#: guiqt/main.py:208
+msgid "value"
+msgstr "hodnota"
+
+#: guiqt/main.py:268
 msgid "disconnect"
 msgstr "nepřipojen"
 
-#: guiqt/main.py:118
+#: guiqt/main.py:274
 msgid "You are not logged. First do login."
 msgstr "Nejste zalogováni. Nejdříve se zalogujte."
 
-#: guiqt/main.py:132 guiqt/main.py:159 guiqt/main.py:177 guiqt/main.py:210
-#: guiqt/main.py:224 guiqt/main.py:239 guiqt/main.py:247
-msgid "Validation error"
-msgstr "Chyba validace"
-
-#: guiqt/main.py:205
+#: guiqt/main.py:372
 msgid "Invalid connection input"
 msgstr "Neplatné zadání pro spojení"
 
-#: guiqt/main.py:306
+#: guiqt/main.py:378
+msgid "Process login failed."
+msgstr "Login se nezdařil"
+
+#: guiqt/main.py:528
+msgid ""
+"In a part of address must be set both city and country code. For disabled "
+"this part leave both empty."
+msgstr ""
+"V části adresa musí být zadáno město a kód země."
+"Nechte obě hodnoty prázdné, chcete-li tuto část vynechat."
+
+#: guiqt/main.py:546 guiqt/main.py:586 guiqt/main.py:623
+msgid "No values to update."
+msgstr "Žádné hodnoty pro aktualizaci."
+
+#: guiqt/main.py:666
 msgid "contact"
 msgstr "kontakt ID"
 
-#: guiqt/main.py:312
+#: guiqt/main.py:672
 msgid "domain"
 msgstr "název domény"
 
-#~ msgid "Value \"%s\" is not allowed. Valid is:"
-#~ msgstr "Hodnota \"%s\" není povolena. Platná je:"
+#: guiqt/main.py:681
+msgid "sources"
+msgstr "Zdroje"
 
-#~ msgid "(Value can be a list of max %d value.)"
-#~ msgid_plural "(Value can be a list of max %d values.)"
-#~ msgstr[0] "(Hodnota může být seznam o max. velikosti %d položky.)"
-#~ msgstr[1] "(Hodnota může být seznam o max. velikosti %d položek.)"
-#~ msgstr[2] "(Hodnota může být seznam o max. velikosti %d položek.)"
-
-#~ msgid "(Value can be an unbouded list of values.)"
-#~ msgstr "(Hodnota může být libovolně velký seznam.)"
-
-#~ msgid "Make connection between client and server without login."
-#~ msgstr "Vytvoří spojení mezi klientem a serverem bez volání funkce login."
-
-#~ msgid "Disconnect from the EPP server."
-#~ msgstr "Odpojit od EPP serveru."
+#: guiqt/main.py:687
+msgid "Sources are not available now. Run command at first."
+msgstr "Zdroje nejsou nyní dostupné. Spusťe nejdříve příkaz."

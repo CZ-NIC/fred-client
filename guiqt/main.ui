@@ -2,7 +2,7 @@
 <class>ccregWindow</class>
 <widget class="QDialog">
     <property name="name">
-	<cstring>ccregWindow</cstring>
+        <cstring>ccregWindow</cstring>
     </property>
     <property name="geometry">
         <rect>
@@ -636,38 +636,6 @@ The "login" command establishes an ongoing server session that preserves client 
                                     <string>data</string>
                                 </property>
                             </widget>
-                            <widget class="QTextEdit">
-                                <property name="name">
-                                    <cstring>login_data</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>130</y>
-                                        <width>450</width>
-                                        <height>200</height>
-                                    </rect>
-                                </property>
-                            </widget>
-                            <widget class="QTextEdit">
-                                <property name="name">
-                                    <cstring>login_msg</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>40</y>
-                                        <width>450</width>
-                                        <height>80</height>
-                                    </rect>
-                                </property>
-                                <property name="text">
-                                    <string></string>
-                                </property>
-                                <property name="wordWrap">
-                                    <enum>WidgetWidth</enum>
-                                </property>
-                            </widget>
                             <widget class="QPushButton">
                                 <property name="name">
                                     <cstring>btn_source_login</cstring>
@@ -688,6 +656,54 @@ The "login" command establishes an ongoing server session that preserves client 
                                 </property>
                                 <property name="toolTip" stdset="0">
                                     <string></string>
+                                </property>
+                            </widget>
+                            <widget class="QTextEdit">
+                                <property name="name">
+                                    <cstring>login_msg</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>40</y>
+                                        <width>450</width>
+                                        <height>70</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string></string>
+                                </property>
+                                <property name="wordWrap">
+                                    <enum>WidgetWidth</enum>
+                                </property>
+                            </widget>
+                            <widget class="QTable">
+                                <column>
+                                    <property name="text">
+                                        <string>name</string>
+                                    </property>
+                                </column>
+                                <column>
+                                    <property name="text">
+                                        <string>value</string>
+                                    </property>
+                                </column>
+                                <property name="name">
+                                    <cstring>login_table</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>120</y>
+                                        <width>450</width>
+                                        <height>210</height>
+                                    </rect>
+                                </property>
+                                <property name="numRows">
+                                    <number>0</number>
+                                </property>
+                                <property name="numCols">
+                                    <number>2</number>
                                 </property>
                             </widget>
                         </widget>
@@ -859,38 +875,6 @@ The EPP "logout" command is used to end a session with an EPP server.</string>
                                     <string>code</string>
                                 </property>
                             </widget>
-                            <widget class="QTextEdit">
-                                <property name="name">
-                                    <cstring>logout_msg</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>40</y>
-                                        <width>450</width>
-                                        <height>80</height>
-                                    </rect>
-                                </property>
-                                <property name="text">
-                                    <string></string>
-                                </property>
-                                <property name="wordWrap">
-                                    <enum>WidgetWidth</enum>
-                                </property>
-                            </widget>
-                            <widget class="QTextEdit">
-                                <property name="name">
-                                    <cstring>logout_data</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>129</y>
-                                        <width>450</width>
-                                        <height>190</height>
-                                    </rect>
-                                </property>
-                            </widget>
                             <widget class="QPushButton">
                                 <property name="name">
                                     <cstring>btn_source_logout</cstring>
@@ -911,6 +895,38 @@ The EPP "logout" command is used to end a session with an EPP server.</string>
                                 </property>
                                 <property name="toolTip" stdset="0">
                                     <string></string>
+                                </property>
+                            </widget>
+                            <widget class="QTextEdit">
+                                <property name="name">
+                                    <cstring>logout_msg</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>40</y>
+                                        <width>450</width>
+                                        <height>70</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string></string>
+                                </property>
+                                <property name="wordWrap">
+                                    <enum>WidgetWidth</enum>
+                                </property>
+                            </widget>
+                            <widget class="QTextEdit">
+                                <property name="name">
+                                    <cstring>logout_data</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>119</y>
+                                        <width>450</width>
+                                        <height>200</height>
+                                    </rect>
                                 </property>
                             </widget>
                         </widget>
@@ -1184,38 +1200,6 @@ The EPP "logout" command is used to end a session with an EPP server.</string>
                                     <string>code</string>
                                 </property>
                             </widget>
-                            <widget class="QTextEdit">
-                                <property name="name">
-                                    <cstring>poll_msg</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>41</y>
-                                        <width>450</width>
-                                        <height>80</height>
-                                    </rect>
-                                </property>
-                                <property name="text">
-                                    <string></string>
-                                </property>
-                                <property name="wordWrap">
-                                    <enum>WidgetWidth</enum>
-                                </property>
-                            </widget>
-                            <widget class="QTextEdit">
-                                <property name="name">
-                                    <cstring>poll_data</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>130</y>
-                                        <width>450</width>
-                                        <height>190</height>
-                                    </rect>
-                                </property>
-                            </widget>
                             <widget class="QPushButton">
                                 <property name="name">
                                     <cstring>btn_source_poll</cstring>
@@ -1236,6 +1220,54 @@ The EPP "logout" command is used to end a session with an EPP server.</string>
                                 </property>
                                 <property name="toolTip" stdset="0">
                                     <string></string>
+                                </property>
+                            </widget>
+                            <widget class="QTable">
+                                <column>
+                                    <property name="text">
+                                        <string>name</string>
+                                    </property>
+                                </column>
+                                <column>
+                                    <property name="text">
+                                        <string>value</string>
+                                    </property>
+                                </column>
+                                <property name="name">
+                                    <cstring>poll_table</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>120</y>
+                                        <width>450</width>
+                                        <height>210</height>
+                                    </rect>
+                                </property>
+                                <property name="numRows">
+                                    <number>0</number>
+                                </property>
+                                <property name="numCols">
+                                    <number>2</number>
+                                </property>
+                            </widget>
+                            <widget class="QTextEdit">
+                                <property name="name">
+                                    <cstring>poll_msg</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>41</y>
+                                        <width>450</width>
+                                        <height>70</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string></string>
+                                </property>
+                                <property name="wordWrap">
+                                    <enum>WidgetWidth</enum>
                                 </property>
                             </widget>
                         </widget>
@@ -1378,38 +1410,6 @@ The EPP "hello" request a "greeting" response message from an EPP server at any 
                                     <string>code</string>
                                 </property>
                             </widget>
-                            <widget class="QTextEdit">
-                                <property name="name">
-                                    <cstring>hello_msg</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>40</y>
-                                        <width>450</width>
-                                        <height>80</height>
-                                    </rect>
-                                </property>
-                                <property name="text">
-                                    <string></string>
-                                </property>
-                                <property name="wordWrap">
-                                    <enum>WidgetWidth</enum>
-                                </property>
-                            </widget>
-                            <widget class="QTextEdit">
-                                <property name="name">
-                                    <cstring>hello_data</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>129</y>
-                                        <width>450</width>
-                                        <height>190</height>
-                                    </rect>
-                                </property>
-                            </widget>
                             <widget class="QPushButton">
                                 <property name="name">
                                     <cstring>btn_source_hello</cstring>
@@ -1430,6 +1430,54 @@ The EPP "hello" request a "greeting" response message from an EPP server at any 
                                 </property>
                                 <property name="toolTip" stdset="0">
                                     <string></string>
+                                </property>
+                            </widget>
+                            <widget class="QTable">
+                                <column>
+                                    <property name="text">
+                                        <string>name</string>
+                                    </property>
+                                </column>
+                                <column>
+                                    <property name="text">
+                                        <string>value</string>
+                                    </property>
+                                </column>
+                                <property name="name">
+                                    <cstring>hello_table</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>120</y>
+                                        <width>450</width>
+                                        <height>210</height>
+                                    </rect>
+                                </property>
+                                <property name="numRows">
+                                    <number>0</number>
+                                </property>
+                                <property name="numCols">
+                                    <number>2</number>
+                                </property>
+                            </widget>
+                            <widget class="QTextEdit">
+                                <property name="name">
+                                    <cstring>hello_msg</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>40</y>
+                                        <width>450</width>
+                                        <height>70</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string></string>
+                                </property>
+                                <property name="wordWrap">
+                                    <enum>WidgetWidth</enum>
                                 </property>
                             </widget>
                         </widget>
@@ -1697,38 +1745,6 @@ Type one or more names (handles) what you want to check. Separate names by space
                                     <string>code</string>
                                 </property>
                             </widget>
-                            <widget class="QTextEdit">
-                                <property name="name">
-                                    <cstring>check_contact_msg</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>140</x>
-                                        <y>40</y>
-                                        <width>450</width>
-                                        <height>80</height>
-                                    </rect>
-                                </property>
-                                <property name="text">
-                                    <string></string>
-                                </property>
-                                <property name="wordWrap">
-                                    <enum>WidgetWidth</enum>
-                                </property>
-                            </widget>
-                            <widget class="QTextEdit">
-                                <property name="name">
-                                    <cstring>check_contact_data</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>140</x>
-                                        <y>129</y>
-                                        <width>450</width>
-                                        <height>190</height>
-                                    </rect>
-                                </property>
-                            </widget>
                             <widget class="QPushButton">
                                 <property name="name">
                                     <cstring>btn_source_check_contact</cstring>
@@ -1749,6 +1765,54 @@ Type one or more names (handles) what you want to check. Separate names by space
                                 </property>
                                 <property name="toolTip" stdset="0">
                                     <string></string>
+                                </property>
+                            </widget>
+                            <widget class="QTextEdit">
+                                <property name="name">
+                                    <cstring>check_contact_msg</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>40</y>
+                                        <width>450</width>
+                                        <height>70</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string></string>
+                                </property>
+                                <property name="wordWrap">
+                                    <enum>WidgetWidth</enum>
+                                </property>
+                            </widget>
+                            <widget class="QTable">
+                                <column>
+                                    <property name="text">
+                                        <string>name</string>
+                                    </property>
+                                </column>
+                                <column>
+                                    <property name="text">
+                                        <string>value</string>
+                                    </property>
+                                </column>
+                                <property name="name">
+                                    <cstring>check_contact_table</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>120</y>
+                                        <width>450</width>
+                                        <height>210</height>
+                                    </rect>
+                                </property>
+                                <property name="numRows">
+                                    <number>0</number>
+                                </property>
+                                <property name="numCols">
+                                    <number>2</number>
                                 </property>
                             </widget>
                         </widget>
@@ -2162,38 +2226,6 @@ specified using the EPP extension framework.</string>
                                     <string>code</string>
                                 </property>
                             </widget>
-                            <widget class="QTextEdit">
-                                <property name="name">
-                                    <cstring>create_contact_msg</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>40</y>
-                                        <width>450</width>
-                                        <height>80</height>
-                                    </rect>
-                                </property>
-                                <property name="text">
-                                    <string></string>
-                                </property>
-                                <property name="wordWrap">
-                                    <enum>WidgetWidth</enum>
-                                </property>
-                            </widget>
-                            <widget class="QTextEdit">
-                                <property name="name">
-                                    <cstring>create_contact_data</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>129</y>
-                                        <width>450</width>
-                                        <height>190</height>
-                                    </rect>
-                                </property>
-                            </widget>
                             <widget class="QPushButton">
                                 <property name="name">
                                     <cstring>btn_source_create_contact</cstring>
@@ -2214,6 +2246,54 @@ specified using the EPP extension framework.</string>
                                 </property>
                                 <property name="toolTip" stdset="0">
                                     <string></string>
+                                </property>
+                            </widget>
+                            <widget class="QTable">
+                                <column>
+                                    <property name="text">
+                                        <string>name</string>
+                                    </property>
+                                </column>
+                                <column>
+                                    <property name="text">
+                                        <string>value</string>
+                                    </property>
+                                </column>
+                                <property name="name">
+                                    <cstring>create_contact_table</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>120</y>
+                                        <width>450</width>
+                                        <height>210</height>
+                                    </rect>
+                                </property>
+                                <property name="numRows">
+                                    <number>0</number>
+                                </property>
+                                <property name="numCols">
+                                    <number>2</number>
+                                </property>
+                            </widget>
+                            <widget class="QTextEdit">
+                                <property name="name">
+                                    <cstring>create_contact_msg</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>40</y>
+                                        <width>450</width>
+                                        <height>70</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string></string>
+                                </property>
+                                <property name="wordWrap">
+                                    <enum>WidgetWidth</enum>
                                 </property>
                             </widget>
                         </widget>
@@ -2355,38 +2435,6 @@ specified using the EPP extension framework.</string>
                                     <string>code</string>
                                 </property>
                             </widget>
-                            <widget class="QTextEdit">
-                                <property name="name">
-                                    <cstring>update_contact_msg</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>40</y>
-                                        <width>450</width>
-                                        <height>80</height>
-                                    </rect>
-                                </property>
-                                <property name="text">
-                                    <string></string>
-                                </property>
-                                <property name="wordWrap">
-                                    <enum>WidgetWidth</enum>
-                                </property>
-                            </widget>
-                            <widget class="QTextEdit">
-                                <property name="name">
-                                    <cstring>update_contact_data</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>129</y>
-                                        <width>450</width>
-                                        <height>190</height>
-                                    </rect>
-                                </property>
-                            </widget>
                             <widget class="QPushButton">
                                 <property name="name">
                                     <cstring>btn_source_update_contact</cstring>
@@ -2407,6 +2455,54 @@ specified using the EPP extension framework.</string>
                                 </property>
                                 <property name="toolTip" stdset="0">
                                     <string></string>
+                                </property>
+                            </widget>
+                            <widget class="QTable">
+                                <column>
+                                    <property name="text">
+                                        <string>name</string>
+                                    </property>
+                                </column>
+                                <column>
+                                    <property name="text">
+                                        <string>value</string>
+                                    </property>
+                                </column>
+                                <property name="name">
+                                    <cstring>update_contact_table</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>120</y>
+                                        <width>450</width>
+                                        <height>210</height>
+                                    </rect>
+                                </property>
+                                <property name="numRows">
+                                    <number>0</number>
+                                </property>
+                                <property name="numCols">
+                                    <number>2</number>
+                                </property>
+                            </widget>
+                            <widget class="QTextEdit">
+                                <property name="name">
+                                    <cstring>update_contact_msg</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>40</y>
+                                        <width>450</width>
+                                        <height>70</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string></string>
+                                </property>
+                                <property name="wordWrap">
+                                    <enum>WidgetWidth</enum>
                                 </property>
                             </widget>
                         </widget>
@@ -2607,38 +2703,6 @@ The EPP "delete" command is used to remove an instance of an existing object.</s
                                     <string>code</string>
                                 </property>
                             </widget>
-                            <widget class="QTextEdit">
-                                <property name="name">
-                                    <cstring>delete_contact_msg</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>40</y>
-                                        <width>450</width>
-                                        <height>80</height>
-                                    </rect>
-                                </property>
-                                <property name="text">
-                                    <string></string>
-                                </property>
-                                <property name="wordWrap">
-                                    <enum>WidgetWidth</enum>
-                                </property>
-                            </widget>
-                            <widget class="QTextEdit">
-                                <property name="name">
-                                    <cstring>delete_contact_data</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>129</y>
-                                        <width>450</width>
-                                        <height>190</height>
-                                    </rect>
-                                </property>
-                            </widget>
                             <widget class="QPushButton">
                                 <property name="name">
                                     <cstring>btn_source_delete_contact</cstring>
@@ -2659,6 +2723,54 @@ The EPP "delete" command is used to remove an instance of an existing object.</s
                                 </property>
                                 <property name="toolTip" stdset="0">
                                     <string></string>
+                                </property>
+                            </widget>
+                            <widget class="QTextEdit">
+                                <property name="name">
+                                    <cstring>delete_contact_msg</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>40</y>
+                                        <width>450</width>
+                                        <height>70</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string></string>
+                                </property>
+                                <property name="wordWrap">
+                                    <enum>WidgetWidth</enum>
+                                </property>
+                            </widget>
+                            <widget class="QTable">
+                                <column>
+                                    <property name="text">
+                                        <string>name</string>
+                                    </property>
+                                </column>
+                                <column>
+                                    <property name="text">
+                                        <string>value</string>
+                                    </property>
+                                </column>
+                                <property name="name">
+                                    <cstring>delete_contact_table</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>120</y>
+                                        <width>450</width>
+                                        <height>210</height>
+                                    </rect>
+                                </property>
+                                <property name="numRows">
+                                    <number>0</number>
+                                </property>
+                                <property name="numCols">
+                                    <number>2</number>
                                 </property>
                             </widget>
                         </widget>
@@ -2829,22 +2941,6 @@ reject a transfer request using the "op" command attribute.</string>
                             </attribute>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel61</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>7</x>
-                                        <y>132</y>
-                                        <width>110</width>
-                                        <height>20</height>
-                                    </rect>
-                                </property>
-                                <property name="text">
-                                    <string>data</string>
-                                </property>
-                            </widget>
-                            <widget class="QLabel">
-                                <property name="name">
                                     <cstring>textLabel62</cstring>
                                 </property>
                                 <property name="geometry">
@@ -2857,73 +2953,6 @@ reject a transfer request using the "op" command attribute.</string>
                                 </property>
                                 <property name="text">
                                     <string>message</string>
-                                </property>
-                            </widget>
-                            <widget class="QLabel">
-                                <property name="name">
-                                    <cstring>textLabel63</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>0</x>
-                                        <y>10</y>
-                                        <width>125</width>
-                                        <height>20</height>
-                                    </rect>
-                                </property>
-                                <property name="text">
-                                    <string>&lt;b&gt;transfer_contact&lt;/b&gt;</string>
-                                </property>
-                                <property name="alignment">
-                                    <set>WordBreak|AlignTop|AlignLeft</set>
-                                </property>
-                            </widget>
-                            <widget class="QLabel">
-                                <property name="name">
-                                    <cstring>transfer_contact_code</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>10</y>
-                                        <width>450</width>
-                                        <height>20</height>
-                                    </rect>
-                                </property>
-                                <property name="text">
-                                    <string>code</string>
-                                </property>
-                            </widget>
-                            <widget class="QTextEdit">
-                                <property name="name">
-                                    <cstring>transfer_contact_msg</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>40</y>
-                                        <width>450</width>
-                                        <height>80</height>
-                                    </rect>
-                                </property>
-                                <property name="text">
-                                    <string></string>
-                                </property>
-                                <property name="wordWrap">
-                                    <enum>WidgetWidth</enum>
-                                </property>
-                            </widget>
-                            <widget class="QTextEdit">
-                                <property name="name">
-                                    <cstring>transfer_contact_data</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>129</y>
-                                        <width>450</width>
-                                        <height>190</height>
-                                    </rect>
                                 </property>
                             </widget>
                             <widget class="QPushButton">
@@ -2946,6 +2975,105 @@ reject a transfer request using the "op" command attribute.</string>
                                 </property>
                                 <property name="toolTip" stdset="0">
                                     <string></string>
+                                </property>
+                            </widget>
+                            <widget class="QTable">
+                                <column>
+                                    <property name="text">
+                                        <string>name</string>
+                                    </property>
+                                </column>
+                                <column>
+                                    <property name="text">
+                                        <string>value</string>
+                                    </property>
+                                </column>
+                                <property name="name">
+                                    <cstring>transfer_contact_table</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>120</y>
+                                        <width>450</width>
+                                        <height>210</height>
+                                    </rect>
+                                </property>
+                                <property name="numRows">
+                                    <number>0</number>
+                                </property>
+                                <property name="numCols">
+                                    <number>2</number>
+                                </property>
+                            </widget>
+                            <widget class="QTextEdit">
+                                <property name="name">
+                                    <cstring>transfer_contact_msg</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>40</y>
+                                        <width>450</width>
+                                        <height>70</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string></string>
+                                </property>
+                                <property name="wordWrap">
+                                    <enum>WidgetWidth</enum>
+                                </property>
+                            </widget>
+                            <widget class="QLabel">
+                                <property name="name">
+                                    <cstring>textLabel63</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>10</x>
+                                        <y>10</y>
+                                        <width>125</width>
+                                        <height>20</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string>&lt;b&gt;transfer_contact&lt;/b&gt;</string>
+                                </property>
+                                <property name="alignment">
+                                    <set>WordBreak|AlignTop|AlignLeft</set>
+                                </property>
+                            </widget>
+                            <widget class="QLabel">
+                                <property name="name">
+                                    <cstring>transfer_contact_code</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>140</x>
+                                        <y>10</y>
+                                        <width>440</width>
+                                        <height>20</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string>code</string>
+                                </property>
+                            </widget>
+                            <widget class="QLabel">
+                                <property name="name">
+                                    <cstring>textLabel61</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>7</x>
+                                        <y>132</y>
+                                        <width>110</width>
+                                        <height>20</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string>data</string>
                                 </property>
                             </widget>
                         </widget>
@@ -3447,38 +3575,6 @@ Type one or more names (handles) what you want to check. Separate names by space
                                     <string>code</string>
                                 </property>
                             </widget>
-                            <widget class="QTextEdit">
-                                <property name="name">
-                                    <cstring>check_nsset_msg</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>40</y>
-                                        <width>450</width>
-                                        <height>80</height>
-                                    </rect>
-                                </property>
-                                <property name="text">
-                                    <string></string>
-                                </property>
-                                <property name="wordWrap">
-                                    <enum>WidgetWidth</enum>
-                                </property>
-                            </widget>
-                            <widget class="QTextEdit">
-                                <property name="name">
-                                    <cstring>check_nsset_data</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>129</y>
-                                        <width>450</width>
-                                        <height>190</height>
-                                    </rect>
-                                </property>
-                            </widget>
                             <widget class="QPushButton">
                                 <property name="name">
                                     <cstring>btn_source_check_nsset</cstring>
@@ -3499,6 +3595,54 @@ Type one or more names (handles) what you want to check. Separate names by space
                                 </property>
                                 <property name="toolTip" stdset="0">
                                     <string></string>
+                                </property>
+                            </widget>
+                            <widget class="QTextEdit">
+                                <property name="name">
+                                    <cstring>check_nsset_msg</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>40</y>
+                                        <width>450</width>
+                                        <height>70</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string></string>
+                                </property>
+                                <property name="wordWrap">
+                                    <enum>WidgetWidth</enum>
+                                </property>
+                            </widget>
+                            <widget class="QTable">
+                                <column>
+                                    <property name="text">
+                                        <string>name</string>
+                                    </property>
+                                </column>
+                                <column>
+                                    <property name="text">
+                                        <string>value</string>
+                                    </property>
+                                </column>
+                                <property name="name">
+                                    <cstring>check_nsset_table</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>120</y>
+                                        <width>450</width>
+                                        <height>210</height>
+                                    </rect>
+                                </property>
+                                <property name="numRows">
+                                    <number>0</number>
+                                </property>
+                                <property name="numCols">
+                                    <number>2</number>
                                 </property>
                             </widget>
                         </widget>
@@ -3703,38 +3847,6 @@ specified using the EPP extension framework.</string>
                                     <string>code</string>
                                 </property>
                             </widget>
-                            <widget class="QTextEdit">
-                                <property name="name">
-                                    <cstring>info_nsset_msg</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>40</y>
-                                        <width>450</width>
-                                        <height>80</height>
-                                    </rect>
-                                </property>
-                                <property name="text">
-                                    <string></string>
-                                </property>
-                                <property name="wordWrap">
-                                    <enum>WidgetWidth</enum>
-                                </property>
-                            </widget>
-                            <widget class="QTextEdit">
-                                <property name="name">
-                                    <cstring>info_nsset_data</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>129</y>
-                                        <width>450</width>
-                                        <height>190</height>
-                                    </rect>
-                                </property>
-                            </widget>
                             <widget class="QPushButton">
                                 <property name="name">
                                     <cstring>btn_source_info_nsset</cstring>
@@ -3755,6 +3867,54 @@ specified using the EPP extension framework.</string>
                                 </property>
                                 <property name="toolTip" stdset="0">
                                     <string></string>
+                                </property>
+                            </widget>
+                            <widget class="QTextEdit">
+                                <property name="name">
+                                    <cstring>info_nsset_msg</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>40</y>
+                                        <width>450</width>
+                                        <height>70</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string></string>
+                                </property>
+                                <property name="wordWrap">
+                                    <enum>WidgetWidth</enum>
+                                </property>
+                            </widget>
+                            <widget class="QTable">
+                                <column>
+                                    <property name="text">
+                                        <string>name</string>
+                                    </property>
+                                </column>
+                                <column>
+                                    <property name="text">
+                                        <string>value</string>
+                                    </property>
+                                </column>
+                                <property name="name">
+                                    <cstring>info_nsset_table</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>120</y>
+                                        <width>450</width>
+                                        <height>210</height>
+                                    </rect>
+                                </property>
+                                <property name="numRows">
+                                    <number>0</number>
+                                </property>
+                                <property name="numCols">
+                                    <number>2</number>
                                 </property>
                             </widget>
                         </widget>
@@ -3896,38 +4056,6 @@ specified using the EPP extension framework.</string>
                                     <string>code</string>
                                 </property>
                             </widget>
-                            <widget class="QTextEdit">
-                                <property name="name">
-                                    <cstring>create_nsset_msg</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>40</y>
-                                        <width>450</width>
-                                        <height>80</height>
-                                    </rect>
-                                </property>
-                                <property name="text">
-                                    <string></string>
-                                </property>
-                                <property name="wordWrap">
-                                    <enum>WidgetWidth</enum>
-                                </property>
-                            </widget>
-                            <widget class="QTextEdit">
-                                <property name="name">
-                                    <cstring>create_nsset_data</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>129</y>
-                                        <width>450</width>
-                                        <height>190</height>
-                                    </rect>
-                                </property>
-                            </widget>
                             <widget class="QPushButton">
                                 <property name="name">
                                     <cstring>btn_source_create_nsset</cstring>
@@ -3948,6 +4076,54 @@ specified using the EPP extension framework.</string>
                                 </property>
                                 <property name="toolTip" stdset="0">
                                     <string></string>
+                                </property>
+                            </widget>
+                            <widget class="QTextEdit">
+                                <property name="name">
+                                    <cstring>create_nsset_msg</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>40</y>
+                                        <width>450</width>
+                                        <height>70</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string></string>
+                                </property>
+                                <property name="wordWrap">
+                                    <enum>WidgetWidth</enum>
+                                </property>
+                            </widget>
+                            <widget class="QTable">
+                                <column>
+                                    <property name="text">
+                                        <string>name</string>
+                                    </property>
+                                </column>
+                                <column>
+                                    <property name="text">
+                                        <string>value</string>
+                                    </property>
+                                </column>
+                                <property name="name">
+                                    <cstring>create_nsset_table</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>120</y>
+                                        <width>450</width>
+                                        <height>210</height>
+                                    </rect>
+                                </property>
+                                <property name="numRows">
+                                    <number>0</number>
+                                </property>
+                                <property name="numCols">
+                                    <number>2</number>
                                 </property>
                             </widget>
                         </widget>
@@ -4089,38 +4265,6 @@ specified using the EPP extension framework.</string>
                                     <string>code</string>
                                 </property>
                             </widget>
-                            <widget class="QTextEdit">
-                                <property name="name">
-                                    <cstring>update_nsset_msg</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>40</y>
-                                        <width>450</width>
-                                        <height>80</height>
-                                    </rect>
-                                </property>
-                                <property name="text">
-                                    <string></string>
-                                </property>
-                                <property name="wordWrap">
-                                    <enum>WidgetWidth</enum>
-                                </property>
-                            </widget>
-                            <widget class="QTextEdit">
-                                <property name="name">
-                                    <cstring>update_nsset_data</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>129</y>
-                                        <width>450</width>
-                                        <height>190</height>
-                                    </rect>
-                                </property>
-                            </widget>
                             <widget class="QPushButton">
                                 <property name="name">
                                     <cstring>btn_source_update_nsset</cstring>
@@ -4141,6 +4285,54 @@ specified using the EPP extension framework.</string>
                                 </property>
                                 <property name="toolTip" stdset="0">
                                     <string></string>
+                                </property>
+                            </widget>
+                            <widget class="QTable">
+                                <column>
+                                    <property name="text">
+                                        <string>name</string>
+                                    </property>
+                                </column>
+                                <column>
+                                    <property name="text">
+                                        <string>value</string>
+                                    </property>
+                                </column>
+                                <property name="name">
+                                    <cstring>update_nsset_table</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>120</y>
+                                        <width>450</width>
+                                        <height>210</height>
+                                    </rect>
+                                </property>
+                                <property name="numRows">
+                                    <number>0</number>
+                                </property>
+                                <property name="numCols">
+                                    <number>2</number>
+                                </property>
+                            </widget>
+                            <widget class="QTextEdit">
+                                <property name="name">
+                                    <cstring>update_nsset_msg</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>40</y>
+                                        <width>450</width>
+                                        <height>70</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string></string>
+                                </property>
+                                <property name="wordWrap">
+                                    <enum>WidgetWidth</enum>
                                 </property>
                             </widget>
                         </widget>
@@ -4341,38 +4533,6 @@ The EPP "delete" command is used to remove an instance of an existing object.</s
                                     <string>code</string>
                                 </property>
                             </widget>
-                            <widget class="QTextEdit">
-                                <property name="name">
-                                    <cstring>delete_nsset_msg</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>40</y>
-                                        <width>450</width>
-                                        <height>80</height>
-                                    </rect>
-                                </property>
-                                <property name="text">
-                                    <string></string>
-                                </property>
-                                <property name="wordWrap">
-                                    <enum>WidgetWidth</enum>
-                                </property>
-                            </widget>
-                            <widget class="QTextEdit">
-                                <property name="name">
-                                    <cstring>delete_nsset_data</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>129</y>
-                                        <width>450</width>
-                                        <height>190</height>
-                                    </rect>
-                                </property>
-                            </widget>
                             <widget class="QPushButton">
                                 <property name="name">
                                     <cstring>btn_source_delete_nsset</cstring>
@@ -4393,6 +4553,54 @@ The EPP "delete" command is used to remove an instance of an existing object.</s
                                 </property>
                                 <property name="toolTip" stdset="0">
                                     <string></string>
+                                </property>
+                            </widget>
+                            <widget class="QTextEdit">
+                                <property name="name">
+                                    <cstring>delete_nsset_msg</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>40</y>
+                                        <width>450</width>
+                                        <height>70</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string></string>
+                                </property>
+                                <property name="wordWrap">
+                                    <enum>WidgetWidth</enum>
+                                </property>
+                            </widget>
+                            <widget class="QTable">
+                                <column>
+                                    <property name="text">
+                                        <string>name</string>
+                                    </property>
+                                </column>
+                                <column>
+                                    <property name="text">
+                                        <string>value</string>
+                                    </property>
+                                </column>
+                                <property name="name">
+                                    <cstring>delete_nsset_table</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>120</y>
+                                        <width>450</width>
+                                        <height>210</height>
+                                    </rect>
+                                </property>
+                                <property name="numRows">
+                                    <number>0</number>
+                                </property>
+                                <property name="numCols">
+                                    <number>2</number>
                                 </property>
                             </widget>
                         </widget>
@@ -4894,38 +5102,6 @@ Type one or more names what you want to check. Separate names by spaces or new l
                                     <string>code</string>
                                 </property>
                             </widget>
-                            <widget class="QTextEdit">
-                                <property name="name">
-                                    <cstring>check_domain_msg</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>40</y>
-                                        <width>450</width>
-                                        <height>80</height>
-                                    </rect>
-                                </property>
-                                <property name="text">
-                                    <string></string>
-                                </property>
-                                <property name="wordWrap">
-                                    <enum>WidgetWidth</enum>
-                                </property>
-                            </widget>
-                            <widget class="QTextEdit">
-                                <property name="name">
-                                    <cstring>check_domain_data</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>129</y>
-                                        <width>450</width>
-                                        <height>190</height>
-                                    </rect>
-                                </property>
-                            </widget>
                             <widget class="QPushButton">
                                 <property name="name">
                                     <cstring>btn_source_check_domain</cstring>
@@ -4946,6 +5122,54 @@ Type one or more names what you want to check. Separate names by spaces or new l
                                 </property>
                                 <property name="toolTip" stdset="0">
                                     <string></string>
+                                </property>
+                            </widget>
+                            <widget class="QTextEdit">
+                                <property name="name">
+                                    <cstring>check_domain_msg</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>40</y>
+                                        <width>450</width>
+                                        <height>70</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string></string>
+                                </property>
+                                <property name="wordWrap">
+                                    <enum>WidgetWidth</enum>
+                                </property>
+                            </widget>
+                            <widget class="QTable">
+                                <column>
+                                    <property name="text">
+                                        <string>name</string>
+                                    </property>
+                                </column>
+                                <column>
+                                    <property name="text">
+                                        <string>value</string>
+                                    </property>
+                                </column>
+                                <property name="name">
+                                    <cstring>check_domain_table</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>120</y>
+                                        <width>450</width>
+                                        <height>210</height>
+                                    </rect>
+                                </property>
+                                <property name="numRows">
+                                    <number>0</number>
+                                </property>
+                                <property name="numCols">
+                                    <number>2</number>
                                 </property>
                             </widget>
                         </widget>
@@ -5150,38 +5374,6 @@ specified using the EPP extension framework.</string>
                                     <string>code</string>
                                 </property>
                             </widget>
-                            <widget class="QTextEdit">
-                                <property name="name">
-                                    <cstring>info_domain_msg</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>40</y>
-                                        <width>450</width>
-                                        <height>80</height>
-                                    </rect>
-                                </property>
-                                <property name="text">
-                                    <string></string>
-                                </property>
-                                <property name="wordWrap">
-                                    <enum>WidgetWidth</enum>
-                                </property>
-                            </widget>
-                            <widget class="QTextEdit">
-                                <property name="name">
-                                    <cstring>info_domain_data</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>129</y>
-                                        <width>450</width>
-                                        <height>190</height>
-                                    </rect>
-                                </property>
-                            </widget>
                             <widget class="QPushButton">
                                 <property name="name">
                                     <cstring>btn_source_info_domain</cstring>
@@ -5202,6 +5394,54 @@ specified using the EPP extension framework.</string>
                                 </property>
                                 <property name="toolTip" stdset="0">
                                     <string></string>
+                                </property>
+                            </widget>
+                            <widget class="QTextEdit">
+                                <property name="name">
+                                    <cstring>info_domain_msg</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>40</y>
+                                        <width>450</width>
+                                        <height>70</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string></string>
+                                </property>
+                                <property name="wordWrap">
+                                    <enum>WidgetWidth</enum>
+                                </property>
+                            </widget>
+                            <widget class="QTable">
+                                <column>
+                                    <property name="text">
+                                        <string>name</string>
+                                    </property>
+                                </column>
+                                <column>
+                                    <property name="text">
+                                        <string>value</string>
+                                    </property>
+                                </column>
+                                <property name="name">
+                                    <cstring>info_domain_table</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>120</y>
+                                        <width>450</width>
+                                        <height>210</height>
+                                    </rect>
+                                </property>
+                                <property name="numRows">
+                                    <number>0</number>
+                                </property>
+                                <property name="numCols">
+                                    <number>2</number>
                                 </property>
                             </widget>
                         </widget>
@@ -5349,38 +5589,6 @@ specified using the EPP extension framework.</string>
                                     <string></string>
                                 </property>
                             </widget>
-                            <widget class="QTextEdit">
-                                <property name="name">
-                                    <cstring>create_domain_msg</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>40</y>
-                                        <width>450</width>
-                                        <height>80</height>
-                                    </rect>
-                                </property>
-                                <property name="text">
-                                    <string></string>
-                                </property>
-                                <property name="wordWrap">
-                                    <enum>WidgetWidth</enum>
-                                </property>
-                            </widget>
-                            <widget class="QTextEdit">
-                                <property name="name">
-                                    <cstring>create_domain_data</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>129</y>
-                                        <width>450</width>
-                                        <height>190</height>
-                                    </rect>
-                                </property>
-                            </widget>
                             <widget class="QLabel">
                                 <property name="name">
                                     <cstring>create_domain_code</cstring>
@@ -5395,6 +5603,54 @@ specified using the EPP extension framework.</string>
                                 </property>
                                 <property name="text">
                                     <string>code</string>
+                                </property>
+                            </widget>
+                            <widget class="QTextEdit">
+                                <property name="name">
+                                    <cstring>create_domain_msg</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>40</y>
+                                        <width>450</width>
+                                        <height>70</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string></string>
+                                </property>
+                                <property name="wordWrap">
+                                    <enum>WidgetWidth</enum>
+                                </property>
+                            </widget>
+                            <widget class="QTable">
+                                <column>
+                                    <property name="text">
+                                        <string>name</string>
+                                    </property>
+                                </column>
+                                <column>
+                                    <property name="text">
+                                        <string>value</string>
+                                    </property>
+                                </column>
+                                <property name="name">
+                                    <cstring>create_domain_table</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>120</y>
+                                        <width>450</width>
+                                        <height>210</height>
+                                    </rect>
+                                </property>
+                                <property name="numRows">
+                                    <number>0</number>
+                                </property>
+                                <property name="numCols">
+                                    <number>2</number>
                                 </property>
                             </widget>
                         </widget>
@@ -5536,38 +5792,6 @@ specified using the EPP extension framework.</string>
                                     <string>code</string>
                                 </property>
                             </widget>
-                            <widget class="QTextEdit">
-                                <property name="name">
-                                    <cstring>update_domain_msg</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>40</y>
-                                        <width>450</width>
-                                        <height>80</height>
-                                    </rect>
-                                </property>
-                                <property name="text">
-                                    <string></string>
-                                </property>
-                                <property name="wordWrap">
-                                    <enum>WidgetWidth</enum>
-                                </property>
-                            </widget>
-                            <widget class="QTextEdit">
-                                <property name="name">
-                                    <cstring>update_domain_data</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>129</y>
-                                        <width>450</width>
-                                        <height>190</height>
-                                    </rect>
-                                </property>
-                            </widget>
                             <widget class="QPushButton">
                                 <property name="name">
                                     <cstring>btn_source_update_domain</cstring>
@@ -5588,6 +5812,54 @@ specified using the EPP extension framework.</string>
                                 </property>
                                 <property name="toolTip" stdset="0">
                                     <string></string>
+                                </property>
+                            </widget>
+                            <widget class="QTable">
+                                <column>
+                                    <property name="text">
+                                        <string>name</string>
+                                    </property>
+                                </column>
+                                <column>
+                                    <property name="text">
+                                        <string>value</string>
+                                    </property>
+                                </column>
+                                <property name="name">
+                                    <cstring>update_domain_table</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>120</y>
+                                        <width>450</width>
+                                        <height>210</height>
+                                    </rect>
+                                </property>
+                                <property name="numRows">
+                                    <number>0</number>
+                                </property>
+                                <property name="numCols">
+                                    <number>2</number>
+                                </property>
+                            </widget>
+                            <widget class="QTextEdit">
+                                <property name="name">
+                                    <cstring>update_domain_msg</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>40</y>
+                                        <width>450</width>
+                                        <height>70</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string></string>
+                                </property>
+                                <property name="wordWrap">
+                                    <enum>WidgetWidth</enum>
                                 </property>
                             </widget>
                         </widget>
@@ -5788,38 +6060,6 @@ The EPP "delete" command is used to remove an instance of an existing object.</s
                                     <string>code</string>
                                 </property>
                             </widget>
-                            <widget class="QTextEdit">
-                                <property name="name">
-                                    <cstring>delete_domain_msg</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>40</y>
-                                        <width>450</width>
-                                        <height>80</height>
-                                    </rect>
-                                </property>
-                                <property name="text">
-                                    <string></string>
-                                </property>
-                                <property name="wordWrap">
-                                    <enum>WidgetWidth</enum>
-                                </property>
-                            </widget>
-                            <widget class="QTextEdit">
-                                <property name="name">
-                                    <cstring>delete_domain_data</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>129</y>
-                                        <width>450</width>
-                                        <height>190</height>
-                                    </rect>
-                                </property>
-                            </widget>
                             <widget class="QPushButton">
                                 <property name="name">
                                     <cstring>btn_source_delete_domain</cstring>
@@ -5840,6 +6080,54 @@ The EPP "delete" command is used to remove an instance of an existing object.</s
                                 </property>
                                 <property name="toolTip" stdset="0">
                                     <string></string>
+                                </property>
+                            </widget>
+                            <widget class="QTable">
+                                <column>
+                                    <property name="text">
+                                        <string>name</string>
+                                    </property>
+                                </column>
+                                <column>
+                                    <property name="text">
+                                        <string>value</string>
+                                    </property>
+                                </column>
+                                <property name="name">
+                                    <cstring>delete_domain_table</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>120</y>
+                                        <width>450</width>
+                                        <height>210</height>
+                                    </rect>
+                                </property>
+                                <property name="numRows">
+                                    <number>0</number>
+                                </property>
+                                <property name="numCols">
+                                    <number>2</number>
+                                </property>
+                            </widget>
+                            <widget class="QTextEdit">
+                                <property name="name">
+                                    <cstring>delete_domain_msg</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>40</y>
+                                        <width>450</width>
+                                        <height>70</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string></string>
+                                </property>
+                                <property name="wordWrap">
+                                    <enum>WidgetWidth</enum>
                                 </property>
                             </widget>
                         </widget>
@@ -6075,38 +6363,6 @@ reject a transfer request using the "op" command attribute.</string>
                                     <string>code</string>
                                 </property>
                             </widget>
-                            <widget class="QTextEdit">
-                                <property name="name">
-                                    <cstring>transfer_domain_msg</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>40</y>
-                                        <width>450</width>
-                                        <height>80</height>
-                                    </rect>
-                                </property>
-                                <property name="text">
-                                    <string></string>
-                                </property>
-                                <property name="wordWrap">
-                                    <enum>WidgetWidth</enum>
-                                </property>
-                            </widget>
-                            <widget class="QTextEdit">
-                                <property name="name">
-                                    <cstring>transfer_domain_data</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>129</y>
-                                        <width>450</width>
-                                        <height>190</height>
-                                    </rect>
-                                </property>
-                            </widget>
                             <widget class="QPushButton">
                                 <property name="name">
                                     <cstring>btn_source_transfer_domain</cstring>
@@ -6127,6 +6383,54 @@ reject a transfer request using the "op" command attribute.</string>
                                 </property>
                                 <property name="toolTip" stdset="0">
                                     <string></string>
+                                </property>
+                            </widget>
+                            <widget class="QTable">
+                                <column>
+                                    <property name="text">
+                                        <string>name</string>
+                                    </property>
+                                </column>
+                                <column>
+                                    <property name="text">
+                                        <string>value</string>
+                                    </property>
+                                </column>
+                                <property name="name">
+                                    <cstring>transfer_domain_table</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>120</y>
+                                        <width>450</width>
+                                        <height>210</height>
+                                    </rect>
+                                </property>
+                                <property name="numRows">
+                                    <number>0</number>
+                                </property>
+                                <property name="numCols">
+                                    <number>2</number>
+                                </property>
+                            </widget>
+                            <widget class="QTextEdit">
+                                <property name="name">
+                                    <cstring>transfer_domain_msg</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>40</y>
+                                        <width>450</width>
+                                        <height>70</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string></string>
+                                </property>
+                                <property name="wordWrap">
+                                    <enum>WidgetWidth</enum>
                                 </property>
                             </widget>
                         </widget>
@@ -6488,38 +6792,6 @@ The EPP "renew" command is used to extend validity of an existing object.</strin
                                     <string>code</string>
                                 </property>
                             </widget>
-                            <widget class="QTextEdit">
-                                <property name="name">
-                                    <cstring>renew_domain_msg</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>40</y>
-                                        <width>450</width>
-                                        <height>80</height>
-                                    </rect>
-                                </property>
-                                <property name="text">
-                                    <string></string>
-                                </property>
-                                <property name="wordWrap">
-                                    <enum>WidgetWidth</enum>
-                                </property>
-                            </widget>
-                            <widget class="QTextEdit">
-                                <property name="name">
-                                    <cstring>renew_domain_data</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>129</y>
-                                        <width>450</width>
-                                        <height>190</height>
-                                    </rect>
-                                </property>
-                            </widget>
                             <widget class="QPushButton">
                                 <property name="name">
                                     <cstring>btn_source_renew_domain</cstring>
@@ -6540,6 +6812,54 @@ The EPP "renew" command is used to extend validity of an existing object.</strin
                                 </property>
                                 <property name="toolTip" stdset="0">
                                     <string></string>
+                                </property>
+                            </widget>
+                            <widget class="QTable">
+                                <column>
+                                    <property name="text">
+                                        <string>name</string>
+                                    </property>
+                                </column>
+                                <column>
+                                    <property name="text">
+                                        <string>value</string>
+                                    </property>
+                                </column>
+                                <property name="name">
+                                    <cstring>renew_domain_table</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>120</y>
+                                        <width>450</width>
+                                        <height>210</height>
+                                    </rect>
+                                </property>
+                                <property name="numRows">
+                                    <number>0</number>
+                                </property>
+                                <property name="numCols">
+                                    <number>2</number>
+                                </property>
+                            </widget>
+                            <widget class="QTextEdit">
+                                <property name="name">
+                                    <cstring>renew_domain_msg</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>40</y>
+                                        <width>450</width>
+                                        <height>70</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string></string>
+                                </property>
+                                <property name="wordWrap">
+                                    <enum>WidgetWidth</enum>
                                 </property>
                             </widget>
                         </widget>
@@ -6807,151 +7127,151 @@ The EPP "list" command is used to list all ID of an existing object owning by re
     <connection>
         <sender>send_delete_contact</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>delete_contact()</slot>
     </connection>
     <connection>
         <sender>send_delete_domain</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>delete_domain()</slot>
     </connection>
     <connection>
         <sender>send_delete_nsset</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>delete_nsset()</slot>
     </connection>
     <connection>
         <sender>send_hello</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>hello()</slot>
     </connection>
     <connection>
         <sender>send_check_contact</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>check_contact()</slot>
     </connection>
     <connection>
         <sender>send_check_domain</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>check_domain()</slot>
     </connection>
     <connection>
         <sender>send_check_nsset</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>check_nsset()</slot>
     </connection>
     <connection>
         <sender>send_info_contact</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>info_contact()</slot>
     </connection>
     <connection>
         <sender>send_info_domain</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>info_domain()</slot>
     </connection>
     <connection>
         <sender>send_info_nsset</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>info_nsset()</slot>
     </connection>
     <connection>
         <sender>send_list_contact</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>list_contact()</slot>
     </connection>
     <connection>
         <sender>send_list_domain</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>list_domain()</slot>
     </connection>
     <connection>
         <sender>send_list_nsset</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>list_nsset()</slot>
     </connection>
     <connection>
         <sender>send_login</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>login()</slot>
     </connection>
     <connection>
         <sender>send_logout</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>logout()</slot>
     </connection>
     <connection>
         <sender>send_poll</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>poll()</slot>
     </connection>
     <connection>
         <sender>send_transfer_contact</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>transfer_contact()</slot>
     </connection>
     <connection>
         <sender>send_transfer_domain</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>transfer_domain()</slot>
     </connection>
     <connection>
         <sender>send_create_contact</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>create_contact()</slot>
     </connection>
     <connection>
         <sender>send_create_domain</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>create_domain()</slot>
     </connection>
     <connection>
         <sender>send_create_nsset</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>create_nsset()</slot>
     </connection>
     <connection>
         <sender>send_update_contact</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>update_contact()</slot>
     </connection>
     <connection>
         <sender>send_update_domain</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>update_domain()</slot>
     </connection>
     <connection>
         <sender>send_update_nsset</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>update_nsset()</slot>
     </connection>
     <connection>
         <sender>send_renew_domain</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>renew_domain()</slot>
     </connection>
     <connection>
@@ -6963,163 +7283,160 @@ The EPP "list" command is used to list all ID of an existing object owning by re
     <connection>
         <sender>btn_source_login</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>source_login()</slot>
     </connection>
     <connection>
         <sender>btn_source_logout</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>source_logout()</slot>
     </connection>
     <connection>
         <sender>btn_source_poll</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>source_poll()</slot>
     </connection>
     <connection>
         <sender>btn_source_hello</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>source_hello()</slot>
     </connection>
     <connection>
         <sender>btn_source_check_contact</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>source_check_contact()</slot>
     </connection>
     <connection>
         <sender>btn_source_info_contact</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>source_info_contact()</slot>
     </connection>
     <connection>
         <sender>btn_source_create_contact</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>source_create_contact()</slot>
     </connection>
     <connection>
         <sender>btn_source_update_contact</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>source_update_contact()</slot>
     </connection>
     <connection>
         <sender>btn_source_delete_contact</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>source_delete_contact()</slot>
     </connection>
     <connection>
         <sender>btn_source_transfer_contact</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>source_transfer_contact()</slot>
     </connection>
     <connection>
         <sender>btn_source_list_contact</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>source_list_contact()</slot>
     </connection>
     <connection>
         <sender>btn_source_check_nsset</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>source_check_nsset()</slot>
     </connection>
     <connection>
         <sender>btn_source_info_nsset</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>source_info_nsset()</slot>
     </connection>
     <connection>
         <sender>btn_source_create_nsset</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>source_create_nsset()</slot>
     </connection>
     <connection>
         <sender>btn_source_update_nsset</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>source_update_nsset()</slot>
     </connection>
     <connection>
         <sender>btn_source_delete_nsset</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>source_delete_nsset()</slot>
     </connection>
     <connection>
         <sender>btn_source_list_nsset</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>source_list_nsset()</slot>
     </connection>
     <connection>
         <sender>btn_source_check_domain</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>source_check_domain()</slot>
     </connection>
     <connection>
         <sender>btn_source_info_domain</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>source_info_domain()</slot>
     </connection>
     <connection>
         <sender>btn_source_create_domain</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>source_create_domain()</slot>
     </connection>
     <connection>
         <sender>btn_source_update_domain</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>source_update_domain()</slot>
     </connection>
     <connection>
         <sender>btn_source_delete_domain</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>source_delete_domain()</slot>
     </connection>
     <connection>
         <sender>btn_source_transfer_domain</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>source_transfer_domain()</slot>
     </connection>
     <connection>
         <sender>btn_source_renew_domain</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>source_renew_domain()</slot>
     </connection>
     <connection>
         <sender>btn_source_list_domain</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>source_list_domain()</slot>
     </connection>
     <connection>
         <sender>buttonOk</sender>
         <signal>clicked()</signal>
-	<receiver>ccregWindow</receiver>
+        <receiver>ccregWindow</receiver>
         <slot>btn_close()</slot>
     </connection>
 </connections>
-<includes>
-    <include location="local" impldecl="in implementation">dialog.ui.h</include>
-</includes>
 <slots>
     <slot>login()</slot>
     <slot>logout()</slot>

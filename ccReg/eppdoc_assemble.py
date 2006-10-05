@@ -60,7 +60,10 @@ class Message(eppdoc.Message):
                 txt = ','.join(self.__make_abrev_help__(allowed))
                 if len(txt)>37: txt = txt[:37]+'...' # shorter too long text
                 text = '%s ${WHITE}%s: ${CYAN}(%s)${NORMAL}'%(text,_T('accepts only values'),txt)
-            msg.append('%s %s'%(text,help))
+            if help:
+                msg.append('%s %s'%(text,help))
+            else:
+                msg.append(_T('no options'))
             if len(children):
                 msg.extend(self.__get_help_scope__(children, deep+1))
         return msg
@@ -147,7 +150,7 @@ class Message(eppdoc.Message):
                         err = self.__check_required__(children, dct, scopes)
                         if err: errors.extend(err)
             else:
-                if min_max[0] > 0: errors.append('%s: %s %s'%(_T('ERROR'),scope_name,_T('missing')))
+                if min_max[0] > 0: errors.append('%s %s'%(scope_name,_T('missing')))
             scopes.pop()
         return errors
 
@@ -333,12 +336,11 @@ class Message(eppdoc.Message):
         if not stop:
             # check list and allowed values if only 'stop' was not set
             errors = self.__check_required__(columns, dct)
-            if errors: error.extend(errors)
-            if len(dct) < vals[0]+1: # počet parametrů plus název příkazu
-                # build command_line example
-                error.append('%s %d.'%(_T('Missing values. Required minimum is'),vals[0]))
-                error.append('%s: %s'%(_T('Type'),self.get_help(command_name)[0]))
-                error.append('(%s: ${BOLD}help %s${NORMAL})'%(_T('For more type'),command_name.encode(encoding)))
+            if errors:
+                error.append(_TP('ERROR: Missing required value.','ERROR: Missing required values.',vals[0]))
+                error.extend(errors)
+                error.append('') # empty line
+                error.append(_T("Type '%s' for more information.")%'help %s'%command_name.encode(encoding))
         self._dct = dct
         return error, example, stop
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import sys, re
+import sys, re, os
 
 # TODO: poll req None
 # error, values
@@ -20,7 +20,7 @@ except ImportError:
         print "ImportError:",msg
         print 'For runnig this application you need install ccReg module. See help.'
         sys.exit(0)
-from ccReg.translate import _T, encoding, options, option_errors
+from ccReg.translate import encoding, options, option_errors
 
 #====================================
 # Qt
@@ -30,7 +30,7 @@ try:
     from qttable import *
 except ImportError, msg:
     print "ImportError:",msg
-    print _T('For runnig this application you need install PyQt and Qt modules. For more see help.')
+    print 'For runnig this application you need install PyQt and Qt modules. For more see help.'
     sys.exit(0)
 
 #====================================
@@ -167,14 +167,14 @@ class ccregMainWindow(_main.ccregWindow):
     def display_error(self, messages, label=''):
         'Display Warning dialog.'
         # about, warning, critical
-        if not label: label = _T('Missing required').decode(encoding)
+        if not label: label = self.__tr('Missing required').decode(encoding)
         if type(messages) not in (list,tuple): messages = (messages,)
         QMessageBox.critical(self, label, '<h2>%s:</h2>\n%s'%(label,'<br>\n'.join(map(lambda s: s.decode(encoding),messages))))
 
     def btn_close(self):
         'Handle click on button Close'
-        label = _T('Close client')
-        msg = _T('Do you wand realy close client?')
+        label = self.__tr('Close client')
+        msg = self.__tr('Do you wand realy close client?')
         if QMessageBox.warning(self, label, msg, QMessageBox.Yes | QMessageBox.Default, QMessageBox.No) == QMessageBox.Yes:
             _main.ccregWindow.close(self)
         
@@ -205,7 +205,7 @@ class ccregMainWindow(_main.ccregWindow):
         getattr(self,'%s_code'%prefix).setText(code)
         getattr(self,'%s_msg'%prefix).setText('<br>\n'.join(msg))
         if not table and getattr(self, '%s_table'%prefix, None):
-            table = (2,(_T('name'),_T('value')),(140,260),None,None)
+            table = (2,(self.__tr('name'),self.__tr('value')),(140,260),None,None)
         if table:
             columns, labels, col_sizes, only_key, count_rows = table
             col_labels = map(lambda s: s.decode('utf8'), labels)
@@ -219,9 +219,15 @@ class ccregMainWindow(_main.ccregWindow):
                 wtab.setNumRows(int(data.get(count_rows,'0')))
             else:
                 wtab.setNumRows(count_data_rows(data))
+            #....................................................
+            column_keys = self.epp._epp.get_keys_sort_by_columns()
+            if not column_keys: column_keys = data.keys()
+            #....................................................
             r=0
-            for key, value in data.items():
+            for key in column_keys:
                 if only_key and key != only_key: continue
+                value = data.get(key)
+                if value is None: continue
                 # enum EditType { Never, OnTyping, WhenCurrent, Always }
                 if columns > 1:
                     wtab.setItem(r, 0, QTableItem(wtab, QTableItem.OnTyping, key))
@@ -245,27 +251,27 @@ class ccregMainWindow(_main.ccregWindow):
         'Used by __display_answer__()'
         if type(value) in (list,tuple):
             if len(value):
-                wtab.setItem(r, c, QTableItem(wtab, QTableItem.OnTyping, value[0]))
+                wtab.setItem(r, c, QTableItem(wtab, QTableItem.OnTyping, get_unicode(value[0])))
                 for v in value[1:]:
                     r+=1
-                    wtab.setItem(r, c, QTableItem(wtab, QTableItem.OnTyping, v))
+                    wtab.setItem(r, c, QTableItem(wtab, QTableItem.OnTyping, get_unicode(v)))
         else:
-            wtab.setItem(r, c, QTableItem(wtab, QTableItem.OnTyping, value))
+            wtab.setItem(r, c, QTableItem(wtab, QTableItem.OnTyping, get_unicode(value)))
         return r
         
     def __set_status__(self):
         'Refresh status after login and logout.'
         if self.epp.is_logon():
             user, host = self.epp._epp.get_username_and_host()
-            status = '<b>%s</b> <b style="color:darkgreen">ONLINE: %s@%s</b>'%(_T('status').decode('utf8'), user, host)
+            status = '<b>%s</b> <b style="color:darkgreen">ONLINE: %s@%s</b>'%(self.__tr('status').decode('utf8'), user, host)
         else:
-            status = ('<b>%s</b> <b style="color:red">%s</b>'%(_T('status'),_T('disconnect'))).decode('utf8') # stranslation is saved in utf8
+            status = ('<b>%s</b> <b style="color:red">%s</b>'%(self.__tr('status'),self.__tr('disconnect'))).decode('utf8') # stranslation is saved in utf8
         self.status.setText(status)
     
     def check_is_online(self):
         'Check online. True - online / False - offline.'
         ret = self.epp.is_logon()
-        if not ret: self.display_error((_T('You are not logged. First do login.'),))
+        if not ret: self.display_error((self.__tr('You are not logged. First do login.'),))
         return ret
 
     #----------------------------------
@@ -346,7 +352,7 @@ class ccregMainWindow(_main.ccregWindow):
     #==============================
     def login(self):
         if self.epp.is_logon():
-            self.display_error((_T('You are logged already.'),))
+            self.display_error((self.__tr('You are logged already.'),))
             return
         d = {}
         append_key(d,'username',self.login_username)
@@ -363,13 +369,13 @@ class ccregMainWindow(_main.ccregWindow):
             append_key(dc,'timeout',  self.connect_timeout)
             errors = self.epp.set_data_connect(dc)
             if errors:
-                self.display_error(errors,_T('Invalid connection input'))
+                self.display_error(errors,self.__tr('Invalid connection input'))
             else:
                 try:
                     self.epp.login(d['username'], d['password'], d.get('new-password'), d.get('cltrid'))
                 except ccReg.ccRegError, err:
                     self.epp._epp._errors.extend(err.args)
-                    self.epp._epp._errors.append(_T('Process login failed.'))
+                    self.epp._epp._errors.append(self.__tr('Process login failed.'))
                 self.__display_answer__('login')
         else:
             self.display_error(self.missing_required)
@@ -519,7 +525,7 @@ class ccregMainWindow(_main.ccregWindow):
         if addr.has_key('city') and addr.has_key('cc'):
             postal_info['addr'] = addr
         else:
-            self.epp._epp._errors.append(_T('In a part of address must be set both city and country code. For disabled this part leave both empty.'))
+            self.epp._epp._errors.append(self.__tr('In a part of address must be set both city and country code. For disabled this part leave both empty.'))
         if len(postal_info): chg['postal_info'] = postal_info
         #... disclose ................
         self.__disclose__(chg, p.update_contact_disclose_flag, p, 'update_contact_disclose_%s')
@@ -537,7 +543,7 @@ class ccregMainWindow(_main.ccregWindow):
             self.__display_answer__('update_contact')
         else:
             if len(d) == 1:
-                self.missing_required.append(_T('No values to update.'))
+                self.missing_required.append(self.__tr('No values to update.'))
             self.display_error(self.missing_required)
 
     def update_nsset(self):
@@ -577,7 +583,7 @@ class ccregMainWindow(_main.ccregWindow):
             self.__display_answer__('update_nsset')
         else:
             if len(d) == 1:
-                self.missing_required.append(_T('No values to update.'))
+                self.missing_required.append(self.__tr('No values to update.'))
             self.display_error(self.missing_required)
 
     def update_domain(self):
@@ -614,7 +620,7 @@ class ccregMainWindow(_main.ccregWindow):
             self.__display_answer__('update_domain')
         else:
             if len(d) == 1:
-                self.missing_required.append(_T('No values to update.'))
+                self.missing_required.append(self.__tr('No values to update.'))
             self.display_error(self.missing_required)
 
     def delete_contact(self):
@@ -657,13 +663,13 @@ class ccregMainWindow(_main.ccregWindow):
             self.display_error(self.missing_required)
 
     def list_contact(self):
-        self.__share_list__('list_contact', _T('contact'))
+        self.__share_list__('list_contact', self.__tr('contact'))
 
     def list_nsset(self):
-        self.__share_list__('list_nsset', _T('nsset'))
+        self.__share_list__('list_nsset', self.__tr('nsset'))
 
     def list_domain(self):
-        self.__share_list__('list_domain', _T('domain'))
+        self.__share_list__('list_domain', self.__tr('domain'))
 
     #==============================
     # Sources
@@ -672,13 +678,13 @@ class ccregMainWindow(_main.ccregWindow):
         'Display sources of command'
         wnd = _sources.ccregWindow(self)
         if self.src.has_key(command_name):
-            wnd.message.setText('<b>%s</b> %s'%(command_name,_T('sources')))
+            wnd.message.setText(u'<b>%s</b> %s'%(command_name,self.__tr('sources')))
             src = self.src[command_name]
             wnd.command_line.setText(src[0])
             wnd.command.setText(ccReg.session_transfer.human_readable(src[1]))
             wnd.response.setText(ccReg.session_transfer.human_readable(src[2]))
         else:
-            wnd.message.setText(u'<b>%s</b> %s'%(command_name,_T('Sources are not available now. Run command at first.')))
+            wnd.message.setText(u'<b>%s</b> %s'%(command_name,self.__tr('Sources are not available now. Run command at first.')))
         wnd.show()
         
     def source_login(self):
@@ -732,11 +738,24 @@ class ccregMainWindow(_main.ccregWindow):
     def source_list_domain(self):
         self.__display_sources__('list_domain')
 
-
+    def __tr(self,s,c = None):
+        return qApp.translate("ccregWindow",s,c)
+        
+def get_unicode(text):
+    'Convert to unicode and catch problems with conversion.'
+    if type(text) not in (str, unicode): text = str(text)
+    if type(text) == str:
+        try:
+            text = text.decode(encoding)
+        except UnicodeDecodeError:
+            text = repr(text)
+    return text
+        
 def main(argv, lang):
     app = QApplication(argv)
     tr = QTranslator()
-    if tr.load(translation_prefix+lang):
+    modul_trans = os.path.join(os.path.split(__file__)[0],'%s%s'%(translation_prefix,lang))
+    if tr.load(modul_trans):
         app.installTranslator(tr)
     form = ccregMainWindow()
     form.show()

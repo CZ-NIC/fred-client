@@ -51,18 +51,25 @@ def load_config_from_file(filename):
         error = "Configuration file '%s' missing."%filename
     return config, error, names
 
-def load_config(config_name):
-    "Load config file and init internal variables. Returns 0 if fatal error occured."
-    config = ConfigParser.SafeConfigParser()
-    error = ''
-    modul_conf = os.path.join(os.path.split(__file__)[0],config_name)
+def get_etc_config_name(name):
+    'Returns shared folder depends on OS type.'
     if os.name == 'posix':
         glob_conf = '/etc/%s'%config_name
     else:
         # ALLUSERSPROFILE = C:\Documents and Settings\All Users
         glob_conf = os.path.join(os.path.expandvars('$ALLUSERSPROFILE'),config_name)
+    return glob_conf
+    
+def load_config(config_name):
+    "Load config file and init internal variables. Returns 0 if fatal error occured."
+    config = ConfigParser.SafeConfigParser()
+    error = ''
+    modul_conf = os.path.join(os.path.split(__file__)[0],config_name)
+    glob_conf = get_etc_config_name(config_name)
     try:
-        names = config.read([modul_conf, glob_conf, os.path.join(os.path.expanduser('~'),config_name)])
+        # If you wand use mode config, uncomment next line and comment line after it.
+        # names = config.read([modul_conf, glob_conf, os.path.join(os.path.expanduser('~'),config_name)])
+        names = config.read(glob_conf)
     except (ConfigParser.MissingSectionHeaderError, ConfigParser.ParsingError), msg:
         error = 'ConfigParserError: %s'%str(msg)
         config = None
@@ -94,21 +101,25 @@ available_langs = ('en','cs')
 default_lang = 'en'
 optcols = (
     '? help',
-    'b bar',
-    'c:config',
+    'b bar',   # Used by ccreg_sender for display bar instead of common output. Suitable for huge command sets.
+    'c:cert',
     'd:command',
-    'e:range',
-    'g:log',
+    'e:range', # Used by ccreg_create for generate range of documents.
+    'f:config',
+    'g:log',   # save log in unittest.
     'h:host',
+    'k:privkey',
     'l:lang',
-    'p:password',
-    'r colors',
+    'o:output',
+    'p:port',
+    'q qt',    # run in Qt
     's:session',
-    't timer',
+    't timer', # for debug only; display duration of processes
     'u:user',
     'v:verbose',
+    'w:password',
     'V version',
-    'x gui',
+    'x no_validate',
     )
 options = {}
 for key in optcols:

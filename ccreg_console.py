@@ -10,6 +10,41 @@ import ccReg
 from ccReg.session_base import colored_output, VERBOSE
 from ccReg.translate import _T, options, option_errors
 
+help_option = _T("""Connection options:
+  -?, --help       show this help and exit
+  -V, --version    Display program version information
+
+  -l LANGUAGE, --lang=LANGUAGE
+                   set user interface language
+  -v LEVEL, --verbose=LEVEL
+                   set verbose level
+                   1 - normal operation
+                   2 - print more details
+                   3 - print more details and display XML sources
+  -x,   --no_validate
+                   disable client-side XML validation
+
+  -f CONFIG, --config=CONFIG
+                   load config from filename
+
+  -h HOSTNAME, --host=HOSTNAME
+                   ccReg server to connect 
+  -p PORT, --port=PORT
+                   server port
+  -u USERNAME, --user=USERNAME
+                   authenticate to server as user
+  -w PASSWORD, --password=PASSWORD
+                   authenticate to server with password
+  -c CERTIFICATE --cert=CERTIFICATE
+                   filepath of your certificate
+  -k PRIVATEKEY --privkey=PRIVATEKEY
+                   filepath of your private key
+  -s SESSION, --session=SESSION
+                   read session name used for connect to the EPP server
+                   session values are read from config file
+  -o OUTPUT_TYPE, --output=OUTPUT_TYPE
+                   display output as: text (default), html""")
+
 def display_profiler(label, indent, debug_time):
     'For test only.'
     msg, prev_t = debug_time[0]
@@ -30,12 +65,12 @@ def main(options):
     ccReg.cmd_history.set_history(epp.get_command_names())
     if not epp.load_config(options): return
     print epp.welcome()
-    epp.display() # display errors or notes
     is_online = 0
     prompt = '> '
     online = prompt
     epp.automatic_login()
     epp.restore_history()
+    epp.display() # display errors or notes
     while 1:
         # change prompt status:
         if is_online:
@@ -115,31 +150,9 @@ if __name__ == '__main__':
     else:
         if options['help']:
             print '%s: %s [OPTIONS...]\n\n%s\n\n%s\n\n  %s\n'%(_T('Usage'), 'ccreg_console.py',
-_T('Console for communication with EPP server.'),
-_T("""Connection options:
-  -?, --help       show this help and exit
-  -V, --version    Display program version information
-
-  -l LANGUAGE, --lang=LANGUAGE
-                   set user interface language
-  -r, --colors     turn on colored output
-  -v LEVEL, --verbose=LEVEL
-                   set verbose level
-                   1 - normal operation
-                   2 - print more details
-                   3 - print more details and display XML sources
-  -h HOSTNAME, --host=HOSTNAME
-                   ccReg server to connect 
-  -u USERNAME, --user=USERNAME
-                   authenticate to server as user
-  -p PASSWORD, --password=PASSWORD
-                   authenticate to server with password
-  -s SESSION, --session=SESSION
-                   read session name  used for connect to the EPP server
-                   session values are read from config file
-  -c CONFIG, --config=CONFIG
-                   load config from filename"""),
-   _T('For more information, see README.'))
+            _T('Console for communication with EPP server.'),
+            help_option,
+            _T('For more information, see README.'))
         elif options['version']:
             epp = ccReg.ClientSession()
             print epp.version()
@@ -147,4 +160,4 @@ _T("""Connection options:
             if option_errors:
                 print option_errors
             else:
-                main(options['session'])
+                main(options)

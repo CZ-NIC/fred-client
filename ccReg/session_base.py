@@ -15,10 +15,11 @@ colored_output = terminal_controler.TerminalController()
 # názvy sloupců pro data sestavené při spojení se serverem
 ONLINE, CMD_ID, LANG, POLL_AUTOACK, CONFIRM_SEND_COMMAND, \
    USERNAME, SESSION, HOST, COLORS, VALIDATE, VERBOSE, SORT_BY_COLUMNS, NULL_VALUE, \
-   TRANSLATE_ANSWER_COLUMN_NAMES = range(14)
+   TRANSLATE_ANSWER_COLUMN_NAMES, OUTPUT_TYPE = range(15)
 # názvy sloupců pro defaultní hodnoty
 DEFS_LENGTH = 4
 LANGS,objURI,extURI,PREFIX = range(DEFS_LENGTH)
+OMMIT_ERROR = 1
 
 class ManagerBase:
     """This class holds buffers with error and note messages.
@@ -46,6 +47,7 @@ class ManagerBase:
                 [],     # SORT_BY_COLUMNS - support for sotring received values (used by check_...)
                 'NULL', # NULL_VALUE
                 1,      # TRANSLATE_ANSWER_COLUMN_NAMES, TEST only
+                'text', # OUTPUT_TYPE (text, html)
                 ]
         # defaults
         self.defs = ['']*DEFS_LENGTH
@@ -64,15 +66,23 @@ class ManagerBase:
 
     def get_session(self, offset):
         return self._session[offset]
+
+    def get_keys_sort_by_columns(self):
+        'Returns list of keys what will be used to sorting output values.'
+        return [n[0]for n in self._session[SORT_BY_COLUMNS]]
         
     def init_options(self):
         'Init variables from options (after loaded config).'
         self._session[LANG] = self._options['lang']
-        if self._options['colors']:
-            colored_output.set_mode(1)
-            self._session[COLORS] = 1
+        # Option 'colors' has been disabled. Use config instead.
+        #if self._options['colors']:
+        #    colored_output.set_mode(1)
+        #    self._session[COLORS] = 1
         if self._options['verbose']:
             self.__init_verbose__(self._options['verbose'])
+        key = self._options['output'].lower()
+        if key in ('text','html'): self._session[OUTPUT_TYPE] = key
+        if self._options['no_validate']: self._session[VALIDATE] = 0
         
     def set_auto_connect(self, switch):
         'Set auto connection ON/OFF. switch = 0/1.'
@@ -191,7 +201,7 @@ class ManagerBase:
             for section in self._conf.sections():
                 msg = ''
                 if section == selected_section:
-                    msg = '${BOLD}${GREEN}### %s ###${NORMAL}'%_T('Actual connection HERE')
+                    msg = '${BOLD}${GREEN}*** %s ***${NORMAL}'%_T('Actual connection HERE')
                 print colored_output.render('${BOLD}[%s]${NORMAL} %s'%(section,msg))
                 for option in self._conf.options(section):
                     print_unicode(colored_output.render('\t${BOLD}%s${NORMAL} = %s'%(option,str(self.get_config_value(section,option)))))
@@ -220,7 +230,7 @@ class ManagerBase:
             seop = ('session','schema')
             name = self.get_config_value(seop[0], seop[1])
             if not name:
-                self.append_error(_T('Schema in session missing. Thi is invalid instalation. Reinstall or restore default-config.txt file.'))
+                self.append_error(_T('Schema in session missing. Thi is invalid instalation.'))
                 return 0
             self._conf.set(seop[0], seop[1], os.path.join(modul_path,'schemas',name))
             # make copy if need
@@ -267,7 +277,7 @@ class ManagerBase:
 
     def save_confing(self):
         'Save conf file.'
-        filepath = os.path.join(os.path.expanduser('~'),translate.config_name)
+        filepath = translate.get_etc_config_name(translate.config_name)
         try:
             fp = open(filepath,'w')
             self._conf.write(fp)
@@ -311,19 +321,19 @@ class ManagerBase:
         self.__config_defaults__()
         # for login with no parameters
         section = self.config_get_section_connect()
+        if options['host']: self._conf.set(section,'host',options['host'])
+        if options['port']: self._conf.set(section,'port',options['port'])
+        if options['user']: self._conf.set(section,'username',options['user'])
+        if options['password']: self._conf.set(section,'password',options['password'])
+        if options['cert']: self._conf.set(section,'ssl_cert',options['cert'])
+        if options['privkey']: self._conf.set(section,'ssl_key',options['privkey'])
+        # copy variables for individual commands
         section_epp_login = 'epp_login'
         self.copy_default_options(section_epp_login, section, 'username')
         self.copy_default_options(section_epp_login, section, 'password')
-        # overwrite from options (command line)
-        if self._conf.has_section(section_epp_login):
-            if self._options['user']: self._conf.set(section_epp_login,'username',self._options['user'])
-            if self._options['password']: self._conf.set(section_epp_login,'password',self._options['password'])
-        if options['host']: self._conf.set(section,'host',options['host'])
-        if options['user']: self._conf.set(section,'username',options['user'])
-        if options['password']: self._conf.set(section,'password',options['password'])
         # session
         section = 'session'
-        self._session[POLL_AUTOACK] = {False:0,True:1}[self.get_config_value(section,'poll_ack').lower() == 'on']
+        self._session[POLL_AUTOACK] = {False:0,True:1}[str(self.get_config_value(section,'poll_autoack')).lower() == 'on']
         self._session[CONFIRM_SEND_COMMAND] = {False:0,True:1}[self.get_config_value(section,'confirm_send_commands').lower() == 'on']
         self._session[VALIDATE] = {False:0,True:1}[self.get_config_value(section,'validate').lower() == 'on']
         colors = self.get_config_value(section,'colors',1)

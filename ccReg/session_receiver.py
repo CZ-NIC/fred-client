@@ -140,6 +140,7 @@ class ManagerReceiver(ManagerCommand):
                     self._dict_answer = self._epp_response.create_data()
                 debug_time.append(('Create data',time.time())) # PROFILER
                 if self._dict_answer.get('greeting',None):
+                    self._dct_answer['command'] = self._command_sent
                     self.answer_greeting()
                 elif self._dict_answer.get('response',None):
                     self.answer_response()
@@ -149,7 +150,6 @@ class ManagerReceiver(ManagerCommand):
                     self.__put_raw_into_note__(self._dict_answer)
         else:
             self.append_note(_T("No response from EPP server."))
-            if not self.is_connected(): self.append_error(_T("Connection interrupted."))
         return debug_time
 
     #==================================================
@@ -162,7 +162,8 @@ class ManagerReceiver(ManagerCommand):
         "Part of process answer - parse greeting node."
         dct = self._dct_answer['data']
         greeting = self._dict_answer['greeting']
-        if not self._dct_answer['reason']: self._dct_answer['reason'] = _T('Incoming greeting message')
+        if not self._dct_answer['reason']:
+            self._dct_answer['reason'] = _T('Incoming greeting message')
         for key in ('svID','svDate'):
             dct[key] = eppdoc.get_dct_value(greeting, key)
         svcMenu = greeting.get('svcMenu',{})
@@ -205,12 +206,13 @@ class ManagerReceiver(ManagerCommand):
 
     def answer_response_login(self, data):
         "data=(response,result,code,msg)"
+        host = self._session[HOST]
         if data[ANSW_CODE] == 1000:
             self._session[ONLINE] = 1 # indikátor zalogování
             self._session[CMD_ID] = 1 # reset - první command byl login
-            self._dct_answer['data']['session'] = '*** %s ***'%_T('Session started')
+            self._dct_answer['data'][host] = _T('Login OK. Session started.')
         else:
-            self._dct_answer['data']['session'] = '--- %s ---'%_T('Login failed')
+            self._dct_answer['data'][host] = _T('Login failed.')
             self.__code_isnot_1000__(data, 'login')
 
     #-------------------------------------

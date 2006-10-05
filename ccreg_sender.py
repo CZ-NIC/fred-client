@@ -9,7 +9,7 @@ from ccReg.translate import _T, options, option_errors, option_args
 
 def __auto_login__(epp, verbose):
     'Do login'
-    if verbose: print 'SEND AUTO-LOGIN:'
+    if verbose > 1: print 'SEND AUTO-LOGIN:'
     try:
         # username a password musí být v config
         epp.api_command('login',epp.get_default_params_from_config('login'))
@@ -18,7 +18,6 @@ def __auto_login__(epp, verbose):
         print 'Error:',msg
         ok = 0
     epp.display()
-    if verbose: print '_'*60
     return ok
 
 def split_docs(docset):
@@ -88,9 +87,7 @@ def send_docs(display_bar, docs=[]):
             epp.display() # display errors or notes
         else:
             if not display_bar: print "ERRORS:",xmldoc
-        if not display_bar:
-            if verbose: print '_'*60
-        else:
+        if display_bar:
             if bar is None: bar = ccReg.terminal_controler.ProgressBar(ccReg.session_base.colored_output,bar_header)
             bar.clear()
             bar.update(bar_pos, _T('sending...'))
@@ -122,32 +119,11 @@ if __name__ == '__main__':
             if not options['help'] and len(sys.argv) > 1:
                 send_docs(options['bar']) # commands from argv
             else:
+                from ccreg_console import help_option
                 print '%s: %s [OPTIONS...]\n\n%s\n\n%s\n\n%s:\n%s\n\n  %s\n'%(_T('Usage'), 'ccreg_sender.py',
-_T('Module for sending files to the EPP server.'),
-_T("""Connection options:
-  -?, --help       show this help and exit
-  -V, --version    Display program version information
-
-  -l LANGUAGE, --lang=LANGUAGE
-                   set user interface language
-  -r, --colors     turn on colored output
-  -v LEVEL, --verbose=LEVEL
-                   set verbose level
-                   1 - normal operation
-                   2 - print more details
-                   3 - print more details and display XML sources
-  -h HOSTNAME, --host=HOSTNAME
-                   ccReg server to connect 
-  -u USERNAME, --user=USERNAME
-                   authenticate to server as user
-  -p PASSWORD, --password=PASSWORD
-                   authenticate to server with password
-  -s SESSION, --session=SESSION
-                   read session name  used for connect to the EPP server
-                   session values are read from config file
-  -c CONFIG, --config=CONFIG
-                   load config from filename"""),
-    _T('EXAMPLES'),
+                _T('Module for sending files to the EPP server.'),
+                help_option,
+                _T('EXAMPLES'),
 """
   ./ccreg_create.py info_domain nic.cz > cmd1.xml
   ./ccreg_create.py info_contact reg-id pokus > cmd2.xml

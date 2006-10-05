@@ -61,12 +61,13 @@ class Lorry:
             self._errors.append('Create socket.error (socket.getaddrinfo): %s'%msg)
         if self._conn is None: return 0
         if self._timeout:
-            self._notes.append('Socket timeout: ${BOLD}%.1f${NORMAL} sec.'%self._timeout)
+            if verbose > 1: self._notes.append('Socket timeout: ${BOLD}%.1f${NORMAL} sec.'%self._timeout)
             self._conn.settimeout(self._timeout)
         try:
             self._conn.connect((DATA[0], DATA[1]))
-            self._notes.append('%s ${BOLD}%s${NORMAL}, port %d'%(_T('Opened connection to'), DATA[0], DATA[1]))
+            if verbose > 1: self._notes.append('%s ${BOLD}%s${NORMAL}, port %d'%(_T('Opened connection to'), DATA[0], DATA[1]))
         except socket.error, tmsg:
+            self._errors.append('%s %s.\n'%(_T('I cannot connect to the server'),DATA[0]))
             self._errors.append('Connection socket.error: %s (%s:%s)'%(str(tmsg),DATA[0],DATA[1]))
         except (KeyboardInterrupt,EOFError):
             self._errors.append(_T('Interrupted by user'))
@@ -80,6 +81,7 @@ class Lorry:
         if len(DATA) > 3 and not os.path.isfile(DATA[3]):
             self._errors.append('%s %s'%(DATA[3],_T('Certificate key file not found.')))
             DATA[3] = None
+        if len(self._errors): return 0 # if any errors occured there's no point in
         ssl_ok = 0
         try:
             if len(DATA) > 3 and DATA[2] and DATA[3]:

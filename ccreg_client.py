@@ -9,35 +9,14 @@ if __name__ == '__main__':
     if msg_invalid:
         print "%s %s" % (msg_invalid)
     else:
+        from ccreg_console import help_option
         if options['help']:
             print '%s: %s [OPTIONS...]\n\n%s\n\n%s\n  %s\n  %s\n\n  %s\n'%(_T('Usage'), 'ccreg_client',
-_T('Client for communication with EPP server.'),
-_T("""Connection options:
-  -?, --help       show this help and exit
-  -V, --version    Display program version information
-
-  -l LANGUAGE, --lang=LANGUAGE
-                   set user interface language
-  -r, --colors     turn on colored output
-  -v LEVEL, --verbose=LEVEL
-                   set verbose level
-                   1 - normal operation
-                   2 - print more details
-                   3 - print more details and display XML sources
-  -h HOSTNAME, --host=HOSTNAME
-                   ccReg server to connect 
-  -u USERNAME, --user=USERNAME
-                   authenticate to server as user
-  -p PASSWORD, --password=PASSWORD
-                   authenticate to server with password
-  -s SESSION, --session=SESSION
-                   read session name  used for connect to the EPP server
-                   session values are read from config file
-  -c CONFIG, --config=CONFIG
-                   load config from filename"""),
+            _T('Client for communication with EPP server.'),
+            help_option,
    _T("""-d COMMAND, --command=COMMAND
                    send command to server and exit"""),
-   _T("""-x --gui
+   _T("""-q,  --qt
                    run client in grafical user interface"""),
    _T('For more information, see README.'))
         elif options['version']:
@@ -49,15 +28,15 @@ _T("""Connection options:
             if options['command']:
                 import ccreg_create
                 import ccreg_sender
-                epp_doc, xml_error = ccreg_create.main(options['command'])
+                epp_doc, xml_error = ccreg_create.main(options)
                 if xml_error:
                     print xml_error
                 else:
                     if len(epp_doc):
-                        ccreg_sender.send_docs(((1,epp_doc),))
+                        ccreg_sender.send_docs(options['bar'], ((1,epp_doc),))
                     else:
                         print 'Internal error: epp_doc, xml_error = ccreg_create.main(options[command])'
-            elif options['gui']:
+            elif options['qt']:
                 from guiqt.main import main
                 main([],options['lang'])
             else:

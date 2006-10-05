@@ -201,7 +201,7 @@ class Message(eppdoc_assemble.Message):
             ('contact_id',(1,1),(),_T('your contact ID'),'CID:ID01','',()),
             ('add',(0,5),update_status,_T('add status'),'','',()),
             ('rem',(0,5),update_status,_T('remove status'),'','',()),
-            ('chg',(0,1),(),_T('change status'),'','',(
+            ('chg',(0,1),(),_T('change values'),'','',(
                 ('postal_info',(0,1),(),_T('postal informations'),'','',(
                     ('name',(0,1),(),_T('name'),u'Jan Novák','',()),
                     ('org',(0,1),(),_T('organisation name'),'Firma s.r.o.','',()),
@@ -245,7 +245,7 @@ class Message(eppdoc_assemble.Message):
                 ('admin',(0,UNBOUNDED),(),_T('admin'),'CID:ID01','',()),
                 ('status',(0,8),update_status,_T('status'),'','',()),
             )),
-            ('chg',(0,1),(),_T('change status'),'','',(
+            ('chg',(0,1),(),_T('change values'),'','',(
                 ('nsset',(0,1),(),_T('nsset'),'NSSET_ID','',()),
                 ('registrant',(0,1),(),_T('registrant'),'CID:ID01','',()),
                 ('pw',(0,1),(),_T('password'),'mypassword','',()),
