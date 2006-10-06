@@ -167,7 +167,7 @@ class ccregMainWindow(_main.ccregWindow):
     def display_error(self, messages, label=''):
         'Display Warning dialog.'
         # about, warning, critical
-        if not label: label = self.__tr('Missing required').decode(encoding)
+        if not label: label = self.__tr('Missing required') ## .decode(encoding)
         if type(messages) not in (list,tuple): messages = (messages,)
         QMessageBox.critical(self, label, '<h2>%s:</h2>\n%s'%(label,'<br>\n'.join(map(lambda s: s.decode(encoding),messages))))
 
@@ -208,7 +208,7 @@ class ccregMainWindow(_main.ccregWindow):
             table = (2,(self.__tr('name'),self.__tr('value')),(140,260),None,None)
         if table:
             columns, labels, col_sizes, only_key, count_rows = table
-            col_labels = map(lambda s: s.decode('utf8'), labels)
+            col_labels = labels
             wtab = getattr(self, '%s_table'%prefix)
             data = dct_answer.get('data',{})
             header = wtab.horizontalHeader()
@@ -263,7 +263,7 @@ class ccregMainWindow(_main.ccregWindow):
         'Refresh status after login and logout.'
         if self.epp.is_logon():
             user, host = self.epp._epp.get_username_and_host()
-            status = '<b>%s</b> <b style="color:darkgreen">ONLINE: %s@%s</b>'%(self.__tr('status').decode('utf8'), user, host)
+            status = '<b>%s</b> <b style="color:darkgreen">ONLINE: %s@%s</b>'%(self.__tr('status'), user, host)
         else:
             status = ('<b>%s</b> <b style="color:red">%s</b>'%(self.__tr('status'),self.__tr('disconnect'))).decode('utf8') # stranslation is saved in utf8
         self.status.setText(status)

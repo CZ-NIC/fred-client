@@ -4,6 +4,7 @@
 """Create EPP XML document from command line parameters.
 """
 import sys, re
+from cgi import escape as escape_html
 import ccReg
 from ccReg.translate import _T, options, option_args, config_error, encoding
 
@@ -18,16 +19,19 @@ def main(options):
     command_name, epp_doc, stop = epp.create_eppdoc(options['command'])
     errors = epp.fetch_errors()
     if not epp_doc and not errors: errors = _T('Unknown command')
-    xml_error = ''
+    str_error = ''
     if errors:
         if type(command_name) == unicode: command_name = command_name.encode(encoding)
         if type(errors) == unicode: errors = errors.encode(encoding)
-        xml_error = "<?xml encoding='utf-8'?><errors>%s: %s</errors>"%(command_name,errors)
-    return epp_doc, xml_error
+        if options['output'] == 'html':
+            str_error = '<div class="ccreg_errors">\n<strong>%s errors:</strong>\n<pre>\n%s</pre><div>'%(command_name,escape_html(errors))
+        else:
+            str_error = "<?xml encoding='utf-8'?><errors>%s: %s</errors>"%(command_name,errors)
+    return epp_doc, str_error
 
-def display(epp_doc, xml_error):
-    if xml_error:
-        print xml_error
+def display(epp_doc, str_error):
+    if str_error:
+        print str_error
     else:
         print epp_doc
   
@@ -41,12 +45,12 @@ if __name__ == '__main__':
                 command = cmd.strip()
                 if command:
                     options['command'] = command
-                    epp_doc, xml_error = main(options)
-                    display(epp_doc, xml_error)
+                    epp_doc, str_error = main(options)
+                    display(epp_doc, str_error)
         elif len(sys.argv) > 1:
             command = ' '.join(option_args)
             if options['range']:
-                epp_doc = xml_error = ''
+                epp_doc = str_error = ''
                 m = re.match('([^\[]+)\[(\d+)(?:\s*,\s*(\d+))?\]',options['range'])
                 if m:
                     min = 0
@@ -58,13 +62,13 @@ if __name__ == '__main__':
                         max = int(m.group(3))
                     for n in range(min,max):
                         options['command'] = re.sub(anchor,'%s%d'%(anchor,n),command)
-                        epp_doc, xml_error = main(options)
-                        display(epp_doc, xml_error)
+                        epp_doc, str_error = main(options)
+                        display(epp_doc, str_error)
                 else:
                     print "<?xml encoding='utf-8'?><errors>Invalid range pattern: %s</errors>"%options['range']
             else:
-                epp_doc, xml_error = main(options)
-                display(epp_doc, xml_error)
+                epp_doc, str_error = main(options)
+                display(epp_doc, str_error)
         else:
             print '%s: %s command params\n\n%s\n\n%s%s\n%s\n\n  %s\n'%(_T('Usage'), 'ccreg_create.py',
                 _T('Create EPP XML document from command line parameters.'),

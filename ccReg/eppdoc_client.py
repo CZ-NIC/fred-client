@@ -408,7 +408,6 @@ class Message(eppdoc_assemble.Message):
     }
     # append similar objects
     sort_by_names['contact:create'] = ('contact', sort_by_names['nsset:create'][1])
-##    sort_by_names['domain:create']  = ('domain', sort_by_names['nsset:create'][1])
     sort_by_names['contact:list']   = sort_by_names['domain:list']
     sort_by_names['nsset:list']     = sort_by_names['domain:list']
     

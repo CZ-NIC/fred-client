@@ -1,5 +1,6 @@
 # -*- coding: utf8 -*-
 #!/usr/bin/env python
+from cgi import escape as escape_html
 import eppdoc_client
 import client_socket
 from session_base import *
@@ -35,14 +36,7 @@ class ManagerTransfer(ManagerBase):
         # Set output SORT BY and VEROBOSE names:
         if self._session[TRANSLATE_ANSWER_COLUMN_NAMES]:
             # Default is 1 (display column names). Zero is used for TEST (display column keys).
-            cols = self._epp_cmd.get_sort_by_names(self._command_sent)
-            if re.match('\w+:check',self._command_sent):
-                pass # list of check names - don't touch!
-            elif cols:
-                self._session[SORT_BY_COLUMNS] = cols
-            else:
-                self._session[SORT_BY_COLUMNS] = []
-                
+            self._session[SORT_BY_COLUMNS] = self._epp_cmd.get_sort_by_names(self._command_sent)
 
     def reset_round(self):
         'Prepare for next round. Reset internal dict with communication values.'
@@ -194,17 +188,30 @@ class ManagerTransfer(ManagerBase):
             else:
                 print self.get_answer(dct) # verbose is not 0
 
+    def get_keys_sort_by_columns(self):
+        'Returns list of keys what will be used to sorting output values.'
+        return [n[0]for n in self.__get_column_items__(self._dct_answer['command'], self._dct_answer['data'])]
+                
+    def __get_column_items__(self, command_name, dct_data):
+        'Returns struct of key names for sorting output values lines.'
+        if self._session[SORT_BY_COLUMNS]:
+            sorted_columns = self._session[SORT_BY_COLUMNS] # sorted output (included in create command part)
+        elif re.match('\w+:check',command_name):
+            # exeption for all check commands
+            keys = dct_data.keys()
+            keys.sort()
+            sorted_columns = map(lambda n:(n,1,''), keys) # sorted by keys
+        else:
+            sorted_columns = map(lambda n:(n,1,''), dct_data.keys()) # default (unsorted)
+        return sorted_columns
+                
     def get_answer_udata(self, sep='\n'):
         'Special for GUI output. Returns unicode.'
         body=[]
         report = body.append
-        dct = self._dct_answer
-        if self._session[SORT_BY_COLUMNS]:
-            keys = self._session[SORT_BY_COLUMNS] # sorted output (included in create command part)
-        else:
-            keys = map(lambda n:(n,1,''), dct['data'].keys()) # default (unsorted)
-        for key,verbose,explain in keys:
-            value = dct['data'].get(key,u'')
+        dct_data = self._dct_answer['data']
+        for key,verbose,explain in self.__get_column_items__(self._dct_answer['command'], dct_data):
+            value = dct_data.get(key,u'')
             if value not in ('',[]): __append_into_report__(body,key,value,explain,'',1) # '' - indent; 1 - no terminal tags
         return sep.join(body).decode(encoding)
 
@@ -238,24 +245,18 @@ class ManagerTransfer(ManagerBase):
             for error in dct['errors']:
                 report(get_ltext('  %s'%error))
             report(colored_output.render('${NORMAL}'))
-        #... init sorting .............................
-        data_indent = ''
-        if self._session[VERBOSE] > 1:
-            data_indent = '   '
-        if self._session[SORT_BY_COLUMNS]:
-            sorted_columns = self._session[SORT_BY_COLUMNS] # sorted output (included in create command part)
-        else:
-            sorted_columns = map(lambda n:(n,1,''), dct['data'].keys()) # default (unsorted)
         #... data .............................
+        data_indent = ''
         data = []
         in_higher_verbose = 0
         used = []
-        for key,verbose,explain in sorted_columns:
+        dct_data = dct['data']
+        for key,verbose,explain in self.__get_column_items__(dct['command'], dct_data):
             if verbose > self._session[VERBOSE]:
                 in_higher_verbose += 1
                 used.append(key)
                 continue
-            value = dct['data'].get(key,u'')
+            value = dct_data.get(key,u'')
             if value not in ('',[]): __append_into_report__(data,key,value,explain,data_indent)
             used.append(key)
         if len(data):
@@ -269,7 +270,7 @@ class ManagerTransfer(ManagerBase):
         # POZOR!!! V ostré verzi musí být deaktivováno!!!
         if self._session[SORT_BY_COLUMNS]:
             # in mode SORT_BY_COLUMNS check if all names was used
-            missing = [k for k in dct['data'].keys() if k not in used and dct['data'][k][0] >= self._session[VERBOSE]]
+            missing = [k for k in dct_data.keys() if k not in used and dct_data[k][0] >= self._session[VERBOSE]]
             if len(missing):
                 report(colored_output.render('\n${BOLD}${RED}Here needs FIX code: %s${NORMAL}'%'(%s)'%', '.join(missing)))
         #---------------------
@@ -287,11 +288,68 @@ class ManagerTransfer(ManagerBase):
         return sep.join(body)
 
     def get_answer_html(self, dct=None):
-        'Returns data in HTML format'
+        """Returns data in HTML format. Used syles:
+        .ccreg_client       - main div of HTML output
+        .ccreg_code         - div part of message (code + reason)
+        .ccreg_errors       - ul li with errors
+        .ccreg_data         - table with data
+        .ccreg_source       - pre with XML sources
+        .command_success    - reason with code 1000
+        .command_done       - other readons
+        .even               - every even row in data table
+        """
         body=[]
         report = body.append
         if not dct: dct = self._dct_answer
-        report('TODO: Not implented yet.')
+        report('<div class="ccreg_client">')
+        #... code and reason .............................
+        report('<div class="ccreg_code">')
+        code = dct['code']
+        reason_css_class = {False:'command_done',True:'command_success'}[code==1000]
+        if self._session[VERBOSE] < 2:
+            # brief output mode
+            report('<table class="ccreg_reason">')
+            report('\t<tr>\n\t<td><span class="%s">%s</span></td>\n</tr>'%(reason_css_class,get_ltext(dct['reason'])))
+            report('</table>')
+        else:
+            # full
+            tbl_reason=['<table class="ccreg_reason">']
+            tbl_reason.append('<tr>\n\t<th>code</th>\n\t<td>%d</td>\n</tr>'%code)
+            tbl_reason.append('<tr>\n\t<th>command</th>\n\t<td>%s</td>\n</tr>'%get_ltext(dct['command']))
+            tbl_reason.append('<tr>\n\t<th>reason</th>\n\t<td><span class="%s">%s</span></td>\n</tr>'%(reason_css_class,get_ltext(dct['reason'])))
+            tbl_reason.append('</table>')
+            report('\n'.join(tbl_reason))
+        report('</div>')
+        #... errors .............................
+        if len(dct['errors']):
+            report('<div class="ccreg_errors">\n<strong>errors:</strong><ul>')
+            for error in dct['errors']:
+                report('<li>%s</li>'%get_ltext(error))
+            report('</ul></div>')
+        #... data .............................
+        data_indent = ''
+        data = []
+        dct_data = dct['data']
+        for key,verbose,explain in self.__get_column_items__(dct['command'], dct_data):
+            if verbose > self._session[VERBOSE]: continue
+            value = dct_data.get(key,u'')
+            if value not in ('',[]): __append_into_report__(data,key,value,explain,'',2) # 2 - use HTML pattern;
+        if len(data):
+            report('<table class="ccreg_data">')
+            body.extend(data)
+            report('</table>')
+        for n in range(len(body)):
+            if type(body[n]) == unicode: body[n] = body[n].encode(encoding)
+        #... third verbose level .............................
+        if self._session[VERBOSE] == 3:
+            report('<pre class="ccreg_source">')
+            report('<strong>COMMAND:</strong>')
+            report(escape_html(human_readable(self._raw_cmd)))
+            report('<strong>ANSWER:</strong>')
+            report(escape_html(human_readable(self._raw_answer)))
+            report('</pre>')
+        # ..............
+        report('</div>')
         return '\n'.join(body)
         
     def save_history(self):
@@ -308,20 +366,30 @@ class ManagerTransfer(ManagerBase):
         
 def __append_into_report__(body,k,v,explain, indent = '', no_terminal_tags=0):
     'Append value type(unicode|list|tuple) into report body.'
+    # odd - lichý, even - sudý
     patt = (
-        ('%s${BOLD}%s${NORMAL} %s','%s${BOLD}%s${NORMAL}'),
-        ('%s%s %s','%s%s')
+        ('%s${BOLD}%s${NORMAL} %s','%s${BOLD}%s${NORMAL}','%s%s'),
+        ('%s%s %s','%s%s','%s%s'),
+        ('%s<tr>\n\t<th>%s</th>\n\t<td>%s</td>\n</tr>','%s<tr>\n\t<th>%s</th>\n\t<td>&nbsp;</td>\n</tr>','%s<tr>\n\t<th>&nbsp;</th>\n\t<td>%s</td>\n</tr>'),
     )[no_terminal_tags]
+    escape = {False:lambda s: s, True:escape_html}[no_terminal_tags == 2]
     if explain: k = explain # overwrite key by explain message
     if type(k) is str: k = k.decode(encoding)
     if type(v) is str: v = v.decode(encoding)
     space = 23 # indent between names and values
-    key = (k+':').ljust(space)
+    if no_terminal_tags == 2:
+        # html
+        key = k
+        ljustify = ''
+    else:
+        # text
+        key = (k+':').ljust(space)
+        ljustify = ''.ljust(space+len(indent)+1)
     if type(v) in (list,tuple):
         if len(v):
-            body.append(get_ltext(colored_output.render(patt[0]%(indent,key,str_lists(v[0])))))
+            body.append(get_ltext(colored_output.render(patt[0]%(indent,key,escape(str_lists(v[0]))))))
             for text in v[1:]:
-                body.append(get_ltext('%s%s'%(''.ljust(space+len(indent)+1),str_lists(text))))
+                body.append(get_ltext(patt[2]%(ljustify,escape(str_lists(text)))))
         else:
             body.append(get_ltext(colored_output.render(patt[1]%(indent,key))))
     else:

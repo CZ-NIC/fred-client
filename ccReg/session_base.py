@@ -67,10 +67,6 @@ class ManagerBase:
     def get_session(self, offset):
         return self._session[offset]
 
-    def get_keys_sort_by_columns(self):
-        'Returns list of keys what will be used to sorting output values.'
-        return [n[0]for n in self._session[SORT_BY_COLUMNS]]
-        
     def init_options(self):
         'Init variables from options (after loaded config).'
         self._session[LANG] = self._options['lang']
