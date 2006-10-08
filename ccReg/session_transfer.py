@@ -190,8 +190,8 @@ class ManagerTransfer(ManagerBase):
 
     def get_keys_sort_by_columns(self):
         'Returns list of keys what will be used to sorting output values.'
-        return [n[0]for n in self.__get_column_items__(self._dct_answer['command'], self._dct_answer['data'])]
-                
+        return self.__get_column_items__(self._dct_answer['command'], self._dct_answer['data'])
+        
     def __get_column_items__(self, command_name, dct_data):
         'Returns struct of key names for sorting output values lines.'
         if self._session[SORT_BY_COLUMNS]:

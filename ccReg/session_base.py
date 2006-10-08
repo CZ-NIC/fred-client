@@ -301,10 +301,9 @@ class ManagerBase:
     def load_config(self, options):
         "Load config file and init internal variables. Returns 0 if fatal error occured."
         if type(options) is dict: self._options = options
-        if not self._conf:
+        if translate.config_error:
             self.append_error(translate.config_error)
-            self.display() # display errors or notes
-            return 0 # fatal error
+            return 1
         self._session[SESSION] = self._options.get('session','') # API definition of --session parameter.
         # set session variables
         section = 'session'
@@ -329,7 +328,7 @@ class ManagerBase:
         self.copy_default_options(section_epp_login, section, 'password')
         # session
         section = 'session'
-        self._session[POLL_AUTOACK] = {False:0,True:1}[str(self.get_config_value(section,'poll_autoack')).lower() == 'on']
+        self._session[POLL_AUTOACK] = {False:0,True:1}[str(self.get_config_value(section,'poll_autoack',OMMIT_ERROR)).lower() == 'on']
         self._session[CONFIRM_SEND_COMMAND] = {False:0,True:1}[self.get_config_value(section,'confirm_send_commands').lower() == 'on']
         self._session[VALIDATE] = {False:0,True:1}[self.get_config_value(section,'validate').lower() == 'on']
         colors = self.get_config_value(section,'colors',1)

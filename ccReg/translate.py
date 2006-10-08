@@ -64,16 +64,19 @@ def load_config(config_name):
     "Load config file and init internal variables. Returns 0 if fatal error occured."
     config = ConfigParser.SafeConfigParser()
     error = ''
-    modul_conf = os.path.join(os.path.split(__file__)[0],config_name)
+    names = []
+    ## modul_conf = os.path.join(os.path.split(__file__)[0],config_name)
     glob_conf = get_etc_config_name(config_name)
-    try:
-        # If you wand use mode config, uncomment next line and comment line after it.
-        # names = config.read([modul_conf, glob_conf, os.path.join(os.path.expanduser('~'),config_name)])
-        names = config.read(glob_conf)
-    except (ConfigParser.MissingSectionHeaderError, ConfigParser.ParsingError), msg:
-        error = 'ConfigParserError: %s'%str(msg)
-        config = None
-        names = []
+    if os.path.isfile(glob_conf):
+        try:
+            # If you wand use mode config, uncomment next line and comment line after it.
+            # names = config.read([modul_conf, glob_conf, os.path.join(os.path.expanduser('~'),config_name)])
+            names = config.read(glob_conf)
+        except (ConfigParser.MissingSectionHeaderError, ConfigParser.ParsingError), msg:
+            error = 'ConfigParserError: %s'%str(msg)
+            config = None
+    else:
+        error = "Configuration file '%s' missing."%glob_conf
     return config, error, names
 
 def get_config_value(config, section, option, omit_errors=0):

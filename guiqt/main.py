@@ -13,7 +13,7 @@ try:
     import ccReg
 except ImportError:
     # and than from relative path
-    sys.path.append('../')
+    sys.path.insert('../')
     try:
         import ccReg
     except ImportError, msg:
@@ -84,7 +84,9 @@ def count_data_rows(dct):
     size = 0
     for v in dct.values():
         if type(v) in (list,tuple):
-            size += len(v)
+            ln = len(v)
+            size += ln
+            if ln == 0: size += 1
         else:
             size += 1
     return size
@@ -221,16 +223,18 @@ class ccregMainWindow(_main.ccregWindow):
                 wtab.setNumRows(count_data_rows(data))
             #....................................................
             column_keys = self.epp._epp.get_keys_sort_by_columns()
-            if not column_keys: column_keys = data.keys()
+            if not column_keys:
+                column_keys = map(lambda k:(k,1,k), data.keys()) # default (unsorted)
             #....................................................
             r=0
-            for key in column_keys:
+            for key,verbose,label in column_keys:
                 if only_key and key != only_key: continue
                 value = data.get(key)
                 if value is None: continue
                 # enum EditType { Never, OnTyping, WhenCurrent, Always }
                 if columns > 1:
-                    wtab.setItem(r, 0, QTableItem(wtab, QTableItem.OnTyping, key))
+                    if not label: label = key
+                    wtab.setItem(r, 0, QTableItem(wtab, QTableItem.OnTyping, label.decode(encoding)))
                     r = self.__inset_into_table__(wtab, value, 1, r)
                 else:
                     r = self.__inset_into_table__(wtab, value, 0, r)
