@@ -7,6 +7,8 @@ import ccReg
 from ccReg.session_receiver import ccRegError
 from ccReg.translate import _T, options, option_errors, option_args
 
+html_tag = ('<pre class="ccreg_messages">','</pre>')
+
 def __auto_login__(epp, verbose):
     'Do login'
     if verbose > 1: print 'SEND AUTO-LOGIN:'
@@ -65,7 +67,9 @@ def send_docs(display_bar, docs=[]):
         max = len(docs)
         bar_step = (100.0/max)*0.01
         bar_header = '%s: %d'%(_T('Send files'),max)
+    if options['output'] == 'html': print html_tag[0]
     for code, xmldoc in docs:
+        epp.reset_round()
         if code:
             command_name = epp.grab_command_name_from_xml(xmldoc)
             if len(command_name):
@@ -74,16 +78,19 @@ def send_docs(display_bar, docs=[]):
                         epp.connect()
                     else:
                         if not __auto_login__(epp, verbose): break
+                if command_name == 'logout':
+                    verbose = epp.set_verbose(0) # silent logout
                 #-------------------------------------------------
                 # pokud je zalogováno, tak pošle soubor
                 #-------------------------------------------------
                 if epp.is_online(command_name) and epp.is_connected():
-                    if not display_bar and verbose: print 'SEND COMMAND:',command_name
                     # send document if only we are online
                     epp.send(xmldoc)          # send to server
                     xml_answer = epp.receive()     # receive answer
                     epp.process_answer(xml_answer) # process answer
+                    if options['output'] == 'html': print html_tag[1]
                     epp.print_answer()
+                    if options['output'] == 'html': print html_tag[0]
             epp.display() # display errors or notes
         else:
             if not display_bar: print "ERRORS:",xmldoc
@@ -92,6 +99,7 @@ def send_docs(display_bar, docs=[]):
             bar.clear()
             bar.update(bar_pos, _T('sending...'))
             bar_pos += bar_step
+    if options['output'] == 'html': print html_tag[1]
     if display_bar:
         # print final 100%
         note = "Ran test in %.3f sec"%(time.time() - sart_at)
@@ -102,6 +110,7 @@ def send_docs(display_bar, docs=[]):
     # KONEC přenosu - automatický logout
     #-------------------------------------------------
     if epp.is_connected():
+        epp.set_verbose(0)
         try:
             epp.api_command('logout') # automatický logout
         except ccRegError, msg:
@@ -130,5 +139,5 @@ if __name__ == '__main__':
   ./ccreg_sender.py cmd1.xml cmd2.xml
   ./ccreg_sender.py -s epp_host -l cs cmd1.xml cmd2.xml
     
-  ./ccreg_create.py info_domain nic.cz | ./ccreg_create.py info_contact reg-id pokus | ./ccreg_create.py check_domain hokus pokus cosi | ./ccreg_sender.py""",
+  echo -en "check_domain nic.cz\\ninfo_domain nic.cz" | ./ccreg_create.py | ./ccreg_sender.py""",
    _T('For more information, see README.'))

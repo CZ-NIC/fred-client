@@ -141,7 +141,6 @@ class ManagerTransfer(ManagerBase):
                 # If XML doc has been sent, manager saves the name of this command.
                 # This is essensial for resolve how type the server answer is.
                 self._command_sent = self.grab_command_name_from_xml(message)
-                if self._session[VERBOSE] > 1: self.append_note(_T('Command sent to EPP server.'),'BOLD')
             self.__check_is_connected__()
         else:
             self.append_error(_T('You are not connected.'))
@@ -301,25 +300,17 @@ class ManagerTransfer(ManagerBase):
         body=[]
         report = body.append
         if not dct: dct = self._dct_answer
-        report('<div class="ccreg_client">')
         #... code and reason .............................
-        report('<div class="ccreg_code">')
         code = dct['code']
         reason_css_class = {False:'command_done',True:'command_success'}[code==1000]
-        if self._session[VERBOSE] < 2:
-            # brief output mode
-            report('<table class="ccreg_reason">')
-            report('\t<tr>\n\t<td><span class="%s">%s</span></td>\n</tr>'%(reason_css_class,get_ltext(dct['reason'])))
-            report('</table>')
-        else:
+        if self._session[VERBOSE] > 1 or code != 1000:
             # full
-            tbl_reason=['<table class="ccreg_reason">']
+            tbl_reason=['<table class="ccreg_data">']
             tbl_reason.append('<tr>\n\t<th>code</th>\n\t<td>%d</td>\n</tr>'%code)
             tbl_reason.append('<tr>\n\t<th>command</th>\n\t<td>%s</td>\n</tr>'%get_ltext(dct['command']))
             tbl_reason.append('<tr>\n\t<th>reason</th>\n\t<td><span class="%s">%s</span></td>\n</tr>'%(reason_css_class,get_ltext(dct['reason'])))
             tbl_reason.append('</table>')
             report('\n'.join(tbl_reason))
-        report('</div>')
         #... errors .............................
         if len(dct['errors']):
             report('<div class="ccreg_errors">\n<strong>errors:</strong><ul>')
@@ -349,7 +340,6 @@ class ManagerTransfer(ManagerBase):
             report(escape_html(human_readable(self._raw_answer)))
             report('</pre>')
         # ..............
-        report('</div>')
         return '\n'.join(body)
         
     def save_history(self):

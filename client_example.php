@@ -1,7 +1,11 @@
 <?php
 $size = 60; // size of inputs
+
 $path = ''; // Here you can write path to the app
 // $path = '/home/zdenek/enum/epp_client/trunk/'; // TEST
+
+$command_options = ''; // here you can type some options. For more see ./ccreg_client.py --help
+// $command_options = '-s curlew'; // TEST
 
 define('CRLF', "\r\n");
 
@@ -22,59 +26,45 @@ body {
     ccRegClient output HTML
 
 *******************************/
-.ccreg_client {
-/*
-    border-left:dashed 3px #8FBCBF;
-    padding:1em;
-    background-color:#lightgreen;
-*/
+.ccreg_output {
+    /* main block of ccreg_client output */
+    font:size:9pt;
 }
 
 .ccreg_errors {
+    /* errors during send/receive process */
     color:#f00;
     font-weight:bold;
 }
+
+.ccreg_messages {
+    /* messages during connection process */
+    color:#888;
+}
+
 .ccreg_source {
+    /* display sources in verbose mode 3 */
     color:#00f;
 }
 
-.ccreg_code {
+.command_success {
+    /* appears if code has value 1000 */
+    color:#008000;
 }
-
-/*------------------------------
-
-    Reason table
-
-------------------------------*/
-table.ccreg_reason  { 
-    border-collapse:collapse;
-    border:solid 2px #8FBCBF;
+.command_done {
+    /* appears if code has not value 1000 */
+    color:#808000;
 }
-.ccreg_reason table { vertical-align:top; }
-.ccreg_reason th, 
-.ccreg_reason td {
-    border-right:solid 1px #7eafc0;
-    border-bottom:solid 1px #7eafc0;
-    padding:4px 8px;
-}
-.ccreg_reason th {
-    text-align:left;
-    border-left:solid 1px #7eafc0;
-    background-color:#F5F5F5;
-}
-.ccreg_reason tr:hover {
-    background-color:#F5F5DC;
-}
-
 
 /* ------------------------------
 
-    DATA table 
+    DATA/REASON table
 
 ------------------------------*/
 table.ccreg_data  { 
     border-collapse:collapse;
     border:solid 2px #8FBCBF;
+    margin:6px 0;
 }
 .ccreg_data table { vertical-align:top; }
 .ccreg_data th, 
@@ -92,23 +82,9 @@ table.ccreg_data  {
     background-color:#F5F5DC;
 }
 
-/*------------------------------
-
-    Messages
-
-------------------------------*/
-.command_success {
-    color:#008000;
-}
-.command_done {
-    color:#808000;
-}
-.ccreg_output {
-    /* color:#00008B; */
-}
 /******************************
 
-    other page tags
+    Input table tags
 
 ******************************/
 table#command  { border-collapse: collapse; }
@@ -131,6 +107,7 @@ table#command  { border-collapse: collapse; }
 }
 .msg-error { color:#f00; }
 .output {
+    /* TEST only */
     background-color:#fafafa;
     border:dotted 1px #a9a9a9;
     padding:0 10px;
@@ -158,6 +135,7 @@ table#command  { border-collapse: collapse; }
     <th>verbose</th>
     <td><select name='verbose'>
     <?php
+    // list of verbose levels:
     for($i=1; $i < 4; $i++) {
         if($i == ($_POST['verbose']+0)) $sel=' selected="selected"'; else $sel = '';
         echo "<option value='$i'$sel>$i</option>".CRLF;
@@ -176,17 +154,27 @@ table#command  { border-collapse: collapse; }
     <th class="tb-top">
     <input class="btn" type="submit" name="reset" value="Reset" /><br />
     <input class="btn" type="submit" name="send[hello]" value="Hello" />
+    <input class="btn" type="submit" name="send[poll]" value="Poll" />
     </th>
+
     <td class="tb-top">
     <input class="btn" type="submit" name="send[check_contact]" value="Check contact" /><br />
     <input class="btn" type="submit" name="send[check_nsset]" value="Check NSSET" /><br />
     <input class="btn" type="submit" name="send[check_domain]" value="Check domain" /><br />
     </td>
+
     <td class="tb-top">
     <input class="btn" type="submit" name="send[info_contact]" value="Info contact" /><br />
     <input class="btn" type="submit" name="send[info_nsset]" value="Info NSSET" /><br />
     <input class="btn" type="submit" name="send[info_domain]" value="Info domain" /><br />
     </td>
+
+    <td class="tb-top">
+    <input class="btn" type="submit" name="send[list_contact]" value="List contact" /><br />
+    <input class="btn" type="submit" name="send[list_nsset]" value="List NSSET" /><br />
+    <input class="btn" type="submit" name="send[list_domain]" value="List domain" /><br />
+    </td>
+
     </tr>
     </table>
 
@@ -196,39 +184,36 @@ table#command  { border-collapse: collapse; }
 </form>
 <?php
 
+// Here are commands that don't need handler:
+$ar_no_handler = array('hello','list_contact','list_nsset','list_domain');
+
 while(is_array($_POST['send'])) {
     $errors = array();
     $command = key($_POST['send']);
     $handle = strtr(trim($_POST['handle']), "'",'"');
 
-    if(!$handle and $command != 'hello') $errors[] = 'Handle missing.';
+    if(!$handle and !in_array($command,$ar_no_handler)) $errors[] = 'Handle missing.';
     // check if ccreg_client exist
     $cmdline = 'python '.$path.'ccreg_client.py -V';
     $ar_retval = array();
     exec($cmdline, $ar_retval);
     $retval = join('\n',$ar_retval);
-    // Test, what goes to the server:
+    // See, what looks command line:
     // echo "<div class='output'><p class='command'>$cmdline</p> <p class='retval'>$retval</p></div>".CRLF;
-    if(!preg_match('/ccRegClient \d+/',$retval)) $errors[] = 'ccreg_client.py not instaled properly.';
+    if(!preg_match('/ccRegClient \d+/',$retval)) $errors[] = 'ccreg_client.py not instaled properly. See help or set prefix of path.';
     if($errors) {
         echo '<h2 class="msg-error">Error:<br />'.join('<br />',$errors).'</h2>';
         break;
     }
-    switch($command) {
-    case 'hello':
-        $ccreg_command = $command;
-        break;
-    default:
-        $ccreg_command = "$command $handle";
-        break;
-    }
-    $cmdline = 'python '.$path."ccreg_client.py -s curlew -x -v $_POST[verbose] -o html -d '$ccreg_command'";
-    // Test, what goes to the server:
+    if(in_array($command,$ar_no_handler))
+         $ccreg_command = $command;
+    else $ccreg_command = "$command $handle";
+    $cmdline = 'python '.$path."ccreg_client.py ".$command_options." -x -v $_POST[verbose] -o html -d '$ccreg_command'";
+    // See, what looks command line:
     // echo "<div class='output'><p class='command'>$cmdline</p></div>".CRLF;
-    echo '<hr />'.CRLF;
-    echo '<pre id="ccreg_output">'.CRLF;
+    echo '<div id="ccreg_output">'.CRLF;
     passthru($cmdline);
-    echo '</pre>'.CRLF;
+    echo '</div>'.CRLF;
     break;
 }
 

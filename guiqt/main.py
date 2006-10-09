@@ -54,9 +54,15 @@ gui_encoding = {'cp852':'cp1250'}.get(encoding,encoding)
 
 def get_str(qtstr):
     'Translate QString. Trip whitespaces at the begining and end. Returns string in local charset.'
-    text = ('%s'%qtstr.local8Bit()).strip()
-    if gui_encoding != encoding:
-        text = text.decode(gui_encoding).encode(encoding)
+    if type(qtstr) is QString:
+        text = ('%s'%qtstr.local8Bit()).strip()
+        if gui_encoding != encoding:
+            text = text.decode(gui_encoding).encode(encoding)
+    else:
+        if type(qtstr) is unicode:
+            text = qtstr.encode(encoding)
+        else:
+            text = qtstr
     return text
 
 def append_key(dct, key, widget):
@@ -161,17 +167,17 @@ class ccregMainWindow(_main.ccregWindow):
     def __check_required__(self, data, required):
         'Returns True if all required data were set. Othervise list of missing names.'
         self.missing_required = []
-        for key in required:
+        for key, label in required:
             if not data.has_key(key) or len(data[key])==0:
-                self.missing_required.append(key)
+                self.missing_required.append(label) # key
         return len(self.missing_required) == 0
 
-    def display_error(self, messages, label=''):
+    def display_error(self, messages, qs_label=None):
         'Display Warning dialog.'
         # about, warning, critical
-        if not label: label = self.__tr('Missing required') ## .decode(encoding)
+        if not qs_label: qs_label = self.__tr('Missing required')
         if type(messages) not in (list,tuple): messages = (messages,)
-        QMessageBox.critical(self, label, '<h2>%s:</h2>\n%s'%(label,'<br>\n'.join(map(lambda s: s.decode(encoding),messages))))
+        QMessageBox.critical(self, qs_label, u'<h2>%s:</h2>\n%s'%(qs_label, u'<br>\n'.join(map(lambda s: get_str(s).decode(encoding),messages))))
 
     def btn_close(self):
         'Handle click on button Close'
@@ -195,7 +201,11 @@ class ccregMainWindow(_main.ccregWindow):
         #    'data': { key: str }
         # }
         dct_answer = self.epp._epp._dct_answer
-        errors = self.epp._epp.fetch_errors()
+        errors = []
+        error = self.epp._epp.fetch_errors()
+        if(error): errors.append(error)
+        if len(dct_answer.get('errors',[])):
+            errors.extend(dct_answer['errors'])
         code = '<b>code:</b> %d'%dct_answer.get('code',0)
         msg = []
         reason = dct_answer.get('reason','')
@@ -203,7 +213,7 @@ class ccregMainWindow(_main.ccregWindow):
             if type(reason) is str: reason = reason.decode(encoding)
             msg.append(reason)
         if len(errors):
-            msg.append('<b style="color:red">%s</b>'%errors)
+            msg.append('<b style="color:red">%s</b>'%'\n'.join(errors))
         getattr(self,'%s_code'%prefix).setText(code)
         getattr(self,'%s_msg'%prefix).setText('<br>\n'.join(msg))
         if not table and getattr(self, '%s_table'%prefix, None):
@@ -275,7 +285,7 @@ class ccregMainWindow(_main.ccregWindow):
     def check_is_online(self):
         'Check online. True - online / False - offline.'
         ret = self.epp.is_logon()
-        if not ret: self.display_error((self.__tr('You are not logged. First do login.'),))
+        if not ret: self.display_error(self.__tr('You are not logged. First do login.'))
         return ret
 
     #----------------------------------
@@ -299,7 +309,7 @@ class ccregMainWindow(_main.ccregWindow):
         append_key(d,'name', getattr(self,'%s_name'%key))
         append_key(d,'passw', getattr(self,'%s_password'%key))
         append_key(d,'cltrid', getattr(self,'%s_cltrid'%key))
-        if self.__check_required__(d, ('name','passw')):
+        if self.__check_required__(d, (('name',self.__tr('name')),('passw',self.__tr('password')))):
             try:
                 getattr(self.epp,key)(d['name'], d['passw'], d.get('cltrid'))
             except ccReg.ccRegError, err:
@@ -314,7 +324,7 @@ class ccregMainWindow(_main.ccregWindow):
         d = {}
         append_key(d,'name', getattr(self,'%s_name'%key))
         append_key(d,'cltrid', getattr(self,'%s_cltrid'%key))
-        if self.__check_required__(d, ('name',)):
+        if self.__check_required__(d, (('name',self.__tr('name')),)):
             if extends == SPLIT_NAME:
                 d['name'] = re.split('\s+',d['name']) # need for check commands
             try:
@@ -356,14 +366,14 @@ class ccregMainWindow(_main.ccregWindow):
     #==============================
     def login(self):
         if self.epp.is_logon():
-            self.display_error((self.__tr('You are logged already.'),))
+            self.display_error(self.__tr('You are logged already.'))
             return
         d = {}
         append_key(d,'username',self.login_username)
         append_key(d,'password',self.login_password)
         append_key(d,'new-password',self.login_new_password)
         append_key(d,'cltrid',self.login_cltrid)
-        if self.__check_required__(d, ('username','password')):
+        if self.__check_required__(d, (('username',self.__tr('username')),('password',self.__tr('password')))):
             # Definition from welcome panel:
             dc = {}
             append_key(dc,'host',       self.connect_host)
@@ -446,7 +456,13 @@ class ccregMainWindow(_main.ccregWindow):
         for key in ('type','number'):
             append_key(ssn, key, getattr(p,'create_contact_ssn_%s'%key))
         if ssn.has_key('number'): d['ssn'] = ssn
-        if self.__check_required__(d, ('id', 'name', 'email', 'city', 'cc')):
+        if self.__check_required__(d, (
+                    ('id',self.__tr('contact ID')), 
+                    ('name',self.__tr('name')), 
+                    ('email',self.__tr('email')), 
+                    ('city',self.__tr('city')), 
+                    ('cc',self.__tr('country code')))
+                    ):
             try:
                 self.epp.create_contact(d['id'], d['name'], d['email'], 
                     d['city'], d['cc'], d.get('pw'),
@@ -473,7 +489,7 @@ class ccregMainWindow(_main.ccregWindow):
                 append_key(dset, key, getattr(wnd,key))
             if dset.has_key('name'): dns.append(dset)
         d['dns'] = dns
-        if self.__check_required__(d, ('id', 'dns', 'tech')):
+        if self.__check_required__(d, (('id',self.__tr('NSSET ID')), ('dns',self.__tr('dns')), ('tech',self.__tr('tech. contact')))):
             try:
                 self.epp.create_nsset(d['id'], d['dns'], d['tech'], d.get('pw'), d.get('cltrid'))
             except ccReg.ccRegError, err:
@@ -497,7 +513,7 @@ class ccregMainWindow(_main.ccregWindow):
         #...............................
         if p.val_ex_date.isEnabled():
             append_key(d,'val_ex_date', self.renew_domain_val_ex_date)
-        if self.__check_required__(d, ('name', 'registrant')):
+        if self.__check_required__(d, (('name',self.__tr('name')), ('registrant',self.__tr('registrant')))):
             try:
                 self.epp.create_domain(d['name'], d['registrant'], 
                     d.get('pw'), d.get('nsset'), d.get('period'), d.get('admin'), 
@@ -539,7 +555,7 @@ class ccregMainWindow(_main.ccregWindow):
             append_key(ssn, key, getattr(p,'update_contact_ssn_%s'%key))
         if ssn.has_key('number'): chg['ssn'] = ssn
         if len(chg): d['chg'] = chg
-        if self.__check_required__(d, ('id',)) and len(d) > 1:
+        if self.__check_required__(d, (('id',self.__tr('Contact ID')),)) and len(d) > 1:
             try:
                 self.epp.update_contact(d['id'], d.get('add'), d.get('rem'), d.get('chg'), d.get('cltrid'))
             except ccReg.ccRegError, err:
@@ -579,7 +595,7 @@ class ccregMainWindow(_main.ccregWindow):
         chg = {}
         append_key(chg, 'pw', getattr(p, 'pw'))
         if len(chg): d['chg'] = chg
-        if self.__check_required__(d, ('id',)) and len(d) > 1:
+        if self.__check_required__(d, (('id',self.__tr('NSSET ID')),)) and len(d) > 1:
             try:
                 self.epp.update_nsset(d['id'], d.get('add'), d.get('rem'), d.get('chg'), d.get('cltrid'))
             except ccReg.ccRegError, err:
@@ -616,7 +632,7 @@ class ccregMainWindow(_main.ccregWindow):
         #................................
         if p.val_ex_date.isEnabled():
             append_key(d, 'val_ex_date', p.val_ex_date)
-        if self.__check_required__(d, ('name',)) and len(d) > 1:
+        if self.__check_required__(d, (('name',self.__tr('domain name')),)) and len(d) > 1:
             try:
                 self.epp.update_domain(d['name'], d.get('add'), d.get('rem'), d.get('chg'), d.get('val_ex_date'), d.get('cltrid'))
             except ccReg.ccRegError, err:
@@ -653,7 +669,7 @@ class ccregMainWindow(_main.ccregWindow):
         period = {}
         append_key(period,'num', self.renew_domain_period_num)
         append_key(period,'unit', self.renew_domain_period_unit)
-        if self.__check_required__(d, ('name','cur_exp_date')):
+        if self.__check_required__(d, (('name',self.__tr('domain name')),('cur_exp_date',self.__tr('')))):
             if period.has_key('num'):
                 period['unit'] = {'year':'y'}.get(period['unit'],'m')
             else:

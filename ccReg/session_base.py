@@ -379,12 +379,13 @@ class ManagerBase:
         if type(verbose) in (str,unicode):
             try:
                 verbose = int(verbose)
-                if verbose in (0,1,2,3):
-                    self._session[VERBOSE] = verbose
-                else:
-                    self.append_error(_T('Available verbose modes: 1, 2r 3.'))
             except ValueError, msg:
                 self.append_error('Verbose ValueError: %s'%msg)
+                verbose = 1
+        if verbose in (0,1,2,3):
+            self._session[VERBOSE] = verbose
+        elif verbose is not None:
+            self.append_error(_T('Available verbose modes: 1, 2, 3.'))
 
     def set_verbose(self, verbose):
         'Set verbose mode.'

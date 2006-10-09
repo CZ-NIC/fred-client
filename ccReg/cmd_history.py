@@ -18,7 +18,7 @@ class Completer:
             self.matching_words = [w for w in self.words if w.startswith(prefix)]
             self.prefix = prefix
         try:
-            return self.matching_words[index]
+            return self.matching_words[index]+' '
         except IndexError:
             return None
 

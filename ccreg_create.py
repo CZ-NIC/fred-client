@@ -67,6 +67,7 @@ if __name__ == '__main__':
                 else:
                     print "<?xml encoding='utf-8'?><errors>Invalid range pattern: %s</errors>"%options['range']
             else:
+                options['command'] = command
                 epp_doc, str_error = main(options)
                 display(epp_doc, str_error)
         else:
