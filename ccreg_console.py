@@ -6,6 +6,11 @@
 # Your terminal should support unicode. Check locale to LANG=cs_CZ.UTF-8
 #
 import sys, re, time
+try:
+    import readline
+except ImportError:
+    readline = None # for Unix like only
+
 import ccReg
 from ccReg.session_base import colored_output, VERBOSE
 from ccReg.translate import _T, options, option_errors
@@ -62,9 +67,9 @@ def main(options):
     if ccReg.translate.warning:
         print colored_output.render("${BOLD}${RED}%s${NORMAL}"%ccReg.translate.warning)
     epp = ccReg.ClientSession()
-    ccReg.cmd_history.set_history(epp.get_command_names())
     if not epp.load_config(options): return
     print epp.welcome()
+    epp.init_radline(readline) # readline behavior for Unix line OS
     is_online = 0
     prompt = '> '
     online = prompt

@@ -7,6 +7,7 @@
 # Funkce s prefixem "assemble_" jsou jednotlivé EPP příkazy, které třída
 # Message() umí sestavit. Seznam dostupných příkazů vrací funkce get_client_commands().
 #
+import time ## !!! TEST !!!
 import re, sys, os
 import random
 import ConfigParser
@@ -290,7 +291,59 @@ class Message(eppdoc.Message):
             columns.extend(self._command_params[command_name][1])
             retval = __build_command_example__(columns, self._dct, null_value)
         return retval.encode(encoding)
-    
+
+    def readline_parse_prompt(self, command_name, cmd):
+        'Parse readline prompt'
+        dct = {}
+        columns = [(command_name,(1,1),(),'','','',())]
+        columns.extend(self._command_params[command_name][1])
+        dct['command'] = [command_name]
+        errors = cmd_parser.parse(dct, columns, cmd)
+        return dct, errors
+
+    def readline_find_words(self, command_name, dct, last_token, fnc_debug_log=None):
+        'Find words to offer in prompt'
+        fnc_debug_log('readline_find_words("%s", len(DICT)=%d, "%s")'%(str(command_name), len(dct), str(last_token)))
+        words = []
+        columns = self._command_params[command_name][1]
+        # Walk throught columns and check if values and blocks are filled.
+        # Returns last empty column or block name and alternative value for choose.
+        for key, min_max, required, help, example, pattern, children in columns:
+            fnc_debug_log('\t\t[%s] KEY: %s EXAMPLE: "%s" HAS-KEY: %s'%(time.strftime("%H:%I:%S"),key,example.encode(encoding),dct.has_key(key)))
+            words = []
+            if dct.has_key(key):
+                # case value is in prompt allready
+##                fnc_debug_log('\t\tHAS-KEY dct[%s]=%s;'%(key,dct[key])) #!!!
+                if min_max[1] > 1 or min_max[1] is UNBOUNDED:
+                    words = [')']
+                    if min_max[1] is UNBOUNDED or len(dct[key]) < min_max[1]:
+                        # list is still not full
+                        choose_and_append_to_words(words,key,example,required)
+                if len(required):
+                    req = [k[0]for k in required]
+##                    fnc_debug_log('\t\tdct[%s]=%s; req=%s'%(key,dct[key],str(req))) #!!!
+                    if dct[key][0] in req:
+                        words = [dct[key][0]]
+                    else:
+                        words = req
+                        break
+            else:
+                # case value is not allready in prompt
+##                fnc_debug_log('\t\tNOT-KEY dct[%s];'%key) #!!!
+##                if len(children):
+##                    words = ['(']
+                if min_max[1] > 1 or min_max[1] is UNBOUNDED:
+                    if last_token == '(':
+                        words = [')'] #!!!
+                    else:
+                        words = ['(']
+                else:
+                    choose_and_append_to_words(words,key,example,required)
+                break
+##            fnc_debug_log('\t\t***STEP key(%s) words=%s'%(key,str(words))) #!!!
+        fnc_debug_log('\tFOUND-WORDS: %s'%str(words)) #!!!
+        return words
+        
     def parse_cmd(self, command_name, cmd, config, interactive, verbose, null_value):
         "Parse command line. Returns errors. Save parsed values to self._dct."
         dct = {}
@@ -1019,3 +1072,15 @@ def text_to_unicode(text):
             error='UnicodeDecodeError: %s'%msg
             text = unicode(repr(text), encoding)
     return text,error
+
+def choose_and_append_to_words(words,key,example,required):
+    'Appends of extends list of words.'
+    if len(required):
+        words.extend([k[0]for k in required])
+    elif example:
+##        if re.search('\s',example): example = "'%s'"%example
+##        words.append(example.encode(encoding))
+        words.append(key) #!!!
+    else:
+        words.append(key)
+    

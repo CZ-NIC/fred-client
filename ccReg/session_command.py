@@ -80,7 +80,7 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
             else:
                 self.append_note(edoc.get_xml(),'GREEN')
 
-    def __parse_command_params__(self, command_name, cmdline, interactive):
+    def __parse_command_params__(self, command_name, cmdline, interactive=None):
         "Check if parameters are valid. Params save into dict for use to assembling EPP document."
         errors, example, stop = self._epp_cmd.parse_cmd(command_name, cmdline, self._conf, interactive, self._session[VERBOSE], self._session[NULL_VALUE])
         if errors: self._errors.extend(errors)
@@ -464,10 +464,10 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
         'Automatic login if all needed informations are known.'
         if self._session[ONLINE]: return # session is logged on already
         data = self.get_connect_defaults()
-        if self.get_config_value('session', 'auto_login',OMMIT_ERROR) in ('no','off'): return # prohibited in config
+        if self.get_config_value('session', 'auto_login',OMIT_ERROR) in ('no','off'): return # prohibited in config
         section_epp_login = 'epp_login'
-        username = self.get_config_value(section_epp_login, 'username',OMMIT_ERROR)
-        password = self.get_config_value(section_epp_login, 'password',OMMIT_ERROR)
+        username = self.get_config_value(section_epp_login, 'username',OMIT_ERROR)
+        password = self.get_config_value(section_epp_login, 'password',OMIT_ERROR)
         # Check if all values are present:
         missing = []
         if not data[0]: missing.append(_T('host missing'))

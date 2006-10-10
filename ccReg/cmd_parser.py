@@ -256,7 +256,7 @@ def parse(dct_root, cols_root, text_line):
                     __next_key__(cols,current)
 
             elif _patt_blank.match(token):
-                pass # ommit blanks
+                pass # omit blanks
             else:
                 if token[-1]==',': token = token[:-1]
                 if explicit_key:

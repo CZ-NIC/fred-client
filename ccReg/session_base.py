@@ -19,7 +19,7 @@ ONLINE, CMD_ID, LANG, POLL_AUTOACK, CONFIRM_SEND_COMMAND, \
 # názvy sloupců pro defaultní hodnoty
 DEFS_LENGTH = 4
 LANGS,objURI,extURI,PREFIX = range(DEFS_LENGTH)
-OMMIT_ERROR = 1
+OMIT_ERROR = 1
 
 class ManagerBase:
     """This class holds buffers with error and note messages.
@@ -328,7 +328,7 @@ class ManagerBase:
         self.copy_default_options(section_epp_login, section, 'password')
         # session
         section = 'session'
-        self._session[POLL_AUTOACK] = {False:0,True:1}[str(self.get_config_value(section,'poll_autoack',OMMIT_ERROR)).lower() == 'on']
+        self._session[POLL_AUTOACK] = {False:0,True:1}[str(self.get_config_value(section,'poll_autoack',OMIT_ERROR)).lower() == 'on']
         self._session[CONFIRM_SEND_COMMAND] = {False:0,True:1}[self.get_config_value(section,'confirm_send_commands').lower() == 'on']
         self._session[VALIDATE] = {False:0,True:1}[self.get_config_value(section,'validate').lower() == 'on']
         colors = self.get_config_value(section,'colors',1)

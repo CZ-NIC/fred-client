@@ -1,5 +1,6 @@
 # -*- coding: utf8 -*-
 #!/usr/bin/env python
+import socket, re
 from cgi import escape as escape_html
 import eppdoc_client
 import client_socket
@@ -23,7 +24,15 @@ class ManagerTransfer(ManagerBase):
         self._raw_cmd = '' # XML EPP příkaz odeslaný serveru
         self._raw_answer = '' # XML EPP odpověd serveru
         self._dct_answer = {} # API response
+        #... readline variables ...............
+        self.readline = None
+        self.readline_words = []
+##        self.readline_prefix = None
+##        self.readline_words = self._available_commands ## self.get_command_names()
+##        self.readline_matching_words = []
+        #......................................
         self.reset_src()
+        test_init_client() # TEST ONLY!!!
 
     def get_command_names(self):
         return self._available_commands
@@ -84,12 +93,12 @@ class ManagerTransfer(ManagerBase):
         'Get connect defaults from config'
         if not self._conf: self.load_config() # load config, if was not been yet
         section = self.config_get_section_connect()
-        data = [self.get_config_value(section,'host',OMMIT_ERROR),
-                self.get_config_value(section,'port',OMMIT_ERROR,'int'),
-                self.get_config_value(section,'ssl_key',OMMIT_ERROR),
-                self.get_config_value(section,'ssl_cert',OMMIT_ERROR),
-                self.get_config_value(section,'timeout',OMMIT_ERROR),
-                self.get_config_value(section,'socket',OMMIT_ERROR),
+        data = [self.get_config_value(section,'host',OMIT_ERROR),
+                self.get_config_value(section,'port',OMIT_ERROR,'int'),
+                self.get_config_value(section,'ssl_key',OMIT_ERROR),
+                self.get_config_value(section,'ssl_cert',OMIT_ERROR),
+                self.get_config_value(section,'timeout',OMIT_ERROR),
+                self.get_config_value(section,'socket',OMIT_ERROR),
                 ]
         # command options
         self._session[HOST] = data[0] # for prompt info
@@ -353,6 +362,53 @@ class ManagerTransfer(ManagerBase):
     def remove_from_history(self, count=1):
         'Remove count last commands from history.'
         eppdoc_client.eppdoc_assemble.remove_from_history(count)
+
+    #-------------------------------------
+    # readline part
+    #-------------------------------------
+    def init_radline(self, readline):
+        'Init modul readline'
+        if readline:
+            readline.parse_and_bind("tab: complete")
+            readline.set_completer(self.complete)
+            self.readline = readline
+
+    def __get_readline_words__(self, buffer):
+        'Find set of words to choose in the prompt help'
+        #writelog("\tbuffer=%s"%buffer)
+        m = re.match('\w+',buffer)
+        if m:
+            command_name = m.group(0)
+        else:
+            command_name = None
+        if command_name is not None and command_name in self._available_commands:
+            writelog("\tCOMMAND IS %s"%command_name)
+            dct, errors = self._epp_cmd.readline_parse_prompt(command_name, buffer)
+            writelog("DICT %s\nERRORS: %s"%(dct,errors))
+            m = re.match('(\S+)\s*$',buffer)
+            if m:
+                token = m.group(1)
+            else:
+                token = ''
+            words = self._epp_cmd.readline_find_words(command_name, dct, token, {False: writelog, True: lambda s: s}[writelog is None])
+        else:
+            words = self._available_commands # default offer
+        #writelog('\tOFFER WORDS = %s'%str(words))
+        return words
+
+    def complete(self, prefix, index):
+        'Function for readline.complete manages reaction on the TAB key press.'
+        if index == 0:
+            self.readline_words = [w for w in self.__get_readline_words__(self.readline.get_line_buffer()) if w.startswith(prefix)]
+        try:
+            word = self.readline_words[index]+' '
+        except IndexError:
+            word = None
+        writelog("complete(%s, %d) WORD=%s;"%(prefix,index,word))
+        #writelog('word = %s'%str(self.readline_words))
+        return word
+    #-------------------------------------
+
         
 def __append_into_report__(body,k,v,explain, indent = '', no_terminal_tags=0):
     'Append value type(unicode|list|tuple) into report body.'
@@ -386,7 +442,7 @@ def __append_into_report__(body,k,v,explain, indent = '', no_terminal_tags=0):
         body.append(get_ltext(colored_output.render(patt[0]%(indent,key, v))))
 
 def str_lists(text):
-    """Prepare list or tuples for display. Same as str() but ommit u'...' symbols
+    """Prepare list or tuples for display. Same as str() but omit u'...' symbols
     and put all values into brackets.
     """
     tmp = text
@@ -413,3 +469,41 @@ def human_readable(body):
     if not re.search('</\w+>\n<',body):
         body = re.sub('(</[^>]+>)','\\1\n',body)
     return body
+
+#--------------------
+# For test only
+#--------------------
+def writelog(msg):
+    'for test only, debug readline'
+    if debug_sock: debug_sock.send('%s\n'%msg)
+def test_init_client():
+    'for test only, debug readline'
+    global debug_sock
+    debug_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    try:
+        debug_sock.connect((DEBUG_HOST, DEBUG_PORT))
+    except socket.error, msg:
+        debug_sock = None
+def run_test_server():
+    'for test only, debug readline'
+    print "RUN TEST SERVER (for debug readline) AT PORT",DEBUG_PORT
+    DEBUG_HOST = '' # Symbolic name meaning the local host
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.bind((DEBUG_HOST, DEBUG_PORT))
+    s.listen(1)
+    conn, addr = s.accept()
+    print 'Connected by', addr
+    while 1:
+        data = conn.recv(1024)
+        if not data: break
+        print data
+    conn.close()
+
+DEBUG_HOST = 'localhost'
+DEBUG_PORT = 50007
+debug_sock = None
+#--------------------
+
+if __name__ == '__main__':
+    if len(sys.argv) > 1 and sys.argv[1]=='server':
+        run_test_server()
