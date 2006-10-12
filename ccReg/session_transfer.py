@@ -27,12 +27,9 @@ class ManagerTransfer(ManagerBase):
         #... readline variables ...............
         self.readline = None
         self.readline_words = []
-##        self.readline_prefix = None
-##        self.readline_words = self._available_commands ## self.get_command_names()
-##        self.readline_matching_words = []
         #......................................
         self.reset_src()
-        test_init_client() # TEST ONLY!!!
+        #test_init_client() # TEST ONLY
 
     def get_command_names(self):
         return self._available_commands
@@ -375,36 +372,37 @@ class ManagerTransfer(ManagerBase):
 
     def __get_readline_words__(self, buffer):
         'Find set of words to choose in the prompt help'
-        #writelog("\tbuffer=%s"%buffer)
+        #writelog("BUFFER=%s"%buffer)
         m = re.match('\w+',buffer)
         if m:
             command_name = m.group(0)
         else:
             command_name = None
         if command_name is not None and command_name in self._available_commands:
-            writelog("\tCOMMAND IS %s"%command_name)
+            #writelog("\tCOMMAND IS %s"%command_name)
             dct, errors = self._epp_cmd.readline_parse_prompt(command_name, buffer)
-            writelog("DICT %s\nERRORS: %s"%(dct,errors))
-            m = re.match('(\S+)\s*$',buffer)
-            if m:
-                token = m.group(1)
-            else:
-                token = ''
-            words = self._epp_cmd.readline_find_words(command_name, dct, token, {False: writelog, True: lambda s: s}[writelog is None])
+            #writelog("DICT %s\nERRORS: %s"%(dct,errors))
+            words = self._epp_cmd.readline_find_words(command_name, dct, {False: writelog, True: lambda s: s}[writelog is None])
         else:
             words = self._available_commands # default offer
-        #writelog('\tOFFER WORDS = %s'%str(words))
+        # writelog('\tOFFER WORDS = %s'%str(words))
         return words
 
     def complete(self, prefix, index):
         'Function for readline.complete manages reaction on the TAB key press.'
         if index == 0:
             self.readline_words = [w for w in self.__get_readline_words__(self.readline.get_line_buffer()) if w.startswith(prefix)]
+            #try: # FOR TEST ONLY
+            #    self.readline_words = []
+            #    words = self.__get_readline_words__(self.readline.get_line_buffer())
+            #    self.readline_words = [w for w in words if w.startswith(prefix)]
+            #except Exception, msg:
+            #    writelog('*** EXCEPTION ***: %s'%str(msg))
         try:
             word = self.readline_words[index]+' '
         except IndexError:
             word = None
-        writelog("complete(%s, %d) WORD=%s;"%(prefix,index,word))
+        #writelog("complete(%s, %d) WORD='%s';"%(prefix,index,word))
         #writelog('word = %s'%str(self.readline_words))
         return word
     #-------------------------------------
@@ -503,7 +501,7 @@ DEBUG_HOST = 'localhost'
 DEBUG_PORT = 50007
 debug_sock = None
 #--------------------
-
-if __name__ == '__main__':
-    if len(sys.argv) > 1 and sys.argv[1]=='server':
-        run_test_server()
+# TEST ONLY
+#if __name__ == '__main__':
+#    if len(sys.argv) > 1 and sys.argv[1]=='server':
+#        run_test_server()

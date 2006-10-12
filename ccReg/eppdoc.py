@@ -369,6 +369,7 @@ class Data:
     """
     def __init__(self, parent):
         # POROR! Žádný uzel se nesmí jmenovat attr a data.
+        # ALERT! Names 'attr' and 'data' are reserve for internal use.
         self._parent = parent
         self._attr = []
         self._data = ''
@@ -399,8 +400,8 @@ class Data:
     def __make_data_help__(self):
         "Make help in format 'name: (name, name: (name[3], name), name)'"
         doc = []
-        if self._data: self.__doc__ += '*' # indikátor, že položka má data
-        if self._attr: self.__doc__ += '^' # indikátor, že položka má atributy
+        if self._data: self.__doc__ += '*' # indicator item has got values
+        if self._attr: self.__doc__ += '^' # indicator item had got attributtes
         for key in self.__dict__:
             if key[0] == '_': continue
             member = self.__dict__[key]
@@ -504,7 +505,7 @@ def __pfd__(dict_data,color=0,indent=0):
             if len(rows): body.extend(rows)
     else:
         if indent and dict_data.has_key('attr'):
-            # attributy, ale ne ty z rootu
+            # attributs, but not from root
             attr=[]
             for k,v in dict_data['attr']:
                 attr.append(patt[0]%(k,v))
@@ -514,7 +515,7 @@ def __pfd__(dict_data,color=0,indent=0):
         # other children nodes    
         ind = ' '*indent
         for key in dict_data.keys():
-            # podřízené uzly
+            # descendents nodes
             if key in ('attr','data'): continue
             if dict_data[key] == {}:
                 # display empty node
@@ -523,19 +524,19 @@ def __pfd__(dict_data,color=0,indent=0):
                 rows = __pfd__(dict_data[key],color,indent+4)
                 if len(rows):
                     if len(rows)>1:
-                        # více řádků [klíč]: a na další řádky hodnoty
+                        # more lines [key]: and next lines with values
                         body.append(patt[2]%(ind,key))
                         for r in rows:
                             body.append('%s%s'%(ind,r))
                     else:
-                        # jeden řádek - [klíč]: hodnota
+                        # one line - [key]: value
                         body.append(patt[3]%(ind,key,rows[0]))
     return body
 
 def prepare_display(dict_data,color=0):
     "Prepare dictionary data for display."
-    # Druhá verze prepare_for_dispaly(), která je kompaktnější a 
-    # kde jednořádkové hodnoty jsou na řádku s klíčem.
+    # Second version of prepare_for_dispaly(), what is mode compact and
+    # where onerow values are on the line with key.
     return '\n'.join(__pfd__(dict_data,color))
 
 def prepare_for_display(dict_values,color=0,indent=0):
@@ -642,7 +643,7 @@ def test_parse(filename):
 
     
 if __name__ == '__main__':
-    "Testování zpracování XML dokumentu a mapování XML.DOM do python dict/class."
+    "Test of parsing XML document and mapping XML.DOM into python dict/class."
 ##    test_display()
     test_parse('test-disclose.xml')
 ##    ret = {'reason': u'Authentication error; server closing connection', 'code': 2501, 'data': {"h1":"ano"}, 'errors': []}
