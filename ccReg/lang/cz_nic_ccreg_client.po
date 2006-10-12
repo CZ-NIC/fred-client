@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-10-05 15:56+0200\n"
+"POT-Creation-Date: 2006-10-12 16:44+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Zdeněk Böhm <zdenek.bohm@nic.cz>\n"
 "Language-Team: CS <info@nic.cz>\n"
@@ -124,9 +124,9 @@ msgstr "povinný jen je-li tato část zadána"
 #, python-format
 msgid "minimum is %d item"
 msgid_plural "minimum are %d items"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "minimum je %d položka"
+msgstr[1] "minimum jsou %d položky"
+msgstr[2] "minimum je %d položek"
 
 #: ccReg/eppdoc_assemble.py:52
 msgid "unbounded list"
@@ -175,7 +175,7 @@ msgid "missing"
 msgstr "chybí"
 
 #: ccReg/eppdoc_assemble.py:184
-msgid "Interactive mode has been interrupted."
+msgid "Interactive mode has been aborded."
 msgstr "Interaktivní mód byl přerušen."
 
 #: ccReg/eppdoc_assemble.py:204
@@ -190,43 +190,40 @@ msgstr "Parametr MUSÍ být hodnota z následujícího seznamu"
 msgid "Example"
 msgstr "Příklad"
 
-#: ccReg/eppdoc_assemble.py:307 ccReg/session_command.py:202
-#: ccreg_create.py:20
+#: ccReg/eppdoc_assemble.py:353 ccReg/session_command.py:202
+#: ccreg_create1490.py:16 ccreg_create.py:21
 msgid "Unknown command"
 msgstr "Neznámý příkaz"
 
-#: ccReg/eppdoc_assemble.py:308
+#: ccReg/eppdoc_assemble.py:354
 msgid "For more type"
 msgstr "Pro více informací zadejte"
 
-#: ccReg/eppdoc_assemble.py:317
-msgid "Interactive input params mode. For BREAK type"
-msgstr "Mód interaktivního zadávání parametrů. Pro přerušení zadejte"
+#: ccReg/eppdoc_assemble.py:363
+msgid "Interactive input mode started. Type ! to abort."
+msgstr "Start interaktivního módu. Zadejte ! pokud chcete mód přerušit."
 
-#: ccReg/eppdoc_assemble.py:317
-msgid "If you don't fill item press ENTER."
-msgstr "Pokud nechcete položku zadat stiskněte ENTER."
-
-#: ccReg/eppdoc_assemble.py:324
+#: ccReg/eppdoc_assemble.py:370
 msgid "End of interactive input. [press enter]"
 msgstr "Konec interaktivního zadání parametrů. [stiskněte enter]"
 
-#: ccReg/eppdoc_assemble.py:329
+#: ccReg/eppdoc_assemble.py:375
 msgid "No parameters. Skip interactive mode."
 msgstr "Žádné parametery. Interaktivní mód přeskočen."
 
-#: ccReg/eppdoc_assemble.py:340
+#: ccReg/eppdoc_assemble.py:386
 msgid "ERROR: Missing required value."
 msgid_plural "ERROR: Missing required values."
 msgstr[0] "chybí povinný parametr"
 msgstr[1] "chybí povinné parametry"
 msgstr[2] "chybí povinné parametry"
 
-#: ccReg/eppdoc_assemble.py:343
+#: ccReg/eppdoc_assemble.py:389
+#, python-format
 msgid "Type '%s' for more information."
 msgstr "Pro více informací zadejte '%s'."
 
-#: ccReg/eppdoc_assemble.py:990
+#: ccReg/eppdoc_assemble.py:908
 #, python-format
 msgid "Value can be a list of max %d value."
 msgid_plural "Value can be a list of max %d values."
@@ -234,11 +231,11 @@ msgstr[0] "Hodnota může být seznam o max. velikosti %d položky."
 msgstr[1] "Hodnota může být seznam o max. velikosti %d položek."
 msgstr[2] "Hodnota může být seznam o max. velikosti %d položek."
 
-#: ccReg/eppdoc_assemble.py:992
+#: ccReg/eppdoc_assemble.py:910
 msgid "Value can be an unbouded list of values."
 msgstr "Hodnota může být libovolně velký seznam."
 
-#: ccReg/eppdoc_assemble.py:994
+#: ccReg/eppdoc_assemble.py:912
 msgid "Minimum is"
 msgstr "Minimum je"
 
@@ -514,7 +511,7 @@ msgstr "oznámení na email"
 msgid "registrant"
 msgstr "vlastník domény"
 
-#: ccReg/eppdoc_client.py:153 ccReg/eppdoc_client.py:249 guiqt/main.py:669
+#: ccReg/eppdoc_client.py:153 ccReg/eppdoc_client.py:249
 msgid "nsset"
 msgstr ""
 
@@ -582,7 +579,7 @@ msgid "postal informations"
 msgstr "poštovní informace"
 
 #: ccReg/eppdoc_client.py:206 ccReg/eppdoc_client.py:270
-#: ccReg/eppdoc_client.py:373 guiqt/main.py:208
+#: ccReg/eppdoc_client.py:373
 msgid "name"
 msgstr "jméno"
 
@@ -615,8 +612,7 @@ msgid "SSN (Security social number)"
 msgstr "SSN (číslo sociálního pojištění)"
 
 #: ccReg/eppdoc_client.py:242 ccReg/eppdoc_client.py:246
-#: ccReg/eppdoc_client.py:267 ccReg/eppdoc_client.py:272 guiqt/main.py:266
-#: guiqt/main.py:268
+#: ccReg/eppdoc_client.py:267 ccReg/eppdoc_client.py:272
 msgid "status"
 msgstr ""
 
@@ -853,93 +849,92 @@ msgstr "Dokument má chybné kódování. LookupError: %s"
 msgid "Internal error: Master node '%s' doesn't exist."
 msgstr "Interní chyba: Nadřazený uzel '%s' neexistuje."
 
-#: ccReg/__init__.py:726
+#: ccReg/__init__.py:725
 msgid "This program requires Python 2.4 or higher. Your version is"
 msgstr "Tento program vyžaduje Python 2.4 nebo vyšší. Vaše verze je"
 
-#: ccReg/session_base.py:106
+#: ccReg/session_base.py:102
 msgid "Confirm has been set to"
 msgstr "Potvrzení bylo nastaveno na"
 
-#: ccReg/session_base.py:162
+#: ccReg/session_base.py:158
 msgid "Type \"help\", \"license\" or \"credits\" for more information."
 msgstr ""
 "Zadejte \"help\", \"license\" or \"credits\" pro zobrazení více informací."
 
-#: ccReg/session_base.py:179
+#: ccReg/session_base.py:175
 msgid "Invalid format of"
 msgstr "Neplatný formát"
 
-#: ccReg/session_base.py:179 ccReg/session_base.py:183
+#: ccReg/session_base.py:175 ccReg/session_base.py:179
 msgid "See help for more."
 msgstr "Více informací najdete v helpu."
 
-#: ccReg/session_base.py:183
+#: ccReg/session_base.py:179
 msgid "cannot be empty"
 msgstr "nemůže být prázdné"
 
-#: ccReg/session_base.py:194
+#: ccReg/session_base.py:190
 msgid "Create default config failed."
 msgstr "Vytvoření defaultního config souboru selhalo."
 
-#: ccReg/session_base.py:196
+#: ccReg/session_base.py:192
 msgid "Actual config builded from files"
 msgstr "Aktuální config sestavený ze souborů"
 
-#: ccReg/session_base.py:198
+#: ccReg/session_base.py:194
 msgid "No config"
 msgstr "Žádný config"
 
-#: ccReg/session_base.py:204
+#: ccReg/session_base.py:200
 msgid "Actual connection HERE"
 msgstr "Aktuální spojení ZDE"
 
-#: ccReg/session_base.py:233
+#: ccReg/session_base.py:229
 msgid "Schema in session missing. Thi is invalid instalation."
-
 msgstr "Chybí schema v session. Tato instalace je neplatná."
 
-#: ccReg/session_base.py:285
+#: ccReg/session_base.py:281
 msgid "Default config file saved. See help for more."
 msgstr ""
 "Defaultní konfigurační soubor byl uložen. Další informace naleznete v "
 "nápovědě."
 
-#: ccReg/session_base.py:288
+#: ccReg/session_base.py:284
 msgid "Can not save config file. Reason"
 msgstr "Není možné uložit konfigurační soubor. Důvod"
 
-#: ccReg/session_base.py:317
+#: ccReg/session_base.py:311
 msgid "Fatal error: Default config create failed."
 msgstr "Fatální chyba: Vytvoření defaultního konfiguračního souboru selhalo."
 
-#: ccReg/session_base.py:369
+#: ccReg/session_base.py:363
 msgid "Host name missing."
 msgstr "Chybí jméno hosta"
 
-#: ccReg/session_base.py:371
+#: ccReg/session_base.py:365
 msgid "Port number missing."
 msgstr "Chybí číslo portu"
 
-#: ccReg/session_base.py:375
+#: ccReg/session_base.py:369
 msgid "SSL certificate path missing."
 msgstr "Cesta k SSL certifikátu chybí."
 
-#: ccReg/session_base.py:379
+#: ccReg/session_base.py:373
 msgid "SSL private key path missing."
 msgstr "Cesta k SSL privátnímu klíči chybí."
 
-#: ccReg/session_base.py:390
-msgid "Available verbose modes: 1, 2r 3."
+#: ccReg/session_base.py:387
+msgid "Available verbose modes: 1, 2, 3."
 msgstr "Mód výstupu může být nastaven jen na hodnoty 1, 2 nebo 3."
 
-#: ccReg/session_base.py:426 ccReg/session_base.py:442
-#: ccReg/session_base.py:463
+#: ccReg/session_base.py:421 ccReg/session_base.py:437
+#: ccReg/session_base.py:458
 #, python-format
 msgid "Validator has been disabled. Type %s to enable it."
 msgstr "Validátor byl deaktivován. Opětná aktivace se provede zadáním %s."
 
-#: ccReg/session_base.py:441
+#: ccReg/session_base.py:436
 msgid ""
 "Temporary file for XML EPP validity verification can not been created. Reason"
 msgstr ""
@@ -1094,7 +1089,8 @@ msgstr "SYNTAXE"
 msgid "OPTIONS"
 msgstr "PARAMETRY"
 
-#: ccReg/session_command.py:178 ccreg_create.py:71 ccreg_sender.py:126
+#: ccReg/session_command.py:178 ccreg_create1490.py:59 ccreg_create.py:76
+#: ccreg_sender.py:135
 msgid "EXAMPLES"
 msgstr "PŘÍKLADY"
 
@@ -1102,120 +1098,120 @@ msgstr "PŘÍKLADY"
 msgid "For list all commands type"
 msgstr "Pro výpis celého seznamu příkazů zadejte"
 
-#: ccReg/session_command.py:244
+#: ccReg/session_command.py:240
 msgid ""
 "Missing command name. For start interactive mode type command name after "
 "exclamation. For mode type help !."
 msgstr ""
-"Jméno příkazu chybí. Zadejte za vykřičník jméno EPP přiazu. Tím spustíte intaraktivní režim."
-"Příkaz help ! zobrazí podrobnosti."
+"Jméno příkazu chybí. Zadejte za vykřičník jméno EPP přiazu. Tím spustíte "
+"intaraktivní režim.Příkaz help ! zobrazí podrobnosti."
 
-#: ccReg/session_command.py:270
+#: ccReg/session_command.py:266
 msgid "Hidden commands are"
 msgstr "Skryté příkazy jsou"
 
-#: ccReg/session_command.py:289
+#: ccReg/session_command.py:285
 msgid "Load file"
 msgstr "Načíst soubor"
 
-#: ccReg/session_command.py:295
+#: ccReg/session_command.py:291
 msgid "Not found"
 msgstr "Nenalezen"
 
-#: ccReg/session_command.py:321
+#: ccReg/session_command.py:317
 msgid "Translation of answer column names is"
 msgstr "Překlad jmen sloupců odpovědi je"
 
-#: ccReg/session_command.py:328
+#: ccReg/session_command.py:324
 msgid "Confirm is"
 msgstr "Potvrzení je nastaveno na"
 
-#: ccReg/session_command.py:333
+#: ccReg/session_command.py:329
 msgid "is"
 msgstr "je"
 
-#: ccReg/session_command.py:338
+#: ccReg/session_command.py:334
 msgid "Validation process is"
 msgstr "Validace je nastavena na"
 
-#: ccReg/session_command.py:343
+#: ccReg/session_command.py:339
 msgid "You are connected already. Type disconnect for close connection."
 msgstr "Již jste připojeni. Pro uzavření spojení zadejte disconnect."
 
-#: ccReg/session_command.py:355
+#: ccReg/session_command.py:351
 msgid "You has been disconnected."
 msgstr "Byli jste odpojeni."
 
-#: ccReg/session_command.py:357 ccReg/session_transfer.py:153
-#: ccReg/session_transfer.py:180 ccreg_console.py:137
+#: ccReg/session_command.py:353 ccReg/session_transfer.py:157
+#: ccReg/session_transfer.py:184 ccreg_console.py:142
 msgid "You are not connected."
 msgstr "Nejste připojeni."
 
-#: ccReg/session_command.py:364
+#: ccReg/session_command.py:360
 msgid "Colors mode is"
 msgstr "Mód barevnosti je"
 
-#: ccReg/session_command.py:369
+#: ccReg/session_command.py:365
 msgid "Verbose mode is"
 msgstr "Mód rozsahu výpisu je"
 
-#: ccReg/session_command.py:386
+#: ccReg/session_command.py:382
 msgid "poll-autoack is"
 msgstr "poll-autoack je"
 
-#: ccReg/session_command.py:394
+#: ccReg/session_command.py:390
 msgid "Dir list"
 msgstr "Výpis adresáře"
 
-#: ccReg/session_command.py:410
+#: ccReg/session_command.py:406
 msgid "Interpreted answer"
 msgstr "Přeložená odpověď"
 
-#: ccReg/session_command.py:413
+#: ccReg/session_command.py:409
 msgid "Answer source"
 msgstr "Zdrojová odpověď"
 
-#: ccReg/session_command.py:420
+#: ccReg/session_command.py:416
 msgid "Interpreted command"
 msgstr "Přeložený příkaz"
 
-#: ccReg/session_command.py:425
+#: ccReg/session_command.py:421
 msgid "Command source"
 msgstr "Zdrojový příkaz"
 
-#: ccReg/session_command.py:444 guiqt/main.py:355
+#: ccReg/session_command.py:440
 msgid "You are logged already."
 msgstr "Jste již zalogován"
 
-#: ccReg/session_command.py:477
+#: ccReg/session_command.py:473
 msgid "host missing"
 msgstr "chybí host"
 
-#: ccReg/session_command.py:478
+#: ccReg/session_command.py:474
 msgid "port missing"
 msgstr "chybí port"
 
-#: ccReg/session_command.py:479
+#: ccReg/session_command.py:475
 msgid "private key missing"
 msgstr "chybí privátní klíč"
 
-#: ccReg/session_command.py:480
+#: ccReg/session_command.py:476
 msgid "certificate missing"
 msgstr "chybí certifikát"
 
-#: ccReg/session_command.py:481
+#: ccReg/session_command.py:477
 msgid "username missing"
 msgstr "chybí username"
 
-#: ccReg/session_command.py:482
+#: ccReg/session_command.py:478
 msgid "password missing"
 msgstr "chybí heslo"
 
-#: ccReg/session_command.py:484
+#: ccReg/session_command.py:480
 msgid "Automatic login stopped"
 msgstr "Automatický login byl zastaven"
 
-#: ccReg/session_command.py:492
+#: ccReg/session_command.py:488
 msgid "Login command sent to the server"
 msgstr "Příkaz login byl odeslán na server"
 
@@ -1285,24 +1281,28 @@ msgstr "Nejste zalogováni. Nejdříve musíte zadat login()."
 msgid "ERROR: Connection to %s interrupted."
 msgstr "Chyba: Spojení s %s bylo přerušeno."
 
-#: ccReg/session_transfer.py:114
+#: ccReg/session_transfer.py:119
 msgid "Can not create connection. Missing values"
 msgstr "Není možné vytvořit spojení. Chybí hodnoty"
 
-#: ccReg/session_transfer.py:123
+#: ccReg/session_transfer.py:128
 msgid "Server didn't return Greeting message. Contact server administrator."
 msgstr "Server nevrátil Greeting odpověď. Kontaktujte správce serveru."
 
-#: ccReg/session_transfer.py:150
-msgid "Command sent to EPP server."
-msgstr "Příkaz byl odeslán na EPP server."
-
-#: ccReg/session_transfer.py:163
+#: ccReg/session_transfer.py:167
 msgid "Logout command sent to server"
 msgstr "Odeslán logout"
 
-#: ccreg_client.py:14 ccreg_console.py:152 ccreg_create.py:69
-#: ccreg_sender.py:123
+#: ccReg/session_transfer.py:296
+#, python-format
+msgid "(%d item)"
+msgid_plural "(%d items)"
+msgstr[0] "(%d položka)"
+msgstr[1] "(%d položky)"
+msgstr[2] "(%d položek)"
+
+#: ccreg_client.py:14 ccreg_console.py:157 ccreg_create1490.py:57
+#: ccreg_create.py:74 ccreg_sender.py:132
 msgid "Usage"
 msgstr "Použití"
 
@@ -1326,12 +1326,12 @@ msgstr ""
 "-q --qt\n"
 "                   spustit klineta v grafickém režimu"
 
-#: ccreg_client.py:21 ccreg_console.py:155 ccreg_create.py:79
-#: ccreg_sender.py:134
+#: ccreg_client.py:21 ccreg_console.py:160 ccreg_create1490.py:67
+#: ccreg_create.py:84 ccreg_sender.py:143
 msgid "For more information, see README."
 msgstr "Více informací v README."
 
-#: ccreg_console.py:13
+#: ccreg_console.py:18
 msgid ""
 "Connection options:\n"
 "  -?, --help       show this help and exit\n"
@@ -1403,103 +1403,36 @@ msgstr ""
 "  -o OUTPUT_TYPE, --output=OUTPUT_TYPE\n"
 "                   zobrazit výstup jako: text (default), html"
 
-#: ccreg_console.py:107
+#: ccreg_console.py:112
 msgid "EPP document is not valid"
 msgstr "EPP dokument není validní"
 
-#: ccreg_console.py:115
+#: ccreg_console.py:120
 msgid "Do you really want to send this command to the server?"
 msgstr "Opravdu chcete odeslat tento poříkaz na server?"
 
-#: ccreg_console.py:153
+#: ccreg_console.py:158
 msgid "Console for communication with EPP server."
 msgstr "Konzole pro komunikaci s EPP serverem."
 
-#: ccreg_create.py:70
+#: ccreg_create1490.py:58 ccreg_create.py:75
 msgid "Create EPP XML document from command line parameters."
 msgstr "Vytvoří EPP XML dokument ze zadaných parametrů."
 
-#: ccreg_create.py:78
+#: ccreg_create1490.py:66 ccreg_create.py:83
 msgid "Eventual errors are return in XML format: <errors>... msg ...</errors>."
 msgstr ""
 "Případné chyby jsou vráceny ve formátu XML: <errors>... msg ...</errors>."
 
-#: ccreg_sender.py:67
+#: ccreg_sender.py:69
 msgid "Send files"
 msgstr "Odeslat soubory"
 
-#: ccreg_sender.py:93
+#: ccreg_sender.py:100
 msgid "sending..."
 msgstr "posílám..."
 
-#: ccreg_sender.py:124
+#: ccreg_sender.py:133
 msgid "Module for sending files to the EPP server."
 msgstr "Modul pro odeslání souborů na EPP server."
 
-#: guiqt/main.py:33
-msgid ""
-"For runnig this application you need install PyQt and Qt modules. For more "
-"see help."
-msgstr ""
-"Pro běh této aplikace potřebujete mít nainstalován PyQt a Qt."
-"Více informací nalezente v helpu."
-
-#: guiqt/main.py:170
-msgid "Missing required"
-msgstr "chybí povinný parametr"
-
-#: guiqt/main.py:176
-msgid "Close client"
-msgstr "Zavřít klienta"
-
-#: guiqt/main.py:177
-msgid "Do you wand realy close client?"
-msgstr "Opravdu chcete ukončit klienta?"
-
-#: guiqt/main.py:208
-msgid "value"
-msgstr "hodnota"
-
-#: guiqt/main.py:268
-msgid "disconnect"
-msgstr "nepřipojen"
-
-#: guiqt/main.py:274
-msgid "You are not logged. First do login."
-msgstr "Nejste zalogováni. Nejdříve se zalogujte."
-
-#: guiqt/main.py:372
-msgid "Invalid connection input"
-msgstr "Neplatné zadání pro spojení"
-
-#: guiqt/main.py:378
-msgid "Process login failed."
-msgstr "Login se nezdařil"
-
-#: guiqt/main.py:528
-msgid ""
-"In a part of address must be set both city and country code. For disabled "
-"this part leave both empty."
-msgstr ""
-"V části adresa musí být zadáno město a kód země."
-"Nechte obě hodnoty prázdné, chcete-li tuto část vynechat."
-
-#: guiqt/main.py:546 guiqt/main.py:586 guiqt/main.py:623
-msgid "No values to update."
-msgstr "Žádné hodnoty pro aktualizaci."
-
-#: guiqt/main.py:666
-msgid "contact"
-msgstr "kontakt ID"
-
-#: guiqt/main.py:672
-msgid "domain"
-msgstr "název domény"
-
-#: guiqt/main.py:681
-msgid "sources"
-msgstr "Zdroje"
-
-#: guiqt/main.py:687
-msgid "Sources are not available now. Run command at first."
-msgstr "Zdroje nejsou nyní dostupné. Spusťe nejdříve příkaz."

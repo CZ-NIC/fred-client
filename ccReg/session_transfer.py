@@ -5,7 +5,7 @@ from cgi import escape as escape_html
 import eppdoc_client
 import client_socket
 from session_base import *
-from translate import _T, _TP, encoding
+from translate import _T, _TP, encoding, options
 
 class ManagerTransfer(ManagerBase):
     """EPP client support.
@@ -88,7 +88,7 @@ class ManagerTransfer(ManagerBase):
     #==================================================
     def get_connect_defaults(self):
         'Get connect defaults from config'
-        if not self._conf: self.load_config() # load config, if was not been yet
+        if not self._conf: self.load_config(options) # load config, if was not been yet
         section = self.config_get_section_connect()
         data = [self.get_config_value(section,'host',OMIT_ERROR),
                 self.get_config_value(section,'port',OMIT_ERROR,'int'),
@@ -110,8 +110,13 @@ class ManagerTransfer(ManagerBase):
         self._lorry.handler_message = self.process_answer
         if not data:
             data = self.get_connect_defaults()
-            if None in data[:5]:
-                self.append_error('%s: %s'%(_T('Can not create connection. Missing values'),str(data)))
+            labels = ('host','port','SSL private key','SSL certificate','timeout')
+            errors=[]
+            for n in range(len(data[:5])):
+                if data[n] is None:
+                    errors.append(labels[n])
+            if len(errors):
+                self.append_error('%s: %s'%(_T('Can not create connection. Missing values'),', '.join(errors)))
                 return 0
         if self._lorry.connect(data, self._session[VERBOSE]):
             epp_greeting = self._lorry.receive() # receive greeting
@@ -220,6 +225,35 @@ class ManagerTransfer(ManagerBase):
             if value not in ('',[]): __append_into_report__(body,key,value,explain,'',1) # '' - indent; 1 - no terminal tags
         return sep.join(body).decode(encoding)
 
+    def __append_to_body__(self, body, dct):
+        'Internal support for get_answer()'
+        data_indent = ''
+        data = []
+        in_higher_verbose = 0
+        used = []
+        dct_data = dct['data']
+        for key,verbose,explain in self.__get_column_items__(dct['command'], dct_data):
+            if verbose > self._session[VERBOSE]:
+                in_higher_verbose += 1
+                used.append(key)
+                continue
+            value = dct_data.get(key,u'')
+            if value not in ('',[]): __append_into_report__(data,key,value,explain,data_indent)
+            used.append(key)
+        if len(data):
+            body.append('')
+            if self._session[VERBOSE] > 1:
+                body.append(colored_output.render('${BOLD}data:${NORMAL}'))
+            body.extend(data)
+        #--- INTERNAL USE ----
+        # POZOR!!! V ostré verzi musí být deaktivováno!!!
+        if self._session[SORT_BY_COLUMNS]:
+            # in mode SORT_BY_COLUMNS check if all names was used
+            missing = [k for k in dct_data.keys() if k not in used and dct_data[k][0] >= self._session[VERBOSE]]
+            if len(missing):
+                body.append(colored_output.render('\n${BOLD}${RED}Here needs FIX code: %s${NORMAL}'%'(%s)'%', '.join(missing)))
+        #---------------------
+
     def get_answer(self, dct=None, sep='\n'):
         'Show values parsed from the server answer.'
         body=[]
@@ -251,34 +285,17 @@ class ManagerTransfer(ManagerBase):
                 report(get_ltext('  %s'%error))
             report(colored_output.render('${NORMAL}'))
         #... data .............................
-        data_indent = ''
-        data = []
-        in_higher_verbose = 0
-        used = []
-        dct_data = dct['data']
-        for key,verbose,explain in self.__get_column_items__(dct['command'], dct_data):
-            if verbose > self._session[VERBOSE]:
-                in_higher_verbose += 1
-                used.append(key)
-                continue
-            value = dct_data.get(key,u'')
-            if value not in ('',[]): __append_into_report__(data,key,value,explain,data_indent)
-            used.append(key)
-        if len(data):
-            body.append('')
-            if self._session[VERBOSE] > 1:
-                body.append(colored_output.render('${BOLD}data:${NORMAL}'))
-            body.extend(data)
-        #if in_higher_verbose:
-        #    report(colored_output.render('   ${WHITE}(${YELLOW}${BOLD}%d${NORMAL} ${WHITE}%s)${NORMAL}'%(in_higher_verbose,_TP('not displayed value','not displayed values',in_higher_verbose))))
-        #--- INTERNAL USE ----
-        # POZOR!!! V ostré verzi musí být deaktivováno!!!
-        if self._session[SORT_BY_COLUMNS]:
-            # in mode SORT_BY_COLUMNS check if all names was used
-            missing = [k for k in dct_data.keys() if k not in used and dct_data[k][0] >= self._session[VERBOSE]]
-            if len(missing):
-                report(colored_output.render('\n${BOLD}${RED}Here needs FIX code: %s${NORMAL}'%'(%s)'%', '.join(missing)))
-        #---------------------
+        if re.match('\w+:list',dct['command']):
+            # list output execption
+            body.append('') # empty line
+            cnt=0
+            for item in dct['data'].get('list',[]):
+                body.append(get_ltext(item))
+                cnt+=1
+            body.append('') # empty line
+            body.append(_TP('(%d item)','(%d items)',cnt)%cnt)
+        else:
+            self.__append_to_body__(body, dct)
         #... third verbose level .............................
         report('') # empty row
         for n in range(len(body)):
@@ -411,6 +428,7 @@ class ManagerTransfer(ManagerBase):
 def __append_into_report__(body,k,v,explain, indent = '', no_terminal_tags=0):
     'Append value type(unicode|list|tuple) into report body.'
     # odd - lichý, even - sudý
+##    print "!!! __append_into_report__ k=",k,"v=",v,"indent=",indent
     patt = (
         ('%s${BOLD}%s${NORMAL} %s','%s${BOLD}%s${NORMAL}','%s%s'),
         ('%s%s %s','%s%s','%s%s'),

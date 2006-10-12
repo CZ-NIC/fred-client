@@ -322,8 +322,8 @@ class Message:
             listData = resData[0].getElementsByTagName(key)
             root['response']['resData'][key][anchor] = get_node_values(listData, anchor)
         node = response[0].getElementsByTagName('result')
-        root['response']['result']['msg'] = get_node_values(node, 'msg')
         root['response']['result'] = get_node_attributes(node, 'result')
+        root['response']['result']['msg'] = get_node_values(node, 'msg')
         return root
 
 #-------------------------------------------------

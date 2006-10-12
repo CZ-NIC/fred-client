@@ -31,7 +31,7 @@ class ManagerCommand(ManagerTransfer):
         #   (example, example)
         # )
         self._session_commands = (
-            (('!',), None, (_T('command'),'any command, EPP or session type',), _T('Start the interactive mode of the input command params.'), ('!create_domain',)),
+            (('!',), None, (_T('command'),'EPP command',), _T('Start the interactive mode of the input command params.'), ('!create_domain',)),
             (('colors',), self.__session_colors__, (_T('switch'),'on','off'), _T('Turn on/off colored output.'), ('colors on',)),
             (('config',), self.manage_config, (_T('command'),'create',), _T('Display or create config file.'), ('config',)),
             (('confirm',), self.__session_confirm__, (_T('switch'),'on','off'), _T('Set on/off confirmation for sending editable commands to the server.'), ('confirm off',)),
@@ -164,7 +164,7 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
             else:
                 command_line, command_help, notice, examples = self.__get_help_session_detail__(command_name)
             patt = re.compile("^(\S)",re.MULTILINE)
-            patt_sub = "   \\1"
+            patt_sub = "    \\1"
             #
             self.append_note('%s:'%_T('DESCRIPTION'),'BOLD')
             self.append_note('${WHITE}%s${NORMAL}'%patt.sub(patt_sub,notice))
@@ -181,7 +181,7 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
             command_name='.'
         return command_name
 
-    def epp_command(self, cmdline):
+    def epp_command(self, cmdline, raw_command):
         'Find EPP command in input and check if is known.'
         command_name = cmdline
         stop = 0
@@ -190,7 +190,7 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
             if m.group(2) in self._available_commands:
                 command_name = m.group(2)
                 all_is_OK, stop = self.__parse_command_params__(command_name, cmdline, m.group(1))
-                if stop == 2: return 'q' # User press Ctrl+C or Ctrl+D
+                if stop == 2: return 'q',1 # User press Ctrl+C or Ctrl+D
                 if all_is_OK:
                     if not stop:
                         # create document if only 'stop' was not occured.
@@ -199,7 +199,7 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
                 else:
                     self.append_error(self._epp_cmd.get_errors()) # any problems on the command line occurrs
             else:
-                self.append_note('%s: %s'%(_T("Unknown command"),cmdline.encode(encoding)))
+                self.append_note('%s: %s'%(_T("Unknown command"),raw_command.encode(encoding)))
                 self.append_note('(%s: ${BOLD}help${NORMAL})'%_T('For list all commands type'))
                 self._epp_cmd.help_check_name(self._notes, cmdline)
         return command_name, stop
@@ -273,7 +273,7 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
                 except UnicodeDecodeError, msg:
                     self.append_error('UnicodeDecodeError: %s'%msg)
                     cmd = unicode(repr(cmd), encoding)
-            command_name, stop = self.epp_command(cmd)
+            command_name, stop = self.epp_command(cmd, command)
             if command_name != 'q': # User press Ctrl+C or Ctrl+D in interactive mode.
                 self._raw_cmd = self._epp_cmd.get_xml()
                 self.append_error(self._epp_cmd.fetch_errors()) # any problems on the command line occurrs

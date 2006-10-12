@@ -181,7 +181,7 @@ class Message(eppdoc.Message):
             if param == '':
                 ret_value = null_value
             elif re.match('!+',param):
-                session_base.print_unicode('${BOLD}${RED}%s${NORMAL}'%_T('Interactive mode has been interrupted.'))
+                session_base.print_unicode('${BOLD}${RED}%s${NORMAL}'%_T('Interactive mode has been aborded.'))
                 stop = 1 # STOP interactive mode
                 ret_value = null_value
                 break
@@ -209,7 +209,7 @@ class Message(eppdoc.Message):
 
     def __interactive_mode_children_values__(self,dct,command_name,parents,name,min,max,children,null_value):
         'Put children values (namespaces)'
-        print_info_listmax(min,max) # (Value can be a list of max %d values.)
+        self.print_info_listmax(min,max) # (Value can be a list of max %d values.)
         dct[name] = []
         current_pos = already_done = 0
         while max is UNBOUNDED or current_pos < max:
@@ -228,7 +228,7 @@ class Message(eppdoc.Message):
     def __interactive_mode_single_value__(self,dct,command_name,parents,name,min,max,allowed,msg_help,example,null_value,already_done,required_pos):
         'Put single value'
         # single value or list of values
-        print_info_listmax(min,max) # (Value can be a list of max %d values.)
+        self.print_info_listmax(min,max) # (Value can be a list of max %d values.)
         if self._verbose > 1:
             if len(allowed):
                 session_base.print_unicode('${WHITE}%s:${NORMAL} (%s)'%(_T('Parameter MUST be a value from following list'),', '.join(self.__make_abrev_help__(allowed))))
@@ -239,7 +239,7 @@ class Message(eppdoc.Message):
         while max is UNBOUNDED or current_pos < max:
             parents[-1][3] = current_pos # name, min, max, counter = current_pos
             if dct.has_key(name) and len(dct[name]) >= min: min = required_pos = 0 # all needed values has been set
-            prompt = u'%s (%s) > '%(__scope_to_string__(parents), unicode(self.param_reqired_type[required_pos],encoding))
+            prompt = u'%s [%s]: '%(__scope_to_string__(parents), unicode(self.param_reqired_type[required_pos],encoding))
             param, stop = self.__ineractive_input_one_param__(name,(min,max),allowed,example, null_value, prompt)
             if stop: break
             current_pos += 1
@@ -258,7 +258,8 @@ class Message(eppdoc.Message):
         for row in columns:
             name,min_max,allowed,msg_help,example,pattern,children = row
             min,max = min_max
-            parents.append([name,min,max,0]) # name,min,max,counter
+            utext,error = text_to_unicode(msg_help)
+            parents.append([name,min,max,0,utext]) # name,min,max,counter
             # Když je hodnota povinná jen v této sekci, tak se req=1 nastaví na req=2
             # když je hodnota s req=2 zadána, tak se všechny ostatní req hodnoty nastaví na req=1
             if already_done:
@@ -359,7 +360,7 @@ class Message(eppdoc.Message):
         if interactive:
             dct[command_name] = [command_name]
             if len(vals[1]) > 1:
-                session_base.print_unicode('${BOLD}${YELLOW}%s: ${NORMAL}${BOLD}!${NORMAL} %s'%(_T('Interactive input params mode. For BREAK type'),_T("If you don't fill item press ENTER.")))
+                session_base.print_unicode('${BOLD}%s${NORMAL}'%_T('Interactive input mode started. Type ! to abort.'))
                 history_length = get_history_length()
                 user_typed_null, stop = self.__interactive_mode__(command_name, vals[1], dct, null_value)
                 if not stop: # user press ! or Ctrl+C or Ctrl+D
@@ -900,6 +901,17 @@ class Message(eppdoc.Message):
 
     #===========================================
 
+    def print_info_listmax(self,min,max):
+        if self._verbose < 2: return # no display message in verbose mode 1
+        msg = []
+        if max > 1:
+            msg.append(_TP('Value can be a list of max %d value.','Value can be a list of max %d values.',max)%max)
+        elif max is UNBOUNDED:
+            msg.append(_T('Value can be an unbouded list of values.'))
+        if len(msg) and min:
+            msg.append('%s %d.'%(_T('Minimum is'),min))
+        if len(msg): session_base.print_unicode('(%s)'%(' '.join(msg)))
+    
 #-----------------------------------------------------
 # Support of command line history
 #-----------------------------------------------------
@@ -944,15 +956,15 @@ def __has_key_dict__(dct, key):
 def __scope_to_string__(scopes):
     'Assemble names into string. Scopes is in format: ((name, min, max, counter), ...)'
     tokens=[]
-    for name,min,max,counter in scopes:
+    for name,min,max,counter,label in scopes:
         if max is UNBOUNDED or max > 1:
             if max is UNBOUNDED:
                 str_max = 'oo'
             else:
                 str_max = str(max)
-            tokens.append('%s[%d/%s]'%(name,counter+1,str_max))
+            tokens.append('%s[%d/%s]'%(label,counter+1,str_max))
         else:
-            tokens.append(name)
+            tokens.append(label)
     return '.'.join(tokens)
 
 def escape(text):
@@ -1028,16 +1040,6 @@ def __build_command_example__(columns, dct_data, null_value):
                 body.append(text)
     while len(body) and body[-1] in (null_value,'()'): body.pop()
     return ' '.join(body)
-    
-def print_info_listmax(min,max):
-    msg = []
-    if max > 1:
-        msg.append(_TP('Value can be a list of max %d value.','Value can be a list of max %d values.',max)%max)
-    elif max is UNBOUNDED:
-        msg.append(_T('Value can be an unbouded list of values.'))
-    if len(msg) and min:
-        msg.append('%s %d.'%(_T('Minimum is'),min))
-    if len(msg): session_base.print_unicode('(%s)'%(' '.join(msg)))
 
 def remove_empty_keys(dct, null_value):
     'Remove empty keys. dct is in format {key: [str, {key: [str, str]} ,str]}'

@@ -62,7 +62,7 @@ class ManagerBase:
         self._options = translate.options # parameters from command line
         if type(self._options) is not dict:
             self._options = {'lang':'en','colors':'off','verbose':'1','user':'','password':'','host':'',}
-        self._email_reports_bug = 'info@nic.cz'
+        self._email_reports_bug = 'ccreg-devel@lists.nic.cz'
 
     def get_session(self, offset):
         return self._session[offset]
@@ -303,7 +303,6 @@ class ManagerBase:
         if type(options) is dict: self._options = options
         if translate.config_error:
             self.append_error(translate.config_error)
-            return 1
         self._session[SESSION] = self._options.get('session','') # API definition of --session parameter.
         # set session variables
         section = 'session'
