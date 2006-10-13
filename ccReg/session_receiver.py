@@ -472,6 +472,7 @@ class ManagerReceiver(ManagerCommand):
         if len(self._errors): raise ccRegError(self.fetch_errors())
         return self._dct_answer
 
+    #-------------------------------------------------
 
 
 class ccRegError(StandardError):
@@ -525,7 +526,7 @@ def adjust_dct_keys(dct, names):
                 dct[name] = (dct[name],)
         else:
             dct[name] = ()
-    
+
 def test(name_amd_xml):
     m = ManagerReceiver()
     m._command_sent = name_amd_xml[0]

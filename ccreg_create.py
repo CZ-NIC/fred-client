@@ -9,6 +9,7 @@ import ccReg
 from ccReg.translate import _T, options, option_args, config_error, encoding
 
 epp = None
+php_string = ccReg.session_transfer.php_string
 
 def main(options):
     global epp
@@ -25,7 +26,10 @@ def main(options):
         if type(errors) == unicode: errors = errors.encode(encoding)
         if options['output'] == 'html':
             str_error = '<div class="ccreg_errors">\n<strong>%s errors:</strong>\n<pre>\n%s</pre><div>'%(command_name,escape_html(errors))
+        elif options['output'] == 'php':
+            str_error = '<?php\n$error_create_name = %s;\n$error_create_value = %s;\n?>'%(php_string(command_name),php_string(errors))
         else:
+            # default 'text'
             str_error = "<?xml encoding='utf-8'?><errors>%s: %s</errors>"%(command_name,errors)
     return epp_doc, str_error
 

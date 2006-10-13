@@ -1,13 +1,17 @@
 <?php
 $size = 60; // size of inputs
 
-$path = ''; // Here you can write path to the app
-// $path = '/home/zdenek/enum/epp_client/trunk/'; // TEST
+$exec_path = ''; // Here you can write path to the app
+// $exec_path = '/home/zdenek/enum/epp_client/trunk/'; // TEST
+
+// Here you define where exe saves PHP code with answer data:
+$php_module_name = '/tmp/ccreg_client.php';
 
 $command_options = ''; // here you can type some options. For more see ./ccreg_client.py --help
 // $command_options = '-s curlew'; // TEST
 
 define('CRLF', "\r\n");
+define('BR', "<br />\r\n");
 
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="cs" xml:lang="cs">
@@ -118,6 +122,10 @@ table#command  { border-collapse: collapse; }
 .retval {
     color:#a80;
 }
+.note {
+    color:#888;
+    font-size:80%;
+}
 </style>
 </head>
 <body>
@@ -180,6 +188,25 @@ table#command  { border-collapse: collapse; }
 
     </td>
 </tr>
+
+<tr>
+    <th>Output</th>
+    <td><?php
+    $ar_output = array('html'=>'Simple HTML', 'php'=>'PHP code');
+    foreach($ar_output as $k => $v) {
+        if($_POST['output'] == $k) $checked = 'checked="checked"'; else $checked = '';
+        echo "<input type='radio' name='output' value='$k' $checked /> $v".CRLF;
+    }
+    ?><br />
+    <span class='note'>
+<i>Explanation:</i><br />
+Mode <strong>Simple HTML</strong> outputs HTML code directly into this web page.<br />
+Mode <strong>PHP code</strong> generates PHP code what we redicert into file and subsequently we include into page.
+    </span>
+    </td>
+</tr>
+
+
 </table>
 </form>
 <?php
@@ -194,7 +221,7 @@ while(is_array($_POST['send'])) {
 
     if(!$handle and !in_array($command,$ar_no_handler)) $errors[] = 'Handle missing.';
     // check if ccreg_client exist
-    $cmdline = 'python '.$path.'ccreg_client.py -V';
+    $cmdline = 'python '.$exec_path.'ccreg_client.py -V';
     $ar_retval = array();
     exec($cmdline, $ar_retval);
     $retval = join('\n',$ar_retval);
@@ -208,12 +235,73 @@ while(is_array($_POST['send'])) {
     if(in_array($command,$ar_no_handler))
          $ccreg_command = $command;
     else $ccreg_command = "$command $handle";
-    $cmdline = 'python '.$path."ccreg_client.py ".$command_options." -x -v $_POST[verbose] -o html -d '$ccreg_command'";
-    // See, what looks command line:
-    // echo "<div class='output'><p class='command'>$cmdline</p></div>".CRLF;
-    echo '<div id="ccreg_output">'.CRLF;
-    passthru($cmdline);
-    echo '</div>'.CRLF;
+    if($_POST['output']=='html') {
+        //--- HTML ---------------------------------
+        $cmdline = 'python '.$exec_path."ccreg_client.py ".$command_options." -x -v $_POST[verbose] -o html -d '$ccreg_command'";
+        // See, what looks command line:
+        // echo "<div class='output'><p class='command'>$cmdline</p></div>".CRLF;
+        echo '<div id="ccreg_output">'.CRLF;
+        passthru($cmdline);
+        echo '</div>'.CRLF;
+        //-----------------------------------------
+    } else {
+        //--- PHP ---------------------------------
+        $cmdline = 'python '.$exec_path."ccreg_client.py ".$command_options." -x -v $_POST[verbose] -o php -d '$ccreg_command' > $php_module_name";
+        // See, what looks command line:
+        // echo "<div class='output'><p class='command'>$cmdline</p></div>".CRLF;
+
+        // reset output:
+        @unlink($php_module_name);
+
+        passthru($cmdline); // output is redirect into file
+
+        // If everything went ok, we have prepared PHP data in module $php_module_name:
+        include($php_module_name);
+        
+        echo "<h3>PHP CODE:</h3>".CRLF;
+        echo '<pre>'.CRLF;
+        echo "<strong>\$encoding</strong>: $encoding".CRLF;
+        echo "<strong>\$code</strong>: $code".CRLF;
+        echo "<strong>\$command</strong>: $command".CRLF;
+        echo "<strong>\$reason</strong>: $reason".CRLF;
+        echo CRLF;
+
+        echo "<strong>\$errors</strong>:".CRLF;
+        print_r($errors);
+        if($error_create_name)  echo "<strong>\$error_create_name</strong>: $error_create_name".CRLF;
+        if($error_create_value) echo "<strong>\$error_create_value</strong>: $error_create_value".CRLF;
+        echo CRLF;
+
+        echo "<strong>DATA (\$labels, \$data)</strong>:".CRLF;
+        if(is_array($data)) {
+            foreach($data as $key => $value) {
+                echo "<strong>$labels[$key]</strong> [$key]: ";
+                print_r($value);
+                if(!is_array($value)) echo CRLF;
+            }
+        }
+        echo "<i>Third verbose level:</i>".BR;
+        echo "<strong>\$source_command</strong>:".BR;
+        echo htmlspecialchars($source_command).BR;
+        echo "<strong>\$source_answer</strong>:".BR;
+        echo htmlspecialchars($source_answer).BR;
+        echo '</pre>'.CRLF;
+
+        //--- FOR EXAMPLE ONLY: --------------------
+        echo '<hr />'.CRLF;
+        echo "<h3>DUMP OF: $php_module_name</h3>".CRLF;
+        echo '<pre class="ccreg_source">'.CRLF;
+        $fp = fopen($php_module_name,'r');
+        if($fp) {
+            while(!feof($fp)) {
+                echo htmlspecialchars(fgets($fp, 4096));
+            }
+            fclose($fp);
+        }
+        echo '</pre>'.CRLF;
+        //-----------------------------------------
+    }
+    
     break;
 }
 

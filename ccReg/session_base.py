@@ -77,7 +77,12 @@ class ManagerBase:
         if self._options['verbose']:
             self.__init_verbose__(self._options['verbose'])
         key = self._options['output'].lower()
-        if key in ('text','html'): self._session[OUTPUT_TYPE] = key
+        if key:
+            avilable = ('text','html','php') 
+            if key in avilable:
+                self._session[OUTPUT_TYPE] = key
+            else:
+                self.append_error('%s: (%s)'%(_T('Option -o --output unknown value. Available values are'),', '.join(avilable)))
         if self._options['no_validate']: self._session[VALIDATE] = 0
         
     def set_auto_connect(self, switch):

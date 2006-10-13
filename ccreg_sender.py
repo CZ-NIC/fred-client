@@ -5,9 +5,8 @@
 import sys, os, re, time
 import ccReg
 from ccReg.session_receiver import ccRegError
+from ccReg.session_transfer import BEGIN, END
 from ccReg.translate import _T, options, option_errors, option_args
-
-html_tag = ('<pre class="ccreg_messages">','</pre>')
 
 def __auto_login__(epp, verbose):
     'Do login'
@@ -67,7 +66,7 @@ def send_docs(display_bar, docs=[]):
         max = len(docs)
         bar_step = (100.0/max)*0.01
         bar_header = '%s: %d'%(_T('Send files'),max)
-    if options['output'] == 'html': print html_tag[0]
+    epp.print_tag(BEGIN)
     for code, xmldoc in docs:
         epp.reset_round()
         if code:
@@ -88,9 +87,9 @@ def send_docs(display_bar, docs=[]):
                     epp.send(xmldoc)          # send to server
                     xml_answer = epp.receive()     # receive answer
                     epp.process_answer(xml_answer) # process answer
-                    if options['output'] == 'html': print html_tag[1]
+                    epp.print_tag(END)
                     epp.print_answer()
-                    if options['output'] == 'html': print html_tag[0]
+                    epp.print_tag(BEGIN)
             epp.display() # display errors or notes
         else:
             if not display_bar: print "ERRORS:",xmldoc
@@ -99,7 +98,7 @@ def send_docs(display_bar, docs=[]):
             bar.clear()
             bar.update(bar_pos, _T('sending...'))
             bar_pos += bar_step
-    if options['output'] == 'html': print html_tag[1]
+    epp.print_tag(END)
     if display_bar:
         # print final 100%
         note = "Ran test in %.3f sec"%(time.time() - sart_at)

@@ -7,6 +7,13 @@ import client_socket
 from session_base import *
 from translate import _T, _TP, encoding, options
 
+# Tags for scripted outputs:
+d_tag = {
+    'html': ('<pre class="ccreg_messages">','</pre>'),
+    'php': ('<?php /*','*/ ?>'),
+}
+BEGIN,END = range(2)
+
 class ManagerTransfer(ManagerBase):
     """EPP client support.
     This class take care about sending and receiving messages from/to server.
@@ -184,6 +191,13 @@ class ManagerTransfer(ManagerBase):
             self.append_error(_T('You are not connected.'))
         return ret
 
+    #==================================================
+    #
+    #    PARSE RESPONSE
+    #    functions for parse and display response
+    #
+    #==================================================
+        
     def process_answer(self, epp_server_answer):
         "This function MUST override derived class."
         self.append_error('Internal Error: Function process_answer() must be overriden!')
@@ -193,10 +207,12 @@ class ManagerTransfer(ManagerBase):
         if not dct: dct = self._dct_answer
         if self._session[VERBOSE] and dct.get('command'):
             # Print in only any command was sent.
-            if self._session[OUTPUT_TYPE] == 'html':
-                print self.get_answer_html(dct) # verbose is not 0
-            else:
-                print self.get_answer(dct) # verbose is not 0
+            fnc = getattr(self,'get_answer_%s'%self._session[OUTPUT_TYPE], self.get_answer)
+            ##print fnc(dct)
+            try:
+                print fnc(dct)
+            except Exception, msg:
+                print 'Exception ERROR:',msg
 
     def get_keys_sort_by_columns(self):
         'Returns list of keys what will be used to sorting output values.'
@@ -311,6 +327,7 @@ class ManagerTransfer(ManagerBase):
 
     def get_answer_html(self, dct=None):
         """Returns data in HTML format. Used syles:
+        CSS:
         .ccreg_client       - main div of HTML output
         .ccreg_code         - div part of message (code + reason)
         .ccreg_errors       - ul li with errors
@@ -364,6 +381,63 @@ class ManagerTransfer(ManagerBase):
             report('</pre>')
         # ..............
         return '\n'.join(body)
+
+    def get_answer_php(self, dct=None):
+        """Returns data as a PHP code:
+        $code           int
+        $command        string
+        $reason         string
+        $errors         array
+        $labels         array
+        $data           array
+        $source_command string (third level)
+        $source_answer  string (third level)
+        """
+        if not dct: dct = self._dct_answer
+        body=[]
+        report = body.append
+        report('<?php')
+        report("$encoding = %s;"%php_string(encoding))
+        #... code and reason .............................
+        code = dct['code']
+        report('$code = %d;'%code)
+        report("$command = %s;"%php_string(dct['command']))
+        report("$reason = %s;"%php_string(dct['reason']))
+        #... errors .............................
+        errors = []
+        for error in dct['errors']:
+            errors.append(php_string(error))
+        report('$errors = array(%s);'%', '.join(errors))
+        #... data .............................
+        report('$labels = array();')
+        report('$data = array();')
+        dct_data = dct['data']
+        for key,verbose,explain in self.__get_column_items__(dct['command'], dct_data):
+            if verbose > self._session[VERBOSE]: continue
+            if not explain: explain = key
+            value = dct_data.get(key,u'')
+            if value not in ('',[]):
+                if type(value) in (list,tuple):
+                    report('$labels[%s] = %s;'%(php_string(key),php_string(explain)))
+                    report('$data[%s] = array();'%php_string(key))
+                    php_key = php_string(key)
+                    for v in value:
+                        report('$data[%s][] = %s;'%(php_key,php_string(v)))
+                else:
+                    report('$labels[%s] = %s;'%(php_string(key),php_string(explain)))
+                    report('$data[%s] = %s;'%(php_string(key),php_string(value)))
+        #... third verbose level .............................
+        if self._session[VERBOSE] == 3:
+            report('$source_command = %s;'%php_string(human_readable(self._raw_cmd)))
+            report('$source_answer = %s;'%php_string(human_readable(self._raw_answer)))
+        # ..............
+        report('?>')
+        return  '\n'.join(body)
+
+    def print_tag(self, pos):
+        'Prints tag for HTML or PHP mode at the position (0-beginig,1-end)'
+        tag = d_tag.get(self._options['output'],('',''))[pos]
+        if tag: print tag
         
     def save_history(self):
         'Save history of command line.'
@@ -427,8 +501,6 @@ class ManagerTransfer(ManagerBase):
         
 def __append_into_report__(body,k,v,explain, indent = '', no_terminal_tags=0):
     'Append value type(unicode|list|tuple) into report body.'
-    # odd - lichý, even - sudý
-##    print "!!! __append_into_report__ k=",k,"v=",v,"indent=",indent
     patt = (
         ('%s${BOLD}%s${NORMAL} %s','%s${BOLD}%s${NORMAL}','%s%s'),
         ('%s%s %s','%s%s','%s%s'),
@@ -485,6 +557,14 @@ def human_readable(body):
     if not re.search('</\w+>\n<',body):
         body = re.sub('(</[^>]+>)','\\1\n',body)
     return body
+
+def php_string(value):
+    'Returns escaped string for place into PHP variable.'
+    if type(value) in (str,unicode):
+        ret = "'%s'"%re.sub("([^\\\])'","\\1\\'",get_ltext(value))
+    else:
+        ret = value # int or float
+    return ret
 
 #--------------------
 # For test only
