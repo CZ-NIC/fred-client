@@ -129,7 +129,24 @@ class Message(eppdoc.Message):
         'Check parsed values for required and allowed values.'
         errors = []
         if len(scopes) and not len(dct_values): return errors # if descendant is empty - not check
-        if type(dct_values) != dict: return ('%s (%s)'%(_T('Invalid input format.'),[c[0] for c in columns]),)
+        if type(dct_values) != dict:
+            # parameter is in invalid format
+            keys = []
+            vals = []
+            for name,min_max,required,msg_help,example,pattern,children in columns:
+                keys.append(name)
+                if len(required):
+                    vals.append(required[0][0])
+                elif example:
+                    vals.append(example)
+                else:
+                    vals.append(name)
+            return ('%s: "%s". (%s: "%s")\n%s: (%s) %s: (%s)'%(
+                _T('Invalid parameter'), '.'.join(scopes),
+                _T('Corrupted value'),str(dct_values),
+                _T('Correct format is'), ', '.join(keys), 
+                _T('For example'), ', '.join(vals), 
+                ) ,)
         for row in columns:
             name,min_max,allowed,msg_help,example,pattern,children = row
             scopes.append(name)
