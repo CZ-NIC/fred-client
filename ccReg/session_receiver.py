@@ -315,7 +315,7 @@ class ManagerReceiver(ManagerCommand):
         value = eppdoc.get_dct_value(dict_data, column_name)
         code = eppdoc.get_dct_attr(dict_data, column_name, attr_name)
         reason_key = '%s:reason'%value
-        dct_answer['data'][value] = {False:0,True:1}[code in ('1','true')]
+        dct_answer['data'][value] = code in ('1','true') and 1 or 0
         dct_answer['data'][reason_key] = eppdoc.get_dct_value(dict_data, '%s:reason'%names[0])
         if dct_answer['data'][value] == 1 and dct_answer['data'][reason_key] == '':
             dct_answer['data'][reason_key] = _T('Not in registry: Object is available.')
@@ -489,7 +489,7 @@ def append_dct(dct,key,multiline):
     if len(value) == 1: value = value[0]
     if dct.has_key(key):
         if type(dct[key]) is not list: dct[key] = [dct[key]]
-        getattr(dct[key],{False:'append',True:'extend'}[type(value) is list])(value)
+        getattr(dct[key], type(value) is list and 'extend' or 'append')(value)
     else:
         dct[key] = value
 

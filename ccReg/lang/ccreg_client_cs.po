@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-10-16 14:49+0200\n"
+"POT-Creation-Date: 2006-10-16 16:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Zdeněk Böhm <zdenek.bohm@nic.cz>\n"
 "Language-Team: CS <ccreg-devel@lists.nic.cz@nic.cz>>\n"
@@ -148,94 +148,98 @@ msgstr "povoleny pouze hodnoty"
 msgid "no options"
 msgstr "žádné parametry"
 
-#: ccReg/eppdoc_assemble.py:99
+#: ccReg/eppdoc_assemble.py:97
+msgid "other_options"
+msgstr "další_parametry"
+
+#: ccReg/eppdoc_assemble.py:101
 msgid "Unknown EPP command. Select one from EPP commands list (Type help)."
 msgstr ""
 "Neznámý EPP příkaz. Vyberte jeden ze seznamu EPP příkazů (zadejte help)."
 
-#: ccReg/eppdoc_assemble.py:106
+#: ccReg/eppdoc_assemble.py:108
 msgid "Try"
 msgstr "Zkuste"
 
-#: ccReg/eppdoc_assemble.py:145
+#: ccReg/eppdoc_assemble.py:147
 msgid "Invalid parameter"
 msgstr "Neplatný parametr"
 
-#: ccReg/eppdoc_assemble.py:146
+#: ccReg/eppdoc_assemble.py:148
 msgid "Corrupted value"
 msgstr "Neplatná hodnota"
 
-#: ccReg/eppdoc_assemble.py:147
+#: ccReg/eppdoc_assemble.py:149
 msgid "Correct format is"
 msgstr "Správný formát je"
 
-#: ccReg/eppdoc_assemble.py:148
+#: ccReg/eppdoc_assemble.py:150
 msgid "For example"
 msgstr "Například"
 
-#: ccReg/eppdoc_assemble.py:156
+#: ccReg/eppdoc_assemble.py:158
 msgid "list of values overflow. Maximum is"
 msgstr "Počet položek v seznamu je překročen. Maximum je"
 
-#: ccReg/eppdoc_assemble.py:163 ccReg/eppdoc_assemble.py:214
+#: ccReg/eppdoc_assemble.py:165 ccReg/eppdoc_assemble.py:216
 #, python-format
 msgid "Value \"%s\" is not allowed. Valid is"
 msgstr "Hodnota \"%s\" není povolena. Platná je"
 
-#: ccReg/eppdoc_assemble.py:170
+#: ccReg/eppdoc_assemble.py:172
 msgid "missing"
 msgstr "chybí"
 
-#: ccReg/eppdoc_assemble.py:201
+#: ccReg/eppdoc_assemble.py:203
 msgid "Interactive mode has been aborded."
 msgstr "Interaktivní mód byl přerušen."
 
-#: ccReg/eppdoc_assemble.py:221
+#: ccReg/eppdoc_assemble.py:223
 msgid "Value is required. MUST be set:"
 msgstr "Údaj je povinný. MUSÍ být zadán:"
 
-#: ccReg/eppdoc_assemble.py:251
+#: ccReg/eppdoc_assemble.py:253
 msgid "Parameter MUST be a value from following list"
 msgstr "Parametr MUSÍ být hodnota z následujícího seznamu"
 
-#: ccReg/eppdoc_assemble.py:254
+#: ccReg/eppdoc_assemble.py:256
 msgid "Example"
 msgstr "Příklad"
 
-#: ccReg/eppdoc_assemble.py:370 ccReg/session_command.py:204
+#: ccReg/eppdoc_assemble.py:372 ccReg/session_command.py:204
 #: ccreg_create1490.py:16 ccreg_create.py:22
 msgid "Unknown command"
 msgstr "Neznámý příkaz"
 
-#: ccReg/eppdoc_assemble.py:371
+#: ccReg/eppdoc_assemble.py:373
 msgid "For more type"
 msgstr "Pro více informací zadejte"
 
-#: ccReg/eppdoc_assemble.py:380
+#: ccReg/eppdoc_assemble.py:382
 msgid "Interactive input mode started. Type ! to abort."
 msgstr "Start interaktivního módu. Zadejte ! pokud chcete mód přerušit."
 
-#: ccReg/eppdoc_assemble.py:387
+#: ccReg/eppdoc_assemble.py:389
 msgid "End of interactive input. [press enter]"
 msgstr "Konec interaktivního zadání parametrů. [stiskněte enter]"
 
-#: ccReg/eppdoc_assemble.py:392
+#: ccReg/eppdoc_assemble.py:394
 msgid "No parameters. Skip interactive mode."
 msgstr "Žádné parametery. Interaktivní mód přeskočen."
 
-#: ccReg/eppdoc_assemble.py:403
+#: ccReg/eppdoc_assemble.py:405
 msgid "ERROR: Missing required value."
 msgid_plural "ERROR: Missing required values."
 msgstr[0] "chybí povinný parametr"
 msgstr[1] "chybí povinné parametry"
 msgstr[2] "chybí povinné parametry"
 
-#: ccReg/eppdoc_assemble.py:406
+#: ccReg/eppdoc_assemble.py:408
 #, python-format
 msgid "Type '%s' for more information."
 msgstr "Pro více informací zadejte '%s'."
 
-#: ccReg/eppdoc_assemble.py:925
+#: ccReg/eppdoc_assemble.py:927
 #, python-format
 msgid "Value can be a list of max %d value."
 msgid_plural "Value can be a list of max %d values."
@@ -243,11 +247,11 @@ msgstr[0] "Hodnota může být seznam o max. velikosti %d položky."
 msgstr[1] "Hodnota může být seznam o max. velikosti %d položek."
 msgstr[2] "Hodnota může být seznam o max. velikosti %d položek."
 
-#: ccReg/eppdoc_assemble.py:927
+#: ccReg/eppdoc_assemble.py:929
 msgid "Value can be an unbouded list of values."
 msgstr "Hodnota může být libovolně velký seznam."
 
-#: ccReg/eppdoc_assemble.py:929
+#: ccReg/eppdoc_assemble.py:931
 msgid "Minimum is"
 msgstr "Minimum je"
 
@@ -865,92 +869,97 @@ msgstr "Interní chyba: Nadřazený uzel '%s' neexistuje."
 msgid "This program requires Python 2.4 or higher. Your version is"
 msgstr "Tento program vyžaduje Python 2.4 nebo vyšší. Vaše verze je"
 
-#: ccReg/session_base.py:93
+#: ccReg/session_base.py:87
 msgid "Unknown output type. Valid types are"
 msgstr "Neznámý typ výstupu. Platné typy jsou"
 
-#: ccReg/session_base.py:116
+#: ccReg/session_base.py:110
 msgid "Confirm has been set to"
 msgstr "Potvrzení bylo nastaveno na"
 
-#: ccReg/session_base.py:172
+#: ccReg/session_base.py:166
 msgid "Type \"help\", \"license\" or \"credits\" for more information."
 msgstr ""
 "Zadejte \"help\", \"license\" or \"credits\" pro zobrazení více informací."
 
-#: ccReg/session_base.py:189
+#: ccReg/session_base.py:183
 msgid "Invalid format of"
 msgstr "Neplatný formát"
 
-#: ccReg/session_base.py:189 ccReg/session_base.py:193
+#: ccReg/session_base.py:183 ccReg/session_base.py:187
 msgid "See help for more."
 msgstr "Více informací najdete v helpu."
 
-#: ccReg/session_base.py:193
+#: ccReg/session_base.py:187
 msgid "cannot be empty"
 msgstr "nemůže být prázdné"
 
-#: ccReg/session_base.py:204
+#: ccReg/session_base.py:198
 msgid "Create default config failed."
 msgstr "Vytvoření defaultního config souboru selhalo."
 
-#: ccReg/session_base.py:206
+#: ccReg/session_base.py:200
 msgid "Actual config builded from files"
 msgstr "Aktuální config sestavený ze souborů"
 
-#: ccReg/session_base.py:208
+#: ccReg/session_base.py:202
 msgid "No config"
 msgstr "Žádný config"
 
-#: ccReg/session_base.py:214
+#: ccReg/session_base.py:208
 msgid "Actual connection HERE"
 msgstr "Aktuální spojení ZDE"
 
-#: ccReg/session_base.py:243
+#: ccReg/session_base.py:237
 msgid "Schema in session missing. Thi is invalid instalation."
 msgstr "Chybí schema v session. Tato instalace je neplatná."
 
-#: ccReg/session_base.py:295
+#: ccReg/session_base.py:289
 msgid "Default config file saved. See help for more."
 msgstr ""
 "Defaultní konfigurační soubor byl uložen. Další informace naleznete v "
 "nápovědě."
 
-#: ccReg/session_base.py:298
+#: ccReg/session_base.py:292
 msgid "Can not save config file. Reason"
 msgstr "Není možné uložit konfigurační soubor. Důvod"
 
-#: ccReg/session_base.py:325
+#: ccReg/session_base.py:319
 msgid "Fatal error: Default config create failed."
 msgstr "Fatální chyba: Vytvoření defaultního konfiguračního souboru selhalo."
 
-#: ccReg/session_base.py:377
+#: ccReg/session_base.py:328
+#, python-format
+msgid "Configuration file has no section \"%s\"."
+msgstr "Konfigurační soubor nemá sekci \"%s\"."
+
+#: ccReg/session_base.py:374
 msgid "Host name missing."
 msgstr "Chybí jméno hosta"
 
-#: ccReg/session_base.py:379
+#: ccReg/session_base.py:376
 msgid "Port number missing."
 msgstr "Chybí číslo portu"
 
-#: ccReg/session_base.py:383
+#: ccReg/session_base.py:380
 msgid "SSL certificate path missing."
 msgstr "Cesta k SSL certifikátu chybí."
 
-#: ccReg/session_base.py:387
+#: ccReg/session_base.py:384
 msgid "SSL private key path missing."
 msgstr "Cesta k SSL privátnímu klíči chybí."
 
-#: ccReg/session_base.py:401
+#: ccReg/session_base.py:398
 msgid "Available verbose modes: 1, 2, 3."
 msgstr "Mód výstupu může být nastaven jen na hodnoty 1, 2 nebo 3."
 
-#: ccReg/session_base.py:435 ccReg/session_base.py:451
-#: ccReg/session_base.py:472
+#: ccReg/session_base.py:432 ccReg/session_base.py:448
+#: ccReg/session_base.py:469
 #, python-format
 msgid "Validator has been disabled. Type %s to enable it."
 msgstr "Validátor byl deaktivován. Opětná aktivace se provede zadáním %s."
 
-#: ccReg/session_base.py:450
+#: ccReg/session_base.py:447
 msgid ""
 "Temporary file for XML EPP validity verification can not been created. Reason"
 msgstr ""
@@ -1127,8 +1136,8 @@ msgid ""
 "Missing command name. For start interactive mode type command name after "
 "exclamation. For mode type help !."
 msgstr ""
-"Jméno EPP příkazu chybí. Zadejte za vykřičník jméno EPP příkazu. Tím spustíte "
-"interaktivní režim. Příkaz help ! zobrazí podrobnosti."
+"Jméno EPP příkazu chybí. Zadejte za vykřičník jméno EPP příkazu. Tím "
+"spustíte interaktivní režim. Příkaz help ! zobrazí podrobnosti."
 
 #: ccReg/session_command.py:268
 msgid "Hidden commands are"
@@ -1463,4 +1472,3 @@ msgstr "posílám..."
 #: ccreg_sender.py:132
 msgid "Module for sending files to the EPP server."
 msgstr "Modul pro odeslání souborů na EPP server."
-

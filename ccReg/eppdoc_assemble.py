@@ -41,7 +41,7 @@ class Message(eppdoc.Message):
             name,min_max,allowed,help,example,pattern,children = row
             min,max = min_max
             if min > 0:
-                color = {False:'YELLOW',True:'GREEN'}[deep==1]
+                color = deep==1 and 'GREEN' or 'YELLOW'
                 required = '${%s}${BOLD}(%s)${NORMAL}'%(color,_T('required'))
                 min_size = _TP('minimum is %d item','minimum are %d items',min)%min
             else:
@@ -93,6 +93,8 @@ class Message(eppdoc.Message):
             if params:
                 for pos in range(required):
                     command_line.append(params[pos][0])
+                # Only hello has not cltrid optional parameter.
+                if command_name != 'hello': command_line.append('[%s]'%_T('other_options'))
             help = self.__get_help_scope__(params)
         else:
             # neznámý příkaz
@@ -1053,7 +1055,7 @@ def __build_command_example__(columns, dct_data, null_value):
                     else:
                         body.append(append_quotes(value))
             else:
-                text = {False:null_value, True:"()"}[max is UNBOUNDED or max > 1]
+                text = (max is UNBOUNDED or max > 1) and '()' or null_value
                 body.append(text)
     while len(body) and body[-1] in (null_value,'()'): body.pop()
     return ' '.join(body)

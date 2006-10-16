@@ -79,12 +79,6 @@ class ManagerBase:
         key = self._options['output'].lower()
         if key:
             self._session[OUTPUT_TYPE] = self.get_valid_output(key)
-##            
-##            avilable = ('text','html','php') 
-##            if key in avilable:
-##                self._session[OUTPUT_TYPE] = key
-##            else:
-##                self.append_error('%s: (%s)'%(_T('Option -o --output unknown value. Available values are'),', '.join(avilable)))
         if self._options['no_validate']: self._session[VALIDATE] = 0
 
     def get_valid_output(self, key):
@@ -96,7 +90,7 @@ class ManagerBase:
         
     def set_auto_connect(self, switch):
         'Set auto connection ON/OFF. switch = 0/1.'
-        self._auto_connect = {False:0,True:1}[switch==1]
+        self._auto_connect = switch==1 and 1 or 0
 
     def is_logon(self):
         'Returns 0-offline,1-online.'
@@ -329,6 +323,9 @@ class ManagerBase:
         self.__config_defaults__()
         # for login with no parameters
         section = self.config_get_section_connect()
+        if not self._conf.has_section(section):
+            self._conf.add_section(section)
+            self.append_note(_T('Configuration file has no section "%s".')%section)
         if options['host']: self._conf.set(section,'host',options['host'])
         if options['port']: self._conf.set(section,'port',options['port'])
         if options['user']: self._conf.set(section,'username',options['user'])
@@ -341,9 +338,9 @@ class ManagerBase:
         self.copy_default_options(section_epp_login, section, 'password')
         # session
         section = 'session'
-        self._session[POLL_AUTOACK] = {False:0,True:1}[str(self.get_config_value(section,'poll_autoack',OMIT_ERROR)).lower() == 'on']
-        self._session[CONFIRM_SEND_COMMAND] = {False:0,True:1}[self.get_config_value(section,'confirm_send_commands').lower() == 'on']
-        self._session[VALIDATE] = {False:0,True:1}[self.get_config_value(section,'validate').lower() == 'on']
+        self._session[POLL_AUTOACK] = str(self.get_config_value(section,'poll_autoack',OMIT_ERROR)).lower() == 'on' and 1 or 0
+        self._session[CONFIRM_SEND_COMMAND] = self.get_config_value(section,'confirm_send_commands').lower() == 'on' and 1 or 0
+        self._session[VALIDATE] = self.get_config_value(section,'validate').lower() == 'on' and 1 or 0
         colors = self.get_config_value(section,'colors',1)
         if colors:
             self._session[COLORS] = (0,1)[colors.lower() == 'on']

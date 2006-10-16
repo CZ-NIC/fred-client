@@ -284,14 +284,14 @@ class ManagerTransfer(ManagerBase):
             if dct['command'] in ('login','hello'):
                 body.pop() # remove previous empty line
             else:
-                report(get_ltext(colored_output.render('${%s}%s${NORMAL}'%({False:'NORMAL',True:'GREEN'}[code==1000],dct['reason']))))
+                report(get_ltext(colored_output.render('${%s}%s${NORMAL}'%(code==1000 and 'GREEN' or 'NORMAL', dct['reason']))))
         else:
             # full
             report(colored_output.render('${BOLD}code:${NORMAL} %d'%code))
             report(colored_output.render('${BOLD}command:${NORMAL} %s'%dct['command']))
             report('%s%s'%(
                 colored_output.render('${BOLD}reason:${NORMAL} '),
-                get_ltext(colored_output.render('${%s}%s${NORMAL}'%({False:'NORMAL',True:'GREEN'}[code==1000],dct['reason']))))
+                get_ltext(colored_output.render('${%s}%s${NORMAL}'%(code==1000 and 'GREEN' or 'NORMAL', dct['reason']))))
                 )
         #... errors .............................
         if len(dct['errors']):
@@ -342,7 +342,7 @@ class ManagerTransfer(ManagerBase):
         if not dct: dct = self._dct_answer
         #... code and reason .............................
         code = dct['code']
-        reason_css_class = {False:'command_done',True:'command_success'}[code==1000]
+        reason_css_class = code==1000 and 'command_success' or 'command_done'
         if self._session[VERBOSE] > 1 or code != 1000:
             # full
             tbl_reason=['<table class="ccreg_data">']
@@ -473,7 +473,7 @@ class ManagerTransfer(ManagerBase):
             #writelog("\tCOMMAND IS %s"%command_name)
             dct, errors = self._epp_cmd.readline_parse_prompt(command_name, buffer)
             #writelog("DICT %s\nERRORS: %s"%(dct,errors))
-            words = self._epp_cmd.readline_find_words(command_name, dct, {False: writelog, True: lambda s: s}[writelog is None])
+            words = self._epp_cmd.readline_find_words(command_name, dct, writelog is None and (lambda s: s) or writelog)
         else:
             words = self._available_commands # default offer
         # writelog('\tOFFER WORDS = %s'%str(words))
@@ -506,7 +506,7 @@ def __append_into_report__(body,k,v,explain, indent = '', no_terminal_tags=0):
         ('%s%s %s','%s%s','%s%s'),
         ('%s<tr>\n\t<th>%s</th>\n\t<td>%s</td>\n</tr>','%s<tr>\n\t<th>%s</th>\n\t<td>&nbsp;</td>\n</tr>','%s<tr>\n\t<th>&nbsp;</th>\n\t<td>%s</td>\n</tr>'),
     )[no_terminal_tags]
-    escape = {False:lambda s: s, True:escape_html}[no_terminal_tags == 2]
+    escape = no_terminal_tags == 2 and escape_html or (lambda s: s)
     if explain: k = explain # overwrite key by explain message
     if type(k) is str: k = k.decode(encoding)
     if type(v) is str: v = v.decode(encoding)

@@ -172,7 +172,7 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
             self.append_note('${WHITE}%s${NORMAL}'%patt.sub(patt_sub,notice))
             #
             self.append_note('\n%s:'%_T('SYNTAX'),'BOLD')
-            self.append_note('    '+command_line)
+            self.append_note('    %s'%command_line)
             #
             self.append_note('\n%s:'%_T('OPTIONS'),'BOLD')
             self.append_note(patt.sub(patt_sub,command_help))
