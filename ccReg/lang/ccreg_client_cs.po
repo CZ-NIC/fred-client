@@ -1127,8 +1127,8 @@ msgid ""
 "Missing command name. For start interactive mode type command name after "
 "exclamation. For mode type help !."
 msgstr ""
-"Jméno příkazu chybí. Zadejte za vykřičník jméno EPP přiazu. Tím spustíte "
-"intaraktivní režim.Příkaz help ! zobrazí podrobnosti."
+"Jméno EPP příkazu chybí. Zadejte za vykřičník jméno EPP příkazu. Tím spustíte "
+"interaktivní režim. Příkaz help ! zobrazí podrobnosti."
 
 #: ccReg/session_command.py:268
 msgid "Hidden commands are"

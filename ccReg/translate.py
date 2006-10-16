@@ -36,16 +36,15 @@ def find_valid_encoding():
 
 def load_config_from_file(filename):
     'Load config file from specifiend filename only.'
-    config = None
+    config = ConfigParser.SafeConfigParser()
     error = ''
     names = []
+    filename = os.path.expanduser(filename)
     if os.path.isfile(filename):
         try:
-            config = ConfigParser.SafeConfigParser()
             config.read(filename)
         except (ConfigParser.MissingSectionHeaderError, ConfigParser.ParsingError), msg:
             error = 'ConfigParserError: %s'%str(msg)
-            config = None
         else:
             names.append(filename)
     else:
@@ -216,3 +215,15 @@ install_translation(options['lang'])
 
 option_errors = '\n'.join(errors)
 warning = '\n'.join(warnings)
+
+if __name__ == '__main__':
+    print 'option_errors:',option_errors # errors
+    print 'warning:',warning # warnings
+    print 'config_error:',config_error
+    print '-'*60
+    print 'option_args:',option_args
+    print 'options:'
+    for k,v in options.items():
+        if not v: continue
+        print k.ljust(20),v
+    
