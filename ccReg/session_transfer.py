@@ -5,7 +5,7 @@ from cgi import escape as escape_html
 import eppdoc_client
 import client_socket
 from session_base import *
-from translate import _T, _TP, encoding, options
+from translate import encoding, options
 
 # Tags for scripted outputs:
 d_tag = {

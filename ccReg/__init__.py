@@ -59,7 +59,6 @@ if epp.is_val() == 1000:
 
 """
 import sys
-from translate import _T
 from session_receiver import ManagerReceiver
 from session_receiver import ccRegError
 

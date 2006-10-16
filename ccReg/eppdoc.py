@@ -17,7 +17,6 @@ except ImportError:
     PrettyPrint = None
 from xml.dom import Node
 import StringIO
-from translate import _T
 
 #========================================================
 # Jmenné prostory EPP

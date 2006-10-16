@@ -9,6 +9,7 @@
 # config_error  - error occured during parse config
 # warning       - message about solved problems
 # ------------------------------------
+import __builtin__
 import os, sys
 import getopt
 import gettext
@@ -89,6 +90,7 @@ def get_config_value(config, section, option, omit_errors=0):
     return value, error
 
 def get_valid_lang(key, msg):
+    available_langs = langs.keys()
     if key in available_langs:
         error = ''
     else:
@@ -96,11 +98,19 @@ def get_valid_lang(key, msg):
         key = default_lang
     return key, error
 
+def install_translation(lang):
+    'Install language translation'
+    gt = langs[lang]
+    gt.install()
+    __builtin__.__dict__['_T'] = gt.gettext
+    __builtin__.__dict__['_TP'] = gt.ngettext
+
 #---------------------------
 # INIT options:
 #---------------------------
 config_name = '.ccreg_client.conf' # .ccReg.conf
-available_langs = ('en','cs')
+domain = 'ccreg_client' # gettext translate domain
+langs = {'en': 0, 'cs': 1} # 0 - no translate, 1 - make translation
 default_lang = 'en'
 optcols = (
     '? help',
@@ -190,21 +200,19 @@ if not len(options['lang']):
 #---------------------------
 encoding, w = find_valid_encoding()
 if w: warnings.append(w)
-if options['lang'] == 'en':
-    _T = gettext.gettext
-    _TP = gettext.ngettext
-else:
-    domain = 'cz_nic_ccreg_client'
-    tpath = os.path.join(os.path.split(__file__)[0],'lang')
-    try:
-        gt = gettext.translation(domain,tpath,(options['lang'],), codeset=encoding)
-        _T = gt.gettext
-        _TP = gt.ngettext
-    except IOError, (no,msg):
-        print 'Translate IOError',no,msg,'\nMISSING:','%s/%s/LC_MESSAGES/%s.mo'%(tpath,options['lang'],domain)
-        _T = gettext.gettext
-        _TP = gettext.ngettext
+tpath = os.path.join(os.path.split(__file__)[0],'lang')
+for key,value in langs.items():
+    if value:
+        try:
+            langs[key] = gettext.translation(domain,tpath,(key,), codeset=encoding)
+        except IOError, (no,msg):
+            langs[key] = gettext.NullTranslations() # no translation
+            print 'Translate IOError',no,msg,'\nMISSING:','%s/%s/LC_MESSAGES/%s.mo'%(tpath,options['lang'],domain)
+    else:
+        langs[key] = gettext.NullTranslations() # no translation
+
+# Install language support
+install_translation(options['lang'])
 
 option_errors = '\n'.join(errors)
 warning = '\n'.join(warnings)
-

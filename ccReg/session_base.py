@@ -7,8 +7,6 @@ import terminal_controler
 import translate
 import internal_variables
 
-_T = translate._T
-
 # Colored output
 colored_output = terminal_controler.TerminalController()
 
@@ -20,6 +18,8 @@ ONLINE, CMD_ID, LANG, POLL_AUTOACK, CONFIRM_SEND_COMMAND, \
 DEFS_LENGTH = 4
 LANGS,objURI,extURI,PREFIX = range(DEFS_LENGTH)
 OMIT_ERROR = 1
+
+OUTPUT_TYPES = ('text','html','php')
 
 class ManagerBase:
     """This class holds buffers with error and note messages.
@@ -78,12 +78,21 @@ class ManagerBase:
             self.__init_verbose__(self._options['verbose'])
         key = self._options['output'].lower()
         if key:
-            avilable = ('text','html','php') 
-            if key in avilable:
-                self._session[OUTPUT_TYPE] = key
-            else:
-                self.append_error('%s: (%s)'%(_T('Option -o --output unknown value. Available values are'),', '.join(avilable)))
+            self._session[OUTPUT_TYPE] = self.get_valid_output(key)
+##            
+##            avilable = ('text','html','php') 
+##            if key in avilable:
+##                self._session[OUTPUT_TYPE] = key
+##            else:
+##                self.append_error('%s: (%s)'%(_T('Option -o --output unknown value. Available values are'),', '.join(avilable)))
         if self._options['no_validate']: self._session[VALIDATE] = 0
+
+    def get_valid_output(self, key):
+        'Get valid output type.'
+        if not key in OUTPUT_TYPES:
+            self.append_error('%s: (%s)'%(_T('Unknown output type. Valid types are'),', '.join(OUTPUT_TYPES)))
+            key = self._session[OUTPUT_TYPE]
+        return key
         
     def set_auto_connect(self, switch):
         'Set auto connection ON/OFF. switch = 0/1.'

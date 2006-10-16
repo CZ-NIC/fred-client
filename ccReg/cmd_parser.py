@@ -1,7 +1,7 @@
 # -*- coding: utf8 -*-
 #!/usr/bin/env python
 import re
-from translate import _T, encoding
+from translate import encoding
 
 UNFINITE = None
 MOD_NORMAL, MOD_LIST, MOD_LIST_AGAIN, MOD_CHILD, MOD_CHILD_LIST, MOD_INSIDE_LIST = range(6)

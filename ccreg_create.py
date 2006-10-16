@@ -6,7 +6,7 @@
 import sys, re
 from cgi import escape as escape_html
 import ccReg
-from ccReg.translate import _T, options, option_args, config_error, encoding
+from ccReg.translate import options, option_args, config_error, encoding
 
 epp = None
 php_string = ccReg.session_transfer.php_string

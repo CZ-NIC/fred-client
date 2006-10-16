@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import ccReg
-from ccReg.translate import _T, encoding, options, option_errors
+from ccReg.translate import encoding, options, option_errors
 from guiqt.main import main
 
 if __name__ == '__main__':

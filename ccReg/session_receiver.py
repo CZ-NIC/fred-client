@@ -5,7 +5,7 @@ import eppdoc
 from eppdoc_assemble import contact_disclose
 from session_base import *
 from session_command import ManagerCommand
-from translate import _T, encoding
+from translate import encoding
 
 SEPARATOR = '-'*60
 ANSW_RESULT, ANSW_CODE, ANSW_MSG = range(3)

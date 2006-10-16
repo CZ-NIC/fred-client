@@ -13,7 +13,7 @@ except ImportError:
 
 import ccReg
 from ccReg.session_base import colored_output, VERBOSE
-from ccReg.translate import _T, options, option_errors
+from ccReg.translate import options, option_errors
 
 help_option = _T("""Connection options:
   -?, --help       show this help and exit
@@ -86,7 +86,7 @@ def main(options):
             online = prompt
             if epp.is_logon():
                 is_online = 1
-                online = '%s@%s: '%epp.get_username_and_host()
+                online = '%s@%s> '%epp.get_username_and_host()
         try:
             command = raw_input(online).strip()
         except (KeyboardInterrupt, EOFError):

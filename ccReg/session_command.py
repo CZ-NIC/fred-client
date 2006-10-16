@@ -5,7 +5,7 @@ import dircache # jen pro testování. v ostré verzi to nebude
 
 import eppdoc
 import eppdoc_client
-from translate import _T, encoding
+from translate import encoding
 
 from session_base import *
 from session_transfer import ManagerTransfer, human_readable
@@ -45,6 +45,7 @@ Set representation of the value what is used to mean nothing. Default is NULL.
 This value we use if we want to skip over any column in the command parameters. 
 Type NULL means we did not put any value in contrast to '' or "" where we put
 value of zero length. See help for more details."""), ('null None','null EMPTY',)),
+            (('output',), self.__session_output__, [_T('type')], _T('Display output in type.'), ('output html',)),
             (('poll-autoack',), self.__session_poll_ack__, (_T('switch'),'on','off'), _T('Send "poll ack" straight away after "poll req".'), ('poll-autoack on',)),
             (('quit','q','exit'), None, (), _T('Quit the client. Same effect has "q" or "exit".'), ()),
             (('raw-answer','raw-a','src-answer','src-a'), self.__session_raw_answer__, (_T('switch'),'d','dict',), _T('Display XML source of the EPP answer.'), ('raw-a','raw-a d','src-a','src-a d')),
@@ -53,10 +54,11 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
             (('validate',), self.__session_validate__, (_T('switch'),'on','off'), _T('Set on/off external validation of the XML documents.'), ('validate off',)),
             (('verbose',), self.__session_verbose__, (_T('switch'),'1','2','3'), _T('Set verbose mode: 1 - brief (default); 2 - full; 3 - full & XML sources.'), ('verbose 2',)),
         )
+        self._session_commands[8][2].extend(OUTPUT_TYPES) # Warning! Index 8 must be changed, if any command add.
         # Here is definition of commands  what will not be displayed in the help
         # because we don't make panic to common user.
         # They are used for test or debug only.
-        self._hidden_commands = ('answer-cols','hidden','colors','config','null_value','raw-command','raw-answer','send')
+        self._hidden_commands = ('answer-cols','hidden','colors','config','null_value','raw-command','raw-answer','send','output')
         self._pattern_session_commands = [] # for recognize command
         self._available_session_commands = [] # for display list of command names
         for n,f,p,e,x in self._session_commands:
@@ -309,19 +311,15 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
     def __session_translate_column_names__(self, param):
         'Set translation of column names in server answer.'
         # TEST only
-        if param:
-            if re.match('(y(es)?|on|1)',param,re.I):
-                self._session[TRANSLATE_ANSWER_COLUMN_NAMES] = 1
-            else:
-                self._session[TRANSLATE_ANSWER_COLUMN_NAMES] = 0
-        self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('Translation of answer column names is'),{False:'OFF',True:'ON'}[self._session[TRANSLATE_ANSWER_COLUMN_NAMES]]))
+        if param: self._session[TRANSLATE_ANSWER_COLUMN_NAMES] = re.match('(y(es)?|on|1)',param,re.I) and 1 or 0
+        self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('Translation of answer column names is'),self._session[TRANSLATE_ANSWER_COLUMN_NAMES] and 'ON' or 'OFF'))
 
     def __session_confirm__(self, param):
         'Set confirm value'
         if param:
             self.set_confirm(param)
         else:
-            self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('Confirm is'),{False:'OFF',True:'ON'}[self._session[CONFIRM_SEND_COMMAND]]))
+            self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('Confirm is'),self._session[CONFIRM_SEND_COMMAND] and 'ON' or 'OFF'))
 
     def __session_null__(self, param):
         'Set NULL value'
@@ -330,8 +328,8 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
 
     def __session_validate__(self, param):
         'Set validate value'
-        if param: self.set_validate((0,1)[param.lower()=='on'])
-        self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('Validation process is'),{False:'OFF',True:'ON'}[self._session[VALIDATE]]))
+        if param: self.set_validate(param.lower()=='on' and 1 or 0)
+        self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('Validation process is'),self._session[VALIDATE] and 'ON' or 'OFF'))
         
     def __session_connect__(self, param):
         'Run connection process'
@@ -355,9 +353,9 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
     def __session_colors__(self, param):
         'Set colors mode'
         if param:
-            self._session[COLORS] = (0,1)[param.lower()=='on']
+            self._session[COLORS] = param.lower()=='on' and 1 or 0
             colored_output.set_mode(self._session[COLORS])
-        self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('Colors mode is'),{False:'OFF',True:'ON'}[self._session[COLORS]]))
+        self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('Colors mode is'),self._session[COLORS] and 'ON' or 'OFF'))
 
     def __session_verbose__(self, param):
         'Set verbose mode'
@@ -378,9 +376,16 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
 
     def __session_poll_ack__(self, param):
         'Set poll acknowledge'
-        if param: self._session[POLL_AUTOACK] = {False:0,True:1}[param in ('on','ON')]
-        self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('poll-autoack is'),{False:'OFF',True:'ON'}[self._session[POLL_AUTOACK]]))
+        if param: self._session[POLL_AUTOACK] = param in ('on','ON') and 1 or 0
+        self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('poll-autoack is'),self._session[POLL_AUTOACK] and 'ON' or 'OFF'))
 
+    def __session_output__(self, param):
+        'Set output type'
+        if param:
+            self._session[OUTPUT_TYPE] = self.get_valid_output(param)
+            self.get_valid_output(param)
+        self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('output type is'),self._session[OUTPUT_TYPE]))
+        
     def __session_send__(self, param):
         'Send any file to the EPP server.'
         command_name = None

@@ -13,7 +13,7 @@ import ConfigParser
 import eppdoc
 import cmd_parser
 import session_base
-from translate import _T, _TP, encoding
+from translate import encoding
 
 try:
     import readline

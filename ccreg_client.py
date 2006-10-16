@@ -2,7 +2,7 @@
 # -*- coding: utf8 -*-
 import sys
 import ccReg
-from ccReg.translate import _T, options, option_errors
+from ccReg.translate import options, option_errors
 
 if __name__ == '__main__':
     msg_invalid = ccReg.check_python_version()

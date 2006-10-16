@@ -2,7 +2,7 @@
 #!/usr/bin/env python
 import re
 import eppdoc_assemble
-from translate import _T, options
+from translate import options
 
 UNBOUNDED = eppdoc_assemble.UNBOUNDED
 
@@ -71,8 +71,8 @@ class Message(eppdoc_assemble.Message):
         'logout': (0, [('',(0,0),(),'','','',()),], _T('The EPP "logout" command is used to end a session with an EPP server.'),()),
         #----------------------------------------------------
         'login': (2,[
-            ('username',(1,1),(),_T('your login name'),'my_login_name','',()),
-            ('password',(1,1),(),_T('your password'),'my_password','',()),
+            ('username',(1,1),(),_T('EPP login name'),'my_login_name','',()),
+            ('password',(1,1),(),_T('EPP password'),'my_password','',()),
             ('new-password',(0,1),(),_T('new password'),'my_new_password','',()),
         ],_T("""
    The "login" command establishes an ongoing server session that preserves client identity

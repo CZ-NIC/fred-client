@@ -6,7 +6,7 @@ import sys, os, re, time
 import ccReg
 from ccReg.session_receiver import ccRegError
 from ccReg.session_transfer import BEGIN, END
-from ccReg.translate import _T, options, option_errors, option_args
+from ccReg.translate import options, option_errors, option_args
 
 def __auto_login__(epp, verbose):
     'Do login'
