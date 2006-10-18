@@ -467,9 +467,9 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
 
     def automatic_login(self, no_outoupt=None):
         'Automatic login if all needed informations are known.'
-        if self._session[ONLINE]: return # session is logged on already
+        if self._session[ONLINE]: return 1 # session is logged on already
         data = self.get_connect_defaults()
-        if self.get_config_value('session', 'auto_login',OMIT_ERROR) in ('no','off'): return # prohibited in config
+        if self.get_config_value(self.config_get_section_connect(), 'nologin', OMIT_ERROR): return 1
         section_epp_login = 'epp_login'
         username = self.get_config_value(section_epp_login, 'username',OMIT_ERROR)
         password = self.get_config_value(section_epp_login, 'password',OMIT_ERROR)
@@ -482,10 +482,12 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
         if not username: missing.append(_T('username missing'))
         if not password: missing.append(_T('password missing'))
         if len(missing):
-            self.append_note('%s:'%_T('Automatic login stopped'))
-            map(self.append_note, missing)
-            return
+            self.append_error('%s:'%_T('Automatic login stopped'))
+            map(self.append_error, missing)
+            return 0
         self._epp_cmd.set_params({'username':[username],'password':[password]})
+        self.display() # display errors or notes
+        ok=0
         self.reset_round()
         self.create_login()
         epp_doc = self._epp_cmd.get_xml()
@@ -497,9 +499,11 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
             if not no_outoupt:
                 self.display() # display errors or notes
                 self.print_answer() # 2. departure from the rule to print answers
+            ok = self._dct_answer.get('code',0) == 1000 and 1 or 0
         else:
             self.append_error(self._epp_cmd.get_errors())
             self.display() # display errors or notes
+        return ok
             
         
 def make_filepath(filename):

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-10-16 16:51+0200\n"
+"POT-Creation-Date: 2006-10-18 15:50+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Zdeněk Böhm <zdenek.bohm@nic.cz>\n"
 "Language-Team: CS <ccreg-devel@lists.nic.cz@nic.cz>>\n"
@@ -24,49 +24,53 @@ msgstr "Soket typu IPv6 (AF_INET6) není v modulu socket dostupný."
 msgid "Used socket type"
 msgstr "Použitý typ soketu"
 
-#: ccReg/client_socket.py:68
-msgid "Opened connection to"
-msgstr "Navázáno spojení na"
+#: ccReg/client_socket.py:66
+msgid "Connecting to"
+msgstr "Připojuji se k"
 
 #: ccReg/client_socket.py:70
 msgid "I cannot connect to the server"
 msgstr "Nemohu se připojit k serveru."
 
-#: ccReg/client_socket.py:73 ccReg/client_socket.py:107
-#: ccReg/client_socket.py:134 ccReg/client_socket.py:167
-#: ccReg/client_socket.py:201 ccReg/client_socket.py:213
+#: ccReg/client_socket.py:73 ccReg/client_socket.py:108
+#: ccReg/client_socket.py:135 ccReg/client_socket.py:168
+#: ccReg/client_socket.py:202 ccReg/client_socket.py:214
 msgid "Interrupted by user"
 msgstr "Přerušeno uživatelem"
 
 #: ccReg/client_socket.py:75
+msgid "Connected!"
+msgstr "Spojení navázáno!"
+
+#: ccReg/client_socket.py:76
 msgid "SSL connection initiated"
 msgstr "Aktivováno SSL spojení"
 
-#: ccReg/client_socket.py:77
+#: ccReg/client_socket.py:78
 msgid "Certificate names not set."
 msgstr "Jména certifikátů nejsou zadána."
 
-#: ccReg/client_socket.py:79
+#: ccReg/client_socket.py:80
 msgid "Private key file not found."
 msgstr "Privátní klíč nebyl nalezen"
 
-#: ccReg/client_socket.py:82
+#: ccReg/client_socket.py:83
 msgid "Certificate key file not found."
 msgstr "Soubor s certifikátem nebyl nalezen"
 
-#: ccReg/client_socket.py:90
+#: ccReg/client_socket.py:91
 msgid "Certificates missing. Trying to connect without SSL!"
 msgstr "Certifikát chybí. Zkouším spojení bez SSL!"
 
-#: ccReg/client_socket.py:97
+#: ccReg/client_socket.py:98
 msgid "Certificate not signed by verified certificate authority."
 msgstr "Použitý certifikát není podepsán uznávanou certifikační autoritou."
 
-#: ccReg/client_socket.py:98
+#: ccReg/client_socket.py:99
 msgid "Server configuration is not valid. Contact administrator."
 msgstr "Server není správně nakonfigurován. Obraťte se na správce serveru."
 
-#: ccReg/client_socket.py:99
+#: ccReg/client_socket.py:100
 msgid ""
 "If this client runs under MS Windows and timeout is not zero, it is probably "
 "SLL bug! Set timeout back to zero."
@@ -74,7 +78,7 @@ msgstr ""
 "Jestliže tento klient běží v MS Windows a timeout není nula, tak se "
 "pravděpodobně jedná o SSL bug! Nastavte timeout zpět na nulu."
 
-#: ccReg/client_socket.py:214
+#: ccReg/client_socket.py:215
 msgid "Connection closed"
 msgstr "Spojení uzavřeno"
 
@@ -865,101 +869,109 @@ msgstr "Dokument má chybné kódování. LookupError: %s"
 msgid "Internal error: Master node '%s' doesn't exist."
 msgstr "Interní chyba: Nadřazený uzel '%s' neexistuje."
 
-#: ccReg/__init__.py:724
+#: ccReg/__init__.py:726
 msgid "This program requires Python 2.4 or higher. Your version is"
 msgstr "Tento program vyžaduje Python 2.4 nebo vyšší. Vaše verze je"
 
-#: ccReg/session_base.py:87
+#: ccReg/session_base.py:98
 msgid "Unknown output type. Valid types are"
 msgstr "Neznámý typ výstupu. Platné typy jsou"
 
-#: ccReg/session_base.py:110
+#: ccReg/session_base.py:121
 msgid "Confirm has been set to"
 msgstr "Potvrzení bylo nastaveno na"
 
-#: ccReg/session_base.py:166
+#: ccReg/session_base.py:169
+msgid "ERROR"
+msgstr "CHYBA"
+
+#: ccReg/session_base.py:179
 msgid "Type \"help\", \"license\" or \"credits\" for more information."
 msgstr ""
 "Zadejte \"help\", \"license\" or \"credits\" pro zobrazení více informací."
 
-#: ccReg/session_base.py:183
+#: ccReg/session_base.py:196
 msgid "Invalid format of"
 msgstr "Neplatný formát"
 
-#: ccReg/session_base.py:183 ccReg/session_base.py:187
+#: ccReg/session_base.py:196 ccReg/session_base.py:200
 msgid "See help for more."
 msgstr "Více informací najdete v helpu."
 
-#: ccReg/session_base.py:187
+#: ccReg/session_base.py:200
 msgid "cannot be empty"
 msgstr "nemůže být prázdné"
 
-#: ccReg/session_base.py:198
+#: ccReg/session_base.py:211
 msgid "Create default config failed."
 msgstr "Vytvoření defaultního config souboru selhalo."
 
-#: ccReg/session_base.py:200
+#: ccReg/session_base.py:213
 msgid "Actual config builded from files"
 msgstr "Aktuální config sestavený ze souborů"
 
-#: ccReg/session_base.py:202
+#: ccReg/session_base.py:215
 msgid "No config"
 msgstr "Žádný config"
 
-#: ccReg/session_base.py:208
+#: ccReg/session_base.py:221
 msgid "Actual connection HERE"
 msgstr "Aktuální spojení ZDE"
 
-#: ccReg/session_base.py:237
-msgid "Schema in session missing. Thi is invalid instalation."
+#: ccReg/session_base.py:250
+msgid "Schema in session missing. This is invalid instalation."
 msgstr "Chybí schema v session. Tato instalace je neplatná."
 
-#: ccReg/session_base.py:289
+#: ccReg/session_base.py:302
 msgid "Default config file saved. See help for more."
 msgstr ""
 "Defaultní konfigurační soubor byl uložen. Další informace naleznete v "
 "nápovědě."
 
-#: ccReg/session_base.py:292
+#: ccReg/session_base.py:305
 msgid "Can not save config file. Reason"
 msgstr "Není možné uložit konfigurační soubor. Důvod"
 
-#: ccReg/session_base.py:319
+#: ccReg/session_base.py:328
+msgid "Using configuration from"
+msgstr "Použit konfigurační soubor"
+
+#: ccReg/session_base.py:336
 msgid "Fatal error: Default config create failed."
 msgstr "Fatální chyba: Vytvoření defaultního konfiguračního souboru selhalo."
 
-#: ccReg/session_base.py:328
+#: ccReg/session_base.py:345
 #, python-format
 msgid "Configuration file has no section \"%s\"."
 msgstr "Konfigurační soubor nemá sekci \"%s\"."
 
-#: ccReg/session_base.py:374
+#: ccReg/session_base.py:382
 msgid "Host name missing."
 msgstr "Chybí jméno hosta"
 
-#: ccReg/session_base.py:376
+#: ccReg/session_base.py:384
 msgid "Port number missing."
 msgstr "Chybí číslo portu"
 
-#: ccReg/session_base.py:380
+#: ccReg/session_base.py:388
 msgid "SSL certificate path missing."
 msgstr "Cesta k SSL certifikátu chybí."
 
-#: ccReg/session_base.py:384
+#: ccReg/session_base.py:392
 msgid "SSL private key path missing."
 msgstr "Cesta k SSL privátnímu klíči chybí."
 
-#: ccReg/session_base.py:398
+#: ccReg/session_base.py:406
 msgid "Available verbose modes: 1, 2, 3."
 msgstr "Mód výstupu může být nastaven jen na hodnoty 1, 2 nebo 3."
 
-#: ccReg/session_base.py:432 ccReg/session_base.py:448
-#: ccReg/session_base.py:469
+#: ccReg/session_base.py:440 ccReg/session_base.py:456
+#: ccReg/session_base.py:477
 #, python-format
 msgid "Validator has been disabled. Type %s to enable it."
 msgstr "Validátor byl deaktivován. Opětná aktivace se provede zadáním %s."
 
-#: ccReg/session_base.py:447
+#: ccReg/session_base.py:455
 msgid ""
 "Temporary file for XML EPP validity verification can not been created. Reason"
 msgstr ""
@@ -1123,7 +1135,7 @@ msgid "OPTIONS"
 msgstr "PARAMETRY"
 
 #: ccReg/session_command.py:180 ccreg_create1490.py:59 ccreg_create.py:80
-#: ccreg_sender.py:134
+#: ccreg_sender.py:136
 msgid "EXAMPLES"
 msgstr "PŘÍKLADY"
 
@@ -1176,7 +1188,7 @@ msgid "You has been disconnected."
 msgstr "Byli jste odpojeni."
 
 #: ccReg/session_command.py:351 ccReg/session_transfer.py:164
-#: ccReg/session_transfer.py:191 ccreg_console.py:142
+#: ccReg/session_transfer.py:191 ccreg_console.py:148
 msgid "You are not connected."
 msgstr "Nejste připojeni."
 
@@ -1248,7 +1260,7 @@ msgstr "chybí heslo"
 msgid "Automatic login stopped"
 msgstr "Automatický login byl zastaven"
 
-#: ccReg/session_command.py:493
+#: ccReg/session_command.py:495
 msgid "Login command sent to the server"
 msgstr "Příkaz login byl odeslán na server"
 
@@ -1338,8 +1350,8 @@ msgstr[0] "(%d položka)"
 msgstr[1] "(%d položky)"
 msgstr[2] "(%d položek)"
 
-#: ccreg_client.py:14 ccreg_console.py:157 ccreg_create1490.py:57
-#: ccreg_create.py:78 ccreg_sender.py:131
+#: ccreg_client.py:14 ccreg_console.py:163 ccreg_create1490.py:57
+#: ccreg_create.py:78 ccreg_sender.py:133
 msgid "Usage"
 msgstr "Použití"
 
@@ -1363,8 +1375,8 @@ msgstr ""
 "-q --qt\n"
 "                   spustit klineta v grafickém režimu"
 
-#: ccreg_client.py:21 ccreg_console.py:160 ccreg_create1490.py:67
-#: ccreg_create.py:88 ccreg_sender.py:142
+#: ccreg_client.py:21 ccreg_console.py:166 ccreg_create1490.py:67
+#: ccreg_create.py:88 ccreg_sender.py:144
 msgid "For more information, see README."
 msgstr "Více informací v README."
 
@@ -1402,6 +1414,8 @@ msgid ""
 "  -s SESSION, --session=SESSION\n"
 "                   read session name used for connect to the EPP server\n"
 "                   session values are read from config file\n"
+"  -n  --nologin    disable automatic login process after start up\n"
+"\n"
 "  -o OUTPUT_TYPE, --output=OUTPUT_TYPE\n"
 "                   display output as: text (default), html"
 msgstr ""
@@ -1437,18 +1451,20 @@ msgstr ""
 "  -s SESSION, --session=SESSION\n"
 "                   kolekce přihlašovacích hodnot z vybrané sekce v "
 "konfiguračním souboru\n"
+"  -n  --nologin    vypnout automatický login po spuštění\n"
+"\n"
 "  -o OUTPUT_TYPE, --output=OUTPUT_TYPE\n"
 "                   zobrazit výstup jako: text (default), html"
 
-#: ccreg_console.py:112
+#: ccreg_console.py:118
 msgid "EPP document is not valid"
 msgstr "EPP dokument není validní"
 
-#: ccreg_console.py:120
+#: ccreg_console.py:126
 msgid "Do you really want to send this command to the server?"
 msgstr "Opravdu chcete odeslat tento poříkaz na server?"
 
-#: ccreg_console.py:158
+#: ccreg_console.py:164
 msgid "Console for communication with EPP server."
 msgstr "Konzole pro komunikaci s EPP serverem."
 
@@ -1461,14 +1477,18 @@ msgid "Eventual errors are return in XML format: <errors>... msg ...</errors>."
 msgstr ""
 "Případné chyby jsou vráceny ve formátu XML: <errors>... msg ...</errors>."
 
-#: ccreg_sender.py:68
+#: ccreg_sender.py:22
+msgid "Login failed"
+msgstr "Login se nezdařil"
+
+#: ccreg_sender.py:70
 msgid "Send files"
 msgstr "Odeslat soubory"
 
-#: ccreg_sender.py:99
+#: ccreg_sender.py:101
 msgid "sending..."
 msgstr "posílám..."
 
-#: ccreg_sender.py:132
+#: ccreg_sender.py:134
 msgid "Module for sending files to the EPP server."
 msgstr "Modul pro odeslání souborů na EPP server."

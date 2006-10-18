@@ -13,11 +13,13 @@ def __auto_login__(epp, verbose):
     if verbose > 1: print 'SEND AUTO-LOGIN:'
     try:
         # username a password musí být v config
-        epp.api_command('login',epp.get_default_params_from_config('login'))
+        dansw = epp.api_command('login',epp.get_default_params_from_config('login'))
         ok = 1
     except ccRegError, msg:
         print 'Error:',msg
         ok = 0
+        dansw={}
+    if dansw.get('code',0) != 1000: epp.append_error(ccReg.session_base.get_ltext(dansw.get('reason',_T('Login failed'))))
     epp.display()
     return ok
 
@@ -40,7 +42,7 @@ def send_docs(display_bar, docs=[]):
     # Inicializace klienta
     #-------------------------------------------------
     epp = ccReg.ClientSession()
-    if not epp.load_config(options): return
+    if not epp.load_config(): return
     
     if len(options['verbose']):
         verbose = epp.set_verbose(options['verbose'])

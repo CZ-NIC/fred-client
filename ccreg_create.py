@@ -15,7 +15,7 @@ def main(options):
     global epp
     if epp is None:
         epp = ccReg.ClientSession()
-        epp.load_config(options)
+        epp.load_config()
         epp.set_auto_connect(0) # set OFF auto connection
     command_name, epp_doc, stop = epp.create_eppdoc(options['command'])
     errors = epp.fetch_errors()

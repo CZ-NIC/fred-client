@@ -63,15 +63,16 @@ class Lorry:
         if self._timeout:
             if verbose > 1: self._notes.append('Socket timeout: ${BOLD}%.1f${NORMAL} sec.'%self._timeout)
             self._conn.settimeout(self._timeout)
+        self._notes.append('%s ${BOLD}%s${NORMAL}, port %d ...'%(_T('Connecting to'), DATA[0], DATA[1]))
         try:
             self._conn.connect((DATA[0], DATA[1]))
-            if verbose > 1: self._notes.append('%s ${BOLD}%s${NORMAL}, port %d'%(_T('Opened connection to'), DATA[0], DATA[1]))
         except socket.error, tmsg:
             self._errors.append('%s %s.\n'%(_T('I cannot connect to the server'),DATA[0]))
             self._errors.append('Connection socket.error: %s (%s:%s)'%(str(tmsg),DATA[0],DATA[1]))
         except (KeyboardInterrupt,EOFError):
             self._errors.append(_T('Interrupted by user'))
         if not ok: return ok
+        self._notes.append(_T('Connected!'))
         if verbose > 1: self._notes.append(_T('SSL connection initiated'))
         if len(DATA) < 4:
             self._errors.append(_T('Certificate names not set.'))
@@ -211,7 +212,7 @@ class Lorry:
                 self._conn_ssl = None
             except (KeyboardInterrupt,EOFError):
                 self._errors.append(_T('Interrupted by user'))
-            self._errors.append(_T('Connection closed'))
+            self._notes.append(_T('Connection closed'))
 
 if __name__ == '__main__':
     import sys

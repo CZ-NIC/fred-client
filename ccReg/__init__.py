@@ -61,6 +61,7 @@ if epp.is_val() == 1000:
 import sys
 from session_receiver import ManagerReceiver
 from session_receiver import ccRegError
+import translate
 
 class Client:
     """EPP client API. Process whole EPP communication with server.
@@ -710,9 +711,10 @@ class Client:
         'Check if client is login on the server.'
         return self._epp.is_logon()
 
-    def load_config(self, options=[]):
+    def load_config(self, session=''):
         'Load config file.'
-        return self._epp.load_config(options)
+        if len(session): translate.options['session'] = session
+        return self._epp.load_config(translate.options)
 
     def set_data_connect(self, dc):
         'Set data for connection: dc = {host: str, port: str, priv_key: str, cert: str, timeout: str }'

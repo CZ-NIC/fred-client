@@ -95,7 +95,7 @@ class ManagerTransfer(ManagerBase):
     #==================================================
     def get_connect_defaults(self):
         'Get connect defaults from config'
-        if not self._conf: self.load_config(options) # load config, if was not been yet
+        if not self._conf: self.load_config() # load config, if was not been yet
         section = self.config_get_section_connect()
         data = [self.get_config_value(section,'host',OMIT_ERROR),
                 self.get_config_value(section,'port',OMIT_ERROR,'int'),
@@ -238,7 +238,7 @@ class ManagerTransfer(ManagerBase):
         dct_data = self._dct_answer['data']
         for key,verbose,explain in self.__get_column_items__(self._dct_answer['command'], dct_data):
             value = dct_data.get(key,u'')
-            if value not in ('',[]): __append_into_report__(body,key,value,explain,'',1) # '' - indent; 1 - no terminal tags
+            if value not in ('',[]): __append_into_report__(body,key,value,explain,self._ljust,'',1) # '' - indent; 1 - no terminal tags
         return sep.join(body).decode(encoding)
 
     def __append_to_body__(self, body, dct):
@@ -254,12 +254,12 @@ class ManagerTransfer(ManagerBase):
                 used.append(key)
                 continue
             value = dct_data.get(key,u'')
-            if value not in ('',[]): __append_into_report__(data,key,value,explain,data_indent)
+            if value not in ('',[]): __append_into_report__(data,key,value,explain,self._ljust,data_indent)
             used.append(key)
         if len(data):
             body.append('')
-            if self._session[VERBOSE] > 1:
-                body.append(colored_output.render('${BOLD}data:${NORMAL}'))
+##            if self._session[VERBOSE] > 1:
+##                body.append(colored_output.render('${BOLD}data:${NORMAL}'))
             body.extend(data)
         #--- INTERNAL USE ----
         # POZOR!!! V ostré verzi musí být deaktivováno!!!
@@ -364,7 +364,7 @@ class ManagerTransfer(ManagerBase):
         for key,verbose,explain in self.__get_column_items__(dct['command'], dct_data):
             if verbose > self._session[VERBOSE]: continue
             value = dct_data.get(key,u'')
-            if value not in ('',[]): __append_into_report__(data,key,value,explain,'',2) # 2 - use HTML pattern;
+            if value not in ('',[]): __append_into_report__(data,key,value,explain,self._ljust,'',2) # 2 - use HTML pattern;
         if len(data):
             report('<table class="ccreg_data">')
             body.extend(data)
@@ -499,7 +499,7 @@ class ManagerTransfer(ManagerBase):
     #-------------------------------------
 
         
-def __append_into_report__(body,k,v,explain, indent = '', no_terminal_tags=0):
+def __append_into_report__(body,k,v,explain,ljust, indent = '', no_terminal_tags=0):
     'Append value type(unicode|list|tuple) into report body.'
     patt = (
         ('%s${BOLD}%s${NORMAL} %s','%s${BOLD}%s${NORMAL}','%s%s'),
@@ -510,15 +510,14 @@ def __append_into_report__(body,k,v,explain, indent = '', no_terminal_tags=0):
     if explain: k = explain # overwrite key by explain message
     if type(k) is str: k = k.decode(encoding)
     if type(v) is str: v = v.decode(encoding)
-    space = 23 # indent between names and values
     if no_terminal_tags == 2:
         # html
         key = k
         ljustify = ''
     else:
         # text
-        key = (k+':').ljust(space)
-        ljustify = ''.ljust(space+len(indent)+1)
+        key = (k+':').ljust(ljust)
+        ljustify = ''.ljust(ljust+len(indent)+1)
     if type(v) in (list,tuple):
         if len(v):
             body.append(get_ltext(colored_output.render(patt[0]%(indent,key,escape(str_lists(v[0]))))))

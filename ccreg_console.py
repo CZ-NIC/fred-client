@@ -47,6 +47,8 @@ help_option = _T("""Connection options:
   -s SESSION, --session=SESSION
                    read session name used for connect to the EPP server
                    session values are read from config file
+  -n  --nologin    disable automatic login process after start up
+
   -o OUTPUT_TYPE, --output=OUTPUT_TYPE
                    display output as: text (default), html""")
 
@@ -67,13 +69,17 @@ def main(options):
     if ccReg.translate.warning:
         print colored_output.render("${BOLD}${RED}%s${NORMAL}"%ccReg.translate.warning)
     epp = ccReg.ClientSession()
-    if not epp.load_config(options): return
+    if not epp.load_config():
+        epp.display() # display errors or notes
+        return
     print epp.welcome()
     epp.init_radline(readline) # readline behavior for Unix line OS
     is_online = 0
     prompt = '> '
     online = prompt
-    epp.automatic_login()
+    if not epp.automatic_login():
+        epp.display() # display errors or notes
+        return
     epp.restore_history()
     epp.display() # display errors or notes
     while 1:

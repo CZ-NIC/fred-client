@@ -122,6 +122,7 @@ optcols = (
     'h:host',
     'k:privkey',
     'l:lang',
+    'n nologin', # turn off automatic login process after start up
     'o:output',
     'p:port',
     'q qt',    # run in Qt

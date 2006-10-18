@@ -63,23 +63,34 @@ class ManagerBase:
         if type(self._options) is not dict:
             self._options = {'lang':'en','colors':'off','verbose':'1','user':'','password':'','host':'',}
         self._email_reports_bug = 'ccreg-devel@lists.nic.cz'
+        self._ljust = 23 # indent values from column names in output
 
     def get_session(self, offset):
         return self._session[offset]
 
-    def init_options(self):
+    def init_from_options(self, section_connect):
         'Init variables from options (after loaded config).'
-        self._session[LANG] = self._options['lang']
-        # Option 'colors' has been disabled. Use config instead.
-        #if self._options['colors']:
-        #    colored_output.set_mode(1)
-        #    self._session[COLORS] = 1
-        if self._options['verbose']:
-            self.__init_verbose__(self._options['verbose'])
-        key = self._options['output'].lower()
+        # connect
+        op = self._options
+        if op['host']: self._conf.set(section_connect,'host',op['host'])
+        if op['port']: self._conf.set(section_connect,'port',op['port'])
+        if op['user']: self._conf.set(section_connect,'username',op['user'])
+        if op['password']: self._conf.set(section_connect,'password',op['password'])
+        if op['cert']: self._conf.set(section_connect,'ssl_cert',op['cert'])
+        if op['privkey']: self._conf.set(section_connect,'ssl_key',op['privkey'])
+        if op['nologin']: self._conf.set(section_connect,'nologin','nologin')
+        # copy variables for individual commands
+        section_epp_login = 'epp_login'
+        self.copy_default_options(section_epp_login, section_connect, 'username')
+        self.copy_default_options(section_epp_login, section_connect, 'password')
+        # selection fo language version
+        self._session[LANG] = op['lang']
+        if op['verbose']:
+            self.__init_verbose__(op['verbose'])
+        key = op['output'].lower()
         if key:
             self._session[OUTPUT_TYPE] = self.get_valid_output(key)
-        if self._options['no_validate']: self._session[VALIDATE] = 0
+        if op['no_validate']: self._session[VALIDATE] = 0
 
     def get_valid_output(self, key):
         'Get valid output type.'
@@ -106,7 +117,7 @@ class ManagerBase:
 
     def set_confirm(self, type):
         'Set switch confirm_commands_before_send'
-        self._session[CONFIRM_SEND_COMMAND] = (0,1)[type in ('on','ON')]
+        self._session[CONFIRM_SEND_COMMAND] = type in ('on','ON') and 1 or 0
         self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('Confirm has been set to'),('OFF','ON')[self._session[CONFIRM_SEND_COMMAND]]))
 
     def get_errors(self, sep='\n'):
@@ -155,15 +166,17 @@ class ManagerBase:
         if self.is_error():
             # chybová hlášení
             msg.append(colored_output.render('${RED}${BOLD}'))
-            for text in self._errors:
-                msg.append(get_ltext(colored_output.render(text)))
+            label = '%s:'%_T('ERROR')
+            msg.append('%s%s'%(label.ljust(self._ljust), self._errors[0]))
+            for text in self._errors[1:]:
+                msg.append('%s%s'%(''.ljust(self._ljust), get_ltext(colored_output.render(text))))
             self._errors = []
             msg.append(colored_output.render('${NORMAL}'))
         return sep.join(msg)
 
     def welcome(self):
         "Welcome message."
-        return '%s\n%s'%(self.version(),_T('Type "help", "license" or "credits" for more information.'))
+        return '%s\n%s\n'%(self.version(),_T('Type "help", "license" or "credits" for more information.'))
 
     def version(self):
         return 'ccRegClient 1.2' # version of the client
@@ -234,7 +247,7 @@ class ManagerBase:
             seop = ('session','schema')
             name = self.get_config_value(seop[0], seop[1])
             if not name:
-                self.append_error(_T('Schema in session missing. Thi is invalid instalation.'))
+                self.append_error(_T('Schema in session missing. This is invalid instalation.'))
                 return 0
             self._conf.set(seop[0], seop[1], os.path.join(modul_path,'schemas',name))
             # make copy if need
@@ -306,9 +319,13 @@ class ManagerBase:
             if not self.__is_config_option__(section, 'timeout'):
                 self._conf.set(section, 'timeout','10.0')
         
-    def load_config(self, options):
+    def load_config(self, options=None):
         "Load config file and init internal variables. Returns 0 if fatal error occured."
+        # 1. first load values from config
+        # 2. overwrite them by options from command line
         if type(options) is dict: self._options = options
+        if len(translate.config_names):
+            self.append_note('%s %s'%(_T('Using configuration from'), ', '.join(translate.config_names)))
         if translate.config_error:
             self.append_error(translate.config_error)
         self._session[SESSION] = self._options.get('session','') # API definition of --session parameter.
@@ -322,35 +339,26 @@ class ManagerBase:
         # default values (timeout)
         self.__config_defaults__()
         # for login with no parameters
-        section = self.config_get_section_connect()
-        if not self._conf.has_section(section):
-            self._conf.add_section(section)
-            self.append_note(_T('Configuration file has no section "%s".')%section)
-        if options['host']: self._conf.set(section,'host',options['host'])
-        if options['port']: self._conf.set(section,'port',options['port'])
-        if options['user']: self._conf.set(section,'username',options['user'])
-        if options['password']: self._conf.set(section,'password',options['password'])
-        if options['cert']: self._conf.set(section,'ssl_cert',options['cert'])
-        if options['privkey']: self._conf.set(section,'ssl_key',options['privkey'])
-        # copy variables for individual commands
-        section_epp_login = 'epp_login'
-        self.copy_default_options(section_epp_login, section, 'username')
-        self.copy_default_options(section_epp_login, section, 'password')
+        section_connect = self.config_get_section_connect()
+        if not self._conf.has_section(section_connect):
+            self._conf.add_section(section_connect)
+            self.append_error(_T('Configuration file has no section "%s".')%section_connect)
+            return 0 # fatal error
         # session
         section = 'session'
         self._session[POLL_AUTOACK] = str(self.get_config_value(section,'poll_autoack',OMIT_ERROR)).lower() == 'on' and 1 or 0
         self._session[CONFIRM_SEND_COMMAND] = self.get_config_value(section,'confirm_send_commands').lower() == 'on' and 1 or 0
         self._session[VALIDATE] = self.get_config_value(section,'validate').lower() == 'on' and 1 or 0
-        colors = self.get_config_value(section,'colors',1)
+        colors = self.get_config_value(section,'colors',OMIT_ERROR)
         if colors:
-            self._session[COLORS] = (0,1)[colors.lower() == 'on']
+            self._session[COLORS] = colors.lower() == 'on' and 1 or 0
             colored_output.set_mode(self._session[COLORS])
-        self.__init_verbose__(self.get_config_value(section,'verbose',1))
+        self.__init_verbose__(self.get_config_value(section,'verbose',OMIT_ERROR))
         # set NULL value
-        value = self.get_config_value(section,'null_value',1)
+        value = self.get_config_value(section,'null_value',OMIT_ERROR)
         if value: self.set_null_value(value)
         # init from command line options
-        self.init_options()
+        self.init_from_options(section_connect)
         return 1 # OK
 
     def set_data_connect(self, dc):

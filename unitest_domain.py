@@ -112,9 +112,9 @@ class Test(unittest.TestCase):
         global epp_cli, epp_cli_TRANSF, epp_cli_log, handle_contact, handle_nsset, log_fp
         # create client object
         epp_cli = ccReg.Client()
-        epp_cli._epp.load_config(ccReg.translate.options)
+        epp_cli._epp.load_config()
         epp_cli_TRANSF = ccReg.Client()
-        epp_cli_TRANSF._epp.load_config(ccReg.translate.options)
+        epp_cli_TRANSF._epp.load_config()
         # login
         dct = epp_cli._epp.get_default_params_from_config('login')
         epp_cli.login(dct['username'], dct['password'])

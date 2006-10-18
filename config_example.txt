@@ -14,6 +14,7 @@ ssl_key  = %(dir)s/epp_test_ccreg_nic_cz_key.pem
 username = MYUSERNAME
 password = MYPASSWORD
 # socket = IPv6     # valid values are: IPv4 and IPv6
+# nologin = y       # turn off automatic login process after start up
 
 [session]
 poll_ack = off

@@ -61,9 +61,9 @@ class Test(unittest.TestCase):
         global epp_cli, epp_cli_TRANSF, handle_contact, handle_nsset, log_fp
         # create client object
         epp_cli = ccReg.Client()
-        epp_cli._epp.load_config(ccReg.translate.options)
+        epp_cli._epp.load_config()
         #epp_cli_TRANSF = ccReg.Client()
-        #epp_cli_TRANSF._epp.load_config(ccReg.translate.options)
+        #epp_cli_TRANSF._epp.load_config()
         # vypnutí validátoru
         epp_cli._epp.set_validate(0)
         #epp_cli_TRANSF.set_validate(0)
