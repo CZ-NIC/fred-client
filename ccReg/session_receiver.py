@@ -341,12 +341,12 @@ class ManagerReceiver(ManagerCommand):
             else:
                 self.__check_available__(self._dct_answer, chunk_cd, names, 'avail')
             # append status according to code
-            status = (_T('Not available'),_T('Available'))
+            status = (_T('Not available'), _T('Available'))
             d = self._dct_answer['data']
             for k,v in d.items():
                 if type(v) == int:
                     key = '%s:reason'%k
-                    d[key] = '%s. %s'%(status[v],d[key])
+                    d[key] = '%s. %s'%(status[v],get_ltext(d[key]))
 
 
     def answer_response_contact_check(self, data):

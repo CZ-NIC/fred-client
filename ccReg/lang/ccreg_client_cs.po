@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-10-18 15:50+0200\n"
+"POT-Creation-Date: 2006-10-18 18:17+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Zdeněk Böhm <zdenek.bohm@nic.cz>\n"
 "Language-Team: CS <ccreg-devel@lists.nic.cz@nic.cz>>\n"
@@ -881,7 +881,7 @@ msgstr "Neznámý typ výstupu. Platné typy jsou"
 msgid "Confirm has been set to"
 msgstr "Potvrzení bylo nastaveno na"
 
-#: ccReg/session_base.py:169
+#: ccReg/session_base.py:169 ccReg/session_transfer.py:301
 msgid "ERROR"
 msgstr "CHYBA"
 
@@ -1317,11 +1317,19 @@ msgstr "Login se nezdařil."
 msgid "Not in registry: Object is available."
 msgstr "Není v registru: Objekt je dostupný."
 
-#: ccReg/session_receiver.py:468
+#: ccReg/session_receiver.py:344
+msgid "Not available"
+msgstr "Nedostupný"
+
+#: ccReg/session_receiver.py:344
+msgid "Available"
+msgstr "Dostupný"
+
+#: ccReg/session_receiver.py:470
 msgid "You are not logged. First type login."
 msgstr "Nejste zalogováni. Nejdříve zadejte login."
 
-#: ccReg/session_receiver.py:471
+#: ccReg/session_receiver.py:473
 msgid "You are not logged. You must call login() before working on the server."
 msgstr "Nejste zalogováni. Nejdříve musíte zadat login()."
 
@@ -1342,7 +1350,15 @@ msgstr "Server nevrátil Greeting odpověď. Kontaktujte správce serveru."
 msgid "Logout command sent to server"
 msgstr "Odeslán logout"
 
-#: ccReg/session_transfer.py:312
+#: ccReg/session_transfer.py:294 ccReg/session_transfer.py:352
+msgid "Return code"
+msgstr "Návratový kód"
+
+#: ccReg/session_transfer.py:295 ccReg/session_transfer.py:354
+msgid "Reason"
+msgstr "Důvod"
+
+#: ccReg/session_transfer.py:315
 #, python-format
 msgid "(%d item)"
 msgid_plural "(%d items)"
