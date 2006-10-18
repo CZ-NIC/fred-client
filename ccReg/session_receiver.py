@@ -340,12 +340,14 @@ class ManagerReceiver(ManagerCommand):
                     self.__check_available__(self._dct_answer, item, names, 'avail')
             else:
                 self.__check_available__(self._dct_answer, chunk_cd, names, 'avail')
-            # SORTING OUTPUT: Join reason column name:
-            cols = []
-            for name in self._session[SORT_BY_COLUMNS]:
-                cols.append((name,1,''))
-                cols.append(('%s:reason'%name,1,''))
-            self._session[SORT_BY_COLUMNS] = cols
+            # append status according to code
+            status = (_T('Not available'),_T('Available'))
+            d = self._dct_answer['data']
+            for k,v in d.items():
+                if type(v) == int:
+                    key = '%s:reason'%k
+                    d[key] = '%s. %s'%(status[v],d[key])
+
 
     def answer_response_contact_check(self, data):
         "data=(response,result,code,msg)"

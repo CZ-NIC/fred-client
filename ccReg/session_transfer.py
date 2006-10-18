@@ -248,18 +248,22 @@ class ManagerTransfer(ManagerBase):
         in_higher_verbose = 0
         used = []
         dct_data = dct['data']
+        is_check = re.match('\w+:check',dct['command']) and 1 or 0 # object:check
         for key,verbose,explain in self.__get_column_items__(dct['command'], dct_data):
             if verbose > self._session[VERBOSE]:
                 in_higher_verbose += 1
                 used.append(key)
                 continue
             value = dct_data.get(key,u'')
-            if value not in ('',[]): __append_into_report__(data,key,value,explain,self._ljust,data_indent)
+            if value not in ('',[]):
+                if is_check:
+                    # Tighten check response by code.
+                    if type(value) is int: continue
+                    key = re.sub(':reason','',key)
+                __append_into_report__(data,key,value,explain,self._ljust,data_indent)
             used.append(key)
         if len(data):
             body.append('')
-##            if self._session[VERBOSE] > 1:
-##                body.append(colored_output.render('${BOLD}data:${NORMAL}'))
             body.extend(data)
         #--- INTERNAL USE ----
         # POZOR!!! V ostré verzi musí být deaktivováno!!!
@@ -283,22 +287,21 @@ class ManagerTransfer(ManagerBase):
             # exception on the command login and hello:
             if dct['command'] in ('login','hello'):
                 body.pop() # remove previous empty line
-            else:
+            elif code != 1000:
                 report(get_ltext(colored_output.render('${%s}%s${NORMAL}'%(code==1000 and 'GREEN' or 'NORMAL', dct['reason']))))
         else:
             # full
-            report(colored_output.render('${BOLD}code:${NORMAL} %d'%code))
-            report(colored_output.render('${BOLD}command:${NORMAL} %s'%dct['command']))
-            report('%s%s'%(
-                colored_output.render('${BOLD}reason:${NORMAL} '),
-                get_ltext(colored_output.render('${%s}%s${NORMAL}'%(code==1000 and 'GREEN' or 'NORMAL', dct['reason']))))
-                )
+            label_code = ('%s:'%_T('Return code')).ljust(self._ljust)
+            label_reason = ('%s:'%_T('Reason')).ljust(self._ljust)
+            report(colored_output.render('${BOLD}%s${NORMAL}%d'%(label_code,code)))
+            report(colored_output.render('${BOLD}%s${%s}%s${NORMAL}'%(label_reason, code==1000 and 'GREEN' or 'NORMAL', get_ltext(dct['reason']))))
         #... errors .............................
         if len(dct['errors']):
-            report(colored_output.render('${BOLD}errors:${NORMAL}'))
             report(colored_output.render('${BOLD}${RED}'))
-            for error in dct['errors']:
-                report(get_ltext('  %s'%error))
+            label = '%s:'%_T('ERROR')
+            report('%s%s'%(label.ljust(self._ljust),dct['errors'][0]))
+            for error in dct['errors'][1:]:
+                report('%s%s'%(''.ljust(self._ljust),get_ltext(error)))
             report(colored_output.render('${NORMAL}'))
         #... data .............................
         if re.match('\w+:list',dct['command']):
@@ -346,9 +349,9 @@ class ManagerTransfer(ManagerBase):
         if self._session[VERBOSE] > 1 or code != 1000:
             # full
             tbl_reason=['<table class="ccreg_data">']
-            tbl_reason.append('<tr>\n\t<th>code</th>\n\t<td>%d</td>\n</tr>'%code)
-            tbl_reason.append('<tr>\n\t<th>command</th>\n\t<td>%s</td>\n</tr>'%get_ltext(dct['command']))
-            tbl_reason.append('<tr>\n\t<th>reason</th>\n\t<td><span class="%s">%s</span></td>\n</tr>'%(reason_css_class,get_ltext(dct['reason'])))
+            tbl_reason.append('<tr>\n\t<th>%s</th>\n\t<td>%d</td>\n</tr>'%(_T('Return code'),code))
+            #tbl_reason.append('<tr>\n\t<th>command</th>\n\t<td>%s</td>\n</tr>'%get_ltext(dct['command']))
+            tbl_reason.append('<tr>\n\t<th>%s</th>\n\t<td><span class="%s">%s</span></td>\n</tr>'%(_T('Reason'), reason_css_class,get_ltext(dct['reason'])))
             tbl_reason.append('</table>')
             report('\n'.join(tbl_reason))
         #... errors .............................
@@ -358,13 +361,19 @@ class ManagerTransfer(ManagerBase):
                 report('<li>%s</li>'%get_ltext(error))
             report('</ul></div>')
         #... data .............................
+        is_check = re.match('\w+:check',dct['command']) and 1 or 0 # object:check
         data_indent = ''
         data = []
         dct_data = dct['data']
         for key,verbose,explain in self.__get_column_items__(dct['command'], dct_data):
             if verbose > self._session[VERBOSE]: continue
             value = dct_data.get(key,u'')
-            if value not in ('',[]): __append_into_report__(data,key,value,explain,self._ljust,'',2) # 2 - use HTML pattern;
+            if value not in ('',[]):
+                if is_check:
+                    # Tighten check response by code.
+                    if type(value) is int: continue
+                    key = re.sub(':reason','',key)
+                __append_into_report__(data,key,value,explain,self._ljust,'',2) # 2 - use HTML pattern;
         if len(data):
             report('<table class="ccreg_data">')
             body.extend(data)

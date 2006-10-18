@@ -193,6 +193,7 @@ table#command  { border-collapse: collapse; }
     <th>Output</th>
     <td><?php
     $ar_output = array('html'=>'Simple HTML', 'php'=>'PHP code');
+    if(!$_POST['output']) $_POST['output'] = key($ar_output);
     foreach($ar_output as $k => $v) {
         if($_POST['output'] == $k) $checked = 'checked="checked"'; else $checked = '';
         echo "<input type='radio' name='output' value='$k' $checked /> $v".CRLF;
