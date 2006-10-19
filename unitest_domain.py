@@ -62,7 +62,7 @@ DOMAIN_1, DOMAIN_2, CHANGE_DOMAIN, DOMAIN_3  = range(4)
 CCREG_DATA = (
     { # DOMAIN_1
        'name':CCREG_DOMAIN1,
-       'pw':CCREG_DOMAIN_PASSW,
+       'auth_info':CCREG_DOMAIN_PASSW,
        'nsset':CCREG_NSSET1,
        'registrant':CCREG_CONTACT1,
        'period': {'num':'3','unit':'y'},
@@ -70,7 +70,7 @@ CCREG_DATA = (
     }, 
     { # DOMAIN_2
        'name':CCREG_DOMAIN2,
-       'pw':CCREG_DOMAIN_PASSW,
+       'auth_info':CCREG_DOMAIN_PASSW,
        'nsset':CCREG_NSSET1,
        'registrant':CCREG_CONTACT1,
        'period': {'num':'3','unit':'y'},
@@ -79,12 +79,12 @@ CCREG_DATA = (
     { # modify CHANGE_DOMAIN
       'nsset': CCREG_NSSET2,
       'registrant': CCREG_CONTACT2,
-##      'auth_info': {'pw': CCREG_DOMAIN_PASSW_NEW,},
-      'pw': CCREG_DOMAIN_PASSW_NEW,
+##      'auth_info': {'auth_info': CCREG_DOMAIN_PASSW_NEW,},
+      'auth_info': CCREG_DOMAIN_PASSW_NEW,
     },
     { # DOMAIN_3 - modified
        'name':CCREG_DOMAIN1,
-       'pw':CCREG_DOMAIN_PASSW_NEW,
+       'auth_info':CCREG_DOMAIN_PASSW_NEW,
        'nsset':CCREG_NSSET2,
        'registrant':CCREG_CONTACT2,
        'period': {'num':'3','unit':'y'},
@@ -163,25 +163,25 @@ class Test(unittest.TestCase):
     def test_050(self):
         '4.5  Pokus o zalozeni domeny s neexistujicim nssetem'
         d = CCREG_DATA[DOMAIN_1]
-        epp_cli.create_domain(d['name'], d['registrant'], d['pw'], 'nsset-not-exists', d['period'], d['contact'])
+        epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], 'nsset-not-exists', d['period'], d['contact'])
         self.assertNotEqual(epp_cli.is_val(), 1000)
 
     def test_060(self):
         '4.6.1  Pokus o zalozeni domeny s neexistujicim registratorem'
         d = CCREG_DATA[DOMAIN_1]
-        epp_cli.create_domain(d['name'], 'reg-not-exists', d['pw'], d['nsset'], d['period'], d['contact'])
+        epp_cli.create_domain(d['name'], 'reg-not-exists', d['auth_info'], d['nsset'], d['period'], d['contact'])
         self.assertNotEqual(epp_cli.is_val(), 1000)
 
     def test_062(self):
         '4.6.2  Pokus o zalozeni domeny s neexistujicim kontaktem'
         d = CCREG_DATA[DOMAIN_1]
-        epp_cli.create_domain(d['name'], d['registrant'], d['pw'], d['nsset'], d['period'], 'CXXX0X')
+        epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], d['nsset'], d['period'], 'CXXX0X')
         self.assertNotEqual(epp_cli.is_val(), 1000)
 
     def test_070(self):
         '4.7  Pokusy o zalozeni domeny s neplatnym nazvem'
         d = CCREG_DATA[DOMAIN_1]
-        epp_cli.create_domain(INVALID_DOMAIN_NAME, d['registrant'], d['pw'], d['nsset'], d['period'], d['contact'])
+        epp_cli.create_domain(INVALID_DOMAIN_NAME, d['registrant'], d['auth_info'], d['nsset'], d['period'], d['contact'])
         self.assertNotEqual(epp_cli.is_val(), 1000, 'Domena %s se vytvorila prestoze nemela.'%INVALID_DOMAIN_NAME)
 
     def test_071(self):
@@ -193,33 +193,33 @@ class Test(unittest.TestCase):
     def test_080(self):
         '4.8  Zalozeni nove domeny'
         d = CCREG_DATA[DOMAIN_1]
-        epp_cli.create_domain(d['name'], d['registrant'], d['pw'], d['nsset'], d['period'], d['contact'])
+        epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], d['nsset'], d['period'], d['contact'])
         self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_090(self):
         '4.9.1 Pokus o zalozeni domeny enum bez valExpDate'
         d = CCREG_DATA[DOMAIN_2]
-        epp_cli.create_domain(d['name'], d['registrant'], d['pw'], d['nsset'], d['period'], d['contact'])
+        epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], d['nsset'], d['period'], d['contact'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_092(self):
         '4.9.2 Pokus o zalozeni domeny enum s nespravnym valExDate'
         d = CCREG_DATA[DOMAIN_2]
         val_ex_date = time.strftime("%Y-%m-%d",time.localtime(time.time()+60*60*24*30*7)) # sedm měsíců
-        epp_cli.create_domain(d['name'], d['registrant'], d['pw'], d['nsset'], d['period'], d['contact'], val_ex_date)
+        epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], d['nsset'], d['period'], d['contact'], val_ex_date)
         self.assertNotEqual(epp_cli.is_val(), 1000, 'Domena enum se vytvorila i kdyz valExDate byl neplatny')
         
     def test_096(self):
         '4.9.3  Zalozeni nove domeny enum'
         d = CCREG_DATA[DOMAIN_2]
         val_ex_date = time.strftime("%Y-%m-%d",time.localtime(time.time()+60*60*24*30*2)) # dva měsíce
-        epp_cli.create_domain(d['name'], d['registrant'], d['pw'], d['nsset'], d['period'], d['contact'], val_ex_date)
+        epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], d['nsset'], d['period'], d['contact'], val_ex_date)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
         
     def test_100(self):
         '4.10  Pokus o zalozeni jiz existujici domeny'
         d = CCREG_DATA[DOMAIN_1]
-        epp_cli.create_domain(d['name'], d['registrant'], d['pw'], d['nsset'], d['period'], d['contact'])
+        epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], d['nsset'], d['period'], d['contact'])
         self.assertNotEqual(epp_cli.is_val(), 1000, 'Domena se vytvorila prestoze jiz existuje')
 
     def test_110(self):
@@ -284,7 +284,7 @@ class Test(unittest.TestCase):
         self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se nastavit status: %s'%status)
         unitest_ccreg_share.reset_client(epp_cli)
         # pokus o změnu
-        epp_cli.update_domain(CCREG_DOMAIN1, None, None, {'auth_info':{'pw':'zmena hesla'}})
+        epp_cli.update_domain(CCREG_DOMAIN1, None, None, {'auth_info':{'auth_info':'zmena hesla'}})
         unitest_ccreg_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(2,3))
         self.assertNotEqual(epp_cli.is_val(), 1000, 'Domena se aktualizovala, prestoze mela nastaven status %s'%status)
         unitest_ccreg_share.reset_client(epp_cli)
@@ -371,14 +371,14 @@ class Test(unittest.TestCase):
         
     def test_220(self):
         '4.22 Druhy registrator: Zmena hesla po prevodu domeny'
-        epp_cli_TRANSF.update_domain(CCREG_DOMAIN1, None, None, {'auth_info':{'pw':CCREG_DOMAIN_PASSW}})
+        epp_cli_TRANSF.update_domain(CCREG_DOMAIN1, None, None, {'auth_info':{'auth_info':CCREG_DOMAIN_PASSW}})
         self.assertEqual(epp_cli_TRANSF.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli_TRANSF))
         
     def test_230(self):
         '4.23 Zmena hesla domeny, ktera registratorovi jiz nepatri'
         global epp_cli_log
         epp_cli_log = epp_cli
-        epp_cli.update_domain(CCREG_DOMAIN1, None, None, {'auth_info':{'pw':'moje-heslo'}})
+        epp_cli.update_domain(CCREG_DOMAIN1, None, None, {'auth_info':{'auth_info':'moje-heslo'}})
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
         
     def test_240(self):
@@ -438,7 +438,7 @@ def __check_equality__(cols, data):
     ##    'contact': ('TDOMCONT01',), 
     ##    'nsset': 'TDOMNSSET01', 
     ##    'registrant': 'TDOMCONT01', 
-    ##    'pw': 'heslicko'}
+    ##    'auth_info': 'heslicko'}
     ##------------------------------------------------------------
     ##DATA:
     ##{   'domain:contact': u'TDOMCONT01', 
@@ -459,7 +459,7 @@ def __check_equality__(cols, data):
     unitest_ccreg_share.err_not_equal(errors, data, 'domain:clID', ref_value)
     unitest_ccreg_share.err_not_equal(errors, data, 'domain:name', cols['name'])
     unitest_ccreg_share.err_not_equal(errors, data, 'domain:nsset', cols['nsset'])
-    unitest_ccreg_share.err_not_equal(errors, data, 'domain:pw', cols['pw'])
+    unitest_ccreg_share.err_not_equal(errors, data, 'domain:pw', cols['auth_info'])
     if not unitest_ccreg_share.are_equal(data['domain:registrant'], cols['registrant']):
         errors.append('Data domain:registrant nesouhlasi. JSOU:%s MELY BYT:%s'%(unitest_ccreg_share.make_str(data['domain:registrant']), unitest_ccreg_share.make_str(cols['registrant'])))
     is_equal, exdate = unitest_ccreg_share.check_date(data['domain:exDate'], cols['period'])

@@ -46,7 +46,7 @@ This value we use if we want to skip over any column in the command parameters.
 Type NULL means we did not put any value in contrast to '' or "" where we put
 value of zero length. See help for more details."""), ('null None','null EMPTY',)),
             (('output',), self.__session_output__, [_T('type')], _T('Display output in type.'), ('output html',)),
-            (('poll-autoack',), self.__session_poll_ack__, (_T('switch'),'on','off'), _T('Send "poll ack" straight away after "poll req".'), ('poll-autoack on',)),
+            (('autoackpoll',), self.__session_poll_ack__, (_T('switch'),'on','off'), _T('Send "poll ack" straight away after "poll req".'), ('autoackpoll on',)),
             (('quit','q','exit'), None, (), _T('Quit the client. Same effect has "q" or "exit".'), ()),
             (('raw-answer','raw-a','src-answer','src-a'), self.__session_raw_answer__, (_T('switch'),'d','dict',), _T('Display XML source of the EPP answer.'), ('raw-a','raw-a d','src-a','src-a d')),
             (('raw-command','raw-c','src-command','src-c'), self.__session_raw_command__, (_T('switch'),'d','dict',), _T('Display XML source of the EPP command.'), ('raw-c','raw-c d','src-c','src-c d')),
@@ -448,7 +448,6 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
                 # commection MUST be created BEFOR assembling login because of tags
                 # <objURI> and <extURI>
                 if not self.connect(): return # connect fails
-            self.check_validator() # set validator OFF, if not supported.
             # prefix 4 ASCII znaků pro clTRID (pro každé sezení nový)
             self._session[CMD_ID] = 0
             self.defs[PREFIX] = ''.join([chr(random.randint(97,122)) for n in range(4)])

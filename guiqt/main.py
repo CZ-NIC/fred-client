@@ -13,7 +13,7 @@ try:
     import ccReg
 except ImportError:
     # and than from relative path
-    sys.path.insert('../')
+    sys.path.insert(0,'../')
     try:
         import ccReg
     except ImportError, msg:
@@ -101,24 +101,25 @@ def count_data_rows(dct):
 class ccregMainWindow(_main.ccregWindow):
     'Main frame dialog.'
 
-    def __init__(self):
+    def __init__(self, epp_client):
         _main.ccregWindow.__init__(self)
-        self.epp = ccReg.Client()
-        self.epp.load_config()
+        self.epp = epp_client
         self.missing_required = []
         self.src = {} # {'command_name':['command line','XML source','XML response'], ...}
         self.epp_status = [n[0]for n in self.epp._epp._epp_cmd.update_status]
         #--------------------------------------        
         # load data for connection
         #--------------------------------------        
-        data = self.epp._epp.get_connect_defaults()
+        data = map(lambda v: v is not None and v or '', self.epp._epp.get_connect_defaults())
+        username = self.epp._epp.get_config_value('epp_login', 'username',1)
+        password = self.epp._epp.get_config_value('epp_login', 'password',1)
         self.connect_host.setText(data[0])
         self.connect_port.setText(str(data[1]))
         self.connect_private_key.setText(data[2])
         self.connect_certificate.setText(data[3])
         self.connect_timeout.setText(data[4])
-        self.login_username.setText(self.epp._epp.get_config_value('epp_login', 'username',1))
-        self.login_password.setText(self.epp._epp.get_config_value('epp_login', 'password',1))
+        if username: self.login_username.setText(username)
+        if password: self.login_password.setText(password)
         #--------------------------------------        
         # scrolled windows
         #--------------------------------------        
@@ -307,11 +308,11 @@ class ccregMainWindow(_main.ccregWindow):
         if not self.check_is_online(): return
         d = {}
         append_key(d,'name', getattr(self,'%s_name'%key))
-        append_key(d,'passw', getattr(self,'%s_password'%key))
+        append_key(d,'auth_info', getattr(self,'%s_password'%key))
         append_key(d,'cltrid', getattr(self,'%s_cltrid'%key))
-        if self.__check_required__(d, (('name',self.__tr('name')),('passw',self.__tr('password')))):
+        if self.__check_required__(d, (('name',self.__tr('name')),('auth_info',self.__tr('Authorization info')))):
             try:
-                getattr(self.epp,key)(d['name'], d['passw'], d.get('cltrid'))
+                getattr(self.epp,key)(d['name'], d['auth_info'], d.get('cltrid'))
             except ccReg.ccRegError, err:
                 self.epp._epp._errors.extend(err.args)
             self.__display_answer__(key)
@@ -446,7 +447,7 @@ class ccregMainWindow(_main.ccregWindow):
         if not self.check_is_online(): return
         d = {}
         p = self.panel_create_contact
-        for key in ('id', 'name', 'email', 'city', 'cc', 'pw','org','sp', 'street',
+        for key in ('id', 'name', 'email', 'city', 'cc', 'auth_info','org','sp', 'street',
                         'pc', 'voice', 'fax', 'vat', 'notify_email', 'cltrid'):
             append_key(d, key, getattr(p,'create_contact_%s'%key))
         #... disclose ................
@@ -465,7 +466,7 @@ class ccregMainWindow(_main.ccregWindow):
                     ):
             try:
                 self.epp.create_contact(d['id'], d['name'], d['email'], 
-                    d['city'], d['cc'], d.get('pw'),
+                    d['city'], d['cc'], d.get('auth_info'),
                     d.get('org'), d.get('street'), d.get('sp'), d.get('pc'), 
                     d.get('voice'), d.get('fax'), d.get('disclose'), d.get('vat'), 
                     d.get('ssn'), d.get('notify_email'), d.get('cltrid'))
@@ -480,7 +481,7 @@ class ccregMainWindow(_main.ccregWindow):
         if not self.check_is_online(): return
         d = {}
         p = self.panel_create_nsset
-        for key in ('id', 'tech', 'pw', 'cltrid'):
+        for key in ('id', 'tech', 'auth_info', 'cltrid'):
             append_key(d, key, getattr(p,key))
         dns = []
         for wnd in p.dns_sets:
@@ -491,7 +492,7 @@ class ccregMainWindow(_main.ccregWindow):
         d['dns'] = dns
         if self.__check_required__(d, (('id',self.__tr('NSSET ID')), ('dns',self.__tr('dns')), ('tech',self.__tr('tech. contact')))):
             try:
-                self.epp.create_nsset(d['id'], d['dns'], d['tech'], d.get('pw'), d.get('cltrid'))
+                self.epp.create_nsset(d['id'], d['dns'], d['tech'], d.get('auth_info'), d.get('cltrid'))
             except ccReg.ccRegError, err:
                 self.epp._epp._errors.extend(err.args)
             self.__display_answer__('create_nsset')
@@ -503,7 +504,7 @@ class ccregMainWindow(_main.ccregWindow):
         if not self.check_is_online(): return
         d = {}
         p = self.panel_create_domain
-        for key in ('name', 'registrant', 'pw', 'nsset', 'admin','cltrid'):
+        for key in ('name', 'registrant', 'auth_info', 'nsset', 'admin','cltrid'):
             append_key(d, key, getattr(p,key))
         #... period ....................
         period = {}
@@ -516,7 +517,7 @@ class ccregMainWindow(_main.ccregWindow):
         if self.__check_required__(d, (('name',self.__tr('name')), ('registrant',self.__tr('registrant')))):
             try:
                 self.epp.create_domain(d['name'], d['registrant'], 
-                    d.get('pw'), d.get('nsset'), d.get('period'), d.get('admin'), 
+                    d.get('auth_info'), d.get('nsset'), d.get('period'), d.get('admin'), 
                     d.get('val_ex_date'), d.get('cltrid'))
             except ccReg.ccRegError, err:
                 self.epp._epp._errors.extend(err.args)
@@ -533,7 +534,7 @@ class ccregMainWindow(_main.ccregWindow):
         for key in ('id', 'cltrid'):
             append_key(d, key, getattr(p,'update_contact_%s'%key))
         chg={}
-        for key in ('voice', 'fax', 'email', 'pw', 'vat', 'notify_email'):
+        for key in ('voice', 'fax', 'email', 'auth_info', 'vat', 'notify_email'):
             append_key(chg, key, getattr(p,'update_contact_%s'%key))
         postal_info = {}
         for key in ('name', 'org'):
@@ -593,7 +594,7 @@ class ccregMainWindow(_main.ccregWindow):
         if len(rem): d['rem'] = rem
         #................................
         chg = {}
-        append_key(chg, 'pw', getattr(p, 'pw'))
+        append_key(chg, 'auth_info', getattr(p, 'auth_info'))
         if len(chg): d['chg'] = chg
         if self.__check_required__(d, (('id',self.__tr('NSSET ID')),)) and len(d) > 1:
             try:
@@ -626,7 +627,7 @@ class ccregMainWindow(_main.ccregWindow):
         if len(rem): d['rem'] = rem
         #................................
         chg = {}
-        for key in ('nsset','registrant','pw'):
+        for key in ('nsset','registrant','auth_info'):
             append_key(chg, key, getattr(p, 'chg_%s'%key))
         if len(chg): d['chg'] = chg
         #................................
@@ -772,12 +773,16 @@ def get_unicode(text):
     return text
         
 def main(argv, lang):
+    epp = ccReg.Client()
+    if not epp.load_config():
+        epp._epp.display()
+        return
     app = QApplication(argv)
     tr = QTranslator()
     modul_trans = os.path.join(os.path.split(__file__)[0],'%s%s'%(translation_prefix,lang))
     if tr.load(modul_trans):
         app.installTranslator(tr)
-    form = ccregMainWindow()
+    form = ccregMainWindow(epp)
     form.show()
     app.setMainWidget(form)
     app.exec_loop()

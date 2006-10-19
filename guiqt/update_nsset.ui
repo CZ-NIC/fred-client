@@ -324,7 +324,7 @@
             </rect>
         </property>
         <property name="text">
-            <string>pasword</string>
+            <string>auth. for transfer</string>
         </property>
     </widget>
     <widget class="Line">
@@ -404,7 +404,7 @@ The EPP "update" command is used to update an instance of an existing object.
     </widget>
     <widget class="QLineEdit">
         <property name="name">
-            <cstring>pw</cstring>
+            <cstring>auth_info</cstring>
         </property>
         <property name="geometry">
             <rect>
@@ -741,7 +741,7 @@ The EPP "update" command is used to update an instance of an existing object.
     <tabstop>rem_clientUpdateProhibited</tabstop>
     <tabstop>rem_clientDeleteProhibited</tabstop>
     <tabstop>rem_clientTransferProhibited</tabstop>
-    <tabstop>pw</tabstop>
+    <tabstop>auth_info</tabstop>
     <tabstop>cltrid</tabstop>
 </tabstops>
 <slots>

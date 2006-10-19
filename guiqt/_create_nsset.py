@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'create_nsset.ui'
 #
-# Created: Út říj 3 10:10:08 2006
+# Created: Čt říj 19 16:26:25 2006
 #      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -57,8 +57,8 @@ class ccregWindow(QWidget):
         self.textLabel6 = QLabel(self,"textLabel6")
         self.textLabel6.setGeometry(QRect(10,560,160,20))
 
-        self.pw = QLineEdit(self,"pw")
-        self.pw.setGeometry(QRect(180,560,360,22))
+        self.auth_info = QLineEdit(self,"auth_info")
+        self.auth_info.setGeometry(QRect(180,560,360,22))
 
         self.frame_dns = QFrame(self,"frame_dns")
         self.frame_dns.setGeometry(QRect(10,280,530,270))
@@ -74,8 +74,8 @@ class ccregWindow(QWidget):
         self.connect(self.tech,SIGNAL("valueChanged(int,int)"),self.tech_value_changed)
 
         self.setTabOrder(self.id,self.tech)
-        self.setTabOrder(self.tech,self.pw)
-        self.setTabOrder(self.pw,self.cltrid)
+        self.setTabOrder(self.tech,self.auth_info)
+        self.setTabOrder(self.auth_info,self.cltrid)
 
 
     def languageChange(self):
@@ -91,7 +91,7 @@ class ccregWindow(QWidget):
         self.textLabel3.setText(self.__tr("<b>tech. contact</b>"))
         self.textLabel4.setText(self.__tr("<b>dns</b>"))
         self.textLabel5.setText(self.__tr("clTRID"))
-        self.textLabel6.setText(self.__tr("password"))
+        self.textLabel6.setText(self.__tr("auth. for transfer"))
 
 
     def tech_current_changed(self,a0,a1):

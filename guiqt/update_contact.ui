@@ -194,7 +194,7 @@
             </rect>
         </property>
         <property name="text">
-            <string>password</string>
+            <string>auth. for transfer</string>
         </property>
     </widget>
     <widget class="QLabel">
@@ -476,7 +476,7 @@
     </widget>
     <widget class="QLineEdit">
         <property name="name">
-            <cstring>update_contact_pw</cstring>
+            <cstring>update_contact_auth_info</cstring>
         </property>
         <property name="geometry">
             <rect>
@@ -1116,7 +1116,7 @@ The EPP "update" command is used to update an instance of an existing object.
     <tabstop>update_contact_voice</tabstop>
     <tabstop>update_contact_fax</tabstop>
     <tabstop>update_contact_email</tabstop>
-    <tabstop>update_contact_pw</tabstop>
+    <tabstop>update_contact_auth_info</tabstop>
     <tabstop>disclose</tabstop>
     <tabstop>update_contact_disclose_flag</tabstop>
     <tabstop>update_contact_disclose_name</tabstop>

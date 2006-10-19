@@ -185,25 +185,28 @@ class Message(eppdoc.Message):
             # param must not be NULL (except min == 0)
             try:
                 param = raw_input(prompt.encode(encoding)).strip()
-            except (KeyboardInterrupt, EOFError):
-                stop=2 # STOP whole application
+            except EOFError:
+                # Ctrl+D - Finish
+                if min_max[0]:
+                    # If value is required Finish mode is rejected.
+                    session_base.print_unicode('${BOLD}${RED}%s${NORMAL}'%_T('First fill required values and then press Ctrl+D to finish command. For abort press Ctrl+C.'))
+                    param = null_value
+                else:
+                    stop = 1 # Finish
+                    break
+            except KeyboardInterrupt:
+                # Ctrl+C - Abort (Cancel)
+                session_base.print_unicode('\n${BOLD}%s${NORMAL}'%_T('Command has been aborted.'))
+                stop = 2 # Abort (Cancel)
                 break
             # autofill required missing values
             if autofill > 2 and param == '':
-                #param = example
-                #if not param: param = 'example' # value MUST be set
-                #if type(param) == unicode: param = param.encode(encoding)
-                #session_base.print_unicode('${BOLD}${GREEN}%s, %s:${NORMAL} %s'%((_T("I'm fed up"),_T("It's boring"))[random.randint(0,1)],_T("example inserted"),param))
-                #autofill = 0
-                param = '!' # go to STOP case
+                session_base.print_unicode('\n${BOLD}${RED}%s${NORMAL}'%_T('Interactive mode has been aborted.'))
+                stop = 2 # Abort (Cancel)
+                break
             # Resolve NULL, STOP, min==0 / parse input
             if param == '':
                 ret_value = null_value
-            elif re.match('!+',param):
-                session_base.print_unicode('${BOLD}${RED}%s${NORMAL}'%_T('Interactive mode has been aborded.'))
-                stop = 1 # STOP interactive mode
-                ret_value = null_value
-                break
             else:
                 if param in ("''",'""'):
                     ret_value = '' # empty string
@@ -220,7 +223,7 @@ class Message(eppdoc.Message):
                 break # value not required
             elif ret_value == null_value:
                 # need to continue
-                session_base.print_unicode('${BOLD}${RED}%s${NORMAL}'%_T('Value is required. MUST be set:'))
+                session_base.print_unicode('${BOLD}${RED}%s${NORMAL}'%_T('Value is required. It MUST be set.'))
                 autofill += 1
             else:
                 break # value is set - stop input
@@ -271,7 +274,7 @@ class Message(eppdoc.Message):
         return (dct.has_key(name) == False), stop
         
     def __interactive_mode__(self, command_name, columns, dct, null_value, parents=[], already_done=0):
-        'Loop interactive input rod all params of command.'
+        'Loop interactive input for all params of command.'
         stop = previous_value_is_set = 0
         previous_min = [n[1]for n in parents]
         for row in columns:
@@ -358,6 +361,17 @@ class Message(eppdoc.Message):
         
     def parse_cmd(self, command_name, cmd, config, interactive, verbose, null_value):
         "Parse command line. Returns errors. Save parsed values to self._dct."
+        # __interactive_mode__() -> 
+        # 'Loop interactive input for all params of command.'
+        #
+        #    __interactive_mode_children_values__() -> __interactive_mode__()
+        #    'Put children values (namespaces)'
+        #
+        #    __interactive_mode_single_value__() ->
+        #    'Put single value'
+        #
+        #        __ineractive_input_one_param__()
+        #        'Loop raw_input while any value is set.'
         dct = {}
         error=[]
         example = ''
@@ -379,14 +393,15 @@ class Message(eppdoc.Message):
         if interactive:
             dct[command_name] = [command_name]
             if len(vals[1]) > 1:
-                session_base.print_unicode('${BOLD}%s${NORMAL}'%_T('Interactive input mode started. Type ! to abort.'))
+                session_base.print_unicode('${BOLD}%s${NORMAL}'%_T('Interactive input mode started. Press Ctrl+C to abort or Ctrl+D to finish command.'))
                 history_length = get_history_length()
                 user_typed_null, stop = self.__interactive_mode__(command_name, vals[1], dct, null_value)
+                if stop: stop -= 1 # 0 - normal; 1 - Finish command => normal; 2 - Abort => break interact.m. but not whole application;
                 if not stop: # user press ! or Ctrl+C or Ctrl+D
                     example = __build_command_example__(columns, dct, null_value)
                     # Note the interactive mode is closed.
                     try:
-                        raw_input(session_base.colored_output.render('${BOLD}${YELLOW}%s${NORMAL}'%_T('End of interactive input. [press enter]')))
+                        raw_input(session_base.colored_output.render('\n${BOLD}${YELLOW}%s${NORMAL}'%_T('End of interactive input. [press enter]')))
                     except (KeyboardInterrupt, EOFError):
                         pass
                 remove_from_history(get_history_length() - history_length)
@@ -600,7 +615,7 @@ class Message(eppdoc.Message):
             ('transfer', '%s:transfer'%names[0], '', attr),
             ('%s:transfer'%names[0], '%s:%s'%names, self._dct['name'][0]),
             ('%s:transfer'%names[0], '%s:authInfo'%names[0]),
-            ('%s:authInfo'%names[0], '%s:pw'%names[0], self._dct['passw'][0]),
+            ('%s:authInfo'%names[0], '%s:pw'%names[0], self._dct['auth_info'][0]),
             ('command', 'clTRID', self._dct.get(TAG_clTRID,[params[0]])[0])
         ))
 
@@ -680,10 +695,10 @@ class Message(eppdoc.Message):
         if __has_key__(dct,'voice'): data.append(('contact:create','contact:voice', dct['voice'][0]))
         if __has_key__(dct,'fax'): data.append(('contact:create','contact:fax', dct['fax'][0]))
         data.append(('contact:create','contact:email',dct['email'][0])) # required
-        if dct.has_key('pw'):
+        if dct.has_key('auth_info'):
             # password required
             data.append(('contact:create','contact:authInfo'))
-            data.append(('contact:authInfo','contact:pw',dct['pw'][0]))
+            data.append(('contact:authInfo','contact:pw',dct['auth_info'][0]))
         # --- BEGIN disclose ------
         if __has_key_dict__(dct,'disclose'):
             self.__append_disclose__(data, 'create', dct['disclose'][0])
@@ -715,10 +730,10 @@ class Message(eppdoc.Message):
         if __has_key__(dct,'nsset'): data.append(('domain:create','domain:nsset',dct['nsset'][0]))
         if __has_key__(dct,'registrant'): data.append(('domain:create','domain:registrant',dct['registrant'][0]))
         self.__append_values__(data, dct, 'admin', 'domain:create', 'domain:admin')
-        if dct.has_key('pw'): ## data.append(('domain:authInfo','domain:pw', dct['pw'][0]))
+        if dct.has_key('auth_info'):
             data.extend((
             ('domain:create','domain:authInfo'),
-            ('domain:authInfo','domain:pw', dct['pw'][0])
+            ('domain:authInfo','domain:pw', dct['auth_info'][0])
         ))
         self.__enum_extensions__('create',data, params)
         data.append(('command', 'clTRID', self._dct.get(TAG_clTRID,[params[0]])[0]))
@@ -751,10 +766,10 @@ class Message(eppdoc.Message):
                 self.__append_nsset__('create', data, dns)
         if __has_key__(dct,'tech'):
             self.__append_values__(data, dct, 'tech', 'nsset:create', 'nsset:tech')
-        if dct.has_key('pw'): 
+        if dct.has_key('auth_info'): 
             data.extend((
             ('nsset:create','nsset:authInfo'),
-            ('nsset:authInfo','nsset:pw', dct['pw'][0])
+            ('nsset:authInfo','nsset:pw', dct['auth_info'][0])
         ))
         data.append(('command', 'clTRID', self._dct.get(TAG_clTRID,[params[0]])[0]))
         self.__assemble_cmd__(data)
@@ -823,9 +838,9 @@ class Message(eppdoc.Message):
             for key in ('voice','fax','email'):
                 if __has_key__(chg,key): data.append(('contact:chg','contact:%s'%key, chg[key][0]))
             # password
-            if __has_key__(chg,'pw'):
+            if __has_key__(chg,'auth_info'):
                 data.append(('contact:chg','contact:authInfo')) # required
-                data.append(('contact:authInfo','contact:pw',chg['pw'][0])) # required
+                data.append(('contact:authInfo','contact:pw',chg['auth_info'][0])) # required
             # --- BEGIN disclose ------
             if __has_key_dict__(chg,'disclose'):
                 self.__append_disclose__(data, 'chg', chg['disclose'][0])
@@ -866,9 +881,9 @@ class Message(eppdoc.Message):
             data.append(('domain:update', 'domain:chg'))
             if __has_key__(chg,'nsset'): data.append(('domain:chg','domain:nsset', chg['nsset'][0]))
             if __has_key__(chg,'registrant'): data.append(('domain:chg','domain:registrant', chg['registrant'][0]))
-            if __has_key_dict__(chg,'pw'):
+            if __has_key_dict__(chg,'auth_info'):
                 data.append(('domain:chg','domain:authInfo'))
-                data.append(('domain:authInfo','domain:pw', chg['pw'][0]))
+                data.append(('domain:authInfo','domain:pw', chg['auth_info'][0]))
         self.__enum_extensions__('update',data, params,'chg')
         data.append(('command', 'clTRID', self._dct.get(TAG_clTRID,[params[0]])[0]))
         self.__assemble_cmd__(data)
@@ -913,7 +928,7 @@ class Message(eppdoc.Message):
             data.append(('nsset:update','nsset:chg'))
             data.append(('nsset:chg','nsset:authInfo'))
             dct_chg = dct['chg'][0]
-            if __has_key__(dct_chg, 'pw'): data.append(('nsset:authInfo','nsset:pw',dct_chg['pw'][0]))
+            if __has_key__(dct_chg, 'auth_info'): data.append(('nsset:authInfo','nsset:pw',dct_chg['auth_info'][0]))
             #if __has_key__(dct_chg, 'ext'): data.append(('nsset:authInfo','nsset:ext',dct_chg['ext'][0]))
         data.append(('command', 'clTRID', self._dct.get(TAG_clTRID,[params[0]])[0]))
         self.__assemble_cmd__(data)

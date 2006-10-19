@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'create_domain.ui'
 #
-# Created: Út říj 3 10:10:44 2006
+# Created: Čt říj 19 13:27:56 2006
 #      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -70,9 +70,9 @@ class ccregWindow(QWidget):
         self.registrant = QLineEdit(self,"registrant")
         self.registrant.setGeometry(QRect(180,140,360,22))
 
-        self.pw = QLineEdit(self,"pw")
-        self.pw.setGeometry(QRect(180,170,360,22))
-        self.pw.setEchoMode(QLineEdit.Normal)
+        self.auth_info = QLineEdit(self,"auth_info")
+        self.auth_info.setGeometry(QRect(180,170,360,22))
+        self.auth_info.setEchoMode(QLineEdit.Normal)
 
         self.nsset = QLineEdit(self,"nsset")
         self.nsset.setGeometry(QRect(180,200,360,22))
@@ -109,8 +109,8 @@ class ccregWindow(QWidget):
         self.connect(self.admin,SIGNAL("currentChanged(int,int)"),self.admin_current_changed)
 
         self.setTabOrder(self.name,self.registrant)
-        self.setTabOrder(self.registrant,self.pw)
-        self.setTabOrder(self.pw,self.nsset)
+        self.setTabOrder(self.registrant,self.auth_info)
+        self.setTabOrder(self.auth_info,self.nsset)
         self.setTabOrder(self.nsset,self.period_unit)
         self.setTabOrder(self.period_unit,self.period_num)
         self.setTabOrder(self.period_num,self.admin)
@@ -123,7 +123,7 @@ class ccregWindow(QWidget):
         self.setCaption(self.__tr("Create Domain panel"))
         self.textLabel1.setText(self.__tr("<b>domain name</b>"))
         self.textLabel2.setText(self.__tr("<b>registrant</b>"))
-        self.textLabel3.setText(self.__tr("password"))
+        self.textLabel3.setText(self.__tr("authorization info"))
         self.textLabel4.setText(self.__tr("nsset"))
         self.textLabel5.setText(self.__tr("period"))
         self.textLabel6.setText(self.__tr("admin"))

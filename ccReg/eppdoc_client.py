@@ -105,19 +105,19 @@ class Message(eppdoc_assemble.Message):
         #----------------------------------------------------
         'transfer_contact': (2,[
             ('name',(1,1),(),_T('contact id'),'CID:ID01','',()),
-            ('passw',(1,1),(),_T('password'),'mypassword','',()),
+            ('auth_info',(1,1),(),_T('authorization'),'mypassword','',()),
         ],notice['transfer'],('transfer_contact CID:ID01 password',)),
         #----------------------------------------------------
         'transfer_nsset': (2,[
             ('name',(1,1),(),_T('nsset name'),'NSSET_ID','',()),
             #('op',(1,1),transfer_op,_T('query type'),()),
-            ('passw',(1,1),(),_T('password'),'mypassword','',()),
+            ('auth_info',(1,1),(),_T('authorization'),'mypassword','',()),
         ],notice['transfer'],('transfer_nsset name-nsset password',)),
         #----------------------------------------------------
         'transfer_domain': (2,[
             ('name',(1,1),(),_T('domain name'),'domain.cz','',()),
             #('op',(1,1),transfer_op,_T('query type'),()),
-            ('passw',(1,1),(),_T('password'),'mypassword','',()),
+            ('auth_info',(1,1),(),_T('authorization'),'mypassword','',()),
         ],notice['transfer'],('transfer_domain name-domain password',)),
         #----------------------------------------------------
         'create_contact': (5,[
@@ -126,7 +126,7 @@ class Message(eppdoc_assemble.Message):
             ('email',(1,1),(),_T('your email'),'info@mymail.cz','',()),
             ('city',(1,1),(),_T('your city'),'Praha','',()),
             ('cc',(1,1),(),_T('country code'),'CZ',_T('country code'),()),
-            ('pw',(0,1),(),_T('password'),'mypassword',_T('password'),()), # required end
+            ('auth_info',(0,1),(),_T('auth. for transfer'),'mypassword',_T('password'),()), # authorization information for transfer
             ('org',(0,1),(),_T('organisation name'),'Firma s.r.o.','',()),
             ('street',(0,3),(),_T('street'),u'Národní třída 1230/12','',()),
             ('sp',(0,1),(),_T('state or province'),_T('state or province'),'',()),
@@ -149,7 +149,7 @@ class Message(eppdoc_assemble.Message):
         'create_domain': (2,[
             ('name',(1,1),(),_T('domain name'),'mydomain.cz','',()),
             ('registrant',(1,1),(),_T('registrant'),'REGID','',()),
-            ('pw',(0,1),(),_T('password'),'mypassword','',()),
+            ('auth_info',(0,1),(),_T('auth. for transfer'),'mypassword','',()),
             ('nsset',(0,1),(),_T('nsset'),'NSSETID','',()),
             ('period',(0,1),(),_T('period'),'','',(
                 ('num',(1,1),(),_T('number of months or years'),'3','',()),
@@ -169,7 +169,7 @@ class Message(eppdoc_assemble.Message):
                 ('addr',(0,UNBOUNDED),(),_T('nsset address'),'217.31.207.130','',()),
             )),
             ('tech',(1,UNBOUNDED),(),_T('tech contact'),'CID:ID01','',()),
-            ('pw',(0,1),(),_T('password'),'mypassword','',()),
+            ('auth_info',(0,1),(),_T('auth. for transfer'),'mypassword','',()),
 
             ],notice['create'],(
                 'create_nsset nssid:nsset1 ((ns1.domain.cz (217.31.207.130 217.31.207.129)),(ns2.domain.cz (217.31.206.130 217.31.206.129)),(ns3.domain.cz (217.31.205.130 217.31.205.129))) cid:reg-id passw',
@@ -216,7 +216,7 @@ class Message(eppdoc_assemble.Message):
                 ('voice',(0,1),(),_T('voice (phone number)'),'+420.222745111','',()),
                 ('fax',(0,1),(),_T('fax number'),'+420.222745111','',()),
                 ('email',(0,1),(),_T('your email'),'info@mymail.cz','',()),
-                ('pw',(0,1),(),_T('password'),'mypassword','',()),
+                ('auth_info',(0,1),(),_T('auth. for transfer'),'mypassword','',()),
                 ('disclose',(0,1),(),_T('disclose'),'','',(
                     ('flag',(1,1),(('y',),('n',)),_T('disclose flag (default y)'),'','',()),
                     ('data',(0,len(eppdoc_assemble.contact_disclose)),eppdoc_assemble.contact_disclose,_T('data for with is set the flag value'),'','',()),
@@ -248,7 +248,7 @@ class Message(eppdoc_assemble.Message):
             ('chg',(0,1),(),_T('change values'),'','',(
                 ('nsset',(0,1),(),_T('nsset'),'NSSET_ID','',()),
                 ('registrant',(0,1),(),_T('registrant'),'CID:ID01','',()),
-                ('pw',(0,1),(),_T('password'),'mypassword','',()),
+                ('auth_info',(0,1),(),_T('auth. for transfer'),'mypassword','',()),
             )),
             ('val_ex_date',(0,1),(),_T('valExDate'),'2008-12-03','',()),
             ],notice['update'],(
@@ -272,7 +272,7 @@ class Message(eppdoc_assemble.Message):
                 ('status',(0,6),update_status,_T('status'),'','',()),
             )),
             ('chg',(0,1),(),_T('change part'),'','',(
-                ('pw',(0,1),(),_T('password'),'new_password','',()),
+                ('auth_info',(0,1),(),_T('auth. for transfer'),'new_password','',()),
                 #('ext',(0,1),(),_T('ext'),'','',()),
             )),
             ],notice['update'],(
@@ -401,7 +401,7 @@ class Message(eppdoc_assemble.Message):
          ('msg',         1,  _T('Message content')),
          )),
 
-       'domain:renew': ('',(
+       'domain:renew': ('domain',(
          ('name',        1,  _T('Domain name')),
          ('exDate',      1,  _T('Expiration date')),
          )),        

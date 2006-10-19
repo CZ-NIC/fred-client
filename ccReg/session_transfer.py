@@ -1,5 +1,5 @@
-# -*- coding: utf8 -*-
 #!/usr/bin/env python
+# -*- coding: utf8 -*-
 import socket, re
 from cgi import escape as escape_html
 import eppdoc_client
@@ -33,6 +33,7 @@ class ManagerTransfer(ManagerBase):
         self._dct_answer = {} # API response
         #... readline variables ...............
         self.readline = None
+        self.readline_prefix = None
         self.readline_words = []
         #......................................
         self.reset_src()
@@ -208,11 +209,11 @@ class ManagerTransfer(ManagerBase):
         if self._session[VERBOSE] and dct.get('command'):
             # Print in only any command was sent.
             fnc = getattr(self,'get_answer_%s'%self._session[OUTPUT_TYPE], self.get_answer)
-            ##print fnc(dct)
-            try:
-                print fnc(dct)
-            except Exception, msg:
-                print 'Exception ERROR:',msg
+            print fnc(dct)
+            #try:
+            #    print fnc(dct) #+++
+            #except Exception, msg:
+            #    print 'Exception ERROR:',msg
 
     def get_keys_sort_by_columns(self):
         'Returns list of keys what will be used to sorting output values.'
@@ -267,6 +268,7 @@ class ManagerTransfer(ManagerBase):
             body.extend(data)
         #--- INTERNAL USE ----
         # POZOR!!! V ostré verzi musí být deaktivováno!!!
+        # ALERT!!! MUST be disabled in release version!!!
         if self._session[SORT_BY_COLUMNS]:
             # in mode SORT_BY_COLUMNS check if all names was used
             missing = [k for k in dct_data.keys() if k not in used and dct_data[k][0] >= self._session[VERBOSE]]
@@ -287,19 +289,22 @@ class ManagerTransfer(ManagerBase):
             # exception on the command login and hello:
             if dct['command'] in ('login','hello'):
                 body.pop() # remove previous empty line
-            elif code != 1000:
-                report(get_ltext(colored_output.render('${%s}%s${NORMAL}'%(code==1000 and 'GREEN' or 'NORMAL', dct['reason']))))
+            else:
+                match = re.match('\w+:(\w+)',dct['command'])
+                key = match is None and dct['command'] or match.group(1)
+                if code != 1000 or key in ('update','delete','transfer'):
+                    report(get_ltext(colored_output.render('${%s}%s${NORMAL}'%(code==1000 and 'GREEN' or 'NORMAL', dct['reason']))))
         else:
             # full
-            label_code = ('%s:'%_T('Return code')).ljust(self._ljust)
-            label_reason = ('%s:'%_T('Reason')).ljust(self._ljust)
-            report(colored_output.render('${BOLD}%s${NORMAL}%d'%(label_code,code)))
-            report(colored_output.render('${BOLD}%s${%s}%s${NORMAL}'%(label_reason, code==1000 and 'GREEN' or 'NORMAL', get_ltext(dct['reason']))))
+            label_code = (u'%s:'%get_unicode(_T('Return code'))).ljust(self._ljust+1) # +1 space between key and value
+            label_reason = (u'%s:'%get_unicode(_T('Reason'))).ljust(self._ljust+1)
+            report(colored_output.render('${BOLD}%s${NORMAL}%d'%(get_ltext(label_code),code)))
+            report(colored_output.render('${BOLD}%s${%s}%s${NORMAL}'%(get_ltext(label_reason), code==1000 and 'GREEN' or 'NORMAL', get_ltext(dct['reason']))))
         #... errors .............................
         if len(dct['errors']):
             report(colored_output.render('${BOLD}${RED}'))
-            label = '%s:'%_T('ERROR')
-            report('%s%s'%(label.ljust(self._ljust),dct['errors'][0]))
+            label = u'%s:'%get_unicode(_T('ERROR'))
+            report('%s%s'%(get_ltext(label.ljust(self._ljust)),get_ltext(dct['errors'][0])))
             for error in dct['errors'][1:]:
                 report('%s%s'%(''.ljust(self._ljust),get_ltext(error)))
             report(colored_output.render('${NORMAL}'))
@@ -485,10 +490,10 @@ class ManagerTransfer(ManagerBase):
             words = self._epp_cmd.readline_find_words(command_name, dct, writelog is None and (lambda s: s) or writelog)
         else:
             words = self._available_commands # default offer
-        # writelog('\tOFFER WORDS = %s'%str(words))
+        writelog('\tOFFER WORDS = %s'%str(words))
         return words
 
-    def complete(self, prefix, index):
+    def complete1(self, prefix, index):
         'Function for readline.complete manages reaction on the TAB key press.'
         if index == 0:
             self.readline_words = [w for w in self.__get_readline_words__(self.readline.get_line_buffer()) if w.startswith(prefix)]
@@ -504,6 +509,28 @@ class ManagerTransfer(ManagerBase):
             word = None
         #writelog("complete(%s, %d) WORD='%s';"%(prefix,index,word))
         #writelog('word = %s'%str(self.readline_words))
+        return word
+
+    def complete(self, prefix, index):
+        'Function for readline.complete manages reaction on the TAB key press.'
+        if prefix != self.readline_prefix:
+            self.readline_prefix = prefix
+            command = self.readline.get_line_buffer().strip()
+            if command in self._available_commands:
+                if prefix == command:
+                    self.matching_words = [command] # space at the end missing
+                else:
+                    self.matching_words = [] # command is already typed
+            else:
+                # find all words that start with this prefix
+                if not len(self.readline_words):
+                    self.readline_words = [i for i in self._available_session_commands if i!='!'] + self._available_commands
+                self.matching_words = [w for w in self.readline_words if w.startswith(prefix)]
+        try:
+            word = self.matching_words[index]+' '
+        except IndexError:
+            word = None
+        #writelog("complete(%s, %d) WORD='%s'"%(prefix,index,word))
         return word
     #-------------------------------------
 
@@ -595,19 +622,24 @@ def run_test_server():
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.bind((DEBUG_HOST, DEBUG_PORT))
     s.listen(1)
-    conn, addr = s.accept()
-    print 'Connected by', addr
-    while 1:
-        data = conn.recv(1024)
-        if not data: break
-        print data
-    conn.close()
+    conn=None
+    try:
+        conn, addr = s.accept()
+        print 'Connected by', addr
+        while 1:
+            data = conn.recv(1024)
+            if not data: break
+            print data
+    except (KeyboardInterrupt, EOFError):
+        pass
+    if conn: conn.close()
 
 DEBUG_HOST = 'localhost'
 DEBUG_PORT = 50007
 debug_sock = None
 #--------------------
-# TEST ONLY
+# TEST ONLY (enable this and test_init_client())
+#--------------------
 #if __name__ == '__main__':
 #    if len(sys.argv) > 1 and sys.argv[1]=='server':
 #        run_test_server()

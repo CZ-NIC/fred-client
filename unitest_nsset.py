@@ -49,7 +49,7 @@ CCREG_DATA = (
     #-------------------------------------------------------
     { # 1. create
     'id': CCREG_HANDLE, # (required)
-    'pw': 'heslo', # (required)
+    'auth_info': 'heslo', # (required)
     'dns': ( # (required)               list with max 9 items.
         {'name': 'ns.name1.cz', 'addr': ('217.31.207.130','217.31.207.129','217.31.207.128') },
         {'name': 'ns.name2.cz', 'addr': ('217.31.206.130','217.31.206.129','217.31.206.128') },
@@ -73,13 +73,13 @@ CCREG_DATA = (
         #'status':'clientDeleteProhibited',
     },
     'chg': {
-        'pw':NSSET_PASSWORD
+        'auth_info':NSSET_PASSWORD
     },
     },
     #-------------------------------------------------------
     { # 3. modified
     'id': CCREG_HANDLE,
-    'pw': NSSET_PASSWORD,
+    'auth_info': NSSET_PASSWORD,
     'dns': (
             {'name':'ns.name3.cz','addr':('217.31.205.130','217.31.205.129','217.31.205.128')},
             {'name':'ns.name4.cz','addr':('217.31.204.130','217.31.204.129','217.31.204.128')},
@@ -160,13 +160,13 @@ class Test(unittest.TestCase):
     def test_042(self):
         '3.4.2 Pokus o zalozeni nssetu s neznámým tech kontaktem'
         d = CCREG_DATA[1]
-        epp_cli.create_nsset(d['id'], d['dns'], 'neznamycid', d['pw'])
+        epp_cli.create_nsset(d['id'], d['dns'], 'neznamycid', d['auth_info'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_043(self):
         '3.4.3 Pokus o zalozeni nssetu jen s jednim dns'
         d = CCREG_DATA[1]
-        epp_cli.create_nsset(CCREG_NSSET1, d['dns'][0], d['tech'], d['pw'])
+        epp_cli.create_nsset(CCREG_NSSET1, d['dns'][0], d['tech'], d['auth_info'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_044(self):
@@ -179,7 +179,7 @@ class Test(unittest.TestCase):
         d = CCREG_DATA[1]
         dns = list(d['dns'])
         dns.append({'name': 'ns.name1.net', 'addr': ('217.31.207.130','217.31.207.129','217.31.207.128') })
-        epp_cli.create_nsset(d['id'], dns, d['tech'], d['pw'])
+        epp_cli.create_nsset(d['id'], dns, d['tech'], d['auth_info'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_046(self):
@@ -187,7 +187,7 @@ class Test(unittest.TestCase):
         d = CCREG_DATA[1]
         dns = list(d['dns'])
         dns.append({'name': 'ns.myname1.cz', 'addr': ('217.31.207.130','127.0.0.1') })
-        epp_cli.create_nsset(d['id'], dns, d['tech'], d['pw'])
+        epp_cli.create_nsset(d['id'], dns, d['tech'], d['auth_info'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
     
     def test_047(self):
@@ -195,7 +195,7 @@ class Test(unittest.TestCase):
         d = CCREG_DATA[1]
         dns = list(d['dns'])
         dns.append({'name': 'ns.myname1.cz', 'addr': ('217.31.207.130','217.31.130.256') })
-        epp_cli.create_nsset(d['id'], dns, d['tech'], d['pw'])
+        epp_cli.create_nsset(d['id'], dns, d['tech'], d['auth_info'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
     
     #def test_048(self):
@@ -203,7 +203,7 @@ class Test(unittest.TestCase):
         #d = CCREG_DATA[1]
         #dns = list(d['dns'])
         #dns.append({'name': 'ns.myname1.cz', 'addr': ('217.31.207.130','0.0.0.0') })
-        #epp_cli.create_nsset(d['id'], dns, d['tech'], d['pw'])
+        #epp_cli.create_nsset(d['id'], dns, d['tech'], d['auth_info'])
         #self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     #def test_049(self):
@@ -211,7 +211,7 @@ class Test(unittest.TestCase):
         #d = CCREG_DATA[1]
         #dns = list(d['dns'])
         #dns.append({'name': 'ns.myname1.cz', 'addr': ('217.31.207.130','1.1.1.1') })
-        #epp_cli.create_nsset(d['id'], dns, d['tech'], d['pw'])
+        #epp_cli.create_nsset(d['id'], dns, d['tech'], d['auth_info'])
         #self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_051(self):
@@ -219,7 +219,7 @@ class Test(unittest.TestCase):
         d = CCREG_DATA[1]
         dns = list(d['dns'])
         dns.append({'name': 'ns.myname1.cz', 'addr': ('217.31.207.130','10.0.0.0') })
-        epp_cli.create_nsset(d['id'], dns, d['tech'], d['pw'])
+        epp_cli.create_nsset(d['id'], dns, d['tech'], d['auth_info'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_052(self):
@@ -227,7 +227,7 @@ class Test(unittest.TestCase):
         d = CCREG_DATA[1]
         dns = list(d['dns'])
         dns.append({'name': 'ns.myname1.cz', 'addr': ('217.31.207.130','172.16.0.0') })
-        epp_cli.create_nsset(d['id'], dns, d['tech'], d['pw'])
+        epp_cli.create_nsset(d['id'], dns, d['tech'], d['auth_info'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_053(self):
@@ -235,19 +235,19 @@ class Test(unittest.TestCase):
         d = CCREG_DATA[1]
         dns = list(d['dns'])
         dns.append({'name': 'ns.myname1.cz', 'addr': ('217.31.207.130','192.168.0.0') })
-        epp_cli.create_nsset(d['id'], dns, d['tech'], d['pw'])
+        epp_cli.create_nsset(d['id'], dns, d['tech'], d['auth_info'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
     
     def test_076(self):
         '3.5.6 Zalozeni neexistujiciho noveho nssetu'
         d = CCREG_DATA[1]
-        epp_cli.create_nsset(d['id'], d['dns'], d['tech'], d['pw'])
+        epp_cli.create_nsset(d['id'], d['dns'], d['tech'], d['auth_info'])
         self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_077(self):
         '3.5.7 Pokus o zalozeni existujiciho nssetu'
         d = CCREG_DATA[1]
-        epp_cli.create_nsset(d['id'], d['dns'], d['tech'], d['pw'])
+        epp_cli.create_nsset(d['id'], d['dns'], d['tech'], d['auth_info'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_078(self):
@@ -319,7 +319,7 @@ class Test(unittest.TestCase):
         epp_cli.update_nsset(handle_nsset, {'status':status})
         self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se nastavit status: %s'%status)
         # pokus o změnu
-        epp_cli.update_nsset(handle_nsset, None, None, {'pw':'zmena hesla'})
+        epp_cli.update_nsset(handle_nsset, None, None, {'auth_info':'zmena hesla'})
         self.assertNotEqual(epp_cli.is_val(), 1000, 'Nsset se aktualizoval, prestoze mel nastaven %s'%status)
         # zrušení stavu
         epp_cli.update_nsset(handle_nsset, None, {'status':status})
@@ -435,18 +435,18 @@ class Test(unittest.TestCase):
         global NSSET_GENPSW
         epp_cli_TRANSF.info_nsset(handle_nsset)
         self.assertEqual(epp_cli_TRANSF.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli_TRANSF))
-        NSSET_GENPSW = epp_cli_TRANSF.is_val(('data','pw'))
+        NSSET_GENPSW = epp_cli_TRANSF.is_val(('data','auth_info'))
 
     def test_170(self):
         '3.17 Druhy registrator: Zmena hesla po prevodu nssetu'
-        epp_cli_TRANSF.update_nsset(handle_nsset, None, None, {'pw':'nove-heslo'})
+        epp_cli_TRANSF.update_nsset(handle_nsset, None, None, {'auth_info':'nove-heslo'})
         self.assertEqual(epp_cli_TRANSF.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli_TRANSF))
 
     def test_180(self):
         '3.18 Pokus o zmenu hesla nssetu, ktery registratorovi jiz nepatri'
         global epp_to_log
         epp_to_log = epp_cli
-        epp_cli.update_nsset(handle_nsset, None, None, {'pw':'moje-heslo'})
+        epp_cli.update_nsset(handle_nsset, None, None, {'auth_info':'moje-heslo'})
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
 
     def test_190(self):
@@ -493,7 +493,7 @@ def __check_equality__(cols, data):
     ##    {'name': 'ns.name1.cz', 'addr': ('127.0.0.1', '127.1.1.1', '127.2.2.2')}, 
     ##    {'name': 'ns.name2.cz', 'addr': ('126.0.0.1', '126.1.1.1', '126.2.2.2')}
     ##    ), 
-    ##    'pw': 'heslo'}
+    ##    'auth_info': 'heslo'}
     ##------------------------------------------------------------
     ##DATA:
     ##    saved_data = {'nsset:upID': u'REG-LRR', 

@@ -49,6 +49,7 @@ class ManagerBase:
                 1,      # TRANSLATE_ANSWER_COLUMN_NAMES, TEST only
                 'text', # OUTPUT_TYPE (text, html)
                 ]
+        self._external_validator = 'xmllint'
         # defaults
         self.defs = ['']*DEFS_LENGTH
         # Values objURI a extURI are loaded from greeting message.
@@ -328,6 +329,7 @@ class ManagerBase:
             self.append_note('%s %s'%(_T('Using configuration from'), ', '.join(translate.config_names)))
         if translate.config_error:
             self.append_error(translate.config_error)
+            return 0
         self._session[SESSION] = self._options.get('session','') # API definition of --session parameter.
         # set session variables
         section = 'session'
@@ -359,6 +361,7 @@ class ManagerBase:
         if value: self.set_null_value(value)
         # init from command line options
         self.init_from_options(section_connect)
+        self.check_validator() # set validator OFF, if not supported.
         return 1 # OK
 
     def set_data_connect(self, dc):
@@ -422,7 +425,7 @@ class ManagerBase:
         if not self._session[VALIDATE]: return # validate is set OFF
         ok = 0
         try:
-            pipes = os.popen3('xmllint')
+            pipes = os.popen3(self._external_validator)
         except IOError, msg:
             self.append_note(str(msg),('RED','BOLD'))
         standr = pipes[1].read()
@@ -435,9 +438,10 @@ class ManagerBase:
                 uerr = errors.decode(translate.encoding)
             except UnicodeDecodeError:
                 uerr = repr(errors)
-            self.append_note(uerr)
             self._session[VALIDATE] = 0 # validator is automaticly switched off
-            self.append_note(_T('Validator has been disabled. Type %s to enable it.')%'${BOLD}validate on${NORMAL}')
+            if self._session[VERBOSE] > 1:
+                self.append_note(uerr)
+                self.append_note(_T('External validator "%s" not found. XML validation has been disabled.')%self._external_validator)
         return ok
     
     def is_epp_valid(self, message):
@@ -461,7 +465,7 @@ class ManagerBase:
             os.unlink(tmpname)
             return '' # schema path is not set
         try:
-            pipes = os.popen3('xmllint --noout --schema "%s" "%s"'%(schema_path, tmpname))
+            pipes = os.popen3('%s --noout --schema "%s" "%s"'%(self._external_validator, schema_path, tmpname))
         except IOError, msg:
             self.append_note(str(msg),('RED','BOLD'))
         errors = pipes[2].read()
@@ -474,6 +478,7 @@ class ManagerBase:
                 or re.search(u'není názvem vnitřního ani vnějšího příkazu'.encode('cp852'),errors) \
                 or re.search('Schemas parser error',errors):
                 # schema missing!
+                self.append_note(get_ltext(errors))
                 self.append_note(_T('Validator has been disabled. Type %s to enable it.')%'${BOLD}validate on${NORMAL}')
                 self._session[VALIDATE] = 0 # automatické vypnutí validace
                 errors=''

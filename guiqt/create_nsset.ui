@@ -184,12 +184,12 @@ object can be created for a specific validity period.</string>
             </rect>
         </property>
         <property name="text">
-            <string>password</string>
+            <string>auth. for transfer</string>
         </property>
     </widget>
     <widget class="QLineEdit">
         <property name="name">
-            <cstring>pw</cstring>
+            <cstring>auth_info</cstring>
         </property>
         <property name="geometry">
             <rect>
@@ -237,7 +237,7 @@ object can be created for a specific validity period.</string>
 <tabstops>
     <tabstop>id</tabstop>
     <tabstop>tech</tabstop>
-    <tabstop>pw</tabstop>
+    <tabstop>auth_info</tabstop>
     <tabstop>cltrid</tabstop>
 </tabstops>
 <slots>

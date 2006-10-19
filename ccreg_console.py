@@ -115,7 +115,7 @@ def main(options):
             invalid_epp = epp.is_epp_valid(epp_doc) # make validation on the XML document
             debug_time.append(('Validation',time.time())) # PROFILER
             if invalid_epp:
-                epp.append_error(_T('EPP document is not valid'),'BOLD')
+                epp.append_error(_T('EPP document is not valid'))
                 v = epp.get_session(VERBOSE)
                 epp.append_error(invalid_epp)
                 if v > 2: epp.append_error(epp_doc)

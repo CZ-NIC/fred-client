@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'create_contact.ui'
 #
-# Created: Út říj 3 09:36:53 2006
+# Created: Čt říj 19 16:26:19 2006
 #      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -115,9 +115,9 @@ class ccregWindow(QWidget):
         self.create_contact_id = QLineEdit(self,"create_contact_id")
         self.create_contact_id.setGeometry(QRect(180,110,360,22))
 
-        self.create_contact_pw = QLineEdit(self,"create_contact_pw")
-        self.create_contact_pw.setGeometry(QRect(180,260,360,22))
-        self.create_contact_pw.setEchoMode(QLineEdit.Normal)
+        self.create_contact_auth_info = QLineEdit(self,"create_contact_auth_info")
+        self.create_contact_auth_info.setGeometry(QRect(180,260,360,22))
+        self.create_contact_auth_info.setEchoMode(QLineEdit.Normal)
 
         self.textLabel18 = QLabel(self,"textLabel18")
         self.textLabel18.setGeometry(QRect(10,290,160,20))
@@ -188,8 +188,8 @@ class ccregWindow(QWidget):
         self.setTabOrder(self.create_contact_name,self.create_contact_email)
         self.setTabOrder(self.create_contact_email,self.create_contact_city)
         self.setTabOrder(self.create_contact_city,self.create_contact_cc)
-        self.setTabOrder(self.create_contact_cc,self.create_contact_pw)
-        self.setTabOrder(self.create_contact_pw,self.create_contact_org)
+        self.setTabOrder(self.create_contact_cc,self.create_contact_auth_info)
+        self.setTabOrder(self.create_contact_auth_info,self.create_contact_org)
         self.setTabOrder(self.create_contact_org,self.create_contact_street)
         self.setTabOrder(self.create_contact_street,self.create_contact_sp)
         self.setTabOrder(self.create_contact_sp,self.create_contact_pc)
@@ -232,7 +232,7 @@ class ccregWindow(QWidget):
         self.create_contact_ssn_type.insertItem(self.__tr("mpsv"))
         self.create_contact_ssn_type.insertItem(self.__tr("ico"))
         self.textLabel14.setText(self.__tr("<b>city</b>"))
-        self.textLabel15.setText(self.__tr("password"))
+        self.textLabel15.setText(self.__tr("auth. for transfer"))
         self.textLabel16.setText(self.__tr("<b>name</b>"))
         self.create_contact_street.horizontalHeader().setLabel(0,self.__tr("street"))
         self.textLabel17.setText(self.__tr("<h2>create_contact</h2>\n"

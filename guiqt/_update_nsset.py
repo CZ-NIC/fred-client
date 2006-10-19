@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'update_nsset.ui'
 #
-# Created: Út říj 3 12:04:25 2006
+# Created: Čt říj 19 16:26:37 2006
 #      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -104,8 +104,8 @@ class ccregWindow(QWidget):
         self.id = QLineEdit(self,"id")
         self.id.setGeometry(QRect(180,110,360,22))
 
-        self.pw = QLineEdit(self,"pw")
-        self.pw.setGeometry(QRect(180,1130,360,22))
+        self.auth_info = QLineEdit(self,"auth_info")
+        self.auth_info.setGeometry(QRect(180,1130,360,22))
 
         self.grp_add_status = QButtonGroup(self,"grp_add_status")
         self.grp_add_status.setEnabled(0)
@@ -198,8 +198,8 @@ class ccregWindow(QWidget):
         self.setTabOrder(self.rem_ok,self.rem_clientUpdateProhibited)
         self.setTabOrder(self.rem_clientUpdateProhibited,self.rem_clientDeleteProhibited)
         self.setTabOrder(self.rem_clientDeleteProhibited,self.rem_clientTransferProhibited)
-        self.setTabOrder(self.rem_clientTransferProhibited,self.pw)
-        self.setTabOrder(self.pw,self.cltrid)
+        self.setTabOrder(self.rem_clientTransferProhibited,self.auth_info)
+        self.setTabOrder(self.auth_info,self.cltrid)
 
 
     def languageChange(self):
@@ -216,7 +216,7 @@ class ccregWindow(QWidget):
         self.textLabel4.setText(self.__tr("technical contact"))
         self.textLabel6.setText(self.__tr("clTRID"))
         self.textLabel7.setText(self.__tr("<h3>Change</h3>"))
-        self.textLabel8.setText(self.__tr("pasword"))
+        self.textLabel8.setText(self.__tr("auth. for transfer"))
         self.textLabel9.setText(self.__tr("<h2>update_nsset</h2>\n"
 "The EPP \"update\" command is used to update an instance of an existing object.\n"
 "   Names what are not included into disclose list are set to opposite value of the disclose flag value."))

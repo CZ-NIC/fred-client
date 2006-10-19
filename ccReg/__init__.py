@@ -165,7 +165,7 @@ class Client:
    """
         return self._epp.api_command('check_nsset',{'name':name, 'cltrid':cltrid})
 
-    def create_contact(self, contact_id, name, email, city, cc, pw=None,
+    def create_contact(self, contact_id, name, email, city, cc, auth_info=None,
             org=None, street=None, sp=None, pc=None, voice=None, fax=None, 
             disclose=None, vat=None, ssn=None, notify_email=None, 
             cltrid=None):
@@ -178,7 +178,7 @@ class Client:
     email (required)
     city (required)
     cc (required)
-    pw (required)
+    auth_info (required)
     org (optional)
     street (optional)           list with max 3 items.
     sp (optional)
@@ -205,19 +205,19 @@ class Client:
 
         """
         return self._epp.api_command('create_contact',{
-            'contact_id':contact_id, 'name':name, 'email':email, 'city':city, 'cc':cc, 'pw':pw,
+            'contact_id':contact_id, 'name':name, 'email':email, 'city':city, 'cc':cc, 'auth_info':auth_info,
             'org':org, 'street':street, 'sp':sp, 'pc':pc, 'voice':voice, 'fax':fax,
             'disclose':disclose, 'vat':vat, 'ssn':ssn, 
             'notify_email':notify_email, 'cltrid':cltrid})
 
-    def create_domain(self, name, registrant, pw=None, nsset=None, period=None, admin=None, val_ex_date=None, 
+    def create_domain(self, name, registrant, auth_info=None, nsset=None, period=None, admin=None, val_ex_date=None, 
         cltrid=None):
-        """Usage: create_domain name pw registrant
+        """Usage: create_domain name auth_info registrant
 
     PARAMS:
 
     name (required)
-    pw (required)
+    auth_info (required)
     period (optional)
         num (required)
         unit (required) accept only values: (y,m)
@@ -232,12 +232,12 @@ class Client:
    An object can be created for an indefinite period of time, or an
    object can be created for a specific validity period.
     """
-        return self._epp.api_command('create_domain',{'name':name,'pw':pw,
+        return self._epp.api_command('create_domain',{'name':name,'auth_info':auth_info,
             'period':period,'registrant':registrant,'nsset':nsset,'admin':admin,
             'val_ex_date':val_ex_date, 'cltrid':cltrid})
 
-    def create_nsset(self, nsset_id, dns, tech, pw=None, cltrid=None):
-        """Usage: create_nsset id pw
+    def create_nsset(self, nsset_id, dns, tech, auth_info=None, cltrid=None):
+        """Usage: create_nsset id auth_info
 
     PARAMS:
 
@@ -246,7 +246,7 @@ class Client:
         name (required)
         addr (optional)         unbounded list
     tech (required)             unbounded list
-    pw (optional)
+    auth_info (optional)
 
     RETURN data: {nsset:id, nsset:crDate}
 
@@ -255,11 +255,11 @@ class Client:
    object can be created for a specific validity period.
 
     Examples:
-    create_nsset exampleNsset passw
-    create_nsset example1 passw ((ns1.domain.net (217.31.207.130 217.31.207.129)),(ns2.domain.net (217.31.206.130 217.31.206.129)),(ns3.domain.net (217.31.205.130 217.31.205.129))) reg-id
+    create_nsset exampleNsset auth_info
+    create_nsset example1 auth_info ((ns1.domain.net (217.31.207.130 217.31.207.129)),(ns2.domain.net (217.31.206.130 217.31.206.129)),(ns3.domain.net (217.31.205.130 217.31.205.129))) reg-id
 
         """
-        return self._epp.api_command('create_nsset',{'id':nsset_id, 'pw':pw, 'dns':dns, 'tech':tech, 'cltrid':cltrid})
+        return self._epp.api_command('create_nsset',{'id':nsset_id, 'auth_info':auth_info, 'dns':dns, 'tech':tech, 'cltrid':cltrid})
 
 
     def delete_contact(self, contact_id, cltrid=None):
@@ -479,13 +479,13 @@ class Client:
             'period':period, 'val_ex_date':val_ex_date, 'cltrid':cltrid})
 
 
-    def transfer_contact(self, name, passw, cltrid=None):
-        """Usage: transfer_contact name passw
+    def transfer_contact(self, name, auth_info, cltrid=None):
+        """Usage: transfer_contact name auth_info
 
     PARAMS:
 
     name (required) CONTACT-ID
-    passw (required)
+    auth_info (required)
 
     RETURN data: {}
 
@@ -497,15 +497,15 @@ class Client:
    request, cancel a transfer request, approve a transfer request, and
    reject a transfer request using the "op" command attribute.
         """
-        return self._epp.api_command('transfer_contact',{'name':name, 'passw':passw, 'cltrid':cltrid})
+        return self._epp.api_command('transfer_contact',{'name':name, 'auth_info':auth_info, 'cltrid':cltrid})
 
-    def transfer_domain(self, name, passw, cltrid=None):
-        """Usage: transfer_domain name passw
+    def transfer_domain(self, name, auth_info, cltrid=None):
+        """Usage: transfer_domain name auth_info
 
     PARAMS:
 
     name (required)
-    passw (required)
+    auth_info (required)
 
     RETURN data: {}
 
@@ -517,15 +517,15 @@ class Client:
    request, cancel a transfer request, approve a transfer request, and
    reject a transfer request using the "op" command attribute.
         """
-        return self._epp.api_command('transfer_domain',{'name':name, 'passw':passw, 'cltrid':cltrid})
+        return self._epp.api_command('transfer_domain',{'name':name, 'auth_info':auth_info, 'cltrid':cltrid})
 
-    def transfer_nsset(self, name, passw, cltrid=None):
-        """Usage: transfer_nsset name passw
+    def transfer_nsset(self, name, auth_info, cltrid=None):
+        """Usage: transfer_nsset name auth_info
 
     PARAMS:
 
     name (required) NSSET-ID
-    passw (required)
+    auth_info (required)
 
     RETURN data: {}
 
@@ -537,7 +537,7 @@ class Client:
    request, cancel a transfer request, approve a transfer request, and
    reject a transfer request using the "op" command attribute.
         """
-        return self._epp.api_command('transfer_nsset',{'name':name, 'passw':passw, 'cltrid':cltrid})
+        return self._epp.api_command('transfer_nsset',{'name':name, 'auth_info':auth_info, 'cltrid':cltrid})
 
 
     def update_contact(self, contact_id, add=None, rem=None, chg=None, cltrid=None):
@@ -561,7 +561,7 @@ class Client:
         voice (optional)
         fax (optional)
         email (optional)
-        pw (optional)
+        auth_info (optional)
         disclose (optional)
             flag (required) y/n default y
             data (required) list: (name,org,addr,voice,fax,email)
@@ -594,7 +594,7 @@ class Client:
     chg (optional)
         nsset (optional)
         registrant (optional)
-        pw (optional)
+        auth_info (optional)
     val_ex_date (optional)
 
     RETURN data: {}
@@ -622,7 +622,7 @@ class Client:
         tech (optional)         unbounded list
         status (optional)       list with max 6 items. accept only values: (clientDeleteProhibited,clientTransferProhibited,clientUpdateProhibited,linked,ok,serverDeleteProhibited,serverTransferProhibited,serverUpdateProhibited)
     chg (optional)
-        pw (optional)
+        auth_info (optional)
 
     RETURN data: {}
 
@@ -630,7 +630,7 @@ class Client:
 
     Examples:
     update_nsset nic.cz
-    update_nsset nsset-ID (((nsset1.name.cz 127.0.0.1),(nsset2.name.cz (127.0.2.1 127.0.2.2)),) tech-add-contact ok) ("My Name",("Tech contact 1","Tech contact 2"),(clientDeleteProhibited ok)) (password extension)
+    update_nsset nsset-ID (((nsset1.name.cz 127.0.0.1),(nsset2.name.cz (127.0.2.1 127.0.2.2)),) tech-add-contact ok) ("My Name",("Tech contact 1","Tech contact 2"),(clientDeleteProhibited ok)) (auth_info extension)
         """
         return self._epp.api_command('update_nsset',{'id':nsset_id, 'add':add, 'rem':rem, 'chg':chg, 'cltrid':cltrid})
 

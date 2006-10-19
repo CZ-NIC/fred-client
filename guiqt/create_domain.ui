@@ -60,7 +60,7 @@
             </rect>
         </property>
         <property name="text">
-            <string>password</string>
+            <string>auth. for transfer</string>
         </property>
     </widget>
     <widget class="QLabel">
@@ -280,7 +280,7 @@ object can be created for a specific validity period.</string>
     </widget>
     <widget class="QLineEdit">
         <property name="name">
-            <cstring>pw</cstring>
+            <cstring>auth_info</cstring>
         </property>
         <property name="geometry">
             <rect>
@@ -433,7 +433,7 @@ object can be created for a specific validity period.</string>
 <tabstops>
     <tabstop>name</tabstop>
     <tabstop>registrant</tabstop>
-    <tabstop>pw</tabstop>
+    <tabstop>auth_info</tabstop>
     <tabstop>nsset</tabstop>
     <tabstop>period_unit</tabstop>
     <tabstop>period_num</tabstop>

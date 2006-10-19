@@ -36,7 +36,7 @@ CCREG_CONTACT = [
     'email': '', #(povinný) váš email
     'city': '', #(povinný) město
     'cc': '', #(povinný) kód země
-    'pw': '', #(povinný) heslo
+    'auth_info': '', #(povinný) heslo
     'org': '', #(nepovinný) název organizace
     'street': '', #(nepovinný)  seznam o maximálně 3 položkách. ulice
     'sp': '', #(nepovinný) č.p.
@@ -55,7 +55,7 @@ CCREG_CONTACT = [
     'email': 'rehor.cizek@mail.cz', #(povinný) váš email
     'city': u'Český Krumlov', #(povinný) město
     'cc': 'CZ', #(povinný) kód země
-    'pw': CONTACT_PASSWORD_1, #(povinný) heslo
+    'auth_info': CONTACT_PASSWORD_1, #(povinný) heslo
     'org': u'Čížková a spol', #(nepovinný) název organizace
     'street': (u'U práce',u'Za monitorem',u'Nad klávesnicí',), #(nepovinný)  seznam o maximálně 3 položkách. ulice
     'sp': '123', #(nepovinný) č.p.
@@ -73,7 +73,7 @@ CCREG_CONTACT = [
     'email': 'breta.zlucnik@bricho.cz', #(povinný) váš email
     'city': u'Střevníkov', #(povinný) město
     'cc': 'CZ', #(povinný) kód země
-    'pw': CONTACT_PASSWORD_2, #(povinný) heslo
+    'auth_info': CONTACT_PASSWORD_2, #(povinný) heslo
     'org': u'Bolení s.r.o.', #(nepovinný) název organizace
     'street': (u'Na toaletách',u'U mísy'), #(nepovinný)  seznam o maximálně 3 položkách. ulice
     'sp': '321', #(nepovinný) č.p.
@@ -105,7 +105,7 @@ CCREG_CONTACT.append({ # chg part to modify contact
             'voice': d['voice'],
             'fax': d['fax'],
             'email': d['email'],
-            'pw': d['pw'],
+            'auth_info': d['auth_info'],
             'disclose': d['disclose'],
             'vat': d['vat'],
             'ssn': d['ssn'],
@@ -166,7 +166,7 @@ class Test(unittest.TestCase):
         '2.3 Zalozeni neexistujiciho noveho kontaktu'
         d = CCREG_CONTACT[1]
         epp_cli.create_contact(handle_contact, 
-            d['name'], d['email'], d['city'], d['cc'], d['pw'],  d['org'], 
+            d['name'], d['email'], d['city'], d['cc'], d['auth_info'],  d['org'], 
             d['street'], d['sp'], d['pc'], d['voice'], d['fax'], d['disclose'],
             d['vat'], d['ssn'], d['notify_email'])
         self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
@@ -292,14 +292,14 @@ class Test(unittest.TestCase):
         
     def test_170(self):
         '2.17 Druhy registrator: Zmena hesla po prevodu domeny'
-        epp_cli_TRANSF.update_contact(handle_contact, None, None, {'auth_info':{'pw':CONTACT_PASSWORD_1}})
+        epp_cli_TRANSF.update_contact(handle_contact, None, None, {'auth_info':{'auth_info':CONTACT_PASSWORD_1}})
         self.assertEqual(epp_cli_TRANSF.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli_TRANSF))
         
     def test_180(self):
         '2.18 Zmena hesla kontaktu, ktery registratorovi jiz nepatri'
         global epp_cli_log
         epp_cli_log = epp_cli
-        epp_cli.update_contact(handle_contact, None, None, {'auth_info':{'pw':'moje-heslo2'}})
+        epp_cli.update_contact(handle_contact, None, None, {'auth_info':{'auth_info':'moje-heslo2'}})
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
         
     def test_190(self):

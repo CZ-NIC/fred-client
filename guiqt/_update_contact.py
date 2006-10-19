@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'update_contact.ui'
 #
-# Created: Út říj 3 09:57:24 2006
+# Created: Čt říj 19 16:26:32 2006
 #      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -111,9 +111,9 @@ class ccregWindow(QWidget):
         self.update_contact_email = QLineEdit(self,"update_contact_email")
         self.update_contact_email.setGeometry(QRect(180,720,360,22))
 
-        self.update_contact_pw = QLineEdit(self,"update_contact_pw")
-        self.update_contact_pw.setGeometry(QRect(180,750,360,22))
-        self.update_contact_pw.setEchoMode(QLineEdit.Normal)
+        self.update_contact_auth_info = QLineEdit(self,"update_contact_auth_info")
+        self.update_contact_auth_info.setGeometry(QRect(180,750,360,22))
+        self.update_contact_auth_info.setEchoMode(QLineEdit.Normal)
 
         self.update_contact_vat = QLineEdit(self,"update_contact_vat")
         self.update_contact_vat.setGeometry(QRect(180,930,360,22))
@@ -253,8 +253,8 @@ class ccregWindow(QWidget):
         self.setTabOrder(self.update_contact_pc,self.update_contact_voice)
         self.setTabOrder(self.update_contact_voice,self.update_contact_fax)
         self.setTabOrder(self.update_contact_fax,self.update_contact_email)
-        self.setTabOrder(self.update_contact_email,self.update_contact_pw)
-        self.setTabOrder(self.update_contact_pw,self.disclose)
+        self.setTabOrder(self.update_contact_email,self.update_contact_auth_info)
+        self.setTabOrder(self.update_contact_auth_info,self.disclose)
         self.setTabOrder(self.disclose,self.update_contact_disclose_flag)
         self.setTabOrder(self.update_contact_disclose_flag,self.update_contact_disclose_name)
         self.setTabOrder(self.update_contact_disclose_name,self.update_contact_disclose_addr)
@@ -283,7 +283,7 @@ class ccregWindow(QWidget):
         self.textLabel6.setText(self.__tr("+420.123456789"))
         self.textLabel7.setText(self.__tr("+420.123456789"))
         self.textLabel8.setText(self.__tr("email"))
-        self.textLabel9.setText(self.__tr("password"))
+        self.textLabel9.setText(self.__tr("auth. for transfer"))
         self.textLabel10.setText(self.__tr("value-added tax"))
         self.textLabel11.setText(self.__tr("clTRID"))
         self.textLabel12.setText(self.__tr("notify email"))
