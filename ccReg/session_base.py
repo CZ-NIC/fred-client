@@ -329,7 +329,6 @@ class ManagerBase:
             self.append_note('%s %s'%(_T('Using configuration from'), ', '.join(translate.config_names)))
         if translate.config_error:
             self.append_error(translate.config_error)
-            return 0
         self._session[SESSION] = self._options.get('session','') # API definition of --session parameter.
         # set session variables
         section = 'session'

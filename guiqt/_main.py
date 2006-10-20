@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'main.ui'
 #
-# Created: Čt říj 5 08:58:18 2006
+# Created: Pá říj 20 15:06:36 2006
 #      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -2035,12 +2035,6 @@ class ccregWindow(QDialog):
         self.textLabel1.setGeometry(QRect(21,110,630,100))
         self.textLabel1.setAlignment(QLabel.WordBreak | QLabel.AlignTop | QLabel.AlignHCenter)
 
-        self.btn_about_client = QPushButton(self.TabPage,"btn_about_client")
-        self.btn_about_client.setGeometry(QRect(20,510,120,30))
-
-        self.btn_about_qt = QPushButton(self.TabPage,"btn_about_qt")
-        self.btn_about_qt.setGeometry(QRect(160,510,120,30))
-
         self.groupBox1 = QGroupBox(self.TabPage,"groupBox1")
         self.groupBox1.setGeometry(QRect(20,210,630,240))
 
@@ -2073,6 +2067,9 @@ class ccregWindow(QDialog):
 
         self.connect_timeout = QLineEdit(self.groupBox1,"connect_timeout")
         self.connect_timeout.setGeometry(QRect(210,190,400,22))
+
+        self.btn_credits = QPushButton(self.TabPage,"btn_credits")
+        self.btn_credits.setGeometry(QRect(20,510,120,30))
         self.tabWidget.insertTab(self.TabPage,QString.fromLatin1(""))
 
         self.Widget8 = QWidget(self.tabWidget,"Widget8")
@@ -2644,10 +2641,6 @@ class ccregWindow(QDialog):
 
         self.tab_12 = QWidget(self.transfer_contact_response,"tab_12")
 
-        self.textLabel57 = QLabel(self.tab_12,"textLabel57")
-        self.textLabel57.setGeometry(QRect(10,10,570,150))
-        self.textLabel57.setAlignment(QLabel.WordBreak | QLabel.AlignTop | QLabel.AlignLeft)
-
         self.textLabel58 = QLabel(self.tab_12,"textLabel58")
         self.textLabel58.setGeometry(QRect(20,170,190,20))
 
@@ -2668,6 +2661,10 @@ class ccregWindow(QDialog):
 
         self.transfer_contact_password = QLineEdit(self.tab_12,"transfer_contact_password")
         self.transfer_contact_password.setGeometry(QRect(220,210,360,22))
+
+        self.textLabel57 = QLabel(self.tab_12,"textLabel57")
+        self.textLabel57.setGeometry(QRect(10,10,570,150))
+        self.textLabel57.setAlignment(QLabel.WordBreak | QLabel.AlignTop | QLabel.AlignLeft)
         self.transfer_contact_response.insertTab(self.tab_12,QString.fromLatin1(""))
 
         self.TabPage_19 = QWidget(self.transfer_contact_response,"TabPage_19")
@@ -3680,6 +3677,7 @@ class ccregWindow(QDialog):
         self.connect(self.btn_source_renew_domain,SIGNAL("clicked()"),self.source_renew_domain)
         self.connect(self.btn_source_list_domain,SIGNAL("clicked()"),self.source_list_domain)
         self.connect(self.buttonOk,SIGNAL("clicked()"),self.btn_close)
+        self.connect(self.btn_credits,SIGNAL("clicked()"),self.credits)
 
 
     def languageChange(self):
@@ -3691,14 +3689,13 @@ class ccregWindow(QDialog):
 "Version 1.0; (Needs <b>ccReg module</b> version 1.2)<br>\n"
 "<br>\n"
 "Parameters in <b>bold</b> style are <b>required</b>. Others are optionals."))
-        self.btn_about_client.setText(self.__tr("About Client"))
-        self.btn_about_qt.setText(self.__tr("About Qt"))
         self.groupBox1.setTitle(self.__tr("Client to EPP server"))
         self.textLabel2.setText(self.__tr("<b>port</b>"))
         self.textLabel3.setText(self.__tr("timeout"))
         self.textLabel4.setText(self.__tr("<b>certificate</b>"))
         self.textLabel5.setText(self.__tr("<b>host</b>"))
         self.textLabel6.setText(self.__tr("<b>private key</b>"))
+        self.btn_credits.setText(self.__tr("Credits"))
         self.tabWidget.changeTab(self.TabPage,self.__tr("&Welcome"))
         self.textLabel7.setText(self.__tr("<h2>Connect</h2>\n"
 "This part use to connect and disconnect to the EPP server. You need defined path to the certificates in your configuration file."))
@@ -3857,18 +3854,12 @@ class ccregWindow(QDialog):
         self.delete_contact_table.horizontalHeader().setLabel(1,self.__tr("value"))
         self.delete_contact_response.changeTab(self.TabPage_17,self.__tr("response"))
         self.tabWidget6_2.changeTab(self.TabPage_16,self.__tr("delete"))
-        self.textLabel57.setText(self.__tr("<h2>transfer_contact</h2>\n"
-"The EPP \"transfer\" command provides a query operation that allows a\n"
-"client to determine real-time status of pending and completed\n"
-"transfer requests.<br>\n"
-"The EPP \"transfer\" command is used to manage changes in client\n"
-"sponsorship of an existing object.  Clients can initiate a transfer\n"
-"request, cancel a transfer request, approve a transfer request, and\n"
-"reject a transfer request using the \"op\" command attribute."))
         self.textLabel58.setText(self.__tr("<b>name</b>"))
         self.textLabel59.setText(self.__tr("<b>password</b>"))
         self.textLabel60.setText(self.__tr("clTRID"))
         self.send_transfer_contact.setText(self.__tr("Send command"))
+        self.textLabel57.setText(self.__tr("<h2>transfer_contact</h2>\n"
+"The EPP \"transfer\" command makes change in client sponsorship of an existing object. The new owner becomes registrant what called transfer command. New auhtorization info is generated automaticly after successfully transfer."))
         self.transfer_contact_response.changeTab(self.tab_12,self.__tr("command"))
         self.textLabel62.setText(self.__tr("message"))
         self.btn_source_transfer_contact.setText(QString.null)
@@ -4086,13 +4077,7 @@ class ccregWindow(QDialog):
         self.textLabel126.setText(self.__tr("<b>name</b>"))
         self.send_transfer_domain.setText(self.__tr("Send command"))
         self.textLabel127.setText(self.__tr("<h2>transfer_domain</h2>\n"
-"The EPP \"transfer\" command provides a query operation that allows a\n"
-"client to determine real-time status of pending and completed\n"
-"transfer requests.<br>\n"
-"The EPP \"transfer\" command is used to manage changes in client\n"
-"sponsorship of an existing object.  Clients can initiate a transfer\n"
-"request, cancel a transfer request, approve a transfer request, and\n"
-"reject a transfer request using the \"op\" command attribute."))
+"The EPP \"transfer\" command makes change in client sponsorship of an existing object. The new owner becomes registrant what called transfer command. New auhtorization info is generated automaticly after successfully transfer."))
         self.transfer_domain_response.changeTab(self.tab_27,self.__tr("command"))
         self.textLabel128.setText(self.__tr("data"))
         self.textLabel129.setText(self.__tr("message"))
@@ -4301,6 +4286,9 @@ class ccregWindow(QDialog):
 
     def btn_close(self):
         print "ccregWindow.btn_close(): Not implemented yet"
+
+    def credits(self):
+        print "ccregWindow.credits(): Not implemented yet"
 
     def __tr(self,s,c = None):
         return qApp.translate("ccregWindow",s,c)

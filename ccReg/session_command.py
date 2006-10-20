@@ -296,13 +296,24 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
 
     def convert_utf8(self, text_utf8):
         'Convert str in UTF-8 to unicode.'
+        error = utext = ''
         try:
             utext = text_utf8.decode('utf-8')
         except UnicodeDecodeError, msg:
-            self.append_note('UnicodeDecodeError: %s'%msg)
-            utext = ''
-        return utext
+            error = 'UnicodeDecodeError: %s'%msg
+        return utext, error
 
+    def get_credits(self):
+        'Returs credits'
+        body, error = load_file(make_filepath('CREDITS'))
+        if error:
+            report = error
+        else:
+            report, error = self.convert_utf8(body)
+            if error: report += '\n'+error
+        return report
+        
+        
     #==================================================
     #
     #    Session commands
@@ -366,13 +377,20 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
         'Display license'
         body, error = load_file(make_filepath('LICENSE'))
         if error: self.append_error(error)
-        if body: self.append_note(self.convert_utf8(body))
+        if body:
+            text, error = self.convert_utf8(body)
+            if error: self.append_note(error)
+            self.append_note(text)
+            
 
     def __session_credits__(self, param):
         'Display credits'
         body, error = load_file(make_filepath('CREDITS'))
         if error: self.append_error(error)
-        if body: self.append_note(self.convert_utf8(body))
+        if body:
+            text, error = self.convert_utf8(body)
+            if error: self.append_note(error)
+            self.append_note(text)
 
     def __session_poll_ack__(self, param):
         'Set poll acknowledge'

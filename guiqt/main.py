@@ -76,7 +76,8 @@ def append_key(dct, key, widget):
     elif wt == QDateEdit:
         dct[key] = '%s'%widget.date().toString(Qt.ISODate) # QDate; Qt.ISODate='YYYY-MM-DD'
     elif wt == QComboBox:
-        dct[key] = get_str(widget.currentText())
+        dct[key] = widget.currentItem()
+        # print "!!! dct[",key,"]=",dct[key],"currentItem=",widget.currentItem()
     elif wt == QTable:
         data = []
         for r in range(widget.numRows()):
@@ -100,9 +101,11 @@ def count_data_rows(dct):
         
 class ccregMainWindow(_main.ccregWindow):
     'Main frame dialog.'
-
+    ssn_types = ('op','rc','passport','mpsv','ico')
+    
     def __init__(self, epp_client):
         _main.ccregWindow.__init__(self)
+        self.setFixedSize(694,656)
         self.epp = epp_client
         self.missing_required = []
         self.src = {} # {'command_name':['command line','XML source','XML response'], ...}
@@ -357,7 +360,7 @@ class ccregMainWindow(_main.ccregWindow):
             for key in ('flag','name','org','addr','voice','fax','email'):
                 append_key(disclose, key, getattr(wnd, prefix%key))
             dct['disclose'] = {
-                'flag': {'yes':'y'}.get(disclose['flag'],'n'),
+                'flag': disclose['flag'] == 0 and 'y' or 'n',
                 'data': [k for k,v in disclose.items() if v == 1]}
             
     #==============================
@@ -456,6 +459,7 @@ class ccregMainWindow(_main.ccregWindow):
         ssn={}
         for key in ('type','number'):
             append_key(ssn, key, getattr(p,'create_contact_ssn_%s'%key))
+        ssn['type'] = ssn_types[ssn['type']]
         if ssn.has_key('number'): d['ssn'] = ssn
         if self.__check_required__(d, (
                     ('id',self.__tr('contact ID')), 
@@ -510,6 +514,7 @@ class ccregMainWindow(_main.ccregWindow):
         period = {}
         append_key(period,'num', p.period_num)
         append_key(period,'unit', p.period_unit)
+        period['unit'] = ('y','m')[period['unit']]
         if period.has_key('num'): d['period'] = period
         #...............................
         if p.val_ex_date.isEnabled():
@@ -554,6 +559,7 @@ class ccregMainWindow(_main.ccregWindow):
         ssn={}
         for key in ('type','number'):
             append_key(ssn, key, getattr(p,'update_contact_ssn_%s'%key))
+        ssn['type'] = ssn_types[ssn['type']]
         if ssn.has_key('number'): chg['ssn'] = ssn
         if len(chg): d['chg'] = chg
         if self.__check_required__(d, (('id',self.__tr('Contact ID')),)) and len(d) > 1:
@@ -672,7 +678,7 @@ class ccregMainWindow(_main.ccregWindow):
         append_key(period,'unit', self.renew_domain_period_unit)
         if self.__check_required__(d, (('name',self.__tr('domain name')),('cur_exp_date',self.__tr('')))):
             if period.has_key('num'):
-                period['unit'] = {'year':'y'}.get(period['unit'],'m')
+                period['unit'] = ('y','m')[period['unit']]
             else:
                 period = None
             try:
@@ -759,6 +765,20 @@ class ccregMainWindow(_main.ccregWindow):
     def source_list_domain(self):
         self.__display_sources__('list_domain')
 
+    def credits(self):
+        'Display credits'
+        wnd = QDialog(self)
+        wnd.setCaption(self.__tr('Credits'))
+        layout = QVBoxLayout(wnd)
+        edit = QTextEdit(wnd)
+        layout.addWidget(edit)
+        edit.setText(self.epp._epp.get_credits())
+        btn = QPushButton(self.__tr('Close'),wnd)
+        layout.addWidget(btn)
+        wnd.connect(btn,SIGNAL("clicked()"),wnd.close)
+        edit.setMinimumSize(500, 300)
+        wnd.show()
+        
     def __tr(self,s,c = None):
         return qApp.translate("ccregWindow",s,c)
         

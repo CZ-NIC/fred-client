@@ -122,38 +122,6 @@ Parameters in &lt;b&gt;bold&lt;/b&gt; style are &lt;b&gt;required&lt;/b&gt;. Oth
                     <set>WordBreak|AlignTop|AlignHCenter</set>
                 </property>
             </widget>
-            <widget class="QPushButton">
-                <property name="name">
-                    <cstring>btn_about_client</cstring>
-                </property>
-                <property name="geometry">
-                    <rect>
-                        <x>20</x>
-                        <y>510</y>
-                        <width>120</width>
-                        <height>30</height>
-                    </rect>
-                </property>
-                <property name="text">
-                    <string>About Client</string>
-                </property>
-            </widget>
-            <widget class="QPushButton">
-                <property name="name">
-                    <cstring>btn_about_qt</cstring>
-                </property>
-                <property name="geometry">
-                    <rect>
-                        <x>160</x>
-                        <y>510</y>
-                        <width>120</width>
-                        <height>30</height>
-                    </rect>
-                </property>
-                <property name="text">
-                    <string>About Qt</string>
-                </property>
-            </widget>
             <widget class="QGroupBox">
                 <property name="name">
                     <cstring>groupBox1</cstring>
@@ -314,6 +282,22 @@ Parameters in &lt;b&gt;bold&lt;/b&gt; style are &lt;b&gt;required&lt;/b&gt;. Oth
                         </rect>
                     </property>
                 </widget>
+            </widget>
+            <widget class="QPushButton">
+                <property name="name">
+                    <cstring>btn_credits</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>20</x>
+                        <y>510</y>
+                        <width>120</width>
+                        <height>30</height>
+                    </rect>
+                </property>
+                <property name="text">
+                    <string>Credits</string>
+                </property>
             </widget>
         </widget>
         <widget class="QWidget">
@@ -2804,32 +2788,6 @@ The EPP "delete" command is used to remove an instance of an existing object.</s
                             </attribute>
                             <widget class="QLabel">
                                 <property name="name">
-                                    <cstring>textLabel57</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>10</x>
-                                        <y>10</y>
-                                        <width>570</width>
-                                        <height>150</height>
-                                    </rect>
-                                </property>
-                                <property name="text">
-                                    <string>&lt;h2&gt;transfer_contact&lt;/h2&gt;
-The EPP "transfer" command provides a query operation that allows a
-client to determine real-time status of pending and completed
-transfer requests.&lt;br&gt;
-The EPP "transfer" command is used to manage changes in client
-sponsorship of an existing object.  Clients can initiate a transfer
-request, cancel a transfer request, approve a transfer request, and
-reject a transfer request using the "op" command attribute.</string>
-                                </property>
-                                <property name="alignment">
-                                    <set>WordBreak|AlignTop|AlignLeft</set>
-                                </property>
-                            </widget>
-                            <widget class="QLabel">
-                                <property name="name">
                                     <cstring>textLabel58</cstring>
                                 </property>
                                 <property name="geometry">
@@ -2929,6 +2887,26 @@ reject a transfer request using the "op" command attribute.</string>
                                         <width>360</width>
                                         <height>22</height>
                                     </rect>
+                                </property>
+                            </widget>
+                            <widget class="QLabel">
+                                <property name="name">
+                                    <cstring>textLabel57</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>10</x>
+                                        <y>10</y>
+                                        <width>570</width>
+                                        <height>150</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string>&lt;h2&gt;transfer_contact&lt;/h2&gt;
+The EPP "transfer" command makes change in client sponsorship of an existing object. The new owner becomes registrant what called transfer command. New auhtorization info is generated automaticly after successfully transfer.</string>
+                                </property>
+                                <property name="alignment">
+                                    <set>WordBreak|AlignTop|AlignLeft</set>
                                 </property>
                             </widget>
                         </widget>
@@ -6276,13 +6254,7 @@ The EPP "delete" command is used to remove an instance of an existing object.</s
                                 </property>
                                 <property name="text">
                                     <string>&lt;h2&gt;transfer_domain&lt;/h2&gt;
-The EPP "transfer" command provides a query operation that allows a
-client to determine real-time status of pending and completed
-transfer requests.&lt;br&gt;
-The EPP "transfer" command is used to manage changes in client
-sponsorship of an existing object.  Clients can initiate a transfer
-request, cancel a transfer request, approve a transfer request, and
-reject a transfer request using the "op" command attribute.</string>
+The EPP "transfer" command makes change in client sponsorship of an existing object. The new owner becomes registrant what called transfer command. New auhtorization info is generated automaticly after successfully transfer.</string>
                                 </property>
                                 <property name="alignment">
                                     <set>WordBreak|AlignTop|AlignLeft</set>
@@ -7436,6 +7408,12 @@ The EPP "list" command is used to list all ID of an existing object owning by re
         <receiver>ccregWindow</receiver>
         <slot>btn_close()</slot>
     </connection>
+    <connection>
+        <sender>btn_credits</sender>
+        <signal>clicked()</signal>
+        <receiver>ccregWindow</receiver>
+        <slot>credits()</slot>
+    </connection>
 </connections>
 <slots>
     <slot>login()</slot>
@@ -7489,6 +7467,7 @@ The EPP "list" command is used to list all ID of an existing object owning by re
     <slot>source_renew_domain()</slot>
     <slot>source_list_domain()</slot>
     <slot>btn_close()</slot>
+    <slot>credits()</slot>
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

@@ -10,7 +10,7 @@
 # warning       - message about solved problems
 # ------------------------------------
 import __builtin__
-import os, sys
+import os, sys, re
 import getopt
 import gettext
 import ConfigParser
@@ -48,36 +48,43 @@ def load_config_from_file(filename):
         else:
             names.append(filename)
     else:
-        error = "Configuration file '%s' missing."%filename
+        error = "Configuration file '%s' not found."%filename
     return config, error, names
 
 def get_etc_config_name(name):
     'Returns shared folder depends on OS type.'
     if os.name == 'posix':
-        glob_conf = '/etc/%s'%config_name
+        glob_conf = '/etc/%s'%name
     else:
         # ALLUSERSPROFILE = C:\Documents and Settings\All Users
-        glob_conf = os.path.join(os.path.expandvars('$ALLUSERSPROFILE'),config_name)
+        glob_conf = os.path.join(os.path.expandvars('$ALLUSERSPROFILE'),name)
     return glob_conf
     
-def load_config(config_name):
-    "Load config file and init internal variables. Returns 0 if fatal error occured."
+def load_default_config(config_name):
+    'Load default config. First try home than etc.'
     config = ConfigParser.SafeConfigParser()
+    # first try home
+    error, names = load_config(config, os.path.join(os.path.expanduser('~'),config_name))
+    if error:
+        # than try etc
+        error, names = load_config(config, get_etc_config_name(config_name[1:]))
+    return config, error, names
+
+def load_config(config, filename):
+    "Load config file and init internal variables. Returns 0 if fatal error occured."
     error = ''
     names = []
-    ## modul_conf = os.path.join(os.path.split(__file__)[0],config_name)
-    glob_conf = get_etc_config_name(config_name)
-    if os.path.isfile(glob_conf):
+    if os.path.isfile(filename):
         try:
             # If you wand use mode config, uncomment next line and comment line after it.
             # names = config.read([modul_conf, glob_conf, os.path.join(os.path.expanduser('~'),config_name)])
-            names = config.read(glob_conf)
+            names = config.read(filename)
         except (ConfigParser.MissingSectionHeaderError, ConfigParser.ParsingError), msg:
             error = 'ConfigParserError: %s'%str(msg)
             config = None
     else:
-        error = "Configuration file '%s' missing."%glob_conf
-    return config, error, names
+        error = "Configuration file '%s' not found."%filename
+    return error, names
 
 def get_config_value(config, section, option, omit_errors=0):
     'Get value from config and catch exceptions.'
@@ -107,32 +114,33 @@ def install_translation(lang):
 #---------------------------
 # INIT options:
 #---------------------------
-config_name = '.ccreg_client.conf' # .ccReg.conf
+app_name = 'ccregClient'
+config_name = '.ccreg_client.conf'
 domain = 'ccreg_client' # gettext translate domain
 langs = {'en': 0, 'cs': 1} # 0 - no translate, 1 - make translation
 default_lang = 'en'
 optcols = (
     '? help',
-    'b bar',   # Used by ccreg_sender for display bar instead of common output. Suitable for huge command sets.
+    'b bar',      # Used by ccreg_sender for display bar instead of common output. Suitable for huge command sets.
     'c:cert',
-    'd:command',
-    'e:range', # Used by ccreg_create for generate range of documents.
-    'f:config',
-    'g:log',   # save log in unittest.
+    'd:command',  # used by creator
+    'e:range',    # Used by ccreg_create for generate range of documents.
+    'f:config',   # define your own config file
+    'g:log',      # save log in unittest.
     'h:host',
     'k:privkey',
     'l:lang',
-    'n nologin', # turn off automatic login process after start up
+    'n nologin',  # turn off automatic login process after start up
     'o:output',
     'p:port',
-    'q qt',    # run in Qt
+    'q qt',       # run in Qt
     's:session',
-    't timer', # for debug only; display duration of processes
+    #'t timer',   # for debug only; display duration of processes
     'u:user',
     'v:verbose',
     'w:password',
     'V version',
-    'x no_validate',
+    'x no_validate', # switch off using validation by extern program (xmllint)
     )
 options = {}
 for key in optcols:
@@ -153,10 +161,10 @@ if len(sys.argv) > 1:
             ''.join(map(lambda s:s[:2].strip(),optcols)),
             map(lambda s:('%s','%s=')[s[1]==':']%s[2:],optcols))
     except getopt.GetoptError, msg:
-        errors.append("Options error: %s"%msg)
+        errors.append('%s'%msg)
     else:
         if len(option_args):
-            errors.append('%s: (%s)'%('Unknown options',', '.join(option_args)))
+            errors.append('%s: (%s)'%('unknown options',', '.join(option_args)))
         for k,v in opts:
             for key in optcols:
                 keys = ('-%s'%key[0], '--%s'%key[2:])
@@ -175,7 +183,7 @@ if len(sys.argv) > 1:
 if options['config']:
     config, config_error, config_names = load_config_from_file(options['config'])
 else:
-    config, config_error, config_names = load_config(config_name)
+    config, config_error, config_names = load_default_config(config_name)
 if config and not options['lang']:
     key, error = get_config_value(config, 'session','lang',1)
     if error:
@@ -214,7 +222,15 @@ for key,value in langs.items():
 # Install language support
 install_translation(options['lang'])
 
-option_errors = '\n'.join(errors)
+if errors:
+    match = re.search('(\w+)(\.py.?)?$',sys.argv[0])
+    name = match is None and sys.argv[0] or match.group(1)
+    option_errors = _T("""%s: %s
+Usage: %s [OPTIONS...]
+Try '%s --help' for more information.
+""")%(app_name, '\n'.join(errors),name,name)
+else:
+    option_errors = ''
 warning = '\n'.join(warnings)
 
 if __name__ == '__main__':

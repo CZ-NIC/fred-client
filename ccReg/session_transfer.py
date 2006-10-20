@@ -377,7 +377,7 @@ class ManagerTransfer(ManagerBase):
                 if is_check:
                     # Tighten check response by code.
                     if type(value) is int: continue
-                    key = re.sub(':reason','',key)
+                    key = re.sub(':reason$','',key)
                 __append_into_report__(data,key,value,explain,self._ljust,'',2) # 2 - use HTML pattern;
         if len(data):
             report('<table class="ccreg_data">')

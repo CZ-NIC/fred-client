@@ -54,6 +54,8 @@ help_option = _T("""Connection options:
 
 def display_profiler(label, indent, debug_time):
     'For test only.'
+    # For enable time uncomment all lines with PROFILER (and display_profiler)
+    # and in translate module option 'timer'.
     msg, prev_t = debug_time[0]
     print '='*60
     print indent,label
@@ -102,9 +104,9 @@ def main(options):
             epp.remove_from_history()
             epp.send_logout()
             break
-        debug_time = [('START',time.time())] # PROFILER
+        #debug_time = [('START',time.time())] # PROFILER
         command_name, epp_doc, stop_interactive_mode = epp.create_eppdoc(command)
-        debug_time.append(('Command created',time.time())) # PROFILER
+        #debug_time.append(('Command created',time.time())) # PROFILER
         if command_name == 'q': # User press Ctrl+C or Ctrl+D in interactive mode.
             epp.send_logout()
             break
@@ -113,7 +115,7 @@ def main(options):
             continue
         if command_name and epp_doc: # if only command is EPP command
             invalid_epp = epp.is_epp_valid(epp_doc) # make validation on the XML document
-            debug_time.append(('Validation',time.time())) # PROFILER
+            #debug_time.append(('Validation',time.time())) # PROFILER
             if invalid_epp:
                 epp.append_error(_T('EPP document is not valid'))
                 v = epp.get_session(VERBOSE)
@@ -126,24 +128,24 @@ def main(options):
                         confirmation = raw_input('%s (y/N): '%_T('Do you really want to send this command to the server?'))
                         epp.remove_from_history()
                         if confirmation not in ('y','Y'): continue
-                    debug_time.append(('Save and restore history',time.time())) # PROFILER
+                    #debug_time.append(('Save and restore history',time.time())) # PROFILER
                     epp.send(epp_doc)          # send to server
-                    debug_time.append(('SEND to server',time.time())) # PROFILER
+                    #debug_time.append(('SEND to server',time.time())) # PROFILER
                     xml_answer = epp.receive()     # receive answer
-                    debug_time.append(('RECEIVE from server',time.time())) # PROFILER
+                    #debug_time.append(('RECEIVE from server',time.time())) # PROFILER
                     try:
                         debug_time_answer = epp.process_answer(xml_answer) # process answer
-                        debug_time.append(('Parse answer',time.time())) # PROFILER
+                        #debug_time.append(('Parse answer',time.time())) # PROFILER
                     except (KeyboardInterrupt, EOFError):
                         debug_time_answer = []
                         break # handle Ctrl+C or Ctrl+D from testy user
                     epp.display() # display errors or notes
-                    debug_time.append(('Prepare answer for display',time.time())) # PROFILER
+                    #debug_time.append(('Prepare answer for display',time.time())) # PROFILER
                     epp.print_answer()
-                    debug_time.append(('Display answer',time.time())) # PROFILER
-                    if options['timer']:
-                        display_profiler('Main LOOP time profiler','',debug_time)
-                        display_profiler('From Main LOOP only "Parse answer"','\t',debug_time_answer)
+                    #debug_time.append(('Display answer',time.time())) # PROFILER
+                    #if options['timer']:
+                    #    display_profiler('Main LOOP time profiler','',debug_time)
+                    #    display_profiler('From Main LOOP only "Parse answer"','\t',debug_time_answer)
                 else:
                     epp.append_note(_T('You are not connected.'),('BOLD','RED'))
         if command_name == 'connect': epp.print_answer()

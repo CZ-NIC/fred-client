@@ -73,6 +73,58 @@
         <source>Sources are not available now. Run command at first.</source>
         <translation>Zdrojové dokumenty nejsou nyní dostupné. Nejdříve spusťte příkaz.</translation>
     </message>
+    <message>
+        <source>Authorization info</source>
+        <translation>Autorizace</translation>
+    </message>
+    <message>
+        <source>username</source>
+        <translation>uživatelské jméno</translation>
+    </message>
+    <message>
+        <source>password</source>
+        <translation>heslo</translation>
+    </message>
+    <message>
+        <source>contact ID</source>
+        <translation>kontakt ID</translation>
+    </message>
+    <message>
+        <source>email</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>city</source>
+        <translation>město</translation>
+    </message>
+    <message>
+        <source>country code</source>
+        <translation>kód země</translation>
+    </message>
+    <message>
+        <source>NSSET ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>dns</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>tech. contact</source>
+        <translation>tech. kontakt</translation>
+    </message>
+    <message>
+        <source>registrant</source>
+        <translation>registrátor</translation>
+    </message>
+    <message>
+        <source>Contact ID</source>
+        <translation>Kontakt ID</translation>
+    </message>
+    <message>
+        <source>domain name</source>
+        <translation>doménové jméno</translation>
+    </message>
 </context>
 <context>
     <name>ccregWindow</name>
@@ -114,7 +166,7 @@
     </message>
     <message>
         <source>social security number</source>
-        <translation type="unfinished">číslo sociálního poj.</translation>
+        <translation>číslo sociálního pojištění</translation>
     </message>
     <message>
         <source>state or province</source>
@@ -122,7 +174,7 @@
     </message>
     <message>
         <source>clTRID</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>number</source>
@@ -134,7 +186,7 @@
     </message>
     <message>
         <source>op</source>
-        <translation type="unfinished"></translation>
+        <translation>OP</translation>
     </message>
     <message>
         <source>rc</source>
@@ -158,7 +210,7 @@
     </message>
     <message>
         <source>password</source>
-        <translation>heslo</translation>
+        <translation type="obsolete">heslo</translation>
     </message>
     <message>
         <source>&lt;b&gt;name&lt;/b&gt;</source>
@@ -276,7 +328,7 @@ Objekt může být vytvořen na neučitý časový úsek nebo na přesně defino
     </message>
     <message>
         <source>nsset</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">nsset</translation>
     </message>
     <message>
         <source>period</source>
@@ -300,7 +352,7 @@ Objekt může být vytvořen na neučitý časový úsek nebo na přesně defino
     </message>
     <message>
         <source>valExDate</source>
-        <translation type="unfinished"></translation>
+        <translation>datum expirace</translation>
     </message>
     <message>
         <source>&lt;h2&gt;create_domain&lt;/h2&gt;
@@ -369,7 +421,7 @@ EPP příkaz &quot;update&quot; se používá pro aktualizaci hodnot instance vy
     </message>
     <message>
         <source>status</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">status</translation>
     </message>
     <message>
         <source>&lt;h3&gt;Remove&lt;/h3&gt;</source>
@@ -435,11 +487,11 @@ Parametry, které jsou &lt;b&gt;tučně&lt;/b&gt;, jsou &lt;b&gt;povinné&lt;/b&
     </message>
     <message>
         <source>About Client</source>
-        <translation>O klientovi</translation>
+        <translation type="obsolete">O klientovi</translation>
     </message>
     <message>
         <source>About Qt</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">O Qt</translation>
     </message>
     <message>
         <source>Client to EPP server</source>
@@ -451,7 +503,7 @@ Parametry, které jsou &lt;b&gt;tučně&lt;/b&gt;, jsou &lt;b&gt;povinné&lt;/b&
     </message>
     <message>
         <source>timeout</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>&lt;b&gt;certificate&lt;/b&gt;</source>
@@ -614,7 +666,8 @@ EPP Příkaz &quot;check&quot; se používá ke zjištění jestli se daný obje
     <message>
         <source>&lt;b&gt;names&lt;/b&gt;&lt;br&gt;
 Type one or more names (handles) what you want to check. Separate names by spaces or new lines.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;jména&lt;/b&gt;&lt;br&gt;
+Zadejte jedno nebo více jmen, které chcete ověřit. Jména oddělujte mezerou nebo novým řádkem.</translation>
     </message>
     <message>
         <source>&lt;b&gt;check_contact&lt;/b&gt;</source>
@@ -648,7 +701,7 @@ EPP příkaz &quot;info&quot; se používá ke zjištění informací spojených
     </message>
     <message>
         <source>create</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>&lt;b&gt;update_contact&lt;/b&gt;</source>
@@ -656,12 +709,13 @@ EPP příkaz &quot;info&quot; se používá ke zjištění informací spojených
     </message>
     <message>
         <source>update</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>&lt;h2&gt;delete_contact&lt;/h2&gt;
 The EPP &quot;delete&quot; command is used to remove an instance of an existing object.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;h2&gt;delete_contact&lt;/h2&gt;
+EPP příkaz &quot;delete&quot; se používá pro odebrání instance vybraného objektu.</translation>
     </message>
     <message>
         <source>&lt;b&gt;delete_contact&lt;/b&gt;</source>
@@ -669,7 +723,7 @@ The EPP &quot;delete&quot; command is used to remove an instance of an existing 
     </message>
     <message>
         <source>delete</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>&lt;h2&gt;transfer_contact&lt;/h2&gt;
@@ -680,7 +734,10 @@ The EPP &quot;transfer&quot; command is used to manage changes in client
 sponsorship of an existing object.  Clients can initiate a transfer
 request, cancel a transfer request, approve a transfer request, and
 reject a transfer request using the &quot;op&quot; command attribute.</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">&lt;h2&gt;transfer_contact&lt;/h2&gt;
+EPP příkaz &quot;transfer&quot; umožňuje zjišťovat aktuální stav nevyřízených anebo dokončených požadavků na transfer.
+Příkaz &quot;transfer&quot; se používá k ovládání změn na vybraném objektu. Klient může vyvolat požadavek na transfer. Nebo může požadovat zrušení požadavku, potvrzení požadavku a nebo odebrání požadavku. To vše pomocí atributu &quot;op&quot;.
+</translation>
     </message>
     <message>
         <source>&lt;b&gt;transfer_contact&lt;/b&gt;</source>
@@ -693,7 +750,8 @@ reject a transfer request using the &quot;op&quot; command attribute.</source>
     <message>
         <source>&lt;h2&gt;list_contact&lt;/h2&gt;
 The EPP &quot;list&quot; command is used to list all ID of an existing object owning by registrant.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;h2&gt;list_contact&lt;/h2&gt;
+EPP příkaz &quot;list&quot; se používá pro zobrazení seznamu všech ID objektů, které ragistrátor vlastní.</translation>
     </message>
     <message>
         <source>&lt;b&gt;list_contact&lt;/b&gt;</source>
@@ -710,12 +768,14 @@ The EPP &quot;list&quot; command is used to list all ID of an existing object ow
     <message>
         <source>&lt;h2&gt;Nsset&lt;/h2&gt;
 Nsset is set of informations about domain name servers and their address and administrators.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;h2&gt;Nsset&lt;/h2&gt;
+Nsset je záznam, který obsahuje odkazy na doménové servery a jejich adresy. Dále obsahuje seznam registrátorů.</translation>
     </message>
     <message>
         <source>&lt;h2&gt;check_nsset&lt;/h2&gt;
 The EPP &quot;check&quot; command is used to determine if an object can be provisioned within a repository.  It provides a hint that allows a client to anticipate the success or failure of provisioning an object using the &quot;create&quot; command as object provisioning requirements are ultimately a matter of server policy.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;h2&gt;check_nsset&lt;/h2&gt;
+EPP Příkaz &quot;check&quot; se používá ke zjištění jestli se daný objekt v repozitáři nachází. To umožňuje řídit spouštění příkazu &quot;create&quot; a poté vyhodnotit jestli příkaz uspěl nebo ne.</translation>
     </message>
     <message>
         <source>&lt;b&gt;check_nsset&lt;/b&gt;</source>
@@ -746,7 +806,8 @@ EPP příkaz &quot;info&quot; se používá ke zjištění informací spojených
     <message>
         <source>&lt;h2&gt;delete_nsset&lt;/h2&gt;
 The EPP &quot;delete&quot; command is used to remove an instance of an existing object.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;h2&gt;delete_nsset&lt;/h2&gt;
+EPP příkaz &quot;delete&quot; se používá pro odebrání instance vybraného objektu.</translation>
     </message>
     <message>
         <source>&lt;b&gt;delete_nsset&lt;/b&gt;</source>
@@ -755,7 +816,8 @@ The EPP &quot;delete&quot; command is used to remove an instance of an existing 
     <message>
         <source>&lt;h2&gt;list_nsset&lt;/h2&gt;
 The EPP &quot;list&quot; command is used to list all ID of an existing object owning by registrant.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;h2&gt;list_nsset&lt;/h2&gt;
+EPP příkaz &quot;list&quot; se používá pro zobrazení seznamu všech ID objektů, které ragistrátor vlastní.</translation>
     </message>
     <message>
         <source>&lt;b&gt;list_nsset&lt;/b&gt;</source>
@@ -768,19 +830,20 @@ The EPP &quot;list&quot; command is used to list all ID of an existing object ow
     <message>
         <source>&lt;h2&gt;Domain&lt;/h2&gt;
 Domain is name whitch is associates nsset and contacts.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;h2&gt;Doména&lt;/h2&gt;
+Doména je jméno, ke kterému se vážou kontakty a nssety.</translation>
     </message>
     <message>
         <source>&lt;h2&gt;check_domain&lt;/h2&gt;
 The EPP &quot;check&quot; command is used to determine if an object can be provisioned within a repository.  It provides a hint that allows a client to anticipate the success or failure of provisioning an object using the &quot;create&quot; command as object provisioning requirements are ultimately a matter of server policy.</source>
-        <translation type="unfinished">&lt;h2&gt;check_domain&lt;/h2&gt;
-EPP Příkaz &quot;check&quot; se používá ke zjištění jestli se daný objekt v repozitáři nachází. To umožňuje řídit spouštění příkazu &quot;create&quot; a poté vyhodnotit jestli příkaz uspěl nebo ne.
-</translation>
+        <translation>&lt;h2&gt;check_domain&lt;/h2&gt;
+EPP Příkaz &quot;check&quot; se používá ke zjištění jestli se daný objekt v repozitáři nachází. To umožňuje řídit spouštění příkazu &quot;create&quot; a poté vyhodnotit jestli příkaz uspěl nebo ne.</translation>
     </message>
     <message>
         <source>&lt;b&gt;names&lt;/b&gt;&lt;br&gt;
 Type one or more names what you want to check. Separate names by spaces or new lines.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;jména&lt;/b&gt;&lt;br&gt;
+Zadejte jedno nebo více jmen, které chcete ověřit. Jména oddělujte mezerou nebo novým řádkem.</translation>
     </message>
     <message>
         <source>&lt;b&gt;check_domain&lt;/b&gt;</source>
@@ -811,7 +874,8 @@ EPP příkaz &quot;info&quot; se používá ke zjištění informací spojených
     <message>
         <source>&lt;h2&gt;delete_domain&lt;/h2&gt;
 The EPP &quot;delete&quot; command is used to remove an instance of an existing object.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;h2&gt;delete_domain&lt;/h2&gt;
+EPP příkaz &quot;delete&quot; se používá pro odebrání instance vybraného objektu.</translation>
     </message>
     <message>
         <source>&lt;b&gt;delete_domain&lt;/b&gt;</source>
@@ -826,7 +890,9 @@ The EPP &quot;transfer&quot; command is used to manage changes in client
 sponsorship of an existing object.  Clients can initiate a transfer
 request, cancel a transfer request, approve a transfer request, and
 reject a transfer request using the &quot;op&quot; command attribute.</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">&lt;h2&gt;transfer_domain&lt;/h2&gt;
+EPP příkaz &quot;transfer&quot; umožňuje zjišťovat aktuální stav nevyřízených anebo dokončených požadavků na transfer.
+Příkaz &quot;transfer&quot; se používá k ovládání změn na vybraném objektu. Klient může vyvolat požadavek na transfer. Nebo může požadovat zrušení požadavku, potvrzení požadavku a nebo odebrání požadavku. To vše pomocí atributu &quot;op&quot;.</translation>
     </message>
     <message>
         <source>&lt;b&gt;transfer_domain&lt;/b&gt;</source>
@@ -834,16 +900,17 @@ reject a transfer request using the &quot;op&quot; command attribute.</source>
     </message>
     <message>
         <source>value expiration date</source>
-        <translation type="unfinished"></translation>
+        <translation>datum expirace</translation>
     </message>
     <message>
         <source>&lt;b&gt;current expiration date&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>aktální datum expirace</translation>
     </message>
     <message>
         <source>&lt;h2&gt;renew_domain&lt;/h2&gt;
 The EPP &quot;renew&quot; command is used to extend validity of an existing object.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;h2&gt;renew_domain&lt;/h2&gt;
+EPP příkaz &quot;renew&quot; se používá pro prodloužení platnosti vybraného objektu.</translation>
     </message>
     <message>
         <source>&lt;b&gt;renew_domain&lt;/b&gt;</source>
@@ -856,7 +923,8 @@ The EPP &quot;renew&quot; command is used to extend validity of an existing obje
     <message>
         <source>&lt;h2&gt;list_domain&lt;/h2&gt;
 The EPP &quot;list&quot; command is used to list all ID of an existing object owning by registrant.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;h2&gt;list_domain&lt;/h2&gt;
+EPP příkaz &quot;list&quot; se používá pro zobrazení seznamu všech ID objektů, které ragistrátor vlastní.</translation>
     </message>
     <message>
         <source>&lt;b&gt;list_domain&lt;/b&gt;</source>
@@ -868,11 +936,11 @@ The EPP &quot;list&quot; command is used to list all ID of an existing object ow
     </message>
     <message>
         <source>Sources</source>
-        <translation type="unfinished"></translation>
+        <translation>Zdroje</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Zavřít</translation>
     </message>
     <message>
         <source>Alt+C</source>
@@ -880,31 +948,31 @@ The EPP &quot;list&quot; command is used to list all ID of an existing object ow
     </message>
     <message>
         <source>command name</source>
-        <translation type="unfinished"></translation>
+        <translation>název příkazu</translation>
     </message>
     <message>
         <source>This document was sent to the EPP server. If is empty, it has not been sent already.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tento dokument byl odeslán na EPP server. Pokud je okno prázdné, tak k odeslání ještě nedošlo.</translation>
     </message>
     <message>
         <source>Command XML</source>
-        <translation type="unfinished"></translation>
+        <translation>Příkaz v XML</translation>
     </message>
     <message>
         <source>This document was received from EPP server. If is empty, it has not been received already.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dokument, který klient obdržel od EPP serveru. Pokud je okno prázné, tak nebyl ještě doručen.</translation>
     </message>
     <message>
         <source>Response XML</source>
-        <translation type="unfinished"></translation>
+        <translation>Odpověď v XML</translation>
     </message>
     <message>
         <source>This example was build from input. It can be used in ccreg_client console.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tento příklad byl sestaven ze vstupních dat. Může být použit v řádkové konzoli.</translation>
     </message>
     <message>
         <source>Command line</source>
-        <translation type="unfinished"></translation>
+        <translation>Příkazová řádka</translation>
     </message>
     <message>
         <source>Update domain panel</source>
@@ -919,10 +987,33 @@ EPP příkaz &quot;update&quot; se používá pro aktualizaci hodnot instance vy
     </message>
     <message>
         <source>admin handle</source>
-        <translation type="unfinished"></translation>
+        <translation>admin identifikátor</translation>
     </message>
     <message>
         <source>registrant</source>
+        <translation>registrátor</translation>
+    </message>
+    <message>
+        <source>auth. for transfer</source>
+        <translation>autorizace pro transfer</translation>
+    </message>
+    <message>
+        <source>authorization info</source>
+        <translation>autorizace</translation>
+    </message>
+    <message>
+        <source>&lt;h2&gt;transfer_domain&lt;/h2&gt;
+The EPP &quot;transfer&quot; command makes change in client sponsorship of an existing object. The new owner becomes registrant what called transfer command. New auhtorization info is generated automaticly after successfully transfer.</source>
+        <translation>&lt;h2&gt;transfer_domain&lt;/h2&gt;
+Příkaz EPP &quot;transfer&quot; provádí změnu vlastníka na existujícím objektu. Novým vlastníkem se stává registrátor, který příkaz transfer použil. Pokud byl transfer úspěšný, tak se automaticky vygeneruje nové autorizační heslo.</translation>
+    </message>
+    <message>
+        <source>&lt;h2&gt;transfer_contact&lt;/h2&gt;
+The EPP &quot;transfer&quot; command makes change in client sponsorship of an existing object. The new owner becomes registrant what called transfer command. New auhtorization info is generated automaticly after successfully transfer.</source>
+        <translation>Příkaz EPP &quot;transfer&quot; provádí změnu vlastníka na existujícím objektu. Novým vlastníkem se stává registrátor, který příkaz transfer použil. Pokud byl transfer úspěšný, tak se automaticky vygeneruje nové autorizační heslo.</translation>
+    </message>
+    <message>
+        <source>Credits</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

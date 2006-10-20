@@ -22,13 +22,10 @@ notice = {'check':_T("""
    specified using the EPP extension framework.
 """),
     'transfer':_T("""
-   The EPP "transfer" command provides a query operation that allows a
-   client to determine real-time status of pending and completed
-   transfer requests.
-   The EPP "transfer" command is used to manage changes in client
-   sponsorship of an existing object.  Clients can initiate a transfer
-   request, cancel a transfer request, approve a transfer request, and
-   reject a transfer request using the "op" command attribute.
+   The EPP "transfer" command makes change in client sponsorship 
+   of an existing object. The new owner becomes registrant what called
+   transfer command. New auhtorization info is generated automaticly
+   after successfully transfer.
 """),
    'create':_T("""
    The EPP "create" command is used to create an instance of an object.
