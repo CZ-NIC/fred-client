@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Manuál pro ccRegClient konzoli a knihovnu ccReg</title><meta name="generator" content="DocBook XSL Stylesheets V1.68.1" /></head><body><div class="book" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h1 class="title"><a id="id2451037"></a>Manuál pro ccRegClient konzoli a knihovnu ccReg</h1></div><div><h2 class="subtitle">Verze 1.2</h2></div><div><p class="releaseinfo">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Manuál pro FredClient konzoli a knihovnu fred</title><meta name="generator" content="DocBook XSL Stylesheets V1.68.1" /></head><body><div class="book" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h1 class="title"><a id="id2451037"></a>Manuál pro FredClient konzoli a knihovnu fred</h1></div><div><h2 class="subtitle">Verze 1.2</h2></div><div><p class="releaseinfo">
     Vzniklo: 11.7.2006;
     Revize:  18.8.2006;
     Revize:   1.9.2006;
     Revize:   4.9.2006;
     Revize:  14.9.2006;
     Revize:  27.9.2006;
-    </p></div><div><p class="copyright">Copyright © 2006 CZ.NIC</p></div></div><hr /></div><div class="toc"><p><b>Obsah</b></p><dl><dt><span class="preface"><a href="#id2489580">Co je ccRegClient:</a></span></dt><dt><span class="chapter"><a href="#id2489600">1. Licence</a></span></dt><dt><span class="chapter"><a href="#id2489610">2. Požadavky na systém a instalace</a></span></dt><dt><span class="chapter"><a href="#id2489620">3. 
+    </p></div><div><p class="copyright">Copyright © 2006 CZ.NIC</p></div></div><hr /></div><div class="toc"><p><b>Obsah</b></p><dl><dt><span class="preface"><a href="#id2489580">Co je FredClient:</a></span></dt><dt><span class="chapter"><a href="#id2489600">1. Licence</a></span></dt><dt><span class="chapter"><a href="#id2489610">2. Požadavky na systém a instalace</a></span></dt><dt><span class="chapter"><a href="#id2489620">3. 
     Popis jednotlivých programů,
        parametry a config
     </a></span></dt><dd><dl><dt><span class="section"><a href="#id2451655">
     Parametry (OPTIONS)
     </a></span></dt><dt><span class="section"><a href="#id2451700">
     Config
-    </a></span></dt></dl></dd><dt><span class="chapter"><a href="#id2451438">4. 
-    Program ccreg_console.py
-    </a></span></dt><dd><dl><dt><span class="section"><a href="#id2451471">Zobrazení helpu</a></span></dt><dt><span class="section"><a href="#id2452037">EPP příkazy</a></span></dt><dt><span class="section"><a href="#id2452078">Typy paramerů příkazu</a></span></dt><dt><span class="section"><a href="#id2450664">Společný parametr cltrid</a></span></dt><dt><span class="section"><a href="#null_or_empty">Žádná hodnota / Prázdná hodnota</a></span></dt><dd><dl><dt><span class="section"><a href="#id2499313">Žádná hodnota: NULL</a></span></dt><dt><span class="section"><a href="#id2499439">Prázdná hodnota: '', ""</a></span></dt></dl></dd><dt><span class="section"><a href="#id2499517">Příkazy relace (session)</a></span></dt></dl></dd><dt><span class="chapter"><a href="#id2499747">5. 
-    Skripty ccreg_create.py a ccreg_sender.py
-    </a></span></dt><dt><span class="chapter"><a href="#id2499869">6. 
-    Knihovna ccReg a popis API
-    </a></span></dt><dd><dl><dt><span class="section"><a href="#id2499887">Online dokumentace:</a></span></dt><dt><span class="section"><a href="#id2499941">Příklady práce s knihovnou</a></span></dt></dl></dd></dl></div><div class="preface" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2489580"></a>Co je ccRegClient:</h2></div></div></div><p>
-    ccRegClient je sada scriptů v jazyce Python postavených na ccReg knihovně
+    </a></span></dt></dl></dd><dt><span class="chapter"><a href="#id2451440">4. 
+    Program fred_console.py
+    </a></span></dt><dd><dl><dt><span class="section"><a href="#id2451996">Zobrazení helpu</a></span></dt><dt><span class="section"><a href="#id2452038">EPP příkazy</a></span></dt><dt><span class="section"><a href="#id2452079">Typy paramerů příkazu</a></span></dt><dt><span class="section"><a href="#id2499134">Společný parametr cltrid</a></span></dt><dt><span class="section"><a href="#null_or_empty">Žádná hodnota / Prázdná hodnota</a></span></dt><dd><dl><dt><span class="section"><a href="#id2499178">Žádná hodnota: NULL</a></span></dt><dt><span class="section"><a href="#id2499304">Prázdná hodnota: '', ""</a></span></dt></dl></dd><dt><span class="section"><a href="#id2499382">Příkazy relace (session)</a></span></dt></dl></dd><dt><span class="chapter"><a href="#id2499612">5. 
+    Skripty fred_create.py a fred_sender.py
+    </a></span></dt><dt><span class="chapter"><a href="#id2499734">6. 
+    Knihovna fred a popis API
+    </a></span></dt><dd><dl><dt><span class="section"><a href="#id2499751">Online dokumentace:</a></span></dt><dt><span class="section"><a href="#id2499806">Příklady práce s knihovnou</a></span></dt></dl></dd></dl></div><div class="preface" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2489580"></a>Co je FredClient:</h2></div></div></div><p>
+    FredClient je sada scriptů v jazyce Python postavených na fred knihovně
     a určených ke komunikaci s EPP serverem.
-    </p><p>Sada obsahuje EPP konzoli a skripty určené pro použití v shellu.</p></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2489600"></a>Kapitola 1. Licence</h2></div></div></div><p>Licence je v souboru ccReg/LICENSE.</p></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2489610"></a>Kapitola 2. Požadavky na systém a instalace</h2></div></div></div><p>Pokyny k instalaci jsou v souboru INSTALL.</p></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2489620"></a>Kapitola 3. 
+    </p><p>Sada obsahuje EPP konzoli a skripty určené pro použití v shellu.</p></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2489600"></a>Kapitola 1. Licence</h2></div></div></div><p>Licence je v souboru fred/LICENSE.</p></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2489610"></a>Kapitola 2. Požadavky na systém a instalace</h2></div></div></div><p>Pokyny k instalaci jsou v souboru INSTALL.</p></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2489620"></a>Kapitola 3. 
     Popis jednotlivých programů,
        parametry a config
     </h2></div></div></div><div class="toc"><p><b>Obsah</b></p><dl><dt><span class="section"><a href="#id2451655">
@@ -32,16 +32,16 @@
     Config
     </a></span></dt></dl></div><p>
 Dostupné skripty jsou následující:
-</p><table class="simplelist" border="0" summary="Simple list"><tr><td>ccreg_client.py   - spouští EPP konzoli nebo sekvenci crate+send (pro shell)</td></tr><tr><td>ccreg_console.py  - EPP konzole, komunikuje s EPP serverem</td></tr><tr><td>ccreg_create.py   - Vytboří zdrojový EPP XML příkaz</td></tr><tr><td>ccreg_sender.py   - Odešle soubor na EPP server</td></tr></table><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2451655"></a>
+</p><table class="simplelist" border="0" summary="Simple list"><tr><td>fred_client.py   - spouští EPP konzoli nebo sekvenci crate+send (pro shell)</td></tr><tr><td>fred_console.py  - EPP konzole, komunikuje s EPP serverem</td></tr><tr><td>fred_create.py   - Vytboří zdrojový EPP XML příkaz</td></tr><tr><td>fred_sender.py   - Odešle soubor na EPP server</td></tr></table><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2451655"></a>
     Parametry (OPTIONS)
     </h2></div></div></div><p>
 Skripty se dají spouštět s parametry. Jaké parametry lze použít zjistíte 
 zadáním parametru --help nebo -?:
 </p><pre class="programlisting">
-    $ ccreg_client.py --help
-    $ ccreg_client.py -?
+    $ fred_client.py --help
+    $ fred_client.py -?
 
-Použití: python ccreg_console.py [OPTIONS]
+Použití: python fred_console.py [OPTIONS]
 Konzole pro komunikaci s EPP serverem.
 
 OPTIONS s hodnotami:
@@ -68,10 +68,14 @@ OPTIONS:
 </pre></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2451700"></a>
     Config
     </h2></div></div></div><p>
-Config je společný pro všechny skripty a je uložen v souboru .ccReg.conf. 
-Nejdříve se hledá v adresáři společném pro všechny uživatele. 
-Na POSIX systémech je to /etc, v MS Windows v adresáři nastaveném v proměnné
-$ALLUSERSPROFILE.</p><p>
+Konfigurační soubor se implicitně hledá nejdříve v home uživatele (~/.fred_client.conf), 
+který skript spustil. Pokud tam není nalezen, hledá se v adresáři etc
+(/etc/fred_client.conf). Na POSIX systémech je to /etc, v MS Windows 
+to je v adresáři nastaveném v proměnné $ALLUSERSPROFILE.
+
+Přepínačem --config=filepath je možné konfigurační soubor 
+načíst z libovolného adresáře.
+</p><p>
 Pak se hledá v adresáři, kde je umístěna knihovna cReg.
 Pokud ani tam není nalezen, hledá se v domovském adresáři uživatele.
 </p><p>
@@ -79,8 +83,8 @@ Název a unístění konfiguračního souboru je možné zadat při spuštění 
 přepínače -c CONFIGNAME, --config=CONFIGNAME.
 </p><p>
 Konfig soubor lze vygenerovat v konzoli. Spusťte si konzoli
-příkazem ccreg_console.py (nebo ccreg_client.py) a zadejte příkaz "config create".
-Další podrobnosti naleznete v části popisu práce s konzolí (4. Program ccreg_console).
+příkazem fred_console.py (nebo fred_client.py) a zadejte příkaz "config create".
+Další podrobnosti naleznete v části popisu práce s konzolí (4. Program fred_console).
 </p><p>
 V konfigu se nachází sekce connect, kde jsou uloženy cesty k certifikátům
 a informace o serveru. Také tam můžou být přihlašovací údaje pro login.
@@ -113,7 +117,7 @@ pomocí parametru --session. Například si vytvoříte sekci [connect_myeppserv
 tu pak aktivujete: 
 
 </p><pre class="programlisting">
-    $ ccreg_client.py --session=myeppserver     (nebo -s myeppserver)
+    $ fred_client.py --session=myeppserver     (nebo -s myeppserver)
 
     [connect_myeppserver]
     dir=/test/certificates
@@ -164,31 +168,31 @@ V sekci <span class="emphasis"><em>session</em></span> jsou tato nastavení:</p>
     </p></li><li><p><span class="bold"><strong>auto_login</strong></span> = on/off</p><p>
         Při nastavení hodnoty auto_login na <span class="bold"><strong>on</strong></span> se po skuštění
         konzole automaticky provede i příakz <span class="emphasis"><em>login</em></span>.
-    </p></li></ul></div></div></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2451438"></a>Kapitola 4. 
-    Program ccreg_console.py
-    </h2></div></div></div><div class="toc"><p><b>Obsah</b></p><dl><dt><span class="section"><a href="#id2451471">Zobrazení helpu</a></span></dt><dt><span class="section"><a href="#id2452037">EPP příkazy</a></span></dt><dt><span class="section"><a href="#id2452078">Typy paramerů příkazu</a></span></dt><dt><span class="section"><a href="#id2450664">Společný parametr cltrid</a></span></dt><dt><span class="section"><a href="#null_or_empty">Žádná hodnota / Prázdná hodnota</a></span></dt><dd><dl><dt><span class="section"><a href="#id2499313">Žádná hodnota: NULL</a></span></dt><dt><span class="section"><a href="#id2499439">Prázdná hodnota: '', ""</a></span></dt></dl></dd><dt><span class="section"><a href="#id2499517">Příkazy relace (session)</a></span></dt></dl></div><p>
-ccreg_console.py je konzole, která komunikuje s EPP serverem. Konzoli spustíte
+    </p></li></ul></div></div></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2451440"></a>Kapitola 4. 
+    Program fred_console.py
+    </h2></div></div></div><div class="toc"><p><b>Obsah</b></p><dl><dt><span class="section"><a href="#id2451996">Zobrazení helpu</a></span></dt><dt><span class="section"><a href="#id2452038">EPP příkazy</a></span></dt><dt><span class="section"><a href="#id2452079">Typy paramerů příkazu</a></span></dt><dt><span class="section"><a href="#id2499134">Společný parametr cltrid</a></span></dt><dt><span class="section"><a href="#null_or_empty">Žádná hodnota / Prázdná hodnota</a></span></dt><dd><dl><dt><span class="section"><a href="#id2499178">Žádná hodnota: NULL</a></span></dt><dt><span class="section"><a href="#id2499304">Prázdná hodnota: '', ""</a></span></dt></dl></dd><dt><span class="section"><a href="#id2499382">Příkazy relace (session)</a></span></dt></dl></div><p>
+fred_console.py je konzole, která komunikuje s EPP serverem. Konzoli spustíte
 příkazem:
 </p><pre class="programlisting">
-    $ ccreg_console.py
+    $ fred_console.py
 </pre><p>
 Pokud máte v configu správně nadefinovánu cestu k certifikátům a uložené login a heslo, 
 tak můžete jednoduše zadat <span class="emphasis"><em>login</em></span> a tím se spojíte s EPP serverem.
 Konzole se ukončuje příkazem "quit" nebo jen krátce "q".
-</p><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2451471"></a>Zobrazení helpu</h2></div></div></div><p>
+</p><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2451996"></a>Zobrazení helpu</h2></div></div></div><p>
 Jaké příkazy máte k dispozici zjistíte zadáním příkazu "help" (nebo h, ?).
 </p><pre class="programlisting">
-    ccReg client verze 1.1 Zadejte "help", "license" nebo "credits" pro zobrazení více informací.
+    FredClient verze 1.0.0 Zadejte "help", "license" nebo "credits" pro zobrazení více informací.
     &gt; help
 </pre><p>Help vypíše dvě části nápovědy:</p><table class="simplelist" border="0" summary="Simple list"><tr><td>1) Dostupné EPP příkazy</td></tr><tr><td>2) Příkazy relace (session) pro nastavení vnitřních proměnných 
-       konzole</td></tr></table></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2452037"></a>EPP příkazy</h2></div></div></div><p>
+       konzole</td></tr></table></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2452038"></a>EPP příkazy</h2></div></div></div><p>
 EPP příkaz zadáváte společně s jeho parametry. Jaké parametry příkaz
 požaduje zjistíte, když zadáte "help příkaz" nebo zkráceně "h příkaz"
 nebo také "? příkaz".
 </p><p>Například:</p><pre class="programlisting">&gt; ?login</pre><p>
 Vypíšou se podrobnosti o jednotlivých parametrech daného příkazu. 
 Samotný příkaz zadáte tak, že napíšete název příkazu a za ním jeho parametry:
-</p><pre class="programlisting">&gt; login moje-ID moje-heslo</pre></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2452078"></a>Typy paramerů příkazu</h2></div></div></div><p><span class="emphasis"><em>INSTRUKCE:</em></span></p><table class="simplelist" border="0" summary="Simple list"><tr><td>parametry zadávejte v pořadí, v jakém jsou vypsané v helpu</td></tr><tr><td>hodnoty s mezerami dejte do uvozovek</td></tr><tr><td>seznamy se definují pomocí závorek, položky seznamu můžou 
+</p><pre class="programlisting">&gt; login moje-ID moje-heslo</pre></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2452079"></a>Typy paramerů příkazu</h2></div></div></div><p><span class="emphasis"><em>INSTRUKCE:</em></span></p><table class="simplelist" border="0" summary="Simple list"><tr><td>parametry zadávejte v pořadí, v jakém jsou vypsané v helpu</td></tr><tr><td>hodnoty s mezerami dejte do uvozovek</td></tr><tr><td>seznamy se definují pomocí závorek, položky seznamu můžou 
       (ale nemusí) být odděleny čárkami</td></tr><tr><td>pokud je v seznamu jen jedna položka, nemusí se závorky zadávat</td></tr><tr><td>jmenné prostory se také jako seznamy definují pomocí závorek</td></tr><tr><td>chcete-li seznam nebo jmenný porostor vynechat, zadejte jen
       prázdné závorky</td></tr><tr><td>hodnoty mimo pořadí zadávejte pomocí klíče</td></tr></table><p><span class="emphasis"><em>VYSVĚTLENÍ:</em></span></p><table class="simplelist" border="0" summary="Simple list"><tr><td>jednoduchá hodnota:  my-value01</td></tr><tr><td>hodnota s mezerou:   'lorem ipsum'   "some value"</td></tr><tr><td>seznam:              (one two three)</td></tr><tr><td>jmenný prostor:      ((one two three) my-value01 'lorem ipsum' (enyky benyky) end-value)</td></tr></table><p>
 Pokud hodnota parametru obsahuje mezeru, tak ji napište do uvozovek. 
@@ -368,14 +372,14 @@ hodnotu například do třetí položky seznamu "ns", tak zadejte:
 
 Dvojka je index seznamu v tomto případě o max. devíti položkách
 (indexy 0 - 8).
-</p></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2450664"></a>Společný parametr cltrid</h2></div></div></div><p>
+</p></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2499134"></a>Společný parametr cltrid</h2></div></div></div><p>
 Každý EPP příkaz, kromě příkazu <span class="emphasis"><em>hello</em></span>, obsahuje 
 tag <span class="bold"><strong>&lt;clTRID&gt;</strong></span>.
 Tato hodnota je identifikátor transakce. Ten si stanovuje klient a 
 může být libovolný v rámci formátovacích pravidel definovaných ve
 schematech pro tuto hodnotu. Identifikátor je nepovinný a pokud 
 není zadán, tak jej program automaticky doplní.
-</p></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="null_or_empty"></a>Žádná hodnota / Prázdná hodnota</h2></div></div></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h3 class="title"><a id="id2499313"></a>Žádná hodnota: NULL</h3></div></div></div><p>
+</p></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="null_or_empty"></a>Žádná hodnota / Prázdná hodnota</h2></div></div></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h3 class="title"><a id="id2499178"></a>Žádná hodnota: NULL</h3></div></div></div><p>
 Výraz <span class="emphasis"><em>Žádná hodnota</em></span> představuje hodnotu, kterou 
 jste nezadali. Slouží nám k tomu, abychom mohli přeskakovat parametry,
 které nechceme zadávat. Defaultě je výraz nastaven na NULL.
@@ -415,7 +419,7 @@ V <span class="emphasis"><em>interaktivním módu</em></span> zadávání parame
 Definici <span class="emphasis"><em>žádné hodnoty</em></span> lze v konzoli změnit příkazem 
 <a href="#null_value">null_value</a>
 a také je možné si ji definovat v <a href="#config_null_value">konfiguračním souboru</a>.
-</p></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h3 class="title"><a id="id2499439"></a>Prázdná hodnota: '', ""</h3></div></div></div><p>
+</p></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h3 class="title"><a id="id2499304"></a>Prázdná hodnota: '', ""</h3></div></div></div><p>
 Výraz <span class="emphasis"><em>Prázdná hodnota</em></span> představuje hodnotu, která je prázdná.
 Je to tedy text o nulové délce. Ten zapisujeme práznými uvozovkami '' nebo "".
 Tato hodnota nám slouží k tomu, abychom mohli zadávat hodnoty nulové délky.
@@ -447,7 +451,7 @@ Příkaz vygeneruje XML, ve kterém budou u prázdných hodnot prázdné tagy:
 </p><p>
 V <span class="emphasis"><em>interaktivním módu</em></span> zadávání parametru zadáme „<span class="quote">prázdnou hodnotu</span>“ tak,
 že zapíšeme prázdné uvozovky '' nebo "".
-</p></div></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2499517"></a>Příkazy relace (session)</h2></div></div></div><p>
+</p></div></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2499382"></a>Příkazy relace (session)</h2></div></div></div><p>
 Konzole má svá vnitřní nastavení, která můžete nastavit. Pokud zadáte
 příkaz bez parametrů, tak se pouze vypíše aktuální stav.
 
@@ -503,7 +507,7 @@ se před odesláním požaduje potvrzení k odeslání. Přepínačem "confirm O
 
 Konzole si hodnoty interních nastavení načítá z konfigu. Pokud ještě konfig nebyl vytvořen, tak se
 nastaví defaultní hodnoty. Aktuální hodnoty konfigu lze zobrazit příkazem "config". Chcete-li
-konfig vytvořit, zadejte "config create". Tím se vytvoří konfigurační soubor ".ccReg.conf" ve vašem
+konfig vytvořit, zadejte "config create". Tím se vytvoří konfigurační soubor ".fred_client.conf" ve vašem
 domovském adresáři. V konfigu si pak můžete nastavit cestu k vašemu certifikátu a další hodnoty.
 Konzole se pokouší neprve načíst konfig z adresáře /etc (ve Windows z adresáře uvedeném v proměnné
 prostředí $ALLUSERSPROFILE, ta bývá obvykle nastavena na "C:\Documents and Settings\All Users")
@@ -546,30 +550,30 @@ nastavit mód výpisu: 1 - stručný (default); 2 - plný; 3 - plný &amp; XML z
 Nastavení reprezentace „<span class="quote">žádné hodnoty</span>“. Viz <a href="#null_or_empty" title="Žádná hodnota / Prázdná hodnota">Žádná hodnota / Prázdná hodnota</a>
 a <a href="#config_null_value">Formát hodnoty NULL</a>.
 
-</div></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2499747"></a>Kapitola 5. 
-    Skripty ccreg_create.py a ccreg_sender.py
+</div></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2499612"></a>Kapitola 5. 
+    Skripty fred_create.py a fred_sender.py
     </h2></div></div></div><p>
 
 
-Skripty <span class="emphasis"><em>ccreg_create.py</em></span> a <span class="emphasis"><em>ccreg_sender.py</em></span> jsou určeny pro použití v shell batchi.
+Skripty <span class="emphasis"><em>fred_create.py</em></span> a <span class="emphasis"><em>fred_sender.py</em></span> jsou určeny pro použití v shell batchi.
 
-<span class="emphasis"><em>ccreg_create.py</em></span> přijímá parametry se standardního vstupu a vygeneruje 
+<span class="emphasis"><em>fred_create.py</em></span> přijímá parametry se standardního vstupu a vygeneruje 
 XML EPP dokument na standardní výstup. Například:
 </p><pre class="programlisting">
-    $ python ccreg_create.py info_domain nic.cz
-    $ ./ccreg_create.py info_domain nic.cz
+    $ python fred_create.py info_domain nic.cz
+    $ ./fred_create.py info_domain nic.cz
 </pre><p>&lt;?xml version='1.0' encoding....</p><p>
 Pokud nastane nějaká chyba, tak vrací XML s chybovým hlášením:
 </p><pre class="programlisting">
-    $ python ccreg_create.py inxo_domain nic.cz
+    $ python fred_create.py inxo_domain nic.cz
 </pre><p>
 &lt;?xml encoding='utf-8'?&gt;&lt;errors&gt;inxo_domain nic.cz: Neznámý příkaz!&lt;/errors&gt;
 </p><p>
 Příkazy se dají zřetězit:
 </p><pre class="programlisting">
-    $ ./ccreg_create.py check_domain test.cz nic.cz | ./ccreg_create.py info_domain nic.cz
+    $ ./fred_create.py check_domain test.cz nic.cz | ./fred_create.py info_domain nic.cz
 </pre><p>
-<span class="emphasis"><em>ccreg_sender.py</em></span> odesílá dokumenty na server. Skript se automaticky zaloguje, pak
+<span class="emphasis"><em>fred_sender.py</em></span> odesílá dokumenty na server. Skript se automaticky zaloguje, pak
 předá dokument, zobrazí odpověď a odloguje se a ukončí. Pro správné zalogovájní je nutné
 mít správně nastaven config.</p><p>
 Skript může odesílat dokumenty dvěma způsoby:
@@ -577,26 +581,26 @@ Skript může odesílat dokumenty dvěma způsoby:
     1. dokumenty se uloží do souboru a skriptu se předají jména souborů. Skript
        je pak odesílá v uvedeném pořadí. Například:
 </p><pre class="programlisting">
-    $ ./ccreg_create.py check_domain cosi.cz nic.cz &gt; doc1.xml
-    $ ./ccreg_create.py info_domain nic.cz &gt; doc2.xml
-    $ ./ccreg_sender.py doc1.xml doc2.xml
+    $ ./fred_create.py check_domain cosi.cz nic.cz &gt; doc1.xml
+    $ ./fred_create.py info_domain nic.cz &gt; doc2.xml
+    $ ./fred_sender.py doc1.xml doc2.xml
 </pre><p>
 </p><p>
     2. PIPE - Zřetězením příkazů create a sender.
        Například:
 
 </p><pre class="programlisting">
-    $ ./ccreg_create.py check_domain cosi.cz nic.cz | ./ccreg_create.py info_domain nic.cz | ./ccreg_sender.py
+    $ ./fred_create.py check_domain cosi.cz nic.cz | ./fred_create.py info_domain nic.cz | ./fred_sender.py
 </pre><p>
 
-</p></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2499869"></a>Kapitola 6. 
-    Knihovna ccReg a popis API
-    </h2></div></div></div><div class="toc"><p><b>Obsah</b></p><dl><dt><span class="section"><a href="#id2499887">Online dokumentace:</a></span></dt><dt><span class="section"><a href="#id2499941">Příklady práce s knihovnou</a></span></dt></dl></div><p>
+</p></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2499734"></a>Kapitola 6. 
+    Knihovna fred a popis API
+    </h2></div></div></div><div class="toc"><p><b>Obsah</b></p><dl><dt><span class="section"><a href="#id2499751">Online dokumentace:</a></span></dt><dt><span class="section"><a href="#id2499806">Příklady práce s knihovnou</a></span></dt></dl></div><p>
 
-Knihovna ccReg vám umoňuje implmentovat API rozhraní do vašich aplikací. Knihova i jednotlivé funkce
+Knihovna "fred" vám umoňuje implmentovat API rozhraní do vašich aplikací. Knihova i jednotlivé funkce
 obsahují komentáře, podle kterých se můžete při implementaci řídit. V části __init__.py naleznete
 i ukázky kódu.
-</p><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2499887"></a>Online dokumentace:</h2></div></div></div><p>
+</p><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2499751"></a>Online dokumentace:</h2></div></div></div><p>
 Pokud si chcete projít jednotlivé třídy a funkce knihovny, tak k tomu můžete využít generátor
 dokumentace, který je standardní součástí pythonu: Zadejte na příkazové řádce příkaz:
 
@@ -607,29 +611,29 @@ dokumentace, který je standardní součástí pythonu: Zadejte na příkazové 
 Tím jste spustili webový server, který generuje strany dokumentace přímo ze zdrojových souborů.
 Parametr -p udává na jakém portu je server spuštěn. Číslo portu můžete zadat jakékoliv jiné.
 Nyní si otevřete prohlížeč a zadejte adresu: http://localhost:8080/. Otevře se strana, na které
-v části ../site-packages naleznete odkaz na ccReg (package).
+v části ../site-packages naleznete odkaz na fred (package).
 </p><p>
 Pokud jste skripty neinstalovali, ale jen nakopírovali, nebo pokud se chcete podívat i na skripty
-pracující s knihovnou ccReg, tak celý proces spuštění udělejte stejně, ale s tím rozdílem, že pydoc
+pracující s knihovnou fred, tak celý proces spuštění udělejte stejně, ale s tím rozdílem, že pydoc
 spustíte z adresáře, kde máte tyto skripty uložené. Pak se v helpu zobrazí i ony:
 
 </p><pre class="programlisting">
-    $ cd ccRegClient-1.1
+    $ cd FredClient-1.0.0
     $ pydoc -p 8080
 </pre><p>
 
 Server ukončíte stiskem Ctrl+C.
-</p></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2499941"></a>Příklady práce s knihovnou</h2></div></div></div><p>
+</p></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2499806"></a>Příklady práce s knihovnou</h2></div></div></div><p>
 Import knihovny provedete příkazem:
 
 </p><pre class="programlisting">
-    &gt;&gt;&gt; import ccReg
+    &gt;&gt;&gt; import fred
 </pre><p>
 
 Instanci EPP klienta vytvoříte:
 
 </p><pre class="programlisting">
-    &gt;&gt;&gt; epp = ccReg.Client()
+    &gt;&gt;&gt; epp = fred.Client()
 </pre><p>
 
 Ještě musíte načíst config, aby knihovna našla certifikát:
@@ -749,5 +753,5 @@ V případě, že daný klíč neexistuje, vrací funkce hodnotu None.
 </pre><p>
 
 Pokud se vyskytne nějaká chyba při přenosu nebo jiná, která zablokuje funkčnost, tak se generuje
-výjimka ccRegError.
+výjimka FredError.
 </p></div></div></div></body></html>

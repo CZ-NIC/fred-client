@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
-import ccReg
-from ccReg.translate import encoding, options, option_errors
+import fred
+from fred.translate import encoding, options, option_errors
 from guiqt.main import main
 
 if __name__ == '__main__':
-    msg_invalid = ccReg.check_python_version()
+    msg_invalid = fred.check_python_version()
     if msg_invalid:
         print msg_invalid
     elif options['version']:
-        epp = ccReg.ClientSession()
+        epp = fred.ClientSession()
         print epp.version()
     else:
         if option_errors:

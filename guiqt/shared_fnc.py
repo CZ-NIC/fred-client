@@ -21,7 +21,7 @@ def table_current_changed(wndQTable, r, c):
     return wndQTable.text(r,c).stripWhiteSpace()
 
 def add_dns_sets(dns_sets, parent_frame, module, name):
-    'Add scrolled view window. Module must have class ccregWindow.'
+    'Add scrolled view window. Module must have class FredWindow.'
     scroll = QScrollView(parent_frame, 'scroll_%s'%name)
     scroll.enableClipper(True)
     g = parent_frame.geometry()
@@ -32,7 +32,7 @@ def add_dns_sets(dns_sets, parent_frame, module, name):
     height = 0
     max = 9
     for i in range(max):
-        wnd = module.ccregWindow(frm,'dns%d'%i)
+        wnd = module.FredWindow(frm,'dns%d'%i)
         label = u'%s (%d/%d)'%(wnd.label_dns_name.text(),i+1,max)
         if i == 0:
             label = u'<b>%s</b>'%label

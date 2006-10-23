@@ -1,8 +1,8 @@
 <!DOCTYPE UI><UI version="3.3" stdsetdef="1">
-<class>ccregWindow</class>
+<class>FredWindow</class>
 <widget class="QWidget">
     <property name="name">
-        <cstring>ccregWindow</cstring>
+        <cstring>FredWindow</cstring>
     </property>
     <property name="geometry">
         <rect>
@@ -735,25 +735,25 @@ The EPP "update" command is used to update an instance of an existing object.
     <connection>
         <sender>add_admin</sender>
         <signal>valueChanged(int,int)</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>add_admin_value_changed(int,int)</slot>
     </connection>
     <connection>
         <sender>add_admin</sender>
         <signal>currentChanged(int,int)</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>add_admin_current_changed(int,int)</slot>
     </connection>
     <connection>
         <sender>rem_admin</sender>
         <signal>currentChanged(int,int)</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>rem_admin_current_changed(int,int)</slot>
     </connection>
     <connection>
         <sender>rem_admin</sender>
         <signal>valueChanged(int,int)</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>rem_admin_value_changed(int,int)</slot>
     </connection>
     <connection>

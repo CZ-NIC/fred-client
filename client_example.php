@@ -5,9 +5,9 @@ $exec_path = ''; // Here you can write path to the app
 // $exec_path = '/home/zdenek/enum/epp_client/trunk/'; // TEST
 
 // Here you define where exe saves PHP code with answer data:
-$php_module_name = '/tmp/ccreg_client.php';
+$php_module_name = '/tmp/fred_client.php';
 
-$command_options = ''; // here you can type some options. For more see ./ccreg_client.py --help
+$command_options = ''; // here you can type some options. For more see ./fred_client.py --help
 // $command_options = '-s curlew'; // TEST
 
 define('CRLF', "\r\n");
@@ -16,7 +16,7 @@ define('BR', "<br />\r\n");
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="cs" xml:lang="cs">
 <head>
-    <title>CZ.NIC - Example of using ccReg</title>
+    <title>CZ.NIC - Example of using Fred</title>
     <meta http-equiv="Content-Language" content="cs" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="Keywords" content="Domény, Domains, Registrátoři, Registrators, Registrace domén, CZ.NIC, WHOIS, DNS, ENUM, Doména .eu, zájmové sdružení právnických osob, Top level domain, Domény nejvyšší urovně" />
@@ -27,26 +27,26 @@ body {
 }
 /*******************************
 
-    ccRegClient output HTML
+    FredClient output HTML
 
 *******************************/
-.ccreg_output {
-    /* main block of ccreg_client output */
+.fred_output {
+    /* main block of fred_client output */
     font:size:9pt;
 }
 
-.ccreg_errors {
+.fred_errors {
     /* errors during send/receive process */
     color:#f00;
     font-weight:bold;
 }
 
-.ccreg_messages {
+.fred_messages {
     /* messages during connection process */
     color:#888;
 }
 
-.ccreg_source {
+.fred_source {
     /* display sources in verbose mode 3 */
     color:#00f;
 }
@@ -65,24 +65,24 @@ body {
     DATA/REASON table
 
 ------------------------------*/
-table.ccreg_data  { 
+table.fred_data  { 
     border-collapse:collapse;
     border:solid 2px #8FBCBF;
     margin:6px 0;
 }
-.ccreg_data table { vertical-align:top; }
-.ccreg_data th, 
-.ccreg_data td {
+.fred_data table { vertical-align:top; }
+.fred_data th, 
+.fred_data td {
     border-right:solid 1px #7eafc0;
     border-bottom:solid 1px #7eafc0;
     padding:4px 8px;
 }
-.ccreg_data th {
+.fred_data th {
     text-align:left;
     border-left:solid 1px #7eafc0;
     background-color:#F5F5F5;
 }
-.ccreg_data tr:hover {
+.fred_data tr:hover {
     background-color:#F5F5DC;
 }
 
@@ -221,33 +221,33 @@ while(is_array($_POST['send'])) {
     $handle = strtr(trim($_POST['handle']), "'",'"');
 
     if(!$handle and !in_array($command,$ar_no_handler)) $errors[] = 'Handle missing.';
-    // check if ccreg_client exist
-    $cmdline = 'python '.$exec_path.'ccreg_client.py -V';
+    // check if fred_client exist
+    $cmdline = 'python '.$exec_path.'fred_client.py -V';
     $ar_retval = array();
     exec($cmdline, $ar_retval);
     $retval = join('\n',$ar_retval);
     // See, what looks command line:
     // echo "<div class='output'><p class='command'>$cmdline</p> <p class='retval'>$retval</p></div>".CRLF;
-    if(!preg_match('/ccRegClient \d+/',$retval)) $errors[] = 'ccreg_client.py not instaled properly. See help or set prefix of path.';
+    if(!preg_match('/FredClient \d+/',$retval)) $errors[] = 'fred_client.py not instaled properly. See help or set prefix of path.';
     if($errors) {
         echo '<h2 class="msg-error">Error:<br />'.join('<br />',$errors).'</h2>';
         break;
     }
     if(in_array($command,$ar_no_handler))
-         $ccreg_command = $command;
-    else $ccreg_command = "$command $handle";
+         $fred_command = $command;
+    else $fred_command = "$command $handle";
     if($_POST['output']=='html') {
         //--- HTML ---------------------------------
-        $cmdline = 'python '.$exec_path."ccreg_client.py ".$command_options." -x -v $_POST[verbose] -o html -d '$ccreg_command'";
+        $cmdline = 'python '.$exec_path."fred_client.py ".$command_options." -x -v $_POST[verbose] -o html -d '$fred_command'";
         // See, what looks command line:
         // echo "<div class='output'><p class='command'>$cmdline</p></div>".CRLF;
-        echo '<div id="ccreg_output">'.CRLF;
+        echo '<div id="fred_output">'.CRLF;
         passthru($cmdline);
         echo '</div>'.CRLF;
         //-----------------------------------------
     } else {
         //--- PHP ---------------------------------
-        $cmdline = 'python '.$exec_path."ccreg_client.py ".$command_options." -x -v $_POST[verbose] -o php -d '$ccreg_command' > $php_module_name";
+        $cmdline = 'python '.$exec_path."fred_client.py ".$command_options." -x -v $_POST[verbose] -o php -d '$fred_command' > $php_module_name";
         // See, what looks command line:
         // echo "<div class='output'><p class='command'>$cmdline</p></div>".CRLF;
 
@@ -291,7 +291,7 @@ while(is_array($_POST['send'])) {
         //--- FOR EXAMPLE ONLY: --------------------
         echo '<hr />'.CRLF;
         echo "<h3>DUMP OF: $php_module_name</h3>".CRLF;
-        echo '<pre class="ccreg_source">'.CRLF;
+        echo '<pre class="fred_source">'.CRLF;
         $fp = fopen($php_module_name,'r');
         if($fp) {
             while(!feof($fp)) {

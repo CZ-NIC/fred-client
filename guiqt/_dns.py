@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'dns.ui'
 #
-# Created: Út říj 3 10:04:09 2006
+# Created: Po říj 23 10:24:34 2006
 #      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,12 +12,12 @@ from qt import *
 from qttable import QTable
 
 
-class ccregWindow(QWidget):
+class FredWindow(QWidget):
     def __init__(self,parent = None,name = None,fl = 0):
         QWidget.__init__(self,parent,name,fl)
 
         if not name:
-            self.setName("ccregWindow")
+            self.setName("FredWindow")
 
 
 
@@ -58,10 +58,10 @@ class ccregWindow(QWidget):
 
 
     def addr_current_changed(self,a0,a1):
-        print "ccregWindow.addr_current_changed(int,int): Not implemented yet"
+        print "FredWindow.addr_current_changed(int,int): Not implemented yet"
 
     def addr_value_changed(self,a0,a1):
-        print "ccregWindow.addr_value_changed(int,int): Not implemented yet"
+        print "FredWindow.addr_value_changed(int,int): Not implemented yet"
 
     def __tr(self,s,c = None):
-        return qApp.translate("ccregWindow",s,c)
+        return qApp.translate("FredWindow",s,c)

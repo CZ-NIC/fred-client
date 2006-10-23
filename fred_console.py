@@ -11,9 +11,9 @@ try:
 except ImportError:
     readline = None # for Unix like only
 
-import ccReg
-from ccReg.session_base import colored_output, VERBOSE
-from ccReg.translate import options, option_errors
+import fred
+from fred.session_base import colored_output, VERBOSE
+from fred.translate import options, option_errors
 
 help_option = _T("""Connection options:
   -?, --help       show this help and exit
@@ -33,7 +33,7 @@ help_option = _T("""Connection options:
                    load config from filename
 
   -h HOSTNAME, --host=HOSTNAME
-                   ccReg server to connect 
+                   fred server to connect 
   -p PORT, --port=PORT
                    server port
   -u USERNAME, --user=USERNAME
@@ -50,7 +50,7 @@ help_option = _T("""Connection options:
   -n  --nologin    disable automatic login process after start up
 
   -o OUTPUT_TYPE, --output=OUTPUT_TYPE
-                   display output as: text (default), html""")
+                   display output as: text (default), html, php""")
 
 def display_profiler(label, indent, debug_time):
     'For test only.'
@@ -68,9 +68,9 @@ def display_profiler(label, indent, debug_time):
     
 def main(options):
     'Main console loop.'
-    if ccReg.translate.warning:
-        print colored_output.render("${BOLD}${RED}%s${NORMAL}"%ccReg.translate.warning)
-    epp = ccReg.ClientSession()
+    if fred.translate.warning:
+        print colored_output.render("${BOLD}${RED}%s${NORMAL}"%fred.translate.warning)
+    epp = fred.ClientSession()
     if not epp.load_config():
         epp.display() # display errors or notes
         return
@@ -157,17 +157,17 @@ def main(options):
 
 
 if __name__ == '__main__':
-    msg_invalid = ccReg.check_python_version()
+    msg_invalid = fred.check_python_version()
     if msg_invalid:
         print msg_invalid
     else:
         if options['help']:
-            print '%s: %s [OPTIONS...]\n\n%s\n\n%s\n\n  %s\n'%(_T('Usage'), 'ccreg_console.py',
+            print '%s: %s [OPTIONS...]\n\n%s\n\n%s\n\n  %s\n'%(_T('Usage'), 'fred_console.py',
             _T('Console for communication with EPP server.'),
             help_option,
             _T('For more information, see README.'))
         elif options['version']:
-            epp = ccReg.ClientSession()
+            epp = fred.ClientSession()
             print epp.version()
         else:
             if option_errors:

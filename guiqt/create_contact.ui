@@ -1,8 +1,8 @@
 <!DOCTYPE UI><UI version="3.3" stdsetdef="1">
-<class>ccregWindow</class>
+<class>FredWindow</class>
 <widget class="QWidget">
     <property name="name">
-        <cstring>ccregWindow</cstring>
+        <cstring>FredWindow</cstring>
     </property>
     <property name="geometry">
         <rect>

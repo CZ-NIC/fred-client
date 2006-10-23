@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'sources.ui'
 #
-# Created: Út říj 3 13:09:05 2006
+# Created: Po říj 23 10:24:19 2006
 #      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -11,12 +11,12 @@
 from qt import *
 
 
-class ccregWindow(QDialog):
+class FredWindow(QDialog):
     def __init__(self,parent = None,name = None,modal = 0,fl = 0):
         QDialog.__init__(self,parent,name,modal,fl)
 
         if not name:
-            self.setName("ccregWindow")
+            self.setName("FredWindow")
 
 
 
@@ -76,9 +76,9 @@ class ccregWindow(QDialog):
         self.tabWidget.changeTab(self.tab,self.__tr("Command XML"))
         self.textLabel3.setText(self.__tr("This document was received from EPP server. If is empty, it has not been received already."))
         self.tabWidget.changeTab(self.tab_2,self.__tr("Response XML"))
-        self.textLabel4.setText(self.__tr("This example was build from input. It can be used in ccreg_client console."))
+        self.textLabel4.setText(self.__tr("This example was build from input. It can be used in fred_client console."))
         self.tabWidget.changeTab(self.TabPage,self.__tr("Command line"))
 
 
     def __tr(self,s,c = None):
-        return qApp.translate("ccregWindow",s,c)
+        return qApp.translate("FredWindow",s,c)

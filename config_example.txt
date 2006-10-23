@@ -1,7 +1,7 @@
 # Example of configuration file.
 # Modify all values dir= to real path of your fiels 
-# and save into /etc/.ccreg_client.conf.
-# Default config file is also possible create from ccreg_client
+# and save into /etc/fred_client.conf.
+# Default config file is also possible create from fred_client
 # by command 'config create'.
 #
 
@@ -20,7 +20,7 @@ password = MYPASSWORD
 poll_ack = off
 confirm_send_commands = on
 validate = on
-schema = /home/username/epp_client/ccReg/schemas/all-1.0.xsd
+schema = /home/username/epp_client/fred/schemas/all-1.0.xsd
 colors = yes
 verbose = 2
 # If lang is not set, ti used value from os.environ.LANG

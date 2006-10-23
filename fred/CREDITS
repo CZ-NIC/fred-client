@@ -1,4 +1,4 @@
-ccRegClient is tool for communicate with EPP server.
+FredClient is tool for communicate with EPP server.
 It is aimed to registrants for manage DNS central registry.
 Client is written in Python.
 

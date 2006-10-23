@@ -1,8 +1,8 @@
 <!DOCTYPE UI><UI version="3.3" stdsetdef="1">
-<class>ccregWindow</class>
+<class>FredWindow</class>
 <widget class="QWidget">
     <property name="name">
-	<cstring>ccregWindow</cstring>
+	<cstring>FredWindow</cstring>
     </property>
     <property name="geometry">
         <rect>
@@ -101,13 +101,13 @@
     <connection>
         <sender>addr</sender>
         <signal>currentChanged(int,int)</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>addr_current_changed(int,int)</slot>
     </connection>
     <connection>
         <sender>addr</sender>
         <signal>valueChanged(int,int)</signal>
-	<receiver>ccregWindow</receiver>
+	<receiver>FredWindow</receiver>
         <slot>addr_value_changed(int,int)</slot>
     </connection>
 </connections>

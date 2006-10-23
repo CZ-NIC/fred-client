@@ -1,8 +1,8 @@
 <!DOCTYPE UI><UI version="3.3" stdsetdef="1">
-<class>ccregWindow</class>
+<class>FredWindow</class>
 <widget class="QDialog">
     <property name="name">
-        <cstring>ccregWindow</cstring>
+        <cstring>FredWindow</cstring>
     </property>
     <property name="geometry">
         <rect>
@@ -175,7 +175,7 @@
                     </rect>
                 </property>
                 <property name="text">
-                    <string>This example was build from input. It can be used in ccreg_client console.</string>
+                    <string>This example was build from input. It can be used in fred_client console.</string>
                 </property>
                 <property name="alignment">
                     <set>AlignTop</set>
@@ -188,7 +188,7 @@
     <connection>
         <sender>btn_close</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>close()</slot>
     </connection>
 </connections>

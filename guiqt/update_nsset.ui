@@ -1,8 +1,8 @@
 <!DOCTYPE UI><UI version="3.3" stdsetdef="1">
-<class>ccregWindow</class>
+<class>FredWindow</class>
 <widget class="QWidget">
     <property name="name">
-        <cstring>ccregWindow</cstring>
+        <cstring>FredWindow</cstring>
     </property>
     <property name="geometry">
         <rect>
@@ -690,37 +690,37 @@ The EPP "update" command is used to update an instance of an existing object.
     <connection>
         <sender>add_tech</sender>
         <signal>currentChanged(int,int)</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>add_tech_current_changed(int,int)</slot>
     </connection>
     <connection>
         <sender>add_tech</sender>
         <signal>valueChanged(int,int)</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>add_tech_value_changed(int,int)</slot>
     </connection>
     <connection>
         <sender>rem_name</sender>
         <signal>currentChanged(int,int)</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>rem_dns_name_current_changed(int,int)</slot>
     </connection>
     <connection>
         <sender>rem_name</sender>
         <signal>valueChanged(int,int)</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>rem_dns_name_value_changed(int,int)</slot>
     </connection>
     <connection>
         <sender>rem_tech</sender>
         <signal>currentChanged(int,int)</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>rem_tech_current_changed(int,int)</slot>
     </connection>
     <connection>
         <sender>rem_tech</sender>
         <signal>valueChanged(int,int)</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>rem_tech_value_changed(int,int)</slot>
     </connection>
 </connections>

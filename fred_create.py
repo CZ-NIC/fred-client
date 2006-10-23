@@ -1,20 +1,20 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
-# Example: echo -en "check_domain nic.cz\ninfo_domain nic.cz" | ./ccreg_create.py
+# Example: echo -en "check_domain nic.cz\ninfo_domain nic.cz" | ./fred_create.py
 """Create EPP XML document from command line parameters.
 """
 import sys, re
 from cgi import escape as escape_html
-import ccReg
-from ccReg.translate import options, option_args, config_error, encoding
+import fred
+from fred.translate import options, option_args, config_error, encoding
 
 epp = None
-php_string = ccReg.session_transfer.php_string
+php_string = fred.session_transfer.php_string
 
 def main(options):
     global epp
     if epp is None:
-        epp = ccReg.ClientSession()
+        epp = fred.ClientSession()
         epp.load_config()
         epp.set_auto_connect(0) # set OFF auto connection
     command_name, epp_doc, stop = epp.create_eppdoc(options['command'])
@@ -25,7 +25,7 @@ def main(options):
         if type(command_name) == unicode: command_name = command_name.encode(encoding)
         if type(errors) == unicode: errors = errors.encode(encoding)
         if options['output'] == 'html':
-            str_error = '<div class="ccreg_errors">\n<strong>%s errors:</strong>\n<pre>\n%s</pre><div>'%(command_name,escape_html(errors))
+            str_error = '<div class="fred_errors">\n<strong>%s errors:</strong>\n<pre>\n%s</pre><div>'%(command_name,escape_html(errors))
         elif options['output'] == 'php':
             str_error = '<?php\n$error_create_name = %s;\n$error_create_value = %s;\n?>'%(php_string(command_name),php_string(errors))
         else:
@@ -40,7 +40,7 @@ def display(epp_doc, str_error):
         print epp_doc
   
 if __name__ == '__main__':
-    msg_invalid = ccReg.check_python_version()
+    msg_invalid = fred.check_python_version()
     if msg_invalid:
         print msg_invalid
     else:
@@ -75,14 +75,14 @@ if __name__ == '__main__':
                 epp_doc, str_error = main(options)
                 display(epp_doc, str_error)
         else:
-            print '%s: %s command params\n\n%s\n\n%s%s\n%s\n\n  %s\n'%(_T('Usage'), 'ccreg_create.py',
+            print '%s: %s command params\n\n%s\n\n%s%s\n%s\n\n  %s\n'%(_T('Usage'), 'fred_create.py',
                 _T('Create EPP XML document from command line parameters.'),
                 _T('EXAMPLES'),
                 """
-./ccreg_create.py info_domain nic.cz
-./ccreg_create.py info_contact reg-id
-echo -en "check_domain nic.cz\\ninfo_domain nic.cz" | ./ccreg_create.py
-cat file-with-commands.txt | ./ccreg_create.py
+./fred_create.py info_domain nic.cz
+./fred_create.py info_contact reg-id
+echo -en "check_domain nic.cz\\ninfo_domain nic.cz" | ./fred_create.py
+cat file-with-commands.txt | ./fred_create.py
 """,
                 _T('Eventual errors are return in XML format: <errors>... msg ...</errors>.'),
                 _T('For more information, see README.')

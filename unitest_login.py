@@ -9,8 +9,8 @@
 1.6 Zmena hesla tam a zpatky s kontrolnim zalogovanim
 """
 import unittest
-import ccReg
-import unitest_ccreg_share
+import fred
+import unitest_share
 
 class Test(unittest.TestCase):
 
@@ -27,8 +27,8 @@ class Test(unittest.TestCase):
                 else:
                     epp_cli.login(dct['username'], dct['password'])
                 code = epp_cli.is_val()
-            except ccReg.ccRegError, msg:
-                error = 'ccRegError: %s'%msg
+            except fred.FredError, msg:
+                error = 'FredError: %s'%msg
         return code, error
 
     def setUp(self):
@@ -36,29 +36,29 @@ class Test(unittest.TestCase):
         if epp_cli:
             if epp_cli._epp.is_online('') and epp_cli._epp.is_connected(): # only if we are online
                 epp_cli.logout()
-                self.assertEqual(epp_cli.is_val(), 1500, unitest_ccreg_share.get_reason(epp_cli))
+                self.assertEqual(epp_cli.is_val(), 1500, unitest_share.get_reason(epp_cli))
             else:
                 epp_cli.close()
 
     def tearDown(self):
-        unitest_ccreg_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription())
-        unitest_ccreg_share.reset_client(epp_cli)
+        unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription())
+        unitest_share.reset_client(epp_cli)
 
     def test_000(self):
         '1.0 Inicializace spojeni a definovani testovacich handlu'
         global epp_cli, log_fp
-        epp_cli = ccReg.Client()
+        epp_cli = fred.Client()
         epp_cli._epp.load_config()
         # logovací soubor
-        if ccReg.translate.options['log']: # zapnuti/vypuni ukladani prikazu do logu
-            log_fp = open(ccReg.translate.options['log'],'w')
-            unitest_ccreg_share.write_log_header(log_fp)
+        if fred.translate.options['log']: # zapnuti/vypuni ukladani prikazu do logu
+            log_fp = open(fred.translate.options['log'],'w')
+            unitest_share.write_log_header(log_fp)
 
     def test_010(self):
         '1.1 Zalogovani s neexistujicim username'
         code, error = self.__login__({'username':'neexistuje', 'password':'123456789'})
         self.assert_(len(error)==0, error)
-        self.assertEqual(code, 2501, unitest_ccreg_share.get_reason(epp_cli))
+        self.assertEqual(code, 2501, unitest_share.get_reason(epp_cli))
 
         
     def test_020(self):
@@ -66,12 +66,12 @@ class Test(unittest.TestCase):
         dct = epp_cli._epp.get_default_params_from_config('login')
         code, error = self.__login__(dct)
         self.assert_(len(error)==0, error)
-        self.assertEqual(code, 1000, unitest_ccreg_share.get_reason(epp_cli))
+        self.assertEqual(code, 1000, unitest_share.get_reason(epp_cli))
 
     def test_030(self):
         '1.3 Zalogovani se spatnym heslem'
         epp_cli.login('REG-LRR','chybne')
-        self.assertEqual(epp_cli.is_val(), 2501, unitest_ccreg_share.get_reason(epp_cli))
+        self.assertEqual(epp_cli.is_val(), 2501, unitest_share.get_reason(epp_cli))
 
     def test_040(self):
         '1.4 Zalogovani se spatnym otiskem certifikatu'
@@ -105,35 +105,35 @@ class Test(unittest.TestCase):
         # změna hesla ........................................
         dct['new_password'] = 'nove-heslo'
         code, error = self.__login__(dct)
-        unitest_ccreg_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(1,3))
+        unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(1,3))
         self.assert_(len(error)==0, error)
-        self.assertEqual(code, 1000, unitest_ccreg_share.get_reason(epp_cli))
-        unitest_ccreg_share.reset_client(epp_cli)
+        self.assertEqual(code, 1000, unitest_share.get_reason(epp_cli))
+        unitest_share.reset_client(epp_cli)
         epp_cli.logout()
-        self.assertEqual(epp_cli.is_val(), 1500, unitest_ccreg_share.get_reason(epp_cli))
+        self.assertEqual(epp_cli.is_val(), 1500, unitest_share.get_reason(epp_cli))
         # zalogování pod novým heslem ........................
         dct['password'] = dct['new_password']
         dct.pop('new_password')
         code, error = self.__login__(dct)
-        unitest_ccreg_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(2,3))
+        unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(2,3))
         self.assert_(len(error)==0, error)
-        self.assertEqual(code, 1000, unitest_ccreg_share.get_reason(epp_cli))
-        unitest_ccreg_share.reset_client(epp_cli)
+        self.assertEqual(code, 1000, unitest_share.get_reason(epp_cli))
+        unitest_share.reset_client(epp_cli)
         epp_cli.logout()
-        self.assertEqual(epp_cli.is_val(), 1500, unitest_ccreg_share.get_reason(epp_cli))
+        self.assertEqual(epp_cli.is_val(), 1500, unitest_share.get_reason(epp_cli))
         # vrácení původního hesla ............................
         dct['new_password'] = puvodni_heslo
         code, error = self.__login__(dct)
         self.assert_(len(error)==0, error)
-        self.assertEqual(code, 1000, unitest_ccreg_share.get_reason(epp_cli))
+        self.assertEqual(code, 1000, unitest_share.get_reason(epp_cli))
 
 epp_cli, log_fp, log_step = (None,)*3
 
 if __name__ == '__main__':
-    if ccReg.translate.option_errors:
-        print ccReg.translate.option_errors
-    elif ccReg.translate.options['help']:
-        print unitest_ccreg_share.__doc__
+    if fred.translate.option_errors:
+        print fred.translate.option_errors
+    elif fred.translate.options['help']:
+        print unitest_share.__doc__
     else:
         suite = unittest.TestSuite()
         suite.addTest(unittest.makeSuite(Test))

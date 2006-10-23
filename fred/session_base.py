@@ -180,7 +180,7 @@ class ManagerBase:
         return '%s\n%s\n'%(self.version(),_T('Type "help", "license" or "credits" for more information.'))
 
     def version(self):
-        return 'ccRegClient 1.2' # version of the client
+        return 'FredClient 1.0.0' # version of the client
 
     def __next_clTRID__(self):
         """Generate next clTRID value.

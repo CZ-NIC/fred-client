@@ -6,10 +6,10 @@ import _update_nsset
 import dns
 
 
-class ccregWindow(_update_nsset.ccregWindow):
+class FredWindow(_update_nsset.FredWindow):
 
     def __init__(self,parent = None,name = None,fl = 0):
-        _update_nsset.ccregWindow.__init__(self,parent,name,fl)
+        _update_nsset.FredWindow.__init__(self,parent,name,fl)
         self.add_tech.horizontalHeader().resizeSection(0,320)
         self._add_tech_item = None
         self.rem_name.horizontalHeader().resizeSection(0,320)
@@ -37,7 +37,7 @@ class ccregWindow(_update_nsset.ccregWindow):
 
 if __name__ == '__main__':
     app = QApplication([])
-    form = ccregWindow()
+    form = FredWindow()
     form.show()
     app.setMainWidget(form)
     app.exec_loop()

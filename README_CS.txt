@@ -1,5 +1,5 @@
 
-Manual pro ccRegClient konzoli a knihovnu ccReg
+Manual pro FredClient konzoli a knihovnu fred
 
 Verze 1.2
 
@@ -11,7 +11,7 @@ Verze 1.2
 
    Obsah
 
-   Co je ccRegClient:
+   Co je FredClient:
    1. Licence
    2. Pozadavky na system a instalace
    3. Popis jednotlivych programu, parametry a config 
@@ -19,7 +19,7 @@ Verze 1.2
         Parametry (OPTIONS) 
         Config 
 
-   4. Program ccreg_console.py 
+   4. Program fred_console.py 
 
         Zobrazeni helpu
         EPP prikazy
@@ -32,22 +32,22 @@ Verze 1.2
 
         Prikazy relace (session)
 
-   5. Skripty ccreg_create.py a ccreg_sender.py 
-   6. Knihovna ccReg a popis API 
+   5. Skripty fred_create.py a fred_sender.py 
+   6. Knihovna fred a popis API 
 
         Online dokumentace:
         Priklady prace s knihovnou
 
-Co je ccRegClient:
+Co je FredClient:
 
-   ccRegClient je sada scriptu v jazyce Python postavenych na ccReg knihovne a
+   FredClient je sada scriptu v jazyce Python postavenych na fred knihovne a
    urcenych ke komunikaci s EPP serverem.
 
    Sada obsahuje EPP konzoli a skripty urcene pro pouziti v shellu.
 
 Kapitola 1. Licence
 
-   Licence je v souboru ccReg/LICENSE.
+   Licence je v souboru fred/LICENSE.
 
 Kapitola 2. Pozadavky na system a instalace
 
@@ -61,19 +61,19 @@ Kapitola 3. Popis jednotlivych programu, parametry a config
    Config 
 
    Dostupne skripty jsou nasledujici:
-   ccreg_client.py - spousti EPP konzoli nebo sekvenci crate+send (pro shell)
-   ccreg_console.py - EPP konzole, komunikuje s EPP serverem
-   ccreg_create.py - Vytbori zdrojovy EPP XML prikaz
-   ccreg_sender.py - Odesle soubor na EPP server
+   fred_client.py - spousti EPP konzoli nebo sekvenci crate+send (pro shell)
+   fred_console.py - EPP konzole, komunikuje s EPP serverem
+   fred_create.py - Vytbori zdrojovy EPP XML prikaz
+   fred_sender.py - Odesle soubor na EPP server
 
 Parametry (OPTIONS)
 
    Skripty se daji spoustet s parametry. Jake parametry lze pouzit zjistite
    zadanim parametru --help nebo -?:
-    $ ccreg_client.py --help
-    $ ccreg_client.py -?
+    $ fred_client.py --help
+    $ fred_client.py -?
 
-Pouziti: python ccreg_console.py [OPTIONS]
+Pouziti: python fred_console.py [OPTIONS]
 Konzole pro komunikaci s EPP serverem.
 
 OPTIONS s hodnotami:
@@ -101,10 +101,12 @@ OPTIONS:
 
 Config
 
-   Config je spolecny pro vsechny skripty a je ulozen v souboru .ccReg.conf.
-   Nejdrive se hleda v adresari spolecnem pro vsechny uzivatele. Na POSIX
-   systemech je to /etc, v MS Windows v adresari nastavenem v promenne
-   $ALLUSERSPROFILE.
+   Konfiguracni soubor se implicitne hleda nejdrive v home uzivatele
+   (~/.fred_client.conf), ktery skript spustil. Pokud tam neni nalezen, hleda
+   se v adresari etc (/etc/fred_client.conf). Na POSIX systemech je to /etc, v
+   MS Windows to je v adresari nastavenem v promenne $ALLUSERSPROFILE.
+   Prepinacem --config=filepath je mozne konfiguracni soubor nacist z
+   libovolneho adresare.
 
    Pak se hleda v adresari, kde je umistena knihovna cReg. Pokud ani tam neni
    nalezen, hleda se v domovskem adresari uzivatele.
@@ -113,9 +115,9 @@ Config
    prepinace -c CONFIGNAME, --config=CONFIGNAME.
 
    Konfig soubor lze vygenerovat v konzoli. Spustte si konzoli prikazem
-   ccreg_console.py (nebo ccreg_client.py) a zadejte prikaz "config create".
+   fred_console.py (nebo fred_client.py) a zadejte prikaz "config create".
    Dalsi podrobnosti naleznete v casti popisu prace s konzoli (4. Program
-   ccreg_console).
+   fred_console).
 
    V konfigu se nachazi sekce connect, kde jsou ulozeny cesty k certifikatum a
    informace o serveru. Take tam muzou byt prihlasovaci udaje pro login. Prikaz
@@ -143,7 +145,7 @@ Config
    Sekci connect muze byt vice. Ktera z nich se pri startu pouzije se nastavi
    pomoci parametru --session. Napriklad si vytvorite sekci
    [connect_myeppserver] tu pak aktivujete:
-    $ ccreg_client.py --session=myeppserver     (nebo -s myeppserver)
+    $ fred_client.py --session=myeppserver     (nebo -s myeppserver)
 
     [connect_myeppserver]
     dir=/test/certificates
@@ -192,7 +194,7 @@ Config
        Pri nastaveni hodnoty auto_login na on se po skusteni konzole
        automaticky provede i priakz login.
 
-Kapitola 4. Program ccreg_console.py
+Kapitola 4. Program fred_console.py
 
    Obsah
 
@@ -207,9 +209,9 @@ Kapitola 4. Program ccreg_console.py
 
    Prikazy relace (session)
 
-   ccreg_console.py je konzole, ktera komunikuje s EPP serverem. Konzoli
+   fred_console.py je konzole, ktera komunikuje s EPP serverem. Konzoli
    spustite prikazem:
-    $ ccreg_console.py
+    $ fred_console.py
 
    Pokud mate v configu spravne nadefinovanu cestu k certifikatum a ulozene
    login a heslo, tak muzete jednoduse zadat login a tim se spojite s EPP
@@ -218,7 +220,7 @@ Kapitola 4. Program ccreg_console.py
 Zobrazeni helpu
 
    Jake prikazy mate k dispozici zjistite zadanim prikazu "help" (nebo h, ?).
-    ccReg client verze 1.1 Zadejte "help", "license" nebo "credits" pro zobraze
+    FredClient verze 1.0.0 Zadejte "help", "license" nebo "credits" pro zobraze
 ni vice informaci.
     > help
 
@@ -520,14 +522,14 @@ Prikazy relace (session)
    Konzole si hodnoty internich nastaveni nacita z konfigu. Pokud jeste konfig
    nebyl vytvoren, tak se nastavi defaultni hodnoty. Aktualni hodnoty konfigu
    lze zobrazit prikazem "config". Chcete-li konfig vytvorit, zadejte "config
-   create". Tim se vytvori konfiguracni soubor ".ccReg.conf" ve vasem domovskem
-   adresari. V konfigu si pak muzete nastavit cestu k vasemu certifikatu a
-   dalsi hodnoty. Konzole se pokousi neprve nacist konfig z adresare /etc (ve
-   Windows z adresare uvedenem v promenne prostredi $ALLUSERSPROFILE, ta byva
-   obvykle nastavena na "C:\Documents and Settings\All Users") a pote nacita
-   dalsi konfig z adresare uzivatele. Na posix to je /home/[user], ve Windows
-   je to "C:\Documents and Settings\[user]". Tak lze ulozit hodnoty spolecne
-   pro vsechny uzivatele.
+   create". Tim se vytvori konfiguracni soubor ".fred_client.conf" ve vasem
+   domovskem adresari. V konfigu si pak muzete nastavit cestu k vasemu
+   certifikatu a dalsi hodnoty. Konzole se pokousi neprve nacist konfig z
+   adresare /etc (ve Windows z adresare uvedenem v promenne prostredi
+   $ALLUSERSPROFILE, ta byva obvykle nastavena na "C:\Documents and
+   Settings\All Users") a pote nacita dalsi konfig z adresare uzivatele. Na
+   posix to je /home/[user], ve Windows je to "C:\Documents and
+   Settings\[user]". Tak lze ulozit hodnoty spolecne pro vsechny uzivatele.
 > send
 
    Prikaz "send" slouzi k posilani libovolneho souboru na EPP server. Tento
@@ -553,26 +555,26 @@ Prikazy relace (session)
    Nastaveni reprezentace """zadne hodnoty""". Viz Zadna hodnota / Prazdna hodnota
    a Format hodnoty NULL.
 
-Kapitola 5. Skripty ccreg_create.py a ccreg_sender.py
+Kapitola 5. Skripty fred_create.py a fred_sender.py
 
-   Skripty ccreg_create.py a ccreg_sender.py jsou urceny pro pouziti v shell
-   batchi. ccreg_create.py prijima parametry se standardniho vstupu a
-   vygeneruje XML EPP dokument na standardni vystup. Napriklad:
-    $ python ccreg_create.py info_domain nic.cz
-    $ ./ccreg_create.py info_domain nic.cz
+   Skripty fred_create.py a fred_sender.py jsou urceny pro pouziti v shell
+   batchi. fred_create.py prijima parametry se standardniho vstupu a vygeneruje
+   XML EPP dokument na standardni vystup. Napriklad:
+    $ python fred_create.py info_domain nic.cz
+    $ ./fred_create.py info_domain nic.cz
 
    <?xml version='1.0' encoding....
 
    Pokud nastane nejaka chyba, tak vraci XML s chybovym hlasenim:
-    $ python ccreg_create.py inxo_domain nic.cz
+    $ python fred_create.py inxo_domain nic.cz
 
    <?xml encoding='utf-8'?><errors>inxo_domain nic.cz: Neznamy prikaz!</errors>
 
    Prikazy se daji zretezit:
-    $ ./ccreg_create.py check_domain test.cz nic.cz | ./ccreg_create.py info_do
-main nic.cz
+    $ ./fred_create.py check_domain test.cz nic.cz | ./fred_create.py info_doma
+in nic.cz
 
-   ccreg_sender.py odesila dokumenty na server. Skript se automaticky zaloguje,
+   fred_sender.py odesila dokumenty na server. Skript se automaticky zaloguje,
    pak preda dokument, zobrazi odpoved a odloguje se a ukonci. Pro spravne
    zalogovajni je nutne mit spravne nastaven config.
 
@@ -580,22 +582,22 @@ main nic.cz
 
    1. dokumenty se ulozi do souboru a skriptu se predaji jmena souboru. Skript
    je pak odesila v uvedenem poradi. Napriklad:
-    $ ./ccreg_create.py check_domain cosi.cz nic.cz > doc1.xml
-    $ ./ccreg_create.py info_domain nic.cz > doc2.xml
-    $ ./ccreg_sender.py doc1.xml doc2.xml
+    $ ./fred_create.py check_domain cosi.cz nic.cz > doc1.xml
+    $ ./fred_create.py info_domain nic.cz > doc2.xml
+    $ ./fred_sender.py doc1.xml doc2.xml
 
    2. PIPE - Zretezenim prikazu create a sender. Napriklad:
-    $ ./ccreg_create.py check_domain cosi.cz nic.cz | ./ccreg_create.py info_do
-main nic.cz | ./ccreg_sender.py
+    $ ./fred_create.py check_domain cosi.cz nic.cz | ./fred_create.py info_doma
+in nic.cz | ./fred_sender.py
 
-Kapitola 6. Knihovna ccReg a popis API
+Kapitola 6. Knihovna fred a popis API
 
    Obsah
 
    Online dokumentace:
    Priklady prace s knihovnou
 
-   Knihovna ccReg vam umonuje implmentovat API rozhrani do vasich aplikaci.
+   Knihovna "fred" vam umonuje implmentovat API rozhrani do vasich aplikaci.
    Knihova i jednotlive funkce obsahuji komentare, podle kterych se muzete pri
    implementaci ridit. V casti __init__.py naleznete i ukazky kodu.
 
@@ -610,13 +612,13 @@ Online dokumentace:
    zdrojovych souboru. Parametr -p udava na jakem portu je server spusten.
    Cislo portu muzete zadat jakekoliv jine. Nyni si otevrete prohlizec a
    zadejte adresu: http://localhost:8080/. Otevre se strana, na ktere v casti
-   ../site-packages naleznete odkaz na ccReg (package).
+   ../site-packages naleznete odkaz na fred (package).
 
    Pokud jste skripty neinstalovali, ale jen nakopirovali, nebo pokud se chcete
-   podivat i na skripty pracujici s knihovnou ccReg, tak cely proces spusteni
+   podivat i na skripty pracujici s knihovnou fred, tak cely proces spusteni
    udelejte stejne, ale s tim rozdilem, ze pydoc spustite z adresare, kde mate
    tyto skripty ulozene. Pak se v helpu zobrazi i ony:
-    $ cd ccRegClient-1.1
+    $ cd FredClient-1.0.0
     $ pydoc -p 8080
 
    Server ukoncite stiskem Ctrl+C.
@@ -624,10 +626,10 @@ Online dokumentace:
 Priklady prace s knihovnou
 
    Import knihovny provedete prikazem:
-    >>> import ccReg
+    >>> import fred
 
    Instanci EPP klienta vytvorite:
-    >>> epp = ccReg.Client()
+    >>> epp = fred.Client()
 
    Jeste musite nacist config, aby knihovna nasla certifikat:
     >>> epp.load_config()
@@ -720,5 +722,5 @@ Priklady prace s knihovnou
     None
 
    Pokud se vyskytne nejaka chyba pri prenosu nebo jina, ktera zablokuje
-   funkcnost, tak se generuje vyjimka ccRegError.
+   funkcnost, tak se generuje vyjimka FredError.
 

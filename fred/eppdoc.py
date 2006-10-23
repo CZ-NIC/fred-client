@@ -610,7 +610,7 @@ def test_display():
         (u'xsi:schemaLocation', u'urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd')], 
     'response': {'trID': 
     {'clTRID': {'data': u'jzqq002#06-07-07at14:08:37'}, 
-     'svTRID': {'data': u'ccReg-0000010021'}}, 
+     'svTRID': {'data': u'fred-0000010021'}}, 
     'result': {'msg': {'data': u'P\u0159\xedkaz \xfasp\u011b\u0161n\u011b proveden', 
         'attr': [(u'lang', u'cs')]}, 
         'attr': [(u'code', u'1000')]

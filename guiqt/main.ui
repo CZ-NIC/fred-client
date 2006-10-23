@@ -1,8 +1,8 @@
 <!DOCTYPE UI><UI version="3.3" stdsetdef="1">
-<class>ccregWindow</class>
+<class>FredWindow</class>
 <widget class="QDialog">
     <property name="name">
-        <cstring>ccregWindow</cstring>
+        <cstring>FredWindow</cstring>
     </property>
     <property name="geometry">
         <rect>
@@ -13,7 +13,7 @@
         </rect>
     </property>
     <property name="caption">
-        <string>ccRegClient</string>
+        <string>FredClient</string>
     </property>
     <property name="sizeGripEnabled">
         <bool>true</bool>
@@ -113,8 +113,8 @@
                     </rect>
                 </property>
                 <property name="text">
-                    <string>Welcome on the &lt;b&gt;ccRegClient&lt;/b&gt; GUI interface.&lt;br&gt;
-Version 1.0; (Needs &lt;b&gt;ccReg module&lt;/b&gt; version 1.2)&lt;br&gt;
+                    <string>Welcome on the &lt;b&gt;FredClient&lt;/b&gt; GUI interface.&lt;br&gt;
+Version 1.0.0; (Needs &lt;b&gt;Fred module&lt;/b&gt; version 1.0.0)&lt;br&gt;
 &lt;br&gt;
 Parameters in &lt;b&gt;bold&lt;/b&gt; style are &lt;b&gt;required&lt;/b&gt;. Others are optionals.</string>
                 </property>
@@ -7099,151 +7099,151 @@ The EPP "list" command is used to list all ID of an existing object owning by re
     <connection>
         <sender>send_delete_contact</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>delete_contact()</slot>
     </connection>
     <connection>
         <sender>send_delete_domain</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>delete_domain()</slot>
     </connection>
     <connection>
         <sender>send_delete_nsset</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>delete_nsset()</slot>
     </connection>
     <connection>
         <sender>send_hello</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>hello()</slot>
     </connection>
     <connection>
         <sender>send_check_contact</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>check_contact()</slot>
     </connection>
     <connection>
         <sender>send_check_domain</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>check_domain()</slot>
     </connection>
     <connection>
         <sender>send_check_nsset</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>check_nsset()</slot>
     </connection>
     <connection>
         <sender>send_info_contact</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>info_contact()</slot>
     </connection>
     <connection>
         <sender>send_info_domain</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>info_domain()</slot>
     </connection>
     <connection>
         <sender>send_info_nsset</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>info_nsset()</slot>
     </connection>
     <connection>
         <sender>send_list_contact</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>list_contact()</slot>
     </connection>
     <connection>
         <sender>send_list_domain</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>list_domain()</slot>
     </connection>
     <connection>
         <sender>send_list_nsset</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>list_nsset()</slot>
     </connection>
     <connection>
         <sender>send_login</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>login()</slot>
     </connection>
     <connection>
         <sender>send_logout</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>logout()</slot>
     </connection>
     <connection>
         <sender>send_poll</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>poll()</slot>
     </connection>
     <connection>
         <sender>send_transfer_contact</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>transfer_contact()</slot>
     </connection>
     <connection>
         <sender>send_transfer_domain</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>transfer_domain()</slot>
     </connection>
     <connection>
         <sender>send_create_contact</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>create_contact()</slot>
     </connection>
     <connection>
         <sender>send_create_domain</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>create_domain()</slot>
     </connection>
     <connection>
         <sender>send_create_nsset</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>create_nsset()</slot>
     </connection>
     <connection>
         <sender>send_update_contact</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>update_contact()</slot>
     </connection>
     <connection>
         <sender>send_update_domain</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>update_domain()</slot>
     </connection>
     <connection>
         <sender>send_update_nsset</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>update_nsset()</slot>
     </connection>
     <connection>
         <sender>send_renew_domain</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>renew_domain()</slot>
     </connection>
     <connection>
@@ -7255,163 +7255,163 @@ The EPP "list" command is used to list all ID of an existing object owning by re
     <connection>
         <sender>btn_source_login</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>source_login()</slot>
     </connection>
     <connection>
         <sender>btn_source_logout</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>source_logout()</slot>
     </connection>
     <connection>
         <sender>btn_source_poll</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>source_poll()</slot>
     </connection>
     <connection>
         <sender>btn_source_hello</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>source_hello()</slot>
     </connection>
     <connection>
         <sender>btn_source_check_contact</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>source_check_contact()</slot>
     </connection>
     <connection>
         <sender>btn_source_info_contact</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>source_info_contact()</slot>
     </connection>
     <connection>
         <sender>btn_source_create_contact</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>source_create_contact()</slot>
     </connection>
     <connection>
         <sender>btn_source_update_contact</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>source_update_contact()</slot>
     </connection>
     <connection>
         <sender>btn_source_delete_contact</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>source_delete_contact()</slot>
     </connection>
     <connection>
         <sender>btn_source_transfer_contact</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>source_transfer_contact()</slot>
     </connection>
     <connection>
         <sender>btn_source_list_contact</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>source_list_contact()</slot>
     </connection>
     <connection>
         <sender>btn_source_check_nsset</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>source_check_nsset()</slot>
     </connection>
     <connection>
         <sender>btn_source_info_nsset</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>source_info_nsset()</slot>
     </connection>
     <connection>
         <sender>btn_source_create_nsset</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>source_create_nsset()</slot>
     </connection>
     <connection>
         <sender>btn_source_update_nsset</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>source_update_nsset()</slot>
     </connection>
     <connection>
         <sender>btn_source_delete_nsset</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>source_delete_nsset()</slot>
     </connection>
     <connection>
         <sender>btn_source_list_nsset</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>source_list_nsset()</slot>
     </connection>
     <connection>
         <sender>btn_source_check_domain</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>source_check_domain()</slot>
     </connection>
     <connection>
         <sender>btn_source_info_domain</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>source_info_domain()</slot>
     </connection>
     <connection>
         <sender>btn_source_create_domain</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>source_create_domain()</slot>
     </connection>
     <connection>
         <sender>btn_source_update_domain</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>source_update_domain()</slot>
     </connection>
     <connection>
         <sender>btn_source_delete_domain</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>source_delete_domain()</slot>
     </connection>
     <connection>
         <sender>btn_source_transfer_domain</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>source_transfer_domain()</slot>
     </connection>
     <connection>
         <sender>btn_source_renew_domain</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>source_renew_domain()</slot>
     </connection>
     <connection>
         <sender>btn_source_list_domain</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>source_list_domain()</slot>
     </connection>
     <connection>
         <sender>buttonOk</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>btn_close()</slot>
     </connection>
     <connection>
         <sender>btn_credits</sender>
         <signal>clicked()</signal>
-        <receiver>ccregWindow</receiver>
+        <receiver>FredWindow</receiver>
         <slot>credits()</slot>
     </connection>
 </connections>

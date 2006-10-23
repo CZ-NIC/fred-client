@@ -24,7 +24,7 @@ except ImportError:
 UNBOUNDED = None
 # ''contact_disclose'' must be same format as eppdoc_client.update_status.
 contact_disclose = map(lambda n: (n,), ('name','org','addr','voice','fax','email'))
-history_filename = os.path.join(os.path.expanduser('~'),'.ccreg_history') # compatibility s MS Win
+history_filename = os.path.join(os.path.expanduser('~'),'.fred_history') # compatibility s MS Win
 
 TAG_clTRID = 'cltrid' # Definition for --key-name = clTRID value.
 

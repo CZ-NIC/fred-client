@@ -18,18 +18,18 @@
 2.15 Check na smazany kontakt
 """
 import unittest
-import ccReg
-from ccReg.eppdoc_assemble import contact_disclose
-import unitest_ccreg_share
+import fred
+from fred.eppdoc_assemble import contact_disclose
+import unitest_share
 
 
-# CCREG_CONTACT[1] - create
-# CCREG_CONTACT[2] - modify
-# CCREG_CONTACT[3] - chg (changes)
+# FRED_CONTACT[1] - create
+# FRED_CONTACT[2] - modify
+# FRED_CONTACT[3] - chg (changes)
 CONTACT_PASSWORD_1 = 'mojeheslo'
 CONTACT_PASSWORD_2 = 'nove-heslo'
 CONTACT_HANDLE = 'CID:test001'
-CCREG_CONTACT = [
+FRED_CONTACT = [
     {   # template
     'id': '', # (povinný) vaše kontaktní ID
     'name': '', # (povinný) vaše jméno
@@ -89,8 +89,8 @@ CCREG_CONTACT = [
 
 ## epp_cli._epp._dct_answer
 
-d = CCREG_CONTACT[2]
-CCREG_CONTACT.append({ # chg part to modify contact
+d = FRED_CONTACT[2]
+FRED_CONTACT.append({ # chg part to modify contact
             'postal_info': {
                 'name': d['name'],
                 'org': d['org'],
@@ -119,18 +119,18 @@ class Test(unittest.TestCase):
         if epp_cli: self.assert_(epp_cli.is_logon(),'client is offline')
 
     def tearDown(self):
-        unitest_ccreg_share.write_log(epp_cli_log, log_fp, log_step, self.id(),self.shortDescription())
-        unitest_ccreg_share.reset_client(epp_cli_log)
+        unitest_share.write_log(epp_cli_log, log_fp, log_step, self.id(),self.shortDescription())
+        unitest_share.reset_client(epp_cli_log)
 
     def test_000(self):
         '2.0 Inicializace spojeni a definovani testovacich handlu'
         global epp_cli, epp_cli_TRANSF, epp_cli_log, handle_contact, handle_nsset, log_fp
         # Natvrdo definovany handle:
-        handle_contact = CCREG_CONTACT[1]['id'] # 'neexist01'
+        handle_contact = FRED_CONTACT[1]['id'] # 'neexist01'
         handle_nsset = 'NSSID:neexist01'
         # create client object
-        epp_cli = ccReg.Client()
-        epp_cli_TRANSF = ccReg.Client()
+        epp_cli = fred.Client()
+        epp_cli_TRANSF = fred.Client()
         epp_cli._epp.load_config()
         epp_cli_TRANSF.load_config()
         # login
@@ -147,8 +147,8 @@ class Test(unittest.TestCase):
         self.assert_(epp_cli.is_logon(), 'Nepodarilo se zalogovat.')
         self.assert_(epp_cli_TRANSF.is_logon(), 'Nepodarilo se zalogovat uzivatele "REG-LRR2" pro transfer.')
         # logovací soubor
-        if ccReg.translate.options['log']: # zapnuti/vypuni ukladani prikazu do logu
-            log_fp = open(ccReg.translate.options['log'],'w')
+        if fred.translate.options['log']: # zapnuti/vypuni ukladani prikazu do logu
+            log_fp = open(fred.translate.options['log'],'w')
     
     def test_010(self):
         '2.1 Check na seznam dvou neexistujicich kontaktu'
@@ -164,17 +164,17 @@ class Test(unittest.TestCase):
 
     def test_030(self):
         '2.3 Zalozeni neexistujiciho noveho kontaktu'
-        d = CCREG_CONTACT[1]
+        d = FRED_CONTACT[1]
         epp_cli.create_contact(handle_contact, 
             d['name'], d['email'], d['city'], d['cc'], d['auth_info'],  d['org'], 
             d['street'], d['sp'], d['pc'], d['voice'], d['fax'], d['disclose'],
             d['vat'], d['ssn'], d['notify_email'])
-        self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_031(self):
         '2.3.1 Overevni vsech hodnot vznikleho kontaktu'
         epp_cli.info_contact(handle_contact)
-        errors = __info_contact__('contact', CCREG_CONTACT[1], epp_cli.is_val('data'))
+        errors = __info_contact__('contact', FRED_CONTACT[1], epp_cli.is_val('data'))
         self.assert_(len(errors)==0, '\n'.join(errors))
 
     def test_040(self):
@@ -193,20 +193,20 @@ class Test(unittest.TestCase):
     def test_060(self):
         '2.6 Info na existujici kontakt a overeni vsech hodnot'
         epp_cli.info_contact(handle_contact)
-        self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
-        errors = __info_contact__('contact', CCREG_CONTACT[1], epp_cli.is_val('data'))
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+        errors = __info_contact__('contact', FRED_CONTACT[1], epp_cli.is_val('data'))
         self.assert_(len(errors)==0, '\n'.join(errors))
 
     def test_070(self):
         '2.7 Update vsech parametru krome stavu'
-        epp_cli.update_contact(handle_contact, None, None, CCREG_CONTACT[3])
-        self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+        epp_cli.update_contact(handle_contact, None, None, FRED_CONTACT[3])
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_071(self):
         '2.7.1 Overevni vsech hodnot zmeneneho kontaktu'
         epp_cli.info_contact(handle_contact)
-        self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
-        errors = __info_contact__('contact', CCREG_CONTACT[2], epp_cli.is_val('data'))
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+        errors = __info_contact__('contact', FRED_CONTACT[2], epp_cli.is_val('data'))
         self.assert_(len(errors)==0, '\n'.join(errors))
         
     def test_080(self):
@@ -225,14 +225,14 @@ class Test(unittest.TestCase):
         '2.9 Update stavu clientDeleteProhibited a pokus o smazani'
         status = 'clientDeleteProhibited'
         epp_cli.update_contact(handle_contact, status)
-        unitest_ccreg_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(1,3))
+        unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(1,3))
         self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se nastavit status: %s'%status)
-        unitest_ccreg_share.reset_client(epp_cli)
+        unitest_share.reset_client(epp_cli)
         # pokus o smazání
         epp_cli.delete_contact(handle_contact)
-        unitest_ccreg_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(2,3))
+        unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(2,3))
         self.assertNotEqual(epp_cli.is_val(), 1000, 'Kontakt se smazal, prestoze mel nastaven %s'%status)
-        unitest_ccreg_share.reset_client(epp_cli)
+        unitest_share.reset_client(epp_cli)
         # zrušení stavu
         epp_cli.update_contact(handle_contact, None, status)
         self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se odstranit status: %s'%status)
@@ -241,14 +241,14 @@ class Test(unittest.TestCase):
         '2.10 Update stavu clientUpdateProhibited a pokus o zmenu objektu, smazani stavu'
         status = 'clientUpdateProhibited'
         epp_cli.update_contact(handle_contact, status)
-        unitest_ccreg_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(1,3))
+        unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(1,3))
         self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se nastavit status: %s'%status)
-        unitest_ccreg_share.reset_client(epp_cli)
+        unitest_share.reset_client(epp_cli)
         # pokus o změnu
         epp_cli.update_contact(handle_contact, None, None, {'notifyEmail':'notifak@jinak.cz'})
-        unitest_ccreg_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(2,3))
+        unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(2,3))
         self.assertNotEqual(epp_cli.is_val(), 1000, 'Kontakt se aktualizoval, prestoze mel nastaven %s'%status)
-        unitest_ccreg_share.reset_client(epp_cli)
+        unitest_share.reset_client(epp_cli)
         # zrušení stavu
         epp_cli.update_contact(handle_contact, None, status)
         self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se odstranit status: %s'%status)
@@ -256,34 +256,34 @@ class Test(unittest.TestCase):
     def test_110(self):
         '2.11 Vytvoreni nnsetu napojeneho na kontakt'
         epp_cli.create_nsset(handle_nsset, ({'name':'ns1.test.cz'},{'name':'ns2.test.cz'}), handle_contact, 'heslo')
-        self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         
     def test_120(self):
         '2.12 Smazani kontaktu na ktery existuji nejake vazby'
         epp_cli.delete_contact(handle_contact)
-        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_130(self):
         '2.13 Smazani nssetu'
         epp_cli.delete_nsset(handle_nsset)
-        self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_140(self):
         '2.14 Trasfer na vlastni contact (Objekt je nezpůsobilý pro transfer)'
         epp_cli.transfer_contact(handle_contact, CONTACT_PASSWORD_2)
-        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         
     def test_150(self):
         '2.15 Druhy registrator: Trasfer s neplatnym heslem (Chyba oprávnění)'
         global epp_cli_log
         epp_cli_log = epp_cli_TRANSF
         epp_cli_TRANSF.transfer_contact(handle_contact, 'heslo neznam')
-        self.assertNotEqual(epp_cli_TRANSF.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli_TRANSF))
+        self.assertNotEqual(epp_cli_TRANSF.is_val(), 1000, unitest_share.get_reason(epp_cli_TRANSF))
         
     def test_160(self):
         '2.16 Druhy registrator: Trasfer kontaktu'
         epp_cli_TRANSF.transfer_contact(handle_contact, CONTACT_PASSWORD_2)
-        self.assertEqual(epp_cli_TRANSF.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli_TRANSF))
+        self.assertEqual(epp_cli_TRANSF.is_val(), 1000, unitest_share.get_reason(epp_cli_TRANSF))
 
     def test_161(self):
         '2.16.1 Kontrola, ze se po stransferu automaticky zmenilo heslo.'
@@ -293,14 +293,14 @@ class Test(unittest.TestCase):
     def test_170(self):
         '2.17 Druhy registrator: Zmena hesla po prevodu domeny'
         epp_cli_TRANSF.update_contact(handle_contact, None, None, {'auth_info':{'auth_info':CONTACT_PASSWORD_1}})
-        self.assertEqual(epp_cli_TRANSF.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli_TRANSF))
+        self.assertEqual(epp_cli_TRANSF.is_val(), 1000, unitest_share.get_reason(epp_cli_TRANSF))
         
     def test_180(self):
         '2.18 Zmena hesla kontaktu, ktery registratorovi jiz nepatri'
         global epp_cli_log
         epp_cli_log = epp_cli
         epp_cli.update_contact(handle_contact, None, None, {'auth_info':{'auth_info':'moje-heslo2'}})
-        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         
     def test_190(self):
         '2.19 Pokus o smazani kontaktu, ktery jiz registratorovi nepatri'
@@ -312,7 +312,7 @@ class Test(unittest.TestCase):
         global epp_cli_log
         epp_cli_log = epp_cli_TRANSF
         epp_cli_TRANSF.delete_contact(handle_contact)
-        self.assertEqual(epp_cli_TRANSF.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli_TRANSF))
+        self.assertEqual(epp_cli_TRANSF.is_val(), 1000, unitest_share.get_reason(epp_cli_TRANSF))
 
     def test_210(self):
         '2.21 Check na smazany kontakt'
@@ -328,11 +328,11 @@ class Test(unittest.TestCase):
         # 1301 Any message
         epp_cli.poll('req')
         if epp_cli.is_val() not in (1000,1300,1301):
-            self.assertEqual(0, 1, unitest_ccreg_share.get_reason(epp_cli))
+            self.assertEqual(0, 1, unitest_share.get_reason(epp_cli))
         id_message = epp_cli.is_val(('data','msgQ.id'))
         if id_message:
             epp_cli.poll('ack', id_message)
-            self.assertEqual(epp_cli.is_val(), 1000, unitest_ccreg_share.get_reason(epp_cli))
+            self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
 
 def __compare_disclose__(cols, disclose, hide):
@@ -345,8 +345,8 @@ def __compare_disclose__(cols, disclose, hide):
     else:
         c['hide'] = disclose_or_hide
         c['disclose'] = [n[0] for n in contact_disclose if n[0] not in disclose_or_hide]
-    is_error = not (unitest_ccreg_share.are_equal(c['disclose'],disclose) and
-                unitest_ccreg_share.are_equal(c['hide'],hide))
+    is_error = not (unitest_share.are_equal(c['disclose'],disclose) and
+                unitest_share.are_equal(c['hide'],hide))
     return (is_error, 
         'disclose(%s) hide(%s)'%(','.join(disclose),','.join(hide)), 
         'disclose(%s) hide(%s)'%(','.join(c['disclose']),','.join(c['hide']))
@@ -374,12 +374,12 @@ def __info_contact__(prefix, cols, scope, key=None, pkeys=[]):
         if k == 'disclose':
             err, vals, v = __compare_disclose__(cols['disclose'], data.get('contact:disclose',[]), data.get('contact:hide',[]))
             if err:
-                errors.append('Data nesouhlasi:\n%s.%s JSOU:%s MELY BYT:%s'%(prevkeys, key, unitest_ccreg_share.make_str(vals), unitest_ccreg_share.make_str(v)))
+                errors.append('Data nesouhlasi:\n%s.%s JSOU:%s MELY BYT:%s'%(prevkeys, key, unitest_share.make_str(vals), unitest_share.make_str(v)))
             continue
         if k == 'ssn':
             err, vals, v = __compare_ssn__(cols['ssn'], data)
             if err:
-                errors.append('Data nesouhlasi:\n%s.%s JSOU:%s MELY BYT:%s'%(prevkeys, key, unitest_ccreg_share.make_str(vals), unitest_ccreg_share.make_str(v)))
+                errors.append('Data nesouhlasi:\n%s.%s JSOU:%s MELY BYT:%s'%(prevkeys, key, unitest_share.make_str(vals), unitest_share.make_str(v)))
             continue
         if type(data) != dict: data = {key:data}
         if data.has_key(key):
@@ -393,8 +393,8 @@ def __info_contact__(prefix, cols, scope, key=None, pkeys=[]):
                     vals = tuple(data[key])
                 else:
                     vals = data[key]
-                if not unitest_ccreg_share.are_equal(vals,v):
-                    errors.append('Data nesouhlasi:\n%s.%s JSOU:%s MELY BYT:%s'%(prevkeys, key, unitest_ccreg_share.make_str(vals), unitest_ccreg_share.make_str(v)))
+                if not unitest_share.are_equal(vals,v):
+                    errors.append('Data nesouhlasi:\n%s.%s JSOU:%s MELY BYT:%s'%(prevkeys, key, unitest_share.make_str(vals), unitest_share.make_str(v)))
         else:
             if key != '%s:disclose_flag'%prefix: # except disclose_flag - it not shown
                 errors.append('Chybi klic %s'%key)
@@ -404,10 +404,10 @@ epp_cli, epp_cli_TRANSF, epp_cli_log, log_fp, log_step, handle_contact, handle_n
 
 if __name__ == '__main__':
 ##if 0:
-    if ccReg.translate.option_errors:
-        print ccReg.translate.option_errors
-    elif ccReg.translate.options['help']:
-        print unitest_ccreg_share.__doc__
+    if fred.translate.option_errors:
+        print fred.translate.option_errors
+    elif fred.translate.options['help']:
+        print unitest_share.__doc__
     else:
         suite = unittest.TestSuite()
         suite.addTest(unittest.makeSuite(Test))
@@ -419,11 +419,11 @@ if 0:
     # TEST equals data
     DATA = (
     #'2.3.1 Overevni vsech hodnot vznikleho kontaktu'
-    (CCREG_CONTACT[1], {'contact:voice': u'+123.456789', 'contact:org': u'\u010c\xed\u017ekov\xe1 a spol', 'contact:fax': u'+321.564987', 'contact:status.s': u'ok', 'contact:disclose': ['name', 'org', 'addr', 'email', 'fax', 'voice'], 'contact:hide': [], 'contact:email': u'rehor.cizek@mail.cz', 'contact:city': u'\u010cesk\xfd Krumlov', 'contact:pc': u'12300', 'contact:crDate': u'2006-08-08T07:59:03.0Z', 'contact:street': [u'U pr\xe1ce', u'Za monitorem', u'Nad kl\xe1vesnic\xed'], 'contact:crID': u'REG-LRR', 'contact:sp': u'123', 'contact:roid': u'C0000426646-CZ', 'contact:cc': u'CZ', 'contact:name': u'\u0158eho\u0159 \u010c\xed\u017eek', 'contact:id': u'test001'}),
+    (FRED_CONTACT[1], {'contact:voice': u'+123.456789', 'contact:org': u'\u010c\xed\u017ekov\xe1 a spol', 'contact:fax': u'+321.564987', 'contact:status.s': u'ok', 'contact:disclose': ['name', 'org', 'addr', 'email', 'fax', 'voice'], 'contact:hide': [], 'contact:email': u'rehor.cizek@mail.cz', 'contact:city': u'\u010cesk\xfd Krumlov', 'contact:pc': u'12300', 'contact:crDate': u'2006-08-08T07:59:03.0Z', 'contact:street': [u'U pr\xe1ce', u'Za monitorem', u'Nad kl\xe1vesnic\xed'], 'contact:crID': u'REG-LRR', 'contact:sp': u'123', 'contact:roid': u'C0000426646-CZ', 'contact:cc': u'CZ', 'contact:name': u'\u0158eho\u0159 \u010c\xed\u017eek', 'contact:id': u'test001'}),
     #'2.6 Info na existujici kontakt a overeni vsech hodnot'
-    (CCREG_CONTACT[1], {'contact:voice': u'+123.456789', 'contact:org': u'\u010c\xed\u017ekov\xe1 a spol', 'contact:fax': u'+321.564987', 'contact:status.s': u'ok', 'contact:disclose': ['name', 'org', 'addr', 'voice', 'fax', 'email'], 'contact:hide': [], 'contact:email': u'rehor.cizek@mail.cz', 'contact:city': u'\u010cesk\xfd Krumlov', 'contact:pc': u'12300', 'contact:crDate': u'2006-08-08T07:59:03.0Z', 'contact:street': [u'U pr\xe1ce', u'Za monitorem', u'Nad kl\xe1vesnic\xed'], 'contact:crID': u'REG-LRR', 'contact:sp': u'123', 'contact:roid': u'C0000426646-CZ', 'contact:cc': u'CZ', 'contact:name': u'\u0158eho\u0159 \u010c\xed\u017eek', 'contact:id': u'test001'}),
+    (FRED_CONTACT[1], {'contact:voice': u'+123.456789', 'contact:org': u'\u010c\xed\u017ekov\xe1 a spol', 'contact:fax': u'+321.564987', 'contact:status.s': u'ok', 'contact:disclose': ['name', 'org', 'addr', 'voice', 'fax', 'email'], 'contact:hide': [], 'contact:email': u'rehor.cizek@mail.cz', 'contact:city': u'\u010cesk\xfd Krumlov', 'contact:pc': u'12300', 'contact:crDate': u'2006-08-08T07:59:03.0Z', 'contact:street': [u'U pr\xe1ce', u'Za monitorem', u'Nad kl\xe1vesnic\xed'], 'contact:crID': u'REG-LRR', 'contact:sp': u'123', 'contact:roid': u'C0000426646-CZ', 'contact:cc': u'CZ', 'contact:name': u'\u0158eho\u0159 \u010c\xed\u017eek', 'contact:id': u'test001'}),
     #'2.7.1 Overevni vsech hodnot zmeneneho kontaktu'
-    (CCREG_CONTACT[2], {'contact:voice': u'+321.987654', 'contact:org': u'Bolen\xed s.r.o.', 'contact:fax': u'+321.987564', 'contact:status.s': u'ok', 'contact:disclose': ['name', 'org', 'addr', 'voice', 'fax', 'email'], 'contact:hide': [], 'contact:email': u'breta.zlucnik@bricho.cz', 'contact:city': u'St\u0159evn\xedkov', 'contact:pc': u'23101', 'contact:crDate': u'2006-08-08T07:59:03.0Z', 'contact:street': (u'Na toaletách',u'U mísy'), 'contact:crID': u'REG-LRR', 'contact:sp': u'321', 'contact:roid': u'C0000426646-CZ', 'contact:cc': u'CZ', 'contact:name': u'B\u0159\xe9\u0165a \u017dlu\u010dn\xedk', 'contact:id': u'test001','contact:ssn':'357','contact:notify_email':'info@zlucnikovi.cz','contact:vat':'753'}),
+    (FRED_CONTACT[2], {'contact:voice': u'+321.987654', 'contact:org': u'Bolen\xed s.r.o.', 'contact:fax': u'+321.987564', 'contact:status.s': u'ok', 'contact:disclose': ['name', 'org', 'addr', 'voice', 'fax', 'email'], 'contact:hide': [], 'contact:email': u'breta.zlucnik@bricho.cz', 'contact:city': u'St\u0159evn\xedkov', 'contact:pc': u'23101', 'contact:crDate': u'2006-08-08T07:59:03.0Z', 'contact:street': (u'Na toaletách',u'U mísy'), 'contact:crID': u'REG-LRR', 'contact:sp': u'321', 'contact:roid': u'C0000426646-CZ', 'contact:cc': u'CZ', 'contact:name': u'B\u0159\xe9\u0165a \u017dlu\u010dn\xedk', 'contact:id': u'test001','contact:ssn':'357','contact:notify_email':'info@zlucnikovi.cz','contact:vat':'753'}),
     )
     print '-'*60
     for cols,vals in DATA:

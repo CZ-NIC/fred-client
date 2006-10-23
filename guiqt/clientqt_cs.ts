@@ -1,6 +1,6 @@
 <!DOCTYPE TS><TS>
 <context>
-    <name>ccregMainWindow</name>
+    <name>FredMainWindow</name>
     <message>
         <source>Missing required</source>
         <translation>Chybí povinné údaje</translation>
@@ -127,7 +127,7 @@
     </message>
 </context>
 <context>
-    <name>ccregWindow</name>
+    <name>FredWindow</name>
     <message>
         <source>street</source>
         <translation>ulice</translation>
@@ -460,7 +460,7 @@ EPP příkaz &quot;update&quot; se používá pro aktualizaci hodnot instance vy
         <translation>hodnota</translation>
     </message>
     <message>
-        <source>ccRegClient</source>
+        <source>FredClient</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -476,12 +476,12 @@ EPP příkaz &quot;update&quot; se používá pro aktualizaci hodnot instance vy
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Welcome on the &lt;b&gt;ccRegClient&lt;/b&gt; GUI interface.&lt;br&gt;
-Version 1.0; (Needs &lt;b&gt;ccReg module&lt;/b&gt; version 1.2)&lt;br&gt;
+        <source>Welcome on the &lt;b&gt;FredClient&lt;/b&gt; GUI interface.&lt;br&gt;
+Version 1.0.0; (Needs &lt;b&gt;Fred module&lt;/b&gt; version 1.0.0)&lt;br&gt;
 &lt;br&gt;
 Parameters in &lt;b&gt;bold&lt;/b&gt; style are &lt;b&gt;required&lt;/b&gt;. Others are optionals.</source>
-        <translation>Vítejte v &lt;b&gt;ccRegClient&lt;/b&gt; grafické nadstavbě.&lt;br&gt;
-Verze 1.0 (Požaduje &lt;b&gt;ccReg modul&lt;/b&gt; verzi 1.2)&lt;br&gt;
+        <translation>Vítejte v &lt;b&gt;FredClient&lt;/b&gt; grafické nadstavbě.&lt;br&gt;
+Verze 1.0.0 (Požaduje &lt;b&gt;Fred modul&lt;/b&gt; verzi 1.0.0)&lt;br&gt;
 &lt;br&gt;
 Parametry, které jsou &lt;b&gt;tučně&lt;/b&gt;, jsou &lt;b&gt;povinné&lt;/b&gt;. Ostatní jsou nepovinné.</translation>
     </message>
@@ -967,7 +967,7 @@ EPP příkaz &quot;list&quot; se používá pro zobrazení seznamu všech ID obj
         <translation>Odpověď v XML</translation>
     </message>
     <message>
-        <source>This example was build from input. It can be used in ccreg_client console.</source>
+        <source>This example was build from input. It can be used in fred_client console.</source>
         <translation>Tento příklad byl sestaven ze vstupních dat. Může být použit v řádkové konzoli.</translation>
     </message>
     <message>

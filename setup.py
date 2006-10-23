@@ -2,20 +2,20 @@
 # -*- coding: utf8 -*-
 from distutils.core import setup
 
-setup(name = 'ccRegClient',
-    description = 'ccReg EPP Client',
+setup(name = 'FredClient',
+    description = 'Client FRED (Free Registry for enum and domain)',
     author = 'Zdenek Bohm, CZ.NIC',
     author_email = 'zdenek.bohm@nic.cz',
     url = 'http://www.nic.cz',
     version = '1.1',
     license = 'GNU GPL',
-    packages = ['ccReg'],
+    packages = ['fred'],
     package_data={
-        'ccReg':['INSTALL','LICENSE','CREDITS','*.txt','schemas/*.xsd',
-        'lang/cz_nic_ccreg_client.po',
-        'lang/cs/LC_MESSAGES/cz_nic_ccreg_client.mo',
+        'fred':['INSTALL','LICENSE','CREDITS','*.txt','schemas/*.xsd',
+        'lang/fred_client_cs.po',
+        'lang/cs/LC_MESSAGES/fred_client.mo',
         # 'certificates/*.pem',
         ],
     },
-    scripts = ['ccreg_client.py','ccreg_console.py','ccreg_create.py','ccreg_sender.py'],
+    scripts = ['fred_client.py','fred_console.py','fred_create.py','fred_sender.py'],
 )

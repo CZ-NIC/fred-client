@@ -114,17 +114,17 @@ def install_translation(lang):
 #---------------------------
 # INIT options:
 #---------------------------
-app_name = 'ccregClient'
-config_name = '.ccreg_client.conf'
-domain = 'ccreg_client' # gettext translate domain
+app_name = 'FredClient'
+config_name = '.fred_client.conf'
+domain = 'fred_client' # gettext translate domain
 langs = {'en': 0, 'cs': 1} # 0 - no translate, 1 - make translation
 default_lang = 'en'
 optcols = (
     '? help',
-    'b bar',      # Used by ccreg_sender for display bar instead of common output. Suitable for huge command sets.
+    'b bar',      # Used by fred_sender for display bar instead of common output. Suitable for huge command sets.
     'c:cert',
     'd:command',  # used by creator
-    'e:range',    # Used by ccreg_create for generate range of documents.
+    'e:range',    # Used by fred_create for generate range of documents.
     'f:config',   # define your own config file
     'g:log',      # save log in unittest.
     'h:host',

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'create_domain.ui'
 #
-# Created: Čt říj 19 13:27:56 2006
+# Created: Po říj 23 10:24:47 2006
 #      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,12 +12,12 @@ from qt import *
 from qttable import QTable
 
 
-class ccregWindow(QWidget):
+class FredWindow(QWidget):
     def __init__(self,parent = None,name = None,fl = 0):
         QWidget.__init__(self,parent,name,fl)
 
         if not name:
-            self.setName("ccregWindow")
+            self.setName("FredWindow")
 
 
 
@@ -123,7 +123,7 @@ class ccregWindow(QWidget):
         self.setCaption(self.__tr("Create Domain panel"))
         self.textLabel1.setText(self.__tr("<b>domain name</b>"))
         self.textLabel2.setText(self.__tr("<b>registrant</b>"))
-        self.textLabel3.setText(self.__tr("authorization info"))
+        self.textLabel3.setText(self.__tr("auth. for transfer"))
         self.textLabel4.setText(self.__tr("nsset"))
         self.textLabel5.setText(self.__tr("period"))
         self.textLabel6.setText(self.__tr("admin"))
@@ -149,10 +149,10 @@ class ccregWindow(QWidget):
 
 
     def admin_value_changed(self,a0,a1):
-        print "ccregWindow.admin_value_changed(int,int): Not implemented yet"
+        print "FredWindow.admin_value_changed(int,int): Not implemented yet"
 
     def admin_current_changed(self,a0,a1):
-        print "ccregWindow.admin_current_changed(int,int): Not implemented yet"
+        print "FredWindow.admin_current_changed(int,int): Not implemented yet"
 
     def __tr(self,s,c = None):
-        return qApp.translate("ccregWindow",s,c)
+        return qApp.translate("FredWindow",s,c)

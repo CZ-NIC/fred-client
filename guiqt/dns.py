@@ -4,10 +4,10 @@ from qt import *
 from shared_fnc import *
 import _dns
 
-class ccregWindow(_dns.ccregWindow):
+class FredWindow(_dns.FredWindow):
 
     def __init__(self,parent = None,name = None,fl = 0):
-        _dns.ccregWindow.__init__(self,parent,name,fl)
+        _dns.FredWindow.__init__(self,parent,name,fl)
         self.addr.horizontalHeader().resizeSection(0,300)
         self._addr_item = None
 
@@ -20,7 +20,7 @@ class ccregWindow(_dns.ccregWindow):
 
 if __name__ == '__main__':
     app = QApplication([])
-    form = ccregWindow()
+    form = FredWindow()
     form.show()
     app.setMainWidget(form)
     app.exec_loop()

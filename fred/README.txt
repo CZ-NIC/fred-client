@@ -4,7 +4,7 @@ Tento dokument je uložen v kódování UTF-8
 
 #################################################
 
-    Popis knihovny ccReg
+    Popis knihovny fred
 
     Zdeněk Böhm
     13.7.2006
@@ -12,13 +12,13 @@ Tento dokument je uložen v kódování UTF-8
 #################################################
 
     +----------------------------------+
- +--|  ccreg_console.py                |
+ +--|  fred_console.py                 |
  |  |----------------------------------|
  |  | interaktivní konzole EPP klienta |
  |  +----------------------------------+
  |
  |
-====[ knihovna ccReg ]==================================================================
+====[ knihovna fred ]===================================================================
  |
  |                                                   +---------------------------------+
  |-------------------------------------------------->| cmd_history.py                  |
@@ -29,7 +29,7 @@ Tento dokument je uložen v kódování UTF-8
  |
  |   +======================================+        +=================================+
  |   | Client Session Manager               |<-------| __init__   * API * rozhraní pro |
- +-->|======================================|        |práci s knihovnou ccReg v pythonu|
+ +-->|======================================|        |práci s knihovnou fred v pythonu |
      | ovládá všechny objekty tvorby EPP    |        +=================================+
      | dokumentů a komunikace se serverem   |
      |                                      |        +=================================+

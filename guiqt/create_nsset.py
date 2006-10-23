@@ -5,10 +5,10 @@ from shared_fnc import *
 import dns
 import _create_nsset
 
-class ccregWindow(_create_nsset.ccregWindow):
+class FredWindow(_create_nsset.FredWindow):
 
     def __init__(self,parent = None,name = None,fl = 0):
-        _create_nsset.ccregWindow.__init__(self,parent,name,fl)
+        _create_nsset.FredWindow.__init__(self,parent,name,fl)
         self.tech.horizontalHeader().resizeSection(0,320)
         self._tech_item = None
         self.dns_sets = []
@@ -23,7 +23,7 @@ class ccregWindow(_create_nsset.ccregWindow):
         
 if __name__ == '__main__':
     app = QApplication([])
-    form = ccregWindow()
+    form = FredWindow()
     form.show()
     app.setMainWidget(form)
     app.exec_loop()

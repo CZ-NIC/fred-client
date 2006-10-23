@@ -1,10 +1,10 @@
 # -*- coding: utf8 -*-
 #!/usr/bin/env python
 """
-import ccReg
+import fred
 
 try:
-    epp = ccReg.Client()
+    epp = fred.Client()
     ret = epp.login("reg-lrr","123456789")
     if ret['code'] == 1000:
         ret = epp.check_contact(("handle1","handle2"))
@@ -15,7 +15,7 @@ try:
         ret = epp.info_contact("handle1")
         epp.print_answer(ret)
         epp.logout()
-except ccReg.ccRegError, msg:
+except fred.FredError, msg:
     print msg
 
 # or you can use function is_val() what returns value without KeyError:
@@ -23,7 +23,7 @@ except ccReg.ccRegError, msg:
 # Next possibility previous example:
     
 try:
-    epp = ccReg.Client()
+    epp = fred.Client()
     epp.login("reg-lrr","123456789")
     if epp.is_val() == 1000:
         epp.check_contact(("handle1","handle2"))
@@ -33,14 +33,14 @@ try:
             epp.info_contact("handle1")
             epp.print_answer()
         epp.logout()
-except ccReg.ccRegError, msg:
+except fred.FredError, msg:
     print msg
 
 #
 # Example to delete created contacts:
 #
-import ccReg
-epp = ccReg.Client()
+import fred
+epp = fred.Client()
 epp.login("REG-LRR","123456789")
 if epp.is_val() == 1000:
     ret = epp.check_contact(("handle1","handle2"))
@@ -60,7 +60,7 @@ if epp.is_val() == 1000:
 """
 import sys
 from session_receiver import ManagerReceiver
-from session_receiver import ccRegError
+from session_receiver import FredError
 import translate
 
 class Client:

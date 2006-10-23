@@ -6,21 +6,21 @@ import sys, re, os
 # 
 
 #====================================
-# ccReg
+# Fred
 #====================================
 # first try import from standard library path
 try:
-    import ccReg
+    import fred
 except ImportError:
     # and than from relative path
     sys.path.insert(0,'../')
     try:
-        import ccReg
+        import fred
     except ImportError, msg:
         print "ImportError:",msg
-        print 'For runnig this application you need install ccReg module. See help.'
+        print 'For runnig this application you need install fred module. See help.'
         sys.exit(0)
-from ccReg.translate import encoding, options, option_errors
+from fred.translate import encoding, options, option_errors
 
 #====================================
 # Qt
@@ -99,12 +99,12 @@ def count_data_rows(dct):
     return size
 
         
-class ccregMainWindow(_main.ccregWindow):
+class FredMainWindow(_main.FredWindow):
     'Main frame dialog.'
     ssn_types = ('op','rc','passport','mpsv','ico')
     
     def __init__(self, epp_client):
-        _main.ccregWindow.__init__(self)
+        _main.FredWindow.__init__(self)
         self.setFixedSize(694,656)
         self.epp = epp_client
         self.missing_required = []
@@ -157,13 +157,13 @@ class ccregMainWindow(_main.ccregWindow):
         self.panel_update_domain.val_ex_date.setDate(curd)
 
     def __add_scroll__(self, parent_frame, module, name):
-        'Add scrolled view window. Module must have class ccregWindow.'
+        'Add scrolled view window. Module must have class FredWindow.'
         scroll = QScrollView(parent_frame, 'scroll_%s'%name)
         scroll.enableClipper(True)
         scroll.setFrameShape(QFrame.NoFrame)
         scroll.setFrameShadow(QFrame.Raised)
         scroll.setGeometry(parent_frame.geometry())
-        panel = module.ccregWindow(scroll)
+        panel = module.FredWindow(scroll)
         scroll.addChild(panel)
         scroll.show()
         return panel
@@ -188,12 +188,12 @@ class ccregMainWindow(_main.ccregWindow):
         label = self.__tr('Close client')
         msg = self.__tr('Do you wand realy close client?')
         if QMessageBox.warning(self, label, msg, QMessageBox.Yes | QMessageBox.Default, QMessageBox.No) == QMessageBox.Yes:
-            _main.ccregWindow.close(self)
+            _main.FredWindow.close(self)
         
     def closeEvent(self, e):
         'Finalize when dialog is closed.'
         self.epp.logout()
-        _main.ccregWindow.closeEvent(self, e)
+        _main.FredWindow.closeEvent(self, e)
 
     def __display_answer__(self, prefix, table=None):
         'Display answer from EPP server.'
@@ -302,7 +302,7 @@ class ccregMainWindow(_main.ccregWindow):
         append_key(d,'cltrid', getattr(self,'%s_cltrid'%key))
         try:
             getattr(self.epp,key)(d.get('cltrid'))
-        except ccReg.ccRegError, err:
+        except fred.FredError, err:
             self.epp._epp._errors.extend(err.args)
         self.__display_answer__(key,(1,(label,),(380,),'list','count'))
 
@@ -316,7 +316,7 @@ class ccregMainWindow(_main.ccregWindow):
         if self.__check_required__(d, (('name',self.__tr('name')),('auth_info',self.__tr('Authorization info')))):
             try:
                 getattr(self.epp,key)(d['name'], d['auth_info'], d.get('cltrid'))
-            except ccReg.ccRegError, err:
+            except fred.FredError, err:
                 self.epp._epp._errors.extend(err.args)
             self.__display_answer__(key)
         else:
@@ -333,7 +333,7 @@ class ccregMainWindow(_main.ccregWindow):
                 d['name'] = re.split('\s+',d['name']) # need for check commands
             try:
                 getattr(self.epp,key)(d['name'], d.get('cltrid'))
-            except ccReg.ccRegError, err:
+            except fred.FredError, err:
                 self.epp._epp._errors.extend(err.args)
             self.__display_answer__(key)
         else:
@@ -391,7 +391,7 @@ class ccregMainWindow(_main.ccregWindow):
             else:
                 try:
                     self.epp.login(d['username'], d['password'], d.get('new-password'), d.get('cltrid'))
-                except ccReg.ccRegError, err:
+                except fred.FredError, err:
                     self.epp._epp._errors.extend(err.args)
                     self.epp._epp._errors.append(self.__tr('Process login failed.'))
                 self.__display_answer__('login')
@@ -404,7 +404,7 @@ class ccregMainWindow(_main.ccregWindow):
         append_key(d,'cltrid',self.logout_cltrid)
         try:
             self.epp.logout(d.get('cltrid'))
-        except ccReg.ccRegError, err:
+        except fred.FredError, err:
             self.epp._epp._errors.extend(err.args)
         self.__display_answer__('logout')
 
@@ -417,14 +417,14 @@ class ccregMainWindow(_main.ccregWindow):
         d['op'] = ('req','ack')[d['op']]
         try:
             self.epp.poll(d['op'], d.get('msg_id'), d.get('cltrid'))
-        except ccReg.ccRegError, err:
+        except fred.FredError, err:
             self.epp._epp._errors.extend(err.args)
         self.__display_answer__('poll')
 
     def hello(self):
         try:
             self.epp.hello()
-        except ccReg.ccRegError, err:
+        except fred.FredError, err:
             self.epp._epp._errors.extend(err.args)
         self.__display_answer__('hello')
 
@@ -474,7 +474,7 @@ class ccregMainWindow(_main.ccregWindow):
                     d.get('org'), d.get('street'), d.get('sp'), d.get('pc'), 
                     d.get('voice'), d.get('fax'), d.get('disclose'), d.get('vat'), 
                     d.get('ssn'), d.get('notify_email'), d.get('cltrid'))
-            except ccReg.ccRegError, err:
+            except fred.FredError, err:
                 self.epp._epp._errors.extend(err.args)
             self.__display_answer__('create_contact')
         else:
@@ -497,7 +497,7 @@ class ccregMainWindow(_main.ccregWindow):
         if self.__check_required__(d, (('id',self.__tr('NSSET ID')), ('dns',self.__tr('dns')), ('tech',self.__tr('tech. contact')))):
             try:
                 self.epp.create_nsset(d['id'], d['dns'], d['tech'], d.get('auth_info'), d.get('cltrid'))
-            except ccReg.ccRegError, err:
+            except fred.FredError, err:
                 self.epp._epp._errors.extend(err.args)
             self.__display_answer__('create_nsset')
         else:
@@ -524,7 +524,7 @@ class ccregMainWindow(_main.ccregWindow):
                 self.epp.create_domain(d['name'], d['registrant'], 
                     d.get('auth_info'), d.get('nsset'), d.get('period'), d.get('admin'), 
                     d.get('val_ex_date'), d.get('cltrid'))
-            except ccReg.ccRegError, err:
+            except fred.FredError, err:
                 self.epp._epp._errors.extend(err.args)
             self.__display_answer__('create_domain')
         else:
@@ -565,7 +565,7 @@ class ccregMainWindow(_main.ccregWindow):
         if self.__check_required__(d, (('id',self.__tr('Contact ID')),)) and len(d) > 1:
             try:
                 self.epp.update_contact(d['id'], d.get('add'), d.get('rem'), d.get('chg'), d.get('cltrid'))
-            except ccReg.ccRegError, err:
+            except fred.FredError, err:
                 self.epp._epp._errors.extend(err.args)
             self.__display_answer__('update_contact')
         else:
@@ -605,7 +605,7 @@ class ccregMainWindow(_main.ccregWindow):
         if self.__check_required__(d, (('id',self.__tr('NSSET ID')),)) and len(d) > 1:
             try:
                 self.epp.update_nsset(d['id'], d.get('add'), d.get('rem'), d.get('chg'), d.get('cltrid'))
-            except ccReg.ccRegError, err:
+            except fred.FredError, err:
                 self.epp._epp._errors.extend(err.args)
             self.__display_answer__('update_nsset')
         else:
@@ -642,7 +642,7 @@ class ccregMainWindow(_main.ccregWindow):
         if self.__check_required__(d, (('name',self.__tr('domain name')),)) and len(d) > 1:
             try:
                 self.epp.update_domain(d['name'], d.get('add'), d.get('rem'), d.get('chg'), d.get('val_ex_date'), d.get('cltrid'))
-            except ccReg.ccRegError, err:
+            except fred.FredError, err:
                 self.epp._epp._errors.extend(err.args)
             self.__display_answer__('update_domain')
         else:
@@ -683,7 +683,7 @@ class ccregMainWindow(_main.ccregWindow):
                 period = None
             try:
                 self.epp.renew_domain(d['name'], d['cur_exp_date'], period, d.get('val_ex_date'), d.get('cltrid'))
-            except ccReg.ccRegError, err:
+            except fred.FredError, err:
                 self.epp._epp._errors.extend(err.args)
             self.__display_answer__('renew_domain')
         else:
@@ -703,13 +703,13 @@ class ccregMainWindow(_main.ccregWindow):
     #==============================
     def __display_sources__(self, command_name):
         'Display sources of command'
-        wnd = _sources.ccregWindow(self)
+        wnd = _sources.FredWindow(self)
         if self.src.has_key(command_name):
             wnd.message.setText(u'<b>%s</b> %s'%(command_name,self.__tr('sources')))
             src = self.src[command_name]
             wnd.command_line.setText(src[0])
-            wnd.command.setText(ccReg.session_transfer.human_readable(src[1]))
-            wnd.response.setText(ccReg.session_transfer.human_readable(src[2]))
+            wnd.command.setText(fred.session_transfer.human_readable(src[1]))
+            wnd.response.setText(fred.session_transfer.human_readable(src[2]))
         else:
             wnd.message.setText(u'<b>%s</b> %s'%(command_name,self.__tr('Sources are not available now. Run command at first.')))
         wnd.show()
@@ -780,7 +780,7 @@ class ccregMainWindow(_main.ccregWindow):
         wnd.show()
         
     def __tr(self,s,c = None):
-        return qApp.translate("ccregWindow",s,c)
+        return qApp.translate("FredWindow",s,c)
         
 def get_unicode(text):
     'Convert to unicode and catch problems with conversion.'
@@ -793,7 +793,7 @@ def get_unicode(text):
     return text
         
 def main(argv, lang):
-    epp = ccReg.Client()
+    epp = fred.Client()
     if not epp.load_config():
         epp._epp.display()
         return
@@ -802,18 +802,18 @@ def main(argv, lang):
     modul_trans = os.path.join(os.path.split(__file__)[0],'%s%s'%(translation_prefix,lang))
     if tr.load(modul_trans):
         app.installTranslator(tr)
-    form = ccregMainWindow(epp)
+    form = FredMainWindow(epp)
     form.show()
     app.setMainWidget(form)
     app.exec_loop()
 
     
 if __name__ == '__main__':
-    msg_invalid = ccReg.check_python_version()
+    msg_invalid = fred.check_python_version()
     if msg_invalid:
         print msg_invalid
     elif options['version']:
-        epp = ccReg.ClientSession()
+        epp = fred.ClientSession()
         print epp.version()
     else:
         if option_errors:

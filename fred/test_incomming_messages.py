@@ -79,7 +79,7 @@ data = (
     </result>
     <trID>
       <clTRID>dnlq003#06-07-12at11:41:05</clTRID>
-      <svTRID>ccReg-0000010019</svTRID>
+      <svTRID>fred-0000010019</svTRID>
     </trID>
   </response>
 </epp>
@@ -98,7 +98,7 @@ data = (
     </result>
     <trID>
       <clTRID>blig004#06-07-13at10:49:35</clTRID>
-      <svTRID>ccReg-0000010109</svTRID>
+      <svTRID>fred-0000010109</svTRID>
     </trID>
   </response>
 </epp>
@@ -115,7 +115,7 @@ data = (
     </msgQ>
     <trID>
       <clTRID>mubd002#06-07-13at13:49:00</clTRID>
-      <svTRID>ccReg-0000010147</svTRID>
+      <svTRID>fred-0000010147</svTRID>
     </trID>
   </response>
 </epp>
@@ -134,7 +134,7 @@ data = (
     </resData>
     <trID>
       <clTRID>ebvg003#06-07-14at11:02:58</clTRID>
-      <svTRID>ccReg-0000010885</svTRID>
+      <svTRID>fred-0000010885</svTRID>
     </trID>
   </response>
 </epp>"""),
@@ -153,7 +153,7 @@ data = (
     </resData>
     <trID>
       <clTRID>ausc002#06-07-14at13:25:54</clTRID>
-      <svTRID>ccReg-0000011001</svTRID>
+      <svTRID>fred-0000011001</svTRID>
     </trID>
   </response>
 </epp>
@@ -172,7 +172,7 @@ data = (
     </resData>
     <trID>
       <clTRID>koix009#06-07-14at13:40:10</clTRID>
-      <svTRID>ccReg-0000011024</svTRID>
+      <svTRID>fred-0000011024</svTRID>
     </trID>
   </response>
 </epp>
@@ -210,7 +210,7 @@ data = (
     </resData>
     <trID>
       <clTRID>ljmm002#06-07-17at10:36:13</clTRID>
-      <svTRID>ccReg-0000011281</svTRID>
+      <svTRID>fred-0000011281</svTRID>
     </trID>
   </response>
 </epp>
@@ -255,7 +255,7 @@ data = (
     </resData>
     <trID>
       <clTRID>hsrq003#06-08-01at15:58:42</clTRID>
-      <svTRID>ccReg-0000001553</svTRID>
+      <svTRID>fred-0000001553</svTRID>
     </trID>
   </response>
 </epp>
@@ -279,7 +279,7 @@ data = (
     </resData>
     <trID>
       <clTRID>cemf003#06-08-08at08:48:59</clTRID>
-      <svTRID>ccReg-0001323538</svTRID>
+      <svTRID>fred-0001323538</svTRID>
     </trID>
   </response>
 </epp>
@@ -304,7 +304,7 @@ data = (
     </result>
     <trID>
       <clTRID>qqve002#06-09-15at15:31:21</clTRID>
-      <svTRID>ccReg-0000180139</svTRID>
+      <svTRID>fred-0000180139</svTRID>
     </trID>
   </response>
 </epp>
@@ -323,7 +323,7 @@ data = (
     </resData>
     <trID>
       <clTRID>jfbs002#06-09-21at17:27:25</clTRID>
-      <svTRID>ccReg-0000014445</svTRID>
+      <svTRID>fred-0000014445</svTRID>
     </trID>
   </response>
 </epp>
@@ -345,7 +345,7 @@ data = (
     </resData>
     <trID>
       <clTRID>jfbs003#06-09-21at17:28:34</clTRID>
-      <svTRID>ccReg-0000014446</svTRID>
+      <svTRID>fred-0000014446</svTRID>
     </trID>
   </response>
 </epp>
@@ -366,7 +366,7 @@ data = (
     </resData>
     <trID>
       <clTRID>jfbs004#06-09-21at17:29:24</clTRID>
-      <svTRID>ccReg-0000014447</svTRID>
+      <svTRID>fred-0000014447</svTRID>
     </trID>
   </response>
 </epp>

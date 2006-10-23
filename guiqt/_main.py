@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'main.ui'
 #
-# Created: Pá říj 20 15:06:36 2006
+# Created: Po říj 23 11:11:22 2006
 #      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -1990,7 +1990,7 @@ image5_data = \
     "\xff\x07\x0a\xad\x06\x13\x66\x5a\x16\x07\x00\x00" \
     "\x00\x00\x49\x45\x4e\x44\xae\x42\x60\x82"
 
-class ccregWindow(QDialog):
+class FredWindow(QDialog):
     def __init__(self,parent = None,name = None,modal = 0,fl = 0):
         QDialog.__init__(self,parent,name,modal,fl)
 
@@ -2007,7 +2007,7 @@ class ccregWindow(QDialog):
         self.image5 = QPixmap()
         self.image5.loadFromData(image5_data,"PNG")
         if not name:
-            self.setName("ccregWindow")
+            self.setName("FredWindow")
 
         self.setSizeGripEnabled(1)
         self.setModal(0)
@@ -3681,12 +3681,12 @@ class ccregWindow(QDialog):
 
 
     def languageChange(self):
-        self.setCaption(self.__tr("ccRegClient"))
+        self.setCaption(self.__tr("FredClient"))
         self.status.setText(self.__tr("<b>Status:</b> <span style=\"color:red\">disconnect</span>"))
         self.buttonOk.setText(self.__tr("E&xit client"))
         self.buttonOk.setAccel(self.__tr("Alt+X"))
-        self.textLabel1.setText(self.__tr("Welcome on the <b>ccRegClient</b> GUI interface.<br>\n"
-"Version 1.0; (Needs <b>ccReg module</b> version 1.2)<br>\n"
+        self.textLabel1.setText(self.__tr("Welcome on the <b>FredClient</b> GUI interface.<br>\n"
+"Version 1.0.0; (Needs <b>Fred module</b> version 1.0.0)<br>\n"
 "<br>\n"
 "Parameters in <b>bold</b> style are <b>required</b>. Others are optionals."))
         self.groupBox1.setTitle(self.__tr("Client to EPP server"))
@@ -4135,160 +4135,160 @@ class ccregWindow(QDialog):
 
 
     def login(self):
-        print "ccregWindow.login(): Not implemented yet"
+        print "FredWindow.login(): Not implemented yet"
 
     def logout(self):
-        print "ccregWindow.logout(): Not implemented yet"
+        print "FredWindow.logout(): Not implemented yet"
 
     def hello(self):
-        print "ccregWindow.hello(): Not implemented yet"
+        print "FredWindow.hello(): Not implemented yet"
 
     def check_contact(self):
-        print "ccregWindow.check_contact(): Not implemented yet"
+        print "FredWindow.check_contact(): Not implemented yet"
 
     def check_nsset(self):
-        print "ccregWindow.check_nsset(): Not implemented yet"
+        print "FredWindow.check_nsset(): Not implemented yet"
 
     def check_domain(self):
-        print "ccregWindow.check_domain(): Not implemented yet"
+        print "FredWindow.check_domain(): Not implemented yet"
 
     def info_contact(self):
-        print "ccregWindow.info_contact(): Not implemented yet"
+        print "FredWindow.info_contact(): Not implemented yet"
 
     def info_nsset(self):
-        print "ccregWindow.info_nsset(): Not implemented yet"
+        print "FredWindow.info_nsset(): Not implemented yet"
 
     def info_domain(self):
-        print "ccregWindow.info_domain(): Not implemented yet"
+        print "FredWindow.info_domain(): Not implemented yet"
 
     def create_contact(self):
-        print "ccregWindow.create_contact(): Not implemented yet"
+        print "FredWindow.create_contact(): Not implemented yet"
 
     def create_nsset(self):
-        print "ccregWindow.create_nsset(): Not implemented yet"
+        print "FredWindow.create_nsset(): Not implemented yet"
 
     def create_domain(self):
-        print "ccregWindow.create_domain(): Not implemented yet"
+        print "FredWindow.create_domain(): Not implemented yet"
 
     def update_contact(self):
-        print "ccregWindow.update_contact(): Not implemented yet"
+        print "FredWindow.update_contact(): Not implemented yet"
 
     def update_nsset(self):
-        print "ccregWindow.update_nsset(): Not implemented yet"
+        print "FredWindow.update_nsset(): Not implemented yet"
 
     def update_domain(self):
-        print "ccregWindow.update_domain(): Not implemented yet"
+        print "FredWindow.update_domain(): Not implemented yet"
 
     def delete_contact(self):
-        print "ccregWindow.delete_contact(): Not implemented yet"
+        print "FredWindow.delete_contact(): Not implemented yet"
 
     def delete_nsset(self):
-        print "ccregWindow.delete_nsset(): Not implemented yet"
+        print "FredWindow.delete_nsset(): Not implemented yet"
 
     def delete_domain(self):
-        print "ccregWindow.delete_domain(): Not implemented yet"
+        print "FredWindow.delete_domain(): Not implemented yet"
 
     def transfer_contact(self):
-        print "ccregWindow.transfer_contact(): Not implemented yet"
+        print "FredWindow.transfer_contact(): Not implemented yet"
 
     def transfer_domain(self):
-        print "ccregWindow.transfer_domain(): Not implemented yet"
+        print "FredWindow.transfer_domain(): Not implemented yet"
 
     def renew_domain(self):
-        print "ccregWindow.renew_domain(): Not implemented yet"
+        print "FredWindow.renew_domain(): Not implemented yet"
 
     def list_contact(self):
-        print "ccregWindow.list_contact(): Not implemented yet"
+        print "FredWindow.list_contact(): Not implemented yet"
 
     def list_nsset(self):
-        print "ccregWindow.list_nsset(): Not implemented yet"
+        print "FredWindow.list_nsset(): Not implemented yet"
 
     def list_domain(self):
-        print "ccregWindow.list_domain(): Not implemented yet"
+        print "FredWindow.list_domain(): Not implemented yet"
 
     def poll(self):
-        print "ccregWindow.poll(): Not implemented yet"
+        print "FredWindow.poll(): Not implemented yet"
 
     def source_login(self):
-        print "ccregWindow.source_login(): Not implemented yet"
+        print "FredWindow.source_login(): Not implemented yet"
 
     def source_logout(self):
-        print "ccregWindow.source_logout(): Not implemented yet"
+        print "FredWindow.source_logout(): Not implemented yet"
 
     def source_poll(self):
-        print "ccregWindow.source_poll(): Not implemented yet"
+        print "FredWindow.source_poll(): Not implemented yet"
 
     def source_hello(self):
-        print "ccregWindow.source_hello(): Not implemented yet"
+        print "FredWindow.source_hello(): Not implemented yet"
 
     def source_check_contact(self):
-        print "ccregWindow.source_check_contact(): Not implemented yet"
+        print "FredWindow.source_check_contact(): Not implemented yet"
 
     def source_info_contact(self):
-        print "ccregWindow.source_info_contact(): Not implemented yet"
+        print "FredWindow.source_info_contact(): Not implemented yet"
 
     def source_create_contact(self):
-        print "ccregWindow.source_create_contact(): Not implemented yet"
+        print "FredWindow.source_create_contact(): Not implemented yet"
 
     def source_update_contact(self):
-        print "ccregWindow.source_update_contact(): Not implemented yet"
+        print "FredWindow.source_update_contact(): Not implemented yet"
 
     def source_delete_contact(self):
-        print "ccregWindow.source_delete_contact(): Not implemented yet"
+        print "FredWindow.source_delete_contact(): Not implemented yet"
 
     def source_transfer_contact(self):
-        print "ccregWindow.source_transfer_contact(): Not implemented yet"
+        print "FredWindow.source_transfer_contact(): Not implemented yet"
 
     def source_list_contact(self):
-        print "ccregWindow.source_list_contact(): Not implemented yet"
+        print "FredWindow.source_list_contact(): Not implemented yet"
 
     def source_check_nsset(self):
-        print "ccregWindow.source_check_nsset(): Not implemented yet"
+        print "FredWindow.source_check_nsset(): Not implemented yet"
 
     def source_info_nsset(self):
-        print "ccregWindow.source_info_nsset(): Not implemented yet"
+        print "FredWindow.source_info_nsset(): Not implemented yet"
 
     def source_create_nsset(self):
-        print "ccregWindow.source_create_nsset(): Not implemented yet"
+        print "FredWindow.source_create_nsset(): Not implemented yet"
 
     def source_update_nsset(self):
-        print "ccregWindow.source_update_nsset(): Not implemented yet"
+        print "FredWindow.source_update_nsset(): Not implemented yet"
 
     def source_delete_nsset(self):
-        print "ccregWindow.source_delete_nsset(): Not implemented yet"
+        print "FredWindow.source_delete_nsset(): Not implemented yet"
 
     def source_list_nsset(self):
-        print "ccregWindow.source_list_nsset(): Not implemented yet"
+        print "FredWindow.source_list_nsset(): Not implemented yet"
 
     def source_check_domain(self):
-        print "ccregWindow.source_check_domain(): Not implemented yet"
+        print "FredWindow.source_check_domain(): Not implemented yet"
 
     def source_info_domain(self):
-        print "ccregWindow.source_info_domain(): Not implemented yet"
+        print "FredWindow.source_info_domain(): Not implemented yet"
 
     def source_create_domain(self):
-        print "ccregWindow.source_create_domain(): Not implemented yet"
+        print "FredWindow.source_create_domain(): Not implemented yet"
 
     def source_update_domain(self):
-        print "ccregWindow.source_update_domain(): Not implemented yet"
+        print "FredWindow.source_update_domain(): Not implemented yet"
 
     def source_delete_domain(self):
-        print "ccregWindow.source_delete_domain(): Not implemented yet"
+        print "FredWindow.source_delete_domain(): Not implemented yet"
 
     def source_transfer_domain(self):
-        print "ccregWindow.source_transfer_domain(): Not implemented yet"
+        print "FredWindow.source_transfer_domain(): Not implemented yet"
 
     def source_renew_domain(self):
-        print "ccregWindow.source_renew_domain(): Not implemented yet"
+        print "FredWindow.source_renew_domain(): Not implemented yet"
 
     def source_list_domain(self):
-        print "ccregWindow.source_list_domain(): Not implemented yet"
+        print "FredWindow.source_list_domain(): Not implemented yet"
 
     def btn_close(self):
-        print "ccregWindow.btn_close(): Not implemented yet"
+        print "FredWindow.btn_close(): Not implemented yet"
 
     def credits(self):
-        print "ccregWindow.credits(): Not implemented yet"
+        print "FredWindow.credits(): Not implemented yet"
 
     def __tr(self,s,c = None):
-        return qApp.translate("ccregWindow",s,c)
+        return qApp.translate("FredWindow",s,c)

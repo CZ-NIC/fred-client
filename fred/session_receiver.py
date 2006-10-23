@@ -456,29 +456,29 @@ class ManagerReceiver(ManagerCommand):
         dct_params = adjust_dict(params)                                      # turn params into expecterd format
         self.create_command_with_params(command_name, dct_params)             # create EPP command
         self._raw_cmd = self._epp_cmd.get_xml()                               # get EPP in XML (string)
-        if len(self._errors): raise ccRegError(self.fetch_errors())
+        if len(self._errors): raise FredError(self.fetch_errors())
         if self.is_online(command_name):                                      # go only if session is online.
             errors = self.is_epp_valid(self._raw_cmd)                         # check doc for EPP validation
-            if len(errors): raise ccRegError(errors)
+            if len(errors): raise FredError(errors)
             if self.is_connected(): # if we are connect, lets communicate with the server
                 self.send(self._raw_cmd)                                      # send to server
-                if len(self._errors): raise ccRegError(self.fetch_errors())
+                if len(self._errors): raise FredError(self.fetch_errors())
                 xml_answer = self.receive()                                   # receive answer
                 self.process_answer(xml_answer)                               # process answer
-                if len(self._errors): raise ccRegError(self.fetch_errors())
+                if len(self._errors): raise FredError(self.fetch_errors())
             else:
                 errors = _T('You are not logged. First type login.')
-                raise ccRegError(errors)
+                raise FredError(errors)
         else:
             self._dct_answer['errors'].append(_T('You are not logged. You must call login() before working on the server.'))
-        if len(self._errors): raise ccRegError(self.fetch_errors())
+        if len(self._errors): raise FredError(self.fetch_errors())
         return self._dct_answer
 
     #-------------------------------------------------
 
 
-class ccRegError(StandardError):
-    'ccReg EPP errors.'
+class FredError(StandardError):
+    'Fred EPP errors.'
     def __init__(self, message):
         StandardError.__init__(self, message)
         # Encode unicode message into the local encoding. session_base.get_unicode()

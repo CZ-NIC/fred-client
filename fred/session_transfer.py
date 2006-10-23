@@ -9,7 +9,7 @@ from translate import encoding, options
 
 # Tags for scripted outputs:
 d_tag = {
-    'html': ('<pre class="ccreg_messages">','</pre>'),
+    'html': ('<pre class="fred_messages">','</pre>'),
     'php': ('<?php /*','*/ ?>'),
 }
 BEGIN,END = range(2)
@@ -336,11 +336,11 @@ class ManagerTransfer(ManagerBase):
     def get_answer_html(self, dct=None):
         """Returns data in HTML format. Used syles:
         CSS:
-        .ccreg_client       - main div of HTML output
-        .ccreg_code         - div part of message (code + reason)
-        .ccreg_errors       - ul li with errors
-        .ccreg_data         - table with data
-        .ccreg_source       - pre with XML sources
+        .fred_client       - main div of HTML output
+        .fred_code         - div part of message (code + reason)
+        .fred_errors       - ul li with errors
+        .fred_data         - table with data
+        .fred_source       - pre with XML sources
         .command_success    - reason with code 1000
         .command_done       - other readons
         .even               - every even row in data table
@@ -353,7 +353,7 @@ class ManagerTransfer(ManagerBase):
         reason_css_class = code==1000 and 'command_success' or 'command_done'
         if self._session[VERBOSE] > 1 or code != 1000:
             # full
-            tbl_reason=['<table class="ccreg_data">']
+            tbl_reason=['<table class="fred_data">']
             tbl_reason.append('<tr>\n\t<th>%s</th>\n\t<td>%d</td>\n</tr>'%(_T('Return code'),code))
             #tbl_reason.append('<tr>\n\t<th>command</th>\n\t<td>%s</td>\n</tr>'%get_ltext(dct['command']))
             tbl_reason.append('<tr>\n\t<th>%s</th>\n\t<td><span class="%s">%s</span></td>\n</tr>'%(_T('Reason'), reason_css_class,get_ltext(dct['reason'])))
@@ -361,7 +361,7 @@ class ManagerTransfer(ManagerBase):
             report('\n'.join(tbl_reason))
         #... errors .............................
         if len(dct['errors']):
-            report('<div class="ccreg_errors">\n<strong>errors:</strong><ul>')
+            report('<div class="fred_errors">\n<strong>errors:</strong><ul>')
             for error in dct['errors']:
                 report('<li>%s</li>'%get_ltext(error))
             report('</ul></div>')
@@ -380,14 +380,14 @@ class ManagerTransfer(ManagerBase):
                     key = re.sub(':reason$','',key)
                 __append_into_report__(data,key,value,explain,self._ljust,'',2) # 2 - use HTML pattern;
         if len(data):
-            report('<table class="ccreg_data">')
+            report('<table class="fred_data">')
             body.extend(data)
             report('</table>')
         for n in range(len(body)):
             if type(body[n]) == unicode: body[n] = body[n].encode(encoding)
         #... third verbose level .............................
         if self._session[VERBOSE] == 3:
-            report('<pre class="ccreg_source">')
+            report('<pre class="fred_source">')
             report('<strong>COMMAND:</strong>')
             report(escape_html(human_readable(self._raw_cmd)))
             report('<strong>ANSWER:</strong>')

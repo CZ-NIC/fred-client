@@ -7,8 +7,8 @@
     -h --help     this help
 """
 import sys, re, time
-import ccReg
-from ccReg.translate import encoding
+import fred
+from fred.translate import encoding
 
 
 def find_available_handle(epp_cli, type_object, prefix):
@@ -56,7 +56,7 @@ def write_log(epp_cli, log_fp, log_step, fnc_name, fnc_doc, step=None):
         answer = epp_cli.get_answer()
         if answer:
             log_fp.write('%s\n'%re.sub('\x1b(\\[|\\()\d*(m|B)','',answer))
-        edoc = ccReg.eppdoc.Message()
+        edoc = fred.eppdoc.Message()
         edoc.parse_xml(epp_cli._epp._raw_answer)
         log_fp.write(edoc.get_xml())
         log_fp.write('\n%s\n'%('='*60))
@@ -118,7 +118,7 @@ def check_date(date, nu, sql_date=None):
     exdate = time.strftime('%Y-%m-%d',ts)
     return exdate == date[:10], exdate
 
-get_local_text = ccReg.session_base.get_ltext
+get_local_text = fred.session_base.get_ltext
 
 if __name__ == '__main__':
-    print "This module is used by all ccreg unittests."
+    print "This module is used by all fred unittests."

@@ -4,10 +4,10 @@ from qt import *
 from shared_fnc import *
 import _update_domain
 
-class ccregWindow(_update_domain.ccregWindow):
+class FredWindow(_update_domain.FredWindow):
 
     def __init__(self,parent = None,name = None,fl = 0):
-        _update_domain.ccregWindow.__init__(self,parent,name,fl)
+        _update_domain.FredWindow.__init__(self,parent,name,fl)
         self.add_admin.horizontalHeader().resizeSection(0,320)
         self._add_admin_item = None
         self.rem_admin.horizontalHeader().resizeSection(0,320)

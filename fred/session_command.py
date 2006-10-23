@@ -348,7 +348,7 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
             self.append_note(_T('You are connected already. Type disconnect for close connection.'))
         else:
             self.connect() # připojení k serveru
-        return 'connect' # Need for ccreg_console.py where must be displayed server answer.
+        return 'connect' # Need for fred_console.py where must be displayed server answer.
 
     def __session_disconnect__(self, param):
         'Run connection process'

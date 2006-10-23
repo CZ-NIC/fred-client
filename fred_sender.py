@@ -3,10 +3,10 @@
 """Send any file (EPP XML) to the EPP server.
 """
 import sys, os, re, time
-import ccReg
-from ccReg.session_receiver import ccRegError
-from ccReg.session_transfer import BEGIN, END
-from ccReg.translate import options, option_errors, option_args
+import fred
+from fred.session_receiver import FredError
+from fred.session_transfer import BEGIN, END
+from fred.translate import options, option_errors, option_args
 
 def __auto_login__(epp, verbose):
     'Do login'
@@ -15,11 +15,11 @@ def __auto_login__(epp, verbose):
         # username a password musí být v config
         dansw = epp.api_command('login',epp.get_default_params_from_config('login'))
         ok = 1
-    except ccRegError, msg:
+    except FredError, msg:
         print 'Error:',msg
         ok = 0
         dansw={}
-    if dansw.get('code',0) != 1000: epp.append_error(ccReg.session_base.get_ltext(dansw.get('reason',_T('Login failed'))))
+    if dansw.get('code',0) != 1000: epp.append_error(fred.session_base.get_ltext(dansw.get('reason',_T('Login failed'))))
     epp.display()
     return ok
 
@@ -41,7 +41,7 @@ def send_docs(display_bar, docs=[]):
     #-------------------------------------------------
     # Inicializace klienta
     #-------------------------------------------------
-    epp = ccReg.ClientSession()
+    epp = fred.ClientSession()
     if not epp.load_config(): return
     
     if len(options['verbose']):
@@ -96,7 +96,7 @@ def send_docs(display_bar, docs=[]):
         else:
             if not display_bar: print "ERRORS:",xmldoc
         if display_bar:
-            if bar is None: bar = ccReg.terminal_controler.ProgressBar(ccReg.session_base.colored_output,bar_header)
+            if bar is None: bar = fred.terminal_controler.ProgressBar(fred.session_base.colored_output,bar_header)
             bar.clear()
             bar.update(bar_pos, _T('sending...'))
             bar_pos += bar_step
@@ -114,12 +114,12 @@ def send_docs(display_bar, docs=[]):
         epp.set_verbose(0)
         try:
             epp.api_command('logout') # automatický logout
-        except ccRegError, msg:
+        except FredError, msg:
             print 'Error:',msg
         epp.print_answer()
 
 if __name__ == '__main__':
-    msg_invalid = ccReg.check_python_version()
+    msg_invalid = fred.check_python_version()
     if msg_invalid:
         print msg_invalid
     else:
@@ -129,16 +129,16 @@ if __name__ == '__main__':
             if not options['help'] and len(sys.argv) > 1:
                 send_docs(options['bar']) # commands from argv
             else:
-                from ccreg_console import help_option
-                print '%s: %s [OPTIONS...]\n\n%s\n\n%s\n\n%s:\n%s\n\n  %s\n'%(_T('Usage'), 'ccreg_sender.py',
+                from fred_console import help_option
+                print '%s: %s [OPTIONS...]\n\n%s\n\n%s\n\n%s:\n%s\n\n  %s\n'%(_T('Usage'), 'fred_sender.py',
                 _T('Module for sending files to the EPP server.'),
                 help_option,
                 _T('EXAMPLES'),
 """
-  ./ccreg_create.py info_domain nic.cz > cmd1.xml
-  ./ccreg_create.py info_contact reg-id pokus > cmd2.xml
-  ./ccreg_sender.py cmd1.xml cmd2.xml
-  ./ccreg_sender.py -s epp_host -l cs cmd1.xml cmd2.xml
+  ./fred_create.py info_domain nic.cz > cmd1.xml
+  ./fred_create.py info_contact reg-id pokus > cmd2.xml
+  ./fred_sender.py cmd1.xml cmd2.xml
+  ./fred_sender.py -s epp_host -l cs cmd1.xml cmd2.xml
     
-  echo -en "check_domain nic.cz\\ninfo_domain nic.cz" | ./ccreg_create.py | ./ccreg_sender.py""",
+  echo -en "check_domain nic.cz\\ninfo_domain nic.cz" | ./fred_create.py | ./fred_sender.py""",
    _T('For more information, see README.'))

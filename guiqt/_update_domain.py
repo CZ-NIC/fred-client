@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'update_domain.ui'
 #
-# Created: Út říj 3 12:38:38 2006
+# Created: Po říj 23 10:24:04 2006
 #      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,12 +12,12 @@ from qt import *
 from qttable import QTable
 
 
-class ccregWindow(QWidget):
+class FredWindow(QWidget):
     def __init__(self,parent = None,name = None,fl = 0):
         QWidget.__init__(self,parent,name,fl)
 
         if not name:
-            self.setName("ccregWindow")
+            self.setName("FredWindow")
 
 
 
@@ -246,16 +246,16 @@ class ccregWindow(QWidget):
 
 
     def add_admin_current_changed(self,a0,a1):
-        print "ccregWindow.add_admin_current_changed(int,int): Not implemented yet"
+        print "FredWindow.add_admin_current_changed(int,int): Not implemented yet"
 
     def add_admin_value_changed(self,a0,a1):
-        print "ccregWindow.add_admin_value_changed(int,int): Not implemented yet"
+        print "FredWindow.add_admin_value_changed(int,int): Not implemented yet"
 
     def rem_admin_current_changed(self,a0,a1):
-        print "ccregWindow.rem_admin_current_changed(int,int): Not implemented yet"
+        print "FredWindow.rem_admin_current_changed(int,int): Not implemented yet"
 
     def rem_admin_value_changed(self,a0,a1):
-        print "ccregWindow.rem_admin_value_changed(int,int): Not implemented yet"
+        print "FredWindow.rem_admin_value_changed(int,int): Not implemented yet"
 
     def __tr(self,s,c = None):
-        return qApp.translate("ccregWindow",s,c)
+        return qApp.translate("FredWindow",s,c)

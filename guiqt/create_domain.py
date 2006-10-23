@@ -3,11 +3,11 @@ from qt import *
 from shared_fnc import *
 import _create_domain
 
-class ccregWindow(_create_domain.ccregWindow):
+class FredWindow(_create_domain.FredWindow):
     'Create domain frame.'
 
     def __init__(self,parent = None,name = None,fl = 0):
-        _create_domain.ccregWindow.__init__(self,parent,name,fl)
+        _create_domain.FredWindow.__init__(self,parent,name,fl)
         self.admin.horizontalHeader().resizeSection(0,320)
         self._admin_item = None
 
@@ -20,7 +20,7 @@ class ccregWindow(_create_domain.ccregWindow):
 
 if __name__ == '__main__':
     app = QApplication([])
-    form = ccregWindow()
+    form = FredWindow()
     form.show()
     app.setMainWidget(form)
     app.exec_loop()

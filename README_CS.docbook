@@ -4,7 +4,7 @@
 <book lang="cs">
 
 <bookinfo>
-    <title>Manuál pro ccRegClient konzoli a knihovnu ccReg</title>
+    <title>Manuál pro FredClient konzoli a knihovnu fred</title>
     <subtitle>Verze 1.2</subtitle>
     <copyright>
       <year>2006</year>
@@ -21,9 +21,9 @@
   </bookinfo>
 
   <preface>
-    <title>Co je ccRegClient:</title>
+    <title>Co je FredClient:</title>
     <para>
-    ccRegClient je sada scriptů v jazyce Python postavených na ccReg knihovně
+    FredClient je sada scriptů v jazyce Python postavených na fred knihovně
     a určených ke komunikaci s EPP serverem.
     </para>
     <para>Sada obsahuje EPP konzoli a skripty určené pro použití v shellu.</para>
@@ -32,7 +32,7 @@
 
   <chapter>
     <title>Licence</title>
-    <para>Licence je v souboru ccReg/LICENSE.</para>
+    <para>Licence je v souboru fred/LICENSE.</para>
   </chapter>
 
 
@@ -58,10 +58,10 @@ Dostupné skripty jsou následující:
 </para>
 
 <simplelist>
-    <member>ccreg_client.py   - spouští EPP konzoli nebo sekvenci crate+send (pro shell)</member>
-    <member>ccreg_console.py  - EPP konzole, komunikuje s EPP serverem</member>
-    <member>ccreg_create.py   - Vytboří zdrojový EPP XML příkaz</member>
-    <member>ccreg_sender.py   - Odešle soubor na EPP server</member>
+    <member>fred_client.py   - spouští EPP konzoli nebo sekvenci crate+send (pro shell)</member>
+    <member>fred_console.py  - EPP konzole, komunikuje s EPP serverem</member>
+    <member>fred_create.py   - Vytboří zdrojový EPP XML příkaz</member>
+    <member>fred_sender.py   - Odešle soubor na EPP server</member>
 </simplelist>
 
     <section>
@@ -76,10 +76,10 @@ zadáním parametru --help nebo -?:
 </para>
 
 <programlisting>
-    $ ccreg_client.py --help
-    $ ccreg_client.py -?
+    $ fred_client.py --help
+    $ fred_client.py -?
 
-Použití: python ccreg_console.py [OPTIONS]
+Použití: python fred_console.py [OPTIONS]
 Konzole pro komunikaci s EPP serverem.
 
 OPTIONS s hodnotami:
@@ -111,10 +111,14 @@ OPTIONS:
     Config
     </title>
 <para>
-Config je společný pro všechny skripty a je uložen v souboru .ccReg.conf. 
-Nejdříve se hledá v adresáři společném pro všechny uživatele. 
-Na POSIX systémech je to /etc, v MS Windows v adresáři nastaveném v proměnné
-$ALLUSERSPROFILE.</para>
+Konfigurační soubor se implicitně hledá nejdříve v home uživatele (~/.fred_client.conf), 
+který skript spustil. Pokud tam není nalezen, hledá se v adresáři etc
+(/etc/fred_client.conf). Na POSIX systémech je to /etc, v MS Windows 
+to je v adresáři nastaveném v proměnné $ALLUSERSPROFILE.
+
+Přepínačem --config=filepath je možné konfigurační soubor 
+načíst z libovolného adresáře.
+</para>
 <para>
 Pak se hledá v adresáři, kde je umístěna knihovna cReg.
 Pokud ani tam není nalezen, hledá se v domovském adresáři uživatele.
@@ -125,8 +129,8 @@ přepínače -c CONFIGNAME, --config=CONFIGNAME.
 </para>
 <para>
 Konfig soubor lze vygenerovat v konzoli. Spusťte si konzoli
-příkazem ccreg_console.py (nebo ccreg_client.py) a zadejte příkaz "config create".
-Další podrobnosti naleznete v části popisu práce s konzolí (4. Program ccreg_console).
+příkazem fred_console.py (nebo fred_client.py) a zadejte příkaz "config create".
+Další podrobnosti naleznete v části popisu práce s konzolí (4. Program fred_console).
 </para>
 <para>
 V konfigu se nachází sekce connect, kde jsou uloženy cesty k certifikátům
@@ -161,7 +165,7 @@ pomocí parametru --session. Například si vytvoříte sekci [connect_myeppserv
 tu pak aktivujete: 
 
 <programlisting>
-    $ ccreg_client.py --session=myeppserver     (nebo -s myeppserver)
+    $ fred_client.py --session=myeppserver     (nebo -s myeppserver)
 
     [connect_myeppserver]
     dir=/test/certificates
@@ -266,16 +270,16 @@ V sekci <emphasis>session</emphasis> jsou tato nastavení:</para>
 
 <chapter>
     <title>
-    Program ccreg_console.py
+    Program fred_console.py
     </title>
 
 <para>
-ccreg_console.py je konzole, která komunikuje s EPP serverem. Konzoli spustíte
+fred_console.py je konzole, která komunikuje s EPP serverem. Konzoli spustíte
 příkazem:
 </para>
 
 <programlisting>
-    $ ccreg_console.py
+    $ fred_console.py
 </programlisting>
 
 <para>
@@ -292,7 +296,7 @@ Jaké příkazy máte k dispozici zjistíte zadáním příkazu "help" (nebo h, 
 </para>
 
 <programlisting>
-    ccReg client verze 1.1 Zadejte "help", "license" nebo "credits" pro zobrazení více informací.
+    FredClient verze 1.0.0 Zadejte "help", "license" nebo "credits" pro zobrazení více informací.
     &gt; help
 </programlisting>
 
@@ -704,7 +708,7 @@ se před odesláním požaduje potvrzení k odeslání. Přepínačem "confirm O
 
 Konzole si hodnoty interních nastavení načítá z konfigu. Pokud ještě konfig nebyl vytvořen, tak se
 nastaví defaultní hodnoty. Aktuální hodnoty konfigu lze zobrazit příkazem "config". Chcete-li
-konfig vytvořit, zadejte "config create". Tím se vytvoří konfigurační soubor ".ccReg.conf" ve vašem
+konfig vytvořit, zadejte "config create". Tím se vytvoří konfigurační soubor ".fred_client.conf" ve vašem
 domovském adresáři. V konfigu si pak můžete nastavit cestu k vašemu certifikátu a další hodnoty.
 Konzole se pokouší neprve načíst konfig z adresáře /etc (ve Windows z adresáře uvedeném v proměnné
 prostředí $ALLUSERSPROFILE, ta bývá obvykle nastavena na "C:\Documents and Settings\All Users")
@@ -756,21 +760,21 @@ a <link linkend='config_null_value'>Formát hodnoty NULL</link>.
 <chapter>
 
     <title>
-    Skripty ccreg_create.py a ccreg_sender.py
+    Skripty fred_create.py a fred_sender.py
     </title>
 
 <para>
 
 
-Skripty <emphasis>ccreg_create.py</emphasis> a <emphasis>ccreg_sender.py</emphasis> jsou určeny pro použití v shell batchi.
+Skripty <emphasis>fred_create.py</emphasis> a <emphasis>fred_sender.py</emphasis> jsou určeny pro použití v shell batchi.
 
-<emphasis>ccreg_create.py</emphasis> přijímá parametry se standardního vstupu a vygeneruje 
+<emphasis>fred_create.py</emphasis> přijímá parametry se standardního vstupu a vygeneruje 
 XML EPP dokument na standardní výstup. Například:
 </para>
 
 <programlisting>
-    $ python ccreg_create.py info_domain nic.cz
-    $ ./ccreg_create.py info_domain nic.cz
+    $ python fred_create.py info_domain nic.cz
+    $ ./fred_create.py info_domain nic.cz
 </programlisting>
 
 <para>&lt;?xml version='1.0' encoding....</para>
@@ -780,7 +784,7 @@ Pokud nastane nějaká chyba, tak vrací XML s chybovým hlášením:
 </para>
 
 <programlisting>
-    $ python ccreg_create.py inxo_domain nic.cz
+    $ python fred_create.py inxo_domain nic.cz
 </programlisting>
 
 <para>
@@ -792,11 +796,11 @@ Příkazy se dají zřetězit:
 </para>
 
 <programlisting>
-    $ ./ccreg_create.py check_domain test.cz nic.cz | ./ccreg_create.py info_domain nic.cz
+    $ ./fred_create.py check_domain test.cz nic.cz | ./fred_create.py info_domain nic.cz
 </programlisting>
 
 <para>
-<emphasis>ccreg_sender.py</emphasis> odesílá dokumenty na server. Skript se automaticky zaloguje, pak
+<emphasis>fred_sender.py</emphasis> odesílá dokumenty na server. Skript se automaticky zaloguje, pak
 předá dokument, zobrazí odpověď a odloguje se a ukončí. Pro správné zalogovájní je nutné
 mít správně nastaven config.</para>
 <para>
@@ -807,9 +811,9 @@ Skript může odesílat dokumenty dvěma způsoby:
     1. dokumenty se uloží do souboru a skriptu se předají jména souborů. Skript
        je pak odesílá v uvedeném pořadí. Například:
 <programlisting>
-    $ ./ccreg_create.py check_domain cosi.cz nic.cz &gt; doc1.xml
-    $ ./ccreg_create.py info_domain nic.cz > doc2.xml
-    $ ./ccreg_sender.py doc1.xml doc2.xml
+    $ ./fred_create.py check_domain cosi.cz nic.cz &gt; doc1.xml
+    $ ./fred_create.py info_domain nic.cz > doc2.xml
+    $ ./fred_sender.py doc1.xml doc2.xml
 </programlisting>
 </para>
 
@@ -818,7 +822,7 @@ Skript může odesílat dokumenty dvěma způsoby:
        Například:
 
 <programlisting>
-    $ ./ccreg_create.py check_domain cosi.cz nic.cz | ./ccreg_create.py info_domain nic.cz | ./ccreg_sender.py
+    $ ./fred_create.py check_domain cosi.cz nic.cz | ./fred_create.py info_domain nic.cz | ./fred_sender.py
 </programlisting>
 
 </para>
@@ -827,12 +831,12 @@ Skript může odesílat dokumenty dvěma způsoby:
 
 <chapter>
     <title>
-    Knihovna ccReg a popis API
+    Knihovna fred a popis API
     </title>
 
 <para>
 
-Knihovna ccReg vám umoňuje implmentovat API rozhraní do vašich aplikací. Knihova i jednotlivé funkce
+Knihovna "fred" vám umoňuje implmentovat API rozhraní do vašich aplikací. Knihova i jednotlivé funkce
 obsahují komentáře, podle kterých se můžete při implementaci řídit. V části __init__.py naleznete
 i ukázky kódu.
 </para>
@@ -850,15 +854,15 @@ dokumentace, který je standardní součástí pythonu: Zadejte na příkazové 
 Tím jste spustili webový server, který generuje strany dokumentace přímo ze zdrojových souborů.
 Parametr -p udává na jakém portu je server spuštěn. Číslo portu můžete zadat jakékoliv jiné.
 Nyní si otevřete prohlížeč a zadejte adresu: http://localhost:8080/. Otevře se strana, na které
-v části ../site-packages naleznete odkaz na ccReg (package).
+v části ../site-packages naleznete odkaz na fred (package).
 </para>
 <para>
 Pokud jste skripty neinstalovali, ale jen nakopírovali, nebo pokud se chcete podívat i na skripty
-pracující s knihovnou ccReg, tak celý proces spuštění udělejte stejně, ale s tím rozdílem, že pydoc
+pracující s knihovnou fred, tak celý proces spuštění udělejte stejně, ale s tím rozdílem, že pydoc
 spustíte z adresáře, kde máte tyto skripty uložené. Pak se v helpu zobrazí i ony:
 
 <programlisting>
-    $ cd ccRegClient-1.1
+    $ cd FredClient-1.0.0
     $ pydoc -p 8080
 </programlisting>
 
@@ -873,13 +877,13 @@ Server ukončíte stiskem Ctrl+C.
 Import knihovny provedete příkazem:
 
 <programlisting>
-    &gt;&gt;&gt; import ccReg
+    &gt;&gt;&gt; import fred
 </programlisting>
 
 Instanci EPP klienta vytvoříte:
 
 <programlisting>
-    &gt;&gt;&gt; epp = ccReg.Client()
+    &gt;&gt;&gt; epp = fred.Client()
 </programlisting>
 
 Ještě musíte načíst config, aby knihovna našla certifikát:
@@ -1006,7 +1010,7 @@ V případě, že daný klíč neexistuje, vrací funkce hodnotu None.
 </programlisting>
 
 Pokud se vyskytne nějaká chyba při přenosu nebo jiná, která zablokuje funkčnost, tak se generuje
-výjimka ccRegError.
+výjimka FredError.
 </para>
 </section>
 

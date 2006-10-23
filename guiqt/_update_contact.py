@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'update_contact.ui'
 #
-# Created: Čt říj 19 16:26:32 2006
+# Created: Po říj 23 10:24:11 2006
 #      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,12 +12,12 @@ from qt import *
 from qttable import QTable
 
 
-class ccregWindow(QWidget):
+class FredWindow(QWidget):
     def __init__(self,parent = None,name = None,fl = 0):
         QWidget.__init__(self,parent,name,fl)
 
         if not name:
-            self.setName("ccregWindow")
+            self.setName("FredWindow")
 
 
 
@@ -340,4 +340,4 @@ class ccregWindow(QWidget):
 
 
     def __tr(self,s,c = None):
-        return qApp.translate("ccregWindow",s,c)
+        return qApp.translate("FredWindow",s,c)
