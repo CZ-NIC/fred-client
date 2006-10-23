@@ -3,13 +3,13 @@
 
 
 
-Instalace ccRegClient
+Instalace FredClient
 
 
 
 ** Požadavky na systém:
 
-ccRegClient je napsán v jazyce Python. Pokud se ve vašem systému Python nenachází, 
+FredClient je napsán v jazyce Python. Pokud se ve vašem systému Python nenachází, 
 tak si jej nainstalujte. Instalační soubory jsou v obvyklých repozitářích 
 nebo na www.python.org. Pro běh skriptů potřebujete Python verzi 2.4 (nevo vyšší).
 
@@ -21,7 +21,7 @@ Vypíše se verze: Python 2.4.3 (...). Běh ukončíte Ctrl+D (nebo Ctrl+Z na Wi
 sekvence to je vám vypíše příkaz exit nebo quit.
 
 
-ccRegClient používá "xmllint" pro validaci XML. Tento program ale není
+FredClient používá "xmllint" pro validaci XML. Tento program ale není
 nutnou podmínkou funkčnosti klienta. Pokud se v systému nenachází, tak 
 se ověřování automaticky vypne. Jestli máte xmllint instalován, zjistíte zadáním
 příkazu na příkatové řádce (vypíše se help nebo hlášení, že příkaz je neznámý):
@@ -34,16 +34,16 @@ Usage : xmllint [options] XMLfiles ... / bash: xmllint: command not found
 
 ** Instalace:
 
-Instalace ccRegClient programu se provede následovně:
+Instalace FredClient programu se provede následovně:
 
-    $ tar -xf ccRegClient-1.1.tar.gz         - rozbalíte archiv
-    $ cd ccRegClient-1.1                     - přejdete se do vzniklého adresáře
+    $ tar -xf FredClient-1.0.0.tar.gz        - rozbalíte archiv
+    $ cd FredClient-1.1                      - přejdete se do vzniklého adresáře
     $ sudo python setup.py install           - spustíte instalaci (musíte mít práva roota)
 
 
 Tím je instalace dokončena. Klienta spustíte příkazem:
 
-    $ ccreg_client.py
+    $ fred_client.py
 
 
 Program lze spustit i bez instalace přímo z daného adresáře. Nebo lze instalaci

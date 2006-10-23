@@ -13,16 +13,17 @@ ssl_cert = %(dir)s/epp_test_ccreg_nic_cz_cert.pem
 ssl_key  = %(dir)s/epp_test_ccreg_nic_cz_key.pem
 username = MYUSERNAME
 password = MYPASSWORD
+timeout = 10.0      # socket timeout in sec.
 # socket = IPv6     # valid values are: IPv4 and IPv6
 # nologin = y       # turn off automatic login process after start up
 
 [session]
-poll_ack = off
-confirm_send_commands = on
-validate = on
 schema = /home/username/epp_client/fred/schemas/all-1.0.xsd
-colors = yes
-verbose = 2
+autoackpoll = off            # on - turn on send "poll ack" right after to "poll req"
+confirm_send_commands = on   # confirm all editable commands
+validate = on                # enable/disable xmllint
+colors = yes                 # display colors on tty console
+verbose = 2                  # set verbose level 1,2,3
 # If lang is not set, ti used value from os.environ.LANG
 # lang = en
 # null_value = None   # substitution of NULL value

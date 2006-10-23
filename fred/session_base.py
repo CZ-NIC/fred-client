@@ -205,24 +205,18 @@ class ManagerBase:
     #---------------------------
     def manage_config(self, param):
         'Display config values or save config.'
-        if param == 'create':
-            if self.__create_default_conf__():
-                self.save_confing()
-            else:
-                self.append_error(_T('Create default config failed.'))
-        else:
-            print_unicode('${BOLD}${YELLOW}%s:${NORMAL}\n\t%s'%(_T('Actual config builded from files'),'\n\t'.join(translate.config_names)))
-            if not self._conf:
-                print_unicode(_T('No config'))
-                return
-            selected_section = self.config_get_section_connect()
-            for section in self._conf.sections():
-                msg = ''
-                if section == selected_section:
-                    msg = '${BOLD}${GREEN}*** %s ***${NORMAL}'%_T('Actual connection HERE')
-                print colored_output.render('${BOLD}[%s]${NORMAL} %s'%(section,msg))
-                for option in self._conf.options(section):
-                    print_unicode(colored_output.render('\t${BOLD}%s${NORMAL} = %s'%(option,str(self.get_config_value(section,option)))))
+        print_unicode('${BOLD}${YELLOW}%s:${NORMAL}\n\t%s'%(_T('Actual config builded from files'),'\n\t'.join(translate.config_names)))
+        if not self._conf:
+            print_unicode(_T('No config'))
+            return
+        selected_section = self.config_get_section_connect()
+        for section in self._conf.sections():
+            msg = ''
+            if section == selected_section:
+                msg = '${BOLD}${GREEN}*** %s ***${NORMAL}'%_T('Actual connection HERE')
+            print colored_output.render('${BOLD}[%s]${NORMAL} %s'%(section,msg))
+            for option in self._conf.options(section):
+                print_unicode(colored_output.render('\t${BOLD}%s${NORMAL} = %s'%(option,str(self.get_config_value(section,option)))))
 
     def copy_default_options(self, section, section_default, option):
         'Copy default options where they missing.'
@@ -293,18 +287,6 @@ class ManagerBase:
                     self.append_error('Config ${BOLD}%s:${NORMAL} %s.'%(option,msg))
         return value
 
-    def save_confing(self):
-        'Save conf file.'
-        filepath = translate.get_etc_config_name(translate.config_name)
-        try:
-            fp = open(filepath,'w')
-            self._conf.write(fp)
-            fp.close()
-            self.append_note(_T('Default config file saved. See help for more.'))
-            self.append_note(filepath,'GREEN')
-        except IOError, (no, msg):
-            self.append_error('%s: [%d] %s'%(_T('Can not save config file. Reason'),no,msg))
-
     def config_get_section_connect(self):
         'Set section name "connect" in config.'
         if self._session[SESSION]:
@@ -347,7 +329,7 @@ class ManagerBase:
             return 0 # fatal error
         # session
         section = 'session'
-        self._session[POLL_AUTOACK] = str(self.get_config_value(section,'poll_autoack',OMIT_ERROR)).lower() == 'on' and 1 or 0
+        self._session[POLL_AUTOACK] = str(self.get_config_value(section,'autoackpoll',OMIT_ERROR)).lower() == 'on' and 1 or 0
         self._session[CONFIRM_SEND_COMMAND] = self.get_config_value(section,'confirm_send_commands').lower() == 'on' and 1 or 0
         self._session[VALIDATE] = self.get_config_value(section,'validate').lower() == 'on' and 1 or 0
         colors = self.get_config_value(section,'colors',OMIT_ERROR)

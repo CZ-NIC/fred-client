@@ -33,7 +33,7 @@ class ManagerCommand(ManagerTransfer):
         self._session_commands = (
             (('!',), None, (_T('command'),'EPP command',), _T('Start the interactive mode of the input command params.'), ('!create_domain',)),
             (('colors',), self.__session_colors__, (_T('switch'),'on','off'), _T('Turn on/off colored output.'), ('colors on',)),
-            (('config',), self.manage_config, (_T('command'),'create',), _T('Display or create config file.'), ('config',)),
+            (('config',), self.manage_config, (), _T('Display or create config file.'), ('config',)),
             (('confirm',), self.__session_confirm__, (_T('switch'),'on','off'), _T('Set on/off confirmation for sending editable commands to the server.'), ('confirm off',)),
             #(('connect',), self.__session_connect__, (), _T('Make connection between client and server without login.'), ()),
             #(('disconnect',), self.__session_disconnect__, (), _T('Disconnect from the EPP server.'), ()),
