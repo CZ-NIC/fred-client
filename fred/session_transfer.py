@@ -56,6 +56,7 @@ class ManagerTransfer(ManagerBase):
         'Prepare for next round. Reset internal dict with communication values.'
         self._errors = []
         self._notes = []
+        self._notes_afrer_errors = []
         self._epp_cmd.reset()
         self._epp_response.reset()
         self._command_sent = '' # jméno posledního odeslaného příkazu
@@ -281,32 +282,39 @@ class ManagerTransfer(ManagerBase):
         body=[]
         report = body.append
         if not dct: dct = self._dct_answer
-        report('')
         #... code and reason .............................
         code = dct['code']
         if self._session[VERBOSE] < 2:
             # brief output mode
             # exception on the command login and hello:
             if dct['command'] in ('login','hello'):
-                body.pop() # remove previous empty line
+                pass # omit reason block body.pop() # remove previous empty line
             else:
                 match = re.match('\w+:(\w+)',dct['command'])
                 key = match is None and dct['command'] or match.group(1)
                 if code != 1000 or key in ('update','delete','transfer'):
-                    report(get_ltext(colored_output.render('${%s}%s${NORMAL}'%(code==1000 and 'GREEN' or 'NORMAL', dct['reason']))))
+                    if code >= 2000:
+                        # move reason message into ERROR block messages and omit line with reason
+                        dct['errors'].insert(0, dct['reason'])
+                    else:
+                        report('')
+                        report(get_ltext(colored_output.render('${%s}%s${NORMAL}'%(code==1000 and 'GREEN' or 'NORMAL', dct['reason']))))
         else:
             # full
+            report('')
             label_code = (u'%s:'%get_unicode(_T('Return code'))).ljust(self._ljust+1) # +1 space between key and value
             label_reason = (u'%s:'%get_unicode(_T('Reason'))).ljust(self._ljust+1)
             report(colored_output.render('${BOLD}%s${NORMAL}%d'%(get_ltext(label_code),code)))
             report(colored_output.render('${BOLD}%s${%s}%s${NORMAL}'%(get_ltext(label_reason), code==1000 and 'GREEN' or 'NORMAL', get_ltext(dct['reason']))))
+            # We must keep message from verbose mode one where reason is shown as ERROR:
+            if code >= 2000 and not len(dct['errors']): dct['errors'].insert(0, dct['reason'])
         #... errors .............................
         if len(dct['errors']):
             report(colored_output.render('${BOLD}${RED}'))
             label = u'%s:'%get_unicode(_T('ERROR'))
-            report('%s%s'%(get_ltext(label.ljust(self._ljust)),get_ltext(dct['errors'][0])))
+            report('%s%s'%(get_ltext(label.ljust(self._ljust+1)),get_ltext(dct['errors'][0])))
             for error in dct['errors'][1:]:
-                report('%s%s'%(''.ljust(self._ljust),get_ltext(error)))
+                report('%s%s'%(''.ljust(self._ljust+1),get_ltext(error)))
             report(colored_output.render('${NORMAL}'))
         #... data .............................
         if re.match('\w+:list',dct['command']):

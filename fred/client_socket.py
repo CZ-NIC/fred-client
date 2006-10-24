@@ -73,7 +73,7 @@ class Lorry:
             self._errors.append(_T('Interrupted by user'))
         if not ok: return ok
         self._notes.append(_T('Connected!'))
-        if verbose > 1: self._notes.append(_T('SSL connection initiated'))
+        if verbose > 1: self._notes.append(_T('Try to open SSL connection...'))
         if len(DATA) < 4:
             self._errors.append(_T('Certificate names not set.'))
         if len(DATA) > 2 and not os.path.isfile(DATA[2]):
@@ -106,7 +106,9 @@ class Lorry:
                     pass
         except (KeyboardInterrupt,EOFError):
             self._errors.append(_T('Interrupted by user'))
-        if not ssl_ok:
+        if ssl_ok:
+            if verbose > 1: self._notes.append(_T('SSL connection established.'))
+        else:
             self._conn.close()
             self._conn = None
             ok = 0

@@ -28,6 +28,7 @@ class ManagerBase:
     def __init__(self):
         self._notes = [] # upozornění na chybné zadání
         self._errors = [] # chybová hlášení při přenosu, parsování
+        self._notes_afrer_errors = [] # hlášení po chybách
         self._sep = '\n' # oddělovač jednotlivých zpráv
         #-----------------------------------------
         # Session data:
@@ -119,7 +120,7 @@ class ManagerBase:
     def set_confirm(self, type):
         'Set switch confirm_commands_before_send'
         self._session[CONFIRM_SEND_COMMAND] = type in ('on','ON') and 1 or 0
-        self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('Confirm has been set to'),('OFF','ON')[self._session[CONFIRM_SEND_COMMAND]]))
+        self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('Command confirmation has been set to'),self._session[CONFIRM_SEND_COMMAND] and 'ON' or 'OFF'))
 
     def get_errors(self, sep='\n'):
         return sep.join(self._errors)
@@ -173,6 +174,9 @@ class ManagerBase:
                 msg.append('%s%s'%(''.ljust(self._ljust), get_ltext(colored_output.render(text))))
             self._errors = []
             msg.append(colored_output.render('${NORMAL}'))
+        if len(self._notes_afrer_errors):
+            msg.extend(map(get_ltext, self._notes_afrer_errors))
+            self._notes_afrer_errors = []
         return sep.join(msg)
 
     def welcome(self):
@@ -445,13 +449,19 @@ class ManagerBase:
         if not schema_path:
             os.unlink(tmpname)
             return '' # schema path is not set
+        command = '%s --noout --schema "%s" "%s"'%(self._external_validator, schema_path, tmpname)
+        if self._session[VERBOSE] > 2:
+            self.append_note(_T('Client-side validation command:'), 'BOLD')
+            self.append_note(get_ltext(command))
         try:
-            pipes = os.popen3('%s --noout --schema "%s" "%s"'%(self._external_validator, schema_path, tmpname))
+            pipes = os.popen3(command)
         except IOError, msg:
-            self.append_note(str(msg),('RED','BOLD'))
+            self.append_note(str(msg),('RED',c))
         errors = pipes[2].read()
         map(lambda f: f.close(), pipes)
-        os.unlink(tmpname)
+        if self._session[VERBOSE] < 3:
+            # leave temporary file for test in verbose mode 3
+            os.unlink(tmpname)
         if re.search(' validates$', errors):
             errors = '' # it seems be OK...
         else:
@@ -459,8 +469,9 @@ class ManagerBase:
                 or re.search(u'není názvem vnitřního ani vnějšího příkazu'.encode('cp852'),errors) \
                 or re.search('Schemas parser error',errors):
                 # schema missing!
-                self.append_note(get_ltext(errors))
-                self.append_note(_T('Validator has been disabled. Type %s to enable it.')%'${BOLD}validate on${NORMAL}')
+                self.append_error(_T('Client side validation failed.'))
+                if self._session[VERBOSE] > 1: self.append_error(get_ltext(errors))
+                self._notes_afrer_errors.append(_T('Validator has been disabled. Type %s to enable it.')%'${BOLD}validate on${NORMAL}')
                 self._session[VALIDATE] = 0 # automatické vypnutí validace
                 errors=''
         return errors

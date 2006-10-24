@@ -119,7 +119,7 @@ def main(options):
             if invalid_epp:
                 epp.append_error(_T('EPP document is not valid'))
                 v = epp.get_session(VERBOSE)
-                epp.append_error(invalid_epp)
+                if v > 1: epp.append_error(invalid_epp)
                 if v > 2: epp.append_error(epp_doc)
             else:
                 if epp.is_online(command_name) and epp.is_connected(): # only if we are online

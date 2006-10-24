@@ -44,33 +44,23 @@ class ManagerReceiver(ManagerCommand):
         """Append standard message if answer code is not 1000.
         Returns FALSE - code is 1000; TRUE - code is NOT 1000;
         """
-        if data[ANSW_CODE] != 1000:
-            # standardní výstup chybového hlášení
-            # detailní rozepsání chyby:
-            if data[ANSW_RESULT].has_key('extValue'):
-                extValue = data[ANSW_RESULT]['extValue']
-                if type(extValue) not in (list,tuple): extValue = (extValue,)
-                for item in extValue:
-                    msg = [] # for values of nodes
-                    msg_attr = [] # for attributes of values
-                    if item.has_key('value'):
-                        # if exists any nodes
-                        for key in item['value'].keys():
-                            if item['value'][key].get('data',None):
-                                # join node value
-                                name = (key+':').ljust(16)
-                                value = item['value'][key].get('data',item['value'][key]).ljust(16)
-                                msg.append('%s%s'%(name,value))
-                            if item['value'][key].get('attr',None):
-                                # join node attributes
-                                for attr in item['value'][key]['attr']:
-                                    msg_attr.append("%s='%s'"%attr)
-                    if item.has_key('reason'):
-                        if item['reason'].has_key('data'): msg.append(item['reason']['data'])
-                    if len(msg_attr): msg.append('(%s)'%', '.join(msg_attr))
-                    self._dct_answer['errors'].append(' '.join(msg))
-        return data[ANSW_CODE] != 1000
-
+        if data[ANSW_CODE] == 1000: return 0
+        extValue = data[ANSW_RESULT].get('extValue',[])
+        if type(extValue) not in (list,tuple): extValue = (extValue,)
+        for item in extValue:
+            msg = [] # for values of nodes
+            msg_attr = [] # for attributes of values
+            for key in item.get('value',{}).keys():
+                value = item['value'][key].get('data',item['value'][key])
+                msg = len(value) and "%s '%s' "%(key, value) or '%s '%key
+                # join node attributes
+                for attr in item['value'][key].get('attr',[]):
+                    msg_attr.append("%s='%s'"%attr)
+                if item.has_key('reason'): msg += item['reason'].get('data','')
+                self._dct_answer['errors'].append(msg)
+                if len(msg_attr): self._dct_answer['errors'].append('(%s)'%', '.join(msg_attr))
+        return 1 # code is NOT 1000
+        
     def answer_response(self):
         "Part of process answer - parse response node."
         # Zde se hledá, jestli na odpověd existuje funkce, ketrá ji zpracuje.
@@ -212,7 +202,7 @@ class ManagerReceiver(ManagerCommand):
             self._session[CMD_ID] = 1 # reset - první command byl login
             self._dct_answer['data'][host] = _T('Login OK. Session started.')
         else:
-            self._dct_answer['data'][host] = _T('Login failed.')
+            self._dct_answer['data'][host] = _T('ERROR: Login failed.')
             self.__code_isnot_1000__(data, 'login')
 
     #-------------------------------------

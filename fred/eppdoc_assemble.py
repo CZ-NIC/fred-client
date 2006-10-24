@@ -402,8 +402,12 @@ class Message(eppdoc.Message):
                     # Note the interactive mode is closed.
                     try:
                         raw_input(session_base.colored_output.render('\n${BOLD}${YELLOW}%s${NORMAL}'%_T('End of interactive input. [press enter]')))
-                    except (KeyboardInterrupt, EOFError):
-                        pass
+                    except EOFError:
+                        session_base.print_unicode(u'') # EOFError: Ctrl+D - Finish command
+                    except KeyboardInterrupt:
+                        stop = 1 # KeyboardInterrupt: Ctrl+C - Abort (Cancel)
+                        example = ''
+                        session_base.print_unicode('\n${BOLD}%s${NORMAL}'%_T('Command has been aborted.'))
                 remove_from_history(get_history_length() - history_length)
             else:
                 session_base.print_unicode('${BOLD}${YELLOW}%s${NORMAL}'%_T('No parameters. Skip interactive mode.'))
@@ -417,10 +421,8 @@ class Message(eppdoc.Message):
             # check list and allowed values if only 'stop' was not set
             errors = self.__check_required__(columns, dct)
             if errors:
-                error.append(_TP('ERROR: Missing required value.','ERROR: Missing required values.',vals[0]))
+                error.append(_TP('Missing required value.','Missing required values.',vals[0]))
                 error.extend(errors)
-                error.append('') # empty line
-                error.append(_T("Type '%s' for more information.")%'help %s'%command_name.encode(encoding))
         self._dct = dct
         return error, example, stop
 

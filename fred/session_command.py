@@ -34,7 +34,7 @@ class ManagerCommand(ManagerTransfer):
             (('!',), None, (_T('command'),'EPP command',), _T('Start the interactive mode of the input command params.'), ('!create_domain',)),
             (('colors',), self.__session_colors__, (_T('switch'),'on','off'), _T('Turn on/off colored output.'), ('colors on',)),
             (('config',), self.manage_config, (), _T('Display or create config file.'), ('config',)),
-            (('confirm',), self.__session_confirm__, (_T('switch'),'on','off'), _T('Set on/off confirmation for sending editable commands to the server.'), ('confirm off',)),
+            (('confirm',), self.__session_confirm__, (_T('switch'),'on','off'), _T('Set on/off command confirmation for sending editable commands to the server.'), ('confirm off',)),
             #(('connect',), self.__session_connect__, (), _T('Make connection between client and server without login.'), ()),
             #(('disconnect',), self.__session_disconnect__, (), _T('Disconnect from the EPP server.'), ()),
             (('credits',), self.__session_credits__, (), _T('Display credits.'), ()),
@@ -51,7 +51,7 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
             (('raw-answer','raw-a','src-answer','src-a'), self.__session_raw_answer__, (_T('switch'),'d','dict',), _T('Display XML source of the EPP answer.'), ('raw-a','raw-a d','src-a','src-a d')),
             (('raw-command','raw-c','src-command','src-c'), self.__session_raw_command__, (_T('switch'),'d','dict',), _T('Display XML source of the EPP command.'), ('raw-c','raw-c d','src-c','src-c d')),
             (('send',), self.__session_send__, (_T('filename'),_T('any filename'),), _T('Send any file to the server. If filename missing command shows actual folder.'), ('send mydoc.xml',)),
-            (('validate',), self.__session_validate__, (_T('switch'),'on','off'), _T('Set on/off external validation of the XML documents.'), ('validate off',)),
+            (('validate',), self.__session_validate__, (_T('switch'),'on','off'), _T('Set on/off client-side validation of the XML documents.'), ('validate off',)),
             (('verbose',), self.__session_verbose__, (_T('switch'),'1','2','3'), _T('Set verbose mode: 1 - brief (default); 2 - full; 3 - full & XML sources.'), ('verbose 2',)),
         )
         self._session_commands[8][2].extend(OUTPUT_TYPES) # Warning! Index 8 must be changed, if any command add.
@@ -85,7 +85,9 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
     def __parse_command_params__(self, command_name, cmdline, interactive=None):
         "Check if parameters are valid. Params save into dict for use to assembling EPP document."
         errors, example, stop = self._epp_cmd.parse_cmd(command_name, cmdline, self._conf, interactive, self._session[VERBOSE], self._session[NULL_VALUE])
-        if errors: self._errors.extend(errors)
+        if errors:
+            self._errors.extend(errors)
+            self._notes_afrer_errors.append(_T("Type '%s' for more information.")%'help %s'%command_name.encode(encoding))
         if example: self.append_note('${BOLD}%s:${NORMAL}\n%s'%(_T('Command to issue'),example.encode(encoding)))
         return (len(errors) == 0), stop
 
@@ -174,11 +176,13 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
             self.append_note('\n%s:'%_T('SYNTAX'),'BOLD')
             self.append_note('    %s'%command_line)
             #
-            self.append_note('\n%s:'%_T('OPTIONS'),'BOLD')
-            self.append_note(patt.sub(patt_sub,command_help))
+            if command_help:
+                self.append_note('\n%s:'%_T('OPTIONS'),'BOLD')
+                self.append_note(patt.sub(patt_sub,command_help))
             #
-            self.append_note('\n%s:'%_T('EXAMPLES'),'BOLD')
-            self.append_note(patt.sub(patt_sub,'\n'.join(examples)))
+            if examples:
+                self.append_note('\n%s:'%_T('EXAMPLES'),'BOLD')
+                self.append_note(patt.sub(patt_sub,'\n'.join(examples)))
             #
             command_name='.'
         return command_name
@@ -239,7 +243,8 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
             session_command = m.group(1)
             command_params = m.group(2)
         if cmd == '!':
-            self.append_note(_T('Missing command name. For start interactive mode type command name after exclamation. For mode type help !.'))
+            self.append_note(_T('ERROR: Missing command to start interactive input'))
+            self.append_note(_T("Type 'help !' for more information."))
             return command_name, self._raw_cmd, 0
         # help
         help, help_item = None,None
@@ -330,17 +335,25 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
         if param:
             self.set_confirm(param)
         else:
-            self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('Confirm is'),self._session[CONFIRM_SEND_COMMAND] and 'ON' or 'OFF'))
+            self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('Command confirmation is'),self._session[CONFIRM_SEND_COMMAND] and 'ON' or 'OFF'))
 
     def __session_null__(self, param):
         'Set NULL value'
-        if param: self.set_null_value(param)
-        self.append_note('null_value %s: ${BOLD}%s${NORMAL}'%(_T('is'),self._session[NULL_VALUE]))
+        if param:
+            self.set_null_value(param)
+            msg = _T('null_value has been set to')
+        else:
+            msg = _T('null_value is')
+        self.append_note('%s ${BOLD}%s${NORMAL}'%(msg,self._session[NULL_VALUE]))
 
     def __session_validate__(self, param):
         'Set validate value'
-        if param: self.set_validate(param.lower()=='on' and 1 or 0)
-        self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('Validation process is'),self._session[VALIDATE] and 'ON' or 'OFF'))
+        if param:
+            self.set_validate(param.lower()=='on' and 1 or 0)
+            msg = _T('Client-side validation has been set to')
+        else:
+            msg = _T('Client-side validation is')
+        self.append_note('%s: ${BOLD}%s${NORMAL}'%(msg, self._session[VALIDATE] and 'ON' or 'OFF'))
         
     def __session_connect__(self, param):
         'Run connection process'
@@ -366,12 +379,19 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
         if param:
             self._session[COLORS] = param.lower()=='on' and 1 or 0
             colored_output.set_mode(self._session[COLORS])
-        self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('Colors mode is'),self._session[COLORS] and 'ON' or 'OFF'))
+            msg = _T('Colors mode has been set to')
+        else:
+            msg = _T('Colors mode is')
+        self.append_note('%s ${BOLD}%s${NORMAL}'%(msg, self._session[COLORS] and 'ON' or 'OFF'))
 
     def __session_verbose__(self, param):
         'Set verbose mode'
-        if param: self.__init_verbose__(param)
-        self.append_note('%s: ${BOLD}%d${NORMAL}'%(_T('Verbose mode is'),self._session[VERBOSE]))
+        if param:
+            self.__init_verbose__(param)
+            msg = _T('Verbose mode has been set to')
+        else:
+            msg = _T('Verbose mode is')
+        self.append_note('%s ${BOLD}%d${NORMAL}'%(msg, self._session[VERBOSE]))
 
     def __session_license__(self, param):
         'Display license'
@@ -394,15 +414,22 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
 
     def __session_poll_ack__(self, param):
         'Set poll acknowledge'
-        if param: self._session[POLL_AUTOACK] = param in ('on','ON') and 1 or 0
-        self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('poll-autoack is'),self._session[POLL_AUTOACK] and 'ON' or 'OFF'))
+        if param:
+            self._session[POLL_AUTOACK] = param in ('on','ON') and 1 or 0
+            msg = _T('Autoacknowledge poll has been set to')
+        else:
+            msg = _T('Autoacknowledge poll is')
+        self.append_note('%s ${BOLD}%s${NORMAL}'%(msg, self._session[POLL_AUTOACK] and 'ON' or 'OFF'))
 
     def __session_output__(self, param):
         'Set output type'
         if param:
             self._session[OUTPUT_TYPE] = self.get_valid_output(param)
             self.get_valid_output(param)
-        self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('output type is'),self._session[OUTPUT_TYPE]))
+            msg = _T('Output type has been set to')
+        else:
+            msg = _T('Output type is')
+        self.append_note('%s ${BOLD}%s${NORMAL}'%(msg, self._session[OUTPUT_TYPE]))
         
     def __session_send__(self, param):
         'Send any file to the EPP server.'

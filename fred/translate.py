@@ -82,8 +82,8 @@ def load_config(config, filename):
         except (ConfigParser.MissingSectionHeaderError, ConfigParser.ParsingError), msg:
             error = 'ConfigParserError: %s'%str(msg)
             config = None
-    else:
-        error = "Configuration file '%s' not found."%filename
+    #else:
+    #    error = "Configuration file '%s' not found."%filename
     return error, names
 
 def get_config_value(config, section, option, omit_errors=0):
