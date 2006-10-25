@@ -167,9 +167,9 @@ class ManagerBase:
             self._notes = []
         if self.is_error():
             # chybová hlášení
-            msg.append(colored_output.render('${RED}${BOLD}'))
+            if len(msg): msg.append('') # empty line - indent errors
             label = '%s:'%_T('ERROR')
-            msg.append('%s%s'%(label.ljust(self._ljust), self._errors[0]))
+            msg.append('%s%s%s'%(colored_output.render('${RED}${BOLD}'),label.ljust(self._ljust), self._errors[0]))
             for text in self._errors[1:]:
                 msg.append('%s%s'%(''.ljust(self._ljust), get_ltext(colored_output.render(text))))
             self._errors = []

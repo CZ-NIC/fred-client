@@ -78,7 +78,9 @@ def make_command_parameters():
             ('lang',(0,1),(),_T('language version'),'en','',()),
         ],_T("""
    The "login" command establishes an ongoing server session that preserves client identity
-   and authorization information during the duration of the session."""),('login john mypass "my new pass!"','login john mypass NULL cs')),
+   and authorization information during the duration of the session. Parametr "lang" set
+   session and client language together. Language is possible to set also by option on the
+   command line, or define it in configuration file or set by client command 'lang'."""),('login john mypass "my new pass!"','login john mypass NULL cs')),
         #----------------------------------------------------
         'info_contact': (1,[
             ('name',(1,1),(),_T('contact name'),'CID:ID01','',()),

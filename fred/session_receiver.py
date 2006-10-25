@@ -378,7 +378,7 @@ class ManagerReceiver(ManagerCommand):
                 self.api_command('poll',{'op':'ack','msg_id':str(msg_id)})
                 # Copy previous "req" answer to new from "ack" command.
                 dct['code'] = self._dct_answer['code']
-                dct['reason'] = 'req: %s\n        ack: %s'%(dct['reason'],self._dct_answer['reason'])
+                dct['reason'] = 'req: %s\n%sack: %s'%(dct['reason'],' '*(self._ljust+1), self._dct_answer['reason'])
                 data = dct['data']
                 data['msgQ.count'] = self.get_value_from_dict(('data','msgQ.count'),self._dct_answer)
                 if self.get_value_from_dict(('data','msg'),self._dct_answer):

@@ -69,7 +69,12 @@ class ManagerCommand(ManagerTransfer):
             #(('disconnect',), self.__session_disconnect__, (), _T('Disconnect from the EPP server.'), ()),
             (('credits',), self.__session_credits__, (), _T('Display credits.'), ()),
             (('help','h','?'), None, [_T('command'),], _T("Help displays details of the selected command.\nType 'help command' for display command details. Synonyms for this command are '?' or 'h'."), ('help update_nsset','? update_nsset','h update_nsset')),
-            (('lang',), self.__session_language__, (_T('code'),'en','cs'), _T('Set translation of the client. If you are online and want to change the server language too,\nyou have to logout and login again.'), ('lang cs',)),
+            (('lang',), self.__session_language__, (_T('code'),'en','cs'), _T("""
+Set the client language and server together. If you are online 
+and want to change the server language too, you have to logout 
+and login again. Language is also possible to change by 'login'
+command or specify in configuration file or set in options on
+the command line."""), ('lang cs',)),
             (('license',), self.__session_license__, (), _T('Display license.'), ()),
             (('null_value','null'), self.__session_null__, (), _T("""
 Set representation of the value what is used to mean nothing. Default is NULL.
