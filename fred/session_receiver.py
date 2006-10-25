@@ -200,6 +200,7 @@ class ManagerReceiver(ManagerCommand):
         if data[ANSW_CODE] == 1000:
             self._session[ONLINE] = 1 # indikátor zalogování
             self._session[CMD_ID] = 1 # reset - první command byl login
+            self.append_note(_T('Connected!'))
             self._dct_answer['data'][host] = _T('Login OK. Session started.')
         else:
             self._dct_answer['data'][host] = _T('ERROR: Login failed.')

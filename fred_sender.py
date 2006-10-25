@@ -130,9 +130,11 @@ if __name__ == '__main__':
                 send_docs(options['bar']) # commands from argv
             else:
                 from fred_console import help_option
-                print '%s: %s [OPTIONS...]\n\n%s\n\n%s\n\n%s:\n%s\n\n  %s\n'%(_T('Usage'), 'fred_sender.py',
+                print '%s: %s [OPTIONS] [filenames]\n\n%s\n%s\n%s\n%s:\n%s\n\n%s\n'%(_T('Usage'), 'fred_sender.py',
                 _T('Module for sending files to the EPP server.'),
                 help_option,
+                _T("""  -o OUTPUT_TYPE, --output=OUTPUT_TYPE
+                   Display output as text (default), html, php"""),
                 _T('EXAMPLES'),
 """
   ./fred_create.py info_domain nic.cz > cmd1.xml

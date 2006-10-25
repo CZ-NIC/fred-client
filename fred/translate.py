@@ -95,14 +95,14 @@ def get_config_value(config, section, option, omit_errors=0):
         if not omit_errors: error = 'ConfigError: %s (%s, %s)'%(msg,section,option)
     return value, error
 
-def get_valid_lang(key, msg):
+def get_valid_lang(code, type_of_value):
     available_langs = langs.keys()
-    if key in available_langs:
+    if code in available_langs:
         error = ''
     else:
-        error = "Unsupported language in %s: '%s'. Available values are: (%s)"%(msg, key,', '.join(available_langs))
-        key = default_lang
-    return key, error
+        error = "Unsupported language code: '%s' in %s. Available codes are: %s."%(code, type_of_value, ', '.join(available_langs))
+        code = default_lang
+    return code, error
 
 def install_translation(lang):
     'Install language translation'
@@ -189,7 +189,7 @@ if config and not options['lang']:
     if error:
         errors.append(error)
     elif key:
-        options['lang'], error = get_valid_lang(key, 'config')
+        options['lang'], error = get_valid_lang(key, 'configuration file')
         if error: errors.append(error)
 
 
@@ -223,6 +223,7 @@ for key,value in langs.items():
 install_translation(options['lang'])
 
 if errors:
+    errors.insert(0,'ERROR:')
     match = re.search('(\w+)(\.py.?)?$',sys.argv[0])
     name = match is None and sys.argv[0] or match.group(1)
     option_errors = _T("""%s: %s

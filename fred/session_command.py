@@ -5,16 +5,24 @@ import dircache # jen pro testování. v ostré verzi to nebude
 
 import eppdoc
 import eppdoc_client
-from translate import encoding
+import translate
 
 from session_base import *
 from session_transfer import ManagerTransfer, human_readable
 
 from eppdoc import nic_cz_version as eppdoc_nic_cz_version
 
-
 COLOR = 1
 SEPARATOR = '-'*60
+
+def __find_index__(array, key):
+    index=-1
+    for n in range(len(array)):
+        if array[n][0][0] == key:
+            index = n
+            break
+    return index
+
 
 class ManagerCommand(ManagerTransfer):
     """EPP client support.
@@ -23,38 +31,10 @@ class ManagerCommand(ManagerTransfer):
 
     def __init__(self):
         ManagerTransfer.__init__(self)
-        # SESSION_COMMANDS: (
-        #   (command_name,command_name,command_name)
-        #   function
-        #   (parameters,parameters)
-        #   'Description'
-        #   (example, example)
-        # )
-        self._session_commands = (
-            (('!',), None, (_T('command'),'EPP command',), _T('Start the interactive mode of the input command params.'), ('!create_domain',)),
-            (('colors',), self.__session_colors__, (_T('switch'),'on','off'), _T('Turn on/off colored output.'), ('colors on',)),
-            (('config',), self.manage_config, (), _T('Display or create config file.'), ('config',)),
-            (('confirm',), self.__session_confirm__, (_T('switch'),'on','off'), _T('Set on/off command confirmation for sending editable commands to the server.'), ('confirm off',)),
-            #(('connect',), self.__session_connect__, (), _T('Make connection between client and server without login.'), ()),
-            #(('disconnect',), self.__session_disconnect__, (), _T('Disconnect from the EPP server.'), ()),
-            (('credits',), self.__session_credits__, (), _T('Display credits.'), ()),
-            (('help','h','?'), None, (), _T('Display this help or command details.'), ('help update_nsset','? update_nsset','h update_nsset')),
-            (('license',), self.__session_license__, (), _T('Display license.'), ()),
-            (('null_value','null'), self.__session_null__, (), _T("""
-Set representation of the value what is used to mean nothing. Default is NULL.
-This value we use if we want to skip over any column in the command parameters. 
-Type NULL means we did not put any value in contrast to '' or "" where we put
-value of zero length. See help for more details."""), ('null None','null EMPTY',)),
-            (('output',), self.__session_output__, [_T('type')], _T('Display output in type.'), ('output html',)),
-            (('autoackpoll',), self.__session_poll_ack__, (_T('switch'),'on','off'), _T('Send "poll ack" straight away after "poll req".'), ('autoackpoll on',)),
-            (('quit','q','exit'), None, (), _T('Quit the client. Same effect has "q" or "exit".'), ()),
-            (('raw-answer','raw-a','src-answer','src-a'), self.__session_raw_answer__, (_T('switch'),'d','dict',), _T('Display XML source of the EPP answer.'), ('raw-a','raw-a d','src-a','src-a d')),
-            (('raw-command','raw-c','src-command','src-c'), self.__session_raw_command__, (_T('switch'),'d','dict',), _T('Display XML source of the EPP command.'), ('raw-c','raw-c d','src-c','src-c d')),
-            (('send',), self.__session_send__, (_T('filename'),_T('any filename'),), _T('Send any file to the server. If filename missing command shows actual folder.'), ('send mydoc.xml',)),
-            (('validate',), self.__session_validate__, (_T('switch'),'on','off'), _T('Set on/off client-side validation of the XML documents.'), ('validate off',)),
-            (('verbose',), self.__session_verbose__, (_T('switch'),'1','2','3'), _T('Set verbose mode: 1 - brief (default); 2 - full; 3 - full & XML sources.'), ('verbose 2',)),
-        )
-        self._session_commands[8][2].extend(OUTPUT_TYPES) # Warning! Index 8 must be changed, if any command add.
+        self.init_session_commands()
+        # output
+        index = __find_index__(self._session_commands, 'output')
+        if index != -1: self._session_commands[index][2].extend(OUTPUT_TYPES)
         # Here is definition of commands  what will not be displayed in the help
         # because we don't make panic to common user.
         # They are used for test or debug only.
@@ -65,7 +45,53 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
             if n[0] not in self._hidden_commands:
                 self._available_session_commands.append(n[0])
             self._pattern_session_commands.extend(n)
+        self.readline_words = [i for i in self._available_session_commands if i!='!'] + self._available_commands
+        # help
+        index = __find_index__(self._session_commands, 'help')
+        if index != -1: self._session_commands[index][2].extend(self.readline_words)
 
+    def init_session_commands(self):
+        'Returns tuple of the session commands.'
+        # SESSION_COMMANDS: (
+        #   (command_name,command_name,command_name)
+        #   function
+        #   (parameters,parameters)
+        #   'Description'
+        #   (example, example)
+        # )
+        self._session_commands = (
+            (('!',), None, (_T('command'),'EPP command',), _T('Start the interactive mode of the input command params.'), ('!create_domain',)),
+            (('autoackpoll',), self.__session_poll_ack__, (_T('switch'),'on','off'), _T('Send "poll ack" straight away after "poll req".'), ('autoackpoll on',)),
+            (('colors',), self.__session_colors__, (_T('switch'),'on','off'), _T('Turn on/off colored output.'), ('colors on',)),
+            (('config',), self.manage_config, (), _T('Display or create config file.'), ('config',)),
+            (('confirm',), self.__session_confirm__, (_T('switch'),'on','off'), _T('Set on/off command confirmation for sending editable commands to the server.'), ('confirm off',)),
+            #(('connect',), self.__session_connect__, (), _T('Make connection between client and server without login.'), ()),
+            #(('disconnect',), self.__session_disconnect__, (), _T('Disconnect from the EPP server.'), ()),
+            (('credits',), self.__session_credits__, (), _T('Display credits.'), ()),
+            (('help','h','?'), None, [_T('command'),], _T("Help displays details of the selected command.\nType 'help command' for display command details. Synonyms for this command are '?' or 'h'."), ('help update_nsset','? update_nsset','h update_nsset')),
+            (('lang',), self.__session_language__, (_T('code'),'en','cs'), _T('Set translation of the client. If you are online and want to change the server language too,\nyou have to logout and login again.'), ('lang cs',)),
+            (('license',), self.__session_license__, (), _T('Display license.'), ()),
+            (('null_value','null'), self.__session_null__, (), _T("""
+Set representation of the value what is used to mean nothing. Default is NULL.
+This value we use if we want to skip over any column in the command parameters. 
+Type NULL means we did not put any value in contrast to '' or "" where we put
+value of zero length. Synonym of the 'null_value' is 'null'. 
+See help for more details."""), ('null_value None','null EMPTY',)),
+            (('output',), self.__session_output__, [_T('type')], _T('Display output in type.'), ('output html',)),
+            (('quit','q','exit'), None, (), _T("Quit the client. Synonyms of 'quit' are 'q' and 'exit'."), ()),
+            (('raw-answer','raw-a','src-answer','src-a'), self.__session_raw_answer__, (_T('switch'),'d','dict',), _T("""
+Display XML source of the EPP answer. If you would display source
+without XML tag, type parametr 'dict' or simple 'd'.
+Synonyms of 'raw-answer' are 'raw-a', 'src-answer' and 'src-a'."""), ('raw-a','raw-a d','src-a','src-a d')),
+            (('raw-command','raw-c','src-command','src-c'), self.__session_raw_command__, (_T('switch'),'d','dict',), _T("""
+Display XML source of the EPP command. If you would display source
+without XML tag, type parametr 'dict' or simple 'd'.
+Synonyms of 'raw-command' are 'raw-c', 'src-command' and 'src-c'."""), ('raw-c','raw-c d','src-c','src-c d')),
+            (('send',), self.__session_send__, (_T('filename'),_T('any filename'),), _T('Send any file to the server. If filename missing command shows actual folder.'), ('send mydoc.xml',)),
+            (('validate',), self.__session_validate__, (_T('switch'),'on','off'), _T('Set on/off client-side validation of the XML documents.'), ('validate off',)),
+            (('verbose',), self.__session_verbose__, (_T('switch'),'1','2','3'), _T('Set verbose mode: 1 - brief (default); 2 - full; 3 - full & XML sources.'), ('verbose 2',)),
+        )
+        
     def __put_raw_into_note__(self, data):
         "Use pprint for displaying structured data (dict, XML-EPP)."
         if data is None:
@@ -87,8 +113,8 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
         errors, example, stop = self._epp_cmd.parse_cmd(command_name, cmdline, self._conf, interactive, self._session[VERBOSE], self._session[NULL_VALUE])
         if errors:
             self._errors.extend(errors)
-            self._notes_afrer_errors.append(_T("Type '%s' for more information.")%'help %s'%command_name.encode(encoding))
-        if example: self.append_note('${BOLD}%s:${NORMAL}\n%s'%(_T('Command to issue'),example.encode(encoding)))
+            self._notes_afrer_errors.append(_T("Type '%s' for more information.")%'help %s'%command_name.encode(translate.encoding))
+        if example: self.append_note('${BOLD}%s:${NORMAL}\n%s'%(_T('Command to issue'),example.encode(translate.encoding)))
         return (len(errors) == 0), stop
 
     def get_default_params_from_config(self, command_name):
@@ -136,8 +162,8 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
                 notice = explain
                 examples = ex
                 command_line = names[0]
-                if len(names)>1:
-                    command_line += ' (${BOLD}%s:${NORMAL} %s)'%(_T('synonyms'),', '.join(names[1:]))
+                #if len(names)>1:
+                #    command_line += ' (${BOLD}%s:${NORMAL} %s)'%(_T('synonyms'),', '.join(names[1:]))
                 if len(params):
                     command_line += ' [%s]'%params[0]
                     command_help = '%s:  %s'%(params[0],', '.join(params[1:]))
@@ -205,7 +231,7 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
                 else:
                     self.append_error(self._epp_cmd.get_errors()) # any problems on the command line occurrs
             else:
-                self.append_note('%s: %s'%(_T("Unknown command"),raw_command.encode(encoding)))
+                self.append_note('%s: %s'%(_T("Unknown command"),raw_command.encode(translate.encoding)))
                 self.append_note('(%s: ${BOLD}help${NORMAL})'%_T('For list all commands type'))
                 self._epp_cmd.help_check_name(self._notes, cmdline)
         return command_name, stop
@@ -276,10 +302,10 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
             cmd = EPP_command
             if type(cmd) != unicode:
                 try:
-                    cmd = unicode(cmd, encoding)
+                    cmd = unicode(cmd, translate.encoding)
                 except UnicodeDecodeError, msg:
                     self.append_error('UnicodeDecodeError: %s'%msg)
-                    cmd = unicode(repr(cmd), encoding)
+                    cmd = unicode(repr(cmd), translate.encoding)
             command_name, stop = self.epp_command(cmd, command)
             if command_name != 'q': # User press Ctrl+C or Ctrl+D in interactive mode.
                 self._raw_cmd = self._epp_cmd.get_xml()
@@ -471,6 +497,30 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
             self.append_note(_T('Command source'),'BOLD')
             self.append_note(human_readable(self._raw_cmd),'GREEN')
 
+    def __session_language__(self, param):
+        'Set language'
+        if param:
+            lang, error = translate.get_valid_lang(param, _T('command'))
+            if error:
+                self.append_note(_T("Unsupported language code: '%s'. Available codes are: %s.")%(param, ', '.join(translate.langs.keys())))
+                msg = _T('Language is')
+            else:
+                if self._session[LANG] == lang:
+                    msg = _T('No change. Language is')
+                else:
+                    self._session[LANG] = lang
+                    translate.install_translation(lang)
+                    # Refresh texts in EPP Message objects and in EPP Manager:
+                    self._epp_cmd.reset_translation()
+                    self._epp_response.reset_translation()
+                    self.init_session_commands()
+                    #
+                    if self._session[ONLINE]:
+                        self.append_note(_T('If you want to change the server language too, you have to logout and login again.'))
+                    msg = _T('Language has been set to')
+        else:
+            msg = _T('Language is')
+        self.append_note('%s ${BOLD}%s${NORMAL}'%(msg, self._session[LANG]))
         
     #==================================================
     #
@@ -489,6 +539,9 @@ value of zero length. See help for more details."""), ('null None','null EMPTY',
             # klient je už zalogován
             self.append_note(_T('You are logged already.'))
         else:
+            cmd_params = self._epp_cmd.get_params()
+            if cmd_params.has_key('lang'):
+                self.__session_language__(get_ltext(cmd_params['lang'][0]))
             if self._auto_connect and not self.is_connected():
                 # commection MUST be created BEFOR assembling login because of tags
                 # <objURI> and <extURI>

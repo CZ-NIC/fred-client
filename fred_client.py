@@ -11,14 +11,15 @@ if __name__ == '__main__':
     else:
         from fred_console import help_option
         if options['help']:
-            print '%s: %s [OPTIONS...]\n\n%s\n\n%s\n  %s\n  %s\n\n  %s\n'%(_T('Usage'), 'fred_client',
-            _T('Client for communication with EPP server.'),
+            print '%s: %s [OPTIONS...]\n%s%s\n%s\n\n%s\n'%(_T('Usage'), 'fred_console',
             help_option,
-   _T("""-d COMMAND, --command=COMMAND
-                   send command to server and exit"""),
-   _T("""-q,  --qt
-                   run client in grafical user interface"""),
-   _T('For more information, see README.'))
+   _T("""  -d COMMAND, --command=COMMAND
+                   Send command to server and exit
+  -o OUTPUT_TYPE, --output=OUTPUT_TYPE
+                   Display output as text (default), html, php"""),
+   _T("""  -q,  --qt
+                   Run client in Qt GUI"""),
+            _T('For more information, see README.'))
         elif options['version']:
             epp = fred.ClientSession()
             print epp.version()

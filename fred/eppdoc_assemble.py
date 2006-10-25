@@ -28,11 +28,17 @@ history_filename = os.path.join(os.path.expanduser('~'),'.fred_history') # compa
 
 TAG_clTRID = 'cltrid' # Definition for --key-name = clTRID value.
 
+
 class Message(eppdoc.Message):
     "Client EPP commands."
 
-    param_reqired_type = (_T('optional'),_T('required'),_T('required only if part is set'))
-    
+    def __init__(self):
+        eppdoc.Message.__init__(self)
+        self.make_param_required_types()
+
+    def make_param_required_types(self):
+        self.param_reqired_type = (_T('optional'),_T('required'),_T('required only if part is set'))
+
     def __get_help_scope__(self, params, deep=1):
         'Support for get_help(). IN: params, deep'
         msg=[]

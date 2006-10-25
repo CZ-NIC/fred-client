@@ -6,8 +6,21 @@ from translate import options
 
 UNBOUNDED = eppdoc_assemble.UNBOUNDED
 
+# transfer op attribute allowed values:
+# transfer_op = ('request','approve','cancel','query','reject')
+update_status = (
+    ('clientDeleteProhibited','cdp'), 
+    ('clientTransferProhibited','ctp'), 
+    ('clientUpdateProhibited','cup'), 
+    ('linked','lnk'), 
+    ('ok',), 
+    )
+    #'serverDeleteProhibited', 'serverTransferProhibited', 'serverUpdateProhibited')
+
 # Help
-notice = {'check':_T("""
+def get_notice():
+    'Returns notice for EPP commands'
+    return {'check':_T("""
    The EPP "check" command is used to determine if an object can be
    provisioned within a repository.  It provides a hint that allows a
    client to anticipate the success or failure of provisioning an object
@@ -45,18 +58,9 @@ notice = {'check':_T("""
     'list':_T("""The EPP "list" command is used to list all ID of an existing object owning by registrant."""),
 }
 
-class Message(eppdoc_assemble.Message):
-    "Client EPP commands."
-    # transfer op attribute allowed values:
-    # transfer_op = ('request','approve','cancel','query','reject')
-    update_status = (
-        ('clientDeleteProhibited','cdp'), 
-        ('clientTransferProhibited','ctp'), 
-        ('clientUpdateProhibited','cup'), 
-        ('linked','lnk'), 
-        ('ok',), 
-        )
-        #'serverDeleteProhibited', 'serverTransferProhibited', 'serverUpdateProhibited')
+def make_command_parameters():
+    'Returns command parameters tuple'
+    notice = get_notice()
     # format:
     # command-name: (param-name, (min,max), (list of required), 'help', 'example', 'pattern', (list of children)
     # For include new command you need do this steps:
@@ -71,9 +75,10 @@ class Message(eppdoc_assemble.Message):
             ('username',(1,1),(),_T('EPP login name'),'my_login_name','',()),
             ('password',(1,1),(),_T('EPP password'),'my_password','',()),
             ('new-password',(0,1),(),_T('new password'),'my_new_password','',()),
+            ('lang',(0,1),(),_T('language version'),'en','',()),
         ],_T("""
    The "login" command establishes an ongoing server session that preserves client identity
-   and authorization information during the duration of the session."""),('login john mypass "my new pass!"',)),
+   and authorization information during the duration of the session."""),('login john mypass "my new pass!"','login john mypass NULL cs')),
         #----------------------------------------------------
         'info_contact': (1,[
             ('name',(1,1),(),_T('contact name'),'CID:ID01','',()),
@@ -280,11 +285,14 @@ class Message(eppdoc_assemble.Message):
         'list_nsset': (0,[('',(0,0),(),'','','',()),],notice['list'],()),
         'list_domain': (0,[('',(0,0),(),'','','',()),],notice['list'],()),
         #----------------------------------------------------
-
     }
     for k,v in command_params.items():
         if k == 'hello': continue
         v[1].append((eppdoc_assemble.TAG_clTRID,(0,1),(),_T('client transaction ID'),'my_own_id','',()))
+    return command_params
+
+def make_sort_by_names():
+    'Returns tuple of names used for sorting received values'
     #----------------------------------
     #
     # OUTPUT SORTED BY NAMES
@@ -407,10 +415,14 @@ class Message(eppdoc_assemble.Message):
     sort_by_names['contact:create'] = ('contact', sort_by_names['nsset:create'][1])
     sort_by_names['contact:list']   = sort_by_names['domain:list']
     sort_by_names['nsset:list']     = sort_by_names['domain:list']
+    return sort_by_names
     
+class Message(eppdoc_assemble.Message):
+    "Client EPP commands."
+
     def get_sort_by_names(self, command_name):
         'Prepare column names for sorted output answer.'
-        scope = Message.sort_by_names.get(command_name,None)
+        scope = self.sort_by_names.get(command_name,None)
         if scope:
             if scope[0]:
                 names = map(lambda i: ('%s:%s'%(scope[0],i[0]),i[1],i[2]),scope[1])
@@ -422,9 +434,16 @@ class Message(eppdoc_assemble.Message):
 
     def __init__(self):
         eppdoc_assemble.Message.__init__(self)
-        self._command_params = Message.command_params
+        self.update_status = update_status
+        self._command_params = make_command_parameters()
+        self.sort_by_names = make_sort_by_names()
     
-
+    def reset_translation(self):
+        'Reset struct with translation after changing language'
+        self._command_params = make_command_parameters()
+        self.sort_by_names = make_sort_by_names()
+        self.make_param_required_types()
+    
 def test(commands):
     import pprint
     import session_base

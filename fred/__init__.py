@@ -400,7 +400,7 @@ class Client:
         return self._epp.api_command('info_nsset',{'name':name, 'cltrid':cltrid})
 
 
-    def login(self, username, password, new_password=None, cltrid=None):
+    def login(self, username, password, new_password=None, lang=None, cltrid=None):
         """Usage: login username password
 
     PARAMS:
@@ -408,6 +408,7 @@ class Client:
     username (required)
     password (required)
     new-password (optional)
+    lang (optional)
 
     RETURN data: {
         nsset:upID: (str)
@@ -424,7 +425,7 @@ class Client:
    and authorization information during the duration of the session.
         """
         return self._epp.api_command('login',{'username':username, 
-            'password':password, 'new-password':new_password, 'cltrid':cltrid})
+            'password':password, 'new-password':new_password, 'lang':lang, 'cltrid':cltrid})
 
 
     def logout(self, cltrid=None):

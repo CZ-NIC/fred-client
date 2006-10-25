@@ -15,43 +15,43 @@ import fred
 from fred.session_base import colored_output, VERBOSE
 from fred.translate import options, option_errors
 
-help_option = _T("""Connection options:
-  -?, --help       show this help and exit
-  -V, --version    Display program version information
-
+help_option = _T("""
+General options:
+  -?, --help       Show this help and exit
+  -V, --version    Display program version information and exit
   -l LANGUAGE, --lang=LANGUAGE
-                   set user interface language
+                   Set user interface language
   -v LEVEL, --verbose=LEVEL
-                   set verbose level
+                   Set verbose level
                    1 - normal operation
                    2 - print more details
                    3 - print more details and display XML sources
-  -x,   --no_validate
-                   disable client-side XML validation
+  -x, --no_validate
+                   Disable client-side XML validation
 
+Connection options:
   -f CONFIG, --config=CONFIG
-                   load config from filename
+                   Load configuration from config file
+  -s SESSION, --session=SESSION
+                   Use session from config file
 
   -h HOSTNAME, --host=HOSTNAME
-                   fred server to connect 
+                   Fred server host 
   -p PORT, --port=PORT
-                   server port
+                   Server port (default: 700)
   -u USERNAME, --user=USERNAME
-                   authenticate to server as user
+                   Authenticate to server as user
   -w PASSWORD, --password=PASSWORD
-                   authenticate to server with password
+                   Authenticate to server with password
   -c CERTIFICATE --cert=CERTIFICATE
-                   filepath of your certificate
+                   Use SSL certificate to connect to server
   -k PRIVATEKEY --privkey=PRIVATEKEY
-                   filepath of your private key
-  -s SESSION, --session=SESSION
-                   read session name used for connect to the EPP server
-                   session values are read from config file
-  -n  --nologin    disable automatic login process after start up
+                   Use SSL private key to connect to server
 
-  -o OUTPUT_TYPE, --output=OUTPUT_TYPE
-                   display output as: text (default), html, php""")
-
+  -n, --nologin    
+                   Disable automatic connection to server at start
+""")
+                   
 def display_profiler(label, indent, debug_time):
     'For test only.'
     # For enable time uncomment all lines with PROFILER (and display_profiler)
@@ -162,8 +162,7 @@ if __name__ == '__main__':
         print msg_invalid
     else:
         if options['help']:
-            print '%s: %s [OPTIONS...]\n\n%s\n\n%s\n\n  %s\n'%(_T('Usage'), 'fred_console.py',
-            _T('Console for communication with EPP server.'),
+            print '%s: %s [OPTIONS...]\n%s\n%s\n'%(_T('Usage'), 'fred_console',
             help_option,
             _T('For more information, see README.'))
         elif options['version']:

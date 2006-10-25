@@ -30,7 +30,7 @@ try:
     from qttable import *
 except ImportError, msg:
     print "ImportError:",msg
-    print 'For runnig this application you need install PyQt and Qt modules. For more see help.'
+    print _T('For runnig this application you need install PyQt and Qt modules. For more see help.')
     sys.exit(0)
 
 #====================================
