@@ -100,7 +100,7 @@ class ManagerTransfer(ManagerBase):
         if not self._conf: self.load_config() # load config, if was not been yet
         section = self.config_get_section_connect()
         data = [self.get_config_value(section,'host',OMIT_ERROR),
-                self.get_config_value(section,'port',OMIT_ERROR,'int'),
+                self.get_config_value(section,'port',OMIT_ERROR),
                 self.get_config_value(section,'ssl_key',OMIT_ERROR),
                 self.get_config_value(section,'ssl_cert',OMIT_ERROR),
                 self.get_config_value(section,'timeout',OMIT_ERROR),
@@ -265,7 +265,7 @@ class ManagerTransfer(ManagerBase):
                 __append_into_report__(data,key,value,explain,self._ljust,data_indent)
             used.append(key)
         if len(data):
-            body.append('')
+            if len(body) and body[-1] != '': body.append('') # empty line
             body.extend(data)
         #--- INTERNAL USE ----
         # POZOR!!! V ostré verzi musí být deaktivováno!!!
@@ -280,6 +280,7 @@ class ManagerTransfer(ManagerBase):
     def get_answer(self, dct=None, sep='\n'):
         'Show values parsed from the server answer.'
         body=[]
+##        body=[''] # indent from command line
         report = body.append
         if not dct: dct = self._dct_answer
         #... code and reason .............................
@@ -293,52 +294,53 @@ class ManagerTransfer(ManagerBase):
                 match = re.match('\w+:(\w+)',dct['command'])
                 key = match is None and dct['command'] or match.group(1)
                 if code != 1000 or key in ('update','delete','transfer'):
-                    if code >= 2000:
-                        # move reason message into ERROR block messages and omit line with reason
-                        dct['errors'].insert(0, dct['reason'])
-                    else:
-                        report('')
-                        report(get_ltext(colored_output.render('${%s}%s${NORMAL}'%(code==1000 and 'GREEN' or 'NORMAL', dct['reason']))))
+##                    if code >= 2000:
+##                        # move reason message into ERROR block messages and omit line with reason
+##                        dct['errors'].insert(0, dct['reason'])
+##                    else:
+##                        report('')
+##                        report(get_ltext(colored_output.render('${%s}%s${NORMAL}'%(code==1000 and 'GREEN' or 'NORMAL', dct['reason']))))
+##                    report('')
+                    report(get_ltext(colored_output.render('${%s}%s${NORMAL}'%(code==1000 and 'GREEN' or 'NORMAL', dct['reason']))))
         else:
             # full
-            report('')
             label_code = (u'%s:'%get_unicode(_T('Return code'))).ljust(self._ljust+1) # +1 space between key and value
             label_reason = (u'%s:'%get_unicode(_T('Reason'))).ljust(self._ljust+1)
             report(colored_output.render('${BOLD}%s${NORMAL}%d'%(get_ltext(label_code),code)))
             report(colored_output.render('${BOLD}%s${%s}%s${NORMAL}'%(get_ltext(label_reason), code==1000 and 'GREEN' or 'NORMAL', get_ltext(dct['reason']))))
             # We must keep message from verbose mode one where reason is shown as ERROR:
-            if code >= 2000 and not len(dct['errors']): dct['errors'].insert(0, dct['reason'])
+            # TODO: musi se to dodelat
+            # !!! Tady se vytvářely ty duplicity
+            # if code >= 2000 and not len(dct['errors']): dct['errors'].insert(0, dct['reason'])
         #... errors .............................
         if len(dct['errors']):
-            report(colored_output.render('${BOLD}${RED}'))
-            label = u'%s:'%get_unicode(_T('ERROR'))
-            report('%s%s'%(get_ltext(label.ljust(self._ljust+1)),get_ltext(dct['errors'][0])))
+            if len(body) and body[-1] != '': report('') # empty line
+            dct['errors'][-1] += colored_output.render('${NORMAL}')
+            report(get_ltext('%s%s: %s'%(colored_output.render('${BOLD}${RED}'),_T('ERROR'),dct['errors'][0])))
             for error in dct['errors'][1:]:
-                report('%s%s'%(''.ljust(self._ljust+1),get_ltext(error)))
-            report(colored_output.render('${NORMAL}'))
+                report(get_ltext(error))
         #... data .............................
         if re.match('\w+:list',dct['command']):
             # list output execption
-            body.append('') # empty line
+            if len(body) and body[-1] != '': report('') # empty line
             cnt=0
             for item in dct['data'].get('list',[]):
                 body.append(get_ltext(item))
                 cnt+=1
-            body.append('') # empty line
+            body.append('') # empty line to separate list from Sum message
             body.append(_TP('(%d item)','(%d items)',cnt)%cnt)
         else:
             self.__append_to_body__(body, dct)
         #... third verbose level .............................
-        report('') # empty row
         for n in range(len(body)):
             if type(body[n]) == unicode: body[n] = body[n].encode(encoding)
         if self._session[VERBOSE] == 3:
+            if len(body) and body[-1] != '': report('') # empty line
             report(colored_output.render('${BOLD}COMMAND:${NORMAL}${GREEN}'))
             report(human_readable(self._raw_cmd))
             report(colored_output.render('${NORMAL}${BOLD}ANSWER:${NORMAL}${GREEN}'))
             report(human_readable(self._raw_answer))
             report(colored_output.render('${NORMAL}'))
-            report('')
         return sep.join(body)
 
     def get_answer_html(self, dct=None):
@@ -419,20 +421,20 @@ class ManagerTransfer(ManagerBase):
         body=[]
         report = body.append
         report('<?php')
-        report("$encoding = %s;"%php_string(encoding))
+        report("$fred_encoding = %s;"%php_string(encoding))
         #... code and reason .............................
         code = dct['code']
-        report('$code = %d;'%code)
-        report("$command = %s;"%php_string(dct['command']))
-        report("$reason = %s;"%php_string(dct['reason']))
+        report('$fred_code = %d;'%code)
+        report("$fred_command = %s;"%php_string(dct['command']))
+        report("$fred_reason = %s;"%php_string(dct['reason']))
         #... errors .............................
         errors = []
         for error in dct['errors']:
             errors.append(php_string(error))
-        report('$errors = array(%s);'%', '.join(errors))
+        report('$fred_errors = array(%s);'%', '.join(errors))
         #... data .............................
-        report('$labels = array();')
-        report('$data = array();')
+        report('$fred_labels = array();')
+        report('$fred_data = array();')
         dct_data = dct['data']
         for key,verbose,explain in self.__get_column_items__(dct['command'], dct_data):
             if verbose > self._session[VERBOSE]: continue
@@ -440,18 +442,18 @@ class ManagerTransfer(ManagerBase):
             value = dct_data.get(key,u'')
             if value not in ('',[]):
                 if type(value) in (list,tuple):
-                    report('$labels[%s] = %s;'%(php_string(key),php_string(explain)))
-                    report('$data[%s] = array();'%php_string(key))
+                    report('$fred_labels[%s] = %s;'%(php_string(key),php_string(explain)))
+                    report('$fred_data[%s] = array();'%php_string(key))
                     php_key = php_string(key)
                     for v in value:
-                        report('$data[%s][] = %s;'%(php_key,php_string(v)))
+                        report('$fred_data[%s][] = %s;'%(php_key,php_string(v)))
                 else:
-                    report('$labels[%s] = %s;'%(php_string(key),php_string(explain)))
-                    report('$data[%s] = %s;'%(php_string(key),php_string(value)))
+                    report('$fred_labels[%s] = %s;'%(php_string(key),php_string(explain)))
+                    report('$fred_data[%s] = %s;'%(php_string(key),php_string(value)))
         #... third verbose level .............................
         if self._session[VERBOSE] == 3:
-            report('$source_command = %s;'%php_string(human_readable(self._raw_cmd)))
-            report('$source_answer = %s;'%php_string(human_readable(self._raw_answer)))
+            report('$fred_source_command = %s;'%php_string(human_readable(self._raw_cmd)))
+            report('$fred_source_answer = %s;'%php_string(human_readable(self._raw_answer)))
         # ..............
         report('?>')
         return  '\n'.join(body)

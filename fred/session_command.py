@@ -34,21 +34,18 @@ class ManagerCommand(ManagerTransfer):
         self.init_session_commands()
         # output
         index = __find_index__(self._session_commands, 'output')
-        if index != -1: self._session_commands[index][2].extend(OUTPUT_TYPES)
+        if index != -1: self._session_commands[index][3].extend(OUTPUT_TYPES)
         # Here is definition of commands  what will not be displayed in the help
         # because we don't make panic to common user.
         # They are used for test or debug only.
         self._hidden_commands = ('answer-cols','hidden','colors','config','null_value','raw-command','raw-answer','send','output')
         self._pattern_session_commands = [] # for recognize command
         self._available_session_commands = [] # for display list of command names
-        for n,f,p,e,x in self._session_commands:
+        for n,f,r,p,e,x in self._session_commands:
             if n[0] not in self._hidden_commands:
                 self._available_session_commands.append(n[0])
             self._pattern_session_commands.extend(n)
         self.readline_words = [i for i in self._available_session_commands if i!='!'] + self._available_commands
-        # help
-        index = __find_index__(self._session_commands, 'help')
-        if index != -1: self._session_commands[index][2].extend(self.readline_words)
 
     def init_session_commands(self):
         'Returns tuple of the session commands.'
@@ -60,41 +57,50 @@ class ManagerCommand(ManagerTransfer):
         #   (example, example)
         # )
         self._session_commands = (
-            (('!',), None, (_T('command'),'EPP command',), _T('Start the interactive mode of the input command params.'), ('!create_domain',)),
-            (('autoackpoll',), self.__session_poll_ack__, (_T('switch'),'on','off'), _T('Send "poll ack" straight away after "poll req".'), ('autoackpoll on',)),
-            (('colors',), self.__session_colors__, (_T('switch'),'on','off'), _T('Turn on/off colored output.'), ('colors on',)),
-            (('config',), self.manage_config, (), _T('Display or create config file.'), ('config',)),
-            (('confirm',), self.__session_confirm__, (_T('switch'),'on','off'), _T('Set on/off command confirmation for sending editable commands to the server.'), ('confirm off',)),
-            #(('connect',), self.__session_connect__, (), _T('Make connection between client and server without login.'), ()),
-            #(('disconnect',), self.__session_disconnect__, (), _T('Disconnect from the EPP server.'), ()),
-            (('credits',), self.__session_credits__, (), _T('Display credits.'), ()),
-            (('help','h','?'), None, [_T('command'),], _T("Help displays details of the selected command.\nType 'help command' for display command details. Synonyms for this command are '?' or 'h'."), ('help update_nsset','? update_nsset','h update_nsset')),
-            (('lang',), self.__session_language__, (_T('code'),'en','cs'), _T("""
+            (('!',), None, 1, (_T('command'),'Start interactive input mode on this command',), _T("""
+! starts interactive input mode. In interactive input mode the program asks
+to fill in all command parameters one by one to help users construct proper
+syntax. After going through all parameters actual command syntax is displayed
+before issuing command to server. 
+
+Interactive mode can be used with EPP commands only."""), ('!create_domain',)),
+            (('poll-autoack',), self.__session_poll_ack__, 0, (_T('switch'),'on','off'), _T('Send "poll ack" straight away after "poll req".'), ('poll-autoack on',)),
+            (('colors',), self.__session_colors__, 0, (_T('switch'),'on','off'), _T('Turn on/off colored output.'), ('colors on',)),
+            (('config',), self.manage_config, 0, (), _T('Display or create config file.'), ('config',)),
+            (('confirm',), self.__session_confirm__, 0, (_T('switch'),'on','off'), _T('Set on/off command confirmation for sending editable commands to the server.'), ('confirm off',)),
+            #(('connect',), self.__session_connect__, 0, (), _T('Make connection between client and server without login.'), ()),
+            #(('disconnect',), self.__session_disconnect__, 0, (), _T('Disconnect from the EPP server.'), ()),
+            (('credits',), self.__session_credits__, 0, (), _T('Display credits.'), ()),
+            (('help','h','?'), None, 0, (_T('command'),_T('Get detailed help for this command.')), _T("""
+Help displays all available commands (type 'help') or displays 
+detailed help for selected command (type 'help command'). 
+Help uses synonyms 'help', '?' or 'h'."""), ('help','? update_nsset')),
+            (('lang',), self.__session_language__, 0, (_T('code'),'en','cs'), _T("""
 Set the client language and server together. If you are online 
 and want to change the server language too, you have to logout 
 and login again. Language is also possible to change by 'login'
 command or specify in configuration file or set in options on
 the command line."""), ('lang cs',)),
-            (('license',), self.__session_license__, (), _T('Display license.'), ()),
-            (('null_value','null'), self.__session_null__, (), _T("""
+            (('license',), self.__session_license__, 0, (), _T('Display license.'), ()),
+            (('null_value','null'), self.__session_null__, 0, (), _T("""
 Set representation of the value what is used to mean nothing. Default is NULL.
 This value we use if we want to skip over any column in the command parameters. 
 Type NULL means we did not put any value in contrast to '' or "" where we put
 value of zero length. Synonym of the 'null_value' is 'null'. 
 See help for more details."""), ('null_value None','null EMPTY',)),
-            (('output',), self.__session_output__, [_T('type')], _T('Display output in type.'), ('output html',)),
-            (('quit','q','exit'), None, (), _T("Quit the client. Synonyms of 'quit' are 'q' and 'exit'."), ()),
-            (('raw-answer','raw-a','src-answer','src-a'), self.__session_raw_answer__, (_T('switch'),'d','dict',), _T("""
+            (('output',), self.__session_output__, 0, [_T('type')], _T('Display output in type.'), ('output html',)),
+            (('quit','q','exit'), None, 0, (), _T("Quit the client. Synonyms of 'quit' are 'q' and 'exit'."), ()),
+            (('raw-answer','raw-a','src-answer','src-a'), self.__session_raw_answer__, 0, (_T('mode'),'d','dict',), _T("""
 Display XML source of the EPP answer. If you would display source
 without XML tag, type parametr 'dict' or simple 'd'.
 Synonyms of 'raw-answer' are 'raw-a', 'src-answer' and 'src-a'."""), ('raw-a','raw-a d','src-a','src-a d')),
-            (('raw-command','raw-c','src-command','src-c'), self.__session_raw_command__, (_T('switch'),'d','dict',), _T("""
+            (('raw-command','raw-c','src-command','src-c'), self.__session_raw_command__, 0, (_T('mode'),'d','dict',), _T("""
 Display XML source of the EPP command. If you would display source
 without XML tag, type parametr 'dict' or simple 'd'.
 Synonyms of 'raw-command' are 'raw-c', 'src-command' and 'src-c'."""), ('raw-c','raw-c d','src-c','src-c d')),
-            (('send',), self.__session_send__, (_T('filename'),_T('any filename'),), _T('Send any file to the server. If filename missing command shows actual folder.'), ('send mydoc.xml',)),
-            (('validate',), self.__session_validate__, (_T('switch'),'on','off'), _T('Set on/off client-side validation of the XML documents.'), ('validate off',)),
-            (('verbose',), self.__session_verbose__, (_T('switch'),'1','2','3'), _T('Set verbose mode: 1 - brief (default); 2 - full; 3 - full & XML sources.'), ('verbose 2',)),
+            (('send',), self.__session_send__, 1, (_T('filename'),_T('any filename'),), _T('Send any file to the server. If filename missing command shows actual folder.'), ('send mydoc.xml',)),
+            (('validate',), self.__session_validate__, 0, (_T('switch'),'on','off'), _T('Set on/off client-side validation of the XML documents.'), ('validate off',)),
+            (('verbose',), self.__session_verbose__, 0, (_T('switch'),'1','2','3'), _T('Set verbose mode: 1 - brief (default); 2 - full; 3 - full & XML sources.'), ('verbose 2',)),
         )
         
     def __put_raw_into_note__(self, data):
@@ -160,20 +166,27 @@ Synonyms of 'raw-command' are 'raw-c', 'src-command' and 'src-c'."""), ('raw-c',
 
     def __get_help_session_detail__(self, command_name):
         'Returns set of details of the session command.'
-        command_line = command_help = notice = ''
+        command_help = notice = ''
         examples = ()
-        for names,func,params,explain,ex in self._session_commands:
+        command_lines = []
+        for names,func,required,params,explain,ex in self._session_commands:
             if command_name in names:
                 notice = explain
                 examples = ex
-                command_line = names[0]
+                options = ''
                 #if len(names)>1:
                 #    command_line += ' (${BOLD}%s:${NORMAL} %s)'%(_T('synonyms'),', '.join(names[1:]))
                 if len(params):
-                    command_line += ' [%s]'%params[0]
+                    if required:
+                        options = ' %s'%' '.join(params[:required])
+                        if len(params)-1 > required: # -1 because first item is param name
+                            options += ' [%s]'%_T('optional')
+                    else:
+                        options = ' [%s]'%params[0]
                     command_help = '%s:  %s'%(params[0],', '.join(params[1:]))
+                command_lines = map(lambda n: '%s%s'%(n,options), names)
                 break
-        return command_line, command_help, notice, examples
+        return command_lines, command_help, notice, examples
 
     def __repalce_static_null_examples__(self, examples):
         'Replace static NULL examples to defined variable NULL_VALUE'
@@ -194,18 +207,20 @@ Synonyms of 'raw-command' are 'raw-c', 'src-command' and 'src-c'."""), ('raw-c',
             # s parametrem - zobrazí se help na vybraný příkaz
             self.append_note('%s: ${BOLD}${GREEN}%s${NORMAL}'%(_T("Help for command"),command_name))
             if type == 'EPP':
-                command_line, command_help, notice, examples = self._epp_cmd.get_help(command_name)
+                command_line, command_help, notice, examples = self._epp_cmd.get_help(command_name, self._ljust)
                 examples = self.__repalce_static_null_examples__(examples)
+                command_lines = (command_line,)
             else:
-                command_line, command_help, notice, examples = self.__get_help_session_detail__(command_name)
+                command_lines, command_help, notice, examples = self.__get_help_session_detail__(command_name)
             patt = re.compile("^(\S)",re.MULTILINE)
             patt_sub = "    \\1"
             #
             self.append_note('%s:'%_T('DESCRIPTION'),'BOLD')
             self.append_note('${WHITE}%s${NORMAL}'%patt.sub(patt_sub,notice))
             #
-            self.append_note('\n%s:'%_T('SYNTAX'),'BOLD')
-            self.append_note('    %s'%command_line)
+            if len(command_lines):
+                self.append_note('\n%s:'%_T('SYNTAX'),'BOLD')
+                self.append_note('    %s'%'\n    '.join(command_lines))
             #
             if command_help:
                 self.append_note('\n%s:'%_T('OPTIONS'),'BOLD')
@@ -291,7 +306,7 @@ Synonyms of 'raw-command' are 'raw-c', 'src-command' and 'src-c'."""), ('raw-c',
             self.display_help(help_item, command)
         elif session_command in self._pattern_session_commands:
             # 2. Session commands
-            for names,func,p,e,x in self._session_commands:
+            for names,func,req,p,e,x in self._session_commands:
                 if session_command in names:
                     if func:
                         name = func(command_params.strip())
@@ -418,7 +433,7 @@ Synonyms of 'raw-command' are 'raw-c', 'src-command' and 'src-c'."""), ('raw-c',
     def __session_verbose__(self, param):
         'Set verbose mode'
         if param:
-            self.__init_verbose__(param)
+            self.parse_verbose_value(param)
             msg = _T('Verbose mode has been set to')
         else:
             msg = _T('Verbose mode is')
@@ -577,14 +592,14 @@ Synonyms of 'raw-command' are 'raw-c', 'src-command' and 'src-c'."""), ('raw-c',
         password = self.get_config_value(section_epp_login, 'password',OMIT_ERROR)
         # Check if all values are present:
         missing = []
-        if not data[0]: missing.append(_T('host missing'))
-        if not data[1]: missing.append(_T('port missing'))
-        if not data[2]: missing.append(_T('private key missing'))
-        if not data[3]: missing.append(_T('certificate missing'))
-        if not username: missing.append(_T('username missing'))
-        if not password: missing.append(_T('password missing'))
+        if not data[0]: missing.append(_T('Hostname missing'))
+        if not data[1]: missing.append(_T('Server port number missing'))
+        if not username: missing.append(_T('Username missing'))
+        if not password: missing.append(_T('Password missing'))
+        if not data[3]: missing.append(_T('SSL certificate missing'))
+        if not data[2]: missing.append(_T('SSL private key file not found'))
         if len(missing):
-            self.append_error('%s:'%_T('Automatic login stopped'))
+            self.append_error(_T("Can't connect to server"))
             map(self.append_error, missing)
             return 0
         self._epp_cmd.set_params({'username':[username],'password':[password]})

@@ -8,7 +8,7 @@ $exec_path = ''; // Here you can write path to the app
 $php_module_name = '/tmp/fred_client.php';
 
 $command_options = ''; // here you can type some options. For more see ./fred_client.py --help
-// $command_options = '-s curlew'; // TEST
+// $command_options = '-s curlew -f /home/zdenek/.fred_client.conf'; // TEST
 
 define('CRLF', "\r\n");
 define('BR', "<br />\r\n");

@@ -88,12 +88,30 @@ class ManagerBase:
         # selection fo language version
         self._session[LANG] = op['lang']
         if op['verbose']:
-            self.__init_verbose__(op['verbose'])
+            self.parse_verbose_value(op['verbose'])
         key = op['output'].lower()
         if key:
             self._session[OUTPUT_TYPE] = self.get_valid_output(key)
         if op['no_validate']: self._session[VALIDATE] = 0
+        port = self.get_config_value(section_connect,'port',OMIT_ERROR)
+        if port:
+            if not self.check_port(port):
+                self._conf.set(section_connect,'port','')
 
+    def check_port(self, sport):
+        'Parse text to port integer.'
+        ok = 0
+        try:
+            port = int(sport)
+        except ValueError, msg:
+            self.append_error("Invalid port value: '%s'."%sport)
+        else:
+            if port > 0 and port <= 65535:
+                ok = 1
+            else:
+                self.append_error('Port is out of range: %d.'%port)
+        return ok
+        
     def get_valid_output(self, key):
         'Get valid output type.'
         if not key in OUTPUT_TYPES:
@@ -162,21 +180,24 @@ class ManagerBase:
         msg = []
         if self.is_note():
             # hlášení, poznámka, hodnoty
+##            if self._notes[-1] != '': msg.append('') # empty line
             for text in self._notes:
                 msg.append(get_ltext(colored_output.render(text)))
             self._notes = []
         if self.is_error():
             # chybová hlášení
-            if len(msg): msg.append('') # empty line - indent errors
-            label = '%s:'%_T('ERROR')
-            msg.append('%s%s%s'%(colored_output.render('${RED}${BOLD}'),label.ljust(self._ljust), self._errors[0]))
+##            if len(msg): msg.append('') # empty line - indent errors
+            if len(msg) and msg[-1] != '': msg.append('')
+            self._errors[-1] += colored_output.render('${NORMAL}')
+            label = _T('ERROR')
+            msg.append('%s%s: %s'%(colored_output.render('${RED}${BOLD}'),label, self._errors[0]))
             for text in self._errors[1:]:
-                msg.append('%s%s'%(''.ljust(self._ljust), get_ltext(colored_output.render(text))))
+                msg.append(get_ltext(text)) ## colored_output.render(
             self._errors = []
-            msg.append(colored_output.render('${NORMAL}'))
         if len(self._notes_afrer_errors):
             msg.extend(map(get_ltext, self._notes_afrer_errors))
             self._notes_afrer_errors = []
+##        if len(msg) and msg[-1] != '': msg.append('') # empty line at the end of all output
         return sep.join(msg)
 
     def welcome(self):
@@ -273,7 +294,7 @@ class ManagerBase:
             ret = self._conf.has_option(section, option)
         return ret
 
-    def get_config_value(self, section, option, omit_errors=0, is_int=None):
+    def get_config_value(self, section, option, omit_errors=0):
         'Get value from config and catch exceptions.'
         value=None
         if not self._conf: return value
@@ -281,14 +302,6 @@ class ManagerBase:
             value = self._conf.get(section,option)
         except (ConfigParser.NoSectionError, ConfigParser.NoOptionError, ConfigParser.InterpolationMissingOptionError), msg:
             if not omit_errors: self.append_error('ConfigError: %s (%s, %s)'%(msg,section,option))
-        if is_int:
-            if value is None:
-                value = 0
-            else:
-                try:
-                    value = int(value)
-                except ValueError, msg:
-                    self.append_error('Config ${BOLD}%s:${NORMAL} %s.'%(option,msg))
         return value
 
     def config_get_section_connect(self):
@@ -340,7 +353,7 @@ class ManagerBase:
         if colors:
             self._session[COLORS] = colors.lower() == 'on' and 1 or 0
             colored_output.set_mode(self._session[COLORS])
-        self.__init_verbose__(self.get_config_value(section,'verbose',OMIT_ERROR))
+        self.parse_verbose_value(self.get_config_value(section,'verbose',OMIT_ERROR))
         # set NULL value
         value = self.get_config_value(section,'null_value',OMIT_ERROR)
         if value: self.set_null_value(value)
@@ -355,47 +368,46 @@ class ManagerBase:
         try:
             timeout = float(dc.get('timeout','0.0'))
         except ValueError, msg:
-            errors.append('Timeout ValueError: %s'%msg)
-        try:
-            port = int(dc.get('port','0'))
-        except ValueError, msg:
-            errors.append('Port ValueError: %s'%msg)
-        if not len(errors):
-            section = self.config_get_section_connect()
-            self._conf.set(section,'port',str(port))
-            self._conf.set(section,'timeout',str(timeout))
-            if dc.has_key('host'):
-                self._options['host'] = dc['host']
+            errors.append("Invalid timeout value: '%s'. %s"%(msg,dc['timeout']))
+        section = self.config_get_section_connect()
+        self._conf.set(section,'timeout',str(timeout))
+        if dc.has_key('host'):
+            self._options['host'] = dc['host']
+        else:
+            errors.append(_T('Hostname missing'))
+        if dc.has_key('port'):
+            if self.check_port(dc['port']):
+                self._conf.set(section,'port',str(dc['port']))
             else:
-                errors.append(_T('Host name missing.'))
-            if not dc.has_key('port'):
-                errors.append(_T('Port number missing.'))
-            if dc.has_key('cert'):
-                self._conf.set(section,'ssl_cert', dc['cert'])
-            else:
-                errors.append(_T('SSL certificate path missing.'))
-            if dc.has_key('priv_key'):
-                self._conf.set(section,'ssl_key', dc['priv_key'])
-            else:
-                errors.append(_T('SSL private key path missing.'))
+                errors.append(self._errors[-1])
+        else:
+            errors.append(_T('Server port number missing'))
+        if dc.has_key('cert'):
+            self._conf.set(section,'ssl_cert', dc['cert'])
+        else:
+            errors.append(_T('SSL certificate path missing'))
+        if dc.has_key('priv_key'):
+            self._conf.set(section,'ssl_key', dc['priv_key'])
+        else:
+            errors.append(_T('SSL private key path missing'))
         return errors
         
-    def __init_verbose__(self, verbose):
+    def parse_verbose_value(self, verbose):
         'Init verbose mode.'
+        nverb = None
         if type(verbose) in (str,unicode):
             try:
-                verbose = int(verbose)
+                nverb = int(verbose)
             except ValueError, msg:
-                self.append_error('Verbose ValueError: %s'%msg)
-                verbose = 1
-        if verbose in (0,1,2,3):
-            self._session[VERBOSE] = verbose
-        elif verbose is not None:
-            self.append_error(_T('Available verbose modes: 1, 2, 3.'))
+                self.append_error("Unknown verbose level: '%s'"%verbose)
+                # self.append_error(_T('Valid verbose level is: 1, 2, 3.'))
+        if nverb in (0,1,2,3):
+            self._session[VERBOSE] = nverb
+        return nverb
 
     def set_verbose(self, verbose):
         'Set verbose mode.'
-        self.__init_verbose__(verbose)
+        self.parse_verbose_value(verbose)
         return self._session[VERBOSE]
     
     #---------------------------

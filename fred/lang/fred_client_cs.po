@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-10-25 14:40+0200\n"
+"POT-Creation-Date: 2006-10-26 16:24+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Zdeněk Böhm <zdenek.bohm@nic.cz>\n"
 "Language-Team: CS <ccreg-devel@lists.nic.cz>\n"
@@ -16,61 +16,65 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3;  plural=n==1 ? 0 : n>=2 && n<=4 ? 1 : 2;\n"
 
-#: fred/client_socket.py:34
-msgid "Socket type IPv6 (AF_INET6) is not present in socket module."
-msgstr "Soket typu IPv6 (AF_INET6) není v modulu socket dostupný."
-
-#: fred/client_socket.py:53
-msgid "Used socket type"
-msgstr "Použitý typ soketu"
-
-#: fred/client_socket.py:66
-msgid "Connecting to"
-msgstr "Připojuji se k"
-
-#: fred/client_socket.py:70
-msgid "I cannot connect to the server"
-msgstr "Nemohu se připojit k serveru."
-
-#: fred/client_socket.py:73 fred/client_socket.py:109
-#: fred/client_socket.py:138 fred/client_socket.py:171
-#: fred/client_socket.py:205 fred/client_socket.py:217
-msgid "Interrupted by user"
-msgstr "Přerušeno uživatelem"
-
-#: fred/client_socket.py:76
-msgid "Connection established."
-msgstr "Spojení bylo navázáno."
-
-#: fred/client_socket.py:77
-msgid "Try to open SSL layer..."
-msgstr "Otevírám SSL vrstvu..."
-
-#: fred/client_socket.py:79
+#: fred/client_socket.py:31
 msgid "Certificate names not set."
 msgstr "Jména certifikátů nejsou zadána."
 
-#: fred/client_socket.py:81
+#: fred/client_socket.py:33
 msgid "Private key file not found."
 msgstr "Privátní klíč nebyl nalezen"
 
-#: fred/client_socket.py:84
+#: fred/client_socket.py:36
 msgid "Certificate key file not found."
 msgstr "Soubor s certifikátem nebyl nalezen"
 
-#: fred/client_socket.py:92
+#: fred/client_socket.py:41
+msgid "Invalid port value"
+msgstr "Neplatné číslo portu"
+
+#: fred/client_socket.py:51
+msgid "Socket type IPv6 (AF_INET6) is not present in socket module."
+msgstr "Soket typu IPv6 (AF_INET6) není v modulu socket dostupný."
+
+#: fred/client_socket.py:70
+msgid "Used socket type"
+msgstr "Použitý typ soketu"
+
+#: fred/client_socket.py:83
+msgid "Connecting to"
+msgstr "Připojuji se k"
+
+#: fred/client_socket.py:87
+msgid "I cannot connect to the server"
+msgstr "Nemohu se připojit k serveru."
+
+#: fred/client_socket.py:90 fred/client_socket.py:118
+#: fred/client_socket.py:147 fred/client_socket.py:180
+#: fred/client_socket.py:214 fred/client_socket.py:226
+msgid "Interrupted by user"
+msgstr "Přerušeno uživatelem"
+
+#: fred/client_socket.py:93
+msgid "Connection established."
+msgstr "Spojení bylo navázáno."
+
+#: fred/client_socket.py:94
+msgid "Try to open SSL layer..."
+msgstr "Otevírám SSL vrstvu..."
+
+#: fred/client_socket.py:101
 msgid "Certificates missing. Trying to connect without SSL!"
 msgstr "Certifikát chybí. Zkouším spojení bez SSL!"
 
-#: fred/client_socket.py:99
+#: fred/client_socket.py:108
 msgid "Certificate not signed by verified certificate authority."
 msgstr "Použitý certifikát není podepsán uznávanou certifikační autoritou."
 
-#: fred/client_socket.py:100
+#: fred/client_socket.py:109
 msgid "Server configuration is not valid. Contact administrator."
 msgstr "Server není správně nakonfigurován. Obraťte se na správce serveru."
 
-#: fred/client_socket.py:101
+#: fred/client_socket.py:110
 msgid ""
 "If this client runs under MS Windows and timeout is not zero, it is probably "
 "SLL bug! Set timeout back to zero."
@@ -78,11 +82,11 @@ msgstr ""
 "Jestliže tento klient běží v MS Windows a timeout není nula, tak se "
 "pravděpodobně jedná o SSL bug! Nastavte timeout zpět na nulu."
 
-#: fred/client_socket.py:111
+#: fred/client_socket.py:120
 msgid "SSL layer opened."
 msgstr "SLL vrstva byla aktivována."
 
-#: fred/client_socket.py:218
+#: fred/client_socket.py:227
 msgid "Connection closed"
 msgstr "Spojení uzavřeno"
 
@@ -116,7 +120,7 @@ msgstr "Nesprávné použití závorek (list)."
 msgid "Invalid bracket definition (childs)."
 msgstr "Nesprávné použití závorek (childs)."
 
-#: fred/eppdoc_assemble.py:40 fred/eppdoc_assemble.py:54
+#: fred/eppdoc_assemble.py:40 fred/session_command.py:183
 msgid "optional"
 msgstr "nepovinný"
 
@@ -148,93 +152,85 @@ msgstr[0] "seznam o maximálně %d položce."
 msgstr[1] "seznam o maximálně %d položkách."
 msgstr[2] "seznam o maximálně %d položkách."
 
-#: fred/eppdoc_assemble.py:68
+#: fred/eppdoc_assemble.py:70
 msgid "accepts only values"
 msgstr "povoleny pouze hodnoty"
 
-#: fred/eppdoc_assemble.py:72
+#: fred/eppdoc_assemble.py:74
 msgid "no options"
 msgstr "žádné parametry"
 
-#: fred/eppdoc_assemble.py:103
+#: fred/eppdoc_assemble.py:105
 msgid "other_options"
 msgstr "další_parametry"
 
-#: fred/eppdoc_assemble.py:107
+#: fred/eppdoc_assemble.py:109
 msgid "Unknown EPP command. Select one from EPP commands list (Type help)."
 msgstr ""
 "Neznámý EPP příkaz. Vyberte jeden ze seznamu EPP příkazů (zadejte help)."
 
-#: fred/eppdoc_assemble.py:114
+#: fred/eppdoc_assemble.py:116
 msgid "Try"
 msgstr "Zkuste"
 
-#: fred/eppdoc_assemble.py:153
+#: fred/eppdoc_assemble.py:155
 msgid "Invalid parameter"
 msgstr "Neplatný parametr"
 
-#: fred/eppdoc_assemble.py:154
+#: fred/eppdoc_assemble.py:156
 msgid "Corrupted value"
 msgstr "Neplatná hodnota"
 
-#: fred/eppdoc_assemble.py:155
+#: fred/eppdoc_assemble.py:157
 msgid "Correct format is"
 msgstr "Správný formát je"
 
-#: fred/eppdoc_assemble.py:156
+#: fred/eppdoc_assemble.py:158
 msgid "For example"
 msgstr "Například"
 
-#: fred/eppdoc_assemble.py:164
+#: fred/eppdoc_assemble.py:166
 msgid "list of values overflow. Maximum is"
 msgstr "Počet položek v seznamu je překročen. Maximum je"
 
-#: fred/eppdoc_assemble.py:171 fred/eppdoc_assemble.py:225
+#: fred/eppdoc_assemble.py:173 fred/eppdoc_assemble.py:227
 #, python-format
 msgid "Value \"%s\" is not allowed. Valid is"
 msgstr "Hodnota \"%s\" není povolena. Platná je"
 
-#: fred/eppdoc_assemble.py:178
+#: fred/eppdoc_assemble.py:180
 msgid "missing"
 msgstr "chybí"
 
-#: fred/eppdoc_assemble.py:198
-msgid ""
-"First fill required values and then press Ctrl+D to finish command. For "
-"abort press Ctrl+C."
-msgstr ""
-"Nejdříve zadejte povinné údaje a potom dokončete zadání kombinací Ctrl+D. "
-"Příkaz zrušíte stisknutím Ctrl+C."
+#: fred/eppdoc_assemble.py:200
+msgid "Can't finish input, required values must be set. Press Ctrl+C to abort."
+msgstr "Nemohu dokončit zadání. Požadované hodnoty musí být zadány. Zadání zrušíte stisknutím Ctrl+C."
 
-#: fred/eppdoc_assemble.py:205 fred/eppdoc_assemble.py:416
-msgid "Command has been aborted."
-msgstr "Příkaz byl zrušen."
-
-#: fred/eppdoc_assemble.py:210
-msgid "Interactive mode has been aborted."
+#: fred/eppdoc_assemble.py:207 fred/eppdoc_assemble.py:212
+msgid "Interactive input aborted."
 msgstr "Interaktivní mód byl zrušen."
 
-#: fred/eppdoc_assemble.py:232
+#: fred/eppdoc_assemble.py:234
 msgid "Value is required. It MUST be set."
 msgstr "Údaj je povinný. MUSÍ být zadán."
 
-#: fred/eppdoc_assemble.py:262
+#: fred/eppdoc_assemble.py:264
 msgid "Parameter MUST be a value from following list"
 msgstr "Parametr MUSÍ být hodnota z následujícího seznamu"
 
-#: fred/eppdoc_assemble.py:265
+#: fred/eppdoc_assemble.py:267
 msgid "Example"
 msgstr "Příklad"
 
-#: fred/eppdoc_assemble.py:392 fred/session_command.py:239 fred_create.py:22
+#: fred/eppdoc_assemble.py:394 fred/session_command.py:254 fred_create.py:22
 msgid "Unknown command"
 msgstr "Neznámý příkaz"
 
-#: fred/eppdoc_assemble.py:393
+#: fred/eppdoc_assemble.py:395
 msgid "For more type"
 msgstr "Pro více informací zadejte"
 
-#: fred/eppdoc_assemble.py:402
+#: fred/eppdoc_assemble.py:404
 msgid ""
 "Interactive input mode started. Press Ctrl+C to abort or Ctrl+D to finish "
 "command."
@@ -242,22 +238,26 @@ msgstr ""
 "Start interaktivního módu. Mód zrušíte stisknutím Ctrl+C. Příkaz dokončíte "
 "kombinací Ctrl+D."
 
-#: fred/eppdoc_assemble.py:410
-msgid "End of interactive input. [press enter]"
-msgstr "Konec interaktivního zadání parametrů. [stiskněte enter]"
+#: fred/eppdoc_assemble.py:412
+msgid "Interactive input completed. [Press Enter]"
+msgstr "Interaktivní mód ukončen. [stiskněte Enter]"
 
-#: fred/eppdoc_assemble.py:419
+#: fred/eppdoc_assemble.py:418
+msgid "Command has been aborted."
+msgstr "Příkaz byl zrušen."
+
+#: fred/eppdoc_assemble.py:421
 msgid "No parameters. Skip interactive mode."
 msgstr "Žádné parametery. Interaktivní mód přeskočen."
 
-#: fred/eppdoc_assemble.py:430
+#: fred/eppdoc_assemble.py:432
 msgid "Missing required value."
 msgid_plural "Missing required values."
 msgstr[0] "Chybí povinný parametr."
 msgstr[1] "Chybí povinné parametry."
 msgstr[2] "Chybí povinné parametry."
 
-#: fred/eppdoc_assemble.py:950
+#: fred/eppdoc_assemble.py:952
 #, python-format
 msgid "Value can be a list of max %d value."
 msgid_plural "Value can be a list of max %d values."
@@ -265,11 +265,11 @@ msgstr[0] "Hodnota může být seznam o max. velikosti %d položky."
 msgstr[1] "Hodnota může být seznam o max. velikosti %d položek."
 msgstr[2] "Hodnota může být seznam o max. velikosti %d položek."
 
-#: fred/eppdoc_assemble.py:952
+#: fred/eppdoc_assemble.py:954
 msgid "Value can be an unbouded list of values."
 msgstr "Hodnota může být libovolně velký seznam."
 
-#: fred/eppdoc_assemble.py:954
+#: fred/eppdoc_assemble.py:956
 msgid "Minimum is"
 msgstr "Minimum je"
 
@@ -394,12 +394,12 @@ msgid "The EPP \"logout\" command is used to end a session with an EPP server."
 msgstr "EPP příkaz \"logout\" se používá pro ukončení spojení s EPP serverem."
 
 #: fred/eppdoc_client.py:75
-msgid "EPP login name"
-msgstr "EPP login"
+msgid "username"
+msgstr ""
 
-#: fred/eppdoc_client.py:76
-msgid "EPP password"
-msgstr "EPP heslo"
+#: fred/eppdoc_client.py:76 fred/eppdoc_client.py:133
+msgid "password"
+msgstr "heslo"
 
 #: fred/eppdoc_client.py:77
 msgid "new password"
@@ -424,7 +424,8 @@ msgstr ""
 "\n"
 "EPP příkaz \"login\" identifikuje uživatele a zahájí spojení s EPP serverem."
 "Parametr \"lang\" nastaví jazykovou verzi pro klienta i odpovědi ze serveru."
-"Jazyk je také možné definovat v konfiguračním souboru nebo zadat na příkazové řádce."
+"Jazyk je také možné definovat v konfiguračním souboru nebo zadat na "
+"příkazové řádce."
 
 #: fred/eppdoc_client.py:86 fred/eppdoc_client.py:96
 msgid "contact name"
@@ -495,10 +496,6 @@ msgstr "město"
 #: fred/eppdoc_client.py:132
 msgid "country code"
 msgstr "kód země"
-
-#: fred/eppdoc_client.py:133
-msgid "password"
-msgstr "heslo"
 
 #: fred/eppdoc_client.py:134 fred/eppdoc_client.py:211
 msgid "organisation name"
@@ -890,160 +887,176 @@ msgstr "Interní chyba: Nadřazený uzel '%s' neexistuje."
 msgid "This program requires Python 2.4 or higher. Your version is"
 msgstr "Tento program vyžaduje Python 2.4 nebo vyšší. Vaše verze je"
 
-#: fred/session_base.py:100
+#: fred/session_base.py:118
 msgid "Unknown output type. Valid types are"
 msgstr "Neznámý typ výstupu. Platné typy jsou"
 
-#: fred/session_base.py:123
+#: fred/session_base.py:141
 msgid "Command confirmation has been set to"
 msgstr "Potvrzení přikazu bylo nastaveno na"
 
-#: fred/session_base.py:171 fred/session_transfer.py:314
+#: fred/session_base.py:192 fred/session_transfer.py:319
 msgid "ERROR"
 msgstr "CHYBA"
 
-#: fred/session_base.py:184
+#: fred/session_base.py:205
 msgid "Type \"help\", \"license\" or \"credits\" for more information."
 msgstr ""
 "Zadejte \"help\", \"license\" or \"credits\" pro zobrazení více informací."
 
-#: fred/session_base.py:201
+#: fred/session_base.py:222
 msgid "Invalid format of"
 msgstr "Neplatný formát"
 
-#: fred/session_base.py:201 fred/session_base.py:205
+#: fred/session_base.py:222 fred/session_base.py:226
 msgid "See help for more."
 msgstr "Více informací najdete v helpu."
 
-#: fred/session_base.py:205
+#: fred/session_base.py:226
 msgid "cannot be empty"
 msgstr "nemůže být prázdné"
 
-#: fred/session_base.py:212
+#: fred/session_base.py:233
 msgid "Actual config builded from files"
 msgstr "Aktuální config sestavený ze souborů"
 
-#: fred/session_base.py:214
+#: fred/session_base.py:235
 msgid "No config"
 msgstr "Žádný config"
 
-#: fred/session_base.py:220
+#: fred/session_base.py:241
 msgid "Actual connection HERE"
 msgstr "Aktuální spojení ZDE"
 
-#: fred/session_base.py:249
+#: fred/session_base.py:270
 msgid "Schema in session missing. This is invalid instalation."
 msgstr "Chybí schema v session. Tato instalace je neplatná."
 
-#: fred/session_base.py:315
+#: fred/session_base.py:328
 msgid "Using configuration from"
 msgstr "Použit konfigurační soubor"
 
-#: fred/session_base.py:323
+#: fred/session_base.py:336
 msgid "Fatal error: Default config create failed."
 msgstr "Fatální chyba: Vytvoření defaultního konfiguračního souboru selhalo."
 
-#: fred/session_base.py:332
+#: fred/session_base.py:345
 #, python-format
 msgid "Configuration file has no section \"%s\"."
 msgstr "Konfigurační soubor nemá sekci \"%s\"."
 
-#: fred/session_base.py:370
-msgid "Host name missing."
-msgstr "Chybí jméno hosta"
+#: fred/session_base.py:377 fred/session_command.py:595
+msgid "Hostname missing"
+msgstr "Chybí hostname"
 
-#: fred/session_base.py:372
-msgid "Port number missing."
-msgstr "Chybí číslo portu"
+#: fred/session_base.py:384 fred/session_command.py:596
+msgid "Server port number missing"
+msgstr "Chybí číslo portu serveru"
 
-#: fred/session_base.py:376
-msgid "SSL certificate path missing."
-msgstr "Cesta k SSL certifikátu chybí."
+#: fred/session_base.py:388
+msgid "SSL certificate path missing"
+msgstr "SSL certifikát chybí."
 
-#: fred/session_base.py:380
-msgid "SSL private key path missing."
-msgstr "Cesta k SSL privátnímu klíči chybí."
+#: fred/session_base.py:392
+msgid "SSL private key path missing"
+msgstr "SSL privátní klíč chybí."
 
-#: fred/session_base.py:394
-msgid "Available verbose modes: 1, 2, 3."
-msgstr "Mód výstupu může být nastaven jen na hodnoty 1, 2 nebo 3."
-
-#: fred/session_base.py:429
+#: fred/session_base.py:441
 #, python-format
 msgid "External validator \"%s\" not found. XML validation has been disabled."
 msgstr "Externí validátor \"%s\" nebyl nalezen. XML validace byla vypnuta."
 
-#: fred/session_base.py:444
+#: fred/session_base.py:456
 msgid ""
 "Temporary file for XML EPP validity verification can not been created. Reason"
 msgstr ""
 "Dočasný soubor pro ověření XML EPP validity se nepodařilo vytvořit. Důvod"
 
-#: fred/session_base.py:445 fred/session_base.py:474
+#: fred/session_base.py:457 fred/session_base.py:486
 #, python-format
 msgid "Validator has been disabled. Type %s to enable it."
 msgstr "Validátor byl deaktivován. Opětná aktivace se provede zadáním %s."
 
-#: fred/session_base.py:454
+#: fred/session_base.py:466
 msgid "Client-side validation command:"
 msgstr "Příkaz pro validátor:"
 
-#: fred/session_base.py:472
+#: fred/session_base.py:484
 msgid "Client side validation failed."
 msgstr "Validace na straně klienta selhala."
 
-#: fred/session_command.py:63 fred/session_command.py:71
-#: fred/session_command.py:508
+#: fred/session_command.py:60 fred/session_command.py:74
+#: fred/session_command.py:523
 msgid "command"
 msgstr "příkaz"
 
-#: fred/session_command.py:63
-msgid "Start the interactive mode of the input command params."
-msgstr "Start režimu interaktivního vkládání parametrů."
+#: fred/session_command.py:60
+msgid ""
+"\n"
+"! starts interactive input mode. In interactive input mode the program asks\n"
+"to fill in all command parameters one by one to help users construct proper\n"
+"syntax. After going through all parameters actual command syntax is "
+"displayed\n"
+"before issuing command to server. \n"
+"\n"
+"Interactive mode can be used with EPP commands only."
+msgstr ""
+"\n"
+"! spustí interaktivní mód vkládání parametrů. Program v interaktivním módu\n"
+"vybízí k zadání všech parametrů jeden za druhým a tím pomáhá uživateli\n"
+"sestavit příkazy s obtížnější syntaxí. Po zadání všech potřebných hodnot\n"
+"je výsledný příkaz zobrazen před tím, než je odeslán na server\n"
+"\n"
+"Interaktivní mód lze použít pouze na EPP příkazy."
 
-#: fred/session_command.py:64 fred/session_command.py:65
-#: fred/session_command.py:67 fred/session_command.py:87
-#: fred/session_command.py:91 fred/session_command.py:96
-#: fred/session_command.py:97
+#: fred/session_command.py:67 fred/session_command.py:68
+#: fred/session_command.py:70 fred/session_command.py:102
+#: fred/session_command.py:103
 msgid "switch"
 msgstr "přepínač"
 
-#: fred/session_command.py:64
+#: fred/session_command.py:67
 msgid "Send \"poll ack\" straight away after \"poll req\"."
 msgstr "Poslat \"poll ack\" ihned po odeslání \"poll req\"."
 
-#: fred/session_command.py:65
+#: fred/session_command.py:68
 msgid "Turn on/off colored output."
 msgstr "Zapnout/vypnout barevný výstup."
 
-#: fred/session_command.py:66
+#: fred/session_command.py:69
 msgid "Display or create config file."
 msgstr "Zobrazení nebo vytvoření konfiguračního souboru."
 
-#: fred/session_command.py:67
+#: fred/session_command.py:70
 msgid ""
 "Set on/off command confirmation for sending editable commands to the server."
 msgstr "Zapnout/vypnout potvrzování odesílání editačních příkazů na server."
 
-#: fred/session_command.py:70
+#: fred/session_command.py:73
 msgid "Display credits."
 msgstr "Zobrazit credits."
 
-#: fred/session_command.py:71
-msgid ""
-"Help displays details of the selected command.\n"
-"Type 'help command' for display command details. Synonyms for this command "
-"are '?' or 'h'."
-msgstr ""
-"Help zobrazí detaily vybraného příkazu.\n"
-"Zadejte 'help command' a zobrazí se detaily příkazu. Synonyma pro tento "
-"příkaz jsou '?' nebo 'h'."
+#: fred/session_command.py:74
+msgid "Get detailed help for this command."
+msgstr "Zobrazit detailní nápovědu pro tento příkaz."
 
-#: fred/session_command.py:72
+#: fred/session_command.py:74
+msgid ""
+"\n"
+"Help displays all available commands (type 'help') or displays \n"
+"detailed help for selected command (type 'help command'). \n"
+"Help uses synonyms 'help', '?' or 'h'."
+msgstr ""
+"\n"
+"Nápověda zobrazí všechny dostupné příkazy (zadejte 'help') nebo\n"
+"zobrazí detaily vybraného příkazu (zadejte 'help příkaz').\n"
+"Nápověda používá synonyma 'help', '?' nebo 'h'."
+
+#: fred/session_command.py:78
 msgid "code"
 msgstr "kód"
 
-#: fred/session_command.py:72
+#: fred/session_command.py:78
 msgid ""
 "\n"
 "Set the client language and server together. If you are online \n"
@@ -1058,11 +1071,11 @@ msgstr ""
 "Jazyk je také možné nastavit příkazem 'login', definováním \n"
 "v konfiguračním souboru nebo zadáním parametru v příkazové řádce."
 
-#: fred/session_command.py:78
+#: fred/session_command.py:84
 msgid "Display license."
 msgstr "Zobrazit licenci."
 
-#: fred/session_command.py:79
+#: fred/session_command.py:85
 msgid ""
 "\n"
 "Set representation of the value what is used to mean nothing. Default is "
@@ -1083,19 +1096,23 @@ msgstr ""
 "kdy jsme zadali hodnotu nulové délky. Synonymum pro 'null_value' je 'null'.\n"
 "Více informací naleznete v helpu."
 
-#: fred/session_command.py:85
+#: fred/session_command.py:91
 msgid "type"
 msgstr "typ"
 
-#: fred/session_command.py:85
+#: fred/session_command.py:91
 msgid "Display output in type."
 msgstr "Zobrazit výstup ve formátu."
 
-#: fred/session_command.py:86
+#: fred/session_command.py:92
 msgid "Quit the client. Synonyms of 'quit' are 'q' and 'exit'."
 msgstr "Ukončit klienta. Synonyma pro 'quit' jsou 'q' a 'exit'."
 
-#: fred/session_command.py:87
+#: fred/session_command.py:93 fred/session_command.py:97
+msgid "mode"
+msgstr "mód"
+
+#: fred/session_command.py:93
 msgid ""
 "\n"
 "Display XML source of the EPP answer. If you would display source\n"
@@ -1107,7 +1124,7 @@ msgstr ""
 "bez XML tagů, zadejte parametr 'dict' nebo jednoduše 'd'.\n"
 "Synonyma pro 'raw-answer' jsou 'raw-a', 'src-answer' a 'src-a'."
 
-#: fred/session_command.py:91
+#: fred/session_command.py:97
 msgid ""
 "\n"
 "Display XML source of the EPP command. If you would display source\n"
@@ -1119,254 +1136,246 @@ msgstr ""
 "bez XML tagů, zadejte parametr 'dict' nebo jednoduše 'd'.\n"
 "Synonyma pro 'raw-command' jsou 'raw-c', 'src-command' a 'src-c'."
 
-#: fred/session_command.py:95
+#: fred/session_command.py:101
 msgid "filename"
 msgstr "název souboru"
 
-#: fred/session_command.py:95
+#: fred/session_command.py:101
 msgid "any filename"
 msgstr "nějaký název souboru"
 
-#: fred/session_command.py:95
+#: fred/session_command.py:101
 msgid ""
 "Send any file to the server. If filename missing command shows actual folder."
 msgstr ""
 "Odeslat soubor na server. Pokud jméno souboru není zadáno zobrazí se "
 "aktuální adresář."
 
-#: fred/session_command.py:96
+#: fred/session_command.py:102
 msgid "Set on/off client-side validation of the XML documents."
 msgstr "Zapnutí/vypnutí XML validátoru dokumentů na straně klienta."
 
-#: fred/session_command.py:97
+#: fred/session_command.py:103
 msgid ""
 "Set verbose mode: 1 - brief (default); 2 - full; 3 - full & XML sources."
 msgstr ""
 "Nastavení módu výpisu: 1 - stručný (default); 2 - plný; 3 - plný & XML "
 "zdroje."
 
-#: fred/session_command.py:103
+#: fred/session_command.py:109
 msgid "No data"
 msgstr "Žádná data"
 
-#: fred/session_command.py:121
+#: fred/session_command.py:127
 #, python-format
 msgid "Type '%s' for more information."
 msgstr "Pro více informací zadejte '%s'."
 
-#: fred/session_command.py:122
+#: fred/session_command.py:128
 msgid "Command to issue"
 msgstr "Příkaz k odeslání"
 
-#: fred/session_command.py:148
+#: fred/session_command.py:154
 msgid "No help available for"
 msgstr "Help nebyl nalezen pro"
 
-#: fred/session_command.py:153
+#: fred/session_command.py:159
 msgid "Type \"help command\" to get help on particular command."
 msgstr "Zadejte \"help command\" pro zobrazení detailů příkazu."
 
-#: fred/session_command.py:154
+#: fred/session_command.py:160
 msgid "Available session commands"
 msgstr "Dostupné session příkazy"
 
-#: fred/session_command.py:156
+#: fred/session_command.py:162
 msgid "Available EPP commands"
 msgstr "Dostupné EPP příkazy"
 
-#: fred/session_command.py:158
+#: fred/session_command.py:164
 msgid "Report bugs to"
 msgstr "Poruchy zasílejte na"
 
-#: fred/session_command.py:195
+#: fred/session_command.py:208
 msgid "Help for command"
 msgstr "Nápověda pro příkaz"
 
-#: fred/session_command.py:204
+#: fred/session_command.py:218
 msgid "DESCRIPTION"
 msgstr "POPIS"
 
-#: fred/session_command.py:207
+#: fred/session_command.py:222
 msgid "SYNTAX"
 msgstr "SYNTAXE"
 
-#: fred/session_command.py:211
+#: fred/session_command.py:226
 msgid "OPTIONS"
 msgstr "PARAMETRY"
 
-#: fred/session_command.py:215 fred_create.py:80 fred_sender.py:138
+#: fred/session_command.py:230 fred_create.py:80 fred_sender.py:137
 msgid "EXAMPLES"
 msgstr "PŘÍKLADY"
 
-#: fred/session_command.py:240
+#: fred/session_command.py:255
 msgid "For list all commands type"
 msgstr "Pro výpis celého seznamu příkazů zadejte"
 
-#: fred/session_command.py:277
+#: fred/session_command.py:292
 msgid "ERROR: Missing command to start interactive input"
 msgstr "CHYBA: Interaktivnímu vstupu nebyl zadán příkaz"
 
-#: fred/session_command.py:278
+#: fred/session_command.py:293
 msgid "Type 'help !' for more information."
 msgstr "Pro více informací zadejte 'help !'."
 
-#: fred/session_command.py:304
+#: fred/session_command.py:319
 msgid "Hidden commands are"
 msgstr "Skryté příkazy jsou"
 
-#: fred/session_command.py:323
+#: fred/session_command.py:338
 msgid "Load file"
 msgstr "Načíst soubor"
 
-#: fred/session_command.py:329
+#: fred/session_command.py:344
 msgid "Not found"
 msgstr "Nenalezen"
 
-#: fred/session_command.py:362
+#: fred/session_command.py:377
 msgid "Translation of answer column names is"
 msgstr "Překlad jmen sloupců odpovědi je"
 
-#: fred/session_command.py:369
+#: fred/session_command.py:384
 msgid "Command confirmation is"
 msgstr "Potvrzování odesílání příkazů je"
 
-#: fred/session_command.py:375
+#: fred/session_command.py:390
 msgid "null_value has been set to"
 msgstr "null_value bylo nastaveno na"
 
-#: fred/session_command.py:377
+#: fred/session_command.py:392
 msgid "null_value is"
 msgstr "null_value je"
 
-#: fred/session_command.py:384
+#: fred/session_command.py:399
 msgid "Client-side validation has been set to"
 msgstr "Validace na straně klienta byla nastavena na"
 
-#: fred/session_command.py:386
+#: fred/session_command.py:401
 msgid "Client-side validation is"
 msgstr "Validace na straně klienta je"
 
-#: fred/session_command.py:392
+#: fred/session_command.py:407
 msgid "You are connected already. Type disconnect for close connection."
 msgstr "Již jste připojeni. Pro uzavření spojení zadejte disconnect."
 
-#: fred/session_command.py:404
+#: fred/session_command.py:419
 msgid "You has been disconnected."
 msgstr "Byli jste odpojeni."
 
-#: fred/session_command.py:406 fred/session_transfer.py:166
-#: fred/session_transfer.py:193 fred_console.py:150
+#: fred/session_command.py:421 fred/session_transfer.py:166
+#: fred/session_transfer.py:193 fred_console.py:151
 msgid "You are not connected."
 msgstr "Nejste připojeni."
 
-#: fred/session_command.py:413
+#: fred/session_command.py:428
 msgid "Colors mode has been set to"
 msgstr "Barevný výstup byl nastaven na"
 
-#: fred/session_command.py:415
+#: fred/session_command.py:430
 msgid "Colors mode is"
 msgstr "Mód barevnosti je"
 
-#: fred/session_command.py:422
+#: fred/session_command.py:437
 msgid "Verbose mode has been set to"
 msgstr "Mód výpisu byl nastaven na"
 
-#: fred/session_command.py:424
+#: fred/session_command.py:439
 msgid "Verbose mode is"
 msgstr "Mód rozsahu výpisu je"
 
-#: fred/session_command.py:450
+#: fred/session_command.py:465
 msgid "Autoacknowledge poll has been set to"
 msgstr "Autopotvrzení poll bylo nastaveno na"
 
-#: fred/session_command.py:452
+#: fred/session_command.py:467
 msgid "Autoacknowledge poll is"
 msgstr "Autopotvrzení poll je"
 
-#: fred/session_command.py:460
+#: fred/session_command.py:475
 msgid "Output type has been set to"
 msgstr "Typ výstupu byl nastaven na"
 
-#: fred/session_command.py:462
+#: fred/session_command.py:477
 msgid "Output type is"
 msgstr "Typ výstupu je"
 
-#: fred/session_command.py:471
+#: fred/session_command.py:486
 msgid "Dir list"
 msgstr "Výpis adresáře"
 
-#: fred/session_command.py:487
+#: fred/session_command.py:502
 msgid "Interpreted answer"
 msgstr "Přeložená odpověď"
 
-#: fred/session_command.py:490
+#: fred/session_command.py:505
 msgid "Answer source"
 msgstr "Zdrojová odpověď"
 
-#: fred/session_command.py:497
+#: fred/session_command.py:512
 msgid "Interpreted command"
 msgstr "Přeložený příkaz"
 
-#: fred/session_command.py:502
+#: fred/session_command.py:517
 msgid "Command source"
 msgstr "Zdrojový příkaz"
 
-#: fred/session_command.py:510
+#: fred/session_command.py:525
 #, python-format
 msgid "Unsupported language code: '%s'. Available codes are: %s."
 msgstr "Nepodporovaná jazyková verze: '%s'. Dostupné verze jsou: %s."
 
-#: fred/session_command.py:511 fred/session_command.py:527
+#: fred/session_command.py:526 fred/session_command.py:542
 msgid "Language is"
 msgstr "Jazyková verze je"
 
-#: fred/session_command.py:514
+#: fred/session_command.py:529
 msgid "No change. Language is"
 msgstr "Žádná změna. Jazyková verze je"
 
-#: fred/session_command.py:524
+#: fred/session_command.py:539
 msgid ""
 "If you want to change the server language too, you have to logout and login "
 "again."
 msgstr "Jestliže chcete změnit také jazyk serveru, musíte se znova zalogovat."
 
-#: fred/session_command.py:525
+#: fred/session_command.py:540
 msgid "Language has been set to"
 msgstr "Jazyková verze byla nastavena na"
 
-#: fred/session_command.py:545
+#: fred/session_command.py:560
 msgid "You are logged already."
 msgstr "Jste již zalogován"
 
-#: fred/session_command.py:580
-msgid "host missing"
-msgstr "chybí host"
-
-#: fred/session_command.py:581
-msgid "port missing"
-msgstr "chybí port"
-
-#: fred/session_command.py:582
-msgid "private key missing"
-msgstr "chybí privátní klíč"
-
-#: fred/session_command.py:583
-msgid "certificate missing"
-msgstr "chybí certifikát"
-
-#: fred/session_command.py:584
-msgid "username missing"
-msgstr "chybí username"
-
-#: fred/session_command.py:585
-msgid "password missing"
-msgstr "chybí heslo"
-
-#: fred/session_command.py:587
-msgid "Automatic login stopped"
-msgstr "Automatický login byl zastaven"
-
 #: fred/session_command.py:597
+msgid "Username missing"
+msgstr "Chybí username"
+
+#: fred/session_command.py:598
+msgid "Password missing"
+msgstr "Chybí heslo"
+
+#: fred/session_command.py:599
+msgid "SSL certificate missing"
+msgstr "SSL certifikát chybí"
+
+#: fred/session_command.py:600
+msgid "SSL private key file not found"
+msgstr "SSL privátní klíč nebyl nalezen"
+
+#: fred/session_command.py:602
+msgid "Can't connect to server"
+msgstr "Nemohu se připojit k serveru"
+
+#: fred/session_command.py:612
 msgid "Login command sent to the server"
 msgstr "Příkaz login byl odeslán na server"
 
@@ -1415,31 +1424,27 @@ msgstr "Všechna data jsou skrytá."
 msgid "Connected!"
 msgstr "Spojení navázáno!"
 
-#: fred/session_receiver.py:204
-msgid "Login OK. Session started."
-msgstr "Login OK. Relace zahájena."
+#: fred/session_receiver.py:205
+msgid "Login failed."
+msgstr "Login se nezdařil."
 
-#: fred/session_receiver.py:206
-msgid "ERROR: Login failed."
-msgstr "CHYBA: Login se nezdařil."
-
-#: fred/session_receiver.py:312
+#: fred/session_receiver.py:311
 msgid "Not in registry: Object is available."
 msgstr "Není v registru: Objekt je dostupný."
 
-#: fred/session_receiver.py:335
+#: fred/session_receiver.py:334
 msgid "Not available"
 msgstr "Nedostupný"
 
-#: fred/session_receiver.py:335
+#: fred/session_receiver.py:334
 msgid "Available"
 msgstr "Dostupný"
 
-#: fred/session_receiver.py:461
+#: fred/session_receiver.py:460
 msgid "You are not logged. First type login."
 msgstr "Nejste zalogováni. Nejdříve zadejte login."
 
-#: fred/session_receiver.py:464
+#: fred/session_receiver.py:463
 msgid "You are not logged. You must call login() before working on the server."
 msgstr "Nejste zalogováni. Nejdříve musíte zadat login()."
 
@@ -1460,15 +1465,15 @@ msgstr "Server nevrátil Greeting odpověď. Kontaktujte správce serveru."
 msgid "Logout command sent to server"
 msgstr "Odeslán logout"
 
-#: fred/session_transfer.py:305 fred/session_transfer.py:365
+#: fred/session_transfer.py:307 fred/session_transfer.py:367
 msgid "Return code"
 msgstr "Návratový kód"
 
-#: fred/session_transfer.py:306 fred/session_transfer.py:367
+#: fred/session_transfer.py:308 fred/session_transfer.py:369
 msgid "Reason"
 msgstr "Důvod"
 
-#: fred/session_transfer.py:328
+#: fred/session_transfer.py:331
 #, python-format
 msgid "(%d item)"
 msgid_plural "(%d items)"
@@ -1476,18 +1481,18 @@ msgstr[0] "(%d položka)"
 msgstr[1] "(%d položky)"
 msgstr[2] "(%d položek)"
 
-#: fred/translate.py:229
+#: fred/translate.py:232 fred_console.py:165
 #, python-format
 msgid ""
-"%s: %s\n"
+"%s\n"
 "Usage: %s [OPTIONS...]\n"
 "Try '%s --help' for more information.\n"
 msgstr ""
-"%s: %s\n"
+"%s\n"
 "Použití: %s [parametry...]\n"
 "Více informací získáze zadáním '%s --help'.\n"
 
-#: fred_client.py:14 fred_console.py:165 fred_create.py:78 fred_sender.py:133
+#: fred_client.py:14 fred_console.py:177 fred_create.py:78 fred_sender.py:132
 msgid "Usage"
 msgstr "Použití"
 
@@ -1511,7 +1516,7 @@ msgstr ""
 "-q --qt\n"
 "                   Spustit klineta v Qt GUI"
 
-#: fred_client.py:22 fred_console.py:167 fred_create.py:88 fred_sender.py:146
+#: fred_client.py:22 fred_console.py:179 fred_create.py:88 fred_sender.py:145
 msgid "For more information, see README."
 msgstr "Více informací v README."
 
@@ -1589,11 +1594,11 @@ msgstr ""
 "  -n, --nologin    \n"
 "                   Deaktivovat automatické spojení se serverem po startu\n"
 
-#: fred_console.py:120
+#: fred_console.py:121
 msgid "EPP document is not valid"
 msgstr "EPP dokument není validní"
 
-#: fred_console.py:128
+#: fred_console.py:129
 msgid "Do you really want to send this command to the server?"
 msgstr "Opravdu chcete odeslat tento poříkaz na server?"
 
@@ -1606,23 +1611,23 @@ msgid "Eventual errors are return in XML format: <errors>... msg ...</errors>."
 msgstr ""
 "Případné chyby jsou vráceny ve formátu XML: <errors>... msg ...</errors>."
 
-#: fred_sender.py:22
+#: fred_sender.py:21
 msgid "Login failed"
 msgstr "Login se nezdařil"
 
-#: fred_sender.py:70
+#: fred_sender.py:69
 msgid "Send files"
 msgstr "Odeslat soubory"
 
-#: fred_sender.py:101
+#: fred_sender.py:100
 msgid "sending..."
 msgstr "posílám..."
 
-#: fred_sender.py:134
+#: fred_sender.py:133
 msgid "Module for sending files to the EPP server."
 msgstr "Modul pro odeslání souborů na EPP server."
 
-#: fred_sender.py:136
+#: fred_sender.py:135
 msgid ""
 "  -o OUTPUT_TYPE, --output=OUTPUT_TYPE\n"
 "                   Display output as text (default), html, php"

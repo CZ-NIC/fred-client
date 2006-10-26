@@ -222,14 +222,17 @@ for key,value in langs.items():
 # Install language support
 install_translation(options['lang'])
 
+match = re.search('(\w+)(\.py.?)?$',sys.argv[0])
+script_name = match is None and sys.argv[0] or match.group(1)
+
 if errors:
-    errors.insert(0,'ERROR:')
-    match = re.search('(\w+)(\.py.?)?$',sys.argv[0])
-    name = match is None and sys.argv[0] or match.group(1)
-    option_errors = _T("""%s: %s
+    #errors[0] = '%s%s'%(errors[0][0].upper(),errors[0][1:]) # First letter to uppercase
+##    match = re.search('(\w+)(\.py.?)?$',sys.argv[0])
+##    name = match is None and sys.argv[0] or match.group(1)
+    option_errors = _T("""%s
 Usage: %s [OPTIONS...]
 Try '%s --help' for more information.
-""")%(app_name, '\n'.join(errors),name,name)
+""")%('\n'.join(errors),script_name,script_name)
 else:
     option_errors = ''
 warning = '\n'.join(warnings)

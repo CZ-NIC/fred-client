@@ -10,13 +10,12 @@ from fred.translate import options, option_errors, option_args
 
 def __auto_login__(epp, verbose):
     'Do login'
-    if verbose > 1: print 'SEND AUTO-LOGIN:'
     try:
         # username a password musí být v config
         dansw = epp.api_command('login',epp.get_default_params_from_config('login'))
         ok = 1
     except FredError, msg:
-        print 'Error:',msg
+        print 'ERROR:',msg
         ok = 0
         dansw={}
     if dansw.get('code',0) != 1000: epp.append_error(fred.session_base.get_ltext(dansw.get('reason',_T('Login failed'))))
@@ -115,7 +114,7 @@ def send_docs(display_bar, docs=[]):
         try:
             epp.api_command('logout') # automatický logout
         except FredError, msg:
-            print 'Error:',msg
+            print 'ERROR:',msg
         epp.print_answer()
 
 if __name__ == '__main__':

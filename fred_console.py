@@ -13,7 +13,7 @@ except ImportError:
 
 import fred
 from fred.session_base import colored_output, VERBOSE
-from fred.translate import options, option_errors
+from fred.translate import options, option_errors, script_name
 
 help_option = _T("""
 General options:
@@ -71,6 +71,7 @@ def main(options):
     if fred.translate.warning:
         print colored_output.render("${BOLD}${RED}%s${NORMAL}"%fred.translate.warning)
     epp = fred.ClientSession()
+    if not check_options(epp): return # any option error occurs
     if not epp.load_config():
         epp.display() # display errors or notes
         return
@@ -155,6 +156,17 @@ def main(options):
     epp.display() # display logout messages
     print "[END]"
 
+def check_options(epp):
+    'Check options what needs epp object for validate.'
+    retval=1
+    if options['verbose']:
+        if epp.parse_verbose_value(options['verbose']) is None:
+            retval=0
+            print _T("""%s
+Usage: %s [OPTIONS...]
+Try '%s --help' for more information.
+""")%(epp.fetch_errors(),script_name,script_name)
+    return retval
 
 if __name__ == '__main__':
     msg_invalid = fred.check_python_version()

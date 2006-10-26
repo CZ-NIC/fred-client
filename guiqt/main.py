@@ -77,7 +77,6 @@ def append_key(dct, key, widget):
         dct[key] = '%s'%widget.date().toString(Qt.ISODate) # QDate; Qt.ISODate='YYYY-MM-DD'
     elif wt == QComboBox:
         dct[key] = widget.currentItem()
-        # print "!!! dct[",key,"]=",dct[key],"currentItem=",widget.currentItem()
     elif wt == QTable:
         data = []
         for r in range(widget.numRows()):

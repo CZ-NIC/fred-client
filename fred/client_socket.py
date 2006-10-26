@@ -26,6 +26,23 @@ class Lorry:
 
     def connect(self, DATA, verbose=1):
         "DATA = ('host', PORT, 'file.key', 'file.crt', timeout, 'socket_family')"
+
+        if len(DATA) < 4:
+            self._errors.append(_T('Certificate names not set.'))
+        if len(DATA) > 2 and not os.path.isfile(DATA[2]):
+            self._errors.append('%s %s'%(DATA[2],_T('Private key file not found.')))
+            DATA[2] = None
+        if len(DATA) > 3 and not os.path.isfile(DATA[3]):
+            self._errors.append('%s %s'%(DATA[3],_T('Certificate key file not found.')))
+            DATA[3] = None
+        try:
+            port = int(DATA[1]) # port has been checked in previous code, but for safety...
+        except ValueError, msg:
+            self._errors.append('%s: %s'%(_T('Invalid port value'),str(DATA[1])))
+        else:
+            DATA[1] = port
+        if len(self._errors): return 0 # if any errors occured there's no point in
+        
         family = {}
         family[socket.AF_INET] = 'IPv4'
         if getattr(socket,'AF_INET6',None):
@@ -75,14 +92,6 @@ class Lorry:
         if verbose > 1:
             self._notes.append(_T('Connection established.'))
             self._notes.append(_T('Try to open SSL layer...'))
-        if len(DATA) < 4:
-            self._errors.append(_T('Certificate names not set.'))
-        if len(DATA) > 2 and not os.path.isfile(DATA[2]):
-            self._errors.append('%s %s'%(DATA[2],_T('Private key file not found.')))
-            DATA[2] = None
-        if len(DATA) > 3 and not os.path.isfile(DATA[3]):
-            self._errors.append('%s %s'%(DATA[3],_T('Certificate key file not found.')))
-            DATA[3] = None
         if len(self._errors): return 0 # if any errors occured there's no point in
         ssl_ok = 0
         try:
@@ -141,7 +150,7 @@ class Lorry:
             try:
                 self._body_length = struct.unpack('!i',header)[0] - 4
             except struct.error, msg:
-                self._errors.append('Error HEADER: %s'%msg)
+                self._errors.append('ERROR HEADER: %s'%msg)
                 ok = 0
         if not ok: self.close()
         return self._body_length

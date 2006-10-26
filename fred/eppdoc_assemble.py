@@ -42,7 +42,7 @@ class Message(eppdoc.Message):
     def __get_help_scope__(self, params, deep=1):
         'Support for get_help(). IN: params, deep'
         msg=[]
-        indent = '    '*deep
+        indent = '  '*deep
         for row in params:
             name,min_max,allowed,help,example,pattern,children = row
             min,max = min_max
@@ -50,10 +50,13 @@ class Message(eppdoc.Message):
                 color = deep==1 and 'GREEN' or 'YELLOW'
                 required = '${%s}${BOLD}(%s)${NORMAL}'%(color,_T('required'))
                 min_size = _TP('minimum is %d item','minimum are %d items',min)%min
+                reqlen = len(_T('required'))+1
             else:
-                required = '${WHITE}(%s)${NORMAL}'%_T('optional')
+                required = '' # '${WHITE}(%s)${NORMAL}'%_T('optional')
                 min_size = ''
-            text = '%s${BOLD}%s${NORMAL} %s'%(indent,name,required)
+                reqlen = 0
+            sep = ''.ljust(self._indent_notes-len(indent)-len(name)-reqlen)
+            text = '%s${BOLD}%s${NORMAL} %s%s'%(indent,name,required,sep)
             if max is UNBOUNDED:
                 max_size = _T('unbounded list')
             elif max > 1:
@@ -61,11 +64,13 @@ class Message(eppdoc.Message):
             else:
                 max_size = ''
             if max_size:
-                text = '%s%s%s %s'%(text,('\t','\t\t')[len(text)<42],max_size,min_size)
-            if len(allowed):
-                txt = ','.join(self.__make_abrev_help__(allowed))
-                if len(txt)>37: txt = txt[:37]+'...' # shorter too long text
-                text = '%s ${WHITE}%s: ${CYAN}(%s)${NORMAL}'%(text,_T('accepts only values'),txt)
+##                text = '%s%s%s %s'%(text,('\t','\t\t')[len(text)<42],max_size,min_size)
+                #TODO: dodelat odsazeni.
+                text = '%s %s %s'%(text,max_size,min_size)
+            #if len(allowed):
+            #    txt = ','.join(self.__make_abrev_help__(allowed))
+            #    if len(txt)>37: txt = txt[:37]+'...' # shorter too long text
+            #    text = '%s ${WHITE}%s: ${CYAN}(%s)${NORMAL}'%(text,_T('accepts only values'),txt)
             if help:
                 msg.append('%s %s'%(text,help))
             else:
@@ -83,8 +88,9 @@ class Message(eppdoc.Message):
                 allowed_abrev[-1]+= ' (%s)'%n[1]
         return allowed_abrev
         
-    def get_help(self, command_name):
+    def get_help(self, command_name, indent_notes=30):
         "Returns help for selected command: (command_line, complete help)."
+        self._indent_notes = indent_notes ## TODO: indent_notes
         command_line = []
         help=[]
         notice=''
@@ -195,19 +201,19 @@ class Message(eppdoc.Message):
                 # Ctrl+D - Finish
                 if min_max[0]:
                     # If value is required Finish mode is rejected.
-                    session_base.print_unicode('${BOLD}${RED}%s${NORMAL}'%_T('First fill required values and then press Ctrl+D to finish command. For abort press Ctrl+C.'))
+                    session_base.print_unicode('\n${BOLD}${RED}%s${NORMAL}'%_T("Can't finish input, required values must be set. Press Ctrl+C to abort."))
                     param = null_value
                 else:
                     stop = 1 # Finish
                     break
             except KeyboardInterrupt:
                 # Ctrl+C - Abort (Cancel)
-                session_base.print_unicode('\n${BOLD}%s${NORMAL}'%_T('Command has been aborted.'))
+                session_base.print_unicode('\n${BOLD}%s${NORMAL}'%_T('Interactive input aborted.'))
                 stop = 2 # Abort (Cancel)
                 break
             # autofill required missing values
             if autofill > 2 and param == '':
-                session_base.print_unicode('\n${BOLD}${RED}%s${NORMAL}'%_T('Interactive mode has been aborted.'))
+                session_base.print_unicode('\n${BOLD}${RED}%s${NORMAL}'%_T('Interactive input aborted.'))
                 stop = 2 # Abort (Cancel)
                 break
             # Resolve NULL, STOP, min==0 / parse input
@@ -407,7 +413,7 @@ class Message(eppdoc.Message):
                     example = __build_command_example__(columns, dct, null_value)
                     # Note the interactive mode is closed.
                     try:
-                        raw_input(session_base.colored_output.render('\n${BOLD}${YELLOW}%s${NORMAL}'%_T('End of interactive input. [press enter]')))
+                        raw_input(session_base.colored_output.render('\n${BOLD}${YELLOW}%s${NORMAL}'%_T('Interactive input completed. [Press Enter]')))
                     except EOFError:
                         session_base.print_unicode(u'') # EOFError: Ctrl+D - Finish command
                     except KeyboardInterrupt:

@@ -72,9 +72,9 @@ def make_command_parameters():
         'logout': (0, [('',(0,0),(),'','','',()),], _T('The EPP "logout" command is used to end a session with an EPP server.'),()),
         #----------------------------------------------------
         'login': (2,[
-            ('username',(1,1),(),_T('EPP login name'),'my_login_name','',()),
-            ('password',(1,1),(),_T('EPP password'),'my_password','',()),
-            ('new-password',(0,1),(),_T('new password'),'my_new_password','',()),
+            ('username',(1,1),(),_T('username'),'username','',()),
+            ('password',(1,1),(),_T('password'),'password','',()),
+            ('new-password',(0,1),(),_T('new password'),'new_password','',()),
             ('lang',(0,1),(),_T('language version'),'en','',()),
         ],_T("""
    The "login" command establishes an ongoing server session that preserves client identity
