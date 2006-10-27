@@ -381,19 +381,16 @@ class FredMainWindow(_main.FredWindow):
             dc = {}
             append_key(dc,'host',       self.connect_host)
             append_key(dc,'port',       self.connect_port)
-            append_key(dc,'priv_key',self.connect_private_key)
-            append_key(dc,'cert',       self.connect_certificate)
-            append_key(dc,'timeout',  self.connect_timeout)
-            errors = self.epp.set_data_connect(dc)
-            if errors:
-                self.display_error(errors,self.__tr('Invalid connection input'))
-            else:
-                try:
-                    self.epp.login(d['username'], d['password'], d.get('new-password'), d.get('cltrid'))
-                except fred.FredError, err:
-                    self.epp._epp._errors.extend(err.args)
-                    self.epp._epp._errors.append(self.__tr('Process login failed.'))
-                self.__display_answer__('login')
+            append_key(dc,'ssl_key',    self.connect_private_key)
+            append_key(dc,'ssl_cert',   self.connect_certificate)
+            append_key(dc,'timeout',    self.connect_timeout)
+            self.epp.set_data_connect(dc)
+            try:
+                self.epp.login(d['username'], d['password'], d.get('new-password'), d.get('cltrid'))
+            except fred.FredError, err:
+                self.epp._epp._errors.extend(err.args)
+                self.epp._epp._errors.append(self.__tr('Process login failed.'))
+            self.__display_answer__('login')
         else:
             self.display_error(self.missing_required)
 

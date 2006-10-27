@@ -26,7 +26,7 @@ class Lorry:
 
     def connect(self, DATA, verbose=1):
         "DATA = ('host', PORT, 'file.key', 'file.crt', timeout, 'socket_family')"
-
+        # this values has been checked before already...
         if len(DATA) < 4:
             self._errors.append(_T('Certificate names not set.'))
         if len(DATA) > 2 and not os.path.isfile(DATA[2]):

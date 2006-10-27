@@ -118,7 +118,7 @@ def main(options):
             invalid_epp = epp.is_epp_valid(epp_doc) # make validation on the XML document
             #debug_time.append(('Validation',time.time())) # PROFILER
             if invalid_epp:
-                epp.append_error(_T('EPP document is not valid'))
+                epp.append_error(_T('Invalid EPP document or impossible to validate it.'))
                 v = epp.get_session(VERBOSE)
                 if v > 1: epp.append_error(invalid_epp)
                 if v > 2: epp.append_error(epp_doc)
@@ -164,8 +164,7 @@ def check_options(epp):
             retval=0
             print _T("""%s
 Usage: %s [OPTIONS...]
-Try '%s --help' for more information.
-""")%(epp.fetch_errors(),script_name,script_name)
+Try '%s --help' for more information.""")%(epp.fetch_errors(),script_name,script_name)
     return retval
 
 if __name__ == '__main__':

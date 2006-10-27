@@ -64,7 +64,7 @@ syntax. After going through all parameters actual command syntax is displayed
 before issuing command to server. 
 
 Interactive mode can be used with EPP commands only."""), ('!create_domain',)),
-            (('poll-autoack',), self.__session_poll_ack__, 0, (_T('switch'),'on','off'), _T('Send "poll ack" straight away after "poll req".'), ('poll-autoack on',)),
+            (('poll_autoack',), self.__session_poll_ack__, 0, (_T('switch'),'on','off'), _T('Send "poll ack" straight away after "poll req".'), ('poll-autoack on',)),
             (('colors',), self.__session_colors__, 0, (_T('switch'),'on','off'), _T('Turn on/off colored output.'), ('colors on',)),
             (('config',), self.manage_config, 0, (), _T('Display or create config file.'), ('config',)),
             (('confirm',), self.__session_confirm__, 0, (_T('switch'),'on','off'), _T('Set on/off command confirmation for sending editable commands to the server.'), ('confirm off',)),
@@ -81,7 +81,7 @@ and want to change the server language too, you have to logout
 and login again. Language is also possible to change by 'login'
 command or specify in configuration file or set in options on
 the command line."""), ('lang cs',)),
-            (('license',), self.__session_license__, 0, (), _T('Display license.'), ()),
+            (('license',), self.__session_license__, 0, (), _T('Displays license terms of this application.'), ()),
             (('null_value','null'), self.__session_null__, 0, (), _T("""
 Set representation of the value what is used to mean nothing. Default is NULL.
 This value we use if we want to skip over any column in the command parameters. 
@@ -89,7 +89,9 @@ Type NULL means we did not put any value in contrast to '' or "" where we put
 value of zero length. Synonym of the 'null_value' is 'null'. 
 See help for more details."""), ('null_value None','null EMPTY',)),
             (('output',), self.__session_output__, 0, [_T('type')], _T('Display output in type.'), ('output html',)),
-            (('quit','q','exit'), None, 0, (), _T("Quit the client. Synonyms of 'quit' are 'q' and 'exit'."), ()),
+            (('quit','q','exit'), None, 0, (), _T("""
+Disconnects from the server and exits the application. Synonyms 'q' and 'exit'
+can be used to invoke same functionality."""), ()),
             (('raw-answer','raw-a','src-answer','src-a'), self.__session_raw_answer__, 0, (_T('mode'),'d','dict',), _T("""
 Display XML source of the EPP answer. If you would display source
 without XML tag, type parametr 'dict' or simple 'd'.
@@ -149,18 +151,24 @@ Synonyms of 'raw-command' are 'raw-c', 'src-command' and 'src-c'."""), ('raw-c',
                 if command_name in self._available_commands:
                     type = 'EPP'
             if type:
-                self.__make_help_details__(command_name, type)
+                parts = command.split()
+                if len(parts) > 2:
+                    # no parameters are alowed: '?','command'
+                    self.append_note('%s: %s'%(_T('ERROR'), _T('Help command can have only one parameter')))
+                    self.append_note(_T("Type 'help ?' to get more information about help usage."))
+                else:
+                    self.__make_help_details__(command_name, type)
             else:
-                self.append_note('%s "%s".'%(_T('No help available for'),command_name))
+                self.append_note('%s: %s'%(_T('No help available for'),command_name))
                 self.__display_help__(command)
         else:
             # help content
             self.append_note('%s\n\n${BOLD}%s:${NORMAL}\n%s\n\n${BOLD}%s:${NORMAL}\n%s\n\n%s %s'%(
-            _T('Type "help command" to get help on particular command.'),
+            _T('Type "help command" to get details of the chosen command.'),
             _T('Available session commands'),
-            __make_help_columns__(self._available_session_commands, 2.0),
+            __make_help_columns__(self._available_session_commands, 2.0, self._indent_left),
             _T('Available EPP commands'),
-            __make_help_columns__(self._available_commands, 3.0),
+            __make_help_columns__(self._available_commands, 3.0, self._indent_left),
             _T('Report bugs to'), self._email_reports_bug
             ))
 
@@ -169,6 +177,7 @@ Synonyms of 'raw-command' are 'raw-c', 'src-command' and 'src-c'."""), ('raw-c',
         command_help = notice = ''
         examples = ()
         command_lines = []
+        space = ' '*self._indent_left
         for names,func,required,params,explain,ex in self._session_commands:
             if command_name in names:
                 notice = explain
@@ -183,8 +192,8 @@ Synonyms of 'raw-command' are 'raw-c', 'src-command' and 'src-c'."""), ('raw-c',
                             options += ' [%s]'%_T('optional')
                     else:
                         options = ' [%s]'%params[0]
-                    command_help = '%s:  %s'%(params[0],', '.join(params[1:]))
-                command_lines = map(lambda n: '%s%s'%(n,options), names)
+                    command_help = '%s%s:  %s'%(space,params[0],', '.join(params[1:]))
+                command_lines = map(lambda name: '%s%s'%(name,options), names)
                 break
         return command_lines, command_help, notice, examples
 
@@ -197,6 +206,17 @@ Synonyms of 'raw-command' are 'raw-c', 'src-command' and 'src-c'."""), ('raw-c',
         else:
             ex = examples
         return ex
+
+    def __format_help_detail__(self, lines):
+        'Format lines with left intentation.'
+        space = ' '*self._indent_left
+        if type(lines) not in (list, tuple): lines = lines.split('\n')
+        if type(lines) is list: lines = list(lines)
+        if len(lines):
+            if lines[0]=='': lines.pop(0) # remove blank line on the top
+            if lines[-1]=='': lines.pop() # remove blank line at the end
+        indentation = map(lambda s: '%s%s'%(space,s), lines)
+        return '\n'.join(indentation)
         
     def __make_help_details__(self, command_name, type):
         "Make help for chosen command."
@@ -207,30 +227,28 @@ Synonyms of 'raw-command' are 'raw-c', 'src-command' and 'src-c'."""), ('raw-c',
             # s parametrem - zobrazí se help na vybraný příkaz
             self.append_note('%s: ${BOLD}${GREEN}%s${NORMAL}'%(_T("Help for command"),command_name))
             if type == 'EPP':
-                command_line, command_help, notice, examples = self._epp_cmd.get_help(command_name, self._ljust)
+                command_line, command_help, notice, examples = self._epp_cmd.get_help(command_name, self._ljust, self._indent_left)
                 examples = self.__repalce_static_null_examples__(examples)
                 command_lines = (command_line,)
             else:
                 command_lines, command_help, notice, examples = self.__get_help_session_detail__(command_name)
-            patt = re.compile("^(\S)",re.MULTILINE)
-            patt_sub = "    \\1"
             #
             self.append_note('%s:'%_T('DESCRIPTION'),'BOLD')
-            self.append_note('${WHITE}%s${NORMAL}'%patt.sub(patt_sub,notice))
+            self.append_note('${WHITE}%s${NORMAL}'%self.__format_help_detail__(notice))
             #
             if len(command_lines):
                 self.append_note('\n%s:'%_T('SYNTAX'),'BOLD')
-                self.append_note('    %s'%'\n    '.join(command_lines))
+                self.append_note(self.__format_help_detail__(command_lines))
             #
             if command_help:
                 self.append_note('\n%s:'%_T('OPTIONS'),'BOLD')
-                self.append_note(patt.sub(patt_sub,command_help))
+                self.append_note(command_help)
             #
             if examples:
                 self.append_note('\n%s:'%_T('EXAMPLES'),'BOLD')
-                self.append_note(patt.sub(patt_sub,'\n'.join(examples)))
+                self.append_note(self.__format_help_detail__(examples))
             #
-            command_name='.'
+            command_name='.' # set name for console part, where we have to check command names
         return command_name
 
     def epp_command(self, cmdline, raw_command):
@@ -251,8 +269,18 @@ Synonyms of 'raw-command' are 'raw-c', 'src-command' and 'src-c'."""), ('raw-c',
                 else:
                     self.append_error(self._epp_cmd.get_errors()) # any problems on the command line occurrs
             else:
-                self.append_note('%s: %s'%(_T("Unknown command"),raw_command.encode(translate.encoding)))
-                self.append_note('(%s: ${BOLD}help${NORMAL})'%_T('For list all commands type'))
+                if m.group(1)=='!':
+                    if m.group(2) in self._available_session_commands:
+                        if m.group(2).strip() == '!':
+                            msg = '%s: %s'%(_T('ERROR'),_T('Illegal use of interactive input mode.'))
+                        else:
+                            msg = '%s: %s'%(_T('ERROR'),_T('Interactive input mode works with EPP commands only.'))
+                    else:
+                        msg = '%s: %s %s'%(_T('ERROR'),_T("Unknown command"),m.group(2).encode(translate.encoding))
+                else:
+                    msg = '%s: %s %s'%(_T('ERROR'),_T("Unknown command"),raw_command.encode(translate.encoding))
+                self.append_note(msg)
+                self.append_note(_T("Type 'help' to list all available commands."))
                 self._epp_cmd.help_check_name(self._notes, cmdline)
         return command_name, stop
 
@@ -364,7 +392,7 @@ Synonyms of 'raw-command' are 'raw-c', 'src-command' and 'src-c'."""), ('raw-c',
             if error: report += '\n'+error
         return report
         
-        
+
     #==================================================
     #
     #    Session commands
@@ -381,7 +409,7 @@ Synonyms of 'raw-command' are 'raw-c', 'src-command' and 'src-c'."""), ('raw-c',
         if param:
             self.set_confirm(param)
         else:
-            self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('Command confirmation is'),self._session[CONFIRM_SEND_COMMAND] and 'ON' or 'OFF'))
+            self.append_note('%s ${BOLD}%s${NORMAL}'%(_T('Command confirmation is'),self._session[CONFIRM_SEND_COMMAND] and 'ON' or 'OFF'))
 
     def __session_null__(self, param):
         'Set NULL value'
@@ -585,25 +613,7 @@ Synonyms of 'raw-command' are 'raw-c', 'src-command' and 'src-c'."""), ('raw-c',
     def automatic_login(self, no_outoupt=None):
         'Automatic login if all needed informations are known.'
         if self._session[ONLINE]: return 1 # session is logged on already
-        data = self.get_connect_defaults()
         if self.get_config_value(self.config_get_section_connect(), 'nologin', OMIT_ERROR): return 1
-        section_epp_login = 'epp_login'
-        username = self.get_config_value(section_epp_login, 'username',OMIT_ERROR)
-        password = self.get_config_value(section_epp_login, 'password',OMIT_ERROR)
-        # Check if all values are present:
-        missing = []
-        if not data[0]: missing.append(_T('Hostname missing'))
-        if not data[1]: missing.append(_T('Server port number missing'))
-        if not username: missing.append(_T('Username missing'))
-        if not password: missing.append(_T('Password missing'))
-        if not data[3]: missing.append(_T('SSL certificate missing'))
-        if not data[2]: missing.append(_T('SSL private key file not found'))
-        if len(missing):
-            self.append_error(_T("Can't connect to server"))
-            map(self.append_error, missing)
-            return 0
-        self._epp_cmd.set_params({'username':[username],'password':[password]})
-        self.display() # display errors or notes
         ok=0
         self.reset_round()
         self.create_login()
@@ -636,10 +646,11 @@ def load_file(filename):
         error = 'IOError: %d. %s (%s)'%(errnum,msg,filename)
     return body, error
 
-def __make_help_columns__(names,fcols,padding=26):
+def __make_help_columns__(names,fcols,left_indent,padding=26):
     'Make columns from list of names. Param cols must be float.'
     length = int(math.ceil(len(names)/fcols))
-    return '\n'.join([''.join(map(lambda s: s.ljust(padding), names[i::length])) for i in range(length)])
+    sep = '\n%s'%(' '*left_indent)
+    return '%s%s'%(' '*left_indent, sep.join([''.join(map(lambda s: s.ljust(padding), names[i::length])) for i in range(length)]))
 
 
 if __name__ == '__main__':

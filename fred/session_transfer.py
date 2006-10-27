@@ -95,6 +95,26 @@ class ManagerTransfer(ManagerBase):
     #    funkce pro komunikaci se socketem
     #
     #==================================================
+    def set_data_connect(self, dc):
+        """Set data needed to connection:
+        dict with strings: {key: str, ....}
+        Used by GUI interface.
+
+        'host':         'epp.server.cz'
+        'port':         '700'
+        'ssl_key':      '/etc/cert/pkey.pem'
+        'ssl_cert':     '/etc/cert/cert.pem'
+        'timeout':      '10.0'
+        'socket':       'IPv6'
+        'username':     'username'
+        'password':     'passw'
+        """
+        section = self.config_get_section_connect()
+        for key in ('host','port','ssl_key','ssl_cert','timeout','socket'):
+            if dc.has_key(key): self._conf.set(section,key,dc[key])
+        if dc.has_key('username'): self._conf.set(section,'username',dc['username'])
+        if dc.has_key('password'): self._conf.set(section,'password',dc['password'])
+    
     def get_connect_defaults(self):
         'Get connect defaults from config'
         if not self._conf: self.load_config() # load config, if was not been yet
@@ -105,11 +125,51 @@ class ManagerTransfer(ManagerBase):
                 self.get_config_value(section,'ssl_cert',OMIT_ERROR),
                 self.get_config_value(section,'timeout',OMIT_ERROR),
                 self.get_config_value(section,'socket',OMIT_ERROR),
+                self.get_config_value('epp_login', 'username',OMIT_ERROR),
+                self.get_config_value('epp_login', 'password',OMIT_ERROR),
                 ]
         # command options
         self._session[HOST] = data[0] # for prompt info
         return data
 
+    def check_port(self, sport):
+        "Check if value can be used as server port. '' - yes (no errors), '...' - no (any error occured)"
+        error = ''
+        try:
+            port = int(sport)
+        except ValueError, msg:
+            error = _T("Invalid port value: '%s'.")%sport
+        else:
+            if not (port > 0 and port <= 65535):
+                error = _T('Port is out of range: %d.')%port
+        return error
+        
+    def check_connect_data(self, data):
+        'Check data for connnect. 1 - valid, 0 - invalid'
+        # Check if all values are present:
+        missing = []
+        if not data[0]: missing.append(_T('Hostname missing'))
+        if not data[1]:
+            missing.append(_T('Server port number missing'))
+        else:
+            error = self.check_port(data[1])
+            if error: missing.append(error)
+        if not data[6]: missing.append(_T('Username missing'))
+        if not data[7]: missing.append(_T('Password missing'))
+        if not data[3]:
+            missing.append(_T('SSL certificate name missing'))
+        else:
+            if not os.path.isfile(data[3]): missing.append(_T('SSL certificate file not found'))
+        if not data[2]:
+            missing.append(_T('SSL private key name missing'))
+        else:
+            if not os.path.isfile(data[2]): missing.append(_T('SSL private key file not found'))
+        if len(missing):
+            self.append_error(_T("Can't connect to server"))
+            map(self.append_error, missing)
+            return 0
+        return 1
+        
     def connect(self, data=None):
         "Connect transfer socket. data=('host',port,'client-type')"
         if self.is_connected(): return 1 # spojení je již navázáno
@@ -117,16 +177,9 @@ class ManagerTransfer(ManagerBase):
         self._lorry._notes = self._notes
         self._lorry._errors = self._errors
         self._lorry.handler_message = self.process_answer
-        if not data:
-            data = self.get_connect_defaults()
-            labels = ('host','port','SSL private key','SSL certificate','timeout')
-            errors=[]
-            for n in range(len(data[:5])):
-                if data[n] is None:
-                    errors.append(labels[n])
-            if len(errors):
-                self.append_error('%s: %s'%(_T('Can not create connection. Missing values'),', '.join(errors)))
-                return 0
+        if not data: data = self.get_connect_defaults()
+        if not self.check_connect_data(data): return 0
+        self._epp_cmd.set_params({'username':[data[6]],'password':[data[7]]})
         if self._lorry.connect(data, self._session[VERBOSE]):
             epp_greeting = self._lorry.receive() # receive greeting
             self.__check_is_connected__()
@@ -503,7 +556,7 @@ class ManagerTransfer(ManagerBase):
         writelog('\tOFFER WORDS = %s'%str(words))
         return words
 
-    def complete1(self, prefix, index):
+    def complete_with_params(self, prefix, index):
         'Function for readline.complete manages reaction on the TAB key press.'
         if index == 0:
             self.readline_words = [w for w in self.__get_readline_words__(self.readline.get_line_buffer()) if w.startswith(prefix)]
@@ -526,15 +579,13 @@ class ManagerTransfer(ManagerBase):
         if prefix != self.readline_prefix:
             self.readline_prefix = prefix
             command = self.readline.get_line_buffer().strip()
-            if command in self._available_commands:
+            if command in self.readline_words:
                 if prefix == command:
                     self.matching_words = [command] # space at the end missing
                 else:
                     self.matching_words = [] # command is already typed
             else:
                 # find all words that start with this prefix
-                if not len(self.readline_words):
-                    self.readline_words = [i for i in self._available_session_commands if i!='!'] + self._available_commands
                 self.matching_words = [w for w in self.readline_words if w.startswith(prefix)]
         try:
             word = self.matching_words[index]+' '

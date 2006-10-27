@@ -42,39 +42,32 @@ class Message(eppdoc.Message):
     def __get_help_scope__(self, params, deep=1):
         'Support for get_help(). IN: params, deep'
         msg=[]
-        indent = '  '*deep
+        indent = ' '*(self._indent_left*deep)
         for row in params:
-            name,min_max,allowed,help,example,pattern,children = row
+            name,min_max,allowed,description,example,pattern,children = row
             min,max = min_max
+            attrib = []
+            required = sattrib = ''
+            reqlen = 0
             if min > 0:
                 color = deep==1 and 'GREEN' or 'YELLOW'
                 required = '${%s}${BOLD}(%s)${NORMAL}'%(color,_T('required'))
-                min_size = _TP('minimum is %d item','minimum are %d items',min)%min
-                reqlen = len(_T('required'))+1
-            else:
-                required = '' # '${WHITE}(%s)${NORMAL}'%_T('optional')
-                min_size = ''
-                reqlen = 0
+                reqlen = len(_T('required'))+2 # add brackets
+                if min > 1:
+                    attrib.append(_TP('minimum %d item','minimum %d items',min)%min)
             sep = ''.ljust(self._indent_notes-len(indent)-len(name)-reqlen)
-            text = '%s${BOLD}%s${NORMAL} %s%s'%(indent,name,required,sep)
+            param_line = '%s${BOLD}%s${NORMAL} %s%s'%(indent,name,required,sep)
             if max is UNBOUNDED:
-                max_size = _T('unbounded list')
+                attrib.append(_T('unbounded list'))
             elif max > 1:
-                max_size = _TP('list with max %d item.','list with max %d items.',max)%max
-            else:
-                max_size = ''
-            if max_size:
-##                text = '%s%s%s %s'%(text,('\t','\t\t')[len(text)<42],max_size,min_size)
-                #TODO: dodelat odsazeni.
-                text = '%s %s %s'%(text,max_size,min_size)
+                attrib.append(_TP('list with max %d item.','list with max %d items.',max)%max)
             #if len(allowed):
             #    txt = ','.join(self.__make_abrev_help__(allowed))
             #    if len(txt)>37: txt = txt[:37]+'...' # shorter too long text
             #    text = '%s ${WHITE}%s: ${CYAN}(%s)${NORMAL}'%(text,_T('accepts only values'),txt)
-            if help:
-                msg.append('%s %s'%(text,help))
-            else:
-                msg.append(_T('no options'))
+            if description:
+                if len(attrib): sattrib = ' (%s)'%', '.join(attrib)
+                msg.append('%s %s%s'%(param_line,description,sattrib))
             if len(children):
                 msg.extend(self.__get_help_scope__(children, deep+1))
         return msg
@@ -88,9 +81,10 @@ class Message(eppdoc.Message):
                 allowed_abrev[-1]+= ' (%s)'%n[1]
         return allowed_abrev
         
-    def get_help(self, command_name, indent_notes=30):
+    def get_help(self, command_name, indent_notes=30, indent_left=2):
         "Returns help for selected command: (command_line, complete help)."
-        self._indent_notes = indent_notes ## TODO: indent_notes
+        self._indent_notes = indent_notes # indent column with descriptions
+        self._indent_left = indent_left   # indent from left border
         command_line = []
         help=[]
         notice=''

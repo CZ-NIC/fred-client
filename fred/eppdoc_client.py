@@ -21,29 +21,29 @@ update_status = (
 def get_notice():
     'Returns notice for EPP commands'
     return {'check':_T("""
-   The EPP "check" command is used to determine if an object can be
-   provisioned within a repository.  It provides a hint that allows a
-   client to anticipate the success or failure of provisioning an object
-   using the "create" command as object provisioning requirements are
-   ultimately a matter of server policy.
+The EPP "check" command is used to determine if an object can be
+provisioned within a repository.  It provides a hint that allows a
+client to anticipate the success or failure of provisioning an object
+using the "create" command as object provisioning requirements are
+ultimately a matter of server policy.
 """),
     'info':_T("""
-   The EPP "info" command is used to retrieve information associated
-   with an existing object. The elements needed to identify an object
-   and the type of information associated with an object are both
-   object-specific, so the child elements of the <info> command are
-   specified using the EPP extension framework.
+The EPP "info" command is used to retrieve information associated
+with an existing object. The elements needed to identify an object
+and the type of information associated with an object are both
+object-specific, so the child elements of the <info> command are
+specified using the EPP extension framework.
 """),
     'transfer':_T("""
-   The EPP "transfer" command makes change in client sponsorship 
-   of an existing object. The new owner becomes registrant what called
-   transfer command. New auhtorization info is generated automaticly
-   after successfully transfer.
+The EPP "transfer" command makes change in client sponsorship 
+of an existing object. The new owner becomes registrant what called
+transfer command. New auhtorization info is generated automaticly
+after successfully transfer.
 """),
    'create':_T("""
-   The EPP "create" command is used to create an instance of an object.
-   An object can be created for an indefinite period of time, or an
-   object can be created for a specific validity period.
+The EPP "create" command is used to create an instance of an object.
+An object can be created for an indefinite period of time, or an
+object can be created for a specific validity period.
 """),
    'delete':_T("""The EPP "delete" command is used to remove an instance of an existing object."""),
    'renew':_T("""The EPP "renew" command is used to extend validity of an existing object."""),
@@ -77,10 +77,10 @@ def make_command_parameters():
             ('new-password',(0,1),(),_T('new password'),'new_password','',()),
             ('lang',(0,1),(),_T('language version'),'en','',()),
         ],_T("""
-   The "login" command establishes an ongoing server session that preserves client identity
-   and authorization information during the duration of the session. Parametr "lang" set
-   session and client language together. Language is possible to set also by option on the
-   command line, or define it in configuration file or set by client command 'lang'."""),('login john mypass "my new pass!"','login john mypass NULL cs')),
+The "login" command establishes an ongoing server session that preserves client identity
+and authorization information during the duration of the session. Parametr "lang" set
+session and client language together. Language is possible to set also by option on the
+command line, or define it in configuration file or set by client command 'lang'."""),('login john mypass "my new pass!"','login john mypass NULL cs')),
         #----------------------------------------------------
         'info_contact': (1,[
             ('name',(1,1),(),_T('contact name'),'CID:ID01','',()),
@@ -105,7 +105,7 @@ def make_command_parameters():
         'poll': (0,[
             ('op',(0,1),(('req',),('ack',)),_T('query type'),'','',()),
             ('msg_id',(0,1),(),_T('index of message, required with op=ack!'),'123','',()),
-        ],_T('The EPP "poll" command is used to discover and retrieve service messages queued by a server for individual clients.'),('poll req','poll ack 4',)),
+        ],_T('The EPP "poll" command is used to discover and retrieve service messages\nqueued by a server for individual clients.'),('poll req','poll ack 4',)),
         #----------------------------------------------------
         'transfer_contact': (2,[
             ('name',(1,1),(),_T('contact id'),'CID:ID01','',()),
@@ -139,7 +139,6 @@ def make_command_parameters():
             ('fax',(0,1),(),_T('fax number'),'+420.222745111','',()),
             ('disclose',(0,1),(),_T('disclose'),'','',(
                 ('flag',(1,1),(('y',),('n',)),_T('disclose flag (default y)'),'','',()),
-##                data pro které se nastaví příznak, data for with is set flag of value
                 ('data',(0,len(eppdoc_assemble.contact_disclose)),eppdoc_assemble.contact_disclose,_T('data for with is set the flag value'),'','',()),
             )),
             ('vat',(0,1),(),_T('VAT (Value-added tax)'),'7035555556','',()), # daˇnový identifikátor

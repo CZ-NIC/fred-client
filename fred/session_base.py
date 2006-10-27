@@ -65,7 +65,9 @@ class ManagerBase:
         if type(self._options) is not dict:
             self._options = {'lang':'en','colors':'off','verbose':'1','user':'','password':'','host':'',}
         self._email_reports_bug = 'ccreg-devel@lists.nic.cz'
-        self._ljust = 23 # indent values from column names in output
+        # Used in detailed help:
+        self._ljust = 25      # indent description column from names
+        self._indent_left = 2 # indent from left border
 
     def get_session(self, offset):
         return self._session[offset]
@@ -93,25 +95,7 @@ class ManagerBase:
         if key:
             self._session[OUTPUT_TYPE] = self.get_valid_output(key)
         if op['no_validate']: self._session[VALIDATE] = 0
-        port = self.get_config_value(section_connect,'port',OMIT_ERROR)
-        if port:
-            if not self.check_port(port):
-                self._conf.set(section_connect,'port','')
 
-    def check_port(self, sport):
-        'Parse text to port integer.'
-        ok = 0
-        try:
-            port = int(sport)
-        except ValueError, msg:
-            self.append_error("Invalid port value: '%s'."%sport)
-        else:
-            if port > 0 and port <= 65535:
-                ok = 1
-            else:
-                self.append_error('Port is out of range: %d.'%port)
-        return ok
-        
     def get_valid_output(self, key):
         'Get valid output type.'
         if not key in OUTPUT_TYPES:
@@ -137,8 +121,13 @@ class ManagerBase:
 
     def set_confirm(self, type):
         'Set switch confirm_commands_before_send'
-        self._session[CONFIRM_SEND_COMMAND] = type in ('on','ON') and 1 or 0
-        self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('Command confirmation has been set to'),self._session[CONFIRM_SEND_COMMAND] and 'ON' or 'OFF'))
+        value = type.upper()
+        if value in ('ON','OFF'):
+            self._session[CONFIRM_SEND_COMMAND] = value == 'ON' and 1 or 0
+            self.append_note('%s ${BOLD}%s${NORMAL}'%(_T('Command confirmation has been set to'),self._session[CONFIRM_SEND_COMMAND] and 'ON' or 'OFF'))
+        else:
+            self.append_error('%s %s'%(_T('Invalid Command confirmation parametr'),type))
+            self._notes_afrer_errors.append(_T("Type 'help confirm' to get more information about confirm commands."))
 
     def get_errors(self, sep='\n'):
         return sep.join(self._errors)
@@ -346,7 +335,7 @@ class ManagerBase:
             return 0 # fatal error
         # session
         section = 'session'
-        self._session[POLL_AUTOACK] = str(self.get_config_value(section,'autoackpoll',OMIT_ERROR)).lower() == 'on' and 1 or 0
+        self._session[POLL_AUTOACK] = str(self.get_config_value(section,'poll_autoack',OMIT_ERROR)).lower() == 'on' and 1 or 0
         self._session[CONFIRM_SEND_COMMAND] = self.get_config_value(section,'confirm_send_commands').lower() == 'on' and 1 or 0
         self._session[VALIDATE] = self.get_config_value(section,'validate').lower() == 'on' and 1 or 0
         colors = self.get_config_value(section,'colors',OMIT_ERROR)
@@ -362,36 +351,6 @@ class ManagerBase:
         self.check_validator() # set validator OFF, if not supported.
         return 1 # OK
 
-    def set_data_connect(self, dc):
-        'Set data for connection: dc = {host: str, port: str, priv_key: str, cert: str, timeout: str }'
-        errors = []
-        try:
-            timeout = float(dc.get('timeout','0.0'))
-        except ValueError, msg:
-            errors.append("Invalid timeout value: '%s'. %s"%(msg,dc['timeout']))
-        section = self.config_get_section_connect()
-        self._conf.set(section,'timeout',str(timeout))
-        if dc.has_key('host'):
-            self._options['host'] = dc['host']
-        else:
-            errors.append(_T('Hostname missing'))
-        if dc.has_key('port'):
-            if self.check_port(dc['port']):
-                self._conf.set(section,'port',str(dc['port']))
-            else:
-                errors.append(self._errors[-1])
-        else:
-            errors.append(_T('Server port number missing'))
-        if dc.has_key('cert'):
-            self._conf.set(section,'ssl_cert', dc['cert'])
-        else:
-            errors.append(_T('SSL certificate path missing'))
-        if dc.has_key('priv_key'):
-            self._conf.set(section,'ssl_key', dc['priv_key'])
-        else:
-            errors.append(_T('SSL private key path missing'))
-        return errors
-        
     def parse_verbose_value(self, verbose):
         'Init verbose mode.'
         nverb = None
