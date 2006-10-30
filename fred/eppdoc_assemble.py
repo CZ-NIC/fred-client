@@ -953,7 +953,13 @@ class Message(eppdoc.Message):
         if len(msg) and min:
             msg.append('%s %d.'%(_T('Minimum is'),min))
         if len(msg): session_base.print_unicode('(%s)'%(' '.join(msg)))
-    
+
+    def get_object_handle(self):
+        'Returns object handle'
+        vals = self._dct.values()
+        return len(vals) > 2 and vals[1][0] or ''
+        
+        
 #-----------------------------------------------------
 # Support of command line history
 #-----------------------------------------------------

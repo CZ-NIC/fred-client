@@ -635,7 +635,6 @@ sources ad advance, transmited between client and server.
         if self._session[ONLINE]: return 1 # session is logged on already
         if self.get_config_value(self.config_get_section_connect(), 'nologin', OMIT_ERROR): return 1
         ok=0
-        self.reset_round()
         self.create_login()
         epp_doc = self._epp_cmd.get_xml()
         if epp_doc and self.is_connected():

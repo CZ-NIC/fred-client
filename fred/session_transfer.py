@@ -334,6 +334,18 @@ class ManagerTransfer(ManagerBase):
                 body.append(colored_output.render('\n${BOLD}${RED}Here needs FIX code: %s${NORMAL}'%'(%s)'%', '.join(missing)))
         #---------------------
 
+    def __modify__reason_message__(self, code, key, dct):
+        'Modify reason message from standard answer to more fit message.'
+        if code == 1000:
+            if key == 'update':
+                dct['reason'] = '%s %s.'(self._epp_cmd.get_object_handle(), _T('updated'))
+            elif key == 'delete':
+                dct['reason'] = '%s %s.'(self._epp_cmd.get_object_handle(), _T('deleted'))
+            elif key == 'transfer':
+                dct['reason'] = '%s %s.'(self._epp_cmd.get_object_handle(), _T('transfer'))
+        else:
+            dct['reason'] = '%s: %s'%(_T('ERROR'),dct['reason'])
+        
     def get_answer(self, dct=None, sep='\n'):
         'Show values parsed from the server answer.'
         body=[]
@@ -342,22 +354,16 @@ class ManagerTransfer(ManagerBase):
         if not dct: dct = self._dct_answer
         #... code and reason .............................
         code = dct['code']
+        match = re.match('\w+:(\w+)',dct['command'])
+        key = match is None and dct['command'] or match.group(1)
+        self.__modify__reason_message__(code, key, dct)
         if self._session[VERBOSE] < 2:
             # brief output mode
             # exception on the command login and hello:
             if dct['command'] in ('login','hello'):
                 pass # omit reason block body.pop() # remove previous empty line
             else:
-                match = re.match('\w+:(\w+)',dct['command'])
-                key = match is None and dct['command'] or match.group(1)
                 if code != 1000 or key in ('update','delete','transfer'):
-##                    if code >= 2000:
-##                        # move reason message into ERROR block messages and omit line with reason
-##                        dct['errors'].insert(0, dct['reason'])
-##                    else:
-##                        report('')
-##                        report(get_ltext(colored_output.render('${%s}%s${NORMAL}'%(code==1000 and 'GREEN' or 'NORMAL', dct['reason']))))
-##                    report('')
                     report(get_ltext(colored_output.render('${%s}%s${NORMAL}'%(code==1000 and 'GREEN' or 'NORMAL', dct['reason']))))
         else:
             # full

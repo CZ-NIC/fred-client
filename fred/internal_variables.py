@@ -1,10 +1,12 @@
 # -*- coding: utf8 -*-
 #!/usr/bin/env python
+# Required default to fit missing config/options
+required_defaults = {'port':700, 'timeout':10.0}
 config = """
 [connect]
 dir = ~
 # host = epp-test.ccreg.nic.cz
-# port = 700
+port = 700
 # ssl_key = %(dir)s/epp_test_ccreg_nic_cz_key.pem
 # ssl_cert = %(dir)s/epp_test_ccreg_nic_cz_cert.pem
 timeout = 10.0

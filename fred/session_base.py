@@ -96,6 +96,12 @@ class ManagerBase:
             self._session[OUTPUT_TYPE] = self.get_valid_output(key)
         if op['no_validate']: self._session[VALIDATE] = 0
 
+    def fill_missing_required(self, section_connect):
+        'Fill missing required valurs by defaults.'
+        for key in ('port','timeout'):
+            if self.get_config_value(section_connect,key,OMIT_ERROR) is None:
+                self._conf.set(section_connect,key,str(internal_variables.required_defaults[key]))
+        
     def get_valid_output(self, key):
         'Get valid output type.'
         if not key in OUTPUT_TYPES:
@@ -276,13 +282,6 @@ class ManagerBase:
                     self.copy_default_options(new_section, section, option)
         return ok 
 
-    def __is_config_option__(self, section, option):
-        'Returns if exists key in config.'
-        ret = False
-        if self._conf.has_section(section):
-            ret = self._conf.has_option(section, option)
-        return ret
-
     def get_config_value(self, section, option, omit_errors=0):
         'Get value from config and catch exceptions.'
         value=None
@@ -301,13 +300,6 @@ class ManagerBase:
             section = 'connect'
         return section
 
-    def __config_defaults__(self):
-        'Set config defaults.'
-        section = self.config_get_section_connect()
-        if self._conf.has_section(section):
-            if not self.__is_config_option__(section, 'timeout'):
-                self._conf.set(section, 'timeout','10.0')
-        
     def load_config(self, options=None):
         "Load config file and init internal variables. Returns 0 if fatal error occured."
         # 1. first load values from config
@@ -325,13 +317,13 @@ class ManagerBase:
                 self.append_error(_T('Fatal error: Default config create failed.'))
                 self.display() # display errors or notes
                 return 0 # fatal error
-        # default values (timeout)
-        self.__config_defaults__()
+            if self._options['session'] != '':
+                self.append_error(_T('Session "%s" without effect. No configuration file.')%self._options['session'])
         # for login with no parameters
         section_connect = self.config_get_section_connect()
         if not self._conf.has_section(section_connect):
             self._conf.add_section(section_connect)
-            self.append_error(_T('Configuration file has no section "%s".')%section_connect)
+            self.append_error(_T('Configuration file has no section "%s".')%section_connect[8:])
             return 0 # fatal error
         # session
         section = 'session'
@@ -348,6 +340,7 @@ class ManagerBase:
         if value: self.set_null_value(value)
         # init from command line options
         self.init_from_options(section_connect)
+        self.fill_missing_required(section_connect)
         self.check_validator() # set validator OFF, if not supported.
         return 1 # OK
 
