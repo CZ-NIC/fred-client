@@ -331,6 +331,7 @@ class ManagerReceiver(ManagerCommand):
             else:
                 self.__check_available__(self._dct_answer, chunk_cd, names, 'avail')
             # append status according to code
+            # FUTURE: This message will be generated on the server.
             status = (_T('Not available'), _T('Available'))
             d = self._dct_answer['data']
             for k,v in d.items():

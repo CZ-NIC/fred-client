@@ -14,6 +14,7 @@ from eppdoc import nic_cz_version as eppdoc_nic_cz_version
 
 COLOR = 1
 SEPARATOR = '-'*60
+OPTIONAL,REQUIRED = range(2)
 
 def __find_index__(array, key):
     index=-1
@@ -33,8 +34,8 @@ class ManagerCommand(ManagerTransfer):
         ManagerTransfer.__init__(self)
         self.init_session_commands()
         # output
-        index = __find_index__(self._session_commands, 'output')
-        if index != -1: self._session_commands[index][3].extend(OUTPUT_TYPES)
+        #index = __find_index__(self._session_commands, 'output')
+        #if index != -1: self._session_commands[index][3].extend(OUTPUT_TYPES)
         # Here is definition of commands  what will not be displayed in the help
         # because we don't make panic to common user.
         # They are used for test or debug only.
@@ -52,57 +53,72 @@ class ManagerCommand(ManagerTransfer):
         # SESSION_COMMANDS: (
         #   (command_name,command_name,command_name)
         #   function
-        #   (parameters,parameters)
+        #   (parameter, parameter)   parameter: (req/opt, name, description, available)
         #   'Description'
         #   (example, example)
         # )
         self._session_commands = (
-            (('!',), None, 1, (_T('command'),'Start interactive input mode on this command',), _T("""
+            (('!',), None, REQUIRED, (_T('command'),_T('Start interactive input mode on this command')), _T("""
 ! starts interactive input mode. In interactive input mode the program asks
 to fill in all command parameters one by one to help users construct proper
 syntax. After going through all parameters actual command syntax is displayed
 before issuing command to server. 
 
 Interactive mode can be used with EPP commands only."""), ('!create_domain',)),
-            (('poll_autoack',), self.__session_poll_ack__, 0, (_T('switch'),'on','off'), _T('Send "poll ack" straight away after "poll req".'), ('poll-autoack on',)),
-            (('colors',), self.__session_colors__, 0, (_T('switch'),'on','off'), _T('Turn on/off colored output.'), ('colors on',)),
-            (('config',), self.manage_config, 0, (), _T('Display or create config file.'), ('config',)),
-            (('confirm',), self.__session_confirm__, 0, (_T('switch'),'on','off'), _T('Set on/off command confirmation for sending editable commands to the server.'), ('confirm off',)),
-            #(('connect',), self.__session_connect__, 0, (), _T('Make connection between client and server without login.'), ()),
-            #(('disconnect',), self.__session_disconnect__, 0, (), _T('Disconnect from the EPP server.'), ()),
-            (('credits',), self.__session_credits__, 0, (), _T('Display credits.'), ()),
-            (('help','h','?'), None, 0, (_T('command'),_T('Get detailed help for this command.')), _T("""
+            (('poll_autoack',), self.__session_poll_ack__, OPTIONAL, (_T('switch'),_T('Turn function on/off.')), _T('Send "poll ack" straight away after "poll req".'), ('poll-autoack on',)),
+            (('colors',), self.__session_colors__, OPTIONAL, (_T('switch'),_T('Turn function on/off.')), _T('Turn on/off colored output.'), ('colors on',)),
+            (('config',), self.manage_config, OPTIONAL, (), _T('Display or create config file.'), ('config',)),
+            (('confirm',), self.__session_confirm__, OPTIONAL, (_T('switch'),_T('Turn function on/off.')), _T('Set on/off command confirmation for sending editable commands to the server.'), ('confirm off',)),
+            #(('connect',), self.__session_connect__, OPTIONAL, (), _T('Make connection between client and server without login.'), ()),
+            #(('disconnect',), self.__session_disconnect__, OPTIONAL, (), _T('Disconnect from the EPP server.'), ()),
+            (('credits',), self.__session_credits__, OPTIONAL, (), _T('Display credits.'), ()),
+            (('help','h','?'), None, OPTIONAL, (_T('command'),_T('Get detailed help for this command.')), _T("""
 Help displays all available commands (type 'help') or displays 
 detailed help for selected command (type 'help command'). 
 Help uses synonyms 'help', '?' or 'h'."""), ('help','? update_nsset')),
-            (('lang',), self.__session_language__, 0, (_T('code'),'en','cs'), _T("""
+            (('lang',), self.__session_language__, OPTIONAL, (_T('code'),_T('Set user interface language.')), _T("""
 Set the client language and server together. If you are online 
 and want to change the server language too, you have to logout 
 and login again. Language is also possible to change by 'login'
 command or specify in configuration file or set in options on
 the command line."""), ('lang cs',)),
-            (('license',), self.__session_license__, 0, (), _T('Displays license terms of this application.'), ()),
-            (('null_value','null'), self.__session_null__, 0, (), _T("""
+            (('license',), self.__session_license__, OPTIONAL, (), _T('Displays license terms of this application.'), ()),
+            (('null_value','null'), self.__session_null__, OPTIONAL, (), _T("""
 Set representation of the value what is used to mean nothing. Default is NULL.
 This value we use if we want to skip over any column in the command parameters. 
 Type NULL means we did not put any value in contrast to '' or "" where we put
 value of zero length. Synonym of the 'null_value' is 'null'. 
 See help for more details."""), ('null_value None','null EMPTY',)),
-            (('output',), self.__session_output__, 0, [_T('type')], _T('Display output in type.'), ('output html',)),
-            (('quit','q','exit'), None, 0, (), _T("""
+            (('output',), self.__session_output__, OPTIONAL, (_T('type'),_T('Set the output type.')), _T('Display output in type.'), ('output html',)),
+            (('quit','q','exit'), None, OPTIONAL, (), _T("""
 Disconnects from the server and exits the application. Synonyms 'q' and 'exit'
 can be used to invoke same functionality."""), ()),
-            (('raw-answer','raw-a','src-answer','src-a'), self.__session_raw_answer__, 0, (_T('mode'),'d','dict',), _T("""
+            (('raw-answer','raw-a','src-answer','src-a'), self.__session_raw_answer__, OPTIONAL, (_T('mode'),_T('Define display mode. XML (default) or DICT (dict or d).')), _T("""
 Display XML source of the EPP answer. If you would display source
 without XML tag, type parametr 'dict' or simple 'd'.
 Synonyms of 'raw-answer' are 'raw-a', 'src-answer' and 'src-a'."""), ('raw-a','raw-a d','src-a','src-a d')),
-            (('raw-command','raw-c','src-command','src-c'), self.__session_raw_command__, 0, (_T('mode'),'d','dict',), _T("""
+            (('raw-command','raw-c','src-command','src-c'), self.__session_raw_command__, 0, (_T('mode'),_T('Define display mode. XML (default) or DICT (dict or d).')), _T("""
 Display XML source of the EPP command. If you would display source
 without XML tag, type parametr 'dict' or simple 'd'.
 Synonyms of 'raw-command' are 'raw-c', 'src-command' and 'src-c'."""), ('raw-c','raw-c d','src-c','src-c d')),
-            (('send',), self.__session_send__, 1, (_T('filename'),_T('any filename'),), _T('Send any file to the server. If filename missing command shows actual folder.'), ('send mydoc.xml',)),
-            (('validate',), self.__session_validate__, 0, (_T('switch'),'on','off'), _T('Set on/off client-side validation of the XML documents.'), ('validate off',)),
-            (('verbose',), self.__session_verbose__, 0, (_T('switch'),'1','2','3'), _T('Set verbose mode: 1 - brief (default); 2 - full; 3 - full & XML sources.'), ('verbose 2',)),
+            (('send',), self.__session_send__, REQUIRED, (_T('filename'),_T('any filename'),), _T('Send any file to the server. If filename missing command shows actual folder.'), ('send mydoc.xml',)),
+            (('validate',), self.__session_validate__, OPTIONAL, (_T('switch'),_T('Turn validation on/off.')), _T("""
+Client doesn't check command parameters itself. It uses for that external application
+'xmllint' whats checks all parameters against to schema defined in XML specification.
+Switch turns validations ON or OFF. Default is ON. If xmllint is not present 
+validation is turned off automaticly."""), ('validate off',)),
+            (('verbose',), self.__session_verbose__, OPTIONAL, (_T('level'),_T('Set verbose level. Available levels are 1, 2, 3.')), _T("""
+Client displays various informations. They are disparted to verbose levels.
+First verbose level (default) is designed to common user and give the output
+at the minimum has needed to work with. For inquiring users is aimed second
+level where are output all occured messages. The third level displays XML 
+sources ad advance, transmited between client and server.
+
+    Verbose modes: 
+
+    1 - brief (default)
+    2 - full
+    3 - full & XML sources."""), ('verbose 2',)),
         )
         
     def __put_raw_into_note__(self, data):
@@ -185,14 +201,18 @@ Synonyms of 'raw-command' are 'raw-c', 'src-command' and 'src-c'."""), ('raw-c',
                 options = ''
                 #if len(names)>1:
                 #    command_line += ' (${BOLD}%s:${NORMAL} %s)'%(_T('synonyms'),', '.join(names[1:]))
+                # params: (name, description)
                 if len(params):
                     if required:
-                        options = ' %s'%' '.join(params[:required])
-                        if len(params)-1 > required: # -1 because first item is param name
-                            options += ' [%s]'%_T('optional')
+##                        options = ' %s'%' '.join(params[:required])
+##                        if len(params)-1 > required: # -1 because first item is param name
+##                            options += ' [%s]'%_T('optional')
+                        options = ' %s'%params[0]
                     else:
                         options = ' [%s]'%params[0]
-                    command_help = '%s%s:  %s'%(space,params[0],', '.join(params[1:]))
+                    name = ('%s%s:'%(space,params[0])).ljust(self._ljust+3) # bracket and space '(required) '
+##                    command_help = '%s%s'%(name,', '.join(params[1:]))
+                    command_help = '%s%s'%(name,params[1])
                 command_lines = map(lambda name: '%s%s'%(name,options), names)
                 break
         return command_lines, command_help, notice, examples
@@ -423,11 +443,15 @@ Synonyms of 'raw-command' are 'raw-c', 'src-command' and 'src-c'."""), ('raw-c',
     def __session_validate__(self, param):
         'Set validate value'
         if param:
-            self.set_validate(param.lower()=='on' and 1 or 0)
-            msg = _T('Client-side validation has been set to')
+            value = param.upper()
+            if value in ('ON','OFF'):
+                self.set_validate(value=='ON' and 1 or 0)
+                self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('Client-side validation has been set to'), self._session[VALIDATE] and 'ON' or 'OFF'))
+            else:
+                self.append_error('%s %s'%(_T('Invalid Client-side validation parametr'),param))
+                self._notes_afrer_errors.append(_T("Type 'help validate' to get more information about client-side validation."))
         else:
-            msg = _T('Client-side validation is')
-        self.append_note('%s: ${BOLD}%s${NORMAL}'%(msg, self._session[VALIDATE] and 'ON' or 'OFF'))
+            self.append_note('%s: ${BOLD}%s${NORMAL}'%(_T('Client-side validation is'), self._session[VALIDATE] and 'ON' or 'OFF'))
         
     def __session_connect__(self, param):
         'Run connection process'
@@ -461,11 +485,10 @@ Synonyms of 'raw-command' are 'raw-c', 'src-command' and 'src-c'."""), ('raw-c',
     def __session_verbose__(self, param):
         'Set verbose mode'
         if param:
-            self.parse_verbose_value(param)
-            msg = _T('Verbose mode has been set to')
+            if self.parse_verbose_value(param) is not None:
+                self.append_note('%s ${BOLD}%d${NORMAL}'%(_T('Verbose mode has been set to'), self._session[VERBOSE]))
         else:
-            msg = _T('Verbose mode is')
-        self.append_note('%s ${BOLD}%d${NORMAL}'%(msg, self._session[VERBOSE]))
+            self.append_note('%s ${BOLD}%d${NORMAL}'%(_T('Verbose mode is'), self._session[VERBOSE]))
 
     def __session_license__(self, param):
         'Display license'
@@ -550,11 +573,11 @@ Synonyms of 'raw-command' are 'raw-c', 'src-command' and 'src-c'."""), ('raw-c',
         if param:
             lang, error = translate.get_valid_lang(param, _T('command'))
             if error:
-                self.append_note(_T("Unsupported language code: '%s'. Available codes are: %s.")%(param, ', '.join(translate.langs.keys())))
+                self.append_note(_T("Unsupported language code: '%s'.\nAvailable codes are: %s.")%(param, ', '.join(translate.langs.keys())))
                 msg = _T('Language is')
             else:
                 if self._session[LANG] == lang:
-                    msg = _T('No change. Language is')
+                    self.append_note('%s ${BOLD}%s${NORMAL}'%(_T('User interface language is already'), self._session[LANG]))
                 else:
                     self._session[LANG] = lang
                     translate.install_translation(lang)
@@ -562,13 +585,10 @@ Synonyms of 'raw-command' are 'raw-c', 'src-command' and 'src-c'."""), ('raw-c',
                     self._epp_cmd.reset_translation()
                     self._epp_response.reset_translation()
                     self.init_session_commands()
-                    #
-                    if self._session[ONLINE]:
-                        self.append_note(_T('If you want to change the server language too, you have to logout and login again.'))
-                    msg = _T('Language has been set to')
+                    self.append_note('%s ${BOLD}%s${NORMAL}'%(_T('User interface language has been set to'), self._session[LANG]))
+                    if self._session[ONLINE]: self.append_note(_T('Reconnect to change server language too.'))
         else:
-            msg = _T('Language is')
-        self.append_note('%s ${BOLD}%s${NORMAL}'%(msg, self._session[LANG]))
+            self.append_note('%s ${BOLD}%s${NORMAL}'%(_T('User interface language is'), self._session[LANG]))
         
     #==================================================
     #

@@ -353,15 +353,22 @@ class ManagerBase:
 
     def parse_verbose_value(self, verbose):
         'Init verbose mode.'
+        if verbose is None: return self._session[VERBOSE]
         nverb = None
         if type(verbose) in (str,unicode):
             try:
                 nverb = int(verbose)
             except ValueError, msg:
-                self.append_error("Unknown verbose level: '%s'"%verbose)
+                self.append_error('%s %s'%(_T('Invalid verbose parametr'),verbose))
                 # self.append_error(_T('Valid verbose level is: 1, 2, 3.'))
+                self._notes_afrer_errors.append(_T("Type 'help verbose' to get more information about verbose levels."))
+                return None
         if nverb in (0,1,2,3):
             self._session[VERBOSE] = nverb
+        else:
+            self.append_error(_T('Verbose level is out of range. Available values are 1, 2, 3.'))
+            self._notes_afrer_errors.append(_T("Type 'help verbose' to get more information about verbose levels."))
+            nverb = None
         return nverb
 
     def set_verbose(self, verbose):

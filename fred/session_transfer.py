@@ -60,7 +60,7 @@ class ManagerTransfer(ManagerBase):
         self._epp_cmd.reset()
         self._epp_response.reset()
         self._command_sent = '' # jméno posledního odeslaného příkazu
-        self._session[SORT_BY_COLUMNS] = []
+        self._session[SORT_BY_COLUMNS] = [] # used to sort output values
 
     def get_command_line(self):
         'Returns example of command built from parameters.'
@@ -74,7 +74,7 @@ class ManagerTransfer(ManagerBase):
         if self._lorry and not self._lorry.is_connected():
             # spojení spadlo
             if self._session[ONLINE]:
-                self.append_note(_T('ERROR: Connection to %s interrupted.')%self._session[HOST])
+                self.append_error(_T('Connection to %s interrupted.')%self._session[HOST])
             self.close()
 
     def grab_command_name_from_xml(self, message):
@@ -272,16 +272,16 @@ class ManagerTransfer(ManagerBase):
     def get_keys_sort_by_columns(self):
         'Returns list of keys what will be used to sorting output values.'
         return self.__get_column_items__(self._dct_answer['command'], self._dct_answer['data'])
-        
+
     def __get_column_items__(self, command_name, dct_data):
         'Returns struct of key names for sorting output values lines.'
         if self._session[SORT_BY_COLUMNS]:
             sorted_columns = self._session[SORT_BY_COLUMNS] # sorted output (included in create command part)
-        elif re.match('\w+:check',command_name):
-            # exeption for all check commands
-            keys = dct_data.keys()
-            keys.sort()
-            sorted_columns = map(lambda n:(n,1,''), keys) # sorted by keys
+##        elif re.match('\w+:check',command_name):
+##            # exeption for all check commands
+##            keys = dct_data.keys()
+##            keys.sort() # sorting alphabetical
+##            sorted_columns = map(lambda n:(n,1,''), keys) # sorted by keys
         else:
             sorted_columns = map(lambda n:(n,1,''), dct_data.keys()) # default (unsorted)
         return sorted_columns
@@ -312,9 +312,13 @@ class ManagerTransfer(ManagerBase):
             value = dct_data.get(key,u'')
             if value not in ('',[]):
                 if is_check:
-                    # Tighten check response by code.
-                    if type(value) is int: continue
-                    key = re.sub(':reason','',key)
+                    # Check response returns code and reason. Code is used to insert status into message.
+                    # join is done in function __answer_response_check__() in module session_receiver.py
+                    # pref:key 0
+                    # pref:key:reason 'message'
+                    ## if type(value) is int: continue
+                    ## key = re.sub(':reason','',key)
+                    value = dct_data.get(key+':reason',u'')
                 __append_into_report__(data,key,value,explain,self._ljust,data_indent)
             used.append(key)
         if len(data):
@@ -323,7 +327,7 @@ class ManagerTransfer(ManagerBase):
         #--- INTERNAL USE ----
         # POZOR!!! V ostré verzi musí být deaktivováno!!!
         # ALERT!!! MUST be disabled in release version!!!
-        if self._session[SORT_BY_COLUMNS]:
+        if self._session[SORT_BY_COLUMNS] and not is_check:
             # in mode SORT_BY_COLUMNS check if all names was used
             missing = [k for k in dct_data.keys() if k not in used and dct_data[k][0] >= self._session[VERBOSE]]
             if len(missing):
@@ -579,6 +583,8 @@ class ManagerTransfer(ManagerBase):
         if prefix != self.readline_prefix:
             self.readline_prefix = prefix
             command = self.readline.get_line_buffer().strip()
+            match = re.match('\w+',command)
+            if match: command = match.group() # remove command parameters
             if command in self.readline_words:
                 if prefix == command:
                     self.matching_words = [command] # space at the end missing
