@@ -3,6 +3,6 @@ It is aimed to registrants for manage DNS central registry.
 Client is written in Python.
 
 For more information see http://www.nic.cz
-Please send bug reports or feature wishes to ccreg-devel@lists.nic.cz
+Please send bug reports or feature wishes to fred@nic.cz
 
 Copyright (c) 2006 CZ.NIC z.s.p.o. All rights reserved.
