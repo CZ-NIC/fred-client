@@ -100,28 +100,6 @@
                     <bool>true</bool>
                 </property>
             </widget>
-            <widget class="QLabel">
-                <property name="name">
-                    <cstring>textLabel1</cstring>
-                </property>
-                <property name="geometry">
-                    <rect>
-                        <x>21</x>
-                        <y>110</y>
-                        <width>630</width>
-                        <height>100</height>
-                    </rect>
-                </property>
-                <property name="text">
-                    <string>Welcome on the &lt;b&gt;FredClient&lt;/b&gt; GUI interface.&lt;br&gt;
-Version 1.0.0; (Needs &lt;b&gt;Fred module&lt;/b&gt; version 1.0.0)&lt;br&gt;
-&lt;br&gt;
-Parameters in &lt;b&gt;bold&lt;/b&gt; style are &lt;b&gt;required&lt;/b&gt;. Others are optionals.</string>
-                </property>
-                <property name="alignment">
-                    <set>WordBreak|AlignTop|AlignHCenter</set>
-                </property>
-            </widget>
             <widget class="QGroupBox">
                 <property name="name">
                     <cstring>groupBox1</cstring>
@@ -297,6 +275,28 @@ Parameters in &lt;b&gt;bold&lt;/b&gt; style are &lt;b&gt;required&lt;/b&gt;. Oth
                 </property>
                 <property name="text">
                     <string>Credits</string>
+                </property>
+            </widget>
+            <widget class="QLabel">
+                <property name="name">
+                    <cstring>textLabel1</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>21</x>
+                        <y>110</y>
+                        <width>630</width>
+                        <height>100</height>
+                    </rect>
+                </property>
+                <property name="text">
+                    <string>Welcome on the &lt;b&gt;FredClient&lt;/b&gt; GUI interface.&lt;br&gt;
+Beta release 0.1.0; (Needs &lt;b&gt;Fred module&lt;/b&gt; version 1.0.0)&lt;br&gt;
+&lt;br&gt;
+Parameters in &lt;b&gt;bold&lt;/b&gt; style are &lt;b&gt;required&lt;/b&gt;. Others are optionals.</string>
+                </property>
+                <property name="alignment">
+                    <set>WordBreak|AlignTop|AlignHCenter</set>
                 </property>
             </widget>
         </widget>

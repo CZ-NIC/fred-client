@@ -634,8 +634,12 @@ sources ad advance, transmited between client and server.
         'Automatic login if all needed informations are known.'
         if self._session[ONLINE]: return 1 # session is logged on already
         if self.get_config_value(self.config_get_section_connect(), 'nologin', OMIT_ERROR): return 1
+        if not self.check_connect_data(self.get_connect_defaults()): return 0
         ok=0
-        self.create_login()
+        # set values from config or options as a parsed params
+        self._epp_cmd._dct['username'] = [self.get_config_value(self._section_epp_login, 'username', OMIT_ERROR)]
+        self._epp_cmd._dct['password'] = [self.get_config_value(self._section_epp_login, 'password', OMIT_ERROR)]
+        self.create_login() # connect and get greeting message, than create XML login document
         epp_doc = self._epp_cmd.get_xml()
         if epp_doc and self.is_connected():
             if self._session[VERBOSE] > 1: self.append_note(_T('Login command sent to the server'))

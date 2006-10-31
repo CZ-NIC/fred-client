@@ -133,7 +133,7 @@ class Message(eppdoc.Message):
         self.__fill_empy_from_config__(config, dct, columns)
         return dct
 
-    def __check_required__(self, columns, dct_values, scopes=[]):
+    def __check_required__(self, command_name, columns, dct_values, scopes=[]):
         'Check parsed values for required and allowed values.'
         errors = []
         if len(scopes) and not len(dct_values): return errors # if descendant is empty - not check
@@ -161,7 +161,10 @@ class Message(eppdoc.Message):
             scope_name = '.'.join(scopes)
             if dct_values.has_key(name):
                 if min_max[1] != UNBOUNDED and len(dct_values[name]) > min_max[1]:
-                    errors.append('%s: %s %d. %s'%(scope_name,_T('list of values overflow. Maximum is'),min_max[1],str(dct_values[name])))
+                    if command_name == 'hello':
+                        errors.append(_T('Command does not have any parameters.'))
+                    else:
+                        errors.append('%s: %s %d. (%s)'%(scope_name,_T('list of values overflow. Maximum is'),min_max[1],', '.join(dct_values[name])))
                 if allowed:
                     # check allowed values
                     allowed_abrev=[]
@@ -172,7 +175,7 @@ class Message(eppdoc.Message):
                 # walk throught descendants:
                 if children:
                     for dct in dct_values[name]:
-                        err = self.__check_required__(children, dct, scopes)
+                        err = self.__check_required__(command_name, children, dct, scopes)
                         if err: errors.extend(err)
             else:
                 if min_max[0] > 0: errors.append('%s %s'%(scope_name,_T('missing')))
@@ -383,16 +386,16 @@ class Message(eppdoc.Message):
         example = ''
         stop = 0
         self._verbose = verbose
-        m = re.match('check_(\w+)\s+(.+)',cmd)
-        if m:
-            # úprava pro příkazy check_..., kde se jména seskupí do jednoho parametru name
-            cmd = 'check_%s (%s)'%(m.group(1),m.group(2))
+        match = re.match('check_(\w+)\s+(.+)',cmd)
+        if match and len(match.group(2)) and match.group(2)[0] != '(':
+            # hint for check_[object] commands, there must be a list
+            cmd = 'check_%s (%s)'%(match.group(1),match.group(2))
         vals = self._command_params.get(command_name,None)
         if not vals:
             error.append("%s: '%s'"%(_T('Unknown command'),command_name))
             error.append('(%s: ${BOLD}help${NORMAL})'%(_T('For more type')))
-            return error
-        if not vals[1]: return error # bez parametrů
+            return error, example, stop
+        if not vals[1]: return error, example, stop # bez parametrů
         columns = [(command_name,(1,1),(),'','','',())]
         columns.extend(self._command_params[command_name][1])
         dct['command'] = [command_name]
@@ -416,7 +419,7 @@ class Message(eppdoc.Message):
                         session_base.print_unicode('\n${BOLD}%s${NORMAL}'%_T('Command has been aborted.'))
                 remove_from_history(get_history_length() - history_length)
             else:
-                session_base.print_unicode('${BOLD}${YELLOW}%s${NORMAL}'%_T('No parameters. Skip interactive mode.'))
+                session_base.print_unicode('${BOLD}${YELLOW}%s${NORMAL}'%_T('Does not have any parameters, skipping interactive input mode.'))
             errors = []
         else:
             errors = cmd_parser.parse(dct, columns, cmd)
@@ -425,9 +428,9 @@ class Message(eppdoc.Message):
         self.__fill_empy_from_config__(config, dct, columns) # fill missing values from config
         if not stop:
             # check list and allowed values if only 'stop' was not set
-            errors = self.__check_required__(columns, dct)
+            errors = self.__check_required__(command_name, columns, dct)
             if errors:
-                error.append(_TP('Missing required value.','Missing required values.',vals[0]))
+##                if vals[0]: error.append(_TP('Missing required value.','Missing required values.',vals[0]))
                 error.extend(errors)
         self._dct = dct
         return error, example, stop
@@ -491,6 +494,7 @@ class Message(eppdoc.Message):
         key = name of key pointed to vlaue in parameters dictionary
         params must have ('clTRID',('name',['name','name',]))
         """
+        self._handle_ID = self._dct[key][0] # keep object handle (ID)
         if len(cols) > 3:
             col1 = '%s:%s'%(cols[1],cols[3])
         else:
@@ -534,7 +538,7 @@ class Message(eppdoc.Message):
             ('login', 'clID', self._dct['username'][0]),
             ('login', 'pw', self._dct['password'][0]),
             ]
-        if __has_key__(self._dct,'new-password'): cols.append(('login', 'newPW', self._dct['new-password'][0]))
+        if __has_key__(self._dct,'new_password'): cols.append(('login', 'newPW', self._dct['new_password'][0]))
         cols.extend([
             ('login', 'options'),
             ('options', 'version', params[1][0]),
@@ -614,6 +618,7 @@ class Message(eppdoc.Message):
 
     def __assemble_transfer__(self, names, params):
         "Assemble transfer XML EPP command."
+        self._handle_ID = dct['name'][0] # keep object handle (ID)
         ns = '%s%s-%s'%(eppdoc.nic_cz_xml_epp_path,names[0],eppdoc.nic_cz_version)
         attr = (('xmlns:%s'%names[0],ns),
                 ('xsi:schemaLocation','%s %s-%s.xsd'%(ns,names[0],eppdoc.nic_cz_version)))
@@ -680,6 +685,7 @@ class Message(eppdoc.Message):
     def assemble_create_contact(self, *params):
         "Assemble XML EPP command."
         dct = self._dct
+        self._handle_ID = dct['contact_id'][0] # keep object handle (ID)
         names = ('contact',)
         ns = '%s%s-%s'%(eppdoc.nic_cz_xml_epp_path,names[0],eppdoc.nic_cz_version)
         attr = (('xmlns:%s'%names[0],ns),
@@ -722,6 +728,7 @@ class Message(eppdoc.Message):
     def assemble_create_domain(self, *params):
         "Assemble XML EPP command."
         dct = self._dct
+        self._handle_ID = dct['name'][0] # keep object handle (ID)
         names = ('domain',)
         ns = '%s%s-%s'%(eppdoc.nic_cz_xml_epp_path,names[0],eppdoc.nic_cz_version)
         attr = (('xmlns:%s'%names[0],ns),
@@ -759,6 +766,7 @@ class Message(eppdoc.Message):
     def assemble_create_nsset(self, *params):
         "Assemble XML EPP command."
         dct = self._dct
+        self._handle_ID = dct['id'][0] # keep object handle (ID)
         names = ('nsset',)
         ns = '%s%s-%s'%(eppdoc.nic_cz_xml_epp_path,names[0],eppdoc.nic_cz_version)
         attr = (('xmlns:%s'%names[0],ns),
@@ -786,6 +794,7 @@ class Message(eppdoc.Message):
         """Assemble XML EPP command. 
         """
         dct = self._dct
+        self._handle_ID = dct['name'][0] # keep object handle (ID)
         names = ('domain',)
         ns = '%s%s-%s'%(eppdoc.nic_cz_xml_epp_path,names[0],eppdoc.nic_cz_version)
         attr = (('xmlns:%s'%names[0],ns),
@@ -810,6 +819,7 @@ class Message(eppdoc.Message):
         params = ('clTRID', ...)
         """
         dct = self._dct
+        self._handle_ID = dct['contact_id'][0] # keep object handle (ID)
         names = ('contact',)
         ns = '%s%s-%s'%(eppdoc.nic_cz_xml_epp_path,names[0],eppdoc.nic_cz_version)
         attr = (('xmlns:%s'%names[0],ns),
@@ -866,6 +876,7 @@ class Message(eppdoc.Message):
         params = ('clTRID', ...)
         """
         dct = self._dct
+        self._handle_ID = dct['name'][0] # keep object handle (ID)
         names = ('domain',)
         ns = '%s%s-%s'%(eppdoc.nic_cz_xml_epp_path,names[0],eppdoc.nic_cz_version)
         attr = (('xmlns:%s'%names[0],ns),
@@ -901,6 +912,7 @@ class Message(eppdoc.Message):
         params = ('clTRID', ...)
         """
         dct = self._dct
+        self._handle_ID = dct['id'][0] # keep object handle (ID)
         names = ('nsset',)
         ns = '%s%s-%s'%(eppdoc.nic_cz_xml_epp_path,names[0],eppdoc.nic_cz_version)
         attr = (('xmlns:%s'%names[0],ns),
@@ -955,10 +967,9 @@ class Message(eppdoc.Message):
         if len(msg): session_base.print_unicode('(%s)'%(' '.join(msg)))
 
     def get_object_handle(self):
-        'Returns object handle'
-        vals = self._dct.values()
-        return len(vals) > 2 and vals[1][0] or ''
-        
+        'Returns object handle ID.'
+        return self._handle_ID
+
         
 #-----------------------------------------------------
 # Support of command line history

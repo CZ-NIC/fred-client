@@ -18,49 +18,21 @@ update_status = (
     #'serverDeleteProhibited', 'serverTransferProhibited', 'serverUpdateProhibited')
 
 # Help
-def get_notice():
+def get_shared_notice():
     'Returns notice for EPP commands'
-    return {'check':_T("""
-The EPP "check" command is used to determine if an object can be
-provisioned within a repository.  It provides a hint that allows a
-client to anticipate the success or failure of provisioning an object
-using the "create" command as object provisioning requirements are
-ultimately a matter of server policy.
-"""),
-    'info':_T("""
-The EPP "info" command is used to retrieve information associated
-with an existing object. The elements needed to identify an object
-and the type of information associated with an object are both
-object-specific, so the child elements of the <info> command are
-specified using the EPP extension framework.
-"""),
-    'transfer':_T("""
-The EPP "transfer" command makes change in client sponsorship 
-of an existing object. The new owner becomes registrant what called
-transfer command. New auhtorization info is generated automaticly
-after successfully transfer.
-"""),
-   'create':_T("""
-The EPP "create" command is used to create an instance of an object.
-An object can be created for an indefinite period of time, or an
-object can be created for a specific validity period.
-"""),
-   'delete':_T("""The EPP "delete" command is used to remove an instance of an existing object."""),
-   'renew':_T("""The EPP "renew" command is used to extend validity of an existing object."""),
-   'update':_T("""The EPP "update" command is used to update an instance of an existing object."""),
+    return {   
    'disclose':_T('Names what are not included into disclose list are set to opposite value of the disclose flag value.'),
-   'ssn':_T("""   SSN types can be: 
+   'ssn':_T("""SSN types can be: 
       op       number identity card
       rc       number of birth
       passport number of passport
       mpsv     number of Ministry of Labour and social affairs
       ico      number of company"""),
-    'list':_T("""The EPP "list" command is used to list all ID of an existing object owning by registrant."""),
 }
 
 def make_command_parameters():
     'Returns command parameters tuple'
-    notice = get_notice()
+    notice = get_shared_notice()
     # format:
     # command-name: (param-name, (min,max), (list of required), 'help', 'example', 'pattern', (list of children)
     # For include new command you need do this steps:
@@ -68,39 +40,77 @@ def make_command_parameters():
     #   2. add function assemble_...() into eppdoc_assemble.Message
     #   3. [optional] add answer_response_...() in session_receiver.ManagerReceiver
     command_params = {
-        'hello': (0, (('',(0,0),(),'','','',()),), _T('The EPP "hello" request a "greeting" response message from an EPP server at any time.'),()),
-        'logout': (0, [('',(0,0),(),'','','',()),], _T('The EPP "logout" command is used to end a session with an EPP server.'),()),
+        'hello': (0, [], _T("""
+Command 'hello' is used to obtain information from the server.
+The server answer to 'hello' command is Greeting message. This message
+is used usualy at the begining of the session for getting some variables
+usefull for communication. Within Server version or ID you can got
+available languages, Data Collection policy etc.
+Command 'hello' you can call at any time."""),()),
+        'logout': (0, [], _T('The EPP "logout" command is used to end a session with an EPP server.'),()),
         #----------------------------------------------------
         'login': (2,[
             ('username',(1,1),(),_T('Username'),'username','',()),
             ('password',(1,1),(),_T('Password'),'password','',()),
-            ('new-password',(0,1),(),_T('New password'),'new_password','',()),
+            ('new_password',(0,1),(),_T('New password'),'new_password','',()),
             ('lang',(0,1),(),_T('Language version'),'en','',()),
         ],_T("""
 The "login" command establishes an ongoing server session that preserves client identity
 and authorization information during the duration of the session. Parametr "lang" set
 session and client language together. Language is possible to set also by option on the
-command line, or define it in configuration file or set by client command 'lang'."""),('login john mypass "my new pass!"','login john mypass NULL cs')),
+command line, or define it in configuration file or set by client command 'lang'.
+Using parameter 'new_password' you can change password.
+"""),('login john mypass "my new pass!"','login john mypass NULL cs')),
         #----------------------------------------------------
         'info_contact': (1,[
             ('name',(1,1),(),_T('Contact ID'),'CID:ID01','',()),
-        ],notice['info'],('info_contact cid:contact',)),
+        ],_T("""
+The EPP "info" command is used to retrieve information associated
+with an existing object. The elements needed to identify an object
+and the type of information associated with an object are both
+object-specific, so the child elements of the <info> command are
+specified using the EPP extension framework."""),('info_contact cid:contact',)),
         'info_domain': (1,[
             ('name',(1,1),(),_T('Domain name'),'mydomain.cz','',()),
-        ],notice['info'],('info_domain my-domain.cz',)),
+        ],_T("""
+The EPP "info" command is used to retrieve information associated
+with an existing object. The elements needed to identify an object
+and the type of information associated with an object are both
+object-specific, so the child elements of the <info> command are
+specified using the EPP extension framework."""),('info_domain my-domain.cz',)),
         'info_nsset': (1,[
             ('name',(1,1),(),_T('NSSET ID'),'NSSET_ID','',()),
-        ],notice['info'],('info_nsset nssid:nsid',)),
+        ],_T("""
+The EPP "info" command is used to retrieve information associated
+with an existing object. The elements needed to identify an object
+and the type of information associated with an object are both
+object-specific, so the child elements of the <info> command are
+specified using the EPP extension framework."""),('info_nsset nssid:nsid',)),
         #----------------------------------------------------
         'check_contact': (1,[
             ('name',(1,UNBOUNDED),(),_T('Contact ID'),'CID:ID01','',()),
-        ],notice['check'],('check_contact cid:contact1 cid:contact2',)),
+        ],_T("""
+The EPP "check" command is used to determine if an object can be
+provisioned within a repository.  It provides a hint that allows a
+client to anticipate the success or failure of provisioning an object
+using the "create" command as object provisioning requirements are
+ultimately a matter of server policy."""),('check_contact cid:contact1 cid:contact2',)),
         'check_domain': (1,[
             ('name',(1,UNBOUNDED),(),_T('Domain name'),'mydomain.cz','',()),
-        ],notice['check'],('check_domain domain1.cz domain2.cz',)),
+        ],_T("""
+The EPP "check" command is used to determine if an object can be
+provisioned within a repository.  It provides a hint that allows a
+client to anticipate the success or failure of provisioning an object
+using the "create" command as object provisioning requirements are
+ultimately a matter of server policy."""),('check_domain domain1.cz domain2.cz',)),
         'check_nsset': (1,[
             ('name',(1,UNBOUNDED),(),_T('NSSET ID'),'NSSET_ID','',()),
-        ],notice['check'],('check_nsset nssid:id1 nssid:id2',)),
+        ],_T("""
+The EPP "check" command is used to determine if an object can be
+provisioned within a repository.  It provides a hint that allows a
+client to anticipate the success or failure of provisioning an object
+using the "create" command as object provisioning requirements are
+ultimately a matter of server policy."""),('check_nsset nssid:id1 nssid:id2',)),
         #----------------------------------------------------
         'poll': (0,[
             ('op',(0,1),(('req',),('ack',)),_T('Query type'),'','',()),
@@ -110,19 +120,31 @@ command line, or define it in configuration file or set by client command 'lang'
         'transfer_contact': (2,[
             ('name',(1,1),(),_T('Contact ID'),'CID:ID01','',()),
             ('auth_info',(1,1),(),_T('Password required by server to authorize the transfer'),'mypassword','',()),
-        ],notice['transfer'],('transfer_contact CID:ID01 password',)),
+        ],_T("""
+The EPP "transfer" command makes change in client sponsorship 
+of an existing object. The new owner becomes registrant what called
+transfer command. New auhtorization info is generated automaticly
+after successfully transfer."""),('transfer_contact CID:ID01 password',)),
         #----------------------------------------------------
         'transfer_nsset': (2,[
             ('name',(1,1),(),_T('NSSET ID'),'NSSET_ID','',()),
             #('op',(1,1),transfer_op,_T('query type'),()),
             ('auth_info',(1,1),(),_T('Password required by server to authorize the transfer'),'mypassword','',()),
-        ],notice['transfer'],('transfer_nsset nssid:nsset password',)),
+        ],_T("""
+The EPP "transfer" command makes change in client sponsorship 
+of an existing object. The new owner becomes registrant what called
+transfer command. New auhtorization info is generated automaticly
+after successfully transfer."""),('transfer_nsset nssid:nsset password',)),
         #----------------------------------------------------
         'transfer_domain': (2,[
             ('name',(1,1),(),_T('Domain name of domain to change sponsorship'),'domain.cz','',()),
             #('op',(1,1),transfer_op,_T('query type'),()),
             ('auth_info',(1,1),(),_T('Password required by server to authorize the transfer'),'mypassword','',()),
-        ],notice['transfer'],('transfer_domain domain.cz password',)),
+        ],_T("""
+The EPP "transfer" command makes change in client sponsorship 
+of an existing object. The new owner becomes registrant what called
+transfer command. New auhtorization info is generated automaticly
+after successfully transfer."""),('transfer_domain domain.cz password',)),
         #----------------------------------------------------
         'create_contact': (5,[
             ('contact_id',(1,1),(),_T('Contact ID'),'CID:ID01','',()),
@@ -147,7 +169,10 @@ command line, or define it in configuration file or set by client command 'lang'
                 ('number',(1,1),(),_T('SSN number'),'8888888856','',()),
             )),
             ('notify_email',(0,1),(),_T('Notification email'),'info@mymail.cz','',()),
-            ],'%s\n   %s\n%s'%(notice['create'],notice['disclose'],notice['ssn']),("create_contact CID:ID01 'Jan Novak' info@mymail.cz Praha CZ mypassword 'Firma s.r.o.' 'Narodni trida 1230/12' '' 12000 +420.222745111 +420.222745111 (y (org fax email)) 7035555556 (op 8888888856) info@mymail.cz",)),
+            ],'%s\n\n%s\n\n%s'%(_T("""
+The EPP "create" command is used to create an instance of an object.
+An object can be created for an indefinite period of time, or an
+object can be created for a specific validity period."""),notice['disclose'],notice['ssn']),("create_contact CID:ID01 'Jan Novak' info@mymail.cz Praha CZ mypassword 'Firma s.r.o.' 'Narodni trida 1230/12' '' 12000 +420.222745111 +420.222745111 (y (org fax email)) 7035555556 (op 8888888856) info@mymail.cz",)),
         #----------------------------------------------------
         'create_domain': (2,[
             ('name',(1,1),(),_T('Domain name'),'mydomain.cz','',()),
@@ -160,7 +185,10 @@ command line, or define it in configuration file or set by client command 'lang'
             )),
             ('admin',(0,UNBOUNDED),(),_T('Administrative contact ID'),'CID:ADMIN_ID','',()),
             ('val_ex_date',(0,1),(),_T('Validation expires at'),'2008-12-03','',()),
-            ],notice['create'],(
+            ],_T("""
+The EPP "create" command is used to create an instance of an object.
+An object can be created for an indefinite period of time, or an
+object can be created for a specific validity period."""),(
                 'create_domain domain.cz cid:regid password nssid:nsid (3 y) (cid:admin1,cid:admin2)',
                 'create_domain 1.1.1.7.4.5.2.2.2.0.2.4.e164.arpa cid:regid password nssid:nsid (3 y) (cid:admin1,cid:admin2) 2006-06-08'
             )),
@@ -174,21 +202,24 @@ command line, or define it in configuration file or set by client command 'lang'
             ('tech',(1,UNBOUNDED),(),_T('Technical contact'),'CID:ID01','',()),
             ('auth_info',(0,1),(),_T('Password required by server to authorize the transfer'),'mypassword','',()),
 
-            ],notice['create'],(
+            ],_T("""
+The EPP "create" command is used to create an instance of an object.
+An object can be created for an indefinite period of time, or an
+object can be created for a specific validity period."""),(
                 'create_nsset nssid:nsset1 ((ns1.domain.cz (217.31.207.130 217.31.207.129)),(ns2.domain.cz (217.31.206.130 217.31.206.129)),(ns3.domain.cz (217.31.205.130 217.31.205.129))) cid:regid passw',
             )),
         #----------------------------------------------------
         'delete_contact': (1,[
              ('id',(1,1),(),_T('Contact ID'),'CID:ID01','',()),
-            ],notice['delete'],('delete_contact cid:id',)),
+            ],_T("""The EPP "delete" command is used to remove an instance of an existing object."""),('delete_contact cid:id',)),
         #----------------------------------------------------
         'delete_domain': (1,[
             ('name',(1,1),(),_T('Domain name'),'mydomain.cz','',()),
-            ],notice['delete'],('delete_domain domain.cz',)),
+            ],_T("""The EPP "delete" command is used to remove an instance of an existing object."""),('delete_domain domain.cz',)),
         #----------------------------------------------------
         'delete_nsset': (1,[
             ('id',(1,1),(),_T('NSSET ID'),'NSSET_ID','',()),
-            ],notice['delete'],('delete_nsset nssid:id',)),
+            ],_T("""The EPP "delete" command is used to remove an instance of an existing object."""),('delete_nsset nssid:id',)),
         #----------------------------------------------------
         'renew_domain': (2,[
             ('name',(1,1),(),_T('Domain name'),'mydomain.cz','',()),
@@ -198,7 +229,7 @@ command line, or define it in configuration file or set by client command 'lang'
                 ('unit',(1,1),(('y',),('m',)),_T('Period unit (y year(default), m month)'),'','',()),
             )),
             ('val_ex_date',(0,1),(),_T('Validation expires at'),'2008-12-03','',()),
-            ],notice['renew'],('renew_domain nic.cz 2008-06-02 (6 y)',)),
+            ],_T("""The EPP "renew" command is used to extend validity of an existing object."""),('renew_domain nic.cz 2008-06-02 (6 y)',)),
         #----------------------------------------------------
         'update_contact': (1,[
             ('contact_id',(1,1),(),_T('Contact ID'),'CID:ID01','',()),
@@ -231,7 +262,7 @@ command line, or define it in configuration file or set by client command 'lang'
                 )),
                 ('notify_email',(0,1),(),_T('Notification email'),'notify@mymail.cz','',()),
             )),
-            ],'%s\n%s'%(notice['update'],notice['disclose']),(
+            ],'%s\n\n%s'%(_T("""The EPP "update" command is used to update an instance of an existing object."""),notice['disclose']),(
                     'update_contact CID:ID01 clientDeleteProhibited',
                     'update_contact CID:ID01 (clientDeleteProhibited linked ok)',
                     "update_contact CID:ID01 clientTransferProhibited (clientDeleteProhibited, clientUpdateProhibited) (('Jan Nowak' 'Firma s.r.o.' (('Na narodni 1230/12', 'Americka 12') Praha Vinohrady 12000 CZ)) +420.222745111 +420.222745111 info@mymail.cz mypassword (y (org, voice, email)) 7035555556 (ico 8888888856) notify@mymail.cz)",
@@ -254,7 +285,7 @@ command line, or define it in configuration file or set by client command 'lang'
                 ('auth_info',(0,1),(),_T('Password required by server to authorize the transfer'),'mypassword','',()),
             )),
             ('val_ex_date',(0,1),(),_T('Validation expires at'),'2008-12-03','',()),
-            ],notice['update'],(
+            ],_T("""The EPP "update" command is used to update an instance of an existing object."""),(
                 'update_domain mydomain.cz ((CID:ID01, CID:ID02) clientTransferProhibited) (CID:ID03 clientDeleteProhibited) (NSSID:NSSET01 CID:ID04 mypass)',
                 'update_domain 1.1.1.7.4.5.2.2.2.0.2.4.e164.arpa ((CID:ID01, CID:ID02) clientTransferProhibited) (CID:ID03 clientDeleteProhibited) (NSSID:NSSET01 CID:ID04 mypass) 2008-12-03',
             )),
@@ -278,13 +309,13 @@ command line, or define it in configuration file or set by client command 'lang'
                 ('auth_info',(0,1),(),_T('Password required by server to authorize the transfer'),'new_password','',()),
                 #('ext',(0,1),(),_T('ext'),'','',()),
             )),
-            ],notice['update'],(
+            ],_T("""The EPP "update" command is used to update an instance of an existing object."""),(
                 "update_nsset nssid:ns1 (((ns1.dns.cz (217.31.207.130, 217.31.207.131, 217.31.207.132)), (ns2.dns.cz (217.31.207.130, 217.31.207.131, 217.31.207.132))) (cid:tech1, cid:tech2, cid:tech3) (ok, clientTransferProhibited)) (((rem1.dns.cz, rem2.dns.cz) (cid:tech_rem01, cid:tech_rem02) serverUpdateProhibited)) (password)",
             )),
         #----------------------------------------------------
-        'list_contact': (0,[('',(0,0),(),'','','',()),],notice['list'],()),
-        'list_nsset': (0,[('',(0,0),(),'','','',()),],notice['list'],()),
-        'list_domain': (0,[('',(0,0),(),'','','',()),],notice['list'],()),
+        'list_contact': (0,[],_T("""The EPP "list" command is used to list all ID of an existing contact owning by registrant."""),()),
+        'list_nsset': (0,[],_T("""The EPP "list" command is used to list all ID of an existing NSSET owning by registrant."""),()),
+        'list_domain': (0,[],_T("""The EPP "list" command is used to list all domain names owning by registrant."""),()),
         #----------------------------------------------------
     }
     for k,v in command_params.items():

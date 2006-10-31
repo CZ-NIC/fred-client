@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'main.ui'
 #
-# Created: Po říj 23 11:11:22 2006
+# Created: Út říj 31 09:22:38 2006
 #      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -2031,10 +2031,6 @@ class FredWindow(QDialog):
         self.pixmapLabel3.setPixmap(self.image0)
         self.pixmapLabel3.setScaledContents(1)
 
-        self.textLabel1 = QLabel(self.TabPage,"textLabel1")
-        self.textLabel1.setGeometry(QRect(21,110,630,100))
-        self.textLabel1.setAlignment(QLabel.WordBreak | QLabel.AlignTop | QLabel.AlignHCenter)
-
         self.groupBox1 = QGroupBox(self.TabPage,"groupBox1")
         self.groupBox1.setGeometry(QRect(20,210,630,240))
 
@@ -2070,6 +2066,10 @@ class FredWindow(QDialog):
 
         self.btn_credits = QPushButton(self.TabPage,"btn_credits")
         self.btn_credits.setGeometry(QRect(20,510,120,30))
+
+        self.textLabel1 = QLabel(self.TabPage,"textLabel1")
+        self.textLabel1.setGeometry(QRect(21,110,630,100))
+        self.textLabel1.setAlignment(QLabel.WordBreak | QLabel.AlignTop | QLabel.AlignHCenter)
         self.tabWidget.insertTab(self.TabPage,QString.fromLatin1(""))
 
         self.Widget8 = QWidget(self.tabWidget,"Widget8")
@@ -3685,10 +3685,6 @@ class FredWindow(QDialog):
         self.status.setText(self.__tr("<b>Status:</b> <span style=\"color:red\">disconnect</span>"))
         self.buttonOk.setText(self.__tr("E&xit client"))
         self.buttonOk.setAccel(self.__tr("Alt+X"))
-        self.textLabel1.setText(self.__tr("Welcome on the <b>FredClient</b> GUI interface.<br>\n"
-"Version 1.0.0; (Needs <b>Fred module</b> version 1.0.0)<br>\n"
-"<br>\n"
-"Parameters in <b>bold</b> style are <b>required</b>. Others are optionals."))
         self.groupBox1.setTitle(self.__tr("Client to EPP server"))
         self.textLabel2.setText(self.__tr("<b>port</b>"))
         self.textLabel3.setText(self.__tr("timeout"))
@@ -3696,6 +3692,10 @@ class FredWindow(QDialog):
         self.textLabel5.setText(self.__tr("<b>host</b>"))
         self.textLabel6.setText(self.__tr("<b>private key</b>"))
         self.btn_credits.setText(self.__tr("Credits"))
+        self.textLabel1.setText(self.__tr("Welcome on the <b>FredClient</b> GUI interface.<br>\n"
+"Beta release 0.1.0; (Needs <b>Fred module</b> version 1.0.0)<br>\n"
+"<br>\n"
+"Parameters in <b>bold</b> style are <b>required</b>. Others are optionals."))
         self.tabWidget.changeTab(self.TabPage,self.__tr("&Welcome"))
         self.textLabel7.setText(self.__tr("<h2>Connect</h2>\n"
 "This part use to connect and disconnect to the EPP server. You need defined path to the certificates in your configuration file."))

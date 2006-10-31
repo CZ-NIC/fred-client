@@ -152,8 +152,6 @@ class ManagerReceiver(ManagerCommand):
         "Part of process answer - parse greeting node."
         dct = self._dct_answer['data']
         greeting = self._dict_answer['greeting']
-        if not self._dct_answer['reason']:
-            self._dct_answer['reason'] = _T('Incoming greeting message')
         for key in ('svID','svDate'):
             dct[key] = eppdoc.get_dct_value(greeting, key)
         svcMenu = greeting.get('svcMenu',{})

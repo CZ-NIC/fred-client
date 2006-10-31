@@ -223,7 +223,12 @@ for key,value in langs.items():
 install_translation(options['lang'])
 
 match = re.search('(\w+)(\.py.?)?$',sys.argv[0])
-script_name = match is None and sys.argv[0] or match.group(1)
+if match:
+    script_name = match.group(1)
+elif len(sys.argv[0]):
+    script_name = sys.argv[0]
+else:
+    script_name = 'fred_module'
 
 if errors:
     #errors[0] = '%s%s'%(errors[0][0].upper(),errors[0][1:]) # First letter to uppercase

@@ -68,6 +68,7 @@ class ManagerBase:
         # Used in detailed help:
         self._ljust = 25      # indent description column from names
         self._indent_left = 2 # indent from left border
+        self._section_epp_login = 'epp_login' # section name in config for username and password
 
     def get_session(self, offset):
         return self._session[offset]
@@ -84,9 +85,8 @@ class ManagerBase:
         if op['privkey']: self._conf.set(section_connect,'ssl_key',op['privkey'])
         if op['nologin']: self._conf.set(section_connect,'nologin','nologin')
         # copy variables for individual commands
-        section_epp_login = 'epp_login'
-        self.copy_default_options(section_epp_login, section_connect, 'username')
-        self.copy_default_options(section_epp_login, section_connect, 'password')
+        self.copy_default_options(self._section_epp_login, section_connect, 'username')
+        self.copy_default_options(self._section_epp_login, section_connect, 'password')
         # selection fo language version
         self._session[LANG] = op['lang']
         if op['verbose']:
@@ -225,7 +225,10 @@ class ManagerBase:
     #---------------------------
     def manage_config(self, param):
         'Display config values or save config.'
-        print_unicode('${BOLD}${YELLOW}%s:${NORMAL}\n\t%s'%(_T('Actual config builded from files'),'\n\t'.join(translate.config_names)))
+        if len(translate.config_names):
+            print_unicode('${BOLD}${YELLOW}%s:${NORMAL}\n\t%s'%(_T('Actual config builded from files'),'\n\t'.join(translate.config_names)))
+        else:
+            print_unicode('${BOLD}${RED}%s${NORMAL}'%_T('No configuration file. Defaults used instead it.'))
         if not self._conf:
             print_unicode(_T('No config'))
             return

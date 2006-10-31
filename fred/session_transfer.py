@@ -125,9 +125,12 @@ class ManagerTransfer(ManagerBase):
                 self.get_config_value(section,'ssl_cert',OMIT_ERROR),
                 self.get_config_value(section,'timeout',OMIT_ERROR),
                 self.get_config_value(section,'socket',OMIT_ERROR),
-                self.get_config_value('epp_login', 'username',OMIT_ERROR),
-                self.get_config_value('epp_login', 'password',OMIT_ERROR),
+                self.get_config_value(self._section_epp_login, 'username',OMIT_ERROR),
+                self.get_config_value(self._section_epp_login, 'password',OMIT_ERROR),
                 ]
+        # overwrite username+password by command line
+        if self._epp_cmd._dct.has_key('username'): data[6] = self._epp_cmd._dct['username'][0]
+        if self._epp_cmd._dct.has_key('password'): data[7] = self._epp_cmd._dct['password'][0]
         # command options
         self._session[HOST] = data[0] # for prompt info
         return data
@@ -144,7 +147,7 @@ class ManagerTransfer(ManagerBase):
                 error = _T('Port is out of range: %d.')%port
         return error
         
-    def check_connect_data(self, data):
+    def check_connect_data(self, data, omit_username=0):
         'Check data for connnect. 1 - valid, 0 - invalid'
         # Check if all values are present:
         missing = []
@@ -154,8 +157,9 @@ class ManagerTransfer(ManagerBase):
         else:
             error = self.check_port(data[1])
             if error: missing.append(error)
-        if not data[6]: missing.append(_T('Username missing'))
-        if not data[7]: missing.append(_T('Password missing'))
+        if not omit_username:
+            if not data[6]: missing.append(_T('Username missing'))
+            if not data[7]: missing.append(_T('Password missing'))
         if not data[3]:
             missing.append(_T('SSL certificate name missing'))
         else:
@@ -170,16 +174,15 @@ class ManagerTransfer(ManagerBase):
             return 0
         return 1
         
-    def connect(self, data=None):
-        "Connect transfer socket. data=('host',port,'client-type')"
+    def connect(self):
+        "Connect transfer socket. data=(host,port,ssl_key,ssl_cert,timeout,socket,username,password)"
         if self.is_connected(): return 1 # spojení je již navázáno
         self._lorry = client_socket.Lorry()
         self._lorry._notes = self._notes
         self._lorry._errors = self._errors
         self._lorry.handler_message = self.process_answer
-        if not data: data = self.get_connect_defaults()
-        if not self.check_connect_data(data): return 0
-        self._epp_cmd.set_params({'username':[data[6]],'password':[data[7]]})
+        data = self.get_connect_defaults()
+        if not self.check_connect_data(data, 1): return 0 # 1 - omit username + password
         if self._lorry.connect(data, self._session[VERBOSE]):
             epp_greeting = self._lorry.receive() # receive greeting
             self.__check_is_connected__()
@@ -338,13 +341,14 @@ class ManagerTransfer(ManagerBase):
         'Modify reason message from standard answer to more fit message.'
         if code == 1000:
             if key == 'update':
-                dct['reason'] = '%s %s.'(self._epp_cmd.get_object_handle(), _T('updated'))
+                dct['reason'] = '%s %s.'%(self._epp_cmd.get_object_handle(), _T('updated'))
             elif key == 'delete':
-                dct['reason'] = '%s %s.'(self._epp_cmd.get_object_handle(), _T('deleted'))
+                dct['reason'] = '%s %s.'%(self._epp_cmd.get_object_handle(), _T('deleted'))
             elif key == 'transfer':
-                dct['reason'] = '%s %s.'(self._epp_cmd.get_object_handle(), _T('transfer'))
+                dct['reason'] = '%s %s.'%(self._epp_cmd.get_object_handle(), _T('transfer'))
         else:
-            dct['reason'] = '%s: %s'%(_T('ERROR'),dct['reason'])
+            if code >= 2000:
+                dct['reason'] = '%s: %s'%(_T('ERROR'),dct['reason'])
         
     def get_answer(self, dct=None, sep='\n'):
         'Show values parsed from the server answer.'
@@ -367,14 +371,12 @@ class ManagerTransfer(ManagerBase):
                     report(get_ltext(colored_output.render('${%s}%s${NORMAL}'%(code==1000 and 'GREEN' or 'NORMAL', dct['reason']))))
         else:
             # full
-            label_code = (u'%s:'%get_unicode(_T('Return code'))).ljust(self._ljust+1) # +1 space between key and value
-            label_reason = (u'%s:'%get_unicode(_T('Reason'))).ljust(self._ljust+1)
-            report(colored_output.render('${BOLD}%s${NORMAL}%d'%(get_ltext(label_code),code)))
-            report(colored_output.render('${BOLD}%s${%s}%s${NORMAL}'%(get_ltext(label_reason), code==1000 and 'GREEN' or 'NORMAL', get_ltext(dct['reason']))))
-            # We must keep message from verbose mode one where reason is shown as ERROR:
-            # TODO: musi se to dodelat
-            # !!! Tady se vytvářely ty duplicity
-            # if code >= 2000 and not len(dct['errors']): dct['errors'].insert(0, dct['reason'])
+            if code:
+                label_code = (u'%s:'%get_unicode(_T('Return code'))).ljust(self._ljust+1) # +1 space between key and value
+                report(colored_output.render('${BOLD}%s${NORMAL}%d'%(get_ltext(label_code),code)))
+            if dct.get('reason'):
+                label_reason = (u'%s:'%get_unicode(_T('Reason'))).ljust(self._ljust+1)
+                report(colored_output.render('${BOLD}%s${%s}%s${NORMAL}'%(get_ltext(label_reason), code==1000 and 'GREEN' or 'NORMAL', get_ltext(dct['reason']))))
         #... errors .............................
         if len(dct['errors']):
             if len(body) and body[-1] != '': report('') # empty line

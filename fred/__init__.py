@@ -407,7 +407,7 @@ class Client:
 
     username (required)
     password (required)
-    new-password (optional)
+    new_password (optional)
     lang (optional)
 
     RETURN data: {
@@ -425,7 +425,7 @@ class Client:
    and authorization information during the duration of the session.
         """
         return self._epp.api_command('login',{'username':username, 
-            'password':password, 'new-password':new_password, 'lang':lang, 'cltrid':cltrid})
+            'password':password, 'new_password':new_password, 'lang':lang, 'cltrid':cltrid})
 
 
     def logout(self, cltrid=None):

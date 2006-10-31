@@ -113,8 +113,8 @@ class FredMainWindow(_main.FredWindow):
         # load data for connection
         #--------------------------------------        
         data = map(lambda v: v is not None and v or '', self.epp._epp.get_connect_defaults())
-        username = self.epp._epp.get_config_value('epp_login', 'username',1)
-        password = self.epp._epp.get_config_value('epp_login', 'password',1)
+        username = self.epp._epp.get_config_value(self.epp._epp._section_epp_login, 'username',1)
+        password = self.epp._epp.get_config_value(self.epp._epp._section_epp_login, 'password',1)
         self.connect_host.setText(data[0])
         self.connect_port.setText(str(data[1]))
         self.connect_private_key.setText(data[2])
@@ -374,7 +374,7 @@ class FredMainWindow(_main.FredWindow):
         d = {}
         append_key(d,'username',self.login_username)
         append_key(d,'password',self.login_password)
-        append_key(d,'new-password',self.login_new_password)
+        append_key(d,'new_password',self.login_new_password)
         append_key(d,'cltrid',self.login_cltrid)
         if self.__check_required__(d, (('username',self.__tr('username')),('password',self.__tr('password')))):
             # Definition from welcome panel:
@@ -386,7 +386,7 @@ class FredMainWindow(_main.FredWindow):
             append_key(dc,'timeout',    self.connect_timeout)
             self.epp.set_data_connect(dc)
             try:
-                self.epp.login(d['username'], d['password'], d.get('new-password'), d.get('cltrid'))
+                self.epp.login(d['username'], d['password'], d.get('new_password'), d.get('cltrid'))
             except fred.FredError, err:
                 self.epp._epp._errors.extend(err.args)
                 self.epp._epp._errors.append(self.__tr('Process login failed.'))

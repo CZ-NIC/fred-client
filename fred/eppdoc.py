@@ -42,10 +42,12 @@ class Message:
         self._command_params = {} # struct of command parameters
         self._verbose = 1  # verbose interactive params input
         self.server_disclose_policy = 1 # Data collection policy: Access; default: 1 - disclosed
+        self._handle_ID = '' # keep object handle (ID)
         
     def reset(self):
         self.__reset_dom__()
         self.errors = []
+        self._handle_ID = ''
 
     def get_params(self):
         'Returns dict of the command params.'

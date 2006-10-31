@@ -39,7 +39,7 @@
     </message>
     <message>
         <source>Invalid connection input</source>
-        <translation>Neplatné zadání pro spojení</translation>
+        <translation type="obsolete">Neplatné zadání pro spojení</translation>
     </message>
     <message>
         <source>Process login failed.</source>
@@ -124,6 +124,14 @@
     <message>
         <source>domain name</source>
         <translation>doménové jméno</translation>
+    </message>
+    <message>
+        <source>Credits</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -480,7 +488,7 @@ EPP příkaz &quot;update&quot; se používá pro aktualizaci hodnot instance vy
 Version 1.0.0; (Needs &lt;b&gt;Fred module&lt;/b&gt; version 1.0.0)&lt;br&gt;
 &lt;br&gt;
 Parameters in &lt;b&gt;bold&lt;/b&gt; style are &lt;b&gt;required&lt;/b&gt;. Others are optionals.</source>
-        <translation>Vítejte v &lt;b&gt;FredClient&lt;/b&gt; grafické nadstavbě.&lt;br&gt;
+        <translation type="obsolete">Vítejte v &lt;b&gt;FredClient&lt;/b&gt; grafické nadstavbě.&lt;br&gt;
 Verze 1.0.0 (Požaduje &lt;b&gt;Fred modul&lt;/b&gt; verzi 1.0.0)&lt;br&gt;
 &lt;br&gt;
 Parametry, které jsou &lt;b&gt;tučně&lt;/b&gt;, jsou &lt;b&gt;povinné&lt;/b&gt;. Ostatní jsou nepovinné.</translation>
@@ -999,7 +1007,7 @@ EPP příkaz &quot;update&quot; se používá pro aktualizaci hodnot instance vy
     </message>
     <message>
         <source>authorization info</source>
-        <translation>autorizace</translation>
+        <translation type="obsolete">autorizace</translation>
     </message>
     <message>
         <source>&lt;h2&gt;transfer_domain&lt;/h2&gt;
@@ -1015,6 +1023,16 @@ The EPP &quot;transfer&quot; command makes change in client sponsorship of an ex
     <message>
         <source>Credits</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Welcome on the &lt;b&gt;FredClient&lt;/b&gt; GUI interface.&lt;br&gt;
+Beta release 0.1.0; (Needs &lt;b&gt;Fred module&lt;/b&gt; version 1.0.0)&lt;br&gt;
+&lt;br&gt;
+Parameters in &lt;b&gt;bold&lt;/b&gt; style are &lt;b&gt;required&lt;/b&gt;. Others are optionals.</source>
+        <translation>Vítejte v &lt;b&gt;FredClient&lt;/b&gt; grafické nadstavbě.&lt;br&gt;
+Beta vydání 0.1.0 (Požaduje &lt;b&gt;Fred modul&lt;/b&gt; verzi 1.0.0)&lt;br&gt;
+&lt;br&gt;
+Parametry, které jsou &lt;b&gt;tučně&lt;/b&gt;, jsou &lt;b&gt;povinné&lt;/b&gt;. Ostatní jsou nepovinné.</translation>
     </message>
 </context>
 </TS>
