@@ -359,6 +359,7 @@ class ManagerBase:
                 # self.append_error(_T('Valid verbose level is: 1, 2, 3.'))
                 self._notes_afrer_errors.append(_T("Type 'help verbose' to get more information about verbose levels."))
                 return None
+        elif type(verbose) is int: nverb = verbose
         if nverb in (0,1,2,3):
             self._session[VERBOSE] = nverb
         else:

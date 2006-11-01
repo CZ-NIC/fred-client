@@ -27,7 +27,7 @@ def main(options):
         if options['output'] == 'html':
             str_error = '<div class="fred_errors">\n<strong>%s errors:</strong>\n<pre>\n%s</pre><div>'%(command_name,escape_html(errors))
         elif options['output'] == 'php':
-            str_error = '<?php\n$error_create_name = %s;\n$error_create_value = %s;\n?>'%(php_string(command_name),php_string(errors))
+            str_error = '<?php\n$fred_error_create_name = %s;\n$fred_error_create_value = %s;\n?>'%(php_string(command_name),php_string(errors))
         else:
             # default 'text'
             str_error = "<?xml encoding='utf-8'?><errors>%s: %s</errors>"%(command_name,errors)

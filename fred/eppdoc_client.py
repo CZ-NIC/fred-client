@@ -148,19 +148,19 @@ after successfully transfer."""),('transfer_domain domain.cz password',)),
         #----------------------------------------------------
         'create_contact': (5,[
             ('contact_id',(1,1),(),_T('Contact ID'),'CID:ID01','',()),
-            ('name',(1,1),(),_T('Name'),u'Jan Novák','',()), # odtud shoda s update contact
+            ('name',(1,1),(),_T('Name'), 'John Nowak','',()), # odtud shoda s update contact
             ('email',(1,1),(),_T('Email'),'info@mymail.cz','',()),
             ('city',(1,1),(),_T('City'),'Praha','',()),
             ('cc',(1,1),(),_T('Country code'),'CZ',_T('country code'),()),
             ('auth_info',(0,1),(),_T('Password required by server to authorize the transfer'),'mypassword',_T('password'),()), # authorization information for transfer
             ('org',(0,1),(),_T('Organisation'),'Firma s.r.o.','',()),
-            ('street',(0,3),(),_T('Street'),u'Národní třída 1230/12','',()),
-            ('sp',(0,1),(),_T('State or province'),_T('state or province'),'',()),
+            ('street',(0,3),(),_T('Street'), 'Downing street 1230/12','',()),
+            ('sp',(0,1),(),_T('State or province'),'Outlands','',()),
             ('pc',(0,1),(),_T('Postal code'),'12000',_T('postal code'),()),
             ('voice',(0,1),(),_T('Phone'),'+420.222745111','',()),
             ('fax',(0,1),(),_T('Fax'),'+420.222745111','',()),
             ('disclose',(0,1),(),_T('Disclose'),'','',(
-                ('flag',(1,1),(('y',),('n',)),_T('Disclose flag (default y)'),'','',()),
+                ('flag',(1,1),(('y',),('n',)),_T('Disclose flag (default y)'),'n','',()),
                 ('data',(0,len(eppdoc_assemble.contact_disclose)),eppdoc_assemble.contact_disclose,_T('Data for with is set the flag value'),'','',()),
             )),
             ('vat',(0,1),(),_T('VAT (Value-added tax)'),'7035555556','',()), # daˇnový identifikátor

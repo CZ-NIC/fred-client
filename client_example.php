@@ -8,7 +8,7 @@ $exec_path = ''; // Here you can write path to the app
 $php_module_name = '/tmp/fred_client.php';
 
 $command_options = ''; // here you can type some options. For more see ./fred_client.py --help
-// $command_options = '-s curlew -f /home/zdenek/.fred_client.conf'; // TEST
+// $command_options = '-s andromeda -f /home/zdenek/.fred_client.conf'; // TEST
 
 define('CRLF', "\r\n");
 define('BR', "<br />\r\n");
@@ -261,31 +261,33 @@ while(is_array($_POST['send'])) {
         
         echo "<h3>PHP CODE:</h3>".CRLF;
         echo '<pre>'.CRLF;
-        echo "<strong>\$encoding</strong>: $encoding".CRLF;
-        echo "<strong>\$code</strong>: $code".CRLF;
-        echo "<strong>\$command</strong>: $command".CRLF;
-        echo "<strong>\$reason</strong>: $reason".CRLF;
+        echo "<strong>\$fred_encoding</strong>: $fred_encoding".CRLF;
+        echo "<strong>\$fred_code</strong>: $fred_code".CRLF;
+        echo "<strong>\$fred_command</strong>: $fred_command".CRLF;
+        echo "<strong>\$fred_reason</strong>: $fred_reason".CRLF;
         echo CRLF;
 
-        echo "<strong>\$errors</strong>:".CRLF;
-        print_r($errors);
-        if($error_create_name)  echo "<strong>\$error_create_name</strong>: $error_create_name".CRLF;
-        if($error_create_value) echo "<strong>\$error_create_value</strong>: $error_create_value".CRLF;
+        echo "<strong>\$fred_errors</strong>:".CRLF;
+        print_r($fred_errors);
+        if($fred_error_create_name)  echo "<strong>\$fred_error_create_name</strong>: $fred_error_create_name".CRLF;
+        if($fred_error_create_value) echo "<strong>\$fred_error_create_value</strong>: $fred_error_create_value".CRLF;
         echo CRLF;
 
-        echo "<strong>DATA (\$labels, \$data)</strong>:".CRLF;
-        if(is_array($data)) {
-            foreach($data as $key => $value) {
-                echo "<strong>$labels[$key]</strong> [$key]: ";
+        $indent_data=50;
+        $label = str_pad('$fred_labels $fred_data[KEY]:',$indent_data);
+        echo "<strong>$label\$fred_data</strong>".CRLF.CRLF;
+        if(is_array($fred_data)) {
+            foreach($fred_data as $key => $value) {
+                echo str_pad("$fred_labels[$key] [$key]:", $indent_data);
                 print_r($value);
                 if(!is_array($value)) echo CRLF;
             }
         }
         echo "<i>Third verbose level:</i>".BR;
-        echo "<strong>\$source_command</strong>:".BR;
-        echo htmlspecialchars($source_command).BR;
-        echo "<strong>\$source_answer</strong>:".BR;
-        echo htmlspecialchars($source_answer).BR;
+        echo "<strong>\$fred_source_command</strong>:".BR;
+        echo htmlspecialchars($fred_source_command).BR;
+        echo "<strong>\$fred_source_answer</strong>:".BR;
+        echo htmlspecialchars($fred_source_answer).BR;
         echo '</pre>'.CRLF;
 
         //--- FOR EXAMPLE ONLY: --------------------

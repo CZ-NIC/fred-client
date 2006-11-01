@@ -341,14 +341,11 @@ class ManagerTransfer(ManagerBase):
         'Modify reason message from standard answer to more fit message.'
         if code == 1000:
             if key == 'update':
-                dct['reason'] = '%s %s.'%(self._epp_cmd.get_object_handle(), _T('updated'))
+                dct['reason'] = u'%s %s.'%(self._epp_cmd.get_object_handle(), _T('updated').decode(encoding))
             elif key == 'delete':
-                dct['reason'] = '%s %s.'%(self._epp_cmd.get_object_handle(), _T('deleted'))
+                dct['reason'] = u'%s %s.'%(self._epp_cmd.get_object_handle(), _T('deleted').decode(encoding))
             elif key == 'transfer':
-                dct['reason'] = '%s %s.'%(self._epp_cmd.get_object_handle(), _T('transfer'))
-##        else:
-##            if code >= 2000 and self._session[VERBOSE] < 2:
-##                dct['reason'] = '%s: %s'%(_T('ERROR'),dct['reason'])
+                dct['reason'] = u'%s %s.'%(self._epp_cmd.get_object_handle(), _T('transfer').decode(encoding))
         
     def get_answer(self, dct=None, sep='\n'):
         'Show values parsed from the server answer.'

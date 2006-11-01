@@ -1,30 +1,28 @@
 # Example of configuration file.
-# Modify all values dir= to real path of your fiels 
-# and save into /etc/fred_client.conf.
-# Default config file is also possible create from fred_client
-# by command 'config create'.
+# Modify line with schema and dir=... set real path of your files.
+# and save into /etc/fred_client.conf or ~/.fred_client.conf
 #
 
 [connect]
 dir=/home/username/certificates
 host = epp-test.ccreg.nic.cz
 port = 700
-ssl_cert = %(dir)s/epp_test_ccreg_nic_cz_cert.pem
-ssl_key  = %(dir)s/epp_test_ccreg_nic_cz_key.pem
+ssl_cert = %(dir)s/certificate.pem
+ssl_key  = %(dir)s/private_key.pem
 username = MYUSERNAME
 password = MYPASSWORD
 timeout = 10.0      # socket timeout in sec.
-# socket = IPv6     # valid values are: IPv4 and IPv6
+# socket = IPv6     # Force socket type. Valid values are: IPv4 and IPv6. 
+                    # othervice used type from offer of the server
 # nologin = y       # turn off automatic login process after start up
 
 [session]
-schema = /home/username/epp_client/fred/schemas/all-1.0.xsd
-poll_autoack = off           # on - turn on send "poll ack" right after to "poll req"
+schema = $python-site-packages/fred/schemas/all-1.0.xsd
+poll_autoack = off           # send "poll ack" right after to "poll req"
 confirm_send_commands = on   # confirm all editable commands
 validate = on                # enable/disable xmllint
 colors = yes                 # display colors on tty console
 verbose = 2                  # set verbose level 1,2,3
-# If lang is not set, ti used value from os.environ.LANG
-# lang = en
-# null_value = None   # substitution of NULL value
-# auto_login = off    # automatic login after start client (default is ON)
+# lang = en                  # if lang is not set, ti used value from os.environ.LANG
+# null_value = None          # substitution of NULL value
+# auto_login = off           # disable automatic login after start client (default is ON)

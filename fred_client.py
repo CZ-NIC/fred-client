@@ -17,8 +17,9 @@ if __name__ == '__main__':
                    Send command to server and exit
   -o OUTPUT_TYPE, --output=OUTPUT_TYPE
                    Display output as text (default), html, php"""),
-   _T("""  -q,  --qt
-                   Run client in Qt GUI"""),
+    '', # GUI disabled
+##   _T("""  -q,  --qt
+##                   Run client in Qt GUI"""),
             _T('For more information, see README.'))
         elif options['version']:
             epp = fred.ClientSession()

@@ -262,11 +262,12 @@ class Message(eppdoc.Message):
         # single value or list of values
         self.print_info_listmax(min,max) # (Value can be a list of max %d values.)
         if self._verbose > 1:
+            message = []
             if len(allowed):
-                session_base.print_unicode('${WHITE}%s:${NORMAL} (%s)'%(_T('Parameter MUST be a value from following list'),', '.join(self.__make_abrev_help__(allowed))))
+                message.append('${WHITE}%s:${NORMAL} (%s)'%(_T('Parameter MUST be a value from following list'),', '.join(self.__make_abrev_help__(allowed))))
             if len(example):
-                if type(example) == unicode: example = example.encode(encoding)
-                session_base.print_unicode('%s ${WHITE}(%s)${NORMAL} %s: %s'%(__scope_to_string__(parents),msg_help,_T('Example'),example))
+                message.append('${WHITE}%s:${NORMAL} %s'%(_T('Example'), local8bit(example)))
+            if len(message): session_base.print_unicode(' '.join(message))
         current_pos = stop = 0
         while max is UNBOUNDED or current_pos < max:
             parents[-1][3] = current_pos # name, min, max, counter = current_pos
@@ -1025,7 +1026,7 @@ def __scope_to_string__(scopes):
             tokens.append('%s[%d/%s]'%(label,counter+1,str_max))
         else:
             tokens.append(label)
-    return '.'.join(tokens)
+    return ' / '.join(tokens)
 
 def escape(text):
     'Escape quotes in text.'

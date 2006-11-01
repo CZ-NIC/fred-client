@@ -43,7 +43,7 @@ Instalace FredClient programu se provede následovně:
 
 Tím je instalace dokončena. Klienta spustíte příkazem:
 
-    $ fred_client.py
+    $ ./fred_client.py
 
 
 Program lze spustit i bez instalace přímo z daného adresáře. Nebo lze instalaci
