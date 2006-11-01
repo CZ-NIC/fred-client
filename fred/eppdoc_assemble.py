@@ -50,9 +50,10 @@ class Message(eppdoc.Message):
             required = sattrib = ''
             reqlen = 0
             if min > 0:
+                msg8bit = _T('required')
                 color = deep==1 and 'GREEN' or 'YELLOW'
-                required = '${%s}${BOLD}(%s)${NORMAL}'%(color,_T('required'))
-                reqlen = len(_T('required'))+2 # add brackets
+                required = '${%s}${BOLD}(%s)${NORMAL}'%(color,msg8bit)
+                reqlen = len(msg8bit.decode(encoding))+2 # add brackets
                 if min > 1:
                     attrib.append(_TP('minimum %d item','minimum %d items',min)%min)
             sep = ''.ljust(self._indent_notes-len(indent)-len(name)-reqlen)
@@ -494,7 +495,7 @@ class Message(eppdoc.Message):
         key = name of key pointed to vlaue in parameters dictionary
         params must have ('clTRID',('name',['name','name',]))
         """
-        self._handle_ID = self._dct[key][0] # keep object handle (ID)
+        self._handle_ID = self._dct.has_key(key) and self._dct[key][0] or '' # keep object handle (ID)
         if len(cols) > 3:
             col1 = '%s:%s'%(cols[1],cols[3])
         else:

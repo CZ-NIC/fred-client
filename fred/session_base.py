@@ -64,7 +64,7 @@ class ManagerBase:
         self._options = translate.options # parameters from command line
         if type(self._options) is not dict:
             self._options = {'lang':'en','colors':'off','verbose':'1','user':'','password':'','host':'',}
-        self._email_reports_bug = 'ccreg-devel@lists.nic.cz'
+        self._email_reports_bug = 'fred@nic.cz'
         # Used in detailed help:
         self._ljust = 25      # indent description column from names
         self._indent_left = 2 # indent from left border
