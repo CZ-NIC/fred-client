@@ -619,7 +619,7 @@ class Message(eppdoc.Message):
 
     def __assemble_transfer__(self, names, params):
         "Assemble transfer XML EPP command."
-        self._handle_ID = dct['name'][0] # keep object handle (ID)
+        self._handle_ID = self._dct['name'][0] # keep object handle (ID)
         ns = '%s%s-%s'%(eppdoc.nic_cz_xml_epp_path,names[0],eppdoc.nic_cz_version)
         attr = (('xmlns:%s'%names[0],ns),
                 ('xsi:schemaLocation','%s %s-%s.xsd'%(ns,names[0],eppdoc.nic_cz_version)))

@@ -346,9 +346,9 @@ class ManagerTransfer(ManagerBase):
                 dct['reason'] = '%s %s.'%(self._epp_cmd.get_object_handle(), _T('deleted'))
             elif key == 'transfer':
                 dct['reason'] = '%s %s.'%(self._epp_cmd.get_object_handle(), _T('transfer'))
-        else:
-            if code >= 2000:
-                dct['reason'] = '%s: %s'%(_T('ERROR'),dct['reason'])
+##        else:
+##            if code >= 2000 and self._session[VERBOSE] < 2:
+##                dct['reason'] = '%s: %s'%(_T('ERROR'),dct['reason'])
         
     def get_answer(self, dct=None, sep='\n'):
         'Show values parsed from the server answer.'
@@ -367,7 +367,9 @@ class ManagerTransfer(ManagerBase):
             if dct['command'] in ('login','hello'):
                 pass # omit reason block body.pop() # remove previous empty line
             else:
-                if code != 1000 or key in ('update','delete','transfer'):
+                if code >= 2000:
+                    dct['errors'].insert(0,dct['reason'])
+                elif code != 1000 or key in ('update','delete','transfer'):
                     report(get_ltext(colored_output.render('${%s}%s${NORMAL}'%(code==1000 and 'GREEN' or 'NORMAL', dct['reason']))))
         else:
             # full
