@@ -3,8 +3,8 @@ Manual pro FredClient konzoli a knihovnu fred
 
 Verze 1.2
 
-   Vzniklo: 11.7.2006; Revize: 18.8.2006; Revize: 1.9.2006; Revize: 4.9.2006;
-   Revize: 14.9.2006; Revize: 27.9.2006;
+   Vzniklo: 11. 7.2006; Revize: 18. 8.2006; 1. 9.2006; 4. 9.2006; 14. 9.2006;
+   27. 9.2006; 1.11.2006;
 
    Copyright (c) 2006 CZ.NIC
      _________________________________________________________________
@@ -17,23 +17,25 @@ Verze 1.2
    3. Popis jednotlivych programu, parametry a config 
 
         Parametry (OPTIONS) 
-        Config 
+        Konfiguracni soubor 
 
    4. Program fred_console.py 
 
         Zobrazeni helpu
         EPP prikazy
         Typy parameru prikazu
-        Spolecny parametr cltrid
+        Spolecny parametr cltrid (Client transaction ID)
         Zadna hodnota / Prazdna hodnota
 
               Zadna hodnota: NULL
               Prazdna hodnota: '', ""
 
         Prikazy relace (session)
+        Testovaci prikazy
 
    5. Skripty fred_create.py a fred_sender.py 
-   6. Knihovna fred a popis API 
+   6. Integrace klienta do PHP kodu
+   7. Knihovna fred a popis API 
 
         Online dokumentace:
         Priklady prace s knihovnou
@@ -58,7 +60,7 @@ Kapitola 3. Popis jednotlivych programu, parametry a config
    Obsah
 
    Parametry (OPTIONS) 
-   Config 
+   Konfiguracni soubor 
 
    Dostupne skripty jsou nasledujici:
    fred_client.py - spousti EPP konzoli nebo sekvenci crate+send (pro shell)
@@ -73,77 +75,100 @@ Parametry (OPTIONS)
     $ fred_client.py --help
     $ fred_client.py -?
 
-Pouziti: python fred_console.py [OPTIONS]
-Konzole pro komunikaci s EPP serverem.
+Pouziti: fred_console [parametry...]
 
-OPTIONS s hodnotami:
-    -s --session  nazev session, ktery se ma pouzit pro spojeni s EPP serverem
-                  session hodnoty jsou nacteny z config souboru a mohou obsahov
-at
-                  cesty k certifikatu, soukromemu klici,
+Hlavni parametry:
+  -?, --help       Zobrazit tuto napovedu a skoncit
+  -V, --version    Zobrazit verzi programu a skoncit
+  -l LANGUAGE, --lang=LANGUAGE
+                   Nastaveni jazykove verze
+  -v LEVEL, --verbose=LEVEL
+                   Nastaveni modu vypisu
+                   1 - normalni vystup
+                   2 - zobrazit vice detailu
+                   3 - zobrazit vice detailu a XML zdroje
+  -x, --no_validate
+                   Deaktivovat XML validaci na strane klienta
 
-    -h --host     jmeno host (prepise config hodnotu)
-    -u --user     jmeno user (prepise config hodnotu)
-    -p --password heslo (prepise config hodnotu)
-    -l --lang     jazykova verze
-    -v --verbose  mod vypisu: 1,2,3; default: 1
-                  1 - zkraceny
-                  2 - plny
-                  3 - plny & XML zdroje
-    -c --command  odeslani prikatu na EPP server
-                  priklad: --command='info_domain nic.cz'
-    -x --gui
-                  klient se spusti v grafickem rezimu (na platforme Qt)
+Parametry pro spojeni:
+  -f CONFIG, --config=CONFIG
+                   Nacteni konfigurace ze souboru
+  -s SESSION, --session=SESSION
+                   Pouzit session z konfiguracniho souboru
 
-OPTIONS:
-    -r --colors   zapnuti barevneho vystupu
-    -? --help     tento help
+  -h HOSTNAME, --host=HOSTNAME
+                   Fred server host
+  -p PORT, --port=PORT\n"
+                   Server port (default: 700)
+  -u USERNAME, --user=USERNAME
+                   Prihlasit se jako uzivatel
+  -w PASSWORD, --password=PASSWORD
+                   Prihlasit se s heslem
+  -c CERTIFICATE --cert=CERTIFICATE
+                   Pro spojeni pouzit SSL certifikat
+  -k PRIVATEKEY --privkey=PRIVATEKEY
+                   Pro spojeni pouzit SSL privatni klic
 
-Config
+  -n, --nologin
+                   Deaktivovat automaticke spojeni se serverem po startu
+  -d COMMAND, --command=COMMAND
+                   Odeslat prikaz na server a skoncit
+  -o OUTPUT_TYPE, --output=OUTPUT_TYPE
+                   Zobrazit vystup jako text (default), html, php
+
+Konfiguracni soubor
 
    Konfiguracni soubor se implicitne hleda nejdrive v home uzivatele
    (~/.fred_client.conf), ktery skript spustil. Pokud tam neni nalezen, hleda
    se v adresari etc (/etc/fred_client.conf). Na POSIX systemech je to /etc, v
    MS Windows to je v adresari nastavenem v promenne $ALLUSERSPROFILE.
-   Prepinacem --config=filepath je mozne konfiguracni soubor nacist z
-   libovolneho adresare.
+   Prepinacem --config=filepath (nebo -f filepath) je mozne konfiguracni soubor
+   nacist z libovolneho souboru.
 
-   Pak se hleda v adresari, kde je umistena knihovna cReg. Pokud ani tam neni
-   nalezen, hleda se v domovskem adresari uzivatele.
+   Pro zalozeni noveho konfiguracniho souboru je k dispozici priklad
+   config_example.txt. Tento priklad muzete pouzit jako zaklad pro vas
+   konfiguracni soubor.
 
-   Nazev a unisteni konfiguracniho souboru je mozne zadat pri spusteni pomoci
-   prepinace -c CONFIGNAME, --config=CONFIGNAME.
-
-   Konfig soubor lze vygenerovat v konzoli. Spustte si konzoli prikazem
-   fred_console.py (nebo fred_client.py) a zadejte prikaz "config create".
-   Dalsi podrobnosti naleznete v casti popisu prace s konzoli (4. Program
-   fred_console).
-
-   V konfigu se nachazi sekce connect, kde jsou ulozeny cesty k certifikatum a
-   informace o serveru. Take tam muzou byt prihlasovaci udaje pro login. Prikaz
-   login tak muze byt zadan bez parametru.
+   V konfiguracnim souboru se nachazi sekce connect, kde jsou ulozeny cesty k
+   certifikatum a informace o serveru. Take tam jsou dalsi hodnoty napriklad
+   username a password. Pokud se tyto hodnoty v konfiguracnim souboru
+   nachazeji, tak je prikaz login pouzije jako parametry prikazu, ktere mu
+   nebyly zadany.
 
    Zde je priklad konfigu:
-    [connect]
-    dir=/installdir/certificates
-    host = epp-test.ccreg.nic.cz
-    port = 700
-    ssl_cert = %(dir)s/epp_test_ccreg_nic_cz_cert.pem
-    ssl_key  = %(dir)s/epp_test_ccreg_nic_cz_key.pem
-    username = your-username
-    password = your-password
+# Example of configuration file.
+# Modify line with schema and dir=... set real path of your files.
+# and save into /etc/fred_client.conf or ~/.fred_client.conf
+#
 
-    [session]
-    poll_ack = off
-    confirm_send_commands = on
-    validate = on
-    schema = /installdir/schemas/all-1.0.xsd
-    colors = on
-    verbose = 2
-    lang = en
+[connect]
+dir=/home/username/certificates
+host = epp-test.ccreg.nic.cz
+port = 700
+ssl_cert = %(dir)s/certificate.pem
+ssl_key  = %(dir)s/private_key.pem
+username = MYUSERNAME
+password = MYPASSWORD
+timeout = 10.0      # socket timeout in sec.
+# socket = IPv6     # Force socket type. Valid values are: IPv4 and IPv6.
+                    # othervice used type from offer of the server
+# nologin = y       # turn off automatic login process after start up
+
+[session]
+schema = $python-site-packages/fred/schemas/all-1.0.xsd
+poll_autoack = off           # send "poll ack" right after to "poll req"
+confirm_send_commands = on   # confirm all editable commands
+validate = on                # enable/disable xmllint
+colors = yes                 # display colors on tty console
+verbose = 2                  # set verbose level 1,2,3
+# lang = en                  # if lang is not set, ti used value from os.enviro
+n.LANG
+# null_value = None          # substitution of NULL value
+# auto_login = off           # disable automatic login after start client (defa
+ult is ON)
 
    Sekci connect muze byt vice. Ktera z nich se pri startu pouzije se nastavi
-   pomoci parametru --session. Napriklad si vytvorite sekci
+   pomoci parametru -s --session. Napriklad si vytvorite sekci
    [connect_myeppserver] tu pak aktivujete:
     $ fred_client.py --session=myeppserver     (nebo -s myeppserver)
 
@@ -160,13 +185,13 @@ Config
        Pri on se po odeslani prikazu poll req automaticky posle i poll ack.
      * confirm_send_commands = on/off
        Vsechny editacni prikazy (create, delete, update, ...) vyzaduji v
-       konzoli pozvrzeni pred odeslanim na server. Toto potvrzeni lze
+       konzoli pozvrzeni pred odeslanim na server. Tuto funkci lze
        vypnout/zapnout.
      * validate = on/off
        K validaci se pouziva externi program xmllint. Validaci lze vypnout a
        dokumnety se tak na server posilaji bez overeni platnosti formatu.
      * schema = /installdir/schemas/all-1.0.xsd
-       Adresar, kde ma validator hledat schemata, podle kterych dokumenty
+       Soubor, ve kterem ma validator hledat schemata, podle kterych dokumenty
        overuje.
      * colors = on/off
        Vystup na terminal muze byt barevny, pokud to terminal umoznuje.
@@ -175,7 +200,7 @@ Config
      * lang = en/cs
        Jazykova verze. Pokud neni zadana zadna hodnota, tak se bere nastaveni z
        promenne LANG prostredi OS. Dostupne jsou zatim jen anglictina a
-       cestina. Jazykovou verzi muzete nastavit i pomoci parametru pri
+       cestina. Jazykovou verzi muzete take nastavit i pomoci parametru pri
        spusteni skriptu.
      * null_value = NULL
        Nastaveni zastupce pro hodnotu nic (Nil), ktera vyjadruje """zadnou
@@ -187,12 +212,37 @@ Config
        spojovnik (-), mezery a kulate zavorky.
        Vice se o teto hodnote dozvite v casti """Zadna hodnota / Prazdna
        hodnota"""
+
+   V sekci connect jsou tato nastaveni:
+     * dir = cesta k adresari s certifikaty
+       Tato hodnota nahrazuje zastupce %(dir)s ve vsech polozkach dane sekce. V
+       nasem pripade je v ni ulozena cesta k certifikatum.
+     * ssl_cert = jmeno certifikatu
+       Nazev souboru s certifikatem. Pred nim je uveden zastupce adresare dir,
+       ktery je nahrazen hodnotou definovanou v teto sekci.
+     * ssl_key = jmeno privatniho klice
+       Nazev souboru s privatnim klicem. Pred nim je uveden zastupce adresare
+       dir, ktery je nahrazen hodnotou definovanou v teto sekci.
+     * host = jmeno_serveru
+       Nazev serveru, ke kteremu se ma klient pripojit.
+     * port = cislo_portu
+       Cislo portu serveru. Pokud neni zadan, pouzije se default 700.
+     * username = uzivatelske jmeno
+       Uzivatelske jmeno potrebne k prihlaseni do systemu.
+     * password = heslo
+       Heslo potrebne k prihlaseni do systemu.
+     * timeout = cas cekani na odpoved ve vterinach
+       Nastaveni timeoutu rika socketu jak dlouho ma cekat na odpoved ze
+       serveru. Pokud do uvedene doby odpoved neprijde, je spojeni povazovano
+       za prerusene. Defaultne je nastaveno 10 vterin. Pozor! V MS Windows se
+       muze u timeoutu vyskytnout bug, ktery zpusobi, ze se spojeni nenavaze. V
+       takovem pripade nastavte timeout na nulu: timeout = 0
      * socket = IPv4/IPv6
        Nastaveni typu soketu na IPv4 nebo IPv6. Pokud neni tato hodnota zadana,
        tak se pouzije typ soketu, ktery nabizi server.
-     * auto_login = on/off
-       Pri nastaveni hodnoty auto_login na on se po skusteni konzole
-       automaticky provede i priakz login.
+     * nologin = on/off
+       Klient se ihned po spusteni pokusi spojit se serverem a zalogovat se.
+       Tuto funkci je mozne vypnout nastavenim nologin = off.
 
 Kapitola 4. Program fred_console.py
 
@@ -201,13 +251,14 @@ Kapitola 4. Program fred_console.py
    Zobrazeni helpu
    EPP prikazy
    Typy parameru prikazu
-   Spolecny parametr cltrid
+   Spolecny parametr cltrid (Client transaction ID)
    Zadna hodnota / Prazdna hodnota
 
         Zadna hodnota: NULL
         Prazdna hodnota: '', ""
 
    Prikazy relace (session)
+   Testovaci prikazy
 
    fred_console.py je konzole, ktera komunikuje s EPP serverem. Konzoli
    spustite prikazem:
@@ -239,7 +290,7 @@ EPP prikazy
 
    Vypisou se podrobnosti o jednotlivych parametrech daneho prikazu. Samotny
    prikaz zadate tak, ze napisete nazev prikazu a za nim jeho parametry:
-> login moje-ID moje-heslo
+> login username password
 
 Typy parameru prikazu
 
@@ -251,6 +302,8 @@ Typy parameru prikazu
    pokud je v seznamu jen jedna polozka, nemusi se zavorky zadavat
    jmenne prostory se take jako seznamy definuji pomoci zavorek
    chcete-li seznam nebo jmenny porostor vynechat, zadejte jen prazdne zavorky
+   Hodnotu, kterou chcete preskocit zadejte jako """zadnou hodnotu""" (Zadna
+   hodnota / Prazdna hodnota).
    hodnoty mimo poradi zadavejte pomoci klice
 
    VYSVETLENI:
@@ -262,37 +315,39 @@ Typy parameru prikazu
 
    Pokud hodnota parametru obsahuje mezeru, tak ji napiste do uvozovek.
    Napriklad:
-> login moje-ID "moje heslo s mezerami"
+> login username "moje heslo s mezerami"
 
    Nektere parametry muzou obsahovat seznam hodnot. Napriklad parametr "street"
    v prikazu create_contact. Vypis casti helpu:
     ?create_contact
     ...
-    ... street (nepovinny)  seznam o maximalne 3 polozkach.
+    ... street                   Ulice (seznam o maximalne 3 polozkach.)
     ...
 
 
    Seznam zadate tak, ze hodnoty uzavrete do zavorek:
-> create_contact my-ID my-name mail city
-            cc org (Vodickova, "Na prikope", "U privozu") voice
+> create_contact CID:MYID ... (Vodickova, "Na prikope", "U privozu") ...
 
 
    Pokud zadavate jen jednu hodnotu ze seznamu, tak zavorky zadavat nemusite:
-    > create_contact my-ID my-name mail city cc org Vodickova voice
+    > create_contact CID:MYID ... Vodickova ...
 
 
    Parametry musite zadavat v poradi, v jakem jsou v helpu vypsany. Povinne
-   jsou vzdy na zacatku a nepovinne tak neni nutne zadavat. Pro pripad, ze
-   chcete krome povinnych hodnot zadat jeste nejakou nepovinnou, ktera ale
-   NENI v poradi, tak mate moznost ji zadat MIMO poradi zadanim jmena parametru
-   - klice. To resi situaci, kdy by se kvuli jednomu parametru na konci rady
-   musely zadavat vsechny parametry pred nim.
+   jsou vzdy na zacatku a nepovinne tak neni nutne zadavat. Pokud byste krome
+   povinnych hodnot chteli zadat i nejakou nepovinnou, tak byste museli nejprve
+   zadat vsechny hodnoty predchazejici te, kterou chcete zadat. Pro tento
+   pripad umoznuje klient zadat hodnotu pomoci pojmenovaneho parametru - klice.
+   Resi se tim tak situace, kdy chcete napriklad zadat jen jeden udaj, ktery je
+   jeste k tomu nekde na konci seznamu parametru.
 
-   Klic (jmeno parametru) se definuje pomoci jednoho nebo dvou spojovniku.
-   Napriklad chcete v prikazu create_contact zadat krome povinnych udaju uz jen
-   hodnotu "notify email", ktera se nachazi prave na uplnem konci seznamu
-   parametru. Pak tuto hodnotu zadate takto:
-  > create_contact my-ID my-name mail city cc --notify_email = muj@mail.cz
+   Klic (jmeno parametru) se definuje pomoci jedne nebo dvou pomlcek, presneji
+   receno spojovniku. Napriklad chcete v prikazu create_contact zadat krome
+   povinnych udaju uz jen hodnotu notify_email (Oznameni na email), ktera se
+   nachazi prave na uplnem konci seznamu parametru. Pak tuto hodnotu zadate
+   takto:
+  > create_contact CID:ID myname my@mail.com city cc --notify_email = muj@mail.
+cz
 
 
    Jaky ma byt klic (nazev parametru) zjistite z helpu daneho prikazu. Parametr
@@ -300,13 +355,13 @@ Typy parameru prikazu
    mezi ostatnimi parametry. Takovy parametr stoji "mimo" poradi a nenarusuje
    pozice ostatnich parametru bez klice. Zde jsou do rady parametru vlozeny
    hodnoty s klici "vat" a "notify_email":
-    > create_contact my-ID my-name mail --vat = 12346 --notify_email = muj@mail
-.cz city cc
+    > create_contact CID:ID myname my@mail.com --vat = 12346 --notify_email = m
+uj@mail.cz city cc
 
 
    Nektere prikazy maji parametry vnorene do dalsich parametru. Ty vytvareji
-   jmenne prostory. Napriklad v prikazu "create_contact" je parametr
-   "disclose". Ten obsahuje dalsi parametry "flag", "data", atd. Samotny nazev
+   tak zvane jmenne prostory. Napriklad v prikazu "create_contact" je parametr
+   "disclose". Ten obsahuje dalsi parametry "flag", "data". Samotny nazev
    "disclose" neni v tomto pripade nazev klice, ale nazev jmenneho prostoru, ve
    kterem se nachazeji klice "flag" a "data". Jmenne prostory se definuji
    stejne jako seznamy pomoci zavorek:
@@ -316,14 +371,14 @@ Typy parameru prikazu
 
    Pokud jmenny prostor nechcete zadavat, napiste proste jen prazdne zavorky.
    To plati i pro seznamy:
-  > create_contact my-ID my-name mail city cc org street sp pc voice fax () vat
- ssn notify@email
+  > create_contact CID:ID myname my@mail.com City CC Organisation Street SP PC
+Voice Fax () Vat Ssn notify@email.com
 
 
    Nektere prikazy maji v parametrech seznamy jmennych prostoru. V takovem
-   pripade pak zavorky maji sve vyznamy podle toho, jak jsou hodnoty
-   strukturovane. Napriklad prikaz "update_nsset" ma jeden nepovinny parametr
-   "add". Pokud jej nechcete zadavat, tak napisete:
+   pripade pak zavorky maji sve vyznamy podle toho, jak jsou hodnoty seskupeny.
+   Napriklad prikaz "update_nsset" ma jeden nepovinny parametr "add" (Pridat
+   hodnoty). Pokud jej nechcete zadavat, tak napisete:
   > update_nsset id () ...    - parametr add je nyni prazdny
 
 
@@ -335,53 +390,67 @@ Typy parameru prikazu
    prostoru "dns". Treti zavorka pro samotny jmenny prostor "dns". Teprve pak
    nasleduje hodnota parametru "name". Za nim pak nasleduje zavorka seznamu
    "addr":
-  >  update_nsset nsset1 (((ns1.dns.cz (217.31.207.130, 217.31.207.131, 217.31.
-207.132)),
+  >  update_nsset NSSID:nsset1 (((ns1.dns.cz (217.31.207.130, 217.31.207.131, 2
+17.31.207.132)),
         (ns2.dns.cz (217.31.207.130, 217.31.207.131, 217.31.207.132))) (tech1,
 tech2, tech3)
-        (ok, clientTransferProhibited)) (((rem1.dns.cz, rem2.dns.cz) (tech-rem0
-1, tech-rem02)
+        (ok, clientTransferProhibited)) (((rem1.dns.cz, rem2.dns.cz) (CID:rem01
+, CID:rem02)
             serverUpdateProhibited)) (password)
 
 
    Pokud "addr" neni seznam, ale jen jedna hodnota, tak se zavorky pro "addr"
    zadavat nemusi: (To je pravidlo jiz zminene v predchozim textu.)
-  > update_nsset nsset-ID (((nsset1 217.31.207.130),(nsset2 217.31.207.130))
+  > update_nsset nsset-ID (((ns1.dns.cz 217.31.207.130),(ns2.dns.cz 217.31.207.
+130))
         tech status) ...
 
 
    Takto slozite zadavani nastesti existuje jen v malem mnozstvi prikazu a
    tento uvedeny priklad zadani je vubec nejslozitejsi ze vsech. Krome toho
-   mate moznost zadavat parametry prikazu v interaktivnim modu - hezky jeden za
-   druhym. Navic je vzdy na konci helpu kazdeho prikazu uveden priklad zadani
-   vsech parametru.
+   mate moznost zadavat parametry prikazu v interaktivnim modu. Ten umoznuje
+   zadavat parametry postupne - klient vyzve k zadani parametru a uzivatel je
+   vyplnuje jeden za druhym. Na konci helpu u kazdeho prikazu je uveden priklad
+   zadani vsech parametru.
 
-   Pokud chcete parametry prikazu zadavat interaktivne, napiste pred prikaz
-   vykricnik:
+   Interaktivni mod vkladani parametru se spousti pomoci vykricniku, ktery se
+   napise pred prikaz:
 > !update_nsset
 
    Tim spustite rezim interaktivniho vkladani parametru. Konzole vzdy vypise
    jmeno parametru a ceka na zadani hodnoty. Pokud hodnotu nechcete zadat, tak
    proste stisknete enter a hodnota se preskoci. Interaktivni rezim muzete
-   kdykoliv ukoncit zadanim vykricniku. Tim se ukonci aktualni jmenny prostor.
-   Nachazite-li se tedy v hlavnim jmennem prostoru, tak se interaktivni rezim
-   ukonci. Pokud je prompt zanoren do nejakeho jmenneho prostoru, tak se
-   ukonci pouze ten a interaktivni vkladani pokracuje nadrazenym prostorem.
-   Chcete-li vyskocit z vicenasobne vnoreneho prostoru nebo ukoncit rezim cely,
-   tak zadejte vice vykricniku najednou. Jeden vykcirnik na jeden jmenny
-   prostor. Nevadi bude-li jich vice, nez pozadovany pocet:
-    > !update_nsset
-    Start interaktivniho zadavani parametru. Pro ukonceni zadejte: !
-    > !update_nsset:id (povinny) > moje-id
-    (Hodnota muze byt seznam o max. velikosti 9 polozek.)
-    > !update_nsset:add.ns[1/9].name (povinny) > ns1
-    (Hodnota muze byt libovolne velky seznam.)
-    > !update_nsset:add.ns[1/9].addr[1/oo] (nepovinny) > 217.31.207.130
-    > !update_nsset:add.ns[1/9].addr[2/oo] (nepovinny) > 217.31.207.131
-    > !update_nsset:add.ns[1/9].addr[3/oo] (nepovinny) >
-    > !update_nsset:add.ns[2/9].name (povinny) > ns2
-    (Hodnota muze byt libovolne velky seznam.)
-    > !update_nsset:add.ns[2/9].addr[1/oo] (nepovinny) > !
+   kdykoliv zrusit stisknutim klaves Ctrl+C (C jako Cancel). Po zadani vsech
+   povinnych parametru, kdy uz nechcete zadavat dalsi nepovinne hodnoty, lze
+   interaktivni rezim dokoncit stiknutim klaves Ctrl+D (D jako Done nebo
+   Dokoncit). V pripade zruseni interaktivniho modu se zadny prikaz nesestavi a
+   nic se na server neposila. V pripade dokonceni modu se sestavi prikaz a na
+   konzoli se vypise tak, jako byste jej zadali primo bez interaktivniho
+   rezimu. Pak se prikaz odesle na server. V pripade, ze se jedna o
+   """editacni""" prikaz a je zapnuta funkce potvrzovani (confirm), tak se prikaz
+   musi pred odeslanim na server jeste potvrdit:
+REG-LRR@epp-test.ccreg.nic.cz> !update_nsset
+Start interaktivniho modu. Mod zrusite stisknutim Ctrl+C. Prikaz dokoncite komb
+inaci Ctrl+D.
+NSSET ID [povinny]: nssid:id01
+Pridat hodnoty / Seznam DNS[1/9] / Jmenny server [povinny jen je-li tato cast z
+adana]: ns1.dns.cz
+Pridat hodnoty / Seznam DNS[1/9] / Adresa serveru[1/oo] [nepovinny]: 217.31.207
+.130
+Pridat hodnoty / Seznam DNS[1/9] / Adresa serveru[2/oo] [nepovinny]: 217.31.207
+.131
+Pridat hodnoty / Seznam DNS[1/9] / Adresa serveru[3/oo] [nepovinny]:
+Pridat hodnoty / Seznam DNS[2/9] / Jmenny server [nepovinny]:
+Pridat hodnoty / Technicky kontakt ID[1/oo] [nepovinny]: cid:myid01
+Pridat hodnoty / Technicky kontakt ID[2/oo] [nepovinny]:
+Pridat hodnoty / Stav[1/6] [nepovinny]:
+Interaktivni mod ukoncen. [stisknete Enter]
+Prikaz k odeslani:
+update_nsset nssid:id01 (((ns1.dns.cz (217.31.207.130, 217.31.207.131))) cid:my
+id01)
+Opravdu chcete odeslat tento porikaz na server? (y/N): y
+nssid:id01 aktualizovano.
+REG-LRR@epp-test.ccreg.nic.cz>
 
 
    Jeste jednou zpet k zadavani pomoci klice: Klic se zadava ve tvaru -[nazev
@@ -394,22 +463,23 @@ tech2, tech3)
    Zalezi na vas, ktery zapis se vam bude zdat citelnejsi. Jak ale zadat
    honodotu, ktera je soucasti jmenneho prostoru? Jednoduse pomoci teckove
    koncence:
-    --add.ns.name = nsset_name
+    --add.dns.name = nsset_name
 
    Takto jste definovali hodnotu nsset_name do jmenneho porostoru "add", do
-   prvni polozky seznamu "ns", do parametru "name". Chcete-li ulozit hodnotu
-   napriklad do treti polozky seznamu "ns", tak zadejte:
-    --add.ns[2].name = nsset_name
+   prvni polozky seznamu "dns", do parametru "name". Chcete-li ulozit hodnotu
+   napriklad do treti polozky seznamu "dns", tak zadejte:
+    --add.dns[2].name = nsset_name
 
    Dvojka je index seznamu v tomto pripade o max. deviti polozkach (indexy 0 -
    8).
 
-Spolecny parametr cltrid
+Spolecny parametr cltrid (Client transaction ID)
 
-   Kazdy EPP prikaz, krome prikazu hello, obsahuje tag <clTRID>. Tato hodnota
-   je identifikator transakce. Ten si stanovuje klient a muze byt libovolny v
-   ramci formatovacich pravidel definovanych ve schematech pro tuto hodnotu.
-   Identifikator je nepovinny a pokud neni zadan, tak jej program automaticky
+   Kazdy EPP prikaz, krome prikazu hello, obsahuje tag <clTRID>. Ten je vzdy
+   jako posledni z parametru a jmenuje se cltrid. Tato hodnota je identifikator
+   transakce. Ten si stanovuje klient a muze byt libovolny v ramci
+   formatovacich pravidel definovanych ve schematech pro tuto hodnotu.
+   Identifikator je nepovinny a pokud neni zadan, tak jej klient automaticky
    doplni.
 
 Zadna hodnota / Prazdna hodnota
@@ -478,8 +548,50 @@ Prazdna hodnota: '', ""
 Prikazy relace (session)
 
    Konzole ma sva vnitrni nastaveni, ktera muzete nastavit. Pokud zadate prikaz
-   bez parametru, tak se pouze vypise aktualni stav.
-> validate on/off
+   bez parametru, tak se pouze vypise aktualni stav nastaveni.
+> ! epp_prikaz
+
+   Timto prikazem se spousti interaktivni mod zadavani parametru. Mod funguje
+   jen pro EPP prikazy. Vkladani se ukonci automaticky po zadani vsech
+   parametru nebo jej lze ukoncit stisknutim kombinace klaves Ctrl+D (Done)
+   nebo zrusit Ctrl+C (Cancel).
+> poll_autoack [on/off]
+
+   Pokud je tento prepinac ON, tak se po odeslani prikazu "poll req"
+   automaticky odesila i "poll ack". Tuhle funkci asi nejvice ocenite, kdyz
+   budete mit na serveru hodne zprav. Prikaz "poll req" zpravu ze serveru pouze
+   zobrazi, ale pak se zprava musi ze serveru odstranint prikazem "poll ack
+   ID-zpravy". Pri automatickem poll-ack se bude odstranovani provadet
+   automaticky po zobrazeni zpravy.
+> confirm [on/off]
+
+   U EPP editacnich prikazu, ktere nejak meni hodnoty na serveru (create,
+   upadte, delete, transfer, renew), se pred odeslanim pozaduje potvrzeni k
+   odeslani. Prepinacem "confirm OFF" lze toto potvrzovani vypnout.
+> credits
+
+   Prikaz credits zobrazi text s informacemi o klientovi.
+> help [prikaz]
+
+   Prikaz help zadany bez parametru zobrazi seznam dostupnych prikazu. Pokud se
+   zada i parametr prikaz, tak se zobrazi detaily zadaneho prikazu. Stejny
+   vyznam jako "help" maji i prikazy "h" a "?".
+> lang [kod]
+
+   Prikazem lang se prepina jazykova verze klienta a serveru. Pokud jste ale
+   jiz zalogovani, tak je nutne se odlogovat a znovu zalogovat. Duvod je ten,
+   ze typ jazykove verze se serveru sdeluje pouze pomoci prikazu "login". To je
+   take druha moznost, jak prepnout na jinou jazykovou verzi: """login usename
+   password cs""" V teto verzi klienta i serveru jsou dostupne jen dva jazyky: en
+   - anglictina; cs - cestina.
+> license
+
+   Prikaz license zobrazi text licence klienta.
+> quit
+
+   Prikaz quit odpoji klienta od serveru a ukonci aplikaci. Synonyma 'q' a
+   'exit' maji stejnou funkci.
+> validate [on/off]
 
    Timto prepinacem zapnete nebo vypnete proces validace XML dokumentu.
    Validace je v teto verzi realizovana pres externi program xmllint. Pokud
@@ -490,70 +602,66 @@ Prikazy relace (session)
    ktera neodpovida konkretnimu schematu. Napriklad prilis kratke heslo.
    Konzole v teto verzi obsah hodnot nijak neoveruje, pouze zjistuje jestli
    byly zadany nebo ne.
-> poll-ack [on/off]
+> verbose [uroven]
 
-   Pokud je tento prepinac ON, tak se po odeslani prikazu "poll req"
-   automaticky odesila i "poll ack". Tuhle funkci asi nejvice ocenite, kdyz
-   budete mit na serveru hodne zprav. Prikaz "poll req" zpravu ze serveru pouze
-   zobrazi, ale pak se zprava musi ze serveru odstranint prikazem "poll ack
-   ID-zpravy". Pri automatickem poll-ack se bude odstranovani provadet
-   automaticky.
+   Klient zobrazuje ruzne informace. Ty jsou rozdeleny do urovni detailu.
+   Prvni uroven zobrazovani (zakladni) je urcena pro bezneho uzivatele a
+   vypisuje nezbytne minimum informaci, ktere jsou k praci nutne. Pro zvidave
+   uzivatele je zacilena druha uroven, ktera vypisuje vsechna dostupna hlaseni,
+   ktera se behem komunikace vyskytla. Treti uroven zobrazuje jeste navic XML
+   zdrojove dokumenty, ktere si klient se serverem predava.
+   Urovne vypisu detailu:
+   1 - strucna (default)
+   2 - vsechno
+   3 - vsechno a XML zdroje.
+
+Testovaci prikazy
+
+   Konzole ma nekolik testovacich prikazu, ktere je mozne pouzit k danym
+   ucelum. Testovaci prikazy se v helpu nezobrazuji.
 > raw-command [dict]
 > raw-answer [dict]
 
-   Tyto prikazy nejsou prepinace internich promennych, ale vypisuji zdrojove
-   tvary posledniho prikazu a odpovedi. Misto "raw" lze zadat i "src" a vsechny
-   funguji ve zkracene verzi:
+   Tento prikaz ma podobnou funkci jako verbose uroven 3. Prikaz vypisuje
+   zdrojovy XML dokument posledniho prikazu nebo odpovedi. Pokud tedy nemate
+   verbose uroven prave nastavenu a chcete se na zdrojovy dokument podivat, tak
+   prave k tomu je tento prikaz urcen. Misto "raw" lze zadat i "src" a oba
+   prikazy funguji ve zkracene verzi:
     raw-c, raw-c d, src-c, src-c d, raw-a, raw-a d, src-a, src-a d
 
-   Kazdy prikaz, ktery zadate v promptu se sestavi do XML EPP dokumentu. Pokud
-   si chcete tento XML dokument prohlednout, tak zadate "src-c" a na vystup se
-   vypise vygenerovane zdojove XML. Chcete-li videt XML zdojovy dokument od
-   serveru, zadejte "src-a". Pokud je XML dokument neprehledny a vy chcete
-   videt jasneji strukturu jednotlivych XML uzlu, tak zadejte "src-c d" (nebo
-   "src-a d"). Konzole vypise hodnoty uzlu v prehledne forme s odsazenim.
-> confirm [on/off]
+   Vysvetleni: Kazdy prikaz, ktery zadate v promptu se sestavi do XML EPP
+   dokumentu. Pokud si chcete tento XML dokument prohlednout, tak zadate
+   "src-c" a na vystup se vypise vygenerovane zdojove XML. Chcete-li videt XML
+   zdojovy dokument od serveru, zadejte "src-a". Pokud je XML dokument
+   neprehledny a vy chcete videt jasneji strukturu jednotlivych XML uzlu, tak
+   zadejte "src-c d" (nebo "src-a d"). Konzole vypise hodnoty uzlu v
+   prehlednejsi forme s odsazenim.
+> config
 
-   U EPP editacnich prikazu, ktere nejak meni hodnoty na serveru (create,
-   upadte, delete, transfer, renew), se pred odeslanim pozaduje potvrzeni k
-   odeslani. Prepinacem "confirm OFF" lze toto potvrzovani vypnout.
-> config [create]
+   Prikaz zobrazuje jmeno a cestu pouziteho konfiguracniho souboru a interni
+   promenne z nej nacetene.
+> send [filename]
 
-   Konzole si hodnoty internich nastaveni nacita z konfigu. Pokud jeste konfig
-   nebyl vytvoren, tak se nastavi defaultni hodnoty. Aktualni hodnoty konfigu
-   lze zobrazit prikazem "config". Chcete-li konfig vytvorit, zadejte "config
-   create". Tim se vytvori konfiguracni soubor ".fred_client.conf" ve vasem
-   domovskem adresari. V konfigu si pak muzete nastavit cestu k vasemu
-   certifikatu a dalsi hodnoty. Konzole se pokousi neprve nacist konfig z
-   adresare /etc (ve Windows z adresare uvedenem v promenne prostredi
-   $ALLUSERSPROFILE, ta byva obvykle nastavena na "C:\Documents and
-   Settings\All Users") a pote nacita dalsi konfig z adresare uzivatele. Na
-   posix to je /home/[user], ve Windows je to "C:\Documents and
-   Settings\[user]". Tak lze ulozit hodnoty spolecne pro vsechny uzivatele.
-> send
-
-   Prikaz "send" slouzi k posilani libovolneho souboru na EPP server. Tento
-   prikaz je zde jen z testovacich duvodu. Pokud "send" zadate bez parametru,
-   tak vypise aktualni adresar. Kdyz "send" zadate se jmenem platneho souboru,
-   tak tento soubor bez dalsiho ptani odesle na EPP server:
+   Send je ryzi testovaci prikaz a slouzi k posilani libovolneho souboru na EPP
+   server. Pokud jej zadate bez parametru, tak vypise aktualni adresar. Kdyz
+   "send" zadate se jmenem platneho souboru, tak tento soubor odesle na EPP
+   server:
     send some-folder/my-test-file.xml
 
-> connect
-
-   Prikaz "connect" vytvari spojeni s EPP serverem aniz by na nej cokoliv
-   posilal. Pokud se spojeni podarilo, posle EPP server zpravu "greeting" a tak
-   se zobrazi na vystupu. Prikaz "connect" je zde z testovacich duvodu a neni
-   potreba jej volat. Staci zadat rovnou "login".
 > colors [on/off]
 
-   zapnout/vypnout barevny vystup
-> verbose [number]
-
-   nastavit mod vypisu: 1 - strucny (default); 2 - plny; 3 - plny & XML zdroje
+   Pokud to konzole umoznuje, tak timto prikazem lze zapnout zvyrazneni vytupu.
+   To je v nekterych hlasenich zapsano tucne a barevne. Napriklad chyby jsou
+   cervene, kladne vyrizeni prikazu zelene.
 > null_value [nejaka_hodnota]
 
    Nastaveni reprezentace """zadne hodnoty""". Viz Zadna hodnota / Prazdna hodnota
    a Format hodnoty NULL.
+> output [typ_vystupu]
+
+   Prikaz output neni primo testovaci. Je urcen k nastaveni typu vystupu.
+   Platne honodty jsou text, php, html. Podrobnejsi popis je na Integrace
+   klienta do PHP kodu
 
 Kapitola 5. Skripty fred_create.py a fred_sender.py
 
@@ -561,7 +669,8 @@ Kapitola 5. Skripty fred_create.py a fred_sender.py
    batchi. fred_create.py prijima parametry se standardniho vstupu a vygeneruje
    XML EPP dokument na standardni vystup. Napriklad:
     $ python fred_create.py info_domain nic.cz
-    $ ./fred_create.py info_domain nic.cz
+    $ echo -en "check_domain nic.cz\ninfo_domain nic.cz" | ./fred_create.py
+    $ cat file-with-commands.txt | ./fred_create.py
 
    <?xml version='1.0' encoding....
 
@@ -570,13 +679,9 @@ Kapitola 5. Skripty fred_create.py a fred_sender.py
 
    <?xml encoding='utf-8'?><errors>inxo_domain nic.cz: Neznamy prikaz!</errors>
 
-   Prikazy se daji zretezit:
-    $ ./fred_create.py check_domain test.cz nic.cz | ./fred_create.py info_doma
-in nic.cz
-
    fred_sender.py odesila dokumenty na server. Skript se automaticky zaloguje,
    pak preda dokument, zobrazi odpoved a odloguje se a ukonci. Pro spravne
-   zalogovajni je nutne mit spravne nastaven config.
+   zalogovajni je nutne mit spravne nastaven konfiguracni soubor.
 
    Skript muze odesilat dokumenty dvema zpusoby:
 
@@ -587,10 +692,72 @@ in nic.cz
     $ ./fred_sender.py doc1.xml doc2.xml
 
    2. PIPE - Zretezenim prikazu create a sender. Napriklad:
-    $ ./fred_create.py check_domain cosi.cz nic.cz | ./fred_create.py info_doma
-in nic.cz | ./fred_sender.py
+    $ ./fred_create.py check_domain cosi.cz nic.cz | ./fred_sender.py
+    $ echo -en "check_domain nic.cz\ninfo_domain nic.cz" | ./fred_create.py | .
+/fred_sender.py
 
-Kapitola 6. Knihovna fred a popis API
+Kapitola 6. Integrace klienta do PHP kodu
+
+   Soucasti distribuce klienta je i ukazkovy PHP skript, ktery demonstruje, jak
+   lze klienta zaclenit do PHP: client_example.php. V prikladu je nutne
+   spravne nastavit cestu ke klientovi $exec_path (pokud ten nebyl nainstalovan
+   standardnim zpusobem a system jej nenalezne). Promenou $php_module_name se
+   nastavuje presmerovani do souboru a $command_options umoznuji pridat dalsi
+   parametry, jsou-li treba.
+
+   Popis zacleneni klienta:
+
+   Klient fred_client.py lze spustit i tak, ze se mu v parametrech na
+   prikazove radce zada prikaz, ktery ma vykonat -d --command. V takovem
+   pripade se nespousti konzole, ale klient funguje jako batch. Stejne jako
+   kombinace skriptu fred_create.py a fred_sender.py. Klient pouze zadany
+   prikaz provede, zobrazi vystup a ukonci se. Prihlaseni a odhlaseni (login,
+   logout) probehnou automaticky a na vystup se nevypisuji. Pro spravne
+   prihlaseni je proto potrebne mit nastaveny konfiguracni soubor nebo vse
+   definovat na prikazove radce.
+
+   Prepinacem --output -o upravime vystup do pozadovaneho formatu. Pokud chceme
+   v prohlizeci hodnoty pouze zobrazit, muzeme zadat typ HTML: --output=html.
+   Chceme-li data dale zpracovavat PHP skriptem, nastavime typ PHP:
+   --output=php.
+
+   Shrnuti metody pouziti klienta v PHP:
+   V PHP se klient spusti jako externi program napriklad funkci passthru().
+   V parametrech se nastavi mod vypisu na PHP: --outout=php
+   Vystup klienta se presmeruje do adresare s pravy zapisu: ... >
+   /cache/outout.php
+   Vysledny kod se vlozi do stranky required_once('/cache/outout.php') a tim
+   jsou hodnoty PHP skriptu dostupne.
+
+   Promenne z PHP vystupu
+   $fred_encoding = 'utf-8'; // kodovani textu
+   $fred_code = 1000; // navratovy kod odpovedi
+   $fred_command = 'domain:info'; // nazev odeslaneho prikazu
+   $fred_reason = 'Command completed successfully'; // popis navratoveho kodu
+   $fred_errors = array(); // seznam chybovych hlasek
+   $fred_labels = array(); // seznam popisku hodnot
+   $fred_data = array(); // seznam hodnot
+   $fred_source_command = '...'; zdrojovy XML dokument prikazu pripraveny pro
+   zobrazeni (projety funkci htmlspecialchars(), generuje se jen ve verbose 3).
+   $fred_source_answer = '...'; zdrojovy XML dokument odpovedi pripraveny pro
+   zobrazeni (projety funkci htmlspecialchars(), generuje se jen ve verbose 3).
+
+   Priklad dat:
+   $fred_labels['domain:name'] = 'Domain name';
+   $fred_data['domain:name'] = 'domena.cz';
+   $fred_labels['domain:roid'] = 'Repository object ID';
+   $fred_data['domain:roid'] = 'D0000000174-CZ';
+   $fred_labels['domain:crID'] = 'Created by';
+   $fred_data['domain:crID'] = 'REG-LRR';
+   $fred_labels['domain:clID'] = 'Designated registrar';
+   $fred_data['domain:clID'] = 'REG-LRR';
+   $fred_labels['domain:crDate'] = 'Created on';
+   $fred_data['domain:crDate'] = '2006-10-31T16:51:56+01:00';
+   $fred_labels['domain:exDate'] = 'Expiration date';
+   $fred_data['domain:exDate'] = '2009-10-31T01:00:00+01:00';
+   $fred_labels['domain:renew'] = 'Last renew on';
+
+Kapitola 7. Knihovna fred a popis API
 
    Obsah
 

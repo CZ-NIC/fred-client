@@ -139,14 +139,14 @@ načíst z libovolného souboru.
 </para>
 <para>
 Pro založení nového konfiguračního souboru je k dispozici příklad 
-config_example.txt. Tento příklad můžete použít jako základ pro váš
+<emphasis>config_example.txt</emphasis>. Tento příklad můžete použít jako základ pro váš
 konfigurační soubor.
 </para>
 <para>
 V konfiguračním souboru se nachází sekce connect, kde jsou uloženy cesty k certifikátům
 a informace o serveru. Také tam jsou další hodnoty například username a password.
-Pokud jsou tyto hodnoty zadány, tak příkaz <emphasis>login</emphasis> může být 
-zadán bez parametrů.
+Pokud se tyto hodnoty v konfiguračním souboru nacházejí, tak je příkaz 
+<emphasis>login</emphasis> použije jako parametry příkazu, které mu nebyly zadány.
 </para>
 <para>
 Zde je příklad konfigu:
@@ -183,7 +183,7 @@ verbose = 2                  # set verbose level 1,2,3
 </programlisting>
 
 Sekcí <emphasis>connect</emphasis> může být více. Která z nich se při startu použije se nastaví
-pomocí parametru --session. Například si vytvoříte sekci [connect_myeppserver]
+pomocí parametru <emphasis>-s --session</emphasis>. Například si vytvoříte sekci [connect_myeppserver]
 tu pak aktivujete: 
 
 <programlisting>
@@ -216,7 +216,7 @@ V sekci <emphasis>session</emphasis> jsou tato nastavení:</para>
     </para>
     <para>
         Všechny editační příkazy (create, delete, update, ...) vyžadují v konzoli
-        pozvrzení před odesláním na server. Toto potvrzení lze vypnout/zapnout.
+        pozvrzení před odesláním na server. Tuto funkci lze vypnout/zapnout.
     </para>
     </listitem>
     <listitem>
@@ -229,7 +229,7 @@ V sekci <emphasis>session</emphasis> jsou tato nastavení:</para>
     <listitem>
     <para><emphasis role='bold'>schema</emphasis> = /installdir/schemas/all-1.0.xsd</para>
     <para>
-        Adresář, kde má validátor hledat schemata, podle kterých dokumenty ověřuje.
+        Soubor, ve kterém má validátor hledat schemata, podle kterých dokumenty ověřuje.
     </para>
     </listitem>
     <listitem>
@@ -298,12 +298,12 @@ V sekci <emphasis>session</emphasis> jsou tato nastavení:</para>
     </listitem>
 
     <listitem>
-    <para><emphasis role='bold'>host</emphasis> = </para>
+    <para><emphasis role='bold'>host</emphasis> = jméno_serveru</para>
     <para>Název serveru, ke kterému se má klient připojit.
     </para>
     </listitem>
     <listitem>
-    <para><emphasis role='bold'>port</emphasis> = </para>
+    <para><emphasis role='bold'>port</emphasis> = číslo_portu</para>
     <para>Číslo portu serveru. Pokud není zadán, použije se default 700.
     </para>
     </listitem>
@@ -323,7 +323,7 @@ V sekci <emphasis>session</emphasis> jsou tato nastavení:</para>
     <para><emphasis role='bold'>timeout</emphasis> = čas čekání na odpověď ve vteřinách</para>
     <para>Nastavení timeoutu říká socketu jak dlouho má čekat na odpověď ze serveru.
     Pokud do uvedené doby odpověď nepřijde, je spojení považováno za přerušené.
-    Defaultně je nastaveno 10 vteřin. Pozor! V MS Windows se může u timeoutu vyskytnout bug,
+    Defaultně je nastaveno 10 vteřin. <emphasis role="bold">Pozor!</emphasis> V MS Windows se může u timeoutu vyskytnout bug,
     který způsobí, že se spojení nenaváže. V takovém případě nastavte timeout na nulu: timeout = 0
     </para>
     </listitem>
@@ -555,7 +555,7 @@ jeden za druhým. Na konci helpu u každého příkazu je uveden
 příklad zadání všech parametrů. 
 </para>
 <para>
-Interaktivní mód vkládání parametrů se spouští pomocí vykřičníku, který
+<emphasis role="bold">Interaktivní mód</emphasis> vkládání parametrů se spouští pomocí vykřičníku, který
 se napíše před příkaz:
 
   <programlisting>&gt; !update_nsset</programlisting>
@@ -743,7 +743,7 @@ V <emphasis>interaktivním módu</emphasis> zadávání parametru zadáme <quote
 
 <para>
 Konzole má svá vnitřní nastavení, která můžete nastavit. Pokud zadáte
-příkaz bez parametrů, tak se pouze vypíše aktuální stav.
+příkaz bez parametrů, tak se pouze vypíše aktuální stav nastavení.
 
 <programlisting>
 &gt; ! epp_příkaz
@@ -792,7 +792,7 @@ Příkazem lang se přepíná jazyková verze klienta a serveru. Pokud jste ale 
 je nutné se odlogovat a znovu zalogovat. Důvod je ten, že typ jazykové verze se serveru sděluje
 pouze pomocí příkazu "login". To je také druhá možnost, jak přepnout na jinou jazykovou verzi:
 
-<emphasis role='bold'>&gt; login usename password cs</emphasis>
+<quote><emphasis role='bold'>login usename password cs</emphasis></quote>
 
 V této verzi klienta i serveru jsou dostupné jen dva jazyky: en - angličtina; cs - čeština.
 
@@ -814,9 +814,10 @@ stejnou funkci.
 </programlisting>
 
 Tímto přepínačem zapnete nebo vypnete proces validace XML dokumentu. Validace je v této verzi
-realizována přes externí program xmllint. Pokud není v systému přítomen, tak nastavení ON nemá
-žádný efekt. Validace ověřuje platnost XML dokumentu podle EPP schemat a to jak v odchozích,
-tak i příchozích zprávách. Pokud není dokument validní, tak jej konzole na server neodešle.
+realizována přes externí program <emphasis>xmllint</emphasis>. Pokud není v systému přítomen, 
+tak nastavení ON nemá žádný efekt. Validace ověřuje platnost XML dokumentu podle EPP schemat 
+a to jak v odchozích, tak i příchozích zprávách. Pokud není dokument validní, tak jej 
+konzole na server neodešle.
 Nevalidní dokument vznikne například tím, že zadáte hodnotu, která neodpovídá konkrétnímu schématu.
 Například příliš krátké heslo. Konzole v této verzi obsah hodnot nijak neověřuje, pouze zjišťuje
 jestli byly zadány nebo ne.
@@ -833,7 +834,7 @@ dostupná hlášení, která se během komunikace vyskytla. Třetí úroveň zob
 ještě navíc XML zdrojové dokumenty, které si klient se serverem předává.
 
 <simplelist>
-      <member>Úrovně výpisu detailů:</member>
+      <member><emphasis>Úrovně výpisu detailů:</emphasis></member>
       <member>1 - stručná (default)</member>
       <member>2 - všechno</member>
       <member>3 - všechno a XML zdroje.</member>
@@ -905,10 +906,11 @@ Nastavení reprezentace <quote>žádné hodnoty</quote>. Viz <link linkend='null
 a <link linkend='config_null_value'>Formát hodnoty NULL</link>.
 
 <programlisting>
-&gt; output [nějaká_hodnota]
+&gt; output [typ_výstupu]
 </programlisting>
 
 Příkaz output není přímo testovací. Je určen k nastavení typu výstupu.
+Platné honodty jsou text, php, html.
 Podrobnější popis je na <link linkend='output_types' endterm="output_types.title"/>
 
 </para>
@@ -998,9 +1000,9 @@ přidat další parametry, jsou-li třeba.
 <para>Popis začlenění klienta:</para>
 
 <para>
-FredClient lze spustit i tak, že se mu v parametrech na příkazové řádce zadá příkaz,
-který má vykonat. V takovém případě se nespouští konzole, ale klient funguje jako batch
-tedy stejně jako kombinace skriptů fred_create.py a fred_sender.py. 
+Klient <emphasis>fred_client.py</emphasis> lze spustit i tak, že se mu v parametrech na příkazové řádce zadá příkaz,
+který má vykonat <emphasis>-d --command</emphasis>. V takovém případě se nespouští konzole, ale klient funguje jako batch.
+Stejně jako kombinace skriptů fred_create.py a fred_sender.py. 
 Klient pouze zadaný příkaz provede, zobrazí výstup a ukončí se. Přihlášení a odhlášení
 (login, logout) proběhnou automaticky a na výstup se nevypisují. Pro správné přihlášení
 je proto potřebné mít nastavený konfigurační soubor nebo vše definovat na příkazové řádce.
