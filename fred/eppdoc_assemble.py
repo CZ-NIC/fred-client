@@ -159,20 +159,20 @@ class Message(eppdoc.Message):
         for row in columns:
             name,min_max,allowed,msg_help,example,pattern,children = row
             scopes.append(name)
-            scope_name = '.'.join(scopes)
+            scope_name = local8bit('.'.join(scopes))
             if dct_values.has_key(name):
                 if min_max[1] != UNBOUNDED and len(dct_values[name]) > min_max[1]:
                     if command_name == 'hello':
                         errors.append(_T('Command does not have any parameters.'))
                     else:
-                        errors.append('%s: %s %d. (%s)'%(scope_name,_T('list of values overflow. Maximum is'),min_max[1],', '.join(dct_values[name])))
+                        errors.append('%s: %s %d. (%s)'%(scope_name,_T('list of values overflow. Maximum is'),min_max[1],local8bit(', '.join(dct_values[name]))))
                 if allowed:
                     # check allowed values
                     allowed_abrev=[]
                     map(allowed_abrev.extend, allowed)
                     for value in dct_values[name]:
                         if value not in allowed_abrev:
-                            errors.append('%s: %s: (%s)'%(scope_name,_T('Value "%s" is not allowed. Valid is')%value.encode(encoding),', '.join(self.__make_abrev_help__(allowed))))
+                            errors.append('%s: %s: (%s)'%(scope_name,_T('Value "%s" is not allowed. Valid is')%local8bit(value),', '.join(self.__make_abrev_help__(allowed))))
                 # walk throught descendants:
                 if children:
                     for dct in dct_values[name]:

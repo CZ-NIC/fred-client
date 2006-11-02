@@ -298,7 +298,7 @@ sources ad advance, transmited between client and server.
                     else:
                         msg = '%s: %s %s'%(_T('ERROR'),_T("Unknown command"),m.group(2).encode(translate.encoding))
                 else:
-                    msg = '%s: %s %s'%(_T('ERROR'),_T("Unknown command"),raw_command.encode(translate.encoding))
+                    msg = '%s: %s %s'%(_T('ERROR'),_T("Unknown command"),get_ltext(raw_command))
                 self.append_note(msg)
                 self.append_note(_T("Type 'help' to list all available commands."))
                 self._epp_cmd.help_check_name(self._notes, cmdline)

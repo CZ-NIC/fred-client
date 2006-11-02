@@ -9,13 +9,13 @@ setup(name = 'FredClient',
     url = 'http://www.nic.cz',
     version = '1.0.0',
     license = 'GNU GPL',
-    packages = ['fred','guiqt'],
+    packages = ['fred'], ## ,'guiqt' temporary disabled
     package_data={
         'fred': ['INSTALL','LICENSE','CREDITS','*.txt','schemas/*.xsd',
             'lang/fred_client_cs.po',
             'lang/cs/LC_MESSAGES/fred_client.mo'],
-
-        'guiqt': ['*.py','*.ui','*.ts','*.qm','*.png','qt_client.project'],
+## temporary disabled
+##        'guiqt': ['*.py','*.ui','*.ts','*.qm','*.png','qt_client.project'],
 
     },
     scripts = ['fred_client.py','fred_console.py','fred_create.py','fred_sender.py'],
