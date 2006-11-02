@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-10-31 16:16+0100\n"
+"POT-Creation-Date: 2006-11-02 16:22+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Zdeněk Böhm <zdenek.bohm@nic.cz>\n"
 "Language-Team: CS <ccreg-devel@lists.nic.cz>\n"
@@ -124,8 +124,7 @@ msgstr "Nesprávné použití závorek (childs)."
 msgid "optional"
 msgstr "nepovinný"
 
-#: fred/eppdoc_assemble.py:40 fred/eppdoc_assemble.py:54
-#: fred/eppdoc_assemble.py:55
+#: fred/eppdoc_assemble.py:40 fred/eppdoc_assemble.py:53
 msgid "required"
 msgstr "povinný"
 
@@ -133,18 +132,19 @@ msgstr "povinný"
 msgid "required only if part is set"
 msgstr "povinný jen je-li tato část zadána"
 
-#: fred/eppdoc_assemble.py:57
+#: fred/eppdoc_assemble.py:58
+#, python-format
 msgid "minimum %d item"
 msgid_plural "minimum %d items"
 msgstr[0] "minimum je %d položka"
 msgstr[1] "minimum jsou %d položky"
 msgstr[2] "minimum je %d položek"
 
-#: fred/eppdoc_assemble.py:61
+#: fred/eppdoc_assemble.py:62
 msgid "unbounded list"
 msgstr "libovolně velký seznam"
 
-#: fred/eppdoc_assemble.py:63
+#: fred/eppdoc_assemble.py:64
 #, python-format
 msgid "list with max %d item."
 msgid_plural "list with max %d items."
@@ -152,84 +152,84 @@ msgstr[0] "seznam o maximálně %d položce."
 msgstr[1] "seznam o maximálně %d položkách."
 msgstr[2] "seznam o maximálně %d položkách."
 
-#: fred/eppdoc_assemble.py:103
+#: fred/eppdoc_assemble.py:104
 msgid "other_options"
 msgstr "další_parametry"
 
-#: fred/eppdoc_assemble.py:107
+#: fred/eppdoc_assemble.py:108
 msgid "Unknown EPP command. Select one from EPP commands list (Type help)."
 msgstr ""
 "Neznámý EPP příkaz. Vyberte jeden ze seznamu EPP příkazů (zadejte help)."
 
-#: fred/eppdoc_assemble.py:114
+#: fred/eppdoc_assemble.py:115
 msgid "Try"
 msgstr "Zkuste"
 
-#: fred/eppdoc_assemble.py:153
+#: fred/eppdoc_assemble.py:155
 msgid "Invalid parameter"
 msgstr "Neplatný parametr"
 
-#: fred/eppdoc_assemble.py:154
+#: fred/eppdoc_assemble.py:156
 msgid "Corrupted value"
 msgstr "Neplatná hodnota"
 
-#: fred/eppdoc_assemble.py:155
+#: fred/eppdoc_assemble.py:157
 msgid "Correct format is"
 msgstr "Správný formát je"
 
-#: fred/eppdoc_assemble.py:156
+#: fred/eppdoc_assemble.py:158
 msgid "For example"
 msgstr "Například"
 
-#: fred/eppdoc_assemble.py:165
+#: fred/eppdoc_assemble.py:167
 msgid "Command does not have any parameters."
 msgstr "Příkaz nemá žádné parametry."
 
-#: fred/eppdoc_assemble.py:167
+#: fred/eppdoc_assemble.py:169
 msgid "list of values overflow. Maximum is"
 msgstr "Počet položek v seznamu je překročen. Maximum je"
 
-#: fred/eppdoc_assemble.py:174 fred/eppdoc_assemble.py:228
+#: fred/eppdoc_assemble.py:176 fred/eppdoc_assemble.py:233
 #, python-format
 msgid "Value \"%s\" is not allowed. Valid is"
 msgstr "Hodnota \"%s\" není povolena. Platná je"
 
-#: fred/eppdoc_assemble.py:181
+#: fred/eppdoc_assemble.py:185
 msgid "missing"
 msgstr "chybí"
 
-#: fred/eppdoc_assemble.py:201
+#: fred/eppdoc_assemble.py:206
 msgid "Can't finish input, required values must be set. Press Ctrl+C to abort."
 msgstr ""
 "Nemohu dokončit zadání. Požadované hodnoty musí být zadány. Zadání zrušíte "
 "stisknutím Ctrl+C."
 
-#: fred/eppdoc_assemble.py:208 fred/eppdoc_assemble.py:213
+#: fred/eppdoc_assemble.py:213 fred/eppdoc_assemble.py:218
 msgid "Interactive input aborted."
 msgstr "Interaktivní mód byl zrušen."
 
-#: fred/eppdoc_assemble.py:235
+#: fred/eppdoc_assemble.py:240
 msgid "Value is required. It MUST be set."
 msgstr "Údaj je povinný. MUSÍ být zadán."
 
-#: fred/eppdoc_assemble.py:265
+#: fred/eppdoc_assemble.py:271
 msgid "Parameter MUST be a value from following list"
 msgstr "Parametr MUSÍ být hodnota z následujícího seznamu"
 
-#: fred/eppdoc_assemble.py:268
+#: fred/eppdoc_assemble.py:273
 msgid "Example"
 msgstr "Příklad"
 
-#: fred/eppdoc_assemble.py:395 fred/session_command.py:299
-#: fred/session_command.py:301 fred_create.py:22
+#: fred/eppdoc_assemble.py:401 fred/session_command.py:299
+#: fred/session_command.py:301 fred_create.py:23
 msgid "Unknown command"
 msgstr "Neznámý příkaz"
 
-#: fred/eppdoc_assemble.py:396
+#: fred/eppdoc_assemble.py:402
 msgid "For more type"
 msgstr "Pro více informací zadejte"
 
-#: fred/eppdoc_assemble.py:405
+#: fred/eppdoc_assemble.py:411
 msgid ""
 "Interactive input mode started. Press Ctrl+C to abort or Ctrl+D to finish "
 "command."
@@ -237,19 +237,26 @@ msgstr ""
 "Start interaktivního módu. Mód zrušíte stisknutím Ctrl+C. Příkaz dokončíte "
 "kombinací Ctrl+D."
 
-#: fred/eppdoc_assemble.py:413
+#: fred/eppdoc_assemble.py:419
 msgid "Interactive input completed. [Press Enter]"
 msgstr "Interaktivní mód ukončen. [stiskněte Enter]"
 
-#: fred/eppdoc_assemble.py:419
+#: fred/eppdoc_assemble.py:425
 msgid "Command has been aborted."
 msgstr "Příkaz byl zrušen."
 
-#: fred/eppdoc_assemble.py:422
+#: fred/eppdoc_assemble.py:428
 msgid "Does not have any parameters, skipping interactive input mode."
 msgstr "Žádné parametery nejsou třeba. Interaktivní mód ukončen."
 
-#: fred/eppdoc_assemble.py:962
+#: fred/eppdoc_assemble.py:440
+msgid "Missing required value."
+msgid_plural "Missing required values."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: fred/eppdoc_assemble.py:969
 #, python-format
 msgid "Value can be a list of max %d value."
 msgid_plural "Value can be a list of max %d values."
@@ -257,11 +264,11 @@ msgstr[0] "Hodnota může být seznam o max. velikosti %d položky."
 msgstr[1] "Hodnota může být seznam o max. velikosti %d položek."
 msgstr[2] "Hodnota může být seznam o max. velikosti %d položek."
 
-#: fred/eppdoc_assemble.py:964
+#: fred/eppdoc_assemble.py:971
 msgid "Value can be an unbouded list of values."
 msgstr "Hodnota může být libovolně velký seznam."
 
-#: fred/eppdoc_assemble.py:966
+#: fred/eppdoc_assemble.py:973
 msgid "Minimum is"
 msgstr "Minimum je"
 
@@ -345,8 +352,7 @@ msgstr ""
 "EPP příkaz \"login\" identifikuje uživatele a zahájí spojení s EPP serverem."
 "Parametr \"lang\" nastaví jazykovou verzi pro klienta i odpovědi ze serveru."
 "Jazyk je také možné definovat v konfiguračním souboru nebo zadat na "
-"příkazové řádce."
-"Heslo můžete změnit zadáním parametru 'new_password'.\n"
+"příkazové řádce.Heslo můžete změnit zadáním parametru 'new_password'.\n"
 
 #: fred/eppdoc_client.py:66 fred/eppdoc_client.py:91 fred/eppdoc_client.py:121
 #: fred/eppdoc_client.py:150 fred/eppdoc_client.py:213
@@ -483,10 +489,6 @@ msgstr "Ulice"
 #: fred/eppdoc_client.py:351
 msgid "State or province"
 msgstr "Stát nebo kraj"
-
-#: fred/eppdoc_client.py:158
-msgid "state or province"
-msgstr "stát nebo kraj"
 
 #: fred/eppdoc_client.py:159 fred/eppdoc_client.py:247
 #: fred/eppdoc_client.py:352
@@ -686,8 +688,8 @@ msgid ""
 "The EPP \"list\" command is used to list all ID of an existing contact "
 "owning by registrant."
 msgstr ""
-"EPP příkaz \"list\" se používá pro zobrazení seznamu všech ID kontaktů, které "
-"ragistrátor vlastní."
+"EPP příkaz \"list\" se používá pro zobrazení seznamu všech ID kontaktů, "
+"které ragistrátor vlastní."
 
 #: fred/eppdoc_client.py:317
 msgid ""
@@ -871,7 +873,7 @@ msgstr "Zadejte 'help confirm' pro zobrazení detailů příkazu."
 #: fred/session_base.py:187 fred/session_command.py:173
 #: fred/session_command.py:295 fred/session_command.py:297
 #: fred/session_command.py:299 fred/session_command.py:301
-#: fred/session_transfer.py:351 fred/session_transfer.py:384
+#: fred/session_transfer.py:383 fred_create.py:34
 msgid "ERROR"
 msgstr "CHYBA"
 
@@ -934,35 +936,36 @@ msgstr "Konfigurační soubor nemá sekci \"%s\"."
 msgid "Invalid verbose parametr"
 msgstr "Neplatný parametr verbose"
 
-#: fred/session_base.py:360 fred/session_base.py:366
+#: fred/session_base.py:360 fred/session_base.py:367
 msgid "Type 'help verbose' to get more information about verbose levels."
 msgstr "Zadejte 'help verbose' pro zobrazení detailů příkazu."
 
-#: fred/session_base.py:365
+#: fred/session_base.py:366
 msgid "Verbose level is out of range. Available values are 1, 2, 3."
-msgstr "Hodnota módu výstupu je mimo stanovený rozsah. Dostupné hodnoty jsou 1, 2, 3."
+msgstr ""
+"Hodnota módu výstupu je mimo stanovený rozsah. Dostupné hodnoty jsou 1, 2, 3."
 
-#: fred/session_base.py:403
+#: fred/session_base.py:404
 #, python-format
 msgid "External validator \"%s\" not found. XML validation has been disabled."
 msgstr "Externí validátor \"%s\" nebyl nalezen. XML validace byla vypnuta."
 
-#: fred/session_base.py:418
+#: fred/session_base.py:419
 msgid ""
 "Temporary file for XML EPP validity verification can not been created. Reason"
 msgstr ""
 "Dočasný soubor pro ověření XML EPP validity se nepodařilo vytvořit. Důvod"
 
-#: fred/session_base.py:419 fred/session_base.py:448
+#: fred/session_base.py:420 fred/session_base.py:449
 #, python-format
 msgid "Validator has been disabled. Type %s to enable it."
 msgstr "Validátor byl deaktivován. Opětná aktivace se provede zadáním %s."
 
-#: fred/session_base.py:428
+#: fred/session_base.py:429
 msgid "Client-side validation command:"
 msgstr "Příkaz pro validátor:"
 
-#: fred/session_base.py:446
+#: fred/session_base.py:447
 msgid "Client side validation failed."
 msgstr "Validace na straně klienta selhala."
 
@@ -1178,7 +1181,8 @@ msgstr ""
 "Klient sám nekontroluje formát parametrů příkazů. K tomu používá externí\n"
 "program 'xmllint', který parametry ověřuje proti schematům definovaným\n"
 "v XML specifikaci. Přepínač switch validaci zapíná nebo vypíná on/off.\n"
-"Default je ON. Pokud xmllint není dostupný, tak se validace automaticky vypne."
+"Default je ON. Pokud xmllint není dostupný, tak se validace automaticky "
+"vypne."
 
 #: fred/session_command.py:110
 msgid "level"
@@ -1202,8 +1206,21 @@ msgid ""
 "\n"
 "    1 - brief (default)\n"
 "    2 - full\n"
-"    3 - full & XML sources."
+"    3 - full & XML sources"
 msgstr ""
+"\n"
+"Klient zobrazuje různé informace. Ty jsou rozděleny do úrovní výpisu detailů.\n"
+"První úroveň (základní) je určena pro běžného uživatele a vypisuje minimum\n"
+"informací,které jsou potřeba k práci s klientem. Pro zvídavé uživatele je určena\n"
+"úroveň dvě, která vypisuje všechna hlášení, která se během práce s klientem\n"
+"objeví. Třetí úroveň navíc vypisuje XML zdrojové dokumenty, které si klient\n"
+"se serverem předává.\n"
+"\n"
+"    Úrovně výpisu:\n"
+"\n"
+"    1 - stručný (základní)\n"
+"    2 - plný\n"
+"    3 - plný a XML zdroje"
 
 #: fred/session_command.py:127
 msgid "No data"
@@ -1262,7 +1279,7 @@ msgstr "SYNTAXE"
 msgid "OPTIONS"
 msgstr "PARAMETRY"
 
-#: fred/session_command.py:268 fred_create.py:80 fred_sender.py:137
+#: fred/session_command.py:268 fred_create.py:81 fred_sender.py:148
 msgid "EXAMPLES"
 msgstr "PŘÍKLADY"
 
@@ -1325,8 +1342,7 @@ msgstr "Neplatný parametr příkazu validate"
 #: fred/session_command.py:452
 msgid ""
 "Type 'help validate' to get more information about client-side validation."
-msgstr ""
-"Zadejte 'help validate' pro výpis detailů o validaci."
+msgstr "Zadejte 'help validate' pro výpis detailů o validaci."
 
 #: fred/session_command.py:454
 msgid "Client-side validation is"
@@ -1402,7 +1418,9 @@ msgstr "Zdrojový příkaz"
 msgid ""
 "Unsupported language code: '%s'.\n"
 "Available codes are: %s."
-msgstr "Nepodporovaná jazyková verze: '%s'.\nDostupné verze jsou: %s."
+msgstr ""
+"Nepodporovaná jazyková verze: '%s'.\n"
+"Dostupné verze jsou: %s."
 
 #: fred/session_command.py:577
 msgid "Language is"
@@ -1568,15 +1586,15 @@ msgstr "smazáno"
 msgid "transfer"
 msgstr ""
 
-#: fred/session_transfer.py:375 fred/session_transfer.py:432
+#: fred/session_transfer.py:374 fred/session_transfer.py:431
 msgid "Return code"
 msgstr "Návratový kód"
 
-#: fred/session_transfer.py:378 fred/session_transfer.py:434
+#: fred/session_transfer.py:377 fred/session_transfer.py:433
 msgid "Reason"
 msgstr "Důvod"
 
-#: fred/session_transfer.py:396
+#: fred/session_transfer.py:395
 #, python-format
 msgid "(%d item)"
 msgid_plural "(%d items)"
@@ -1595,7 +1613,7 @@ msgstr ""
 "Použití: %s [parametry...]\n"
 "Více informací získáze zadáním '%s --help'."
 
-#: fred_client.py:14 fred_console.py:176 fred_create.py:78 fred_sender.py:132
+#: fred_client.py:14 fred_console.py:176 fred_create.py:79 fred_sender.py:143
 msgid "Usage"
 msgstr "Použití"
 
@@ -1611,15 +1629,7 @@ msgstr ""
 "  -o OUTPUT_TYPE, --output=OUTPUT_TYPE\n"
 "                   Zobrazit výstup jako text (default), html, php"
 
-#: fred_client.py:20
-msgid ""
-"  -q,  --qt\n"
-"                   Run client in Qt GUI"
-msgstr ""
-"-q --qt\n"
-"                   Spustit klineta v Qt GUI"
-
-#: fred_client.py:22 fred_console.py:178 fred_create.py:88 fred_sender.py:145
+#: fred_client.py:23 fred_console.py:178 fred_create.py:89 fred_sender.py:156
 msgid "For more information, see README."
 msgstr "Více informací v README."
 
@@ -1705,32 +1715,31 @@ msgstr "EPP dokument není validní nebo nelze validaci provést."
 msgid "Do you really want to send this command to the server?"
 msgstr "Opravdu chcete odeslat tento poříkaz na server?"
 
-#: fred_create.py:79
+#: fred_create.py:80
 msgid "Create EPP XML document from command line parameters."
 msgstr "Vytvoří EPP XML dokument ze zadaných parametrů."
-
-#: fred_create.py:87
-msgid "Eventual errors are return in XML format: <errors>... msg ...</errors>."
-msgstr ""
-"Případné chyby jsou vráceny ve formátu XML: <errors>... msg ...</errors>."
 
 #: fred_sender.py:21
 msgid "Login failed"
 msgstr "Login se nezdařil"
 
-#: fred_sender.py:69
+#: fred_sender.py:41
+msgid "Invalid EPP XML document. Last tag missing."
+msgstr "Neplatný EPP XML dokument. Chybí poslední tag."
+
+#: fred_sender.py:81
 msgid "Send files"
 msgstr "Odeslat soubory"
 
-#: fred_sender.py:100
+#: fred_sender.py:111
 msgid "sending..."
 msgstr "posílám..."
 
-#: fred_sender.py:133
+#: fred_sender.py:144
 msgid "Module for sending files to the EPP server."
 msgstr "Modul pro odeslání souborů na EPP server."
 
-#: fred_sender.py:135
+#: fred_sender.py:146
 msgid ""
 "  -o OUTPUT_TYPE, --output=OUTPUT_TYPE\n"
 "                   Display output as text (default), html, php"
@@ -1745,3 +1754,10 @@ msgid ""
 msgstr ""
 "Pro spuštění této aplikace musíte mít nainstalovány PyQt a Qt moduly.Více "
 "informací naleznete v helpu."
+
+#~ msgid ""
+#~ "  -q,  --qt\n"
+#~ "                   Run client in Qt GUI"
+#~ msgstr ""
+#~ "-q --qt\n"
+#~ "                   Spustit klineta v Qt GUI"

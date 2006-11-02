@@ -24,17 +24,29 @@ def __auto_login__(epp, verbose):
 
 def split_docs(docset):
     docs = []
-    patt_error = re.compile('<errors>(.+?)</errors>', re.S)
-    for doc in re.split('<\\?xml', docset):
-        doc = doc.strip()
-        if not len(doc): continue
-        m_err = patt_error.search(doc)
-        if m_err:
-            docs.append((0,m_err.group(1)))
+    xmltag = re.compile('\s*<\?xml', re.S)
+    eppend = re.compile('(</epp>)', re.S)
+    chops = re.split('(<\?xml)', docset)
+    limit = len(chops)
+    n=0
+    while n < limit:
+        if xmltag.match(chops[n]) and n+1 < limit:
+            chunk = '%s%s'%(chops[n],chops[n+1])
+            n+=1
+            parts = eppend.split(chunk)
+            if len(parts)>1:
+                docs.append((1,'%s%s'%(parts[0],parts[1]))) # body + last tag
+                rest = len(parts) > 2 and parts[2] or ''
+            else:
+                rest = _T('Invalid EPP XML document. Last tag missing.')
+            mess = rest.strip()
+            if mess: docs.append((0,mess))
         else:
-            docs.append((1,'<?xml %s'%doc))
+            if chops[n]: docs.append((0,chops[n]))
+        n+=1
     return docs
-    
+
+
 def send_docs(display_bar, docs=[]):
     names = ()
     #-------------------------------------------------
@@ -67,17 +79,16 @@ def send_docs(display_bar, docs=[]):
         max = len(docs)
         bar_step = (100.0/max)*0.01
         bar_header = '%s: %d'%(_T('Send files'),max)
-    epp.print_tag(BEGIN)
+    epp.print_tag(BEGIN) # enclose leak messages into tag (comment)
     for code, xmldoc in docs:
         epp.reset_round()
         if code:
             command_name = epp.grab_command_name_from_xml(xmldoc)
             if len(command_name):
-                if not epp.is_connected():
-                    if command_name == 'login':
-                        epp.connect()
-                    else:
-                        if not __auto_login__(epp, verbose): break
+                if command_name in ('hello','login'):
+                    epp.connect() # No problem call connect() if we are connected already.
+                elif not epp.is_connected():
+                    if not __auto_login__(epp, verbose): break
                 if command_name == 'logout':
                     verbose = epp.set_verbose(0) # silent logout
                 #-------------------------------------------------
@@ -99,7 +110,7 @@ def send_docs(display_bar, docs=[]):
             bar.clear()
             bar.update(bar_pos, _T('sending...'))
             bar_pos += bar_step
-    epp.print_tag(END)
+    epp.print_tag(END) # end of enclosing leak messages
     if display_bar:
         # print final 100%
         note = "Ran test in %.3f sec"%(time.time() - sart_at)
@@ -107,15 +118,15 @@ def send_docs(display_bar, docs=[]):
         bar.update(1.0, note)
 
     #-------------------------------------------------
-    # KONEC přenosu - automatický logout
+    # END of transmition - automatic logout
     #-------------------------------------------------
     if epp.is_connected():
-        epp.set_verbose(0)
+        epp.set_verbose(0) # Very important! If is not set, it can overwrite outputed data.
         try:
             epp.api_command('logout') # automatický logout
         except FredError, msg:
-            print 'ERROR:',msg
-        epp.print_answer()
+            pass # print 'ERROR:',msg
+        #epp.print_answer()
 
 if __name__ == '__main__':
     msg_invalid = fred.check_python_version()

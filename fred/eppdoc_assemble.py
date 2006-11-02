@@ -136,8 +136,9 @@ class Message(eppdoc.Message):
 
     def __check_required__(self, command_name, columns, dct_values, scopes=[]):
         'Check parsed values for required and allowed values.'
+        miss_req = 0
         errors = []
-        if len(scopes) and not len(dct_values): return errors # if descendant is empty - not check
+        if len(scopes) and not len(dct_values): return errors, miss_req # if descendant is empty - not check
         if type(dct_values) != dict:
             # parameter is in invalid format
             keys = []
@@ -150,16 +151,16 @@ class Message(eppdoc.Message):
                     vals.append(example)
                 else:
                     vals.append(name)
-            return ('%s: "%s". (%s: "%s")\n%s: (%s) %s: (%s)'%(
-                _T('Invalid parameter'), '.'.join(scopes),
+            return '%s: "%s". (%s: "%s")\n%s: (%s) %s: (%s)'%(
+                _T('Invalid parameter'), local8bit(' / '.join(scopes)),
                 _T('Corrupted value'),str(dct_values),
                 _T('Correct format is'), ', '.join(keys), 
                 _T('For example'), ', '.join(vals), 
-                ) ,)
+                ), miss_req
         for row in columns:
             name,min_max,allowed,msg_help,example,pattern,children = row
             scopes.append(name)
-            scope_name = local8bit('.'.join(scopes))
+            scope_name = local8bit(' / '.join(scopes))
             if dct_values.has_key(name):
                 if min_max[1] != UNBOUNDED and len(dct_values[name]) > min_max[1]:
                     if command_name == 'hello':
@@ -176,12 +177,15 @@ class Message(eppdoc.Message):
                 # walk throught descendants:
                 if children:
                     for dct in dct_values[name]:
-                        err = self.__check_required__(command_name, children, dct, scopes)
+                        err, mr = self.__check_required__(command_name, children, dct, scopes)
                         if err: errors.extend(err)
+                        miss_req += mr
             else:
-                if min_max[0] > 0: errors.append('%s %s'%(scope_name,_T('missing')))
+                if min_max[0] > 0:
+                    errors.append('%s %s'%(scope_name,_T('missing')))
+                    miss_req += 1
             scopes.pop()
-        return errors
+        return errors, miss_req
 
     def __ineractive_input_one_param__(self, name,min_max,allowed,example, null_value, prompt):
         'Loop raw_input while any value is set.'
@@ -430,9 +434,10 @@ class Message(eppdoc.Message):
         self.__fill_empy_from_config__(config, dct, columns) # fill missing values from config
         if not stop:
             # check list and allowed values if only 'stop' was not set
-            errors = self.__check_required__(command_name, columns, dct)
+            errors, miss_req = self.__check_required__(command_name, columns, dct)
             if errors:
-##                if vals[0]: error.append(_TP('Missing required value.','Missing required values.',vals[0]))
+                if miss_req:
+                    error.append(_TP('Missing required value.','Missing required values.',miss_req))
                 error.extend(errors)
         self._dct = dct
         return error, example, stop

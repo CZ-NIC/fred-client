@@ -20,9 +20,9 @@
     Program fred_console.py
     </a></span></dt><dd><dl><dt><span class="section"><a href="#id2452190">Zobrazení helpu</a></span></dt><dt><span class="section"><a href="#id2452233">EPP příkazy</a></span></dt><dt><span class="section"><a href="#id2452274">Typy paramerů příkazu</a></span></dt><dt><span class="section"><a href="#id2499387">Společný parametr cltrid (Client transaction ID)</a></span></dt><dt><span class="section"><a href="#null_or_empty">Žádná hodnota / Prázdná hodnota</a></span></dt><dd><dl><dt><span class="section"><a href="#id2499439">Žádná hodnota: NULL</a></span></dt><dt><span class="section"><a href="#id2499565">Prázdná hodnota: '', ""</a></span></dt></dl></dd><dt><span class="section"><a href="#id2499643">Příkazy relace (session)</a></span></dt><dt><span class="section"><a href="#id2499838">Testovací příkazy</a></span></dt></dl></dd><dt><span class="chapter"><a href="#id2499989">5. 
     Skripty fred_create.py a fred_sender.py
-    </a></span></dt><dt><span class="chapter"><a href="#output_types">6. Integrace klienta do PHP kódu</a></span></dt><dt><span class="chapter"><a href="#id2500364">7. 
+    </a></span></dt><dt><span class="chapter"><a href="#output_types">6. Integrace klienta do PHP kódu</a></span></dt><dt><span class="chapter"><a href="#id2500336">7. 
     Knihovna fred a popis API
-    </a></span></dt><dd><dl><dt><span class="section"><a href="#id2500381">Online dokumentace:</a></span></dt><dt><span class="section"><a href="#id2500436">Příklady práce s knihovnou</a></span></dt></dl></dd></dl></div><div class="preface" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2489580"></a>Co je FredClient:</h2></div></div></div><p>
+    </a></span></dt><dd><dl><dt><span class="section"><a href="#id2500353">Online dokumentace:</a></span></dt><dt><span class="section"><a href="#id2500408">Příklady práce s knihovnou</a></span></dt></dl></dd></dl></div><div class="preface" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2489580"></a>Co je FredClient:</h2></div></div></div><p>
     FredClient je sada scriptů v jazyce Python postavených na fred knihovně
     a určených ke komunikaci s EPP serverem.
     </p><p>Sada obsahuje EPP konzoli a skripty určené pro použití v shellu.</p></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2489600"></a>Kapitola 1. Licence</h2></div></div></div><p>Licence je v souboru fred/LICENSE.</p></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2489609"></a>Kapitola 2. Požadavky na systém a instalace</h2></div></div></div><p>Pokyny k instalaci jsou v souboru INSTALL.</p></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2489620"></a>Kapitola 3. 
@@ -718,16 +718,30 @@ je proto potřebné mít nastavený konfigurační soubor nebo vše definovat na
 Přepínačem <span class="bold"><strong>--output -o</strong></span> upravíme výstup do požadovaného formátu. Pokud chceme v prohlížeči hodnoty pouze
 zobrazit, můžeme zadat typ HTML: --output=html. Chceme-li data dále
 zpracovávat PHP skriptem, nastavíme typ PHP: --output=php.
-</p><p>Shrnutí metody použití klienta v PHP:</p><table class="simplelist" border="0" summary="Simple list"><tr><td>V PHP se klient spustí jako externí program například funkcí <span class="emphasis"><em>passthru()</em></span>.</td></tr><tr><td>V parametrech se nastaví mód výpisu na PHP: --outout=php</td></tr><tr><td>Výstup klienta se přesměruje do adresáře s právy zápisu: <span class="emphasis"><em>... &gt; /cache/outout.php</em></span></td></tr><tr><td>Výsledný kód se vloží do stránky <span class="emphasis"><em>required_once('/cache/outout.php')</em></span> a tím jsou hodnoty PHP skriptu dostupné.</td></tr></table><p>Proměnné z PHP výstupu</p><table class="simplelist" border="0" summary="Simple list"><tr><td>$fred_encoding = 'utf-8'; // kódování textu </td></tr><tr><td>$fred_code = 1000; // návratový kód odpovědi </td></tr><tr><td>$fred_command = 'domain:info'; // název odeslaného příkazu </td></tr><tr><td>$fred_reason = 'Command completed successfully'; // popis návratového kódu </td></tr><tr><td>$fred_errors = array(); // seznam chybových hlášek </td></tr><tr><td>$fred_labels = array(); // seznam popisků hodnot </td></tr><tr><td>$fred_data = array(); // seznam hodnot </td></tr><tr><td>$fred_source_command = '...'; zdrojový XML dokument příkazu připravený pro zobrazení (projetý
+</p><p>Shrnutí metody použití klienta v PHP:</p><table class="simplelist" border="0" summary="Simple list"><tr><td>V PHP se klient spustí jako externí program například funkcí <span class="emphasis"><em>passthru()</em></span>.</td></tr><tr><td>V parametrech se nastaví mód výpisu na PHP: --outout=php</td></tr><tr><td>Výstup klienta se přesměruje do adresáře s právy zápisu: <span class="emphasis"><em>... &gt; /cache/outout.php</em></span></td></tr><tr><td>Výsledný kód se vloží do stránky <span class="emphasis"><em>required_once('/cache/outout.php')</em></span> a tím jsou hodnoty PHP skriptu dostupné.</td></tr></table><p>Proměnné z PHP výstupu</p><table class="simplelist" border="0" summary="Simple list"><tr><td>$fred_error_create_name = 'poll'; // jméno neplatného příkazu</td></tr><tr><td>$fred_error_create_value = 'op: Value "xxx" is not allowed. Valid is: (req, ack)'; // popis chyby, která se objevila při vytváření příkazu.</td></tr><tr><td>$fred_encoding = 'utf-8'; // kódování textu </td></tr><tr><td>$fred_code = 1000; // návratový kód odpovědi </td></tr><tr><td>$fred_command = 'domain:info'; // název odeslaného příkazu </td></tr><tr><td>$fred_reason = 'Command completed successfully'; // popis návratového kódu </td></tr><tr><td>$fred_errors = array(); // seznam chybových hlášek, které vznikly během komunikace se serverem </td></tr><tr><td>$fred_labels = array(); // seznam popisků hodnot </td></tr><tr><td>$fred_data = array(); // seznam hodnot </td></tr><tr><td>$fred_source_command = '...'; zdrojový XML dokument příkazu připravený pro zobrazení (projetý
 funkcí htmlspecialchars(), generuje se jen ve verbose 3). </td></tr><tr><td>$fred_source_answer = '...'; zdrojový XML dokument odpovědi připravený pro zobrazení (projetý
-funkcí htmlspecialchars(), generuje se jen ve verbose 3). </td></tr></table><p>Příklad dat:</p><table class="simplelist" border="0" summary="Simple list"><tr><td>$fred_labels['domain:name'] = 'Domain name';</td></tr><tr><td>$fred_data['domain:name'] = 'domena.cz';</td></tr><tr><td>$fred_labels['domain:roid'] = 'Repository object ID';</td></tr><tr><td>$fred_data['domain:roid'] = 'D0000000174-CZ';</td></tr><tr><td>$fred_labels['domain:crID'] = 'Created by';</td></tr><tr><td>$fred_data['domain:crID'] = 'REG-LRR';</td></tr><tr><td>$fred_labels['domain:clID'] = 'Designated registrar';</td></tr><tr><td>$fred_data['domain:clID'] = 'REG-LRR';</td></tr><tr><td>$fred_labels['domain:crDate'] = 'Created on';</td></tr><tr><td>$fred_data['domain:crDate'] = '2006-10-31T16:51:56+01:00';</td></tr><tr><td>$fred_labels['domain:exDate'] = 'Expiration date';</td></tr><tr><td>$fred_data['domain:exDate'] = '2009-10-31T01:00:00+01:00';</td></tr><tr><td>$fred_labels['domain:renew'] = 'Last renew on';</td></tr></table></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2500364"></a>Kapitola 7. 
+funkcí htmlspecialchars(), generuje se jen ve verbose 3). </td></tr></table><p>Příklad dat:</p><pre class="programlisting">
+$fred_labels['domain:name'] = 'Domain name';
+$fred_data['domain:name'] = 'domena.cz';
+$fred_labels['domain:roid'] = 'Repository object ID';
+$fred_data['domain:roid'] = 'D0000000174-CZ';
+$fred_labels['domain:crID'] = 'Created by';
+$fred_data['domain:crID'] = 'REG-LRR';
+$fred_labels['domain:clID'] = 'Designated registrar';
+$fred_data['domain:clID'] = 'REG-LRR';
+$fred_labels['domain:crDate'] = 'Created on';
+$fred_data['domain:crDate'] = '2006-10-31T16:51:56+01:00';
+$fred_labels['domain:exDate'] = 'Expiration date';
+$fred_data['domain:exDate'] = '2009-10-31T01:00:00+01:00';
+$fred_labels['domain:renew'] = 'Last renew on';
+</pre></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2500336"></a>Kapitola 7. 
     Knihovna fred a popis API
-    </h2></div></div></div><div class="toc"><p><b>Obsah</b></p><dl><dt><span class="section"><a href="#id2500381">Online dokumentace:</a></span></dt><dt><span class="section"><a href="#id2500436">Příklady práce s knihovnou</a></span></dt></dl></div><p>
+    </h2></div></div></div><div class="toc"><p><b>Obsah</b></p><dl><dt><span class="section"><a href="#id2500353">Online dokumentace:</a></span></dt><dt><span class="section"><a href="#id2500408">Příklady práce s knihovnou</a></span></dt></dl></div><p>
 
 Knihovna "fred" vám umoňuje implmentovat API rozhraní do vašich aplikací. Knihova i jednotlivé funkce
 obsahují komentáře, podle kterých se můžete při implementaci řídit. V části __init__.py naleznete
 i ukázky kódu.
-</p><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2500381"></a>Online dokumentace:</h2></div></div></div><p>
+</p><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2500353"></a>Online dokumentace:</h2></div></div></div><p>
 Pokud si chcete projít jednotlivé třídy a funkce knihovny, tak k tomu můžete využít generátor
 dokumentace, který je standardní součástí pythonu: Zadejte na příkazové řádce příkaz:
 
@@ -750,7 +764,7 @@ spustíte z adresáře, kde máte tyto skripty uložené. Pak se v helpu zobraz�
 </pre><p>
 
 Server ukončíte stiskem Ctrl+C.
-</p></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2500436"></a>Příklady práce s knihovnou</h2></div></div></div><p>
+</p></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2500408"></a>Příklady práce s knihovnou</h2></div></div></div><p>
 Import knihovny provedete příkazem:
 
 </p><pre class="programlisting">

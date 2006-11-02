@@ -19,7 +19,8 @@ def main(options):
         epp.set_auto_connect(0) # set OFF auto connection
     command_name, epp_doc, stop = epp.create_eppdoc(options['command'])
     errors = epp.fetch_errors()
-    if not epp_doc and not errors: errors = _T('Unknown command')
+    if not epp_doc and not errors:
+        errors = '%s %s'%(_T('Unknown command'),command_name.encode(encoding))
     str_error = ''
     if errors:
         if type(command_name) == unicode: command_name = command_name.encode(encoding)
@@ -27,10 +28,10 @@ def main(options):
         if options['output'] == 'html':
             str_error = '<div class="fred_errors">\n<strong>%s errors:</strong>\n<pre>\n%s</pre><div>'%(command_name,escape_html(errors))
         elif options['output'] == 'php':
-            str_error = '<?php\n$fred_error_create_name = %s;\n$fred_error_create_value = %s;\n?>'%(php_string(command_name),php_string(errors))
+            str_error = '<?php\n$fred_error_create_name = %s;\n$fred_error_create_value = %s;\n%s\n?>'%(php_string(command_name),php_string(errors),epp.get_empty_php_code())
         else:
             # default 'text'
-            str_error = "<?xml encoding='utf-8'?><errors>%s: %s</errors>"%(command_name,errors)
+            str_error = "%s: %s"%(_T('ERROR'),errors)
     return epp_doc, str_error
 
 def display(epp_doc, str_error):
@@ -75,7 +76,7 @@ if __name__ == '__main__':
                 epp_doc, str_error = main(options)
                 display(epp_doc, str_error)
         else:
-            print '%s: %s command params\n\n%s\n\n%s%s\n%s\n\n  %s\n'%(_T('Usage'), 'fred_create.py',
+            print '%s: %s command params\n\n%s\n\n%s%s\n\n  %s\n'%(_T('Usage'), 'fred_create.py',
                 _T('Create EPP XML document from command line parameters.'),
                 _T('EXAMPLES'),
                 """
@@ -84,6 +85,5 @@ if __name__ == '__main__':
 echo -en "check_domain nic.cz\\ninfo_domain nic.cz" | ./fred_create.py
 cat file-with-commands.txt | ./fred_create.py
 """,
-                _T('Eventual errors are return in XML format: <errors>... msg ...</errors>.'),
                 _T('For more information, see README.')
                 )

@@ -118,7 +118,7 @@ sources ad advance, transmited between client and server.
 
     1 - brief (default)
     2 - full
-    3 - full & XML sources."""), ('verbose 2',)),
+    3 - full & XML sources"""), ('verbose 2',)),
         )
         
     def __put_raw_into_note__(self, data):

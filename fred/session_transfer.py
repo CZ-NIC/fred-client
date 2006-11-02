@@ -470,35 +470,50 @@ class ManagerTransfer(ManagerBase):
         # ..............
         return '\n'.join(body)
 
+    def get_empty_php_code(self):
+        'Returns empty PHP code when create command fails.'
+        return """
+$fred_encoding = %s;       // used encoding
+$fred_command = '';        // command sent to the server
+$fred_code = 0;            // code returned from server
+$fred_reason = '';         // reason returned from server (description of the code)
+$fred_errors = array();    // errors occured during communication
+$fred_labels = array();    // descriptions of the data columns
+$fred_data = array();      // data returned by server
+$fred_source_command = ''; // source code (XML) of the command prepared to display
+$fred_source_answer = '';  // source code (XML) of the answer prepared to display
+"""%php_string(encoding)
+        
     def get_answer_php(self, dct=None):
         """Returns data as a PHP code:
-        $code           int
-        $command        string
-        $reason         string
-        $errors         array
-        $labels         array
-        $data           array
-        $source_command string (third level)
-        $source_answer  string (third level)
+        $fred_encoding      string
+        $fred_code           int
+        $fred_command        string
+        $fred_reason         string
+        $fred_errors         array
+        $fred_labels         array
+        $fred_data           array
+        $fred_source_command string (third level)
+        $fred_source_answer  string (third level)
         """
         if not dct: dct = self._dct_answer
         body=[]
         report = body.append
         report('<?php')
-        report("$fred_encoding = %s;"%php_string(encoding))
+        report("$fred_encoding = %s; // used encoding"%php_string(encoding))
         #... code and reason .............................
         code = dct['code']
-        report('$fred_code = %d;'%code)
-        report("$fred_command = %s;"%php_string(dct['command']))
-        report("$fred_reason = %s;"%php_string(dct['reason']))
+        report("$fred_command = %s; // command sent to the server"%php_string(dct['command']))
+        report('$fred_code = %d; // code returned from server'%code)
+        report("$fred_reason = %s; // reason returned from server (description of the code)"%php_string(dct['reason']))
         #... errors .............................
         errors = []
         for error in dct['errors']:
             errors.append(php_string(error))
-        report('$fred_errors = array(%s);'%', '.join(errors))
+        report('$fred_errors = array(%s); // errors occured during communication'%', '.join(errors))
         #... data .............................
-        report('$fred_labels = array();')
-        report('$fred_data = array();')
+        report('$fred_labels = array(); // descriptions of the data columns')
+        report('$fred_data = array(); // data returned by server')
         dct_data = dct['data']
         for key,verbose,explain in self.__get_column_items__(dct['command'], dct_data):
             if verbose > self._session[VERBOSE]: continue
@@ -518,6 +533,9 @@ class ManagerTransfer(ManagerBase):
         if self._session[VERBOSE] == 3:
             report('$fred_source_command = %s;'%php_string(human_readable(self._raw_cmd)))
             report('$fred_source_answer = %s;'%php_string(human_readable(self._raw_answer)))
+        else:
+            report("$fred_source_command = '';")
+            report("$fred_source_answer = '';")
         # ..............
         report('?>')
         return  '\n'.join(body)
@@ -589,9 +607,13 @@ class ManagerTransfer(ManagerBase):
         'Function for readline.complete manages reaction on the TAB key press.'
         if prefix != self.readline_prefix:
             self.readline_prefix = prefix
-            command = self.readline.get_line_buffer().strip()
-            match = re.match('\w+',command)
-            if match: command = match.group() # remove command parameters
+            buffer = self.readline.get_line_buffer().strip()
+            match = re.match('\w+',buffer)
+            command = match and match.group() or buffer # remove command parameters
+            if re.match('\?|h(elp)?$',command):
+                # exception for command help whitch after display list command
+                match = re.match('(\?\s*|\w+\s+)(\w+)',buffer)
+                command = match and match.group(2) or ''
             if command in self.readline_words:
                 if prefix == command:
                     self.matching_words = [command] # space at the end missing

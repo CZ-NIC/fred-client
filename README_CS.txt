@@ -730,11 +730,15 @@ Kapitola 6. Integrace klienta do PHP kodu
    jsou hodnoty PHP skriptu dostupne.
 
    Promenne z PHP vystupu
+   $fred_error_create_name = 'poll'; // jmeno neplatneho prikazu
+   $fred_error_create_value = 'op: Value "xxx" is not allowed. Valid is: (req,
+   ack)'; // popis chyby, ktera se objevila pri vytvareni prikazu.
    $fred_encoding = 'utf-8'; // kodovani textu
    $fred_code = 1000; // navratovy kod odpovedi
    $fred_command = 'domain:info'; // nazev odeslaneho prikazu
    $fred_reason = 'Command completed successfully'; // popis navratoveho kodu
-   $fred_errors = array(); // seznam chybovych hlasek
+   $fred_errors = array(); // seznam chybovych hlasek, ktere vznikly behem
+   komunikace se serverem
    $fred_labels = array(); // seznam popisku hodnot
    $fred_data = array(); // seznam hodnot
    $fred_source_command = '...'; zdrojovy XML dokument prikazu pripraveny pro
@@ -743,19 +747,19 @@ Kapitola 6. Integrace klienta do PHP kodu
    zobrazeni (projety funkci htmlspecialchars(), generuje se jen ve verbose 3).
 
    Priklad dat:
-   $fred_labels['domain:name'] = 'Domain name';
-   $fred_data['domain:name'] = 'domena.cz';
-   $fred_labels['domain:roid'] = 'Repository object ID';
-   $fred_data['domain:roid'] = 'D0000000174-CZ';
-   $fred_labels['domain:crID'] = 'Created by';
-   $fred_data['domain:crID'] = 'REG-LRR';
-   $fred_labels['domain:clID'] = 'Designated registrar';
-   $fred_data['domain:clID'] = 'REG-LRR';
-   $fred_labels['domain:crDate'] = 'Created on';
-   $fred_data['domain:crDate'] = '2006-10-31T16:51:56+01:00';
-   $fred_labels['domain:exDate'] = 'Expiration date';
-   $fred_data['domain:exDate'] = '2009-10-31T01:00:00+01:00';
-   $fred_labels['domain:renew'] = 'Last renew on';
+$fred_labels['domain:name'] = 'Domain name';
+$fred_data['domain:name'] = 'domena.cz';
+$fred_labels['domain:roid'] = 'Repository object ID';
+$fred_data['domain:roid'] = 'D0000000174-CZ';
+$fred_labels['domain:crID'] = 'Created by';
+$fred_data['domain:crID'] = 'REG-LRR';
+$fred_labels['domain:clID'] = 'Designated registrar';
+$fred_data['domain:clID'] = 'REG-LRR';
+$fred_labels['domain:crDate'] = 'Created on';
+$fred_data['domain:crDate'] = '2006-10-31T16:51:56+01:00';
+$fred_labels['domain:exDate'] = 'Expiration date';
+$fred_data['domain:exDate'] = '2009-10-31T01:00:00+01:00';
+$fred_labels['domain:renew'] = 'Last renew on';
 
 Kapitola 7. Knihovna fred a popis API
 
