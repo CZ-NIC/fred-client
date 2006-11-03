@@ -1,14 +1,15 @@
 <?php
 $size = 60; // size of inputs
+$indent_data=50; // indent column of data
 
 $exec_path = ''; // Here you can write path to the app
-// $exec_path = '/home/zdenek/enum/epp_client/trunk/'; // TEST
+$exec_path = '/home/zdenek/enum/epp_client/trunk/'; // TEST
 
 // Here you define where exe saves PHP code with answer data:
 $php_module_name = '/tmp/fred_client.php';
 
 $command_options = ''; // here you can type some options. For more see ./fred_client.py --help
-// $command_options = '-s andromeda -f /home/zdenek/.fred_client.conf'; // TEST
+$command_options = '-s andromeda -f /home/zdenek/.fred_client.conf'; // TEST
 
 define('CRLF', "\r\n");
 define('BR', "<br />\r\n");
@@ -183,6 +184,15 @@ table#command  { border-collapse: collapse; }
     <input class="btn" type="submit" name="send[list_domain]" value="List domain" /><br />
     </td>
 
+    <td class="tb-top">
+    TEST (ERRORS)<br/>
+    <input class="btn" type="submit" name="send[invalid]" value="Invalid command" /><br />
+    <input class="btn" type="submit" name="send[invalid_handle_missing]" value="info_contact Handle missing" /><br />
+    <input class="btn" type="submit" name="send[invalid_login]" value="Invalid login" /><br />
+    <input class="btn" type="submit" name="send[invalid_cert]" value="Invalid certificate" /><br />
+    <input class="btn" type="submit" name="send[invalid_invalidhost]" value="Invalid host" /><br />
+    </td>
+
     </tr>
     </table>
 
@@ -231,8 +241,19 @@ while(is_array($_POST['send'])) {
     if(!preg_match('/FredClient \d+/',$retval)) $errors[] = 'fred_client.py not instaled properly. See help or set prefix of path.';
     if($errors) {
         echo '<h2 class="msg-error">Error:<br />'.join('<br />',$errors).'</h2>';
-        break;
+        if(!preg_match('/invalid_?(\w*)/',$command)) break;
     }
+
+    $TEST = 0;
+    if(preg_match('/invalid_?(\w*)/',$command, $match)) {
+            $TEST = 1;
+            $command = $match[1];
+            if($command=='login') $command_options .= ' -w invalidpassw';
+            elseif($command=='cert') { $command = 'login'; $command_options .= ' -c invalid_cert.pem'; }
+            elseif($command=='invalidhost') { $command = 'login'; $command_options .= ' -h invalidhost'; }
+            elseif($command=='handle_missing') { $command = 'info_contact'; $handle = ''; }
+    }
+
     if(in_array($command,$ar_no_handler))
          $fred_command = $command;
     else $fred_command = "$command $handle";
@@ -249,7 +270,7 @@ while(is_array($_POST['send'])) {
         //--- PHP ---------------------------------
         $cmdline = 'python '.$exec_path."fred_client.py ".$command_options." -x -v $_POST[verbose] -o php -d '$fred_command' > $php_module_name";
         // See, what looks command line:
-        // echo "<div class='output'><p class='command'>$cmdline</p></div>".CRLF;
+        if($TEST) echo "<br/>Command:<div class='output'><p class='command'>$cmdline</p></div>".CRLF;
 
         // reset output:
         @unlink($php_module_name);
@@ -261,19 +282,25 @@ while(is_array($_POST['send'])) {
         
         echo "<h3>PHP CODE:</h3>".CRLF;
         echo '<pre>'.CRLF;
-        echo "<strong>\$fred_encoding</strong>: $fred_encoding".CRLF;
-        echo "<strong>\$fred_code</strong>: $fred_code".CRLF;
-        echo "<strong>\$fred_command</strong>: $fred_command".CRLF;
-        echo "<strong>\$fred_reason</strong>: $fred_reason".CRLF;
+
+        echo "<strong>\$fred_client_notes</strong>:".CRLF;
+        print_r($fred_client_notes);
+        echo "<strong>\$fred_client_errors</strong>:".CRLF;
+        print_r($fred_client_errors);
         echo CRLF;
 
-        echo "<strong>\$fred_errors</strong>:".CRLF;
-        print_r($fred_errors);
+        echo '<strong>'.str_pad('$fred_encoding',$indent_data)."</strong>$fred_encoding".CRLF;
+        echo '<strong>'.str_pad('$fred_command',$indent_data)."</strong>$fred_command".CRLF;
+        echo '<strong>'.str_pad('$fred_code',$indent_data)."</strong>$fred_code".CRLF;
+        echo '<strong>'.str_pad('$fred_reason',$indent_data)."</strong>$fred_reason".CRLF;
+        echo CRLF;
+
+        echo "<strong>\$fred_reason_errors</strong>:".CRLF;
+        print_r($fred_reason_errors);
         if($fred_error_create_name)  echo "<strong>\$fred_error_create_name</strong>: $fred_error_create_name".CRLF;
         if($fred_error_create_value) echo "<strong>\$fred_error_create_value</strong>: $fred_error_create_value".CRLF;
         echo CRLF;
 
-        $indent_data=50;
         $label = str_pad('$fred_labels $fred_data[KEY]:',$indent_data);
         echo "<strong>$label\$fred_data</strong>".CRLF.CRLF;
         if(is_array($fred_data)) {

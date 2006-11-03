@@ -1028,17 +1028,17 @@ zpracovávat PHP skriptem, nastavíme typ PHP: --output=php.
 <simplelist>
 <member>$fred_error_create_name = 'poll'; // jméno neplatného příkazu</member>
 <member>$fred_error_create_value = 'op: Value "xxx" is not allowed. Valid is: (req, ack)'; // popis chyby, která se objevila při vytváření příkazu.</member>
+<member>$fred_client_notes = array(); // seznam hlášení, které se generuje během komunikace</member>
+<member>$fred_client_errors = array(); // seznam chyb, které vznikly během komunikce</member>
 <member>$fred_encoding = 'utf-8'; // kódování textu </member>
 <member>$fred_code = 1000; // návratový kód odpovědi </member>
 <member>$fred_command = 'domain:info'; // název odeslaného příkazu </member>
 <member>$fred_reason = 'Command completed successfully'; // popis návratového kódu </member>
-<member>$fred_errors = array(); // seznam chybových hlášek, které vznikly během komunikace se serverem </member>
+<member>$fred_reason_errors = array(); // detaily hodnot, které způsobily navrácení kódu s chybou</member>
 <member>$fred_labels = array(); // seznam popisků hodnot </member>
 <member>$fred_data = array(); // seznam hodnot </member>
-<member>$fred_source_command = '...'; zdrojový XML dokument příkazu připravený pro zobrazení (projetý
-funkcí htmlspecialchars(), generuje se jen ve verbose 3). </member>
-<member>$fred_source_answer = '...'; zdrojový XML dokument odpovědi připravený pro zobrazení (projetý
-funkcí htmlspecialchars(), generuje se jen ve verbose 3). </member>
+<member>$fred_source_command = '&lt;?xml ... &gt;'; zdrojový XML dokument příkazu generuje se jen ve verbose 3). </member>
+<member>$fred_source_answer = '&lt;?xml ... &gt;'; zdrojový XML dokument odpovědi, generuje se jen ve verbose 3). </member>
 </simplelist>
 
 <para>Příklad dat:</para>

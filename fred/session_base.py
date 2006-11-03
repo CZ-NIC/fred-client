@@ -164,6 +164,13 @@ class ManagerBase:
         "Check if any note is in the stack"
         return len(self._notes)
 
+    def get_init_php(self):
+        'Get part of PHP code what have to put as a first into output.'
+        return """
+$fred_client_notes = array();  // notes occuring during communication
+$fred_client_errors = array(); // errors occuring during communication
+"""
+        
     def display(self):
         "Output all messages to stdout or log file."
         msg = self.get_messages()
@@ -173,24 +180,37 @@ class ManagerBase:
         'Same as display but returns as local string.'
         #TODO: log file
         msg = []
+        is_php = self._session[OUTPUT_TYPE] == 'php'
         if self.is_note():
             # hlášení, poznámka, hodnoty
 ##            if self._notes[-1] != '': msg.append('') # empty line
             for text in self._notes:
-                msg.append(get_ltext(colored_output.render(text)))
+                if is_php:
+                    msg.append('$fred_client_notes[] = %s;'%php_string(text))
+                else:
+                    msg.append(get_ltext(colored_output.render(text)))
             self._notes = []
         if self.is_error():
             # chybová hlášení
 ##            if len(msg): msg.append('') # empty line - indent errors
             if len(msg) and msg[-1] != '': msg.append('')
             self._errors[-1] += colored_output.render('${NORMAL}')
-            label = _T('ERROR')
-            msg.append('%s%s: %s'%(colored_output.render('${RED}${BOLD}'),label, self._errors[0]))
+            if is_php:
+                msg.append('$fred_client_errors[] = %s;'%php_string(self._errors[0]))
+            else:
+                label = _T('ERROR')
+                msg.append('%s%s: %s'%(colored_output.render('${RED}${BOLD}'),label, self._errors[0]))
             for text in self._errors[1:]:
-                msg.append(get_ltext(text)) ## colored_output.render(
+                if is_php:
+                    msg.append('$fred_client_errors[] = %s;'%php_string(text))
+                else:
+                    msg.append(get_ltext(text))
             self._errors = []
         if len(self._notes_afrer_errors):
-            msg.extend(map(get_ltext, self._notes_afrer_errors))
+            if is_php: 
+                msg.extend(map(lambda s: '$fred_client_notes[] = %s;'%php_string(s), self._notes_afrer_errors))
+            else:
+                msg.extend(map(get_ltext, self._notes_afrer_errors))
             self._notes_afrer_errors = []
 ##        if len(msg) and msg[-1] != '': msg.append('') # empty line at the end of all output
         return sep.join(msg)
@@ -312,6 +332,7 @@ class ManagerBase:
             self.append_note('%s %s'%(_T('Using configuration from'), ', '.join(translate.config_names)))
         if translate.config_error:
             self.append_error(translate.config_error)
+            return 0 # Errors occured during parsing config. Error of missing file not included!
         self._session[SESSION] = self._options.get('session','') # API definition of --session parameter.
         # set session variables
         section = 'session'
@@ -417,7 +438,7 @@ class ManagerBase:
                 msg = '(UnicodeDecodeError) '+repr(msg)
             self._session[VALIDATE] = 0 # automatické vypnutí validace
             self.append_note('%s: [%d] %s'%(_T('Temporary file for XML EPP validity verification can not been created. Reason'),no,msg))
-            self.append_note(_T('Validator has been disabled. Type %s to enable it.')%'${BOLD}validate on${NORMAL}')
+            self.append_note(_T("Client-side validation has been disabled. Type '%s' to enable it.")%'${BOLD}validate on${NORMAL}')
             return '' # impossible save xml file needed for validation
         # kontrola validity XML
         schema_path = self.get_config_value('session','schema')
@@ -444,9 +465,9 @@ class ManagerBase:
                 or re.search(u'není názvem vnitřního ani vnějšího příkazu'.encode('cp852'),errors) \
                 or re.search('Schemas parser error',errors):
                 # schema missing!
-                self.append_error(_T('Client side validation failed.'))
-                if self._session[VERBOSE] > 1: self.append_error(get_ltext(errors))
-                self._notes_afrer_errors.append(_T('Validator has been disabled. Type %s to enable it.')%'${BOLD}validate on${NORMAL}')
+                self.append_note(_T('Warning: Client-side validation failed.'))
+                if self._session[VERBOSE] > 1: self.append_note(get_ltext(errors))
+                self._notes_afrer_errors.append(_T("Client-side validation has been disabled. Type '%s' to enable it.")%'${BOLD}validate on${NORMAL}')
                 self._session[VALIDATE] = 0 # automatické vypnutí validace
                 errors=''
         return errors
@@ -528,6 +549,20 @@ def get_unicode(text):
             text = repr(re.sub('\$\{[A-Z]+\}','',text)) # remove color tags
     return text
 
+def php_string(value):
+    'Returns escaped string for place into PHP variable.'
+    if type(value) in (str,unicode):
+        ret = "'%s'"%re.sub("([^\\\])'","\\1\\'",get_ltext(value))
+    elif type(value) in (list, tuple):
+        items=[]
+        for n in value:
+            items.append(php_string(n))
+        ret = 'array(%s)'%', '.join(items)
+    else:
+        ret = value # int or float
+    return ret
+
+    
 if __name__ == '__main__':
     mb = ManagerBase()
     mb._conf = ConfigParser.SafeConfigParser()

@@ -118,7 +118,7 @@ def main(options):
             invalid_epp = epp.is_epp_valid(epp_doc) # make validation on the XML document
             #debug_time.append(('Validation',time.time())) # PROFILER
             if invalid_epp:
-                epp.append_error(_T('Invalid EPP document or impossible to validate it.'))
+                epp.append_error(_T('Command data XML document failed to validate.'))
                 v = epp.get_session(VERBOSE)
                 if v > 1: epp.append_error(invalid_epp)
                 if v > 2: epp.append_error(epp_doc)

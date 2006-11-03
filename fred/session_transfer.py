@@ -10,7 +10,7 @@ from translate import encoding, options
 # Tags for scripted outputs:
 d_tag = {
     'html': ('<pre class="fred_messages">','</pre>'),
-    'php': ('<?php /*','*/ ?>'),
+    'php': ('<?php ','?>'),
 }
 BEGIN,END = range(2)
 
@@ -476,15 +476,15 @@ class ManagerTransfer(ManagerBase):
     def get_empty_php_code(self):
         'Returns empty PHP code when create command fails.'
         return """
-$fred_encoding = %s;       // used encoding
-$fred_command = '';        // command sent to the server
-$fred_code = 0;            // code returned from server
-$fred_reason = '';         // reason returned from server (description of the code)
-$fred_errors = array();    // errors occured during communication
-$fred_labels = array();    // descriptions of the data columns
-$fred_data = array();      // data returned by server
-$fred_source_command = ''; // source code (XML) of the command prepared to display
-$fred_source_answer = '';  // source code (XML) of the answer prepared to display
+$fred_encoding = %s;           // used encoding
+$fred_command = '';            // command sent to the server
+$fred_code = 0;                // code returned from server
+$fred_reason = '';             // reason returned from server (description of the code)
+$fred_reason_errors = array(); // errors described details that caused invalid code
+$fred_labels = array();        // descriptions of the data columns
+$fred_data = array();          // data returned by server
+$fred_source_command = '';     // source code (XML) of the command prepared to display
+$fred_source_answer = '';      // source code (XML) of the answer prepared to display
 """%php_string(encoding)
         
     def get_answer_php(self, dct=None):
@@ -493,16 +493,16 @@ $fred_source_answer = '';  // source code (XML) of the answer prepared to displa
         $fred_code           int
         $fred_command        string
         $fred_reason         string
-        $fred_errors         array
         $fred_labels         array
         $fred_data           array
+        $fred_reason_errors  array
         $fred_source_command string (third level)
         $fred_source_answer  string (third level)
         """
         if not dct: dct = self._dct_answer
         body=[]
         report = body.append
-        report('<?php')
+##        report('<?php')
         report("$fred_encoding = %s; // used encoding"%php_string(encoding))
         #... code and reason .............................
         code = dct['code']
@@ -513,7 +513,7 @@ $fred_source_answer = '';  // source code (XML) of the answer prepared to displa
         errors = []
         for error in dct['errors']:
             errors.append(php_string(error))
-        report('$fred_errors = array(%s); // errors occured during communication'%', '.join(errors))
+        report('$fred_reason_errors = array(%s); // errors described details that caused invalid code'%', '.join(errors))
         #... data .............................
         report('$fred_labels = array(); // descriptions of the data columns')
         report('$fred_data = array(); // data returned by server')
@@ -540,13 +540,16 @@ $fred_source_answer = '';  // source code (XML) of the answer prepared to displa
             report("$fred_source_command = '';")
             report("$fred_source_answer = '';")
         # ..............
-        report('?>')
+##        report('?>')
         return  '\n'.join(body)
 
     def print_tag(self, pos):
         'Prints tag for HTML or PHP mode at the position (0-beginig,1-end)'
-        tag = d_tag.get(self._options['output'],('',''))[pos]
+        tag = d_tag.get(self._session[OUTPUT_TYPE],('',''))[pos]
         if tag: print tag
+        if self._session[OUTPUT_TYPE]=='php' and pos==0:
+            # init variables for notes and errros
+            print self.get_init_php()
         
     def save_history(self):
         'Save history of command line.'
@@ -691,14 +694,6 @@ def human_readable(body):
     if not re.search('</\w+>\n<',body):
         body = re.sub('(</[^>]+>)','\\1\n',body)
     return body
-
-def php_string(value):
-    'Returns escaped string for place into PHP variable.'
-    if type(value) in (str,unicode):
-        ret = "'%s'"%re.sub("([^\\\])'","\\1\\'",get_ltext(value))
-    else:
-        ret = value # int or float
-    return ret
 
 #--------------------
 # For test only

@@ -733,18 +733,21 @@ Kapitola 6. Integrace klienta do PHP kodu
    $fred_error_create_name = 'poll'; // jmeno neplatneho prikazu
    $fred_error_create_value = 'op: Value "xxx" is not allowed. Valid is: (req,
    ack)'; // popis chyby, ktera se objevila pri vytvareni prikazu.
+   $fred_client_notes = array(); // seznam hlaseni, ktere se generuje behem
+   komunikace
+   $fred_client_errors = array(); // seznam chyb, ktere vznikly behem komunikce
    $fred_encoding = 'utf-8'; // kodovani textu
    $fred_code = 1000; // navratovy kod odpovedi
    $fred_command = 'domain:info'; // nazev odeslaneho prikazu
    $fred_reason = 'Command completed successfully'; // popis navratoveho kodu
-   $fred_errors = array(); // seznam chybovych hlasek, ktere vznikly behem
-   komunikace se serverem
+   $fred_reason_errors = array(); // detaily hodnot, ktere zpusobily navraceni
+   kodu s chybou
    $fred_labels = array(); // seznam popisku hodnot
    $fred_data = array(); // seznam hodnot
-   $fred_source_command = '...'; zdrojovy XML dokument prikazu pripraveny pro
-   zobrazeni (projety funkci htmlspecialchars(), generuje se jen ve verbose 3).
-   $fred_source_answer = '...'; zdrojovy XML dokument odpovedi pripraveny pro
-   zobrazeni (projety funkci htmlspecialchars(), generuje se jen ve verbose 3).
+   $fred_source_command = '<?xml ... >'; zdrojovy XML dokument prikazu generuje
+   se jen ve verbose 3).
+   $fred_source_answer = '<?xml ... >'; zdrojovy XML dokument odpovedi,
+   generuje se jen ve verbose 3).
 
    Priklad dat:
 $fred_labels['domain:name'] = 'Domain name';

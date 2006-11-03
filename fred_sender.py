@@ -15,10 +15,10 @@ def __auto_login__(epp, verbose):
         dansw = epp.api_command('login',epp.get_default_params_from_config('login'))
         ok = 1
     except FredError, msg:
-        print 'ERROR:',msg
         ok = 0
         dansw={}
-    if dansw.get('code',0) != 1000: epp.append_error(fred.session_base.get_ltext(dansw.get('reason',_T('Login failed'))))
+    if dansw.get('code',0) != 1000:
+        epp.append_error(fred.session_base.get_ltext(dansw.get('reason',_T('Login failed'))))
     epp.display()
     return ok
 
@@ -99,9 +99,9 @@ def send_docs(display_bar, docs=[]):
                     epp.send(xmldoc)          # send to server
                     xml_answer = epp.receive()     # receive answer
                     epp.process_answer(xml_answer) # process answer
-                    epp.print_tag(END)
+##                    epp.print_tag(END)
                     epp.print_answer()
-                    epp.print_tag(BEGIN)
+##                    epp.print_tag(BEGIN)
             epp.display() # display errors or notes
         else:
             if not display_bar: print "ERRORS:",xmldoc

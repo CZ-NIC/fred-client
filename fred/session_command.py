@@ -65,7 +65,6 @@ syntax. After going through all parameters actual command syntax is displayed
 before issuing command to server. 
 
 Interactive mode can be used with EPP commands only."""), ('!create_domain',)),
-            (('poll_autoack',), self.__session_poll_ack__, OPTIONAL, (_T('switch'),_T('Turn function on/off.')), _T('Send "poll ack" straight away after "poll req".'), ('poll-autoack on',)),
             (('colors',), self.__session_colors__, OPTIONAL, (_T('switch'),_T('Turn function on/off.')), _T('Turn on/off colored output.'), ('colors on',)),
             (('config',), self.manage_config, OPTIONAL, (), _T('Display or create config file.'), ('config',)),
             (('confirm',), self.__session_confirm__, OPTIONAL, (_T('switch'),_T('Turn function on/off.')), _T('Set on/off command confirmation for sending editable commands to the server.'), ('confirm off',)),
@@ -90,6 +89,7 @@ Type NULL means we did not put any value in contrast to '' or "" where we put
 value of zero length. Synonym of the 'null_value' is 'null'. 
 See help for more details."""), ('null_value None','null EMPTY',)),
             (('output',), self.__session_output__, OPTIONAL, (_T('type'),_T('Set the output type.')), _T('Display output in type.'), ('output html',)),
+            (('poll_autoack',), self.__session_poll_ack__, OPTIONAL, (_T('switch'),_T('Turn function on/off.')), _T('Send "poll ack" straight away after "poll req".'), ('poll-autoack on',)),
             (('quit','q','exit'), None, OPTIONAL, (), _T("""
 Disconnects from the server and exits the application. Synonyms 'q' and 'exit'
 can be used to invoke same functionality."""), ()),
@@ -640,6 +640,7 @@ sources ad advance, transmited between client and server.
         self._epp_cmd._dct['username'] = [self.get_config_value(self._section_epp_login, 'username', OMIT_ERROR)]
         self._epp_cmd._dct['password'] = [self.get_config_value(self._section_epp_login, 'password', OMIT_ERROR)]
         self.create_login() # connect and get greeting message, than create XML login document
+        self.display() # display errors or notes
         epp_doc = self._epp_cmd.get_xml()
         if epp_doc and self.is_connected():
             if self._session[VERBOSE] > 1: self.append_note(_T('Login command sent to the server'))
