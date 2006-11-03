@@ -356,7 +356,10 @@ class ManagerTransfer(ManagerBase):
         #... code and reason .............................
         code = dct['code']
         match = re.match('\w+:(\w+)',dct['command'])
-        key = match is None and dct['command'] or match.group(1)
+        if match:
+            key = match.group(1)
+        else:
+            key = dct['command']
         self.__modify__reason_message__(code, key, dct)
         if self._session[VERBOSE] < 2:
             # brief output mode

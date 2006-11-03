@@ -131,7 +131,7 @@ class Test(unittest.TestCase):
     
     def test_010(self):
         '3.1 Check na seznam dvou neexistujicich nssetu'
-        handles = (handle_nsset,'neexist002')
+        handles = (handle_nsset,'nssid:neexist002')
         epp_cli.check_nsset(handles)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         for name in handles:
@@ -252,10 +252,10 @@ class Test(unittest.TestCase):
 
     def test_078(self):
         '3.7.8 Check na seznam existujiciho a neexistujicich nssetu'
-        handles = (handle_nsset,'neexist002')
+        handles = (handle_nsset,'nssid:neexist002')
         epp_cli.check_nsset(handles)
         self.assertEqual(epp_cli.is_val(('data',handle_nsset)), 0)
-        self.assertEqual(epp_cli.is_val(('data','neexist002')), 1)
+        self.assertEqual(epp_cli.is_val(('data','nssid:neexist002')), 1)
 
     def test_079(self):
         '3.7.9 Info na existujici nsset a kontrola hodnot'

@@ -97,7 +97,7 @@ NSSET_DNS = (
             {'name': u'ns.pokus2.cz', 'addr': ('217.31.204.131','217.31.204.127')},
         )
 
-class Test(unittest.TestCase):
+class TestDomain(unittest.TestCase):
 
     def setUp(self):
         'Check if cilent is online.'
@@ -284,7 +284,7 @@ class Test(unittest.TestCase):
         self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se nastavit status: %s'%status)
         unitest_share.reset_client(epp_cli)
         # pokus o změnu
-        epp_cli.update_domain(FRED_DOMAIN1, None, None, {'auth_info':{'auth_info':'zmena hesla'}})
+        epp_cli.update_domain(FRED_DOMAIN1, None, None, {'auth_info':'zmena hesla'})
         unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(2,3))
         self.assertNotEqual(epp_cli.is_val(), 1000, 'Domena se aktualizovala, prestoze mela nastaven status %s'%status)
         unitest_share.reset_client(epp_cli)
@@ -371,14 +371,14 @@ class Test(unittest.TestCase):
         
     def test_220(self):
         '4.22 Druhy registrator: Zmena hesla po prevodu domeny'
-        epp_cli_TRANSF.update_domain(FRED_DOMAIN1, None, None, {'auth_info':{'auth_info':FRED_DOMAIN_PASSW}})
+        epp_cli_TRANSF.update_domain(FRED_DOMAIN1, None, None, {'auth_info':FRED_DOMAIN_PASSW})
         self.assertEqual(epp_cli_TRANSF.is_val(), 1000, unitest_share.get_reason(epp_cli_TRANSF))
         
     def test_230(self):
         '4.23 Zmena hesla domeny, ktera registratorovi jiz nepatri'
         global epp_cli_log
         epp_cli_log = epp_cli
-        epp_cli.update_domain(FRED_DOMAIN1, None, None, {'auth_info':{'auth_info':'moje-heslo'}})
+        epp_cli.update_domain(FRED_DOMAIN1, None, None, {'auth_info':'moje-heslo'})
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         
     def test_240(self):
@@ -480,6 +480,6 @@ if __name__ == '__main__':
         print unitest_share.__doc__
     else:
         suite = unittest.TestSuite()
-        suite.addTest(unittest.makeSuite(Test))
+        suite.addTest(unittest.makeSuite(TestDomain))
         unittest.TextTestRunner(verbosity=2).run(suite)
         if log_fp: log_fp.close()

@@ -12,9 +12,13 @@ import unittest
 import fred
 import unitest_share
 
-class Test(unittest.TestCase):
+INVALID_LOGIN = 1
+USERNAME = '' # 'REG-LRR'
+PASSWORD = '' # '123456789'
 
-    def __login__(self, dct):
+class TestLogin(unittest.TestCase):
+
+    def __login__(self, dct, invalid_login=0):
         'Login and logout.'
         code = 0
         error = ''
@@ -28,7 +32,10 @@ class Test(unittest.TestCase):
                     epp_cli.login(dct['username'], dct['password'])
                 code = epp_cli.is_val()
             except fred.FredError, msg:
-                error = 'FredError: %s'%msg
+                if not invalid_login:
+                    # we need error message in case of valid login
+                    # when we try invalid, we havent reseive errors otherwice
+                    error = 'FredError: %s'%msg
         return code, error
 
     def setUp(self):
@@ -44,11 +51,16 @@ class Test(unittest.TestCase):
         unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription())
         unitest_share.reset_client(epp_cli)
 
-    def test_000(self):
+    def test_001(self):
         '1.0 Inicializace spojeni a definovani testovacich handlu'
-        global epp_cli, log_fp
+        global epp_cli, log_fp, USERNAME, PASSWORD
+
         epp_cli = fred.Client()
         epp_cli._epp.load_config()
+        USERNAME = epp_cli._epp.get_config_value(epp_cli._epp._section_epp_login,'username')
+        PASSWORD = epp_cli._epp.get_config_value(epp_cli._epp._section_epp_login,'password')
+        self.assert_(USERNAME, 'USERNAME missing')
+        self.assert_(PASSWORD, 'PASSWORD missing')
         # logovací soubor
         if fred.translate.options['log']: # zapnuti/vypuni ukladani prikazu do logu
             log_fp = open(fred.translate.options['log'],'w')
@@ -56,25 +68,23 @@ class Test(unittest.TestCase):
 
     def test_010(self):
         '1.1 Zalogovani s neexistujicim username'
-        code, error = self.__login__({'username':'neexistuje', 'password':'123456789'})
-        self.assert_(len(error)==0, error)
-        self.assertEqual(code, 2501, unitest_share.get_reason(epp_cli))
+        try:
+            epp_cli.login('neplatne_usernam',PASSWORD) # maximum 16 chars to username
+        except fred.FredError, msg:
+            pass
+        self.assertEqual(epp_cli.is_val(), 2501, unitest_share.get_reason(epp_cli))
 
         
     def test_020(self):
-        '1.2 Zalogovani se spravnym heslem a spravnym otiskem certifikatu'
-        dct = epp_cli._epp.get_default_params_from_config('login')
-        code, error = self.__login__(dct)
-        self.assert_(len(error)==0, error)
-        self.assertEqual(code, 1000, unitest_share.get_reason(epp_cli))
-
-    def test_030(self):
-        '1.3 Zalogovani se spatnym heslem'
-        epp_cli.login('REG-LRR','chybne')
+        '1.2 Zalogovani se spatnym heslem'
+        try:
+            epp_cli.login(USERNAME,'chybne_heslo')
+        except fred.FredError, msg:
+            pass
         self.assertEqual(epp_cli.is_val(), 2501, unitest_share.get_reason(epp_cli))
-
-    def test_040(self):
-        '1.4 Zalogovani se spatnym otiskem certifikatu'
+        
+    def test_030(self):
+        '1.3 Zalogovani se spatnym otiskem certifikatu'
         cert_name = None
         current_section = epp_cli._epp.config_get_section_connect()
         valid_certificat = epp_cli._epp.get_config_value(current_section,'ssl_cert')
@@ -96,6 +106,14 @@ class Test(unittest.TestCase):
         self.assert_(len(error), error)
         self.assertNotEqual(code, 1000, 'Zalogovani proslo s neplatnym certifikatem:\n%s (section: %s)\nplatny je:\n%s.'%(cert_name,current_section,valid_certificat))
 
+    def test_040(self):
+        '1.4 Zalogovani se spravnym heslem a spravnym otiskem certifikatu'
+        dct = epp_cli._epp.get_default_params_from_config('login')
+        code, error = self.__login__(dct)
+        self.assert_(len(error)==0, error)
+        self.assertEqual(code, 1000, unitest_share.get_reason(epp_cli))
+
+        
     def test_050(self):
         '1.5 Zmena hesla tam a zpatky s kontrolnim zalogovanim'
         dct = epp_cli._epp.get_default_params_from_config('login')
@@ -136,7 +154,7 @@ if __name__ == '__main__':
         print unitest_share.__doc__
     else:
         suite = unittest.TestSuite()
-        suite.addTest(unittest.makeSuite(Test))
+        suite.addTest(unittest.makeSuite(TestLogin))
         unittest.TextTestRunner(verbosity=2).run(suite)
         if log_fp: log_fp.close()
 

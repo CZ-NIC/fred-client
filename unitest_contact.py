@@ -28,7 +28,7 @@ import unitest_share
 # FRED_CONTACT[3] - chg (changes)
 CONTACT_PASSWORD_1 = 'mojeheslo'
 CONTACT_PASSWORD_2 = 'nove-heslo'
-CONTACT_HANDLE = 'CID:test001'
+CONTACT_HANDLE = 'CID:test002'
 FRED_CONTACT = [
     {   # template
     'id': '', # (povinný) vaše kontaktní ID
@@ -87,8 +87,6 @@ FRED_CONTACT = [
     },
 ]
 
-## epp_cli._epp._dct_answer
-
 d = FRED_CONTACT[2]
 FRED_CONTACT.append({ # chg part to modify contact
             'postal_info': {
@@ -112,7 +110,7 @@ FRED_CONTACT.append({ # chg part to modify contact
             'notify_email': d['notify_email'],
     })
 
-class Test(unittest.TestCase):
+class TestContact(unittest.TestCase):
 
     def setUp(self):
         'Check if cilent is online.'
@@ -127,7 +125,7 @@ class Test(unittest.TestCase):
         global epp_cli, epp_cli_TRANSF, epp_cli_log, handle_contact, handle_nsset, log_fp
         # Natvrdo definovany handle:
         handle_contact = FRED_CONTACT[1]['id'] # 'neexist01'
-        handle_nsset = 'NSSID:neexist01'
+        handle_nsset = 'NSSID:neexist02'
         # create client object
         epp_cli = fred.Client()
         epp_cli_TRANSF = fred.Client()
@@ -152,7 +150,7 @@ class Test(unittest.TestCase):
     
     def test_010(self):
         '2.1 Check na seznam dvou neexistujicich kontaktu'
-        handles = (handle_contact,'NSSID:neexist002')
+        handles = (handle_contact,'CID:neexist002')
         epp_cli.check_contact(handles)
         for name in handles:
             self.assertEqual(epp_cli.is_val(('data',name)), 1, 'Kontakt existuje: %s'%name)
@@ -185,10 +183,10 @@ class Test(unittest.TestCase):
 
     def test_050(self):
         '2.5 Check na seznam existujiciho a neexistujicich kontaktu'
-        handles = (handle_contact,'NSSID:neexist002')
+        handles = (handle_contact,'CID:neexist002')
         epp_cli.check_contact(handles)
         self.assertEqual(epp_cli.is_val(('data',handle_contact)), 0)
-        self.assertEqual(epp_cli.is_val(('data','NSSID:neexist002')), 1)
+        self.assertEqual(epp_cli.is_val(('data','CID:neexist002')), 1)
 
     def test_060(self):
         '2.6 Info na existujici kontakt a overeni vsech hodnot'
@@ -292,14 +290,14 @@ class Test(unittest.TestCase):
         
     def test_170(self):
         '2.17 Druhy registrator: Zmena hesla po prevodu domeny'
-        epp_cli_TRANSF.update_contact(handle_contact, None, None, {'auth_info':{'auth_info':CONTACT_PASSWORD_1}})
+        epp_cli_TRANSF.update_contact(handle_contact, None, None, {'auth_info':CONTACT_PASSWORD_1})
         self.assertEqual(epp_cli_TRANSF.is_val(), 1000, unitest_share.get_reason(epp_cli_TRANSF))
         
     def test_180(self):
         '2.18 Zmena hesla kontaktu, ktery registratorovi jiz nepatri'
         global epp_cli_log
         epp_cli_log = epp_cli
-        epp_cli.update_contact(handle_contact, None, None, {'auth_info':{'auth_info':'moje-heslo2'}})
+        epp_cli.update_contact(handle_contact, None, None, {'auth_info':'moje-heslo2'})
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         
     def test_190(self):
@@ -370,6 +368,7 @@ def __info_contact__(prefix, cols, scope, key=None, pkeys=[]):
     #--------------------------------
     for k,v in cols.items():
         if k == 'notify_email': k = 'notifyEmail'
+        if k == 'auth_info': k = 'pw'
         key = '%s:%s'%(prefix,k)
         if k == 'disclose':
             err, vals, v = __compare_disclose__(cols['disclose'], data.get('contact:disclose',[]), data.get('contact:hide',[]))
@@ -403,14 +402,13 @@ def __info_contact__(prefix, cols, scope, key=None, pkeys=[]):
 epp_cli, epp_cli_TRANSF, epp_cli_log, log_fp, log_step, handle_contact, handle_nsset = (None,)*7
 
 if __name__ == '__main__':
-##if 0:
     if fred.translate.option_errors:
         print fred.translate.option_errors
     elif fred.translate.options['help']:
         print unitest_share.__doc__
     else:
         suite = unittest.TestSuite()
-        suite.addTest(unittest.makeSuite(Test))
+        suite.addTest(unittest.makeSuite(TestContact))
         unittest.TextTestRunner(verbosity=2).run(suite)
         if log_fp: log_fp.close()
 
