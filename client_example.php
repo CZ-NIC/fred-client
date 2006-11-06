@@ -3,13 +3,13 @@ $size = 60; // size of inputs
 $indent_data=50; // indent column of data
 
 $exec_path = ''; // Here you can write path to the app
-$exec_path = '/home/zdenek/enum/epp_client/trunk/'; // TEST
+// $exec_path = '/home/zdenek/enum/epp_client/trunk/'; // TEST
 
 // Here you define where exe saves PHP code with answer data:
 $php_module_name = '/tmp/fred_client.php';
 
 $command_options = ''; // here you can type some options. For more see ./fred_client.py --help
-$command_options = '-s andromeda -f /home/zdenek/.fred_client.conf'; // TEST
+// $command_options = '-s andromeda -f /home/zdenek/.fred_client.conf'; // TEST
 
 define('CRLF', "\r\n");
 define('BR', "<br />\r\n");

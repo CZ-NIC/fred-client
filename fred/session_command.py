@@ -204,14 +204,10 @@ sources ad advance, transmited between client and server.
                 # params: (name, description)
                 if len(params):
                     if required:
-##                        options = ' %s'%' '.join(params[:required])
-##                        if len(params)-1 > required: # -1 because first item is param name
-##                            options += ' [%s]'%_T('optional')
                         options = ' %s'%params[0]
                     else:
                         options = ' [%s]'%params[0]
                     name = ('%s%s:'%(space,params[0])).ljust(self._ljust+3) # bracket and space '(required) '
-##                    command_help = '%s%s'%(name,', '.join(params[1:]))
                     command_help = '%s%s'%(name,params[1])
                 command_lines = map(lambda name: '%s%s'%(name,options), names)
                 break
@@ -681,7 +677,6 @@ if __name__ == '__main__':
     # Test
     m = ManagerCommand()
     m._session[0]=1 # login simulation
-##    command_name, xml, stop = m.create_eppdoc('create_contact reg-id "John Doe" jon@mail.com "New York" US "Example Inc." ("Yellow harbor" "Blueberry hill") VA 20166-6503 +1.7035555555 +1.7035555556 (0 d-name "d org." "street number city" +21321313 +734321 info@buzz.com) vat-test ssn-test notify@here.net')
     # Test na disclose
     disclose = "(n (org fax email))"
     print 'disclose:',disclose

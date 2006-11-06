@@ -48,7 +48,7 @@ class ManagerTransfer(ManagerBase):
         self._dict_answer = '' # dict - slovník vytvořený z XML EPP odpovědi
         self._dct_answer = {'code':0,'command':'',  'reason':'', 'errors':[], 'data':{}} # API response
         # Set output SORT BY and VEROBOSE names:
-        if self._session[TRANSLATE_ANSWER_COLUMN_NAMES]:
+        if self._session[TRANSLATE_ANSWER_COLUMN_NAMES] and not len(self._session[SORT_BY_COLUMNS]):
             # Default is 1 (display column names). Zero is used for TEST (display column keys).
             self._session[SORT_BY_COLUMNS] = self._epp_cmd.get_sort_by_names(self._command_sent)
 
@@ -86,8 +86,17 @@ class ManagerTransfer(ManagerBase):
         epp_xml = eppdoc_client.Message()
         epp_xml.parse_xml(message)
         err = epp_xml.fetch_errors()
-        if len(err): self._errors.append(err)
-        return epp_xml.get_epp_command_name()
+        command_name = epp_xml.get_epp_command_name()
+        if len(err):
+            self._errors.append(err)
+        else: 
+            match = re.match('(\w+):check',command_name) # domain:check
+            if match:
+                names = epp_xml.get_check_names(match.group(1))
+                if len(names):
+                    # makte struct (key, verbose, description)
+                    self._session[SORT_BY_COLUMNS] = map(lambda s: (s,1,s), names)
+        return command_name
 
     #==================================================
     #
@@ -280,11 +289,6 @@ class ManagerTransfer(ManagerBase):
         'Returns struct of key names for sorting output values lines.'
         if self._session[SORT_BY_COLUMNS]:
             sorted_columns = self._session[SORT_BY_COLUMNS] # sorted output (included in create command part)
-##        elif re.match('\w+:check',command_name):
-##            # exeption for all check commands
-##            keys = dct_data.keys()
-##            keys.sort() # sorting alphabetical
-##            sorted_columns = map(lambda n:(n,1,''), keys) # sorted by keys
         else:
             sorted_columns = map(lambda n:(n,1,''), dct_data.keys()) # default (unsorted)
         return sorted_columns
@@ -319,8 +323,6 @@ class ManagerTransfer(ManagerBase):
                     # join is done in function __answer_response_check__() in module session_receiver.py
                     # pref:key 0
                     # pref:key:reason 'message'
-                    ## if type(value) is int: continue
-                    ## key = re.sub(':reason','',key)
                     value = dct_data.get(key+':reason',u'')
                 __append_into_report__(data,key,value,explain,self._ljust,data_indent)
             used.append(key)
@@ -330,11 +332,11 @@ class ManagerTransfer(ManagerBase):
         #--- INTERNAL USE ----
         # POZOR!!! V ostré verzi musí být deaktivováno!!!
         # ALERT!!! MUST be disabled in release version!!!
-        if self._session[SORT_BY_COLUMNS] and not is_check:
-            # in mode SORT_BY_COLUMNS check if all names was used
-            missing = [k for k in dct_data.keys() if k not in used and dct_data[k][0] >= self._session[VERBOSE]]
-            if len(missing):
-                body.append(colored_output.render('\n${BOLD}${RED}Here needs FIX code: %s${NORMAL}'%'(%s)'%', '.join(missing)))
+        #if self._session[SORT_BY_COLUMNS] and not is_check:
+        #    # in mode SORT_BY_COLUMNS check if all names was used
+        #    missing = [k for k in dct_data.keys() if k not in used and dct_data[k][0] >= self._session[VERBOSE]]
+        #    if len(missing):
+        #        body.append(colored_output.render('\n${BOLD}${RED}Here needs FIX code: %s${NORMAL}'%'(%s)'%', '.join(missing)))
         #---------------------
 
     def __modify__reason_message__(self, code, key, dct):
@@ -502,7 +504,6 @@ $fred_source_answer = '';      // source code (XML) of the answer prepared to di
         if not dct: dct = self._dct_answer
         body=[]
         report = body.append
-##        report('<?php')
         report("$fred_encoding = %s; // used encoding"%php_string(encoding))
         #... code and reason .............................
         code = dct['code']
@@ -540,7 +541,6 @@ $fred_source_answer = '';      // source code (XML) of the answer prepared to di
             report("$fred_source_command = '';")
             report("$fred_source_answer = '';")
         # ..............
-##        report('?>')
         return  '\n'.join(body)
 
     def print_tag(self, pos):

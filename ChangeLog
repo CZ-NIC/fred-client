@@ -1,0 +1,30 @@
+FredClient 1.0.0
+
+
+Nové funkce:
+    * zavedení "žádné" a "prázdné" hodnoty v zadávání paramterů příkazů
+      (hodnota '' má nyní jiný význam: není to již žádná hodnota, ale hodnota o nulové délce
+       podrobnosti jsou README)
+    * možnost zadání vlastní hodnoty clTRID
+    * zadávání parametrů pro připojení při spuštění klienta
+    * zavedeny zkratky pro statusy: clientDeleteProhibited -> cdp atd.
+    * možnost nastavení typu socketu
+    * automaticke zalogovani pro spusteni klienta (lze vypnout)
+    * podpora integrace s PHP (vývojová verze)
+
+Změny:
+    * změny v povinných a nepovinných parametrech příkazů: Všechny položky password
+      u contact, nsset, a domain byly přejmenovány na auth_info a jsou nyní nepovinné.
+    * úprava zobrazování výstupních hodnot
+    * zobrazování názvů ve sloupci návratových hodnot
+    * přehlednější help
+    * úprava interaktivního režimu vkládání parametrů
+    * úprava doplňování příkazu v příkazové řádce
+    * změna v zapojení fred_create.py do roury; nyní je možné skriptu předat
+      soubor s příkazy, každý na samostatném řádku
+
+Opravy:
+    * doplění chybějící hodnoty domain:valExDate (Validace platná do) v info_domain
+    * oprava ukládání historie příkazů
+    * oprava parsování hodnoty pojmenovaného parametru
+

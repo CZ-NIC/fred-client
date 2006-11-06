@@ -1,6 +1,7 @@
 global-include README*.*
 global-exclude test_*.*
 include INSTALL
+include ChangeLog
 include client_example.php
 include config_example.txt
 include fred/CREDITS
@@ -9,6 +10,6 @@ graft fred/schemas
 graft fred/lang
 prune .svn
 prune fred/.svn
-prune guiqt/.svn
-include guiqt/*.ts
-include guiqt/*.qm
+# prune guiqt/.svn
+# include guiqt/*.ts
+# include guiqt/*.qm

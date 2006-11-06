@@ -1,7 +1,7 @@
-# Example of configuration file.
-# Modify line with schema and dir=... set real path of your files.
-# and save into /etc/fred_client.conf or ~/.fred_client.conf
-#
+; Example of configuration file.
+; Modify line with schema=... and dir=... set real path of your files.
+; and save into /etc/fred_client.conf or ~/.fred_client.conf
+;
 
 [connect]
 dir=/home/username/certificates
@@ -11,18 +11,18 @@ ssl_cert = %(dir)s/certificate.pem
 ssl_key  = %(dir)s/private_key.pem
 username = MYUSERNAME
 password = MYPASSWORD
-timeout = 10.0      # socket timeout in sec.
-# socket = IPv6     # Force socket type. Valid values are: IPv4 and IPv6. 
-                    # othervice used type from offer of the server
-# nologin = y       # turn off automatic login process after start up
+timeout = 10.0      ; socket timeout in sec.
+; socket = IPv6     ; Force socket type. Valid values are: IPv4 and IPv6. 
+                    ; othervice used type from offer of the server
+; nologin = y       ; turn off automatic login process after start up
 
 [session]
-schema = $python-site-packages/fred/schemas/all-1.0.xsd
-poll_autoack = off           # send "poll ack" right after to "poll req"
-confirm_send_commands = on   # confirm all editable commands
-validate = on                # enable/disable xmllint
-colors = yes                 # display colors on tty console
-verbose = 2                  # set verbose level 1,2,3
-# lang = en                  # if lang is not set, ti used value from os.environ.LANG
-# null_value = None          # substitution of NULL value
-# auto_login = off           # disable automatic login after start client (default is ON)
+schema = %(python-site-packages)s/fred/schemas/all-1.0.xsd
+poll_autoack = off           ; send "poll ack" right after to "poll req"
+confirm_send_commands = on   ; confirm all editable commands
+validate = on                ; enable/disable xmllint
+colors = yes                 ; display colors on tty console
+verbose = 2                  ; set verbose level 1,2,3
+; lang = en                  ; if lang is not set, ti used value from os.environ.LANG
+; null_value = None          ; substitution of NULL value
+; auto_login = off           ; disable automatic login after start client (default is ON)

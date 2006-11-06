@@ -211,6 +211,17 @@ class Message:
                     name = node.nodeName.lower()
         return name
 
+    def get_check_names(self, type):
+        'Returs list of names from object:check commands. It can be used for sorting.'
+        names=[]
+        if not self.dom: return names
+        node_name = type == 'domain' and 'domain:name' or '%s:id'%type
+        # <command> <check> <domain:check> <domain:name>
+        for node in self.dom.getElementsByTagName(node_name):
+            if node.nodeType == Node.ELEMENT_NODE and len(node.childNodes):
+                names.append(node.childNodes[0].nodeValue)
+        return names
+        
     #====================================
     # Parse to Dict / Data class
     #====================================

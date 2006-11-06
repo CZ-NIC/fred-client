@@ -83,6 +83,8 @@ def send_docs(display_bar, docs=[]):
     for code, xmldoc in docs:
         epp.reset_round()
         if code:
+            # Returns command name from XML doc,
+            # for check_* commands also grab list of names for sorting output
             command_name = epp.grab_command_name_from_xml(xmldoc)
             if len(command_name):
                 if command_name in ('hello','login'):
@@ -99,9 +101,7 @@ def send_docs(display_bar, docs=[]):
                     epp.send(xmldoc)          # send to server
                     xml_answer = epp.receive()     # receive answer
                     epp.process_answer(xml_answer) # process answer
-##                    epp.print_tag(END)
                     epp.print_answer()
-##                    epp.print_tag(BEGIN)
             epp.display() # display errors or notes
         else:
             if not display_bar: print "ERRORS:",xmldoc

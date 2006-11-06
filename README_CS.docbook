@@ -989,6 +989,11 @@ Skript může odesílat dokumenty dvěma způsoby:
 <title id="output_types.title">Integrace klienta do PHP kódu</title>
 
 <para>
+Pozor! Rozšíření klienta o podporu PHP je v této verzi ve vývojovém a testovacím stádiu.
+Finální řešení se může od tohoto vývojového ještě lišit.
+</para>
+
+<para>
 Součástí distribuce klienta je i ukázkový PHP skript, který demonstruje,
 jak lze klienta začlenit do PHP: <emphasis role='bold'>client_example.php</emphasis>.
 V příkladu je nutné správně nastavit cestu ke klientovi <emphasis>$exec_path</emphasis> (pokud ten nebyl nainstalován

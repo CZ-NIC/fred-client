@@ -698,6 +698,9 @@ Kapitola 5. Skripty fred_create.py a fred_sender.py
 
 Kapitola 6. Integrace klienta do PHP kodu
 
+   Pozor! Rozsireni klienta o podporu PHP je v teto verzi ve vyvojovem a
+   testovacim stadiu. Finalni reseni se muze od tohoto vyvojoveho jeste lisit.
+
    Soucasti distribuce klienta je i ukazkovy PHP skript, ktery demonstruje, jak
    lze klienta zaclenit do PHP: client_example.php. V prikladu je nutne
    spravne nastavit cestu ke klientovi $exec_path (pokud ten nebyl nainstalovan

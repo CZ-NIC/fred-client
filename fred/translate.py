@@ -213,6 +213,10 @@ for key,value in langs.items():
     if value:
         try:
             langs[key] = gettext.translation(domain,tpath,(key,), codeset=encoding)
+        except TypeError, msg:
+            print 'ERROR:',msg
+            print 'Unsupported python version. Client supports python version 2.4 and higher.\nThis version is',sys.version
+            sys.exit(1)
         except IOError, (no,msg):
             langs[key] = gettext.NullTranslations() # no translation
             print 'Translate IOError',no,msg,'\nMISSING:','%s/%s/LC_MESSAGES/%s.mo'%(tpath,options['lang'],domain)

@@ -81,7 +81,7 @@ if __name__ == '__main__':
                 _T('EXAMPLES'),
                 """
 ./fred_create.py info_domain nic.cz
-./fred_create.py info_contact reg-id
+./fred_create.py info_contact cid:regid
 echo -en "check_domain nic.cz\\ninfo_domain nic.cz" | ./fred_create.py
 cat file-with-commands.txt | ./fred_create.py
 """,
