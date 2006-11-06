@@ -1,8 +1,4 @@
-FredClient is tool for communicate with EPP server.
-It is aimed to registrants for manage DNS central registry.
-Client is written in Python.
+Copyright (c) 2006 CZ.NIC z.s.p.o. All rights reserved.
 
-For more information see http://www.nic.cz
 Please send bug reports or feature wishes to fred@nic.cz
 
-Copyright (c) 2006 CZ.NIC z.s.p.o. All rights reserved.
