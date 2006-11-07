@@ -131,7 +131,15 @@ table#command  { border-collapse: collapse; }
 </head>
 <body>
 
-<h1>Example of using cceg_client.</h1>
+<h1>Example of using fred_client.</h1>
+
+<p style="font-size:80%"><i>Note:</i> For running this example:</p>
+<ul style="font-size:80%">
+<li>Place this example to your www folder.</li>
+<li>You have to install <strong>fred_client</strong> properly or use <strong>$exec_path</strong> instead..</li>
+<li>Your configuration file must be in <strong>/etc</strong> or use <strong>$command_options</strong> instead.</li>
+</ul>
+
 
 <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 

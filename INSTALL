@@ -32,13 +32,12 @@ Usage : xmllint [options] XMLfiles ... / bash: xmllint: command not found
 Instalace FredClient programu se provede nasledovne:
 
     $ tar -xf FredClient-1.0.0.tar.gz        - rozbalite archiv
-    $ cd FredClient-1.1                      - prejdete se do vznikleho adresare
-    $ sudo .install.sh                       - spustite instalaci (musite mit prava roota)
-
+    $ cd FredClient-1.0.0                    - prejdete se do vznikleho adresare
+    $ sudo ./install.sh                      - spustite instalaci (musite mit prava roota)
 
 Tim je instalace dokoncena. Klienta spustite prikazem:
 
-    $ ./fred_client.py
+    $ fred_client.py
 
 
 Program lze spustit i bez instalace primo z daneho adresare. Nebo lze instalaci
@@ -46,4 +45,11 @@ provest s vlastnim nastavenim. Viz help:
 
     $ python setup.py --help install
 
+
+
+** Odinstalovani:
+
+Program se ze systemu odinstaluje prikazem:
+
+    $ sudo ./uninstall.py
 

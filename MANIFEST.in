@@ -4,6 +4,7 @@ global-exclude test_*.*
 global-exclude *.*~
 include INSTALL
 include install.sh
+include uninstall.py
 include ChangeLog
 include fred_client_sample.conf
 include fred/CREDITS
@@ -12,6 +13,7 @@ graft fred/schemas
 graft fred/lang
 prune .svn
 prune fred/.svn
+prune  qt3doc
 # prune guiqt/.svn
 # include guiqt/*.ts
 # include guiqt/*.qm
