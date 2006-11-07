@@ -3,7 +3,7 @@ $size = 60; // size of inputs
 $indent_data=50; // indent column of data
 
 $exec_path = ''; // Here you can write path to the app
-// $exec_path = '/home/zdenek/enum/epp_client/trunk/'; // TEST
+// $exec_path = 'python /home/zdenek/enum/epp_client/trunk/'; // TEST
 
 // Here you define where exe saves PHP code with answer data:
 $php_module_name = '/tmp/fred_client.php';
@@ -232,7 +232,7 @@ while(is_array($_POST['send'])) {
 
     if(!$handle and !in_array($command,$ar_no_handler)) $errors[] = 'Handle missing.';
     // check if fred_client exist
-    $cmdline = 'python '.$exec_path.'fred_client.py -V';
+    $cmdline = $exec_path.'fred_client.py -V';
     $ar_retval = array();
     exec($cmdline, $ar_retval);
     $retval = join('\n',$ar_retval);
@@ -259,7 +259,7 @@ while(is_array($_POST['send'])) {
     else $fred_command = "$command $handle";
     if($_POST['output']=='html') {
         //--- HTML ---------------------------------
-        $cmdline = 'python '.$exec_path."fred_client.py ".$command_options." -x -v $_POST[verbose] -o html -d '$fred_command'";
+        $cmdline = $exec_path."fred_client.py ".$command_options." -x -v $_POST[verbose] -o html -d '$fred_command'";
         // See, what looks command line:
         // echo "<div class='output'><p class='command'>$cmdline</p></div>".CRLF;
         echo '<div id="fred_output">'.CRLF;
@@ -268,7 +268,7 @@ while(is_array($_POST['send'])) {
         //-----------------------------------------
     } else {
         //--- PHP ---------------------------------
-        $cmdline = 'python '.$exec_path."fred_client.py ".$command_options." -x -v $_POST[verbose] -o php -d '$fred_command' > $php_module_name";
+        $cmdline = $exec_path."fred_client.py ".$command_options." -x -v $_POST[verbose] -o php -d '$fred_command' > $php_module_name";
         // See, what looks command line:
         if($TEST) echo "<br/>Command:<div class='output'><p class='command'>$cmdline</p></div>".CRLF;
 

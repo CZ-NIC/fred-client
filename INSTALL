@@ -33,7 +33,7 @@ Instalace FredClient programu se provede nasledovne:
 
     $ tar -xf FredClient-1.0.0.tar.gz        - rozbalite archiv
     $ cd FredClient-1.1                      - prejdete se do vznikleho adresare
-    $ sudo python setup.py install           - spustite instalaci (musite mit prava roota)
+    $ sudo .install.sh                       - spustite instalaci (musite mit prava roota)
 
 
 Tim je instalace dokoncena. Klienta spustite prikazem:

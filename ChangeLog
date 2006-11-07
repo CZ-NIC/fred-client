@@ -1,30 +1,31 @@
 FredClient 1.0.0
 
 
-Nové funkce:
-    * zavedení "žádné" a "prázdné" hodnoty v zadávání paramterů příkazů
-      (hodnota '' má nyní jiný význam: není to již žádná hodnota, ale hodnota o nulové délce
+Nove funkce:
+    * zavedeni "zadne" a "prazdne" hodnoty v zadavani paramteru prikazu
+      (hodnota '' ma nyni jiny vyznam: neni to jiz zadna hodnota, ale hodnota o nulove delce
        podrobnosti jsou README)
-    * možnost zadání vlastní hodnoty clTRID
-    * zadávání parametrů pro připojení při spuštění klienta
+    * moznost zadani vlastni hodnoty clTRID
+    * zadavani parametru pro pripojeni pri spusteni klienta
     * zavedeny zkratky pro statusy: clientDeleteProhibited -> cdp atd.
-    * možnost nastavení typu socketu
+    * moznost nastaveni typu socketu
     * automaticke zalogovani pro spusteni klienta (lze vypnout)
-    * podpora integrace s PHP (vývojová verze)
+    * podpora integrace s PHP (vyvojova verze)
 
-Změny:
-    * změny v povinných a nepovinných parametrech příkazů: Všechny položky password
-      u contact, nsset, a domain byly přejmenovány na auth_info a jsou nyní nepovinné.
-    * úprava zobrazování výstupních hodnot
-    * zobrazování názvů ve sloupci návratových hodnot
-    * přehlednější help
-    * úprava interaktivního režimu vkládání parametrů
-    * úprava doplňování příkazu v příkazové řádce
-    * změna v zapojení fred_create.py do roury; nyní je možné skriptu předat
-      soubor s příkazy, každý na samostatném řádku
+Zmeny:
+    * zmeny v povinnych a nepovinnych parametrech prikazu: Vsechny polozky password
+      u contact, nsset, a domain byly prejmenovany na auth_info a jsou nyni nepovinne.
+    * uprava zobrazovani vystupnich hodnot
+    * zobrazovani nazvu ve sloupci navratovych hodnot
+    * prehlednejsi help
+    * uprava interaktivniho rezimu vkladani parametru
+    * uprava doplnovani prikazu v prikazove radce
+    * zmena v zapojeni fred_create.py do roury; nyni je mozne skriptu predat
+      soubor s prikazy, kazdy na samostatnem radku
 
 Opravy:
-    * doplění chybějící hodnoty domain:valExDate (Validace platná do) v info_domain
-    * oprava ukládání historie příkazů
-    * oprava parsování hodnoty pojmenovaného parametru
+    * dopleni chybejici hodnoty domain:valExDate (Validace platna do) v info_domain
+    * oprava ukladani historie prikazu
+    * oprava parsovani hodnoty pojmenovaneho parametru
+
 

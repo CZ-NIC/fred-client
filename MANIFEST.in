@@ -1,6 +1,7 @@
 global-include doc/*.*
 global-include extras/*.py
 global-exclude test_*.*
+global-exclude *.*~
 include INSTALL
 include install.sh
 include ChangeLog

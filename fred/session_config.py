@@ -36,17 +36,19 @@ def load_default_config(config_name):
     'Load default config. First try home than etc.'
     config = ConfigParser.SafeConfigParser()
     # first try home
-    error, names = load_config(config, os.path.join(os.path.expanduser('~'),config_name))
-    if error:
+    error, names, missing = load_config(config, os.path.join(os.path.expanduser('~'),config_name))
+    if missing:
         # than try etc
-        error, names = load_config(config, get_etc_config_name(config_name[1:]))
+        error, names, missing = load_config(config, get_etc_config_name(config_name[1:]))
     return config, error, names
 
 def load_config(config, filename):
     "Load config file and init internal variables. Returns 0 if fatal error occured."
+    missing = 1
     error = ''
     names = []
     if os.path.isfile(filename):
+        missing = 0
         try:
             # If you wand use mode config, uncomment next line and comment line after it.
             # names = config.read([modul_conf, glob_conf, os.path.join(os.path.expanduser('~'),config_name)])
@@ -56,7 +58,7 @@ def load_config(config, filename):
             config = None
     #else:
     #    error = "Configuration file '%s' not found."%filename
-    return error, names
+    return error, names, missing
 
 def get_config_value(config, section, option, omit_errors=0):
     'Get value from config and catch exceptions.'
