@@ -5,16 +5,16 @@
 """
 import sys, re
 from cgi import escape as escape_html
-import fred
-from fred.translate import options, option_args, config_error, encoding
+from __init__ import ClientSession, check_python_version
+from session_transfer import php_string
+from translate import options, option_args, encoding
 
 epp = None
-php_string = fred.session_transfer.php_string
 
-def main(options):
+def run_creation(options):
     global epp
     if epp is None:
-        epp = fred.ClientSession()
+        epp = ClientSession()
         epp.load_config()
         epp.set_auto_connect(0) # set OFF auto connection
     command_name, epp_doc, stop = epp.create_eppdoc(options['command'])
@@ -40,8 +40,8 @@ def display(epp_doc, str_error):
     else:
         print epp_doc
   
-if __name__ == '__main__':
-    msg_invalid = fred.check_python_version()
+def main():
+    msg_invalid = check_python_version()
     if msg_invalid:
         print msg_invalid
     else:
@@ -50,7 +50,7 @@ if __name__ == '__main__':
                 command = cmd.strip()
                 if command:
                     options['command'] = command
-                    epp_doc, str_error = main(options)
+                    epp_doc, str_error = run_creation(options)
                     display(epp_doc, str_error)
         elif len(sys.argv) > 1:
             command = ' '.join(option_args)
@@ -67,13 +67,13 @@ if __name__ == '__main__':
                         max = int(m.group(3))
                     for n in range(min,max):
                         options['command'] = re.sub(anchor,'%s%d'%(anchor,n),command)
-                        epp_doc, str_error = main(options)
+                        epp_doc, str_error = run_creation(options)
                         display(epp_doc, str_error)
                 else:
                     print "<?xml encoding='utf-8'?><errors>Invalid range pattern: %s</errors>"%options['range']
             else:
                 options['command'] = command
-                epp_doc, str_error = main(options)
+                epp_doc, str_error = run_creation(options)
                 display(epp_doc, str_error)
         else:
             print '%s: %s command params\n\n%s\n\n%s%s\n\n  %s\n'%(_T('Usage'), 'fred_create.py',
@@ -87,3 +87,6 @@ cat file-with-commands.txt | ./fred_create.py
 """,
                 _T('For more information, see README.')
                 )
+
+if __name__ == '__main__':
+    main()

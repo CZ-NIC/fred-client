@@ -1,30 +1,25 @@
-# -*- coding: utf8 -*-
-# Tento dokument je ulozen v kodovani UTF-8.
-
-
-
 Instalace FredClient
 
 
 
-** Požadavky na systém:
+** Pozadavky na system:
 
-FredClient je napsán v jazyce Python. Pokud se ve vašem systému Python nenachází, 
-tak si jej nainstalujte. Instalační soubory jsou v obvyklých repozitářích 
-nebo na www.python.org. Pro běh skriptů potřebujete Python verzi 2.4 (nevo vyšší).
+FredClient je napsan v jazyce Python. Pokud se ve vasem systemu Python nenachazi, 
+tak si jej nainstalujte. Instalacni soubory jsou v obvyklych repozitarich 
+nebo na www.python.org. Pro beh skriptu potrebujete Python verzi 2.4 (nevo vyssi).
 
-Existenci Pythonu a jeho verze si ověříte tak, že na příkazové řádce zadáte příkaz:
+Existenci Pythonu a jeho verze si overite tak, ze na prikazove radce zadate prikaz:
 
     $ python
 
-Vypíše se verze: Python 2.4.3 (...). Běh ukončíte Ctrl+D (nebo Ctrl+Z na Win), která
-sekvence to je vám vypíše příkaz exit nebo quit.
+Vypise se verze: Python 2.4.3 (...). Beh ukoncite Ctrl+D (nebo Ctrl+Z na Win), ktera
+sekvence to je vam vypise prikaz exit nebo quit.
 
 
-FredClient používá "xmllint" pro validaci XML. Tento program ale není
-nutnou podmínkou funkčnosti klienta. Pokud se v systému nenachází, tak 
-se ověřování automaticky vypne. Jestli máte xmllint instalován, zjistíte zadáním
-příkazu na příkatové řádce (vypíše se help nebo hlášení, že příkaz je neznámý):
+FredClient pouziva "xmllint" pro validaci XML. Tento program ale neni
+nutnou podminkou funkcnosti klienta. Pokud se v systemu nenachazi, tak 
+se overovani automaticky vypne. Jestli mate xmllint instalovan, zjistite zadanim
+prikazu na prikatove radce (vypise se help nebo hlaseni, ze prikaz je neznamy):
 
     $ xmllint
 
@@ -34,20 +29,21 @@ Usage : xmllint [options] XMLfiles ... / bash: xmllint: command not found
 
 ** Instalace:
 
-Instalace FredClient programu se provede následovně:
+Instalace FredClient programu se provede nasledovne:
 
-    $ tar -xf FredClient-1.0.0.tar.gz        - rozbalíte archiv
-    $ cd FredClient-1.1                      - přejdete se do vzniklého adresáře
-    $ sudo python setup.py install           - spustíte instalaci (musíte mít práva roota)
+    $ tar -xf FredClient-1.0.0.tar.gz        - rozbalite archiv
+    $ cd FredClient-1.1                      - prejdete se do vznikleho adresare
+    $ sudo python setup.py install           - spustite instalaci (musite mit prava roota)
 
 
-Tím je instalace dokončena. Klienta spustíte příkazem:
+Tim je instalace dokoncena. Klienta spustite prikazem:
 
     $ ./fred_client.py
 
 
-Program lze spustit i bez instalace přímo z daného adresáře. Nebo lze instalaci
-provést s vlastním nastavením. Viz help:
+Program lze spustit i bez instalace primo z daneho adresare. Nebo lze instalaci
+provest s vlastnim nastavenim. Viz help:
 
     $ python setup.py --help install
+
 

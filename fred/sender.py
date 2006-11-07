@@ -3,10 +3,12 @@
 """Send any file (EPP XML) to the EPP server.
 """
 import sys, os, re, time
-import fred
-from fred.session_receiver import FredError
-from fred.session_transfer import BEGIN, END
-from fred.translate import options, option_errors, option_args
+import terminal_controler
+from __init__ import ClientSession, check_python_version
+from session_base import get_ltext, colored_output
+from session_receiver import FredError
+from session_transfer import BEGIN, END
+from translate import options, option_errors, option_args
 
 def __auto_login__(epp, verbose):
     'Do login'
@@ -18,7 +20,7 @@ def __auto_login__(epp, verbose):
         ok = 0
         dansw={}
     if dansw.get('code',0) != 1000:
-        epp.append_error(fred.session_base.get_ltext(dansw.get('reason',_T('Login failed'))))
+        epp.append_error(session_base.get_ltext(dansw.get('reason',_T('Login failed'))))
     epp.display()
     return ok
 
@@ -52,7 +54,7 @@ def send_docs(display_bar, docs=[]):
     #-------------------------------------------------
     # Inicializace klienta
     #-------------------------------------------------
-    epp = fred.ClientSession()
+    epp = ClientSession()
     if not epp.load_config(): return
     
     if len(options['verbose']):
@@ -104,9 +106,10 @@ def send_docs(display_bar, docs=[]):
                     epp.print_answer()
             epp.display() # display errors or notes
         else:
-            if not display_bar: print "ERRORS:",xmldoc
+            if not display_bar:
+                print epp.get_formated_message(xmldoc,1) # 0 - note, 1 - ERROR
         if display_bar:
-            if bar is None: bar = fred.terminal_controler.ProgressBar(fred.session_base.colored_output,bar_header)
+            if bar is None: bar = terminal_controler.ProgressBar(colored_output,bar_header)
             bar.clear()
             bar.update(bar_pos, _T('sending...'))
             bar_pos += bar_step
@@ -128,8 +131,8 @@ def send_docs(display_bar, docs=[]):
             pass # print 'ERROR:',msg
         #epp.print_answer()
 
-if __name__ == '__main__':
-    msg_invalid = fred.check_python_version()
+def main():
+    msg_invalid = check_python_version()
     if msg_invalid:
         print msg_invalid
     else:
@@ -139,7 +142,7 @@ if __name__ == '__main__':
             if not options['help'] and len(sys.argv) > 1:
                 send_docs(options['bar']) # commands from argv
             else:
-                from fred_console import help_option
+                from console import help_option
                 print '%s: %s [OPTIONS] [filenames]\n\n%s\n%s\n%s\n%s:\n%s\n\n%s\n'%(_T('Usage'), 'fred_sender.py',
                 _T('Module for sending files to the EPP server.'),
                 help_option,
@@ -154,3 +157,6 @@ if __name__ == '__main__':
     
   echo -en "check_domain nic.cz\\ninfo_domain nic.cz" | ./fred_create.py | ./fred_sender.py""",
    _T('For more information, see README.'))
+
+if __name__ == '__main__':
+    main()

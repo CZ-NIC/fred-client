@@ -1,9 +1,10 @@
-global-include README*.*
+global-include doc/*.*
+global-include extras/*.py
 global-exclude test_*.*
 include INSTALL
+include install.sh
 include ChangeLog
-include client_example.php
-include config_example.txt
+include fred_client_sample.conf
 include fred/CREDITS
 include fred/LICENSE
 graft fred/schemas

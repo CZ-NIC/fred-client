@@ -3,17 +3,14 @@
 # localization in lang folder.
 # OUTPUT OBJECTS:
 # ------------------------------------
-# config        - ConfigParser object
 # options       - dict with options values
 # option_errors - (str) error occured during parse config and options
-# config_error  - error occured during parse config
 # warning       - message about solved problems
 # ------------------------------------
 import __builtin__
 import os, sys, re
 import getopt
 import gettext
-import ConfigParser
 
 def find_valid_encoding():
     """Find valid encoding in system, where sys.stdout.encodig doesnt be right value.
@@ -33,67 +30,6 @@ def find_valid_encoding():
         #On the POSIX systems set locale to LANG=cs_CZ.UTF-8.
         valid_charset = sys.stdout.encoding
     return valid_charset,warning
-
-def load_config_from_file(filename):
-    'Load config file from specifiend filename only.'
-    config = ConfigParser.SafeConfigParser()
-    error = ''
-    names = []
-    filename = os.path.expanduser(filename)
-    if os.path.isfile(filename):
-        try:
-            config.read(filename)
-        except (ConfigParser.MissingSectionHeaderError, ConfigParser.ParsingError), msg:
-            error = 'ConfigParserError: %s'%str(msg)
-        else:
-            names.append(filename)
-    else:
-        error = "Configuration file '%s' not found."%filename
-    return config, error, names
-
-def get_etc_config_name(name):
-    'Returns shared folder depends on OS type.'
-    if os.name == 'posix':
-        glob_conf = '/etc/%s'%name
-    else:
-        # ALLUSERSPROFILE = C:\Documents and Settings\All Users
-        glob_conf = os.path.join(os.path.expandvars('$ALLUSERSPROFILE'),name)
-    return glob_conf
-    
-def load_default_config(config_name):
-    'Load default config. First try home than etc.'
-    config = ConfigParser.SafeConfigParser()
-    # first try home
-    error, names = load_config(config, os.path.join(os.path.expanduser('~'),config_name))
-    if error:
-        # than try etc
-        error, names = load_config(config, get_etc_config_name(config_name[1:]))
-    return config, error, names
-
-def load_config(config, filename):
-    "Load config file and init internal variables. Returns 0 if fatal error occured."
-    error = ''
-    names = []
-    if os.path.isfile(filename):
-        try:
-            # If you wand use mode config, uncomment next line and comment line after it.
-            # names = config.read([modul_conf, glob_conf, os.path.join(os.path.expanduser('~'),config_name)])
-            names = config.read(filename)
-        except (ConfigParser.MissingSectionHeaderError, ConfigParser.ParsingError), msg:
-            error = 'ConfigParserError: %s'%str(msg)
-            config = None
-    #else:
-    #    error = "Configuration file '%s' not found."%filename
-    return error, names
-
-def get_config_value(config, section, option, omit_errors=0):
-    'Get value from config and catch exceptions.'
-    value = error = ''
-    try:
-        value = config.get(section,option)
-    except (ConfigParser.NoSectionError, ConfigParser.NoOptionError, ConfigParser.InterpolationMissingOptionError), msg:
-        if not omit_errors: error = 'ConfigError: %s (%s, %s)'%(msg,section,option)
-    return value, error
 
 def get_valid_lang(code, type_of_value):
     available_langs = langs.keys()
@@ -115,7 +51,7 @@ def install_translation(lang):
 # INIT options:
 #---------------------------
 app_name = 'FredClient'
-config_name = '.fred_client.conf'
+##config_name = '.fred_client.conf'
 domain = 'fred_client' # gettext translate domain
 langs = {'en': 0, 'cs': 1} # 0 - no translate, 1 - make translation
 default_lang = 'en'
@@ -177,22 +113,6 @@ if len(sys.argv) > 1:
                     else:
                         options[key] = v
 
-#---------------------------
-# LOAD CONFIG
-#---------------------------
-if options['config']:
-    config, config_error, config_names = load_config_from_file(options['config'])
-else:
-    config, config_error, config_names = load_default_config(config_name)
-if config and not options['lang']:
-    key, error = get_config_value(config, 'session','lang',1)
-    if error:
-        errors.append(error)
-    elif key:
-        options['lang'], error = get_valid_lang(key, 'configuration file')
-        if error: errors.append(error)
-
-
 if not len(options['lang']):
     # set language from environ
     code = os.environ.get('LANG') # 'cs_CZ.UTF-8'
@@ -214,8 +134,7 @@ for key,value in langs.items():
         try:
             langs[key] = gettext.translation(domain,tpath,(key,), codeset=encoding)
         except TypeError, msg:
-            print 'ERROR:',msg
-            print 'Unsupported python version. Client supports python version 2.4 and higher.\nThis version is',sys.version
+            print 'This program requires Python 2.4 or higher.\nYour version is',sys.version
             sys.exit(1)
         except IOError, (no,msg):
             langs[key] = gettext.NullTranslations() # no translation
@@ -246,7 +165,6 @@ warning = '\n'.join(warnings)
 if __name__ == '__main__':
     print 'option_errors:',option_errors # errors
     print 'warning:',warning # warnings
-    print 'config_error:',config_error
     print '-'*60
     print 'option_args:',option_args
     print 'options:'

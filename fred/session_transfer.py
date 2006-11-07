@@ -488,6 +488,16 @@ $fred_data = array();          // data returned by server
 $fred_source_command = '';     // source code (XML) of the command prepared to display
 $fred_source_answer = '';      // source code (XML) of the answer prepared to display
 """%php_string(encoding)
+
+    def get_formated_message(self, message, type):
+        'Returns formated outout for text/php/html type: 0 - note, 1 - ERROR'
+        if self._session[OUTPUT_TYPE] == 'php':
+            msg = '$fred_client_%s[] = %s;'%(type == 1 and 'errors' or 'notes', php_string(message))
+        elif self._session[OUTPUT_TYPE] == 'html':
+            msg = '<div class="fred_%s">%s<div>'%(type == 1 and 'errors' or 'notes', message)
+        else: # text
+            msg = message
+        return msg
         
     def get_answer_php(self, dct=None):
         """Returns data as a PHP code:
@@ -519,11 +529,18 @@ $fred_source_answer = '';      // source code (XML) of the answer prepared to di
         report('$fred_labels = array(); // descriptions of the data columns')
         report('$fred_data = array(); // data returned by server')
         dct_data = dct['data']
+        is_check = re.match('\w+:check',dct['command']) and 1 or 0 # object:check
         for key,verbose,explain in self.__get_column_items__(dct['command'], dct_data):
             if verbose > self._session[VERBOSE]: continue
             if not explain: explain = key
             value = dct_data.get(key,u'')
             if value not in ('',[]):
+                if is_check:
+                    # Check response returns code and reason. Code is used to insert status into message.
+                    # join is done in function __answer_response_check__() in module session_receiver.py
+                    # pref:key 0
+                    # pref:key:reason 'message'
+                    value = dct_data.get(key+':reason',u'')
                 if type(value) in (list,tuple):
                     report('$fred_labels[%s] = %s;'%(php_string(key),php_string(explain)))
                     report('$fred_data[%s] = array();'%php_string(key))

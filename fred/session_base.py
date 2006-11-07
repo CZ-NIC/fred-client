@@ -5,6 +5,7 @@ import sys, os, StringIO
 import ConfigParser
 import terminal_controler
 import translate
+import session_config
 import internal_variables
 
 # Colored output
@@ -59,7 +60,7 @@ class ManagerBase:
                 'http://www.nic.cz/xml/epp/nsset-1.0']
         self.defs[extURI] = ['http://www.nic.cz/xml/epp/enumval-1.0']
         self.defs[PREFIX] = '' # pro každé sezení nový prefix
-        self._conf = translate.config # <ConfigParser object> from translate module
+        self._conf = None ## <ConfigParser object> from session_config.py
         self._auto_connect = 1 # auto connection during login or hello
         self._options = translate.options # parameters from command line
         if type(self._options) is not dict:
@@ -69,6 +70,8 @@ class ManagerBase:
         self._ljust = 25      # indent description column from names
         self._indent_left = 2 # indent from left border
         self._section_epp_login = 'epp_login' # section name in config for username and password
+        self._config_name = '.fred_client.conf' # name for home folder; for share (etc) is mofified from this name
+        self._config_used_files = []
 
     def get_session(self, offset):
         return self._session[offset]
@@ -245,8 +248,8 @@ $fred_client_errors = array(); // errors occuring during communication
     #---------------------------
     def manage_config(self, param):
         'Display config values or save config.'
-        if len(translate.config_names):
-            print_unicode('${BOLD}${YELLOW}%s:${NORMAL}\n\t%s'%(_T('Actual config builded from files'),'\n\t'.join(translate.config_names)))
+        if len(self._config_used_files):
+            print_unicode('${BOLD}${YELLOW}%s:${NORMAL}\n\t%s'%(_T('Actual config builded from files'),'\n\t'.join(self._config_used_files)))
         else:
             print_unicode('${BOLD}${RED}%s${NORMAL}'%_T('No configuration file. Defaults used instead it.'))
         if not self._conf:
@@ -327,11 +330,17 @@ $fred_client_errors = array(); // errors occuring during communication
         "Load config file and init internal variables. Returns 0 if fatal error occured."
         # 1. first load values from config
         # 2. overwrite them by options from command line
+        #
+        # keep options in Manager instance
         if type(options) is dict: self._options = options
-        if len(translate.config_names):
-            self.append_note('%s %s'%(_T('Using configuration from'), ', '.join(translate.config_names)))
-        if translate.config_error:
-            self.append_error(translate.config_error)
+        # Load configuration file:
+        self._conf, self._config_used_files, config_errors = session_config.main(self._config_name, self._options)
+        # set language version
+        translate.install_translation(self._options['lang'])
+        if len(self._config_used_files):
+            self.append_note('%s %s'%(_T('Using configuration from'), ', '.join(self._config_used_files)))
+        if len(config_errors):
+            self._errors.extend(config_errors)
             return 0 # Errors occured during parsing config. Error of missing file not included!
         self._session[SESSION] = self._options.get('session','') # API definition of --session parameter.
         # set session variables
@@ -552,7 +561,7 @@ def get_unicode(text):
 def php_string(value):
     'Returns escaped string for place into PHP variable.'
     if type(value) in (str,unicode):
-        ret = "'%s'"%re.sub("([^\\\])'","\\1\\'",get_ltext(value))
+        ret = "'%s'"%re.sub("([^\\\])'","\\1\\'",get_ltext(value)).strip()
     elif type(value) in (list, tuple):
         items=[]
         for n in value:

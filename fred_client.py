@@ -6,10 +6,10 @@ from fred.translate import options, option_errors
 
 if __name__ == '__main__':
     msg_invalid = fred.check_python_version()
-    if msg_invalid:
+    if len(msg_invalid):
         print "%s %s" % (msg_invalid)
     else:
-        from fred_console import help_option
+        from fred.console import help_option
         if options['help']:
             print '%s: %s [OPTIONS...]\n%s%s\n%s\n\n%s\n'%(_T('Usage'), 'fred_console',
             help_option,
@@ -28,19 +28,19 @@ if __name__ == '__main__':
             print option_errors
         else:
             if options['command']:
-                import fred_create
-                import fred_sender
-                epp_doc, xml_error = fred_create.main(options)
+                import fred.creator
+                import fred.sender
+                epp_doc, xml_error = fred.creator.run_creation(options)
                 if xml_error:
                     print xml_error
                 else:
                     if len(epp_doc):
-                        fred_sender.send_docs(options['bar'], ((1,epp_doc),))
+                        fred.sender.send_docs(options['bar'], ((1,epp_doc),))
                     else:
                         print 'Internal error: epp_doc, xml_error = fred_create.main(options[command])'
             elif options['qt']:
                 from guiqt.main import main
                 main([],options['lang'])
             else:
-                import fred_console
-                fred_console.main(options)
+                import fred.console
+                fred.console.main(options)
