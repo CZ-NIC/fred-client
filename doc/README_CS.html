@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Manuál pro FredClient konzoli a knihovnu fred</title><meta name="generator" content="DocBook XSL Stylesheets V1.68.1" /></head><body><div class="book" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h1 class="title"><a id="id2451037"></a>Manuál pro FredClient konzoli a knihovnu fred</h1></div><div><h2 class="subtitle">Verze 1.2</h2></div><div><p class="releaseinfo">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Manuál pro FredClient konzoli a knihovnu fred</title><meta name="generator" content="DocBook XSL Stylesheets V1.68.1" /></head><body><div class="book" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h1 class="title"><a id="id2450696"></a>Manuál pro FredClient konzoli a knihovnu fred</h1></div><div><h2 class="subtitle">Verze 1.2</h2></div><div><p class="releaseinfo">
     Vzniklo: 11. 7.2006;
     Revize:  
     18. 8.2006;
@@ -9,32 +9,33 @@
     14. 9.2006;
     27. 9.2006;
      1.11.2006;
-    </p></div><div><p class="copyright">Copyright © 2006 CZ.NIC</p></div></div><hr /></div><div class="toc"><p><b>Obsah</b></p><dl><dt><span class="preface"><a href="#id2489580">Co je FredClient:</a></span></dt><dt><span class="chapter"><a href="#id2489600">1. Licence</a></span></dt><dt><span class="chapter"><a href="#id2489609">2. Požadavky na systém a instalace</a></span></dt><dt><span class="chapter"><a href="#id2489620">3. 
+     7.11.2006;
+    </p></div><div><p class="copyright">Copyright © 2006 CZ.NIC</p></div></div><hr /></div><div class="toc"><p><b>Obsah</b></p><dl><dt><span class="preface"><a href="#id2489580">Co je FredClient:</a></span></dt><dt><span class="chapter"><a href="#id2489600">1. Licence</a></span></dt><dt><span class="chapter"><a href="#id2489610">2. Požadavky na systém a instalace</a></span></dt><dt><span class="chapter"><a href="#id2489621">3. 
     Popis jednotlivých programů,
        parametry a config
-    </a></span></dt><dd><dl><dt><span class="section"><a href="#id2451655">
+    </a></span></dt><dd><dl><dt><span class="section"><a href="#id2450915">
     Parametry (OPTIONS)
-    </a></span></dt><dt><span class="section"><a href="#id2451707">
+    </a></span></dt><dt><span class="section"><a href="#id2450967">
     Konfigurační soubor
-    </a></span></dt></dl></dd><dt><span class="chapter"><a href="#id2452157">4. 
+    </a></span></dt></dl></dd><dt><span class="chapter"><a href="#id2453145">4. 
     Program fred_console.py
-    </a></span></dt><dd><dl><dt><span class="section"><a href="#id2452190">Zobrazení helpu</a></span></dt><dt><span class="section"><a href="#id2452233">EPP příkazy</a></span></dt><dt><span class="section"><a href="#id2452274">Typy paramerů příkazu</a></span></dt><dt><span class="section"><a href="#id2499387">Společný parametr cltrid (Client transaction ID)</a></span></dt><dt><span class="section"><a href="#null_or_empty">Žádná hodnota / Prázdná hodnota</a></span></dt><dd><dl><dt><span class="section"><a href="#id2499439">Žádná hodnota: NULL</a></span></dt><dt><span class="section"><a href="#id2499565">Prázdná hodnota: '', ""</a></span></dt></dl></dd><dt><span class="section"><a href="#id2499643">Příkazy relace (session)</a></span></dt><dt><span class="section"><a href="#id2499838">Testovací příkazy</a></span></dt></dl></dd><dt><span class="chapter"><a href="#id2499989">5. 
+    </a></span></dt><dd><dl><dt><span class="section"><a href="#id2453177">Zobrazení helpu</a></span></dt><dt><span class="section"><a href="#id2453220">EPP příkazy</a></span></dt><dt><span class="section"><a href="#id2453262">Typy paramerů příkazu</a></span></dt><dt><span class="section"><a href="#id2499390">Společný parametr cltrid (Client transaction ID)</a></span></dt><dt><span class="section"><a href="#null_or_empty">Žádná hodnota / Prázdná hodnota</a></span></dt><dd><dl><dt><span class="section"><a href="#id2499443">Žádná hodnota: NULL</a></span></dt><dt><span class="section"><a href="#id2499569">Prázdná hodnota: '', ""</a></span></dt></dl></dd><dt><span class="section"><a href="#id2499647">Příkazy relace (session)</a></span></dt><dt><span class="section"><a href="#id2499842">Testovací příkazy</a></span></dt></dl></dd><dt><span class="chapter"><a href="#id2499992">5. 
     Skripty fred_create.py a fred_sender.py
-    </a></span></dt><dt><span class="chapter"><a href="#output_types">6. Integrace klienta do PHP kódu</a></span></dt><dt><span class="chapter"><a href="#id2500354">7. 
+    </a></span></dt><dt><span class="chapter"><a href="#output_types">6. Integrace klienta do PHP kódu</a></span></dt><dt><span class="chapter"><a href="#id2500357">7. 
     Knihovna fred a popis API
-    </a></span></dt><dd><dl><dt><span class="section"><a href="#id2500371">Online dokumentace:</a></span></dt><dt><span class="section"><a href="#id2500425">Příklady práce s knihovnou</a></span></dt></dl></dd></dl></div><div class="preface" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2489580"></a>Co je FredClient:</h2></div></div></div><p>
+    </a></span></dt><dd><dl><dt><span class="section"><a href="#id2500374">Online dokumentace:</a></span></dt><dt><span class="section"><a href="#id2500429">Příklady práce s knihovnou</a></span></dt></dl></dd></dl></div><div class="preface" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2489580"></a>Co je FredClient:</h2></div></div></div><p>
     FredClient je sada scriptů v jazyce Python postavených na fred knihovně
     a určených ke komunikaci s EPP serverem.
-    </p><p>Sada obsahuje EPP konzoli a skripty určené pro použití v shellu.</p></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2489600"></a>Kapitola 1. Licence</h2></div></div></div><p>Licence je v souboru fred/LICENSE.</p></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2489609"></a>Kapitola 2. Požadavky na systém a instalace</h2></div></div></div><p>Pokyny k instalaci jsou v souboru INSTALL.</p></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2489620"></a>Kapitola 3. 
+    </p><p>Sada obsahuje EPP konzoli a skripty určené pro použití v shellu.</p></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2489600"></a>Kapitola 1. Licence</h2></div></div></div><p>Licence je v souboru fred/LICENSE.</p></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2489610"></a>Kapitola 2. Požadavky na systém a instalace</h2></div></div></div><p>Pokyny k instalaci jsou v souboru INSTALL.</p></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2489621"></a>Kapitola 3. 
     Popis jednotlivých programů,
        parametry a config
-    </h2></div></div></div><div class="toc"><p><b>Obsah</b></p><dl><dt><span class="section"><a href="#id2451655">
+    </h2></div></div></div><div class="toc"><p><b>Obsah</b></p><dl><dt><span class="section"><a href="#id2450915">
     Parametry (OPTIONS)
-    </a></span></dt><dt><span class="section"><a href="#id2451707">
+    </a></span></dt><dt><span class="section"><a href="#id2450967">
     Konfigurační soubor
     </a></span></dt></dl></div><p>
 Dostupné skripty jsou následující:
-</p><table class="simplelist" border="0" summary="Simple list"><tr><td>fred_client.py   - spouští EPP konzoli nebo sekvenci crate+send (pro shell)</td></tr><tr><td>fred_console.py  - EPP konzole, komunikuje s EPP serverem</td></tr><tr><td>fred_create.py   - Vytboří zdrojový EPP XML příkaz</td></tr><tr><td>fred_sender.py   - Odešle soubor na EPP server</td></tr></table><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2451655"></a>
+</p><table class="simplelist" border="0" summary="Simple list"><tr><td>fred_client.py   - spouští EPP konzoli nebo sekvenci crate+send (pro shell)</td></tr><tr><td>fred_console.py  - EPP konzole, komunikuje s EPP serverem</td></tr><tr><td>fred_create.py   - Vytboří zdrojový EPP XML příkaz</td></tr><tr><td>fred_sender.py   - Odešle soubor na EPP server</td></tr></table><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2450915"></a>
     Parametry (OPTIONS)
     </h2></div></div></div><p>
 Skripty se dají spouštět s parametry. Jaké parametry lze použít zjistíte 
@@ -83,7 +84,7 @@ Parametry pro spojení:
                    Odeslat příkaz na server a skončit
   -o OUTPUT_TYPE, --output=OUTPUT_TYPE
                    Zobrazit výstup jako text (default), html, php
-</pre></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2451707"></a>
+</pre></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2450967"></a>
     Konfigurační soubor
     </h2></div></div></div><p>
 Konfigurační soubor se implicitně hledá nejdříve v home uživatele (~/.fred_client.conf), 
@@ -206,9 +207,9 @@ V sekci <span class="emphasis"><em>session</em></span> jsou tato nastavení:</p>
     </p></li><li><p><span class="bold"><strong>nologin</strong></span> = on/off</p><p>
         Klient se ihned po spuštění pokusí spojit se serverem a zalogovat se.
         Tuto funkci je možné vypnout nastavením nologin = <span class="bold"><strong>off</strong></span>.
-    </p></li></ul></div></div></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2452157"></a>Kapitola 4. 
+    </p></li></ul></div></div></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2453145"></a>Kapitola 4. 
     Program fred_console.py
-    </h2></div></div></div><div class="toc"><p><b>Obsah</b></p><dl><dt><span class="section"><a href="#id2452190">Zobrazení helpu</a></span></dt><dt><span class="section"><a href="#id2452233">EPP příkazy</a></span></dt><dt><span class="section"><a href="#id2452274">Typy paramerů příkazu</a></span></dt><dt><span class="section"><a href="#id2499387">Společný parametr cltrid (Client transaction ID)</a></span></dt><dt><span class="section"><a href="#null_or_empty">Žádná hodnota / Prázdná hodnota</a></span></dt><dd><dl><dt><span class="section"><a href="#id2499439">Žádná hodnota: NULL</a></span></dt><dt><span class="section"><a href="#id2499565">Prázdná hodnota: '', ""</a></span></dt></dl></dd><dt><span class="section"><a href="#id2499643">Příkazy relace (session)</a></span></dt><dt><span class="section"><a href="#id2499838">Testovací příkazy</a></span></dt></dl></div><p>
+    </h2></div></div></div><div class="toc"><p><b>Obsah</b></p><dl><dt><span class="section"><a href="#id2453177">Zobrazení helpu</a></span></dt><dt><span class="section"><a href="#id2453220">EPP příkazy</a></span></dt><dt><span class="section"><a href="#id2453262">Typy paramerů příkazu</a></span></dt><dt><span class="section"><a href="#id2499390">Společný parametr cltrid (Client transaction ID)</a></span></dt><dt><span class="section"><a href="#null_or_empty">Žádná hodnota / Prázdná hodnota</a></span></dt><dd><dl><dt><span class="section"><a href="#id2499443">Žádná hodnota: NULL</a></span></dt><dt><span class="section"><a href="#id2499569">Prázdná hodnota: '', ""</a></span></dt></dl></dd><dt><span class="section"><a href="#id2499647">Příkazy relace (session)</a></span></dt><dt><span class="section"><a href="#id2499842">Testovací příkazy</a></span></dt></dl></div><p>
 fred_console.py je konzole, která komunikuje s EPP serverem. Konzoli spustíte
 příkazem:
 </p><pre class="programlisting">
@@ -217,20 +218,20 @@ příkazem:
 Pokud máte v configu správně nadefinovánu cestu k certifikátům a uložené login a heslo, 
 tak můžete jednoduše zadat <span class="emphasis"><em>login</em></span> a tím se spojíte s EPP serverem.
 Konzole se ukončuje příkazem "quit" nebo jen krátce "q".
-</p><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2452190"></a>Zobrazení helpu</h2></div></div></div><p>
+</p><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2453177"></a>Zobrazení helpu</h2></div></div></div><p>
 Jaké příkazy máte k dispozici zjistíte zadáním příkazu "help" (nebo h, ?).
 </p><pre class="programlisting">
-    FredClient verze 1.0.0 Zadejte "help", "license" nebo "credits" pro zobrazení více informací.
+    FredClient verze 1.2.0 Zadejte "help", "license" nebo "credits" pro zobrazení více informací.
     &gt; help
 </pre><p>Help vypíše dvě části nápovědy:</p><table class="simplelist" border="0" summary="Simple list"><tr><td>1) Dostupné EPP příkazy</td></tr><tr><td>2) Příkazy relace (session) pro nastavení vnitřních proměnných 
-       konzole</td></tr></table></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2452233"></a>EPP příkazy</h2></div></div></div><p>
+       konzole</td></tr></table></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2453220"></a>EPP příkazy</h2></div></div></div><p>
 EPP příkaz zadáváte společně s jeho parametry. Jaké parametry příkaz
 požaduje zjistíte, když zadáte "help příkaz" nebo zkráceně "h příkaz"
 nebo také "? příkaz".
 </p><p>Například:</p><pre class="programlisting">&gt; ?login</pre><p>
 Vypíšou se podrobnosti o jednotlivých parametrech daného příkazu. 
 Samotný příkaz zadáte tak, že napíšete název příkazu a za ním jeho parametry:
-</p><pre class="programlisting">&gt; login username password</pre></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2452274"></a>Typy paramerů příkazu</h2></div></div></div><p><span class="emphasis"><em>INSTRUKCE:</em></span></p><table class="simplelist" border="0" summary="Simple list"><tr><td>parametry zadávejte v pořadí, v jakém jsou vypsané v helpu</td></tr><tr><td>hodnoty s mezerami dejte do uvozovek</td></tr><tr><td>seznamy se definují pomocí závorek, položky seznamu můžou 
+</p><pre class="programlisting">&gt; login username password</pre></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2453262"></a>Typy paramerů příkazu</h2></div></div></div><p><span class="emphasis"><em>INSTRUKCE:</em></span></p><table class="simplelist" border="0" summary="Simple list"><tr><td>parametry zadávejte v pořadí, v jakém jsou vypsané v helpu</td></tr><tr><td>hodnoty s mezerami dejte do uvozovek</td></tr><tr><td>seznamy se definují pomocí závorek, položky seznamu můžou 
       (ale nemusí) být odděleny čárkami</td></tr><tr><td>pokud je v seznamu jen jedna položka, nemusí se závorky zadávat</td></tr><tr><td>jmenné prostory se také jako seznamy definují pomocí závorek</td></tr><tr><td>chcete-li seznam nebo jmenný porostor vynechat, zadejte jen
       prázdné závorky</td></tr><tr><td>Hodnotu, kterou chcete přeskočit zadejte jako „<span class="quote">žádnou hodnotu</span>“ (<a href="#null_or_empty" title="Žádná hodnota / Prázdná hodnota">Žádná hodnota / Prázdná hodnota</a>).</td></tr><tr><td>hodnoty mimo pořadí zadávejte pomocí klíče</td></tr></table><p><span class="emphasis"><em>VYSVĚTLENÍ:</em></span></p><table class="simplelist" border="0" summary="Simple list"><tr><td>jednoduchá hodnota:  my-value01</td></tr><tr><td>hodnota s mezerou:   'lorem ipsum'   "some value"</td></tr><tr><td>seznam:              (one two three)</td></tr><tr><td>jmenný prostor:      ((one two three) my-value01 'lorem ipsum' (enyky benyky) end-value)</td></tr></table><p>
 Pokud hodnota parametru obsahuje mezeru, tak ji napište do uvozovek. 
@@ -418,7 +419,7 @@ hodnotu například do třetí položky seznamu "dns", tak zadejte:
 
 Dvojka je index seznamu v tomto případě o max. devíti položkách
 (indexy 0 - 8).
-</p></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2499387"></a>Společný parametr cltrid (Client transaction ID)</h2></div></div></div><p>
+</p></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2499390"></a>Společný parametr cltrid (Client transaction ID)</h2></div></div></div><p>
 Každý EPP příkaz, kromě příkazu <span class="emphasis"><em>hello</em></span>, obsahuje 
 tag <span class="bold"><strong>&lt;clTRID&gt;</strong></span>. Ten je vždy jako
 poslední z parametrů a jmenuje se <span class="bold"><strong>cltrid</strong></span>.
@@ -426,7 +427,7 @@ Tato hodnota je identifikátor transakce. Ten si stanovuje klient a
 může být libovolný v rámci formátovacích pravidel definovaných ve
 schematech pro tuto hodnotu. Identifikátor je nepovinný a pokud 
 není zadán, tak jej klient automaticky doplní.
-</p></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="null_or_empty"></a>Žádná hodnota / Prázdná hodnota</h2></div></div></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h3 class="title"><a id="id2499439"></a>Žádná hodnota: NULL</h3></div></div></div><p>
+</p></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="null_or_empty"></a>Žádná hodnota / Prázdná hodnota</h2></div></div></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h3 class="title"><a id="id2499443"></a>Žádná hodnota: NULL</h3></div></div></div><p>
 Výraz <span class="emphasis"><em>Žádná hodnota</em></span> představuje hodnotu, kterou 
 jste nezadali. Slouží nám k tomu, abychom mohli přeskakovat parametry,
 které nechceme zadávat. Defaultě je výraz nastaven na NULL.
@@ -466,7 +467,7 @@ prostě tak, že jenom stisknete ENTER.
 Definici <span class="emphasis"><em>žádné hodnoty</em></span> lze v konzoli změnit příkazem 
 <a href="#null_value">null_value</a>
 a také je možné si ji definovat v <a href="#config_null_value">konfiguračním souboru</a>.
-</p></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h3 class="title"><a id="id2499565"></a>Prázdná hodnota: '', ""</h3></div></div></div><p>
+</p></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h3 class="title"><a id="id2499569"></a>Prázdná hodnota: '', ""</h3></div></div></div><p>
 Výraz <span class="emphasis"><em>Prázdná hodnota</em></span> představuje hodnotu, která je prázdná.
 Je to tedy text o nulové délce. Ten zapisujeme práznými uvozovkami '' nebo "".
 Tato hodnota nám slouží k tomu, abychom mohli zadávat hodnoty nulové délky.
@@ -498,7 +499,7 @@ Příkaz vygeneruje XML, ve kterém budou u prázdných hodnot prázdné tagy:
 </p><p>
 V <span class="emphasis"><em>interaktivním módu</em></span> zadávání parametru zadáme „<span class="quote">prázdnou hodnotu</span>“ tak,
 že zapíšeme prázdné uvozovky '' nebo "".
-</p></div></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2499643"></a>Příkazy relace (session)</h2></div></div></div><p>
+</p></div></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2499647"></a>Příkazy relace (session)</h2></div></div></div><p>
 Konzole má svá vnitřní nastavení, která můžete nastavit. Pokud zadáte
 příkaz bez parametrů, tak se pouze vypíše aktuální stav nastavení.
 
@@ -592,7 +593,7 @@ ještě navíc XML zdrojové dokumenty, které si klient se serverem předává.
 
 </p><table class="simplelist" border="0" summary="Simple list"><tr><td><span class="emphasis"><em>Úrovně výpisu detailů:</em></span></td></tr><tr><td>1 - stručná (default)</td></tr><tr><td>2 - všechno</td></tr><tr><td>3 - všechno a XML zdroje.</td></tr></table><p>
 
-</p></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2499838"></a>Testovací příkazy</h2></div></div></div><p>
+</p></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2499842"></a>Testovací příkazy</h2></div></div></div><p>
 
 Konzole má několik testovacích příkazů, které je možné použít k daným účelům.
 Testovací příkazy se v helpu nezobrazují.
@@ -660,7 +661,7 @@ Příkaz output není přímo testovací. Je určen k nastavení typu výstupu.
 Platné honodty jsou text, php, html.
 Podrobnější popis je na <a href="#output_types" title="Kapitola 6. Integrace klienta do PHP kódu">Integrace klienta do PHP kódu</a>
 
-</p></div></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2499989"></a>Kapitola 5. 
+</p></div></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2499992"></a>Kapitola 5. 
     Skripty fred_create.py a fred_sender.py
     </h2></div></div></div><p>
 
@@ -735,14 +736,14 @@ $fred_data['domain:crDate'] = '2006-10-31T16:51:56+01:00';
 $fred_labels['domain:exDate'] = 'Expiration date';
 $fred_data['domain:exDate'] = '2009-10-31T01:00:00+01:00';
 $fred_labels['domain:renew'] = 'Last renew on';
-</pre></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2500354"></a>Kapitola 7. 
+</pre></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2500357"></a>Kapitola 7. 
     Knihovna fred a popis API
-    </h2></div></div></div><div class="toc"><p><b>Obsah</b></p><dl><dt><span class="section"><a href="#id2500371">Online dokumentace:</a></span></dt><dt><span class="section"><a href="#id2500425">Příklady práce s knihovnou</a></span></dt></dl></div><p>
+    </h2></div></div></div><div class="toc"><p><b>Obsah</b></p><dl><dt><span class="section"><a href="#id2500374">Online dokumentace:</a></span></dt><dt><span class="section"><a href="#id2500429">Příklady práce s knihovnou</a></span></dt></dl></div><p>
 
 Knihovna "fred" vám umoňuje implmentovat API rozhraní do vašich aplikací. Knihova i jednotlivé funkce
 obsahují komentáře, podle kterých se můžete při implementaci řídit. V části __init__.py naleznete
 i ukázky kódu.
-</p><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2500371"></a>Online dokumentace:</h2></div></div></div><p>
+</p><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2500374"></a>Online dokumentace:</h2></div></div></div><p>
 Pokud si chcete projít jednotlivé třídy a funkce knihovny, tak k tomu můžete využít generátor
 dokumentace, který je standardní součástí pythonu: Zadejte na příkazové řádce příkaz:
 
@@ -760,12 +761,12 @@ pracující s knihovnou fred, tak celý proces spuštění udělejte stejně, al
 spustíte z adresáře, kde máte tyto skripty uložené. Pak se v helpu zobrazí i ony:
 
 </p><pre class="programlisting">
-    $ cd FredClient-1.0.0
+    $ cd FredClient-1.2.0
     $ pydoc -p 8080
 </pre><p>
 
 Server ukončíte stiskem Ctrl+C.
-</p></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2500425"></a>Příklady práce s knihovnou</h2></div></div></div><p>
+</p></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2500429"></a>Příklady práce s knihovnou</h2></div></div></div><p>
 Import knihovny provedete příkazem:
 
 </p><pre class="programlisting">

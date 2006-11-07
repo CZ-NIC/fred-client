@@ -19,6 +19,7 @@
     14. 9.2006;
     27. 9.2006;
      1.11.2006;
+     7.11.2006;
     </releaseinfo>
   </bookinfo>
 
@@ -375,7 +376,7 @@ Jaké příkazy máte k dispozici zjistíte zadáním příkazu "help" (nebo h, 
 </para>
 
 <programlisting>
-    FredClient verze 1.0.0 Zadejte "help", "license" nebo "credits" pro zobrazení více informací.
+    FredClient verze 1.2.0 Zadejte "help", "license" nebo "credits" pro zobrazení více informací.
     &gt; help
 </programlisting>
 
@@ -1101,7 +1102,7 @@ pracující s knihovnou fred, tak celý proces spuštění udělejte stejně, al
 spustíte z adresáře, kde máte tyto skripty uložené. Pak se v helpu zobrazí i ony:
 
 <programlisting>
-    $ cd FredClient-1.0.0
+    $ cd FredClient-1.2.0
     $ pydoc -p 8080
 </programlisting>
 

@@ -57,8 +57,8 @@ def main():
         except OSError, msg:
             print 'OSError:',msg
             return 0
-    print 'REMOVE THIS FOLDER'
-    if not remove_all('.'): return
+    #print 'REMOVE THIS FOLDER'
+    #if not remove_all('.'): return
     return 1
 
 if __name__ == '__main__':
