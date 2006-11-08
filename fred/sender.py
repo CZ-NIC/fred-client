@@ -20,7 +20,7 @@ def __auto_login__(epp, verbose):
         ok = 0
         dansw={}
     if dansw.get('code',0) != 1000:
-        epp.append_error(session_base.get_ltext(dansw.get('reason',_T('Login failed'))))
+        epp.append_error(get_ltext(dansw.get('reason',_T('Login failed'))))
     epp.display()
     return ok
 

@@ -332,11 +332,11 @@ class ManagerTransfer(ManagerBase):
         #--- INTERNAL USE ----
         # POZOR!!! V ostré verzi musí být deaktivováno!!!
         # ALERT!!! MUST be disabled in release version!!!
-        #if self._session[SORT_BY_COLUMNS] and not is_check:
-        #    # in mode SORT_BY_COLUMNS check if all names was used
-        #    missing = [k for k in dct_data.keys() if k not in used and dct_data[k][0] >= self._session[VERBOSE]]
-        #    if len(missing):
-        #        body.append(colored_output.render('\n${BOLD}${RED}Here needs FIX code: %s${NORMAL}'%'(%s)'%', '.join(missing)))
+        if self._session[SORT_BY_COLUMNS] and not is_check:
+            # in mode SORT_BY_COLUMNS check if all names was used
+            missing = [k for k in dct_data.keys() if k not in used and dct_data[k][0] >= self._session[VERBOSE]]
+            if len(missing):
+                body.append(colored_output.render('\n${BOLD}${RED}Here needs FIX code: %s${NORMAL}'%'(%s)'%', '.join(missing)))
         #---------------------
 
     def __modify__reason_message__(self, code, key, dct):
