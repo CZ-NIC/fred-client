@@ -265,7 +265,8 @@ object can be created for a specific validity period."""),(
             ],'%s\n\n%s'%(_T("""The EPP "update" command is used to update an instance of an existing object."""),notice['disclose']),(
                     'update_contact CID:ID01 clientDeleteProhibited',
                     'update_contact CID:ID01 (clientDeleteProhibited linked ok)',
-                    "update_contact CID:ID01 clientTransferProhibited (clientDeleteProhibited, clientUpdateProhibited) (('Jan Nowak' 'Firma s.r.o.' (('Na narodni 1230/12', 'Americka 12') Praha Vinohrady 12000 CZ)) +420.222745111 +420.222745111 info@mymail.cz mypassword (y (org, voice, email)) 7035555556 (ico 8888888856) notify@mymail.cz)",
+                    "update_contact CID:ID01 clientTransferProhibited (clientDeleteProhibited, clientUpdateProhibited) (('Jan Nowak' 'Firma s.r.o.' (Praha CZ ('Na narodni 1230/12', 'Americka 12') Vinohrady 12000)) +420.222745111 +420.222745111 info@mymail.cz mypassword (y (org, voice, email)) 7035555556 (ico 8888888856) notify@mymail.cz)",
+                    "update_contact cid:id01 ctp (cup, cdp) (('Jan Novák' 'Firma s.r.o.' (Praha CZ ('Na národní 1230/12', 'Americká 12') Vinohrady 12000)) +420.222745111 +420.222745111 info@mymail.cz password (y (org, voice, email)) 7035555556 (ico 8888888856) notify@mymail.cz)",
                     "update_contact CID:ID01 () () (() NULL NULL NULL NULL () NULL () change.only@notify-mail.cz)",
             )),
         #----------------------------------------------------
