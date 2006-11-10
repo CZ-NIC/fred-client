@@ -80,7 +80,7 @@ Set the client language and server together. If you are online
 and want to change the server language too, you have to logout 
 and login again. Language is also possible to change by 'login'
 command or specify in configuration file or set in options on
-the command line."""), ('lang cs',)),
+the command line."""), ('lang en','lang cs',)),
             (('license',), self.__session_license__, OPTIONAL, (), _T('Displays license terms of this application.'), ()),
             (('null_value','null'), self.__session_null__, OPTIONAL, (), _T("""
 Set representation of the value what is used to mean nothing. Default is NULL.
@@ -89,7 +89,11 @@ Type NULL means we did not put any value in contrast to '' or "" where we put
 value of zero length. Synonym of the 'null_value' is 'null'. 
 See help for more details."""), ('null_value None','null EMPTY',)),
             (('output',), self.__session_output__, OPTIONAL, (_T('type'),_T('Set the output type.')), _T('Display output in type.'), ('output html',)),
-            (('poll_autoack',), self.__session_poll_ack__, OPTIONAL, (_T('switch'),_T('Turn function on/off.')), _T('Send "poll ack" straight away after "poll req".'), ('poll-autoack on',)),
+            (('poll_autoack',), self.__session_poll_ack__, OPTIONAL, (_T('switch'),_T('Turn function on/off.')), _T("""
+First see 'help poll' for understanding how to manage the server messages.
+Funcion poll_autoack causes the client will send two poll commands instead 
+of the one only. First poll is sent as 'poll req' and second as 'poll ack'.
+The result is a message what has been removed from the message queue."""), ('poll_autoack on','poll_autoack off')),
             (('quit','q','exit'), None, OPTIONAL, (), _T("""
 Disconnects from the server and exits the application. Synonyms 'q' and 'exit'
 can be used to invoke same functionality."""), ()),
@@ -167,11 +171,10 @@ sources ad advance, transmited between client and server.
                 if command_name in self._available_commands:
                     type = 'EPP'
             if type:
-                parts = command.split()
-                if len(parts) > 2:
+                if re.match('(\?|h(elp)?\s+)\s*\S+\s+\S+',command):
                     # no parameters are alowed: '?','command'
-                    self.append_note('%s: %s'%(_T('ERROR'), _T('Help command can have only one parameter')))
-                    self.append_note(_T("Type 'help ?' to get more information about help usage."))
+                    self.append_error(_T('Help command can have only one parameter'))
+                    self._notes_afrer_errors.append(_T("Type 'help ?' to get more information about help usage."))
                 else:
                     self.__make_help_details__(command_name, type)
             else:
@@ -285,10 +288,12 @@ sources ad advance, transmited between client and server.
                 else:
                     self.append_error(self._epp_cmd.get_errors()) # any problems on the command line occurrs
             else:
+                note = _T("Type 'help' to list all available commands.")
                 if m.group(1)=='!':
                     if m.group(2) in self._available_session_commands:
                         if m.group(2).strip() == '!':
                             msg = '%s: %s'%(_T('ERROR'),_T('Illegal use of interactive input mode.'))
+                            note = _T("Type 'help !' to get more information about interactive input mode usage.")
                         else:
                             msg = '%s: %s'%(_T('ERROR'),_T('Interactive input mode works with EPP commands only.'))
                     else:
@@ -296,7 +301,7 @@ sources ad advance, transmited between client and server.
                 else:
                     msg = '%s: %s %s'%(_T('ERROR'),_T("Unknown command"),get_ltext(raw_command))
                 self.append_note(msg)
-                self.append_note(_T("Type 'help' to list all available commands."))
+                self.append_note(note)
                 self._epp_cmd.help_check_name(self._notes, cmdline)
         return command_name, stop
 
@@ -347,7 +352,11 @@ sources ad advance, transmited between client and server.
         # Resolve three command types: 1. help; 2. session command; 3. EPP command
         if help:
             # 1. help
-            self.display_help(help_item, command)
+            if len(cmd.split()) > 2:
+                self.append_error(_T('Help command can have only one parameter'))
+                self._notes_afrer_errors.append(_T("Type 'help ?' to get more information about help usage."))
+            else:
+                self.display_help(help_item, command)
         elif session_command in self._pattern_session_commands:
             # 2. Session commands
             for names,func,req,p,e,x in self._session_commands:
@@ -508,11 +517,15 @@ sources ad advance, transmited between client and server.
     def __session_poll_ack__(self, param):
         'Set poll acknowledge'
         if param:
-            self._session[POLL_AUTOACK] = param in ('on','ON') and 1 or 0
-            msg = _T('Autoacknowledge poll has been set to')
+            param = param.upper()
+            if param not in ('ON','OFF'):
+                self.append_error(_T("Unknown switch '%s'")%param)
+                self._notes_afrer_errors.append(_T("Type 'help poll_autoack' to get details on poll_autoack usage."))
+            else:
+                self._session[POLL_AUTOACK] = param  == 'ON' and 1 or 0
+                self.append_note('%s ${BOLD}%s${NORMAL}'%(_T('Autoacknowledge poll has been set to'), self._session[POLL_AUTOACK] and 'ON' or 'OFF'))
         else:
-            msg = _T('Autoacknowledge poll is')
-        self.append_note('%s ${BOLD}%s${NORMAL}'%(msg, self._session[POLL_AUTOACK] and 'ON' or 'OFF'))
+            self.append_note('%s ${BOLD}%s${NORMAL}'%(_T('poll_autoack is'), self._session[POLL_AUTOACK] and 'ON' or 'OFF'))
 
     def __session_output__(self, param):
         'Set output type'

@@ -30,6 +30,7 @@ class ManagerBase:
         self._notes = [] # upozornění na chybné zadání
         self._errors = [] # chybová hlášení při přenosu, parsování
         self._notes_afrer_errors = [] # hlášení po chybách
+        self._data_post_messages = [] # messages shown after displayed data
         self._sep = '\n' # oddělovač jednotlivých zpráv
         #-----------------------------------------
         # Session data:
@@ -223,7 +224,7 @@ $fred_client_errors = array(); // errors occuring during communication
         return '%s\n%s\n'%(self.version(),_T('Type "help", "license" or "credits" for more information.'))
 
     def version(self):
-        return 'FredClient 1.2.0' # version of the client
+        return 'FredClient 1.2.1' # version of the client
 
     def __next_clTRID__(self):
         """Generate next clTRID value.

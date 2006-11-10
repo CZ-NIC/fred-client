@@ -57,6 +57,7 @@ class ManagerTransfer(ManagerBase):
         self._errors = []
         self._notes = []
         self._notes_afrer_errors = []
+        self._data_post_messages = []
         self._epp_cmd.reset()
         self._epp_response.reset()
         self._command_sent = '' # jméno posledního odeslaného příkazu
@@ -197,16 +198,28 @@ class ManagerTransfer(ManagerBase):
             self.__check_is_connected__()
             if epp_greeting:
                 self.process_answer(epp_greeting)
+                if self._session[VERBOSE] > 1:
+                    # display server fingerprint (svID)
+                    data = self._dct_answer.get('data',{})
+                    for key,verbose,label in self._epp_cmd.get_sort_by_names('hello'):
+                        if verbose > 1: continue # display only items in 1 verbose mode
+                        value = data.get(key,u'')
+                        if value not in ('',[]):
+                            __append_into_report__(self._notes,key,value,label,self._ljust,'')
                 return 1
             else:
                 self.append_error(_T("Server didn't return Greeting message. Contact server administrator."))
         return 0
-        
+
     def close(self):
         "Close connection with server."
         if self._lorry:
             self._lorry.close()
             self._lorry = None
+        # Messages will be dispalyed after data from server.
+        if self._session[ONLINE] == 1:
+            self._data_post_messages.append('%s %s'%(_T('Ending session at'),self._session[HOST]))
+            self._data_post_messages.append(_T('Disconnected.'))
         # když se spojení zrušilo, tak o zalogování nemůže být ani řeči
         self._session[ONLINE] = 0
         self._session[USERNAME] = '' # for prompt info
@@ -232,7 +245,7 @@ class ManagerTransfer(ManagerBase):
         return ret
 
     def send_logout(self, no_outoupt=None):
-        'Send EPP logout message.'
+        'Send EPP logout command.'
         if not self._session[ONLINE]: return # session zalogována nebyla
         self.reset_round()
         self._epp_cmd.assemble_logout(self.__next_clTRID__())
@@ -280,7 +293,7 @@ class ManagerTransfer(ManagerBase):
             #    print fnc(dct) #+++
             #except Exception, msg:
             #    print 'Exception ERROR:',msg
-
+        
     def get_keys_sort_by_columns(self):
         'Returns list of keys what will be used to sorting output values.'
         return self.__get_column_items__(self._dct_answer['command'], self._dct_answer['data'])
@@ -371,7 +384,8 @@ class ManagerTransfer(ManagerBase):
             else:
                 if code >= 2000:
                     dct['errors'].insert(0,dct['reason'])
-                elif code != 1000 or key in ('update','delete','transfer'):
+                elif code not in (1000,1500) or key in ('update','delete','transfer'):
+                    # 1000 - success,  1500 - success logout
                     report(get_ltext(colored_output.render('${%s}%s${NORMAL}'%(code==1000 and 'GREEN' or 'NORMAL', dct['reason']))))
         else:
             # full
@@ -400,6 +414,9 @@ class ManagerTransfer(ManagerBase):
             body.append(_TP('(%d item)','(%d items)',cnt)%cnt)
         else:
             self.__append_to_body__(body, dct)
+        #... post messages .............................
+        if len(self._data_post_messages):
+            body.extend(self._data_post_messages)
         #... third verbose level .............................
         for n in range(len(body)):
             if type(body[n]) == unicode: body[n] = body[n].encode(encoding)
@@ -462,6 +479,10 @@ class ManagerTransfer(ManagerBase):
             report('<table class="fred_data">')
             body.extend(data)
             report('</table>')
+        #... post messages .............................
+        if len(self._data_post_messages):
+            body.extend(self._data_post_messages)
+        # encode to 8bit local
         for n in range(len(body)):
             if type(body[n]) == unicode: body[n] = body[n].encode(encoding)
         #... third verbose level .............................
@@ -550,6 +571,10 @@ $fred_source_answer = '';      // source code (XML) of the answer prepared to di
                 else:
                     report('$fred_labels[%s] = %s;'%(php_string(key),php_string(explain)))
                     report('$fred_data[%s] = %s;'%(php_string(key),php_string(value)))
+        #... post messages .............................
+        if len(self._data_post_messages):
+            for msg in self._data_post_messages:
+                report('$fred_client_notes[] = %s;'%php_string(msg))
         #... third verbose level .............................
         if self._session[VERBOSE] == 3:
             report('$fred_source_command = %s;'%php_string(human_readable(self._raw_cmd)))

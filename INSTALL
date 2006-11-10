@@ -31,8 +31,8 @@ Usage : xmllint [options] XMLfiles ... / bash: xmllint: command not found
 
 Instalace FredClient programu se provede nasledovne:
 
-    $ tar -xf FredClient-1.0.0.tar.gz        - rozbalite archiv
-    $ cd FredClient-1.0.0                    - prejdete se do vznikleho adresare
+    $ tar -xf FredClient-X.Y.Z.tar.gz        - rozbalite archiv
+    $ cd FredClient-X.Y.Z                    - prejdete se do vznikleho adresare
     $ sudo ./install.sh                      - spustite instalaci (musite mit prava roota)
 
 Tim je instalace dokoncena. Klienta spustite prikazem:

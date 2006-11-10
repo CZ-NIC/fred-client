@@ -47,7 +47,10 @@ is used usualy at the begining of the session for getting some variables
 usefull for communication. Within Server version or ID you can got
 available languages, Data Collection policy etc.
 Command 'hello' you can call at any time."""),()),
-        'logout': (0, [], _T('The EPP "logout" command is used to end a session with an EPP server.'),()),
+        'logout': (0, [], _T("""
+The EPP "logout" command is used to end a session with an EPP server.
+But client will be still running. For close client type 'quit' (see help).
+Client send logout automaticly, if user was online and set 'quit' command."""),()),
         #----------------------------------------------------
         'login': (2,[
             ('username',(1,1),(),_T('Username'),'username','',()),
@@ -114,8 +117,16 @@ ultimately a matter of server policy."""),('check_nsset nssid:id1 nssid:id2',)),
         #----------------------------------------------------
         'poll': (0,[
             ('op',(0,1),(('req',),('ack',)),_T('Query type'),'','',()),
-            ('msg_id',(0,1),(),_T('Index of message, required with op=ack!'),'123','',()),
-        ],_T('The EPP "poll" command is used to discover and retrieve service messages\nqueued by a server for individual clients.'),('poll req','poll ack 4',)),
+            ('msg_id',(0,1),(),_T('Index of message, required with op = ack only.'),'123','',()),
+        ],_T("""
+Poll command is used to discover and retrieve service messages. They are saved
+in the message queue. When you send poll with parameter op = req, 
+you get only the last message from the queue. But this message
+still remains on the queue. For remove message from the queue set
+poll op = ack and ID of this message. So you needs to send two poll
+commands for manage one message: 1. reading, 2. removing.
+See help poll_autoack for client function that sends this commands together.
+"""),('poll req','poll ack 4',)),
         #----------------------------------------------------
         'transfer_contact': (2,[
             ('name',(1,1),(),_T('Contact ID'),'CID:ID01','',()),
@@ -170,9 +181,9 @@ after successfully transfer."""),('transfer_domain domain.cz password',)),
             )),
             ('notify_email',(0,1),(),_T('Notification email'),'info@mymail.cz','',()),
             ],'%s\n\n%s\n\n%s'%(_T("""
-The EPP "create" command is used to create an instance of an object.
-An object can be created for an indefinite period of time, or an
-object can be created for a specific validity period."""),notice['disclose'],notice['ssn']),("create_contact CID:ID01 'Jan Novak' info@mymail.cz Praha CZ mypassword 'Firma s.r.o.' 'Narodni trida 1230/12' '' 12000 +420.222745111 +420.222745111 (y (org fax email)) 7035555556 (op 8888888856) info@mymail.cz",)),
+The EPP "create_contact" command is used to create an instance of the contact.
+The contact can be created for an indefinite period of time, or
+it can be created for a specific validity period."""),notice['disclose'],notice['ssn']),("create_contact CID:ID01 'Jan Novak' info@mymail.cz Praha CZ mypassword 'Firma s.r.o.' 'Narodni trida 1230/12' '' 12000 +420.222745111 +420.222745111 (y (org fax email)) 7035555556 (op 8888888856) info@mymail.cz",)),
         #----------------------------------------------------
         'create_domain': (2,[
             ('name',(1,1),(),_T('Domain name'),'mydomain.cz','',()),

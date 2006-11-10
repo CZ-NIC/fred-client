@@ -1,3 +1,8 @@
+FredClient 1.2.1
+    * oprava chyby v casti sender
+    * uprava prikladu zadani parametru u prikazu update_contact
+
+
 FredClient 1.2.0
 
 

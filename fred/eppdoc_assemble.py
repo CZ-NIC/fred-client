@@ -375,7 +375,12 @@ class Message(eppdoc.Message):
         return label
         
     def parse_cmd(self, command_name, cmd, config, interactive, verbose, null_value):
-        "Parse command line. Returns errors. Save parsed values to self._dct."
+        """Parse command line. Returns errors. Save parsed values to self._dct.
+        Returns: 
+            errors     list of errors
+            example    string return command line after interactive mode
+            stop       if user press stop/finish
+        """
         # __interactive_mode__() -> 
         # 'Loop interactive input for all params of command.'
         #
@@ -401,13 +406,22 @@ class Message(eppdoc.Message):
             error.append("%s: '%s'"%(_T('Unknown command'),command_name))
             error.append('(%s: ${BOLD}help${NORMAL})'%(_T('For more type')))
             return error, example, stop
-        if not vals[1]: return error, example, stop # bez parametrů
+        if not vals[1]:
+            # takes only command hello
+            if interactive:
+                error.append(_T('Command %s does not have any parameters, skipping interactive input mode.')%command_name)
+            elif len(cmd.split(' ')) > 1:
+                error.append(_T('Command %s does not have any parameters.')%command_name)
+            return error, example, stop # bez parametrů
         columns = [(command_name,(1,1),(),'','','',())]
         columns.extend(self._command_params[command_name][1])
         dct['command'] = [command_name]
         if interactive:
             dct[command_name] = [command_name]
-            if len(vals[1]) > 1:
+            if command_name == 'hello':
+                # only hello has not any parameter
+                session_base.print_unicode('${BOLD}${YELLOW}%s${NORMAL}'%_T('Does not have any parameters, skipping interactive input mode.'))
+            else:
                 session_base.print_unicode('${BOLD}%s${NORMAL}'%_T('Interactive input mode started. Press Ctrl+C to abort or Ctrl+D to finish command.'))
                 history_length = get_history_length()
                 user_typed_null, stop = self.__interactive_mode__(command_name, vals[1], dct, null_value)
@@ -424,8 +438,6 @@ class Message(eppdoc.Message):
                         example = ''
                         session_base.print_unicode('\n${BOLD}%s${NORMAL}'%_T('Command has been aborted.'))
                 remove_from_history(get_history_length() - history_length)
-            else:
-                session_base.print_unicode('${BOLD}${YELLOW}%s${NORMAL}'%_T('Does not have any parameters, skipping interactive input mode.'))
             errors = []
         else:
             errors = cmd_parser.parse(dct, columns, cmd)
