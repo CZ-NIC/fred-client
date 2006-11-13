@@ -72,10 +72,10 @@ def main(options):
         print colored_output.render("${BOLD}${RED}%s${NORMAL}"%__init__.translate.warning)
     epp = __init__.ClientSession()
     if not check_options(epp): return # any option error occurs
+    print epp.welcome()
     if not epp.load_config():
         epp.display() # display errors or notes
         return
-    print epp.welcome()
     epp.init_radline(readline) # readline behavior for Unix line OS
     is_online = 0
     prompt = '> '

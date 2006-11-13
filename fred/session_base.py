@@ -335,7 +335,7 @@ $fred_client_errors = array(); // errors occuring during communication
         # keep options in Manager instance
         if type(options) is dict: self._options = options
         # Load configuration file:
-        self._conf, self._config_used_files, config_errors = session_config.main(self._config_name, self._options)
+        self._conf, self._config_used_files, config_errors = session_config.main(self._config_name, self._options, self._session[VERBOSE])
         # set language version
         translate.install_translation(self._options['lang'])
         if len(self._config_used_files):
@@ -353,6 +353,7 @@ $fred_client_errors = array(); // errors occuring during communication
                 return 0 # fatal error
             if self._options['session'] != '':
                 self.append_error(_T('Session "%s" without effect. No configuration file.')%self._options['session'])
+                return 0
         # for login with no parameters
         section_connect = self.config_get_section_connect()
         if not self._conf.has_section(section_connect):

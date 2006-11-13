@@ -6,7 +6,7 @@ import os
 import ConfigParser
 from translate import get_valid_lang
 
-def load_config_from_file(filename):
+def load_config_from_file(filename, verbose):
     'Load config file from specifiend filename only.'
     config = ConfigParser.SafeConfigParser()
     error = ''
@@ -16,7 +16,8 @@ def load_config_from_file(filename):
         try:
             config.read(filename)
         except (ConfigParser.MissingSectionHeaderError, ConfigParser.ParsingError), msg:
-            error = 'ConfigParserError: %s'%str(msg)
+            error = 'ConfigParserError: %s'%_T('File contains parsing errors.') + \
+                (verbose > 1 and ('\n' + str(msg)) or ' %s'%_T('See details in verbose 2 or higher.'))
         else:
             names.append(filename)
     else:
@@ -32,17 +33,17 @@ def get_etc_config_name(name):
         glob_conf = os.path.join(os.path.expandvars('$ALLUSERSPROFILE'),name)
     return glob_conf
     
-def load_default_config(config_name):
+def load_default_config(config_name, verbose):
     'Load default config. First try home than etc.'
     config = ConfigParser.SafeConfigParser()
     # first try home
-    error, names, missing = load_config(config, os.path.join(os.path.expanduser('~'),config_name))
+    error, names, missing = load_config(config, os.path.join(os.path.expanduser('~'),config_name), verbose)
     if missing:
         # than try etc
-        error, names, missing = load_config(config, get_etc_config_name(config_name[1:]))
+        error, names, missing = load_config(config, get_etc_config_name(config_name[1:]), verbose)
     return config, error, names
 
-def load_config(config, filename):
+def load_config(config, filename, verbose):
     "Load config file and init internal variables. Returns 0 if fatal error occured."
     missing = 1
     error = ''
@@ -54,7 +55,8 @@ def load_config(config, filename):
             # names = config.read([modul_conf, glob_conf, os.path.join(os.path.expanduser('~'),config_name)])
             names = config.read(filename)
         except (ConfigParser.MissingSectionHeaderError, ConfigParser.ParsingError), msg:
-            error = 'ConfigParserError: %s'%str(msg)
+            error = 'ConfigParserError: %s'%_T('File contains parsing errors.') + \
+                (verbose > 1 and ('\n' + str(msg)) or ' %s'%_T('See details in verbose 2 or higher.'))
             config = None
     #else:
     #    error = "Configuration file '%s' not found."%filename
@@ -73,13 +75,13 @@ def get_config_value(config, section, option, omit_errors=0):
 #---------------------------
 # LOAD CONFIG
 #---------------------------
-def main(config_name, options):
+def main(config_name, options, verbose):
     'Load configuration file'
     errors = []
     if options.has_key('config') and len(options['config']):
-        config, config_error, config_names = load_config_from_file(options['config'])
+        config, config_error, config_names = load_config_from_file(options['config'], verbose)
     else:
-        config, config_error, config_names = load_default_config(config_name)
+        config, config_error, config_names = load_default_config(config_name, verbose)
     if len(config_error): errors.append(config_error)
     if config and not options.has_key('lang'):
         key, error = get_config_value(config, 'session','lang',1) # 1 - omit errors

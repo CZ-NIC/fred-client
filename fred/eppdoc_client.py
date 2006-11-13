@@ -133,9 +133,8 @@ See help poll_autoack for client function that sends this commands together.
             ('auth_info',(1,1),(),_T('Password required by server to authorize the transfer'),'mypassword','',()),
         ],_T("""
 The EPP "transfer" command makes change in client sponsorship 
-of an existing object. The new owner becomes registrant what called
-transfer command. New auhtorization info is generated automaticly
-after successfully transfer."""),('transfer_contact CID:ID01 password',)),
+of a designated registrar. New password for authorisation 
+will be generated automaticly after succefull transfer."""),('transfer_contact CID:ID01 password',)),
         #----------------------------------------------------
         'transfer_nsset': (2,[
             ('name',(1,1),(),_T('NSSET ID'),'NSSET_ID','',()),
@@ -143,9 +142,8 @@ after successfully transfer."""),('transfer_contact CID:ID01 password',)),
             ('auth_info',(1,1),(),_T('Password required by server to authorize the transfer'),'mypassword','',()),
         ],_T("""
 The EPP "transfer" command makes change in client sponsorship 
-of an existing object. The new owner becomes registrant what called
-transfer command. New auhtorization info is generated automaticly
-after successfully transfer."""),('transfer_nsset nssid:nsset password',)),
+of a designated registrar. New password for authorisation 
+will be generated automaticly after succefull transfer."""),('transfer_nsset nssid:nsset password',)),
         #----------------------------------------------------
         'transfer_domain': (2,[
             ('name',(1,1),(),_T('Domain name of domain to change sponsorship'),'domain.cz','',()),
@@ -153,9 +151,8 @@ after successfully transfer."""),('transfer_nsset nssid:nsset password',)),
             ('auth_info',(1,1),(),_T('Password required by server to authorize the transfer'),'mypassword','',()),
         ],_T("""
 The EPP "transfer" command makes change in client sponsorship 
-of an existing object. The new owner becomes registrant what called
-transfer command. New auhtorization info is generated automaticly
-after successfully transfer."""),('transfer_domain domain.cz password',)),
+of a designated registrar. New password for authorisation 
+will be generated automaticly after succefull transfer."""),('transfer_domain domain.cz password',)),
         #----------------------------------------------------
         'create_contact': (5,[
             ('contact_id',(1,1),(),_T('Contact ID'),'CID:ID01','',()),
@@ -286,7 +283,7 @@ maximum value."""),('renew_domain nic.cz 2008-06-02 (6 y)',)), # The EPP renew_d
                 )),
                 ('notify_email',(0,1),(),_T('Notification email'),'notify@mymail.cz','',()),
             )),
-            ],'%s\n\n%s'%(_T("""The EPP "update" command is used to update an instance of an existing object."""),notice['disclose']),(
+            ],_T("""The EPP "update" command is used to update an instance of an existing object."""),(
                     'update_contact CID:ID01 clientDeleteProhibited',
                     'update_contact CID:ID01 (clientDeleteProhibited linked ok)',
                     "update_contact CID:ID01 clientTransferProhibited (clientDeleteProhibited, clientUpdateProhibited) (('Jan Nowak' 'Firma s.r.o.' (Praha CZ ('Na narodni 1230/12', 'Americka 12') Vinohrady 12000)) +420.222745111 +420.222745111 info@mymail.cz mypassword (y (org, voice, email)) 7035555556 (ico 8888888856) notify@mymail.cz)",

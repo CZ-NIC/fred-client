@@ -145,8 +145,8 @@ class ManagerReceiver(ManagerCommand):
                 else:
                     self.append_note(_T('Unknown response type'),('RED','BOLD'))
                     self.__put_raw_into_note__(self._dict_answer)
-        else:
-            self.append_note(_T("No response from EPP server."))
+        #else:
+        #    self.append_note(_T("No response from EPP server."))
         return debug_time
 
     #==================================================
