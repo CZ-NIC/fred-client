@@ -134,7 +134,7 @@ class Message(eppdoc.Message):
         self.__fill_empy_from_config__(config, dct, columns)
         return dct
 
-    def __check_required__(self, command_name, columns, dct_values, scopes=[]):
+    def __check_required__(self, command_name, columns, dct_values, null_value, scopes=[]):
         'Check parsed values for required and allowed values.'
         miss_req = 0
         errors = []
@@ -151,37 +151,52 @@ class Message(eppdoc.Message):
                     vals.append(example)
                 else:
                     vals.append(name)
-            return '%s: "%s". (%s: "%s")\n%s: (%s) %s: (%s)'%(
+            message = [_T('Invalid parameter value.')]
+            if self._verbose > 1:
+                message.append('%s: "%s". (%s: "%s")\n%s: (%s) %s: (%s)'%(
                 _T('Invalid parameter'), local8bit(' / '.join(scopes)),
                 _T('Corrupted value'),str(dct_values),
                 _T('Correct format is'), ', '.join(keys), 
                 _T('For example'), ', '.join(vals), 
-                ), miss_req
+                ))
+            return '\n'.join(message), miss_req
+        is_poll = command_name == 'poll' # compile boolean for more faster comparation
         for row in columns:
             name,min_max,allowed,msg_help,example,pattern,children = row
             scopes.append(name)
             scope_name = local8bit(' / '.join(scopes))
             if dct_values.has_key(name):
-                if min_max[1] != UNBOUNDED and len(dct_values[name]) > min_max[1]:
-                    if command_name == 'hello':
-                        errors.append(_T('Command does not have any parameters.'))
-                    else:
-                        errors.append('%s: %s %d. (%s)'%(scope_name,_T('list of values overflow. Maximum is'),min_max[1],local8bit(', '.join(dct_values[name]))))
-                if allowed:
-                    # check allowed values
-                    allowed_abrev=[]
-                    map(allowed_abrev.extend, allowed)
-                    for value in dct_values[name]:
-                        if value not in allowed_abrev:
-                            errors.append('%s: %s: (%s)'%(scope_name,_T('Value "%s" is not allowed. Valid is')%local8bit(value),', '.join(self.__make_abrev_help__(allowed))))
-                # walk throught descendants:
-                if children:
-                    for dct in dct_values[name]:
-                        err, mr = self.__check_required__(command_name, children, dct, scopes)
-                        if err: errors.extend(err)
-                        miss_req += mr
+                if is_poll and scope_name == 'msg_id' and dct_values.get('op',[''])[0] == 'req':
+                    # exception for command 'poll req' what does't need msg_id value
+                    # errors.append(_T("poll req doesn't have msg_id value. Type %s for continue with next parameter.")%null_value)
+                    errors.append(_T("poll req doesn't have msg_id value"))
+                else:
+                    if min_max[1] != UNBOUNDED and len(dct_values[name]) > min_max[1]:
+                        if command_name == 'hello':
+                            errors.append(_T('Command does not have any parameters.'))
+                        else:
+                            errors.append('%s: %s %d. (%s)'%(scope_name,_T('list of values overflow. Maximum is'),min_max[1],local8bit(', '.join(dct_values[name]))))
+                    if allowed:
+                        # check allowed values
+                        allowed_abrev=[]
+                        map(allowed_abrev.extend, allowed)
+                        for value in dct_values[name]:
+                            if value not in allowed_abrev:
+                                errors.append('%s: %s: (%s)'%(scope_name,_T('Value "%s" is not allowed. Valid is')%local8bit(value),', '.join(self.__make_abrev_help__(allowed))))
+                    # walk throught descendants:
+                    if children:
+                        for dct in dct_values[name]:
+                            err, mr = self.__check_required__(command_name, children, dct, null_value, scopes)
+                            if err:
+                                if type(err) in (list,tuple):
+                                    errors.extend(err)
+                                else:
+                                    errors.append(err)
+                            miss_req += mr
             else:
-                if min_max[0] > 0:
+                if is_poll and scope_name == 'msg_id' and dct_values.get('op',[''])[0] == 'req':
+                    pass # exception for command 'poll req' what does't need msg_id value
+                elif min_max[0] > 0:
                     errors.append('%s %s'%(scope_name,_T('missing')))
                     miss_req += 1
             scopes.pop()
@@ -292,8 +307,12 @@ class Message(eppdoc.Message):
         'Loop interactive input for all params of command.'
         stop = previous_value_is_set = 0
         previous_min = [n[1]for n in parents]
+        is_poll = command_name == 'poll' # compile boolean for more faster comparation
         for row in columns:
             name,min_max,allowed,msg_help,example,pattern,children = row
+            if is_poll and name == 'msg_id' and dct.get('op',[''])[0] == 'req':
+                # exception on the 'poll req' type where msg_id is jumped
+                continue
             min,max = min_max
             utext,error = text_to_unicode(msg_help)
             parents.append([name,min,max,0,utext]) # name,min,max,counter
@@ -446,7 +465,7 @@ class Message(eppdoc.Message):
         self.__fill_empy_from_config__(config, dct, columns) # fill missing values from config
         if not stop:
             # check list and allowed values if only 'stop' was not set
-            errors, miss_req = self.__check_required__(command_name, columns, dct)
+            errors, miss_req = self.__check_required__(command_name, columns, dct, null_value)
             if errors:
                 if miss_req:
                     error.append(_TP('Missing required value.','Missing required values.',miss_req))
@@ -614,8 +633,9 @@ class Message(eppdoc.Message):
 
     def assemble_poll(self, *params):
         op = self._dct.get('op',['req'])[0]
+        msg_id = self._dct.get('msg_id',[None])[0]
         attr = [('op',op)]
-        if self._dct.get('msg_id',None): attr.append(('msgID',self._dct['msg_id'][0]))
+        if msg_id: attr.append(('msgID',msg_id))
         self.__assemble_cmd__((
             ('epp', 'command'),
             ('command', 'poll', '', attr),

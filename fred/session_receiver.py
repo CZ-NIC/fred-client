@@ -43,22 +43,29 @@ class ManagerReceiver(ManagerCommand):
     def __code_isnot_1000__(self, data, label):
         """Append standard message if answer code is not 1000.
         Returns FALSE - code is 1000; TRUE - code is NOT 1000;
+        <extValue>
+            <value>
+                <poll op='ack'/>
+            </value>
+            <reason>Required parameter msgID is missing</reason>
+        </extValue>
         """
         if data[ANSW_CODE] == 1000: return 0
         extValue = data[ANSW_RESULT].get('extValue',[])
         if type(extValue) not in (list,tuple): extValue = (extValue,)
+        extra_message = []
+        tags = self._session[OUTPUT_TYPE] in ('html','php') and ('&lt;','&gt;') or ('<','>')
         for item in extValue:
-            msg = [] # for values of nodes
-            msg_attr = [] # for attributes of values
             for key in item.get('value',{}).keys():
-                value = item['value'][key].get('data',item['value'][key])
-                msg = len(value) and "%s '%s' "%(key, value) or '%s '%key
-                # join node attributes
-                for attr in item['value'][key].get('attr',[]):
-                    msg_attr.append("%s='%s'"%attr)
-                if item.has_key('reason'): msg += item['reason'].get('data','')
-                self._dct_answer['errors'].append(msg)
-                if len(msg_attr): self._dct_answer['errors'].append('(%s)'%', '.join(msg_attr))
+                if self._session[VERBOSE] > 1:
+                    attributes=[]
+                    for attr in item['value'][key].get('attr',[]):
+                        attributes.append("%s='%s'"%attr)
+                    attribs = len(attributes) and ' %s'%' '.join(attributes) or ''
+                    extra_message.append('%s: %s%s%s%s'%(_T('Element that caused a server error condition'),tags[0],key,attribs,tags[1]))
+                if item.has_key('reason'): extra_message.append('%s: %s'%(_T('Reason'), item['reason'].get('data','')))
+        if len(extra_message):
+            self._dct_answer['errors'].extend(extra_message)
         return 1 # code is NOT 1000
         
     def answer_response(self):
