@@ -167,7 +167,7 @@ class Client:
 
     def create_contact(self, contact_id, name, email, city, cc, auth_info=None,
             org=None, street=None, sp=None, pc=None, voice=None, fax=None, 
-            disclose=None, vat=None, ssn=None, notify_email=None, 
+            disclose=None, vat=None, ident=None, notify_email=None, 
             cltrid=None):
         """Usage: create_contact contact-id name email city cc
 
@@ -189,7 +189,7 @@ class Client:
         flag (required) y/n default y
         data (required) list: (name,org,addr,voice,fax,email)
     vat (optional)
-    ssn (optional)
+    ident (optional)
         type (required)
         number (required)
     notify_email (optional)
@@ -207,7 +207,7 @@ class Client:
         return self._epp.api_command('create_contact',{
             'contact_id':contact_id, 'name':name, 'email':email, 'city':city, 'cc':cc, 'auth_info':auth_info,
             'org':org, 'street':street, 'sp':sp, 'pc':pc, 'voice':voice, 'fax':fax,
-            'disclose':disclose, 'vat':vat, 'ssn':ssn, 
+            'disclose':disclose, 'vat':vat, 'ident':ident, 
             'notify_email':notify_email, 'cltrid':cltrid})
 
     def create_domain(self, name, registrant, auth_info=None, nsset=None, period=None, admin=None, val_ex_date=None, 
@@ -567,7 +567,7 @@ class Client:
             flag (required) y/n default y
             data (required) list: (name,org,addr,voice,fax,email)
         vat (optional)
-        ssn (optional)
+        ident (optional)
             type (required)
             number (required)
         notifyEmail (optional)
@@ -606,7 +606,7 @@ class Client:
             'add':add, 'rem':rem, 'chg':chg, 'val_ex_date':val_ex_date, 'cltrid':cltrid})
 
 
-    def update_nsset(self, nsset_id, add=None, rem=None, chg=None, cltrid=None):
+    def update_nsset(self, nsset_id, add=None, rem=None, auth_info=None, cltrid=None):
         """Usage: update_nsset id
 
     PARAMS:
@@ -622,8 +622,7 @@ class Client:
         name (optional)         list with max 9 items.
         tech (optional)         unbounded list
         status (optional)       list with max 6 items. accept only values: (clientDeleteProhibited,clientTransferProhibited,clientUpdateProhibited,linked,ok,serverDeleteProhibited,serverTransferProhibited,serverUpdateProhibited)
-    chg (optional)
-        auth_info (optional)
+    auth_info (optional)
 
     RETURN data: {}
 
@@ -633,7 +632,7 @@ class Client:
     update_nsset nic.cz
     update_nsset nsset-ID (((nsset1.name.cz 127.0.0.1),(nsset2.name.cz (127.0.2.1 127.0.2.2)),) tech-add-contact ok) ("My Name",("Tech contact 1","Tech contact 2"),(clientDeleteProhibited ok)) (auth_info extension)
         """
-        return self._epp.api_command('update_nsset',{'id':nsset_id, 'add':add, 'rem':rem, 'chg':chg, 'cltrid':cltrid})
+        return self._epp.api_command('update_nsset',{'id':nsset_id, 'add':add, 'rem':rem, 'auth_info':auth_info, 'cltrid':cltrid})
 
     def list_contact(self, cltrid=None):
         """Usage: list_contact

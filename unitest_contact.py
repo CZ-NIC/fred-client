@@ -50,8 +50,8 @@ FRED_CONTACT = [
     'fax': '', #(nepovinný) fax
     'disclose': {'flag':'n', 'data':('name','org','addr','voice','fax','email')},
     'vat': '', #(nepovinný) DPH
-    'ssn': '', #(nepovinný) SSN
-    'ssn': {'type':'','number':''}, #(nepovinný) SSN
+    'ident': '', #(nepovinný) Ident
+    'ident': {'type':'','number':''}, #(nepovinný) Ident
     'notify_email': '', #(nepovinný) oznámení na email
     },
     {   # create contact
@@ -69,7 +69,7 @@ FRED_CONTACT = [
     'fax': '+321.564987', #(nepovinný) fax
     'disclose': {'flag':'n', 'data':('name',)},
     'vat': '963', #(nepovinný) DPH
-    'ssn': {'type':'op','number':'12345679'}, #(nepovinný) SSN
+    'ident': {'type':'op','number':'12345679'}, #(nepovinný) ident
     'notify_email': 'info@rehorovi.cz', #(nepovinný) oznámení na email
     },
     {   # modify contact
@@ -87,7 +87,7 @@ FRED_CONTACT = [
     'fax': '+321.987564', #(nepovinný) fax
     'disclose': {'flag':'y', 'data':('voice','fax','email')},
     'vat': '753', #(nepovinný) DPH
-    'ssn': {'type':'rc','number':'831101934'}, #(nepovinný) SSN
+    'ident': {'type':'rc','number':'831101934'}, #(nepovinný) ident
     'notify_email': 'info@zlucnikovi.cz', #(nepovinný) oznámení na email
     },
 ]
@@ -111,7 +111,7 @@ FRED_CONTACT.append({ # chg part to modify contact
             'auth_info': d['auth_info'],
             'disclose': d['disclose'],
             'vat': d['vat'],
-            'ssn': d['ssn'],
+            'ident': d['ident'],
             'notify_email': d['notify_email'],
     })
 
@@ -170,7 +170,7 @@ class TestContact(unittest.TestCase):
         epp_cli.create_contact(handle_contact, 
             d['name'], d['email'], d['city'], d['cc'], d['auth_info'],  d['org'], 
             d['street'], d['sp'], d['pc'], d['voice'], d['fax'], d['disclose'],
-            d['vat'], d['ssn'], d['notify_email'])
+            d['vat'], d['ident'], d['notify_email'])
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_031(self):
@@ -354,11 +354,11 @@ def __compare_disclose__(cols, disclose, hide):
         'disclose(%s) hide(%s)'%(','.join(c['disclose']),','.join(c['hide']))
         )
 
-def __compare_ssn__(cols_ssn, data):
-    ssn_type = data.get('contact:ssn.type','')
-    ssn_number = data.get('contact:ssn','')
-    is_error = not(cols_ssn['type'] == ssn_type and cols_ssn['number'] == ssn_number)
-    return is_error, '(%s)%s'%(ssn_type,ssn_number), '(%s)%s'%(cols_ssn['type'],cols_ssn['number'])
+def __compare_ident__(cols_ident, data):
+    ident_type = data.get('contact:ident.type','')
+    ident_number = data.get('contact:ident','')
+    is_error = not(cols_ident['type'] == ident_type and cols_ident['number'] == ident_number)
+    return is_error, '(%s)%s'%(ident_type,ident_number), '(%s)%s'%(cols_ident['type'],cols_ident['number'])
             
 def __info_contact__(prefix, cols, scope, key=None, pkeys=[]):
     'Check info-[object] against selected set.'
@@ -379,8 +379,8 @@ def __info_contact__(prefix, cols, scope, key=None, pkeys=[]):
             if err:
                 errors.append('Data nesouhlasi:\n%s.%s JSOU:%s MELY BYT:%s'%(prevkeys, key, unitest_share.make_str(vals), unitest_share.make_str(v)))
             continue
-        if k == 'ssn':
-            err, vals, v = __compare_ssn__(cols['ssn'], data)
+        if k == 'ident':
+            err, vals, v = __compare_ident__(cols['ident'], data)
             if err:
                 errors.append('Data nesouhlasi:\n%s.%s JSOU:%s MELY BYT:%s'%(prevkeys, key, unitest_share.make_str(vals), unitest_share.make_str(v)))
             continue
@@ -425,7 +425,7 @@ if 0:
     #'2.6 Info na existujici kontakt a overeni vsech hodnot'
     (FRED_CONTACT[1], {'contact:voice': u'+123.456789', 'contact:org': u'\u010c\xed\u017ekov\xe1 a spol', 'contact:fax': u'+321.564987', 'contact:status.s': u'ok', 'contact:disclose': ['name', 'org', 'addr', 'voice', 'fax', 'email'], 'contact:hide': [], 'contact:email': u'rehor.cizek@mail.cz', 'contact:city': u'\u010cesk\xfd Krumlov', 'contact:pc': u'12300', 'contact:crDate': u'2006-08-08T07:59:03.0Z', 'contact:street': [u'U pr\xe1ce', u'Za monitorem', u'Nad kl\xe1vesnic\xed'], 'contact:crID': u'REG-LRR', 'contact:sp': u'123', 'contact:roid': u'C0000426646-CZ', 'contact:cc': u'CZ', 'contact:name': u'\u0158eho\u0159 \u010c\xed\u017eek', 'contact:id': u'test001'}),
     #'2.7.1 Overevni vsech hodnot zmeneneho kontaktu'
-    (FRED_CONTACT[2], {'contact:voice': u'+321.987654', 'contact:org': u'Bolen\xed s.r.o.', 'contact:fax': u'+321.987564', 'contact:status.s': u'ok', 'contact:disclose': ['name', 'org', 'addr', 'voice', 'fax', 'email'], 'contact:hide': [], 'contact:email': u'breta.zlucnik@bricho.cz', 'contact:city': u'St\u0159evn\xedkov', 'contact:pc': u'23101', 'contact:crDate': u'2006-08-08T07:59:03.0Z', 'contact:street': (u'Na toaletách',u'U mísy'), 'contact:crID': u'REG-LRR', 'contact:sp': u'321', 'contact:roid': u'C0000426646-CZ', 'contact:cc': u'CZ', 'contact:name': u'B\u0159\xe9\u0165a \u017dlu\u010dn\xedk', 'contact:id': u'test001','contact:ssn':'357','contact:notify_email':'info@zlucnikovi.cz','contact:vat':'753'}),
+    (FRED_CONTACT[2], {'contact:voice': u'+321.987654', 'contact:org': u'Bolen\xed s.r.o.', 'contact:fax': u'+321.987564', 'contact:status.s': u'ok', 'contact:disclose': ['name', 'org', 'addr', 'voice', 'fax', 'email'], 'contact:hide': [], 'contact:email': u'breta.zlucnik@bricho.cz', 'contact:city': u'St\u0159evn\xedkov', 'contact:pc': u'23101', 'contact:crDate': u'2006-08-08T07:59:03.0Z', 'contact:street': (u'Na toaletách',u'U mísy'), 'contact:crID': u'REG-LRR', 'contact:sp': u'321', 'contact:roid': u'C0000426646-CZ', 'contact:cc': u'CZ', 'contact:name': u'B\u0159\xe9\u0165a \u017dlu\u010dn\xedk', 'contact:id': u'test001','contact:ident':'357','contact:notify_email':'info@zlucnikovi.cz','contact:vat':'753'}),
     )
     print '-'*60
     for cols,vals in DATA:

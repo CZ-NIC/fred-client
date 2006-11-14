@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-11-14 12:15+0100\n"
+"POT-Creation-Date: 2006-11-14 16:22+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Zdeněk Böhm <zdenek.bohm@nic.cz>\n"
 "Language-Team: CS <ccreg-devel@lists.nic.cz>\n"
@@ -233,7 +233,7 @@ msgstr "Neznámý příkaz"
 
 #: fred/creator.py:34 fred/session_base.py:205 fred/session_command.py:295
 #: fred/session_command.py:298 fred/session_command.py:300
-#: fred/session_command.py:302 fred/session_transfer.py:402
+#: fred/session_command.py:302 fred/session_transfer.py:404
 msgid "ERROR"
 msgstr "CHYBA"
 
@@ -361,8 +361,7 @@ msgstr "Pro více informací zadejte"
 #, python-format
 msgid ""
 "Command %s does not have any parameters, skipping interactive input mode."
-msgstr ""
-"Příkaz %s nemá žádné parametry, interaktivní mód byl zrušen."
+msgstr "Příkaz %s nemá žádné parametry, interaktivní mód byl zrušen."
 
 #: fred/eppdoc_assemble.py:433
 #, python-format
@@ -396,7 +395,7 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: fred/eppdoc_assemble.py:1001
+#: fred/eppdoc_assemble.py:1012
 #, python-format
 msgid "Value can be a list of max %d value."
 msgid_plural "Value can be a list of max %d values."
@@ -404,11 +403,11 @@ msgstr[0] "Hodnota může být seznam o max. velikosti %d položky."
 msgstr[1] "Hodnota může být seznam o max. velikosti %d položek."
 msgstr[2] "Hodnota může být seznam o max. velikosti %d položek."
 
-#: fred/eppdoc_assemble.py:1003
+#: fred/eppdoc_assemble.py:1014
 msgid "Value can be an unbouded list of values."
 msgstr "Hodnota může být libovolně velký seznam."
 
-#: fred/eppdoc_assemble.py:1005
+#: fred/eppdoc_assemble.py:1016
 msgid "Minimum is"
 msgstr "Minimum je"
 
@@ -422,14 +421,14 @@ msgstr ""
 
 #: fred/eppdoc_client.py:25
 msgid ""
-"SSN types can be: \n"
+"Identificator type can be: \n"
 "      op       number identity card\n"
 "      rc       number of birth\n"
 "      passport number of passport\n"
 "      mpsv     number of Ministry of Labour and social affairs\n"
 "      ico      number of company"
 msgstr ""
-"   SSN typy můžou být: \n"
+"Identifikátor typy můžou být: \n"
 "      op       číslo občanského průkazu\n"
 "      rc       rodné číslo\n"
 "      passport číslo pasu\n"
@@ -460,17 +459,18 @@ msgid ""
 "The EPP \"logout\" command is used to end a session with the server.\n"
 "But client will be still running. For close client type 'quit' (see help).\n"
 "Before quit the client send logout automaticly."
-msgstr "\n"
+msgstr ""
+"\n"
 "Příkaz 'logout' se používá pro ukončení spojení se serverem.\n"
-"Ale klient se tím neukončí. Klient se ukončí příkazem 'quit' (více v helpu).\n"
+"Ale klient se tím neukončí. Klient se ukončí příkazem 'quit' (více v "
+"helpu).\n"
 "Před ukončením pošle klient logout automaticky."
 
 #: fred/eppdoc_client.py:56
 msgid "Username"
 msgstr "Uživatelské jméno"
 
-#: fred/eppdoc_client.py:57 fred/eppdoc_client.py:402
-#: fred/eppdoc_client.py:417
+#: fred/eppdoc_client.py:57
 msgid "Password"
 msgstr "Heslo"
 
@@ -503,8 +503,8 @@ msgstr ""
 
 #: fred/eppdoc_client.py:69 fred/eppdoc_client.py:94 fred/eppdoc_client.py:132
 #: fred/eppdoc_client.py:158 fred/eppdoc_client.py:221
-#: fred/eppdoc_client.py:256 fred/eppdoc_client.py:361
-#: fred/eppdoc_client.py:424
+#: fred/eppdoc_client.py:256 fred/eppdoc_client.py:362
+#: fred/eppdoc_client.py:428
 msgid "Contact ID"
 msgstr "Kontakt ID"
 
@@ -526,8 +526,8 @@ msgstr ""
 #: fred/eppdoc_client.py:77 fred/eppdoc_client.py:102
 #: fred/eppdoc_client.py:186 fred/eppdoc_client.py:225
 #: fred/eppdoc_client.py:233 fred/eppdoc_client.py:295
-#: fred/eppdoc_client.py:390 fred/eppdoc_client.py:434
-#: fred/eppdoc_client.py:468
+#: fred/eppdoc_client.py:392 fred/eppdoc_client.py:438
+#: fred/eppdoc_client.py:472
 msgid "Domain name"
 msgstr "Název domény"
 
@@ -535,8 +535,8 @@ msgstr "Název domény"
 #: fred/eppdoc_client.py:140 fred/eppdoc_client.py:189
 #: fred/eppdoc_client.py:205 fred/eppdoc_client.py:229
 #: fred/eppdoc_client.py:305 fred/eppdoc_client.py:316
-#: fred/eppdoc_client.py:401 fred/eppdoc_client.py:409
-#: fred/eppdoc_client.py:429
+#: fred/eppdoc_client.py:403 fred/eppdoc_client.py:412
+#: fred/eppdoc_client.py:433
 msgid "NSSET ID"
 msgstr "NSSET ID"
 
@@ -575,7 +575,8 @@ msgid ""
 "commands for manage one message: 1. reading, 2. removing.\n"
 "See help poll_autoack for client function that sends this commands "
 "together.\n"
-msgstr "\n"
+msgstr ""
+"\n"
 "Příkaz poll se používá k zobrazení servisních zpráv, které jsou na serveru.\n"
 "Pokus se poll pošle s parameterm op = req, tak server vrátí zprávu,\n"
 "která je poslední ve frontě zpráv. Zpráva ale zůstává ve frontě.\n"
@@ -588,7 +589,7 @@ msgstr "\n"
 #: fred/eppdoc_client.py:151 fred/eppdoc_client.py:163
 #: fred/eppdoc_client.py:188 fred/eppdoc_client.py:211
 #: fred/eppdoc_client.py:274 fred/eppdoc_client.py:307
-#: fred/eppdoc_client.py:331
+#: fred/eppdoc_client.py:334
 msgid "Password required by server to authorize the transfer"
 msgstr "Heslo požadované serverem pro autorizaci transferu"
 
@@ -610,7 +611,7 @@ msgid "Domain name of domain to change sponsorship"
 msgstr "Doménové jméno u kterého se změní editor"
 
 #: fred/eppdoc_client.py:159 fred/eppdoc_client.py:261
-#: fred/eppdoc_client.py:369
+#: fred/eppdoc_client.py:370
 msgid "Name"
 msgstr "Jméno"
 
@@ -619,12 +620,12 @@ msgid "Email"
 msgstr ""
 
 #: fred/eppdoc_client.py:161 fred/eppdoc_client.py:264
-#: fred/eppdoc_client.py:372
+#: fred/eppdoc_client.py:373
 msgid "City"
 msgstr "Město"
 
 #: fred/eppdoc_client.py:162 fred/eppdoc_client.py:265
-#: fred/eppdoc_client.py:375
+#: fred/eppdoc_client.py:376
 msgid "Country code"
 msgstr "Kód země"
 
@@ -637,22 +638,22 @@ msgid "password"
 msgstr "heslo"
 
 #: fred/eppdoc_client.py:164 fred/eppdoc_client.py:262
-#: fred/eppdoc_client.py:370
+#: fred/eppdoc_client.py:371
 msgid "Organisation"
 msgstr "Název organizace"
 
 #: fred/eppdoc_client.py:165 fred/eppdoc_client.py:266
-#: fred/eppdoc_client.py:371
+#: fred/eppdoc_client.py:372
 msgid "Street"
 msgstr "Ulice"
 
 #: fred/eppdoc_client.py:166 fred/eppdoc_client.py:267
-#: fred/eppdoc_client.py:373
+#: fred/eppdoc_client.py:374
 msgid "State or province"
 msgstr "Stát nebo kraj"
 
 #: fred/eppdoc_client.py:167 fred/eppdoc_client.py:268
-#: fred/eppdoc_client.py:374
+#: fred/eppdoc_client.py:375
 msgid "Postal code"
 msgstr "PSČ"
 
@@ -661,7 +662,7 @@ msgid "postal code"
 msgstr "PSČ"
 
 #: fred/eppdoc_client.py:168 fred/eppdoc_client.py:271
-#: fred/eppdoc_client.py:377
+#: fred/eppdoc_client.py:379
 msgid "Phone"
 msgstr "Telefon"
 
@@ -670,7 +671,7 @@ msgid "Fax"
 msgstr ""
 
 #: fred/eppdoc_client.py:170 fred/eppdoc_client.py:275
-#: fred/eppdoc_client.py:382
+#: fred/eppdoc_client.py:384
 msgid "Disclose"
 msgstr "Zveřejnit"
 
@@ -686,21 +687,22 @@ msgstr "Data, pro které se nastaví příznak"
 msgid "VAT (Value-added tax)"
 msgstr "VAT (daňový identifikátor)"
 
-#: fred/eppdoc_client.py:175
-msgid "SSN (Social security number)"
-msgstr "SSN číslo dokladu"
+#: fred/eppdoc_client.py:175 fred/eppdoc_client.py:280
+#: fred/eppdoc_client.py:388
+msgid "Identificator"
+msgstr "Identifikátor"
 
 #: fred/eppdoc_client.py:176 fred/eppdoc_client.py:281
-#: fred/eppdoc_client.py:385
-msgid "SSN type"
-msgstr "SSN typ čísla dokladu"
+#: fred/eppdoc_client.py:387
+msgid "Identificator type"
+msgstr "Typ identifikátoru"
 
 #: fred/eppdoc_client.py:177 fred/eppdoc_client.py:282
-msgid "SSN number"
-msgstr "SSN číslo (Security social number)"
+msgid "Identificator number"
+msgstr "Čislo identifikátoru"
 
 #: fred/eppdoc_client.py:179 fred/eppdoc_client.py:284
-#: fred/eppdoc_client.py:380
+#: fred/eppdoc_client.py:382
 msgid "Notification email"
 msgstr "Oznámení na email"
 
@@ -718,7 +720,7 @@ msgstr ""
 "definované období."
 
 #: fred/eppdoc_client.py:187 fred/eppdoc_client.py:306
-#: fred/eppdoc_client.py:404
+#: fred/eppdoc_client.py:407
 msgid "Registrant ID"
 msgstr "ID držitele"
 
@@ -740,7 +742,7 @@ msgid "Administrative contact ID"
 msgstr "Administrativní kontakt ID"
 
 #: fred/eppdoc_client.py:195 fred/eppdoc_client.py:239
-#: fred/eppdoc_client.py:309 fred/eppdoc_client.py:399
+#: fred/eppdoc_client.py:309 fred/eppdoc_client.py:401
 msgid "Validation expires at"
 msgstr "Validace platná do"
 
@@ -769,7 +771,7 @@ msgstr "Jmenný server"
 msgid "Server address"
 msgstr "Adresa serveru"
 
-#: fred/eppdoc_client.py:210 fred/eppdoc_client.py:419
+#: fred/eppdoc_client.py:210 fred/eppdoc_client.py:423
 msgid "Technical contact"
 msgstr "Technický kontakt"
 
@@ -781,8 +783,8 @@ msgid ""
 msgstr ""
 "EPP příkaz \"delete\" se používá pro odebrání instance vybraného objektu."
 
-#: fred/eppdoc_client.py:234 fred/eppdoc_client.py:398
-#: fred/eppdoc_client.py:436 fred/eppdoc_client.py:469
+#: fred/eppdoc_client.py:234 fred/eppdoc_client.py:400
+#: fred/eppdoc_client.py:440 fred/eppdoc_client.py:473
 msgid "Expiration date"
 msgstr "Datum expirace"
 
@@ -813,7 +815,6 @@ msgid "Remove status"
 msgstr "Odebrat status"
 
 #: fred/eppdoc_client.py:259 fred/eppdoc_client.py:304
-#: fred/eppdoc_client.py:330
 msgid "Change values"
 msgstr "Změna hodnot"
 
@@ -829,16 +830,12 @@ msgstr "Adresa"
 msgid "data for with is set the flag value"
 msgstr "data, pro které se nastaví příznak"
 
-#: fred/eppdoc_client.py:279 fred/eppdoc_client.py:384
+#: fred/eppdoc_client.py:279 fred/eppdoc_client.py:386
 msgid "VAT"
 msgstr "DPH"
 
-#: fred/eppdoc_client.py:280
-msgid "SSN (Security social number)"
-msgstr "SSN (číslo sociálního pojištění)"
-
 #: fred/eppdoc_client.py:286 fred/eppdoc_client.py:310
-#: fred/eppdoc_client.py:334
+#: fred/eppdoc_client.py:335
 msgid ""
 "The EPP \"update\" command is used to update an instance of an existing "
 "object."
@@ -848,8 +845,8 @@ msgstr ""
 
 #: fred/eppdoc_client.py:298 fred/eppdoc_client.py:302
 #: fred/eppdoc_client.py:323 fred/eppdoc_client.py:328
-#: fred/eppdoc_client.py:381 fred/eppdoc_client.py:403
-#: fred/eppdoc_client.py:418
+#: fred/eppdoc_client.py:383 fred/eppdoc_client.py:406
+#: fred/eppdoc_client.py:422
 msgid "Status"
 msgstr "Stav"
 
@@ -869,7 +866,7 @@ msgstr "Technický kontakt ID"
 msgid "Remove values"
 msgstr "Odebrat hodnoty"
 
-#: fred/eppdoc_client.py:338
+#: fred/eppdoc_client.py:339
 msgid ""
 "The EPP \"list\" command is used to list all ID of an existing contact "
 "owning by registrant."
@@ -877,7 +874,7 @@ msgstr ""
 "EPP příkaz \"list\" se používá pro zobrazení seznamu všech ID kontaktů, "
 "které ragistrátor vlastní."
 
-#: fred/eppdoc_client.py:339
+#: fred/eppdoc_client.py:340
 msgid ""
 "The EPP \"list\" command is used to list all ID of an existing NSSET owning "
 "by registrant."
@@ -885,7 +882,7 @@ msgstr ""
 "EPP příkaz \"list\" se používá pro zobrazení seznamu všech ID NSSETů, které "
 "ragistrátor vlastní."
 
-#: fred/eppdoc_client.py:340
+#: fred/eppdoc_client.py:341
 msgid ""
 "The EPP \"list\" command is used to list all domain names owning by "
 "registrant."
@@ -893,122 +890,119 @@ msgstr ""
 "EPP příkaz \"list\" se používá pro zobrazení seznamu všech domén, které "
 "ragistrátor vlastní."
 
-#: fred/eppdoc_client.py:345
+#: fred/eppdoc_client.py:346
 msgid "Client transaction ID"
 msgstr ""
 
-#: fred/eppdoc_client.py:362 fred/eppdoc_client.py:391
-#: fred/eppdoc_client.py:410
+#: fred/eppdoc_client.py:363 fred/eppdoc_client.py:393
+#: fred/eppdoc_client.py:413
 msgid "Repository object ID"
 msgstr "ID objektu v rep."
 
-#: fred/eppdoc_client.py:363 fred/eppdoc_client.py:392
-#: fred/eppdoc_client.py:411
+#: fred/eppdoc_client.py:364 fred/eppdoc_client.py:394
+#: fred/eppdoc_client.py:414
 msgid "Created by"
 msgstr "Vytvořil"
 
-#: fred/eppdoc_client.py:364 fred/eppdoc_client.py:393
-#: fred/eppdoc_client.py:412
+#: fred/eppdoc_client.py:365 fred/eppdoc_client.py:395
+#: fred/eppdoc_client.py:415
 msgid "Designated registrar"
 msgstr "Určený registrátor"
 
-#: fred/eppdoc_client.py:365 fred/eppdoc_client.py:394
-#: fred/eppdoc_client.py:413
+#: fred/eppdoc_client.py:366 fred/eppdoc_client.py:396
+#: fred/eppdoc_client.py:416
 msgid "Updated by"
 msgstr "Změnil"
 
-#: fred/eppdoc_client.py:366 fred/eppdoc_client.py:395
-#: fred/eppdoc_client.py:414 fred/eppdoc_client.py:425
-#: fred/eppdoc_client.py:430 fred/eppdoc_client.py:435
+#: fred/eppdoc_client.py:367 fred/eppdoc_client.py:397
+#: fred/eppdoc_client.py:417 fred/eppdoc_client.py:429
+#: fred/eppdoc_client.py:434 fred/eppdoc_client.py:439
 msgid "Created on"
 msgstr "Vytvořeno dne"
 
-#: fred/eppdoc_client.py:367 fred/eppdoc_client.py:396
-#: fred/eppdoc_client.py:415
+#: fred/eppdoc_client.py:368 fred/eppdoc_client.py:398
+#: fred/eppdoc_client.py:418
 msgid "Last transfer on"
 msgstr "Poslední transfer dne"
 
-#: fred/eppdoc_client.py:368 fred/eppdoc_client.py:397
+#: fred/eppdoc_client.py:369 fred/eppdoc_client.py:399
 msgid "Last update on"
 msgstr "Poslední změna dne"
 
-#: fred/eppdoc_client.py:376
+#: fred/eppdoc_client.py:377 fred/eppdoc_client.py:404
+#: fred/eppdoc_client.py:421
 msgid "Password for transfer"
 msgstr "Heslo pro transfer"
 
-#: fred/eppdoc_client.py:383
+#: fred/eppdoc_client.py:385
 msgid "Hide"
 msgstr "Skrýt"
 
-#: fred/eppdoc_client.py:386
-msgid "SSN"
-msgstr "SSN číslo dokladu"
-
-#: fred/eppdoc_client.py:400
+#: fred/eppdoc_client.py:402
 msgid "Last renew on"
 msgstr "Poslední prodloužení dne"
 
-#: fred/eppdoc_client.py:405
+#: fred/eppdoc_client.py:408
 msgid "Administrative contact"
 msgstr "Administrativní kontakt"
 
-#: fred/eppdoc_client.py:416
+#: fred/eppdoc_client.py:419
 msgid "Last updated on"
 msgstr "Poslední změna dne"
 
-#: fred/eppdoc_client.py:420
+#: fred/eppdoc_client.py:424
 msgid "Name servers"
 msgstr "Jmenné servery"
 
-#: fred/eppdoc_client.py:440
+#: fred/eppdoc_client.py:444
 msgid "Available languages"
 msgstr "Podporované jazyky"
 
-#: fred/eppdoc_client.py:441
+#: fred/eppdoc_client.py:445
 msgid "Server ID"
 msgstr "ID serveru"
 
-#: fred/eppdoc_client.py:442
+#: fred/eppdoc_client.py:446
 msgid "Server date"
 msgstr "Datum serveru"
 
-#: fred/eppdoc_client.py:443
+#: fred/eppdoc_client.py:447
 msgid "Server version"
 msgstr "Verze serveru"
 
-#: fred/eppdoc_client.py:444
+#: fred/eppdoc_client.py:448
 msgid "Objects URI"
 msgstr "URI objekt"
 
-#: fred/eppdoc_client.py:445
+#: fred/eppdoc_client.py:449
 msgid "Extensions URI"
 msgstr "URI rozšíření"
 
-#: fred/eppdoc_client.py:446
+#: fred/eppdoc_client.py:450
 msgid "Data Collection policy"
 msgstr ""
 
-#: fred/eppdoc_client.py:456
+#: fred/eppdoc_client.py:460
 msgid "List"
 msgstr "Seznam"
 
-#: fred/eppdoc_client.py:457
+#: fred/eppdoc_client.py:461
 msgid "Count"
 msgstr "Počet"
 
-#: fred/eppdoc_client.py:461
+#: fred/eppdoc_client.py:465
 msgid "Queue size"
 msgstr "Počet zpráv"
 
-#: fred/eppdoc_client.py:462
+#: fred/eppdoc_client.py:466
 msgid "Message ID"
 msgstr "ID zprávy"
 
-#: fred/eppdoc_client.py:463
+#: fred/eppdoc_client.py:467
 msgid "Message date"
 msgstr "Zpráva vložena"
 
-#: fred/eppdoc_client.py:464
+#: fred/eppdoc_client.py:468
 msgid "Message content"
 msgstr "Text zprávy"
 
@@ -1027,7 +1021,7 @@ msgstr "Dokument má chybné kódování. LookupError: %s"
 msgid "Internal error: Master node '%s' doesn't exist."
 msgstr "Interní chyba: Nadřazený uzel '%s' neexistuje."
 
-#: fred/__init__.py:727
+#: fred/__init__.py:726
 msgid "This program requires Python 2.4 or higher. Your version is"
 msgstr "Tento program vyžaduje Python 2.4 nebo vyšší. Vaše verze je"
 
@@ -1308,7 +1302,8 @@ msgid ""
 msgstr ""
 "\n"
 "V 'help poll' je popsán způsob jak se odebírají zprávy ze serveru.\n"
-"Příkaz poll se musí zadat dvakrát. Funkce poll_autoack umožňuje odeslání poll\n"
+"Příkaz poll se musí zadat dvakrát. Funkce poll_autoack umožňuje odeslání "
+"poll\n"
 "sloučit do jednoho příkazu tak, že po odeslání poll req klient automaticky\n"
 "odešle i poll ack. To umožňuje vybírání zpráv jen na jeden příkaz poll."
 
@@ -1678,8 +1673,8 @@ msgstr "Detaily jsou zobrazeny ve verbose 2 nebo vyšším."
 msgid "Element that caused a server error condition"
 msgstr "Element který způsobil chybu"
 
-#: fred/session_receiver.py:66 fred/session_transfer.py:396
-#: fred/session_transfer.py:455
+#: fred/session_receiver.py:66 fred/session_transfer.py:398
+#: fred/session_transfer.py:457
 msgid "Reason"
 msgstr "Důvod"
 
@@ -1811,23 +1806,23 @@ msgstr "Odpojeno."
 msgid "Logout command sent to server"
 msgstr "Odeslán logout"
 
-#: fred/session_transfer.py:359
+#: fred/session_transfer.py:361
 msgid "updated"
 msgstr "aktualizováno"
 
-#: fred/session_transfer.py:361
+#: fred/session_transfer.py:363
 msgid "deleted"
 msgstr "smazáno"
 
-#: fred/session_transfer.py:363
+#: fred/session_transfer.py:365
 msgid "transfer"
 msgstr ""
 
-#: fred/session_transfer.py:393 fred/session_transfer.py:453
+#: fred/session_transfer.py:395 fred/session_transfer.py:455
 msgid "Return code"
 msgstr "Návratový kód"
 
-#: fred/session_transfer.py:414
+#: fred/session_transfer.py:416
 #, python-format
 msgid "(%d item)"
 msgid_plural "(%d items)"
@@ -1854,3 +1849,4 @@ msgid ""
 msgstr ""
 "Pro spuštění této aplikace musíte mít nainstalovány PyQt a Qt moduly.Více "
 "informací naleznete v helpu."
+

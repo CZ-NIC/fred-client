@@ -245,9 +245,9 @@ class ManagerReceiver(ManagerCommand):
                     disclosed.pop(disclosed.index(name))
             dct['contact:disclose'] = disclosed
             dct['contact:hide'] = not_disclosed
-            dct['contact:pw'] = eppdoc.get_dct_value(contact_infData, ('contact:authInfo','contact:pw'))
-            dct['contact:ssn.type'] = eppdoc.get_dct_attr(contact_infData, 'contact:ssn', 'type')
-            dct['contact:ssn'] = eppdoc.get_dct_value(contact_infData, 'contact:ssn')
+            dct['contact:authInfo'] = eppdoc.get_dct_value(contact_infData, 'contact:authInfo') ## ('contact:authInfo','contact:pw'))
+            dct['contact:ident.type'] = eppdoc.get_dct_attr(contact_infData, 'contact:ident', 'type')
+            dct['contact:ident'] = eppdoc.get_dct_value(contact_infData, 'contact:ident')
             dct['contact:notifyEmail'] = eppdoc.get_dct_value(contact_infData, 'contact:notifyEmail')
             dct['contact:vat'] = eppdoc.get_dct_value(contact_infData, 'contact:vat')
 
@@ -264,8 +264,8 @@ class ManagerReceiver(ManagerCommand):
                 ('domain:name','domain:roid','domain:status s','domain:registrant','domain:admin',
                  'domain:contact','domain:contact type','domain:nsset',
                  'domain:crID','domain:clID','domain:upID',
-                 'domain:crDate','domain:trDate','domain:upDate','domain:exDate'))
-            self._dct_answer['data']['domain:pw'] = eppdoc.get_dct_value(domain_infData, ('domain:authInfo','domain:pw'))
+                 'domain:crDate','domain:trDate','domain:upDate','domain:exDate','domain:authInfo'))
+##            self._dct_answer['data']['domain:pw'] = eppdoc.get_dct_value(domain_infData, ('domain:authInfo','domain:pw'))
             exDate = self.get_value_from_dict(('data','domain:exDate'))
             if exDate:
                 m = re.match('\d{4}-\d{2}-\d{2}', exDate)
@@ -286,7 +286,7 @@ class ManagerReceiver(ManagerCommand):
             self.__append_note_from_dct__(nsset_infData,('nsset:id','nsset:roid',
                 'nsset:clID','nsset:crID','nsset:trID','nsset:upID',
                 'nsset:crDate','nsset:trDate','nsset:upDate','nsset:authInfo','nsset:tech',
-                'nsset:status s'))
+                'nsset:status s','nsset:authInfo'))
             if nsset_infData.has_key('nsset:ns'):
                 nsset_ns = nsset_infData['nsset:ns']
                 dns = []
@@ -296,7 +296,7 @@ class ManagerReceiver(ManagerCommand):
                     addr = eppdoc.get_dct_value(ns, 'nsset:addr').split('\n')
                     dns.append([name,addr])
                 self._dct_answer['data']['nsset:ns'] = dns
-            self._dct_answer['data']['nsset:pw'] = eppdoc.get_dct_value(nsset_infData, ('nsset:authInfo','nsset:pw'))
+##            self._dct_answer['data']['nsset:pw'] = eppdoc.get_dct_value(nsset_infData, ('nsset:authInfo','nsset:pw'))
 
 
     #-------------------------------------

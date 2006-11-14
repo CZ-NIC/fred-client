@@ -224,7 +224,7 @@ $fred_client_errors = array(); // errors occuring during communication
         return '%s\n%s\n'%(self.version(),_T('Type "help", "license" or "credits" for more information.'))
 
     def version(self):
-        return 'FredClient 1.2.1' # version of the client
+        return 'FredClient 1.3.0' # version of the client
 
     def __next_clTRID__(self):
         """Generate next clTRID value.

@@ -324,7 +324,9 @@ class ManagerTransfer(ManagerBase):
         used = []
         dct_data = dct['data']
         is_check = re.match('\w+:check',dct['command']) and 1 or 0 # object:check
+        column_verbose = {} # dict of keys and their verbose level
         for key,verbose,explain in self.__get_column_items__(dct['command'], dct_data):
+            column_verbose[key] = verbose # keep verbose mode for check used item (debug only)
             if verbose > self._session[VERBOSE]:
                 in_higher_verbose += 1
                 used.append(key)
@@ -345,11 +347,11 @@ class ManagerTransfer(ManagerBase):
         #--- INTERNAL USE ----
         # POZOR!!! V ostré verzi musí být deaktivováno!!!
         # ALERT!!! MUST be disabled in release version!!!
-        #if self._session[SORT_BY_COLUMNS] and not is_check:
-        #    # in mode SORT_BY_COLUMNS check if all names was used
-        #    missing = [k for k in dct_data.keys() if k not in used and dct_data[k][0] >= self._session[VERBOSE]]
-        #    if len(missing):
-        #        body.append(colored_output.render('\n${BOLD}${RED}Here needs FIX code: %s${NORMAL}'%'(%s)'%', '.join(missing)))
+        if self._session[SORT_BY_COLUMNS] and not is_check:
+            # in mode SORT_BY_COLUMNS check if all names was used
+            missing = [k for k in dct_data.keys() if k not in used and column_verbose.get(k,0) >= self._session[VERBOSE]]
+            if len(missing):
+                body.append(colored_output.render('\n${BOLD}${RED}Here needs FIX code: %s${NORMAL}'%'(%s)'%', '.join(missing)))
         #---------------------
 
     def __modify__reason_message__(self, code, key, dct):

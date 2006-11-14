@@ -100,7 +100,7 @@ def count_data_rows(dct):
         
 class FredMainWindow(_main.FredWindow):
     'Main frame dialog.'
-    ssn_types = ('op','rc','passport','mpsv','ico')
+    ident_types = ('op','rc','passport','mpsv','ico')
     
     def __init__(self, epp_client):
         _main.FredWindow.__init__(self)
@@ -451,12 +451,12 @@ class FredMainWindow(_main.FredWindow):
             append_key(d, key, getattr(p,'create_contact_%s'%key))
         #... disclose ................
         self.__disclose__(d, p.create_contact_disclose_flag, p, 'create_contact_disclose_%s')
-        #.... ssn .........................
-        ssn={}
+        #.... ident .........................
+        ident={}
         for key in ('type','number'):
-            append_key(ssn, key, getattr(p,'create_contact_ssn_%s'%key))
-        ssn['type'] = ssn_types[ssn['type']]
-        if ssn.has_key('number'): d['ssn'] = ssn
+            append_key(ident, key, getattr(p,'create_contact_ssn_%s'%key))
+        ident['type'] = ident_types[ident['type']]
+        if ident.has_key('number'): d['ident'] = ident
         if self.__check_required__(d, (
                     ('id',self.__tr('contact ID')), 
                     ('name',self.__tr('name')), 
@@ -469,7 +469,7 @@ class FredMainWindow(_main.FredWindow):
                     d['city'], d['cc'], d.get('auth_info'),
                     d.get('org'), d.get('street'), d.get('sp'), d.get('pc'), 
                     d.get('voice'), d.get('fax'), d.get('disclose'), d.get('vat'), 
-                    d.get('ssn'), d.get('notify_email'), d.get('cltrid'))
+                    d.get('ident'), d.get('notify_email'), d.get('cltrid'))
             except fred.FredError, err:
                 self.epp._epp._errors.extend(err.args)
             self.__display_answer__('create_contact')
@@ -551,12 +551,12 @@ class FredMainWindow(_main.FredWindow):
         if len(postal_info): chg['postal_info'] = postal_info
         #... disclose ................
         self.__disclose__(chg, p.update_contact_disclose_flag, p, 'update_contact_disclose_%s')
-        #.... ssn .........................
-        ssn={}
+        #.... ident .........................
+        ident={}
         for key in ('type','number'):
-            append_key(ssn, key, getattr(p,'update_contact_ssn_%s'%key))
-        ssn['type'] = ssn_types[ssn['type']]
-        if ssn.has_key('number'): chg['ssn'] = ssn
+            append_key(ident, key, getattr(p,'update_contact_ssn_%s'%key))
+        ident['type'] = ident_types[ident['type']]
+        if ident.has_key('number'): chg['ident'] = ident
         if len(chg): d['chg'] = chg
         if self.__check_required__(d, (('id',self.__tr('Contact ID')),)) and len(d) > 1:
             try:

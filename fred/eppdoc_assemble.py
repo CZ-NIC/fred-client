@@ -666,8 +666,9 @@ class Message(eppdoc.Message):
             ('command', 'transfer', '', (('op','request'),)), # self._dct['op'][0]
             ('transfer', '%s:transfer'%names[0], '', attr),
             ('%s:transfer'%names[0], '%s:%s'%names, self._dct['name'][0]),
-            ('%s:transfer'%names[0], '%s:authInfo'%names[0]),
-            ('%s:authInfo'%names[0], '%s:pw'%names[0], self._dct['auth_info'][0]),
+##            ('%s:transfer'%names[0], '%s:authInfo'%names[0]),
+##            ('%s:authInfo'%names[0], '%s:pw'%names[0], self._dct['auth_info'][0]),
+            ('%s:transfer'%names[0], '%s:authInfo'%names[0], self._dct['auth_info'][0]),
             ('command', 'clTRID', self._dct.get(TAG_clTRID,[params[0]])[0])
         ))
 
@@ -750,16 +751,17 @@ class Message(eppdoc.Message):
         data.append(('contact:create','contact:email',dct['email'][0])) # required
         if dct.has_key('auth_info'):
             # password required
-            data.append(('contact:create','contact:authInfo'))
-            data.append(('contact:authInfo','contact:pw',dct['auth_info'][0]))
+##            data.append(('contact:create','contact:authInfo'))
+##            data.append(('contact:authInfo','contact:pw',dct['auth_info'][0]))
+            data.append(('contact:create','contact:authInfo',dct['auth_info'][0]))
         # --- BEGIN disclose ------
         if __has_key_dict__(dct,'disclose'):
             self.__append_disclose__(data, 'create', dct['disclose'][0])
         # --- END disclose ------
         if __has_key__(dct,'vat'): data.append(('contact:create','contact:vat', dct['vat'][0]))
-        if __has_key_dict__(dct,'ssn'):
-            ssn = dct['ssn'][0]
-            data.append(('contact:create','contact:ssn', ssn['number'][0], (('type',ssn['type'][0]),)))
+        if __has_key_dict__(dct,'ident'):
+            ident = dct['ident'][0]
+            data.append(('contact:create','contact:ident', ident['number'][0], (('type',ident['type'][0]),)))
         if __has_key__(dct,'notify_email'): data.append(('contact:create','contact:notifyEmail', dct['notify_email'][0]))
         data.append(('command', 'clTRID', self._dct.get(TAG_clTRID,[params[0]])[0]))
         self.__assemble_cmd__(data)
@@ -785,10 +787,11 @@ class Message(eppdoc.Message):
         if __has_key__(dct,'registrant'): data.append(('domain:create','domain:registrant',dct['registrant'][0]))
         self.__append_values__(data, dct, 'admin', 'domain:create', 'domain:admin')
         if dct.has_key('auth_info'):
-            data.extend((
-            ('domain:create','domain:authInfo'),
-            ('domain:authInfo','domain:pw', dct['auth_info'][0])
-        ))
+            data.append(('domain:create','domain:authInfo', dct['auth_info'][0]))
+##            data.extend((
+##            ('domain:create','domain:authInfo'),
+##            ('domain:authInfo','domain:pw', dct['auth_info'][0])
+##        ))
         self.__enum_extensions__('create',data, params)
         data.append(('command', 'clTRID', self._dct.get(TAG_clTRID,[params[0]])[0]))
         self.__assemble_cmd__(data)
@@ -822,10 +825,11 @@ class Message(eppdoc.Message):
         if __has_key__(dct,'tech'):
             self.__append_values__(data, dct, 'tech', 'nsset:create', 'nsset:tech')
         if dct.has_key('auth_info'): 
-            data.extend((
-            ('nsset:create','nsset:authInfo'),
-            ('nsset:authInfo','nsset:pw', dct['auth_info'][0])
-        ))
+            data.append(('nsset:create','nsset:authInfo', dct['auth_info'][0]))
+##            data.extend((
+##            ('nsset:create','nsset:authInfo'),
+##            ('nsset:authInfo','nsset:pw', dct['auth_info'][0])
+##        ))
         data.append(('command', 'clTRID', self._dct.get(TAG_clTRID,[params[0]])[0]))
         self.__assemble_cmd__(data)
 
@@ -896,16 +900,17 @@ class Message(eppdoc.Message):
                 if __has_key__(chg,key): data.append(('contact:chg','contact:%s'%key, chg[key][0]))
             # password
             if __has_key__(chg,'auth_info'):
-                data.append(('contact:chg','contact:authInfo')) # required
-                data.append(('contact:authInfo','contact:pw',chg['auth_info'][0])) # required
+##                data.append(('contact:chg','contact:authInfo')) # required
+##                data.append(('contact:authInfo','contact:pw',chg['auth_info'][0])) # required
+                data.append(('contact:chg','contact:authInfo',chg['auth_info'][0]))
             # --- BEGIN disclose ------
             if __has_key_dict__(chg,'disclose'):
                 self.__append_disclose__(data, 'chg', chg['disclose'][0])
             # --- END disclose ------
             if __has_key__(chg,'vat'): data.append(('contact:chg','contact:vat', chg['vat'][0]))
-            if __has_key_dict__(chg,'ssn'):
-                ssn = chg['ssn'][0]
-                data.append(('contact:chg','contact:ssn', ssn['number'][0], (('type',ssn['type'][0]),)))
+            if __has_key_dict__(chg,'ident'):
+                ident = chg['ident'][0]
+                data.append(('contact:chg','contact:ident', ident['number'][0], (('type',ident['type'][0]),)))
             if __has_key__(chg,'notify_email'): data.append(('contact:chg','contact:notifyEmail', chg['notify_email'][0]))
         data.append(('command', 'clTRID', self._dct.get(TAG_clTRID,[params[0]])[0]))
         self.__assemble_cmd__(data)
@@ -940,8 +945,9 @@ class Message(eppdoc.Message):
             if __has_key__(chg,'nsset'): data.append(('domain:chg','domain:nsset', chg['nsset'][0]))
             if __has_key__(chg,'registrant'): data.append(('domain:chg','domain:registrant', chg['registrant'][0]))
             if __has_key_dict__(chg,'auth_info'):
-                data.append(('domain:chg','domain:authInfo'))
-                data.append(('domain:authInfo','domain:pw', chg['auth_info'][0]))
+##                data.append(('domain:chg','domain:authInfo'))
+##                data.append(('domain:authInfo','domain:pw', chg['auth_info'][0]))
+                data.append(('domain:chg','domain:authInfo', chg['auth_info'][0]))
         self.__enum_extensions__('update',data, params,'chg')
         data.append(('command', 'clTRID', self._dct.get(TAG_clTRID,[params[0]])[0]))
         self.__assemble_cmd__(data)
@@ -983,12 +989,17 @@ class Message(eppdoc.Message):
             self.__append_values__(data, dct_rem, 'tech', 'nsset:rem', 'nsset:tech')
             self.__append_attr__(data, dct_rem, 'status', 'nsset:rem', 'nsset:status','s')
 
-        if __has_key_dict__(dct,'chg'):
+##        if __has_key_dict__(dct,'chg'):
+##            data.append(('nsset:update','nsset:chg'))
+##            data.append(('nsset:chg','nsset:authInfo'))
+##            dct_chg = dct['chg'][0]
+##            if __has_key__(dct_chg, 'auth_info'): data.append(('nsset:authInfo','nsset:pw',dct_chg['auth_info'][0]))
+##            #if __has_key__(dct_chg, 'ext'): data.append(('nsset:authInfo','nsset:ext',dct_chg['ext'][0]))
+
+        if __has_key_dict__(dct,'auth_info'):
             data.append(('nsset:update','nsset:chg'))
-            data.append(('nsset:chg','nsset:authInfo'))
-            dct_chg = dct['chg'][0]
-            if __has_key__(dct_chg, 'auth_info'): data.append(('nsset:authInfo','nsset:pw',dct_chg['auth_info'][0]))
-            #if __has_key__(dct_chg, 'ext'): data.append(('nsset:authInfo','nsset:ext',dct_chg['ext'][0]))
+            data.append(('nsset:chg','nsset:authInfo',dct['auth_info'][0]))
+            
         data.append(('command', 'clTRID', self._dct.get(TAG_clTRID,[params[0]])[0]))
         self.__assemble_cmd__(data)
 

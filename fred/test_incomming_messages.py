@@ -249,7 +249,7 @@ data = (
           <contact:voice/>
         </contact:disclose>
         <contact:vat>963</contact:vat>
-        <contact:ssn>852</contact:ssn>
+        <contact:ident>852</contact:ident>
         <contact:notifyEmail>info@rehorovi.cz</contact:notifyEmail>
         </contact:infData>
     </resData>

@@ -22,7 +22,7 @@ def get_shared_notice():
     'Returns notice for EPP commands'
     return {   
    'disclose':_T('Names what are not included into disclose list are set to opposite value of the disclose flag value.'),
-   'ssn':_T("""SSN types can be: 
+   'ident':_T("""Identificator type can be: 
       op       number identity card
       rc       number of birth
       passport number of passport
@@ -172,15 +172,15 @@ will be generated automaticly after succefull transfer."""),('transfer_domain do
                 ('data',(0,len(eppdoc_assemble.contact_disclose)),eppdoc_assemble.contact_disclose,_T('Data for with is set the flag value'),'','',()),
             )),
             ('vat',(0,1),(),_T('VAT (Value-added tax)'),'7035555556','',()), # daˇnový identifikátor
-            ('ssn',(0,1),(),_T('SSN (Social security number)'),'','',( # mpsv: identifikátor Ministerstva práce a sociálních věcí
-                ('type',(1,1),map(lambda n:(n,),('op','rc','passport','mpsv','ico')),_T('SSN type'),'op','',()),
-                ('number',(1,1),(),_T('SSN number'),'8888888856','',()),
+            ('ident',(0,1),(),_T('Identificator'),'','',( # mpsv: identifikátor Ministerstva práce a sociálních věcí
+                ('type',(1,1),map(lambda n:(n,),('op','rc','passport','mpsv','ico')),_T('Identificator type'),'op','',()),
+                ('number',(1,1),(),_T('Identificator number'),'8888888856','',()),
             )),
             ('notify_email',(0,1),(),_T('Notification email'),'info@mymail.cz','',()),
             ],'%s\n\n%s\n\n%s'%(_T("""
 The EPP "create_contact" command is used to create an instance of the contact.
 The contact can be created for an indefinite period of time, or
-it can be created for a specific validity period."""),notice['disclose'],notice['ssn']),("create_contact CID:ID01 'Jan Novak' info@mymail.cz Praha CZ mypassword 'Firma s.r.o.' 'Narodni trida 1230/12' '' 12000 +420.222745111 +420.222745111 (y (org fax email)) 7035555556 (op 8888888856) info@mymail.cz",)),
+it can be created for a specific validity period."""),notice['disclose'],notice['ident']),("create_contact CID:ID01 'Jan Novak' info@mymail.cz Praha CZ mypassword 'Firma s.r.o.' 'Narodni trida 1230/12' '' 12000 +420.222745111 +420.222745111 (y (org fax email)) 7035555556 (op 8888888856) info@mymail.cz",)),
         #----------------------------------------------------
         'create_domain': (2,[
             ('name',(1,1),(),_T('Domain name'),'mydomain.cz','',()),
@@ -277,9 +277,9 @@ maximum value."""),('renew_domain nic.cz 2008-06-02 (6 y)',)), # The EPP renew_d
                     ('data',(0,len(eppdoc_assemble.contact_disclose)),eppdoc_assemble.contact_disclose,_T('data for with is set the flag value'),'','',()),
                 )),
                 ('vat',(0,1),(),_T('VAT'),'7035555556','',()),
-                ('ssn',(0,1),(),_T('SSN (Security social number)'),'','',(
-                    ('type',(1,1),map(lambda n:(n,),('op','rc','passport','mpsv','ico')),_T('SSN type'),'op','',()),
-                    ('number',(1,1),(),_T('SSN number'),'8888888856','',()),
+                ('ident',(0,1),(),_T('Identificator'),'','',(
+                    ('type',(1,1),map(lambda n:(n,),('op','rc','passport','mpsv','ico')),_T('Identificator type'),'op','',()),
+                    ('number',(1,1),(),_T('Identificator number'),'8888888856','',()),
                 )),
                 ('notify_email',(0,1),(),_T('Notification email'),'notify@mymail.cz','',()),
             )),
@@ -327,12 +327,13 @@ maximum value."""),('renew_domain nic.cz 2008-06-02 (6 y)',)), # The EPP renew_d
                 ('tech',(0,UNBOUNDED),(),_T('Technical contact ID'),'CID:ID01','',()),
                 ('status',(0,6),update_status,_T('Status'),'','',()),
             )),
-            ('chg',(0,1),(),_T('Change values'),'','',(
-                ('auth_info',(0,1),(),_T('Password required by server to authorize the transfer'),'new_password','',()),
-                #('ext',(0,1),(),_T('ext'),'','',()),
-            )),
+##            ('chg',(0,1),(),_T('Change values'),'','',(
+##                ('auth_info',(0,1),(),_T('Password required by server to authorize the transfer'),'new_password','',()),
+##                #('ext',(0,1),(),_T('ext'),'','',()),
+##            )),
+            ('auth_info',(0,1),(),_T('Password required by server to authorize the transfer'),'new_password','',()),
             ],_T("""The EPP "update" command is used to update an instance of an existing object."""),(
-                "update_nsset nssid:ns1 (((ns1.dns.cz (217.31.207.130, 217.31.207.131, 217.31.207.132)), (ns2.dns.cz (217.31.207.130, 217.31.207.131, 217.31.207.132))) (cid:tech1, cid:tech2, cid:tech3) (ok, clientTransferProhibited)) (((rem1.dns.cz, rem2.dns.cz) (cid:tech_rem01, cid:tech_rem02) serverUpdateProhibited)) (password)",
+                "update_nsset nssid:ns1 (((ns1.dns.cz (217.31.207.130, 217.31.207.131, 217.31.207.132)), (ns2.dns.cz (217.31.207.130, 217.31.207.131, 217.31.207.132))) (cid:tech1, cid:tech2, cid:tech3) (ok, clientTransferProhibited)) (((rem1.dns.cz, rem2.dns.cz) (cid:tech_rem01, cid:tech_rem02) serverUpdateProhibited)) password",
             )),
         #----------------------------------------------------
         'list_contact': (0,[],_T("""The EPP "list" command is used to list all ID of an existing contact owning by registrant."""),()),
@@ -373,7 +374,8 @@ def make_sort_by_names():
          ('sp',          1,  _T('State or province')),
          ('pc',          1,  _T('Postal code')),
          ('cc',          1,  _T('Country code')),
-         ('pw',          1,  _T('Password for transfer')),
+         ('authInfo',    1,  _T('Password for transfer')),
+##         ('pw',          1,  _T('Password for transfer')),
          ('voice',       1,  _T('Phone')),
          ('fax',         1,  'Fax'),
          ('email',       1,  'Email'),
@@ -382,8 +384,8 @@ def make_sort_by_names():
          ('disclose',    1,  _T('Disclose')),
          ('hide',        1,  _T('Hide')),
          ('vat',         1,  _T('VAT')),
-         ('ssn.type',    1,  _T('SSN type')),
-         ('ssn',         1,  _T('SSN')),
+         ('ident.type',  1,  _T('Identificator type')),
+         ('ident',       1,  _T('Identificator')),
          )),
 
        'domain:info': ('domain',(
@@ -399,7 +401,8 @@ def make_sort_by_names():
          ('valExDate',   1,  _T('Validation expires at')), # validace platná do
          ('renew',       1,  _T('Last renew on')),
          ('nsset',       1,  _T('NSSET ID')),
-         ('pw',          1,  _T('Password')),
+         ('authInfo',    1,  _T('Password for transfer')),
+##         ('pw',          1,  _T('Password')),
          ('status.s',    1,  _T('Status')),
          ('registrant',  1,  _T('Registrant ID')),
          ('admin',       1,  _T('Administrative contact')),
@@ -414,7 +417,8 @@ def make_sort_by_names():
          ('crDate',      1,  _T('Created on')),
          ('trDate',      1,  _T('Last transfer on')),
          ('upDate',      1,  _T('Last updated on')),
-         ('pw',          1,  _T('Password')),
+##         ('pw',          1,  _T('Password')),
+         ('authInfo',    1,  _T('Password for transfer')),
          ('status.s',    1,  _T('Status')),
          ('tech',        1,  _T('Technical contact')),
          ('ns',          1,  _T('Name servers')),
