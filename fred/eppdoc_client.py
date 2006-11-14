@@ -48,9 +48,9 @@ usefull for communication. Within Server version or ID you can got
 available languages, Data Collection policy etc.
 Command 'hello' you can call at any time."""),()),
         'logout': (0, [], _T("""
-The EPP "logout" command is used to end a session with an EPP server.
+The EPP "logout" command is used to end a session with the server.
 But client will be still running. For close client type 'quit' (see help).
-Client send logout automaticly, if user was online and set 'quit' command."""),()),
+Before quit the client send logout automaticly."""),()),
         #----------------------------------------------------
         'login': (2,[
             ('username',(1,1),(),_T('Username'),'username','',()),
@@ -420,16 +420,20 @@ def make_sort_by_names():
          ('ns',          1,  _T('Name servers')),
          )),
 
-       'nsset:create': ('nsset',(
+       'contact:create': ('contact',(
+         ('id',          1,  _T('Contact ID')),
          ('crDate',      1,  _T('Created on')),
-         ('exDate',      1,  _T('Expiration date')),
-         ('id',          1,  'ID'),
+         )),
+         
+       'nsset:create': ('nsset',(
+         ('id',          1,  _T('NSSET ID')),
+         ('crDate',      1,  _T('Created on')),
          )),
 
        'domain:create': ('domain',(
+         ('name',        1,  _T('Domain name')),
          ('crDate',      1,  _T('Created on')),
          ('exDate',      1,  _T('Expiration date')),
-         ('name',        1,  _T('name')),
          )),
 
        'hello': ('',(
@@ -466,7 +470,7 @@ def make_sort_by_names():
          )),        
     }
     # append similar objects
-    sort_by_names['contact:create'] = ('contact', sort_by_names['nsset:create'][1])
+##    sort_by_names['contact:create'] = ('contact', sort_by_names['nsset:create'][1])
     sort_by_names['contact:list']   = sort_by_names['domain:list']
     sort_by_names['nsset:list']     = sort_by_names['domain:list']
     return sort_by_names

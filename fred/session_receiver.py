@@ -63,7 +63,7 @@ class ManagerReceiver(ManagerCommand):
                         attributes.append("%s='%s'"%attr)
                     attribs = len(attributes) and ' %s'%' '.join(attributes) or ''
                     extra_message.append('%s: %s%s%s%s'%(_T('Element that caused a server error condition'),tags[0],key,attribs,tags[1]))
-                if item.has_key('reason'): extra_message.append('%s: %s'%(_T('Reason'), item['reason'].get('data','')))
+                if item.has_key('reason'): extra_message.append('%s: %s'%(_T('Reason'), get_ltext(item['reason'].get('data',''))))
         if len(extra_message):
             self._dct_answer['errors'].extend(extra_message)
         return 1 # code is NOT 1000

@@ -210,7 +210,7 @@ sources ad advance, transmited between client and server.
                         options = ' %s'%params[0]
                     else:
                         options = ' [%s]'%params[0]
-                    name = ('%s%s:'%(space,params[0])).ljust(self._ljust+3) # bracket and space '(required) '
+                    name = ('%s%s'%(space,params[0])).ljust(self._ljust+2) # +bracket '(required) '
                     command_help = '%s%s'%(name,params[1])
                 command_lines = map(lambda name: '%s%s'%(name,options), names)
                 break

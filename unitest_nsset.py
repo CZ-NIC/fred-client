@@ -37,10 +37,11 @@ import unitest_share
 # FRED_DATA[1] - create
 # FRED_DATA[2] - modify
 # FRED_DATA[3] - modified
-FRED_HANDLE = 'NSSID:unittest2'
-FRED_NSSET1 = 'NSSID:examp2134'
-FRED_CONTACT1 = 'CID:UNITTEST1'
-FRED_CONTACT2 = 'CID:UNITTEST2'
+FRED_NSSET1 = unitest_share.create_handle('NSSID:U1') ## 'NSSID:examp2134'
+FRED_HANDLE = unitest_share.create_handle('NSSID:U2') ## 'NSSID:unittest2'
+FRED_NOTEXIST = unitest_share.create_handle('NSSID:NE')
+FRED_CONTACT1 = unitest_share.create_handle('CID:U1') ## 'CID:UNITTEST1'
+FRED_CONTACT2 = unitest_share.create_handle('CID:U2') ## 'CID:UNITTEST2'
 NSSET_PASSWORD = 'heslicko'
 NSSET_GENPSW = ''
 FRED_DATA = ( 
@@ -131,7 +132,7 @@ class Test(unittest.TestCase):
     
     def test_010(self):
         '3.1 Check na seznam dvou neexistujicich nssetu'
-        handles = (handle_nsset,'nssid:neexist002')
+        handles = (handle_nsset, FRED_NOTEXIST)
         epp_cli.check_nsset(handles)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         for name in handles:
@@ -252,10 +253,10 @@ class Test(unittest.TestCase):
 
     def test_078(self):
         '3.7.8 Check na seznam existujiciho a neexistujicich nssetu'
-        handles = (handle_nsset,'nssid:neexist002')
+        handles = (handle_nsset, FRED_NOTEXIST)
         epp_cli.check_nsset(handles)
         self.assertEqual(epp_cli.is_val(('data',handle_nsset)), 0)
-        self.assertEqual(epp_cli.is_val(('data','nssid:neexist002')), 1)
+        self.assertEqual(epp_cli.is_val(('data',FRED_NOTEXIST)), 1)
 
     def test_079(self):
         '3.7.9 Info na existujici nsset a kontrola hodnot'

@@ -46,11 +46,11 @@ import unitest_share
 ##    1 | 12642 | D0000012642-CZ | 4.4.4.0.2.4.e164.arpa
 
 #-----------------------
-FRED_CONTACT1 = 'CID:TDOMCONT01'
-FRED_CONTACT2 = 'CID:TDOMCONT02'
-FRED_NSSET1 = 'NSSID:TDOMNSSET01'
-FRED_NSSET2 = 'NSSID:TDOMNSSET02'
-FRED_DOMAIN1 = 'hokus-pokus.cz' # hokus-pokus.cz sakra.cz
+FRED_CONTACT1 = unitest_share.create_handle('CID:D1') ## 'CID:TDOMCONT01'
+FRED_CONTACT2 = unitest_share.create_handle('CID:D2') ## 'CID:TDOMCONT02'
+FRED_NSSET1 = unitest_share.create_handle('NSSID:D1') ## 'NSSID:TDOMNSSET01'
+FRED_NSSET2 = unitest_share.create_handle('NSSID:D2') ## 'NSSID:TDOMNSSET02'
+FRED_DOMAIN1 = '%s.cz'%unitest_share.create_handle('test') ## 'hokus-pokus.cz' # hokus-pokus.cz sakra.cz
 FRED_DOMAIN2 = '0.1.1.7.4.5.1.2.2.0.2.4.e164.arpa'
 ##VAL_EX_DATE = '2007-02-02'
 FRED_DOMAIN_PASSW = 'heslicko'

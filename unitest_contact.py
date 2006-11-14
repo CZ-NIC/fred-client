@@ -17,6 +17,7 @@
 2.14 Smazani kontaktu 
 2.15 Check na smazany kontakt
 """
+import time
 import unittest
 import fred
 from fred.eppdoc_assemble import contact_disclose
@@ -28,7 +29,11 @@ import unitest_share
 # FRED_CONTACT[3] - chg (changes)
 CONTACT_PASSWORD_1 = 'mojeheslo'
 CONTACT_PASSWORD_2 = 'nove-heslo'
-CONTACT_HANDLE = 'CID:test002'
+#CONTACT_HANDLE = 'CID:test002'
+CONTACT_HANDLE = unitest_share.create_handle('CID:')
+NSSET_HANDLE = unitest_share.create_handle('NSSID:')
+#print "CREATE CONTACT_HANDLE: ",CONTACT_HANDLE
+#print "CREATE NSSET_HANDLE: ",NSSET_HANDLE
 FRED_CONTACT = [
     {   # template
     'id': '', # (povinný) vaše kontaktní ID
@@ -122,10 +127,9 @@ class TestContact(unittest.TestCase):
 
     def test_000(self):
         '2.0 Inicializace spojeni a definovani testovacich handlu'
-        global epp_cli, epp_cli_TRANSF, epp_cli_log, handle_contact, handle_nsset, log_fp
+        global epp_cli, epp_cli_TRANSF, epp_cli_log, handle_contact, log_fp
         # Natvrdo definovany handle:
         handle_contact = FRED_CONTACT[1]['id'] # 'neexist01'
-        handle_nsset = 'NSSID:neexist02'
         # create client object
         epp_cli = fred.Client()
         epp_cli_TRANSF = fred.Client()
@@ -253,7 +257,7 @@ class TestContact(unittest.TestCase):
 
     def test_110(self):
         '2.11 Vytvoreni nnsetu napojeneho na kontakt'
-        epp_cli.create_nsset(handle_nsset, ({'name':'ns1.test.cz'},{'name':'ns2.test.cz'}), handle_contact, 'heslo')
+        epp_cli.create_nsset(NSSET_HANDLE, ({'name':'ns1.test.cz'},{'name':'ns2.test.cz'}), handle_contact, 'heslo')
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         
     def test_120(self):
@@ -263,7 +267,7 @@ class TestContact(unittest.TestCase):
 
     def test_130(self):
         '2.13 Smazani nssetu'
-        epp_cli.delete_nsset(handle_nsset)
+        epp_cli.delete_nsset(NSSET_HANDLE)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_140(self):
@@ -399,7 +403,7 @@ def __info_contact__(prefix, cols, scope, key=None, pkeys=[]):
                 errors.append('Chybi klic %s'%key)
     return errors
 
-epp_cli, epp_cli_TRANSF, epp_cli_log, log_fp, log_step, handle_contact, handle_nsset = (None,)*7
+epp_cli, epp_cli_TRANSF, epp_cli_log, log_fp, log_step, handle_contact = (None,)*6
 
 if __name__ == '__main__':
     if fred.translate.option_errors:

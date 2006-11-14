@@ -12,13 +12,17 @@ import fred
 import unitest_share
 
 #-----------------------
-FRED_CONTACT1 = 'CID:TDOMCONT01'
-FRED_NSSET1 = 'NSSID:TDOMNSSET01'
-FRED_DOMAIN1 = 'hokus-pokus.cz'
+FRED_CONTACT1 = unitest_share.create_handle('CID:T1')
+FRED_NSSET1 = unitest_share.create_handle('NSSID:T1')
+FRED_DOMAIN1 = '%s.cz'%unitest_share.create_handle('tset')
 FRED_DOMAIN2 = '0.1.1.7.4.5.6.2.2.0.2.4.e164.arpa'
-FRED_DOMAIN3 = '6.2.2.0.2.4.e164.arpa'
+FRED_DOMAIN3 =             '6.2.2.0.2.4.e164.arpa'
 FRED_DOMAIN_PASSW = 'heslicko'
 FRED_DOMAIN_PASSW_NEW = 'noveheslo'
+
+FRED_ENUM_PREFIX  =           '5.7.2.2.0.2.4.e164.arpa'
+FRED_ENUM_ENDUSER = '0.1.1.7.4.5.7.2.2.0.2.4.e164.arpa'
+
 #-----------------------
 DOMAIN_1, DOMAIN_2, CHANGE_DOMAIN, DOMAIN_3  = range(4)
 #-----------------------
@@ -53,27 +57,28 @@ class Test(unittest.TestCase):
         if epp_cli: self.assert_(epp_cli.is_logon(),'client is offline')
 
     def tearDown(self):
-        unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription())
-        unitest_share.reset_client(epp_cli)
+        unitest_share.write_log(epp_cli_log, log_fp, log_step, self.id(),self.shortDescription())
+        unitest_share.reset_client(epp_cli_log)
 
     def test_000(self):
         '3.0 Inicializace spojeni a definovani testovacich handlu'
-        global epp_cli, epp_cli_TRANSF, handle_contact, handle_nsset, log_fp
+        global epp_cli_log, epp_cli, epp_cli_TRANSF, handle_contact, handle_nsset, log_fp
         # create client object
         epp_cli = fred.Client()
         epp_cli._epp.load_config()
-        #epp_cli_TRANSF = fred.Client()
-        #epp_cli_TRANSF._epp.load_config()
+        epp_cli_TRANSF = fred.Client()
+        epp_cli_TRANSF._epp.load_config()
         # vypnutí validátoru
         epp_cli._epp.set_validate(0)
-        #epp_cli_TRANSF.set_validate(0)
+        epp_cli_TRANSF.set_validate(0)
         # login
         dct = epp_cli._epp.get_default_params_from_config('login')
         epp_cli.login(dct['username'], dct['password'])
-        #epp_cli_TRANSF.login('REG-LRR2', dct['password'])
+        epp_cli_TRANSF.login('REG-LRR2', dct['password'])
+        epp_cli_log = epp_cli
         # kontrola:
         self.assert_(epp_cli.is_logon(), 'Nepodarilo se zalogovat.')
-        #self.assert_(epp_cli_TRANSF.is_logon(), 'Nepodarilo se zalogovat uzivatele "REG-LRR2" pro transfer.')
+        self.assert_(epp_cli_TRANSF.is_logon(), 'Nepodarilo se zalogovat uzivatele "REG-LRR2" pro transfer.')
         # logovací soubor
         if fred.translate.options['log']: # zapnuti/vypuni ukladani prikazu do logu
             log_fp = open(fred.translate.options['log'],'w')
@@ -177,33 +182,83 @@ class Test(unittest.TestCase):
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_180(self):
-        '4.18  Zalozeni nove domeny enum'
+        '4.18  Zalozeni ENUM domeny (enduser)'
         d = FRED_DATA[DOMAIN_2]
         val_ex_date = time.strftime("%Y-%m-%d",time.localtime(time.time()+60*60*24*30*2)) # dva měsíce
         epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], d['nsset'], d['period'], d['contact'], val_ex_date)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_190(self):
-        '4.19  Smazani domeny enum'
+        '4.19 Zalozeni ENUM domeny (prefix)'
         d = FRED_DATA[DOMAIN_2]
-        epp_cli.delete_domain(d['name'])
+        val_ex_date = time.strftime("%Y-%m-%d",time.localtime(time.time()+60*60*24*30*2)) # dva měsíce
+        epp_cli.create_domain(FRED_ENUM_PREFIX, d['registrant'], None, None, None, None, val_ex_date)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         
-##    def test_130(self):
-##        '4.13 Update vsech parametru domeny'
-##        epp_cli.update_domain(FRED_DOMAIN1, None, None, FRED_DATA[CHANGE_DOMAIN])
-##        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+    def test_200(self):
+        '4.20 DRUHY REGISTRATOR: Pokus o zalozeni ENUM do jine zony (prefix je soucasti enduser)'
+        global epp_cli_log
+        epp_cli_log = epp_cli_TRANSF
+        d = FRED_DATA[DOMAIN_2]
+        val_ex_date = time.strftime("%Y-%m-%d",time.localtime(time.time()+60*60*24*30*2)) # dva měsíce
+        # epp_cli_TRANSF.create_domain(d['name'], d['registrant'], d['auth_info'], d['nsset'], d['period'], d['contact'], val_ex_date)
+        epp_cli_TRANSF.create_domain(FRED_DOMAIN3, d['registrant'], None, None, None, None, val_ex_date)
+        self.assertNotEqual(epp_cli_TRANSF.is_val(), 1000, 'ENUM domena se vytvorila prestoze patri do jiz obsazene zony.')
+
+    def test_210(self):
+        '4.21 DRUHY REGISTRATOR: Pokus o zalozeni ENUM do jine zony (enduser je v rozsahu prefixu)'
+        d = FRED_DATA[DOMAIN_2]
+        val_ex_date = time.strftime("%Y-%m-%d",time.localtime(time.time()+60*60*24*30*2)) # dva měsíce
+        epp_cli_TRANSF.create_domain(FRED_ENUM_ENDUSER, d['registrant'], None, None, None, None, val_ex_date)
+        self.assertNotEqual(epp_cli_TRANSF.is_val(), 1000, 'ENUM domena se vytvorila prestoze patri do jiz obsazene zony.')
+
+    def test_220(self):
+        '4.22 Pokus o zalozeni ENUM ve vlastni zone (prefix je soucasti enduser)'
+        global epp_cli_log
+        epp_cli_log = epp_cli
+        d = FRED_DATA[DOMAIN_2]
+        val_ex_date = time.strftime("%Y-%m-%d",time.localtime(time.time()+60*60*24*30*2)) # dva měsíce
+        epp_cli.create_domain(FRED_DOMAIN3, d['registrant'], None, None, None, None, val_ex_date)
+        self.assertNotEqual(epp_cli.is_val(), 1000, 'ENUM FRED_DOMAIN3 se vytvorila prestoze patri do jiz obsazene zony.')
+
+    def test_230(self):
+        '4.21 Pokus o zalozeni ENUM ve vlastni zone (enduser je v rozsahu prefixu)'
+        d = FRED_DATA[DOMAIN_2]
+        val_ex_date = time.strftime("%Y-%m-%d",time.localtime(time.time()+60*60*24*30*2)) # dva měsíce
+        epp_cli.create_domain(FRED_ENUM_ENDUSER, d['registrant'], None, None, None, None, val_ex_date)
+        self.assertNotEqual(epp_cli.is_val(), 1000, 'ENUM FRED_ENUM_ENDUSER se vytvorila prestoze patri do jiz obsazene zony.')
         
     # -------------------------------------
     # clean supported objects
     # -------------------------------------
+##    def test_950(self):
+##        '4.-6  Smazani domeny FRED_ENUM_ENDUSER'
+##        epp_cli.delete_domain(FRED_ENUM_ENDUSER)
+##        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+##
+##    def test_960(self):
+##        '4.-5  Smazani domeny FRED_DOMAIN3'
+##        epp_cli.delete_domain(FRED_DOMAIN3)
+##        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
+    def test_970(self):
+        '4.-4  Smazani domeny enum'
+        epp_cli.delete_domain(FRED_ENUM_PREFIX)
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+        
+    def test_980(self):
+        '4.-3  Smazani domeny enum'
+        d = FRED_DATA[DOMAIN_2]
+        epp_cli.delete_domain(d['name'])
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+        
     def test_990(self):
-        '4.LAST.1 Smazani pomocneho nssetu'
+        '4.-2 Smazani pomocneho nssetu'
         epp_cli.delete_nsset(FRED_NSSET1)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
     
     def test_992(self):
-        '4.LAST.2 Smazani pomocneho kontaktu'
+        '4.-1 Smazani pomocneho kontaktu'
         epp_cli.delete_contact(FRED_CONTACT1)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 

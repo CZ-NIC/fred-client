@@ -118,6 +118,10 @@ def check_date(date, nu, sql_date=None):
     exdate = time.strftime('%Y-%m-%d',ts)
     return exdate == date[:10], exdate
 
+def create_handle(prefix=''):
+    "Generate unique handler in format 'prefix:2006:11:14:10:7:2.44'"
+    return '%s%s%s'%(prefix, ''.join(map(str, time.localtime()[2:5])),('%.2f'%time.clock()).replace('.',''))
+    
 get_local_text = fred.session_base.get_ltext
 
 if __name__ == '__main__':
