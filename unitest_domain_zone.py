@@ -69,7 +69,7 @@ class Test(unittest.TestCase):
         epp_cli_TRANSF = fred.Client()
         epp_cli_TRANSF._epp.load_config()
         # vypnutí validátoru
-        epp_cli._epp.set_validate(0)
+        #epp_cli._epp.set_validate(0)
         epp_cli_TRANSF.set_validate(0)
         # login
         dct = epp_cli._epp.get_default_params_from_config('login')
@@ -172,7 +172,11 @@ class Test(unittest.TestCase):
     def test_160(self):
         '4.16  Pokus o zalozeni neplatne domeny "abc"*256 + ".cz" (presahuje maximalni delku)'
         d = FRED_DATA[DOMAIN_1]
-        epp_cli.create_domain('%s.cz'%('abc'*256), d['registrant'], d['auth_info'])
+        try:
+            epp_cli.create_domain('%s.cz'%('abc'*256), d['registrant'], d['auth_info'])
+        except fred.FredError, msg:
+            # hodnota neprojde přes validátor
+            unitest_share.write_log_message(log_fp, '%s\n%s'%(self.test_160.__doc__,msg))
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_170(self):

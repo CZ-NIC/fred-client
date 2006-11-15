@@ -238,19 +238,15 @@ object can be created for a specific validity period."""),(
             )),
             ('val_ex_date',(0,1),(),_T('Validation expires at'),'2008-12-03','',()),
             ],_T("""
-A domain name object MAY have a specified validity period.  If server
+A domain name object MAY have a specified validity period. If server
 policy supports domain object validity periods, the validity period
 is defined when a domain object is created, and it MAY be extended by
-the EPP 'renew' or 'transfer' commands.  As a matter of server
-policy, this specification does not define actions to be taken upon
-expiration of a domain object's validity period.
+the EPP 'renew' command.
 
 Validity periods are measured in years or months with the appropriate
-units specified using the "unit" attribute.  Valid values for the
-"unit" attribute are "y" for years and "m" for months.  The minimum
-allowable period value is one decimal (1).  The maximum allowable
-value is ninety-nine decimal (99).  A server MAY support a lower
-maximum value."""),('renew_domain nic.cz 2008-06-02 (6 y)',)), # The EPP renew_domain command is used to extend validity of an existing domain.
+units specified using the 'unit' attribute.  Valid values for the
+'unit' attribute are 'y' for years and 'm' for months.  The minimum
+and maximum allowable period is defined in the Communication rules."""),('renew_domain nic.cz 2008-06-02 (6 y)',)), # The EPP renew_domain command is used to extend validity of an existing domain.
         #----------------------------------------------------
         'update_contact': (1,[
             ('contact_id',(1,1),(),_T('Contact ID'),'CID:ID01','',()),

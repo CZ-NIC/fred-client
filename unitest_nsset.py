@@ -109,7 +109,7 @@ class Test(unittest.TestCase):
         # create client object
         epp_cli = fred.Client()
         epp_cli._epp.load_config()
-        epp_cli._epp.set_validate(0)
+        #epp_cli._epp.set_validate(0)
         epp_cli_TRANSF = fred.Client()
         epp_cli_TRANSF._epp.load_config()
         
@@ -335,7 +335,11 @@ class Test(unittest.TestCase):
     def test_113(self):
         '3.11.3 Pokus o pridani neplatne IPv6 ::'
         d = FRED_DATA[2]
-        epp_cli.update_nsset(d['id'], {'dns':{'name':'ns.fail01.cz','addr':('::',)}})
+        try:
+            epp_cli.update_nsset(d['id'], {'dns':{'name':'ns.fail01.cz','addr':('::',)}})
+        except fred.FredError, msg:
+            # hodnota '::' neprojde přes validátor
+            unitest_share.write_log_message(log_fp, '%s\n%s'%(self.test_113.__doc__,msg))
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
     
     def test_114(self):

@@ -54,15 +54,25 @@ class ManagerReceiver(ManagerCommand):
         extValue = data[ANSW_RESULT].get('extValue',[])
         if type(extValue) not in (list,tuple): extValue = (extValue,)
         extra_message = []
-        tags = self._session[OUTPUT_TYPE] in ('html','php') and ('&lt;','&gt;') or ('<','>')
+        tags = self._session[OUTPUT_TYPE] in ('html','php') and ('&lt;','&gt;','&lt;/','/&gt;') or ('<','>','</','/>')
         for item in extValue:
-            for key in item.get('value',{}).keys():
+            value = item.get('value',{})
+            for key in value.keys():
                 if self._session[VERBOSE] > 1:
                     attributes=[]
                     for attr in item['value'][key].get('attr',[]):
                         attributes.append("%s='%s'"%attr)
                     attribs = len(attributes) and ' %s'%' '.join(attributes) or ''
-                    extra_message.append('%s: %s%s%s%s'%(_T('Element that caused a server error condition'),tags[0],key,attribs,tags[1]))
+                    elvalue = value[key].get('data',u'')
+                    if type(elvalue) in (list, tuple):
+                        elvalue = ' '.join(elvalue)
+                    if elvalue:
+                        stoptag = tags[1]
+                        endtag = u'%s%s%s'%(tags[2],key,tags[1])
+                    else:
+                        stoptag = tags[3]
+                        endtag = ''
+                    extra_message.append('%s: %s%s%s%s%s%s'%(_T('Element that caused a server error condition'),get_ltext(tags[0]),get_ltext(key),get_ltext(attribs),stoptag,get_ltext(elvalue),get_ltext(endtag)))
                 if item.has_key('reason'): extra_message.append('%s: %s'%(_T('Reason'), get_ltext(item['reason'].get('data',''))))
         if len(extra_message):
             self._dct_answer['errors'].extend(extra_message)
@@ -117,16 +127,6 @@ class ManagerReceiver(ManagerCommand):
             if self._epp_response.is_error():
                 # při parsování se vyskytly chyby
                 self.append_error(self._epp_response.get_errors())
-            else:
-                if not list_type:
-                    # For LIST commands is validation turned off.
-                    invalid_epp = self.is_epp_valid(self._epp_response.get_xml())
-                    debug_time.append(('Validation',time.time())) # PROFILER
-                    if invalid_epp:
-                        # když se odpověd serveru neplatná...
-                        self.append_note(_T('Server reply is not valid!'),('RED','BOLD'))
-                        if self._session[VERBOSE] > 1: self.append_note(invalid_epp)
-                        self.append_note(_T('Type %s to disable validator')%'${BOLD}validate off${NORMAL}')
             if not self._epp_response.is_error():
                 # když přišla nějaká odpověd a podařilo se jí zparsovat:
                 # HOOK for contact:list, nsset:list, domain:list
@@ -460,7 +460,10 @@ class ManagerReceiver(ManagerCommand):
                 self.send(self._raw_cmd)                                      # send to server
                 if len(self._errors): raise FredError(self.fetch_errors())
                 xml_answer = self.receive()                                   # receive answer
+                error_validate_answer = self.is_epp_valid(xml_answer)
                 self.process_answer(xml_answer)                               # process answer
+                if len(error_validate_answer):
+                    self._errors.append(error_validate_answer)                # join validate error AFTER process
                 if len(self._errors): raise FredError(self.fetch_errors())
             else:
                 errors = _T('You are not logged. First type login.')

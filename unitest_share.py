@@ -34,6 +34,10 @@ def get_reason(client):
 
 def write_log_header(log_fp):
     log_fp.write('Created at %s\n'%time.strftime("%Y-%m-%d %H:%M:%S",time.localtime()))
+
+def write_log_message(log_fp, message):
+    if log_fp:
+        log_fp.write(str(message))
     
 def write_log(epp_cli, log_fp, log_step, fnc_name, fnc_doc, step=None):
     if log_fp and epp_cli._epp._raw_cmd:
