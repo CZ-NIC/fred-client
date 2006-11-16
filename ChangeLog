@@ -1,10 +1,17 @@
 FredClient 1.2.1
+
+Nove funkce:
+    * kontrola verze schemat mezi klientem a serverem
+    * schemata mohou byt v konfiguracnim souboru definovana pro kazdy server zvlast
+
+Opravy:
+    * oprava vypisu chyboveho hlaseni a pridani chybejici hodnoty elementu
     * oprava chyby v casti sender
     * uprava prikladu zadani parametru u prikazu update_contact
 
 
-FredClient 1.2.0
 
+FredClient 1.2.0
 
 Nove funkce:
     * zavedeni "zadne" a "prazdne" hodnoty v zadavani paramteru prikazu

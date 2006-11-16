@@ -371,4 +371,23 @@ data = (
   </response>
 </epp>
     """),
+    ('domain:renew',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
+<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
+  <response>
+    <result code='2004'>
+      <msg lang='cs'>Chybný rozsah parametru</msg>
+      <extValue>
+        <value>
+          <period unit='y'>10</period>
+        </value>
+        <reason lang='cs'>perioda je nad maximalní dovolenou hodnotou</reason>
+      </extValue>
+    </result>
+    <trID>
+      <clTRID>zisv003#06-11-15at14:28:10</clTRID>
+      <svTRID>ccReg-0000026830</svTRID>
+    </trID>
+  </response>
+</epp>
+"""),
     )

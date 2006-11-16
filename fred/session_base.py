@@ -435,40 +435,33 @@ $fred_client_errors = array(); // errors occuring during communication
                 self.append_note(uerr)
                 self.append_note(_T('External validator "%s" not found. XML validation has been disabled.')%self._external_validator)
         return ok
+
+    def __get_actual_schema_path__(self):
+        'Returns schema path. Try first in individual connect section than share in session.'
+        schema_path = self.get_config_value(self.config_get_section_connect(),'schema',OMIT_ERROR)
+        if not schema_path:
+            # if schema is not defined for server get share default
+            schema_path = self.get_config_value('session','schema')
+        return schema_path
     
     def is_epp_valid(self, message):
         "Check XML EPP by xmllint. OUT: '' - correct; '...' any error occurs."
         if not self._session[VALIDATE]: return '' # validace je vypnutá
-        tmpname = os.path.join(os.path.expanduser('~'),'eppdoc_tmp_test_validity.xml')
-        try:
-            open(tmpname,'w').write(message)
-        except IOError, (no, msg):
-            try:
-                msg = msg.decode(translate.encoding)
-            except UnicodeDecodeError, error:
-                msg = '(UnicodeDecodeError) '+repr(msg)
-            self._session[VALIDATE] = 0 # automatické vypnutí validace
-            self.append_note('%s: [%d] %s'%(_T('Temporary file for XML EPP validity verification can not been created. Reason'),no,msg))
-            self.append_note(_T("Client-side validation has been disabled. Type '%s' to enable it.")%'${BOLD}validate on${NORMAL}')
-            return '' # impossible save xml file needed for validation
         # kontrola validity XML
-        schema_path = self.get_config_value('session','schema')
-        if not schema_path:
-            os.unlink(tmpname)
-            return '' # schema path is not set
-        command = '%s --noout --schema "%s" "%s"'%(self._external_validator, schema_path, tmpname)
+        schema_path = self.__get_actual_schema_path__()
+        if not schema_path: return '' # schema path is not set
+        command = '%s --noout --schema "%s" -'%(self._external_validator, schema_path)
         if self._session[VERBOSE] > 2:
             self.append_note(_T('Client-side validation command:'), 'BOLD')
             self.append_note(get_ltext(command))
         try:
-            pipes = os.popen3(command)
+            pipes = os.popen3(command,'w+')
+            pipes[0].write(message)
+            pipes[0].close()
         except IOError, msg:
             self.append_note(str(msg),('RED',c))
         errors = pipes[2].read()
         map(lambda f: f.close(), pipes)
-        if self._session[VERBOSE] < 3:
-            # leave temporary file for test in verbose mode 3
-            os.unlink(tmpname)
         if re.search(' validates$', errors):
             errors = '' # it seems be OK...
         else:
@@ -509,6 +502,21 @@ $fred_client_errors = array(); // errors occuring during communication
         if colored_output.CLEAR_EOL and cmd[5:] == colored_output.get_term_vers():
             self.__do_help__(self.__prepare_help__(terminal_controler.supported_versions))
 
+    def check_schemas_version(self, list_schemas):
+        'Check version number of used schemas between local and server version'
+        # objURI= [u'http://www.nic.cz/xml/epp/contact-1.0', ...]
+        if self._session[VERBOSE] < 2: return # no comparation in verbose 1
+        # check once only or if schemas loaded:
+        if not len(list_schemas): return
+        match = re.search('[\d\.]+$', list_schemas[0]) # check first list item only
+        if not match: return
+        server_version = match.group(0)
+        schema_path = self.__get_actual_schema_path__()
+        match = re.search('([\d\.]+)\.xsd$',schema_path)
+        if not match: return
+        local_version = match.group(1)
+        if server_version != local_version:
+            self.append_note(_T('Warning: Different schema version. Client schemas version is %s and on the server is %s.')%(local_version, server_version))
 
 def append_with_colors(list_of_messages, msg, color):
     "Used by Manager::append_error() and Manager::append_note() functions"

@@ -66,18 +66,16 @@ def display_profiler(label, indent, debug_time):
     print indent,'-'*43
     print indent,'Total:'.ljust(30),'%02.4f sec.'%(t - debug_time[0][1])
 
-def make_validation(epp, epp_doc, label):
+def make_validation(epp, xml_epp_doc, label):
     """Make validation and join error message according by verbose mode
     Returns True - valid, False - invalid
     """
-    error_message = epp.is_epp_valid(epp_doc) # make validation on the XML document
-    #debug_time.append(('Validation',time.time())) # PROFILER
+    error_message = epp.is_epp_valid(xml_epp_doc) # make validation on the XML document
     if error_message:
-##        epp.append_error(_T('Command data XML document failed to validate.'))
         epp.append_error(label)
         v = epp.get_session(VERBOSE)
         if v > 1: epp.append_error(error_message)
-        if v > 2: epp.append_error(epp_doc)
+        if v > 2: epp.append_error(xml_epp_doc)
     return (len(error_message) == 0)
     
 def main(options):
@@ -130,6 +128,7 @@ def main(options):
             continue
         if command_name and epp_doc: # if only command is EPP command
             is_valid = make_validation(epp, epp_doc, _T('Command data XML document failed to validate.'))
+            #debug_time.append(('Validation',time.time())) # PROFILER
             if is_valid and epp.is_online(command_name) and epp.is_connected(): # only if we are online
                 epp.display() # display errors or notes
                 if epp.is_confirm_cmd_name(command_name):
@@ -141,7 +140,8 @@ def main(options):
                 #debug_time.append(('SEND to server',time.time())) # PROFILER
                 xml_answer = epp.receive()     # receive answer
                 #debug_time.append(('RECEIVE from server',time.time())) # PROFILER
-                is_valid = make_validation(epp, xml_answer, _T('Answer data XML document failed to validate.'))
+                is_valid = make_validation(epp, xml_answer, _T('Server answer XML document failed to validate.'))
+                #debug_time.append(('Validation',time.time())) # PROFILER
                 try:
                     debug_time_answer = epp.process_answer(xml_answer) # process answer
                     #debug_time.append(('Parse answer',time.time())) # PROFILER

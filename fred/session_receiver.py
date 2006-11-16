@@ -167,10 +167,11 @@ class ManagerReceiver(ManagerCommand):
         self.defs[LANGS] = dct['lang'] = dct['lang'].split('\n')
         if type(self.defs[LANGS]) in (str,unicode):
             self.defs[LANGS] = (self.defs[LANGS],)
-        self.defs[objURI] = dct['objURI'] = dct.get('objURI','').split('\n')
+        dct['objURI'] = dct.get('objURI','').split('\n')
+        if dct['objURI']:
+            self.defs[objURI] = dct['objURI']
+            self.check_schemas_version(dct['objURI'])
         self.defs[extURI] = eppdoc.get_dct_values(svcMenu, ('svcExtension','extURI'))
-        if self.defs[objURI]:
-            dct['objURI'] = self.defs[objURI]
         if self.defs[extURI]:
             dct['extURI'] = self.defs[extURI]
         adjust_dct_keys(dct,('lang','objURI','extURI'))

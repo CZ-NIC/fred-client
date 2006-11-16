@@ -4,6 +4,7 @@ $indent_data=50; // indent column of data
 
 $exec_path = ''; // Here you can write path to the app
 // $exec_path = 'python /home/zdenek/enum/epp_client/trunk/'; // TEST
+// $exec_path = 'python /home/zdenek/enum/epp_client/branches/1.2/'; // TEST
 
 // Here you define where exe saves PHP code with answer data:
 $php_module_name = '/tmp/fred_client.php';
