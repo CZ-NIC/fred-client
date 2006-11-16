@@ -8,13 +8,13 @@ UNBOUNDED = eppdoc_assemble.UNBOUNDED
 
 # transfer op attribute allowed values:
 # transfer_op = ('request','approve','cancel','query','reject')
-update_status = (
-    ('clientDeleteProhibited','cdp'), 
-    ('clientTransferProhibited','ctp'), 
-    ('clientUpdateProhibited','cup'), 
-    ('linked','lnk'), 
-    ('ok',), 
-    )
+##update_status = (
+##    ('clientDeleteProhibited','cdp'), 
+##    ('clientTransferProhibited','ctp'), 
+##    ('clientUpdateProhibited','cup'), 
+##    ('linked','lnk'), 
+##    ('ok',), 
+##    )
     #'serverDeleteProhibited', 'serverTransferProhibited', 'serverUpdateProhibited')
 
 # Help
@@ -117,7 +117,7 @@ ultimately a matter of server policy."""),('check_nsset nssid:id1 nssid:id2',)),
         #----------------------------------------------------
         'poll': (1,[
             ('op',(1,1),(('req',),('ack',)),_T('Query type'),'','',()),
-            ('msg_id',(1,1),(),_T("Index of message (required only with op = 'ack')"),'123','',()), ## , required with op = ack only.
+            ('msg_id',(1,1),(),_T("Index of message (required only with op = 'ack')"),'123','',()),
         ],_T("""
 Poll command is used to discover and retrieve service messages. They are saved
 in the message queue. When you send poll with parameter op = req, 
@@ -250,8 +250,8 @@ and maximum allowable period is defined in the Communication rules."""),('renew_
         #----------------------------------------------------
         'update_contact': (1,[
             ('contact_id',(1,1),(),_T('Contact ID'),'CID:ID01','',()),
-            ('add',(0,5),update_status,_T('Add status'),'','',()),
-            ('rem',(0,5),update_status,_T('Remove status'),'','',()),
+##            ('add',(0,5),update_status,_T('Add status'),'','',()),
+##            ('rem',(0,5),update_status,_T('Remove status'),'','',()),
             ('chg',(0,1),(),_T('Change values'),'','',(
                 ('postal_info',(0,1),(),_T('Postal informations'),'','',(
                     ('name',(0,1),(),_T('Name'),u'Jan Novák','',()),
@@ -280,23 +280,23 @@ and maximum allowable period is defined in the Communication rules."""),('renew_
                 ('notify_email',(0,1),(),_T('Notification email'),'notify@mymail.cz','',()),
             )),
             ],_T("""The EPP "update" command is used to update an instance of an existing object."""),(
-                    'update_contact CID:ID01 clientDeleteProhibited',
-                    'update_contact CID:ID01 (clientDeleteProhibited linked ok)',
-                    "update_contact CID:ID01 clientTransferProhibited (clientDeleteProhibited, clientUpdateProhibited) (('Jan Nowak' 'Firma s.r.o.' (Praha CZ ('Na narodni 1230/12', 'Americka 12') Vinohrady 12000)) +420.222745111 +420.222745111 info@mymail.cz mypassword (y (org, voice, email)) 7035555556 (ico 8888888856) notify@mymail.cz)",
-                    "update_contact cid:id01 ctp (cup, cdp) (('Jan Novák' 'Firma s.r.o.' (Praha CZ ('Na národní 1230/12', 'Americká 12') Vinohrady 12000)) +420.222745111 +420.222745111 info@mymail.cz password (y (org, voice, email)) 7035555556 (ico 8888888856) notify@mymail.cz)",
-                    "update_contact CID:ID01 () () (() NULL NULL NULL NULL () NULL () change.only@notify-mail.cz)",
+                    "update_contact CID:ID01 (('Jan Nowak' 'Firma s.r.o.' (Praha CZ ('Na narodni 1230/12', 'Americka 12') Vinohrady 12000)) +420.222745111 +420.222745111 info@mymail.cz mypassword (y (org, voice, email)) 7035555556 (ico 8888888856) notify@mymail.cz)",
+                    "update_contact cid:id01 (('Jan Novák' 'Firma s.r.o.' (Praha CZ ('Na národní 1230/12', 'Americká 12') Vinohrady 12000)) +420.222745111 +420.222745111 info@mymail.cz password (y (org, voice, email)) 7035555556 (ico 8888888856) notify@mymail.cz)",
+                    "update_contact CID:ID01 (() NULL NULL NULL NULL () NULL () change.only@notify-mail.cz)",
             )),
         #----------------------------------------------------
         'update_domain': (1,[
             ('name',(1,1),(),_T('Domain name'),'mydomain.cz','',()),
-            ('add',(0,1),(),_T('Add status'),'','',(
-                ('admin',(0,UNBOUNDED),(),_T('Administrative contact ID'),'CID:ID01','',()),
-                ('status',(0,8),update_status,_T('Status'),'','',()),
-            )),
-            ('rem',(0,1),(),_T('Remove status'),'','',(
-                ('admin',(0,UNBOUNDED),(),_T('Administrative contact ID'),'CID:ID01','',()),
-                ('status',(0,8),update_status,_T('Status'),'','',()),
-            )),
+            ('add_admin',(0,UNBOUNDED),(),_T('Administrative contact ID'),'CID:ID01','',()),
+##            ('add',(0,1),(),_T('Add status'),'','',(
+##                ('admin',(0,UNBOUNDED),(),_T('Administrative contact ID'),'CID:ID01','',()),
+##                ('status',(0,8),update_status,_T('Status'),'','',()),
+##            )),
+            ('rem_admin',(0,UNBOUNDED),(),_T('Administrative contact ID'),'CID:ID01','',()),
+##            ('rem',(0,1),(),_T('Remove status'),'','',(
+##                ('admin',(0,UNBOUNDED),(),_T('Administrative contact ID'),'CID:ID01','',()),
+##                ('status',(0,8),update_status,_T('Status'),'','',()),
+##            )),
             ('chg',(0,1),(),_T('Change values'),'','',(
                 ('nsset',(0,1),(),_T('NSSET ID'),'NSSET_ID','',()),
                 ('registrant',(0,1),(),_T('Registrant ID'),'CID:ID01','',()),
@@ -304,8 +304,8 @@ and maximum allowable period is defined in the Communication rules."""),('renew_
             )),
             ('val_ex_date',(0,1),(),_T('Validation expires at'),'2008-12-03','',()),
             ],_T("""The EPP "update" command is used to update an instance of an existing object."""),(
-                'update_domain mydomain.cz ((CID:ID01, CID:ID02) clientTransferProhibited) (CID:ID03 clientDeleteProhibited) (NSSID:NSSET01 CID:ID04 mypass)',
-                'update_domain 1.1.1.7.4.5.2.2.2.0.2.4.e164.arpa ((CID:ID01, CID:ID02) clientTransferProhibited) (CID:ID03 clientDeleteProhibited) (NSSID:NSSET01 CID:ID04 mypass) 2008-12-03',
+                'update_domain mydomain.cz (CID:ID01, CID:ID02) CID:ID03 (NSSID:NSSET01 CID:ID04 mypass)',
+                'update_domain 1.1.1.7.4.5.2.2.2.0.2.4.e164.arpa (CID:ID01, CID:ID02) CID:ID03 (NSSID:NSSET01 CID:ID04 mypass) 2008-12-03',
             )),
         #----------------------------------------------------
         'update_nsset': (1,[
@@ -316,20 +316,16 @@ and maximum allowable period is defined in the Communication rules."""),('renew_
                     ('addr',(0,UNBOUNDED),(),_T('Server address'),'217.31.207.130','',()),
                 )),
                 ('tech',(0,UNBOUNDED),(),_T('Technical contact ID'),'CID:ID01','',()),
-                ('status',(0,6),update_status,_T('Status'),'','',()),
+##                ('status',(0,6),update_status,_T('Status'),'','',()),
             )),
             ('rem',(0,1),(),_T('Remove values'),'','',(
                 ('name',(0,9),(),_T('Name server'),'my.dns.cz','',()),
                 ('tech',(0,UNBOUNDED),(),_T('Technical contact ID'),'CID:ID01','',()),
-                ('status',(0,6),update_status,_T('Status'),'','',()),
+##                ('status',(0,6),update_status,_T('Status'),'','',()),
             )),
-##            ('chg',(0,1),(),_T('Change values'),'','',(
-##                ('auth_info',(0,1),(),_T('Password required by server to authorize the transfer'),'new_password','',()),
-##                #('ext',(0,1),(),_T('ext'),'','',()),
-##            )),
             ('auth_info',(0,1),(),_T('Password required by server to authorize the transfer'),'new_password','',()),
             ],_T("""The EPP "update" command is used to update an instance of an existing object."""),(
-                "update_nsset nssid:ns1 (((ns1.dns.cz (217.31.207.130, 217.31.207.131, 217.31.207.132)), (ns2.dns.cz (217.31.207.130, 217.31.207.131, 217.31.207.132))) (cid:tech1, cid:tech2, cid:tech3) (ok, clientTransferProhibited)) (((rem1.dns.cz, rem2.dns.cz) (cid:tech_rem01, cid:tech_rem02) serverUpdateProhibited)) password",
+                "update_nsset nssid:ns1 (((ns1.dns.cz (217.31.207.130, 217.31.207.131, 217.31.207.132)), (ns2.dns.cz (217.31.207.130, 217.31.207.131, 217.31.207.132))) (cid:tech1, cid:tech2, cid:tech3)) (((rem1.dns.cz, rem2.dns.cz) (cid:tech_rem01, cid:tech_rem02))) password",
             )),
         #----------------------------------------------------
         'list_contact': (0,[],_T("""The EPP "list" command is used to list all ID of an existing contact owning by registrant."""),()),
@@ -371,12 +367,12 @@ def make_sort_by_names():
          ('pc',          1,  _T('Postal code')),
          ('cc',          1,  _T('Country code')),
          ('authInfo',    1,  _T('Password for transfer')),
-##         ('pw',          1,  _T('Password for transfer')),
          ('voice',       1,  _T('Phone')),
          ('fax',         1,  'Fax'),
          ('email',       1,  'Email'),
          ('notifyEmail', 1,  _T('Notification email')),
          ('status.s',    1,  _T('Status')),
+         ('status',      1,  _T('Status message')),
          ('disclose',    1,  _T('Disclose')),
          ('hide',        1,  _T('Hide')),
          ('vat',         1,  _T('VAT')),
@@ -398,8 +394,8 @@ def make_sort_by_names():
          ('renew',       1,  _T('Last renew on')),
          ('nsset',       1,  _T('NSSET ID')),
          ('authInfo',    1,  _T('Password for transfer')),
-##         ('pw',          1,  _T('Password')),
          ('status.s',    1,  _T('Status')),
+         ('status',      1,  _T('Status message')),
          ('registrant',  1,  _T('Registrant ID')),
          ('admin',       1,  _T('Administrative contact')),
          )),
@@ -413,9 +409,9 @@ def make_sort_by_names():
          ('crDate',      1,  _T('Created on')),
          ('trDate',      1,  _T('Last transfer on')),
          ('upDate',      1,  _T('Last updated on')),
-##         ('pw',          1,  _T('Password')),
          ('authInfo',    1,  _T('Password for transfer')),
          ('status.s',    1,  _T('Status')),
+         ('status',      1,  _T('Status message')),
          ('tech',        1,  _T('Technical contact')),
          ('ns',          1,  _T('Name servers')),
          )),
@@ -470,7 +466,6 @@ def make_sort_by_names():
          )),        
     }
     # append similar objects
-##    sort_by_names['contact:create'] = ('contact', sort_by_names['nsset:create'][1])
     sort_by_names['contact:list']   = sort_by_names['domain:list']
     sort_by_names['nsset:list']     = sort_by_names['domain:list']
     return sort_by_names
@@ -497,7 +492,7 @@ class Message(eppdoc_assemble.Message):
 
     def __init__(self):
         eppdoc_assemble.Message.__init__(self)
-        self.update_status = update_status
+##        self.update_status = update_status
         self._command_params = make_command_parameters()
         self.sort_by_names = make_sort_by_names()
     

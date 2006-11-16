@@ -541,14 +541,12 @@ class Client:
         return self._epp.api_command('transfer_nsset',{'name':name, 'auth_info':auth_info, 'cltrid':cltrid})
 
 
-    def update_contact(self, contact_id, add=None, rem=None, chg=None, cltrid=None):
+    def update_contact(self, contact_id, chg=None, cltrid=None):
         """Usage: update_contact contact-id
 
     PARAMS:
 
     contact_id (required)
-    add (optional)              list with max 5 items.
-    rem (optional)              list with max 5 items.
     chg (optional)
         postal_info (optional)
             name (optional)
@@ -576,22 +574,18 @@ class Client:
 
     The EPP "update" command is used to update an instance of an existing object.
         """
-        return self._epp.api_command('update_contact',{'contact_id':contact_id, 'add':add, 
-            'rem':rem, 'chg':chg, 'cltrid':cltrid})
+        return self._epp.api_command('update_contact',{'contact_id':contact_id,
+            'chg':chg, 'cltrid':cltrid})
 
 
-    def update_domain(self, name, add=None, rem=None, chg=None, val_ex_date=None, cltrid=None):
+    def update_domain(self, name, add_admin=None, rem_admin=None, chg=None, val_ex_date=None, cltrid=None):
         """Usage: update_domain name
 
     PARAMS:
 
     name (required)
-    add (optional)
-        admin (optional)      unbounded list
-        status (optional)       list with max 8 items. accept only values: (clientDeleteProhibited,clientTransferProhibited,clientUpdateProhibited,linked,ok,serverDeleteProhibited,serverTransferProhibited,serverUpdateProhibited)
-    rem (optional)
-        admin (optional)      unbounded list
-        status (optional)       list with max 8 items. accept only values: (clientDeleteProhibited,clientTransferProhibited,clientUpdateProhibited,linked,ok,serverDeleteProhibited,serverTransferProhibited,serverUpdateProhibited)
+    add_admin (optional)      unbounded list
+    rem_admin (optional)      unbounded list
     chg (optional)
         nsset (optional)
         registrant (optional)
@@ -603,7 +597,7 @@ class Client:
     The EPP "update" command is used to update an instance of an existing object.
         """
         return self._epp.api_command('update_domain',{'name':name, 
-            'add':add, 'rem':rem, 'chg':chg, 'val_ex_date':val_ex_date, 'cltrid':cltrid})
+            'add_admin':add_admin, 'rem_admin':rem_admin, 'chg':chg, 'val_ex_date':val_ex_date, 'cltrid':cltrid})
 
 
     def update_nsset(self, nsset_id, add=None, rem=None, auth_info=None, cltrid=None):
@@ -617,11 +611,9 @@ class Client:
             name (required)
             addr (optional)     unbounded list
         tech (optional)         unbounded list
-        status (optional)       list with max 6 items. accept only values: (clientDeleteProhibited,clientTransferProhibited,clientUpdateProhibited,linked,ok,serverDeleteProhibited,serverTransferProhibited,serverUpdateProhibited)
     rem (optional)
         name (optional)         list with max 9 items.
         tech (optional)         unbounded list
-        status (optional)       list with max 6 items. accept only values: (clientDeleteProhibited,clientTransferProhibited,clientUpdateProhibited,linked,ok,serverDeleteProhibited,serverTransferProhibited,serverUpdateProhibited)
     auth_info (optional)
 
     RETURN data: {}

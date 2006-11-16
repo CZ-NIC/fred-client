@@ -2,7 +2,7 @@
 #!/usr/bin/env python
 """TEST the server answers.
 """
-data = (
+data = ( # 0
         ('greeting',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
 <epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
   <greeting>
@@ -39,6 +39,7 @@ data = (
   </greeting>
 </epp>
         """),
+        # 1
         ('transfer',"""<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <epp xmlns="urn:ietf:params:xml:ns:epp-1.0"
      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -59,6 +60,7 @@ data = (
     <clTRID>ABC-12345</clTRID>
   </command>
 </epp>"""),
+    # 2
     ('create:domain',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
 <epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
   <response>
@@ -84,6 +86,7 @@ data = (
   </response>
 </epp>
     """),
+    # 3
     ('poll',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
 <epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
   <response>
@@ -103,6 +106,7 @@ data = (
   </response>
 </epp>
     """),
+    # 4
     ('poll',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
 <epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
   <response>
@@ -120,6 +124,7 @@ data = (
   </response>
 </epp>
     """),
+    # 5
     ('contact:create',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
 <epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:contact='http://www.nic.cz/xml/epp/contact-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
   <response>
@@ -138,6 +143,7 @@ data = (
     </trID>
   </response>
 </epp>"""),
+    # 6
     ('domain:create',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
 <epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:domain='http://www.nic.cz/xml/epp/domain-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
   <response>
@@ -158,6 +164,7 @@ data = (
   </response>
 </epp>
 """),
+    # 7
     ('domain:renew',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
 <epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:domain='http://www.nic.cz/xml/epp/domain-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
   <response>
@@ -177,6 +184,7 @@ data = (
   </response>
 </epp>
 """),
+    # 8
     ('nsset:info',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
 <epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:nsset='http://www.nic.cz/xml/epp/nsset-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
   <response>
@@ -187,7 +195,7 @@ data = (
       <nsset:infData xsi:schemaLocation='http://www.nic.cz/xml/epp/nsset-1.0 nsset-1.0.xsd'>
         <nsset:id>one</nsset:id>
         <nsset:roid>N0000000059-CZ</nsset:roid>
-        <nsset:status s='ok'/>
+        <nsset:status s='ok'>NSSET is OK</nsset:status>
         <nsset:clID>REG-LRR</nsset:clID>
         <nsset:crDate>2006-06-30T09:09:57.0Z</nsset:crDate>
         <nsset:upID>REG-LRR</nsset:upID>
@@ -215,6 +223,7 @@ data = (
   </response>
 </epp>
 """),
+    # 9
     ('contact:info',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
 <epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:contact='http://www.nic.cz/xml/epp/contact-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
   <response>
@@ -225,7 +234,7 @@ data = (
       <contact:infData xsi:schemaLocation='http://www.nic.cz/xml/epp/contact-1.0 contact-1.0.xsd'>
         <contact:id>test001</contact:id>
         <contact:roid>C0000000031-CZ</contact:roid>
-        <contact:status s='ok'/>
+        <contact:status s='ok'>Status is valid</contact:status>
         <contact:postalInfo>
           <contact:name>Řehoř Čížek</contact:name>
           <contact:org>Čížková a spol</contact:org>
@@ -249,7 +258,7 @@ data = (
           <contact:voice/>
         </contact:disclose>
         <contact:vat>963</contact:vat>
-        <contact:ident>852</contact:ident>
+        <contact:ssn>852</contact:ssn>
         <contact:notifyEmail>info@rehorovi.cz</contact:notifyEmail>
         </contact:infData>
     </resData>
@@ -260,6 +269,7 @@ data = (
   </response>
 </epp>
     """),
+    # 10
     ('domain:check',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
 <epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:domain='http://www.nic.cz/xml/epp/domain-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
   <response>
@@ -284,6 +294,7 @@ data = (
   </response>
 </epp>
 """),
+    # 11
     ('domain:create',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
 <epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
   <response>
@@ -309,6 +320,7 @@ data = (
   </response>
 </epp>
     """),
+    # 12
     ('contact:list',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
 <epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:contact='http://www.nic.cz/xml/epp/contact-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
   <response>
@@ -328,6 +340,7 @@ data = (
   </response>
 </epp>
 """),
+    # 13
     ('nsset:list',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
 <epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:nsset='http://www.nic.cz/xml/epp/nsset-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
   <response>
@@ -350,6 +363,7 @@ data = (
   </response>
 </epp>
 """),
+    # 14
     ('domain:list',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
 <epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:domain='http://www.nic.cz/xml/epp/domain-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
   <response>
@@ -371,6 +385,7 @@ data = (
   </response>
 </epp>
     """),
+    # 15
     ('domain:renew',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
 <epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
   <response>

@@ -226,7 +226,7 @@ class ManagerReceiver(ManagerCommand):
             self.append_error('answer_response_contact_info KeyError: %s'%msg)
         else:
             self.__append_note_from_dct__(contact_infData,
-                ('contact:id','contact:roid','contact:status s',
+                ('contact:id','contact:roid','contact:status s','contact:status',
                 'contact:voice','contact:fax','contact:email',
                 'contact:crID', 'contact:clID', 'contact:upID', 
                 'contact:crDate', 'contact:trDate', 'contact:upDate'))
@@ -246,7 +246,7 @@ class ManagerReceiver(ManagerCommand):
                     disclosed.pop(disclosed.index(name))
             dct['contact:disclose'] = disclosed
             dct['contact:hide'] = not_disclosed
-            dct['contact:authInfo'] = eppdoc.get_dct_value(contact_infData, 'contact:authInfo') ## ('contact:authInfo','contact:pw'))
+            dct['contact:authInfo'] = eppdoc.get_dct_value(contact_infData, 'contact:authInfo')
             dct['contact:ident.type'] = eppdoc.get_dct_attr(contact_infData, 'contact:ident', 'type')
             dct['contact:ident'] = eppdoc.get_dct_value(contact_infData, 'contact:ident')
             dct['contact:notifyEmail'] = eppdoc.get_dct_value(contact_infData, 'contact:notifyEmail')
@@ -262,11 +262,11 @@ class ManagerReceiver(ManagerCommand):
             self.append_error('answer_response_domain_info KeyError: %s'%msg)
         else:
             self.__append_note_from_dct__(domain_infData,
-                ('domain:name','domain:roid','domain:status s','domain:registrant','domain:admin',
+                ('domain:name','domain:roid','domain:status s','domain:status',
+                 'domain:registrant','domain:admin',
                  'domain:contact','domain:contact type','domain:nsset',
                  'domain:crID','domain:clID','domain:upID',
                  'domain:crDate','domain:trDate','domain:upDate','domain:exDate','domain:authInfo'))
-##            self._dct_answer['data']['domain:pw'] = eppdoc.get_dct_value(domain_infData, ('domain:authInfo','domain:pw'))
             exDate = self.get_value_from_dict(('data','domain:exDate'))
             if exDate:
                 m = re.match('\d{4}-\d{2}-\d{2}', exDate)
@@ -287,7 +287,7 @@ class ManagerReceiver(ManagerCommand):
             self.__append_note_from_dct__(nsset_infData,('nsset:id','nsset:roid',
                 'nsset:clID','nsset:crID','nsset:trID','nsset:upID',
                 'nsset:crDate','nsset:trDate','nsset:upDate','nsset:authInfo','nsset:tech',
-                'nsset:status s','nsset:authInfo'))
+                'nsset:status s','nsset:status','nsset:authInfo'))
             if nsset_infData.has_key('nsset:ns'):
                 nsset_ns = nsset_infData['nsset:ns']
                 dns = []
@@ -297,7 +297,6 @@ class ManagerReceiver(ManagerCommand):
                     addr = eppdoc.get_dct_value(ns, 'nsset:addr').split('\n')
                     dns.append([name,addr])
                 self._dct_answer['data']['nsset:ns'] = dns
-##            self._dct_answer['data']['nsset:pw'] = eppdoc.get_dct_value(nsset_infData, ('nsset:authInfo','nsset:pw'))
 
 
     #-------------------------------------
@@ -548,5 +547,6 @@ if __name__ == '__main__':
         # Data item has format: ('command:name',"""<?xml ...XML document... >""")
         # For example: ('nsset:info',"""<?xml ...<epp ...><response> ... </epp>""")
         #test(test_incomming_messages.data[0])
-        test(test_incomming_messages.data[-1])
+##        test(test_incomming_messages.data[-1])
         #map(test, test_incomming_messages.data)
+        test(test_incomming_messages.data[9]) # test na contact:info status
