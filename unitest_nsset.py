@@ -73,9 +73,7 @@ FRED_DATA = (
         'tech':FRED_CONTACT1,
         #'status':'clientDeleteProhibited',
     },
-    'chg': {
-        'auth_info':NSSET_PASSWORD
-    },
+    'auth_info':NSSET_PASSWORD
     },
     #-------------------------------------------------------
     { # 3. modified
@@ -109,9 +107,10 @@ class Test(unittest.TestCase):
         # create client object
         epp_cli = fred.Client()
         epp_cli._epp.load_config()
-        #epp_cli._epp.set_validate(0)
+        epp_cli._epp.set_validate(0)
         epp_cli_TRANSF = fred.Client()
         epp_cli_TRANSF._epp.load_config()
+        epp_cli_TRANSF._epp.set_validate(0)
         
         # login
         dct = epp_cli._epp.get_default_params_from_config('login')
@@ -268,7 +267,7 @@ class Test(unittest.TestCase):
     def test_080(self):
         '3.8 Update vsech parametru krome stavu'
         d = FRED_DATA[2]
-        epp_cli.update_nsset(d['id'], d['add'], d['rem'], d['chg'])
+        epp_cli.update_nsset(d['id'], d['add'], d['rem'], d['auth_info'])
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_081(self):
@@ -290,11 +289,11 @@ class Test(unittest.TestCase):
         epp_cli.update_nsset(d['id'], None, {'name':'ns.name3.cz'})
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
-    def test_090(self):
-        '3.9 Pokus o update vsech stavu server*[delete,update]'
-        for status in ('serverDeleteProhibited', 'serverUpdateProhibited'):
-            epp_cli.update_nsset(handle_nsset, {'status':status})
-            self.assertNotEqual(epp_cli.is_val(), 1000, 'Status "%s" prosel prestoze nemel.'%status)
+##    def test_090(self):
+##        '3.9 Pokus o update vsech stavu server*[delete,update]'
+##        for status in ('serverDeleteProhibited', 'serverUpdateProhibited'):
+##            epp_cli.update_nsset(handle_nsset, {'status':status})
+##            self.assertNotEqual(epp_cli.is_val(), 1000, 'Status "%s" prosel prestoze nemel.'%status)
         
     def test_094(self):
         '3.9.1 Pokus o odstraneni tech-kontaktu'
@@ -302,29 +301,29 @@ class Test(unittest.TestCase):
         epp_cli.update_nsset(d['id'], None, {'tech':FRED_CONTACT2})
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         
-    def test_100(self):
-        '3.10 Update stavu clientDeleteProhibited a pokus o smazani'
-        status = 'clientDeleteProhibited'
-        epp_cli.update_nsset(handle_nsset, {'status':status})
-        self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se nastavit status: %s'%status)
-        # pokus o smazání
-        epp_cli.delete_nsset(handle_nsset)
-        self.assertNotEqual(epp_cli.is_val(), 1000, 'Kontakt se smazal, prestoze mel nastaven %s'%status)
-        # zrušení stavu
-        epp_cli.update_nsset(handle_nsset, None, {'status':status})
-        self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se odstranit status: %s'%status)
+##    def test_100(self):
+##        '3.10 Update stavu clientDeleteProhibited a pokus o smazani'
+##        status = 'clientDeleteProhibited'
+##        epp_cli.update_nsset(handle_nsset, {'status':status})
+##        self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se nastavit status: %s'%status)
+##        # pokus o smazání
+##        epp_cli.delete_nsset(handle_nsset)
+##        self.assertNotEqual(epp_cli.is_val(), 1000, 'Kontakt se smazal, prestoze mel nastaven %s'%status)
+##        # zrušení stavu
+##        epp_cli.update_nsset(handle_nsset, None, {'status':status})
+##        self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se odstranit status: %s'%status)
         
-    def test_110(self):
-        '3.11 Update stavu clientUpdateProhibited a pokus o zmenu objektu, smazani stavu'
-        status = 'clientUpdateProhibited'
-        epp_cli.update_nsset(handle_nsset, {'status':status})
-        self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se nastavit status: %s'%status)
-        # pokus o změnu
-        epp_cli.update_nsset(handle_nsset, None, None, {'auth_info':'zmena hesla'})
-        self.assertNotEqual(epp_cli.is_val(), 1000, 'Nsset se aktualizoval, prestoze mel nastaven %s'%status)
-        # zrušení stavu
-        epp_cli.update_nsset(handle_nsset, None, {'status':status})
-        self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se odstranit status: %s'%status)
+##    def test_110(self):
+##        '3.11 Update stavu clientUpdateProhibited a pokus o zmenu objektu, smazani stavu'
+##        status = 'clientUpdateProhibited'
+##        epp_cli.update_nsset(handle_nsset, {'status':status})
+##        self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se nastavit status: %s'%status)
+##        # pokus o změnu
+##        epp_cli.update_nsset(handle_nsset, None, None, {'auth_info':'zmena hesla'})
+##        self.assertNotEqual(epp_cli.is_val(), 1000, 'Nsset se aktualizoval, prestoze mel nastaven %s'%status)
+##        # zrušení stavu
+##        epp_cli.update_nsset(handle_nsset, None, {'status':status})
+##        self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se odstranit status: %s'%status)
 
     def test_112(self):
         '3.11.2 Pridani IPv6 2001:200::fea5:3015'

@@ -2,14 +2,14 @@
 <class>FredWindow</class>
 <widget class="QWidget">
     <property name="name">
-	    <cstring>FredWindow</cstring>
+        <cstring>FredWindow</cstring>
     </property>
     <property name="geometry">
         <rect>
             <x>0</x>
             <y>0</y>
             <width>574</width>
-            <height>1135</height>
+            <height>943</height>
         </rect>
     </property>
     <property name="caption">
@@ -31,138 +31,41 @@
             <string>&lt;b&gt;contact ID&lt;/b&gt;</string>
         </property>
     </widget>
-    <widget class="QLabel">
-        <property name="name">
-            <cstring>textLabel2</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>10</x>
-                <y>340</y>
-                <width>160</width>
-                <height>20</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string>name</string>
-        </property>
-    </widget>
     <widget class="QLineEdit">
         <property name="name">
-            <cstring>update_contact_name</cstring>
+            <cstring>update_contact_id</cstring>
         </property>
         <property name="geometry">
             <rect>
                 <x>180</x>
-                <y>340</y>
+                <y>110</y>
                 <width>360</width>
                 <height>22</height>
             </rect>
         </property>
-        <property name="toolTip" stdset="0">
-            <string>CZ</string>
-        </property>
-        <property name="whatsThis" stdset="0">
-            <string>pokus</string>
-        </property>
-    </widget>
-    <widget class="QLineEdit">
-        <property name="name">
-            <cstring>update_contact_org</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>180</x>
-                <y>370</y>
-                <width>360</width>
-                <height>22</height>
-            </rect>
-        </property>
-        <property name="toolTip" stdset="0">
-            <string>CZ</string>
-        </property>
-        <property name="whatsThis" stdset="0">
-            <string>pokus</string>
+        <property name="text">
+            <string></string>
         </property>
     </widget>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel3</cstring>
+            <cstring>textLabel18</cstring>
         </property>
         <property name="geometry">
             <rect>
                 <x>10</x>
-                <y>370</y>
-                <width>160</width>
-                <height>20</height>
+                <y>10</y>
+                <width>530</width>
+                <height>90</height>
             </rect>
         </property>
         <property name="text">
-            <string>organisation name</string>
+            <string>&lt;h2&gt;update_contact&lt;/h2&gt;
+The EPP "update" command is used to update an instance of an existing object.
+   Names what are not included into disclose list are set to opposite value of the disclose flag value.</string>
         </property>
-    </widget>
-    <widget class="QLabel">
-        <property name="name">
-            <cstring>textLabel4</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>10</x>
-                <y>690</y>
-                <width>160</width>
-                <height>20</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string>fax</string>
-        </property>
-    </widget>
-    <widget class="QLabel">
-        <property name="name">
-            <cstring>textLabel5</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>10</x>
-                <y>660</y>
-                <width>160</width>
-                <height>20</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string>voice (phone number)</string>
-        </property>
-    </widget>
-    <widget class="QLabel">
-        <property name="name">
-            <cstring>textLabel6</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>380</x>
-                <y>690</y>
-                <width>160</width>
-                <height>20</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string>+420.123456789</string>
-        </property>
-    </widget>
-    <widget class="QLabel">
-        <property name="name">
-            <cstring>textLabel7</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>380</x>
-                <y>660</y>
-                <width>160</width>
-                <height>20</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string>+420.123456789</string>
+        <property name="alignment">
+            <set>WordBreak|AlignTop|AlignLeft</set>
         </property>
     </widget>
     <widget class="QLabel">
@@ -172,13 +75,250 @@
         <property name="geometry">
             <rect>
                 <x>10</x>
-                <y>720</y>
+                <y>520</y>
                 <width>160</width>
                 <height>20</height>
             </rect>
         </property>
         <property name="text">
             <string>email</string>
+        </property>
+    </widget>
+    <widget class="QLineEdit">
+        <property name="name">
+            <cstring>update_contact_org</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>180</x>
+                <y>170</y>
+                <width>360</width>
+                <height>22</height>
+            </rect>
+        </property>
+        <property name="toolTip" stdset="0">
+            <string>CZ</string>
+        </property>
+        <property name="whatsThis" stdset="0">
+            <string>pokus</string>
+        </property>
+    </widget>
+    <widget class="QLineEdit">
+        <property name="name">
+            <cstring>update_contact_name</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>180</x>
+                <y>140</y>
+                <width>360</width>
+                <height>22</height>
+            </rect>
+        </property>
+        <property name="toolTip" stdset="0">
+            <string>CZ</string>
+        </property>
+        <property name="whatsThis" stdset="0">
+            <string>pokus</string>
+        </property>
+    </widget>
+    <widget class="QLabel">
+        <property name="name">
+            <cstring>textLabel21</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>10</x>
+                <y>760</y>
+                <width>160</width>
+                <height>20</height>
+            </rect>
+        </property>
+        <property name="text">
+            <string>social security number</string>
+        </property>
+    </widget>
+    <widget class="QGroupBox">
+        <property name="name">
+            <cstring>grp_disclose</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>180</x>
+                <y>580</y>
+                <width>360</width>
+                <height>140</height>
+            </rect>
+        </property>
+        <property name="title">
+            <string>disclose</string>
+        </property>
+        <widget class="QComboBox">
+            <item>
+                <property name="text">
+                    <string>yes</string>
+                </property>
+            </item>
+            <item>
+                <property name="text">
+                    <string>no</string>
+                </property>
+            </item>
+            <property name="name">
+                <cstring>update_contact_disclose_flag</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>190</x>
+                    <y>20</y>
+                    <width>85</width>
+                    <height>22</height>
+                </rect>
+            </property>
+        </widget>
+        <widget class="QCheckBox">
+            <property name="name">
+                <cstring>update_contact_disclose_name</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>10</x>
+                    <y>50</y>
+                    <width>160</width>
+                    <height>20</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>name</string>
+            </property>
+        </widget>
+        <widget class="QCheckBox">
+            <property name="name">
+                <cstring>update_contact_disclose_addr</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>10</x>
+                    <y>80</y>
+                    <width>160</width>
+                    <height>20</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>address</string>
+            </property>
+        </widget>
+        <widget class="QCheckBox">
+            <property name="name">
+                <cstring>update_contact_disclose_fax</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>10</x>
+                    <y>110</y>
+                    <width>160</width>
+                    <height>20</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>fax</string>
+            </property>
+        </widget>
+        <widget class="QCheckBox">
+            <property name="name">
+                <cstring>update_contact_disclose_org</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>190</x>
+                    <y>50</y>
+                    <width>160</width>
+                    <height>20</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>organisation</string>
+            </property>
+        </widget>
+        <widget class="QCheckBox">
+            <property name="name">
+                <cstring>update_contact_disclose_voice</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>190</x>
+                    <y>80</y>
+                    <width>160</width>
+                    <height>20</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>voice</string>
+            </property>
+        </widget>
+        <widget class="QCheckBox">
+            <property name="name">
+                <cstring>update_contact_disclose_email</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>190</x>
+                    <y>110</y>
+                    <width>160</width>
+                    <height>20</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>email</string>
+            </property>
+        </widget>
+    </widget>
+    <widget class="QLineEdit">
+        <property name="name">
+            <cstring>update_contact_notify_email</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>180</x>
+                <y>860</y>
+                <width>360</width>
+                <height>22</height>
+            </rect>
+        </property>
+    </widget>
+    <widget class="QLabel">
+        <property name="name">
+            <cstring>textLabel12</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>10</x>
+                <y>860</y>
+                <width>160</width>
+                <height>20</height>
+            </rect>
+        </property>
+        <property name="text">
+            <string>notify email</string>
+        </property>
+    </widget>
+    <widget class="QLineEdit">
+        <property name="name">
+            <cstring>update_contact_voice</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>180</x>
+                <y>460</y>
+                <width>180</width>
+                <height>22</height>
+            </rect>
+        </property>
+        <property name="inputMask">
+            <string></string>
         </property>
     </widget>
     <widget class="QLabel">
@@ -188,7 +328,7 @@
         <property name="geometry">
             <rect>
                 <x>10</x>
-                <y>750</y>
+                <y>550</y>
                 <width>160</width>
                 <height>20</height>
             </rect>
@@ -199,50 +339,31 @@
     </widget>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel10</cstring>
+            <cstring>textLabel7</cstring>
         </property>
         <property name="geometry">
             <rect>
-                <x>10</x>
-                <y>930</y>
+                <x>380</x>
+                <y>460</y>
                 <width>160</width>
                 <height>20</height>
             </rect>
         </property>
         <property name="text">
-            <string>value-added tax</string>
+            <string>+420.123456789</string>
         </property>
     </widget>
-    <widget class="QLabel">
+    <widget class="QLineEdit">
         <property name="name">
-            <cstring>textLabel11</cstring>
+            <cstring>update_contact_email</cstring>
         </property>
         <property name="geometry">
             <rect>
-                <x>10</x>
-                <y>1090</y>
-                <width>160</width>
-                <height>20</height>
+                <x>180</x>
+                <y>520</y>
+                <width>360</width>
+                <height>22</height>
             </rect>
-        </property>
-        <property name="text">
-            <string>clTRID</string>
-        </property>
-    </widget>
-    <widget class="QLabel">
-        <property name="name">
-            <cstring>textLabel12</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>10</x>
-                <y>1060</y>
-                <width>160</width>
-                <height>20</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string>notify email</string>
         </property>
     </widget>
     <widget class="QGroupBox">
@@ -252,7 +373,7 @@
         <property name="geometry">
             <rect>
                 <x>10</x>
-                <y>400</y>
+                <y>200</y>
                 <width>531</width>
                 <height>250</height>
             </rect>
@@ -429,527 +550,6 @@
             </property>
         </widget>
     </widget>
-    <widget class="QLineEdit">
-        <property name="name">
-            <cstring>update_contact_voice</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>180</x>
-                <y>660</y>
-                <width>180</width>
-                <height>22</height>
-            </rect>
-        </property>
-        <property name="inputMask">
-            <string></string>
-        </property>
-    </widget>
-    <widget class="QLineEdit">
-        <property name="name">
-            <cstring>update_contact_fax</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>180</x>
-                <y>690</y>
-                <width>180</width>
-                <height>22</height>
-            </rect>
-        </property>
-        <property name="inputMask">
-            <string></string>
-        </property>
-    </widget>
-    <widget class="QLineEdit">
-        <property name="name">
-            <cstring>update_contact_email</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>180</x>
-                <y>720</y>
-                <width>360</width>
-                <height>22</height>
-            </rect>
-        </property>
-    </widget>
-    <widget class="QLineEdit">
-        <property name="name">
-            <cstring>update_contact_auth_info</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>180</x>
-                <y>750</y>
-                <width>360</width>
-                <height>22</height>
-            </rect>
-        </property>
-        <property name="echoMode">
-            <enum>Normal</enum>
-        </property>
-    </widget>
-    <widget class="QLineEdit">
-        <property name="name">
-            <cstring>update_contact_vat</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>180</x>
-                <y>930</y>
-                <width>360</width>
-                <height>22</height>
-            </rect>
-        </property>
-    </widget>
-    <widget class="QCheckBox">
-        <property name="name">
-            <cstring>checkBox_rem</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>10</x>
-                <y>240</y>
-                <width>150</width>
-                <height>20</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string>remove</string>
-        </property>
-    </widget>
-    <widget class="QCheckBox">
-        <property name="name">
-            <cstring>checkBox_add</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>10</x>
-                <y>140</y>
-                <width>150</width>
-                <height>20</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string>add</string>
-        </property>
-    </widget>
-    <widget class="QGroupBox">
-        <property name="name">
-            <cstring>grp_disclose</cstring>
-        </property>
-        <property name="enabled">
-            <bool>false</bool>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>180</x>
-                <y>780</y>
-                <width>360</width>
-                <height>140</height>
-            </rect>
-        </property>
-        <property name="title">
-            <string>disclose</string>
-        </property>
-        <widget class="QComboBox">
-            <item>
-                <property name="text">
-                    <string>yes</string>
-                </property>
-            </item>
-            <item>
-                <property name="text">
-                    <string>no</string>
-                </property>
-            </item>
-            <property name="name">
-                <cstring>update_contact_disclose_flag</cstring>
-            </property>
-            <property name="geometry">
-                <rect>
-                    <x>190</x>
-                    <y>20</y>
-                    <width>85</width>
-                    <height>22</height>
-                </rect>
-            </property>
-        </widget>
-        <widget class="QCheckBox">
-            <property name="name">
-                <cstring>update_contact_disclose_name</cstring>
-            </property>
-            <property name="geometry">
-                <rect>
-                    <x>10</x>
-                    <y>50</y>
-                    <width>160</width>
-                    <height>20</height>
-                </rect>
-            </property>
-            <property name="text">
-                <string>name</string>
-            </property>
-        </widget>
-        <widget class="QCheckBox">
-            <property name="name">
-                <cstring>update_contact_disclose_addr</cstring>
-            </property>
-            <property name="geometry">
-                <rect>
-                    <x>10</x>
-                    <y>80</y>
-                    <width>160</width>
-                    <height>20</height>
-                </rect>
-            </property>
-            <property name="text">
-                <string>address</string>
-            </property>
-        </widget>
-        <widget class="QCheckBox">
-            <property name="name">
-                <cstring>update_contact_disclose_fax</cstring>
-            </property>
-            <property name="geometry">
-                <rect>
-                    <x>10</x>
-                    <y>110</y>
-                    <width>160</width>
-                    <height>20</height>
-                </rect>
-            </property>
-            <property name="text">
-                <string>fax</string>
-            </property>
-        </widget>
-        <widget class="QCheckBox">
-            <property name="name">
-                <cstring>update_contact_disclose_org</cstring>
-            </property>
-            <property name="geometry">
-                <rect>
-                    <x>190</x>
-                    <y>50</y>
-                    <width>160</width>
-                    <height>20</height>
-                </rect>
-            </property>
-            <property name="text">
-                <string>organisation</string>
-            </property>
-        </widget>
-        <widget class="QCheckBox">
-            <property name="name">
-                <cstring>update_contact_disclose_voice</cstring>
-            </property>
-            <property name="geometry">
-                <rect>
-                    <x>190</x>
-                    <y>80</y>
-                    <width>160</width>
-                    <height>20</height>
-                </rect>
-            </property>
-            <property name="text">
-                <string>voice</string>
-            </property>
-        </widget>
-        <widget class="QCheckBox">
-            <property name="name">
-                <cstring>update_contact_disclose_email</cstring>
-            </property>
-            <property name="geometry">
-                <rect>
-                    <x>190</x>
-                    <y>110</y>
-                    <width>160</width>
-                    <height>20</height>
-                </rect>
-            </property>
-            <property name="text">
-                <string>email</string>
-            </property>
-        </widget>
-    </widget>
-    <widget class="QCheckBox">
-        <property name="name">
-            <cstring>disclose</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>10</x>
-                <y>780</y>
-                <width>160</width>
-                <height>20</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string>disclose</string>
-        </property>
-    </widget>
-    <widget class="QButtonGroup">
-        <property name="name">
-            <cstring>grp_add</cstring>
-        </property>
-        <property name="enabled">
-            <bool>false</bool>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>180</x>
-                <y>140</y>
-                <width>360</width>
-                <height>90</height>
-            </rect>
-        </property>
-        <property name="title">
-            <string>add</string>
-        </property>
-        <widget class="QCheckBox">
-            <property name="name">
-                <cstring>add_clientTransferProhibited</cstring>
-            </property>
-            <property name="geometry">
-                <rect>
-                    <x>140</x>
-                    <y>60</y>
-                    <width>210</width>
-                    <height>20</height>
-                </rect>
-            </property>
-            <property name="text">
-                <string>clientTransferProhibited</string>
-            </property>
-        </widget>
-        <widget class="QCheckBox">
-            <property name="name">
-                <cstring>add_clientDeleteProhibited</cstring>
-            </property>
-            <property name="geometry">
-                <rect>
-                    <x>140</x>
-                    <y>40</y>
-                    <width>210</width>
-                    <height>20</height>
-                </rect>
-            </property>
-            <property name="text">
-                <string>clientDeleteProhibited</string>
-            </property>
-        </widget>
-        <widget class="QCheckBox">
-            <property name="name">
-                <cstring>add_clientUpdateProhibited</cstring>
-            </property>
-            <property name="geometry">
-                <rect>
-                    <x>140</x>
-                    <y>20</y>
-                    <width>210</width>
-                    <height>20</height>
-                </rect>
-            </property>
-            <property name="text">
-                <string>clientUpdateProhibited</string>
-            </property>
-        </widget>
-        <widget class="QCheckBox">
-            <property name="name">
-                <cstring>add_linked</cstring>
-            </property>
-            <property name="geometry">
-                <rect>
-                    <x>10</x>
-                    <y>20</y>
-                    <width>70</width>
-                    <height>20</height>
-                </rect>
-            </property>
-            <property name="text">
-                <string>linked</string>
-            </property>
-        </widget>
-        <widget class="QCheckBox">
-            <property name="name">
-                <cstring>add_ok</cstring>
-            </property>
-            <property name="geometry">
-                <rect>
-                    <x>10</x>
-                    <y>40</y>
-                    <width>70</width>
-                    <height>20</height>
-                </rect>
-            </property>
-            <property name="text">
-                <string>ok</string>
-            </property>
-        </widget>
-    </widget>
-    <widget class="QButtonGroup">
-        <property name="name">
-            <cstring>grp_remove</cstring>
-        </property>
-        <property name="enabled">
-            <bool>false</bool>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>180</x>
-                <y>240</y>
-                <width>360</width>
-                <height>90</height>
-            </rect>
-        </property>
-        <property name="title">
-            <string>remove</string>
-        </property>
-        <widget class="QCheckBox">
-            <property name="name">
-                <cstring>rem_linked</cstring>
-            </property>
-            <property name="geometry">
-                <rect>
-                    <x>10</x>
-                    <y>20</y>
-                    <width>70</width>
-                    <height>20</height>
-                </rect>
-            </property>
-            <property name="text">
-                <string>linked</string>
-            </property>
-        </widget>
-        <widget class="QCheckBox">
-            <property name="name">
-                <cstring>rem_ok</cstring>
-            </property>
-            <property name="geometry">
-                <rect>
-                    <x>10</x>
-                    <y>40</y>
-                    <width>70</width>
-                    <height>20</height>
-                </rect>
-            </property>
-            <property name="text">
-                <string>ok</string>
-            </property>
-        </widget>
-        <widget class="QCheckBox">
-            <property name="name">
-                <cstring>rem_clientUpdateProhibited</cstring>
-            </property>
-            <property name="geometry">
-                <rect>
-                    <x>140</x>
-                    <y>20</y>
-                    <width>210</width>
-                    <height>20</height>
-                </rect>
-            </property>
-            <property name="text">
-                <string>clientUpdateProhibited</string>
-            </property>
-        </widget>
-        <widget class="QCheckBox">
-            <property name="name">
-                <cstring>rem_clientDeleteProhibited</cstring>
-            </property>
-            <property name="geometry">
-                <rect>
-                    <x>140</x>
-                    <y>40</y>
-                    <width>210</width>
-                    <height>20</height>
-                </rect>
-            </property>
-            <property name="text">
-                <string>clientDeleteProhibited</string>
-            </property>
-        </widget>
-        <widget class="QCheckBox">
-            <property name="name">
-                <cstring>rem_clientTransferProhibited</cstring>
-            </property>
-            <property name="geometry">
-                <rect>
-                    <x>140</x>
-                    <y>60</y>
-                    <width>210</width>
-                    <height>20</height>
-                </rect>
-            </property>
-            <property name="text">
-                <string>clientTransferProhibited</string>
-            </property>
-        </widget>
-    </widget>
-    <widget class="QLineEdit">
-        <property name="name">
-            <cstring>update_contact_id</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>180</x>
-                <y>110</y>
-                <width>360</width>
-                <height>22</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string></string>
-        </property>
-    </widget>
-    <widget class="QLineEdit">
-        <property name="name">
-            <cstring>update_contact_cltrid</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>180</x>
-                <y>1090</y>
-                <width>360</width>
-                <height>22</height>
-            </rect>
-        </property>
-    </widget>
-    <widget class="QLineEdit">
-        <property name="name">
-            <cstring>update_contact_notify_email</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>180</x>
-                <y>1060</y>
-                <width>360</width>
-                <height>22</height>
-            </rect>
-        </property>
-    </widget>
-    <widget class="QLabel">
-        <property name="name">
-            <cstring>textLabel18</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>10</x>
-                <y>10</y>
-                <width>530</width>
-                <height>90</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string>&lt;h2&gt;update_contact&lt;/h2&gt;
-The EPP "update" command is used to update an instance of an existing object.
-   Names what are not included into disclose list are set to opposite value of the disclose flag value.</string>
-        </property>
-        <property name="alignment">
-            <set>WordBreak|AlignTop|AlignLeft</set>
-        </property>
-    </widget>
     <widget class="QGroupBox">
         <property name="name">
             <cstring>groupBox2_2</cstring>
@@ -957,7 +557,7 @@ The EPP "update" command is used to update an instance of an existing object.
         <property name="geometry">
             <rect>
                 <x>180</x>
-                <y>960</y>
+                <y>760</y>
                 <width>360</width>
                 <height>90</height>
             </rect>
@@ -1049,20 +649,190 @@ The EPP "update" command is used to update an instance of an existing object.
             </property>
         </widget>
     </widget>
+    <widget class="QLineEdit">
+        <property name="name">
+            <cstring>update_contact_fax</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>180</x>
+                <y>490</y>
+                <width>180</width>
+                <height>22</height>
+            </rect>
+        </property>
+        <property name="inputMask">
+            <string></string>
+        </property>
+    </widget>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel21</cstring>
+            <cstring>textLabel11</cstring>
         </property>
         <property name="geometry">
             <rect>
                 <x>10</x>
-                <y>960</y>
+                <y>890</y>
                 <width>160</width>
                 <height>20</height>
             </rect>
         </property>
         <property name="text">
-            <string>social security number</string>
+            <string>clTRID</string>
+        </property>
+    </widget>
+    <widget class="QLabel">
+        <property name="name">
+            <cstring>textLabel2</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>10</x>
+                <y>140</y>
+                <width>160</width>
+                <height>20</height>
+            </rect>
+        </property>
+        <property name="text">
+            <string>name</string>
+        </property>
+    </widget>
+    <widget class="QLineEdit">
+        <property name="name">
+            <cstring>update_contact_vat</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>180</x>
+                <y>730</y>
+                <width>360</width>
+                <height>22</height>
+            </rect>
+        </property>
+    </widget>
+    <widget class="QLineEdit">
+        <property name="name">
+            <cstring>update_contact_cltrid</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>180</x>
+                <y>890</y>
+                <width>360</width>
+                <height>22</height>
+            </rect>
+        </property>
+    </widget>
+    <widget class="QCheckBox">
+        <property name="name">
+            <cstring>disclose</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>10</x>
+                <y>580</y>
+                <width>160</width>
+                <height>20</height>
+            </rect>
+        </property>
+        <property name="text">
+            <string>disclose</string>
+        </property>
+    </widget>
+    <widget class="QLabel">
+        <property name="name">
+            <cstring>textLabel6</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>380</x>
+                <y>490</y>
+                <width>160</width>
+                <height>20</height>
+            </rect>
+        </property>
+        <property name="text">
+            <string>+420.123456789</string>
+        </property>
+    </widget>
+    <widget class="QLineEdit">
+        <property name="name">
+            <cstring>update_contact_auth_info</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>180</x>
+                <y>550</y>
+                <width>360</width>
+                <height>22</height>
+            </rect>
+        </property>
+        <property name="echoMode">
+            <enum>Normal</enum>
+        </property>
+    </widget>
+    <widget class="QLabel">
+        <property name="name">
+            <cstring>textLabel5</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>10</x>
+                <y>460</y>
+                <width>160</width>
+                <height>20</height>
+            </rect>
+        </property>
+        <property name="text">
+            <string>voice (phone number)</string>
+        </property>
+    </widget>
+    <widget class="QLabel">
+        <property name="name">
+            <cstring>textLabel4</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>10</x>
+                <y>490</y>
+                <width>160</width>
+                <height>20</height>
+            </rect>
+        </property>
+        <property name="text">
+            <string>fax</string>
+        </property>
+    </widget>
+    <widget class="QLabel">
+        <property name="name">
+            <cstring>textLabel10</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>10</x>
+                <y>730</y>
+                <width>160</width>
+                <height>20</height>
+            </rect>
+        </property>
+        <property name="text">
+            <string>value-added tax</string>
+        </property>
+    </widget>
+    <widget class="QLabel">
+        <property name="name">
+            <cstring>textLabel3</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>10</x>
+                <y>170</y>
+                <width>160</width>
+                <height>20</height>
+            </rect>
+        </property>
+        <property name="text">
+            <string>organisation name</string>
         </property>
     </widget>
 </widget>
@@ -1074,18 +844,6 @@ The EPP "update" command is used to update an instance of an existing object.
         <slot>setEnabled(bool)</slot>
     </connection>
     <connection>
-        <sender>checkBox_add</sender>
-        <signal>toggled(bool)</signal>
-        <receiver>grp_add</receiver>
-        <slot>setEnabled(bool)</slot>
-    </connection>
-    <connection>
-        <sender>checkBox_rem</sender>
-        <signal>toggled(bool)</signal>
-        <receiver>grp_remove</receiver>
-        <slot>setEnabled(bool)</slot>
-    </connection>
-    <connection>
         <sender>disclose</sender>
         <signal>toggled(bool)</signal>
         <receiver>grp_disclose</receiver>
@@ -1094,18 +852,6 @@ The EPP "update" command is used to update an instance of an existing object.
 </connections>
 <tabstops>
     <tabstop>update_contact_id</tabstop>
-    <tabstop>checkBox_add</tabstop>
-    <tabstop>add_linked</tabstop>
-    <tabstop>add_ok</tabstop>
-    <tabstop>add_clientUpdateProhibited</tabstop>
-    <tabstop>add_clientDeleteProhibited</tabstop>
-    <tabstop>add_clientTransferProhibited</tabstop>
-    <tabstop>checkBox_rem</tabstop>
-    <tabstop>rem_linked</tabstop>
-    <tabstop>rem_ok</tabstop>
-    <tabstop>rem_clientUpdateProhibited</tabstop>
-    <tabstop>rem_clientDeleteProhibited</tabstop>
-    <tabstop>rem_clientTransferProhibited</tabstop>
     <tabstop>update_contact_name</tabstop>
     <tabstop>update_contact_org</tabstop>
     <tabstop>update_contact_city</tabstop>

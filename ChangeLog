@@ -1,8 +1,19 @@
+FredClient 1.3.0
+
+Zmeny:
+    * Pridany prikazy sendAuthInfo
+    * Odebrani priznaku status v update prikazech
+    * Presun elementu pw do authInfo
+    * Prejmenovani SSN na Ident
+
 FredClient 1.2.1
 
 Nove funkce:
     * kontrola verze schemat mezi klientem a serverem
     * schemata mohou byt v konfiguracnim souboru definovana pro kazdy server zvlast
+
+Zmeny:
+    * pri validaci se jiz neuklada pomocny soubor
 
 Opravy:
     * oprava vypisu chyboveho hlaseni a pridani chybejici hodnoty elementu

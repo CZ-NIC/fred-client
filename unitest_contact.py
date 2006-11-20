@@ -201,7 +201,7 @@ class TestContact(unittest.TestCase):
 
     def test_070(self):
         '2.7 Update vsech parametru krome stavu'
-        epp_cli.update_contact(handle_contact, None, None, FRED_CONTACT[3])
+        epp_cli.update_contact(handle_contact, FRED_CONTACT[3])
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_071(self):
@@ -211,49 +211,49 @@ class TestContact(unittest.TestCase):
         errors = __info_contact__('contact', FRED_CONTACT[2], epp_cli.is_val('data'))
         self.assert_(len(errors)==0, '\n'.join(errors))
         
-    def test_080(self):
-        '2.8.1 Pokus o update stavu serverDeleteProhibited'
-        status = 'serverDeleteProhibited'
-        epp_cli.update_contact(handle_contact, status)
-        self.assertNotEqual(epp_cli.is_val(), 1000, 'Status "%s" prosel prestoze nemel.'%status)
-
-    def test_081(self):
-        '2.8.2 Pokus o update stavu serverUpdateProhibited'
-        status = 'serverUpdateProhibited'
-        epp_cli.update_contact(handle_contact, status)
-        self.assertNotEqual(epp_cli.is_val(), 1000, 'Status "%s" prosel prestoze nemel.'%status)
-
-    def test_090(self):
-        '2.9 Update stavu clientDeleteProhibited a pokus o smazani'
-        status = 'clientDeleteProhibited'
-        epp_cli.update_contact(handle_contact, status)
-        unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(1,3))
-        self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se nastavit status: %s'%status)
-        unitest_share.reset_client(epp_cli)
-        # pokus o smazání
-        epp_cli.delete_contact(handle_contact)
-        unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(2,3))
-        self.assertNotEqual(epp_cli.is_val(), 1000, 'Kontakt se smazal, prestoze mel nastaven %s'%status)
-        unitest_share.reset_client(epp_cli)
-        # zrušení stavu
-        epp_cli.update_contact(handle_contact, None, status)
-        self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se odstranit status: %s'%status)
-
-    def test_100(self):
-        '2.10 Update stavu clientUpdateProhibited a pokus o zmenu objektu, smazani stavu'
-        status = 'clientUpdateProhibited'
-        epp_cli.update_contact(handle_contact, status)
-        unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(1,3))
-        self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se nastavit status: %s'%status)
-        unitest_share.reset_client(epp_cli)
-        # pokus o změnu
-        epp_cli.update_contact(handle_contact, None, None, {'notifyEmail':'notifak@jinak.cz'})
-        unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(2,3))
-        self.assertNotEqual(epp_cli.is_val(), 1000, 'Kontakt se aktualizoval, prestoze mel nastaven %s'%status)
-        unitest_share.reset_client(epp_cli)
-        # zrušení stavu
-        epp_cli.update_contact(handle_contact, None, status)
-        self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se odstranit status: %s'%status)
+##    def test_080(self):
+##        '2.8.1 Pokus o update stavu serverDeleteProhibited'
+##        status = 'serverDeleteProhibited'
+##        epp_cli.update_contact(handle_contact, status)
+##        self.assertNotEqual(epp_cli.is_val(), 1000, 'Status "%s" prosel prestoze nemel.'%status)
+##
+##    def test_081(self):
+##        '2.8.2 Pokus o update stavu serverUpdateProhibited'
+##        status = 'serverUpdateProhibited'
+##        epp_cli.update_contact(handle_contact, status)
+##        self.assertNotEqual(epp_cli.is_val(), 1000, 'Status "%s" prosel prestoze nemel.'%status)
+##
+##    def test_090(self):
+##        '2.9 Update stavu clientDeleteProhibited a pokus o smazani'
+##        status = 'clientDeleteProhibited'
+##        epp_cli.update_contact(handle_contact, status)
+##        unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(1,3))
+##        self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se nastavit status: %s'%status)
+##        unitest_share.reset_client(epp_cli)
+##        # pokus o smazání
+##        epp_cli.delete_contact(handle_contact)
+##        unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(2,3))
+##        self.assertNotEqual(epp_cli.is_val(), 1000, 'Kontakt se smazal, prestoze mel nastaven %s'%status)
+##        unitest_share.reset_client(epp_cli)
+##        # zrušení stavu
+##        epp_cli.update_contact(handle_contact, None, status)
+##        self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se odstranit status: %s'%status)
+##
+##    def test_100(self):
+##        '2.10 Update stavu clientUpdateProhibited a pokus o zmenu objektu, smazani stavu'
+##        status = 'clientUpdateProhibited'
+##        epp_cli.update_contact(handle_contact, status)
+##        unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(1,3))
+##        self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se nastavit status: %s'%status)
+##        unitest_share.reset_client(epp_cli)
+##        # pokus o změnu
+##        epp_cli.update_contact(handle_contact, None, None, {'notifyEmail':'notifak@jinak.cz'})
+##        unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(2,3))
+##        self.assertNotEqual(epp_cli.is_val(), 1000, 'Kontakt se aktualizoval, prestoze mel nastaven %s'%status)
+##        unitest_share.reset_client(epp_cli)
+##        # zrušení stavu
+##        epp_cli.update_contact(handle_contact, None, status)
+##        self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se odstranit status: %s'%status)
 
     def test_110(self):
         '2.11 Vytvoreni nnsetu napojeneho na kontakt'
@@ -290,18 +290,18 @@ class TestContact(unittest.TestCase):
     def test_161(self):
         '2.16.1 Kontrola, ze se po stransferu automaticky zmenilo heslo.'
         epp_cli_TRANSF.info_contact(handle_contact)
-        self.assertNotEqual(epp_cli_TRANSF.is_val(('data','contact:pw')), CONTACT_PASSWORD_2, 'Heslo po transferu zustalo puvodni.')
+        self.assertNotEqual(epp_cli_TRANSF.is_val(('data','contact:auth_info')), CONTACT_PASSWORD_2, 'Heslo po transferu zustalo puvodni.')
         
     def test_170(self):
         '2.17 Druhy registrator: Zmena hesla po prevodu domeny'
-        epp_cli_TRANSF.update_contact(handle_contact, None, None, {'auth_info':CONTACT_PASSWORD_1})
+        epp_cli_TRANSF.update_contact(handle_contact, {'auth_info':CONTACT_PASSWORD_1})
         self.assertEqual(epp_cli_TRANSF.is_val(), 1000, unitest_share.get_reason(epp_cli_TRANSF))
         
     def test_180(self):
         '2.18 Zmena hesla kontaktu, ktery registratorovi jiz nepatri'
         global epp_cli_log
         epp_cli_log = epp_cli
-        epp_cli.update_contact(handle_contact, None, None, {'auth_info':'moje-heslo2'})
+        epp_cli.update_contact(handle_contact, {'auth_info':'moje-heslo2'})
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         
     def test_190(self):
@@ -372,7 +372,7 @@ def __info_contact__(prefix, cols, scope, key=None, pkeys=[]):
     #--------------------------------
     for k,v in cols.items():
         if k == 'notify_email': k = 'notifyEmail'
-        if k == 'auth_info': k = 'pw'
+        if k == 'auth_info': k = 'authInfo'
         key = '%s:%s'%(prefix,k)
         if k == 'disclose':
             err, vals, v = __compare_disclose__(cols['disclose'], data.get('contact:disclose',[]), data.get('contact:hide',[]))

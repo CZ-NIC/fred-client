@@ -460,6 +460,42 @@ class Client:
         return self._epp.api_command('poll',{'op':op,'msg_id':msg_id, 'cltrid':cltrid})
 
 
+    def sendauthinfo_contact(self, contact_id, cltrid=None):
+        """Usage: sendauthinfo_contact id
+
+    PARAMS:
+
+    id (required)
+
+    RETURN data: {}
+
+        """
+        return self._epp.api_command('sendauthinfo_contact',{'id':contact_id, 'cltrid':cltrid})
+
+    def sendauthinfo_domain(self, name, cltrid=None):
+        """Usage: sendauthinfo_domain name
+
+    PARAMS:
+
+    name (required)
+
+    RETURN data: {}
+
+        """
+        return self._epp.api_command('sendauthinfo_domain',{'name':name, 'cltrid':cltrid})
+
+    def sendauthinfo_nsset(self, nsset_id, cltrid=None):
+        """Usage: sendauthinfo_nsset id
+
+    PARAMS:
+
+    id (required)
+
+    RETURN data: {}
+
+        """
+        return self._epp.api_command('sendauthinfo_nsset',{'id':nsset_id, 'cltrid':cltrid})
+        
     def renew_domain(self, name, cur_exp_date, period=None, val_ex_date=None, cltrid=None):
         """Usage: renew_domain name cur_exp_date
 

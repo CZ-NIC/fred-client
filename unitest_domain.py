@@ -248,49 +248,49 @@ class TestDomain(unittest.TestCase):
         errors = __check_equality__(FRED_DATA[DOMAIN_3], epp_cli.is_val('data'))
         self.assert_(len(errors)==0, '\n'.join(errors))
         
-    def test_140(self):
-        '4.14.1 Pokus o update stavu serverDeleteProhibited'
-        status = 'serverDeleteProhibited'
-        epp_cli.update_domain(FRED_DOMAIN1, {'status':status})
-        self.assertNotEqual(epp_cli.is_val(), 1000, 'Status "%s" prosel prestoze nemel.'%status)
-
-    def test_141(self):
-        '4.14.2 Pokus o update stavu serverUpdateProhibited'
-        status = 'serverUpdateProhibited'
-        epp_cli.update_domain(FRED_DOMAIN1, {'status':status})
-        self.assertNotEqual(epp_cli.is_val(), 1000, 'Status "%s" prosel prestoze nemel.'%status)
+##    def test_140(self):
+##        '4.14.1 Pokus o update stavu serverDeleteProhibited'
+##        status = 'serverDeleteProhibited'
+##        epp_cli.update_domain(FRED_DOMAIN1, {'status':status})
+##        self.assertNotEqual(epp_cli.is_val(), 1000, 'Status "%s" prosel prestoze nemel.'%status)
+##
+##    def test_141(self):
+##        '4.14.2 Pokus o update stavu serverUpdateProhibited'
+##        status = 'serverUpdateProhibited'
+##        epp_cli.update_domain(FRED_DOMAIN1, {'status':status})
+##        self.assertNotEqual(epp_cli.is_val(), 1000, 'Status "%s" prosel prestoze nemel.'%status)
+##        
+##    def test_150(self):
+##        '4.15 Update stavu clientDeleteProhibited a pokus o smazani'
+##        status = 'clientDeleteProhibited'
+##        epp_cli.update_domain(FRED_DOMAIN1, {'status':status})
+##        unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(1,3))
+##        self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se nastavit status: %s'%status)
+##        unitest_share.reset_client(epp_cli)
+##        # pokus o smazání
+##        epp_cli.delete_domain(FRED_DOMAIN1)
+##        unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(2,3))
+##        self.assertNotEqual(epp_cli.is_val(), 1000, 'Kontakt se smazal, prestoze mel nastaven %s'%status)
+##        unitest_share.reset_client(epp_cli)
+##        # zrušení stavu
+##        epp_cli.update_domain(FRED_DOMAIN1, None, {'status':status})
+##        self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se odstranit status: %s'%status)
         
-    def test_150(self):
-        '4.15 Update stavu clientDeleteProhibited a pokus o smazani'
-        status = 'clientDeleteProhibited'
-        epp_cli.update_domain(FRED_DOMAIN1, {'status':status})
-        unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(1,3))
-        self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se nastavit status: %s'%status)
-        unitest_share.reset_client(epp_cli)
-        # pokus o smazání
-        epp_cli.delete_domain(FRED_DOMAIN1)
-        unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(2,3))
-        self.assertNotEqual(epp_cli.is_val(), 1000, 'Kontakt se smazal, prestoze mel nastaven %s'%status)
-        unitest_share.reset_client(epp_cli)
-        # zrušení stavu
-        epp_cli.update_domain(FRED_DOMAIN1, None, {'status':status})
-        self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se odstranit status: %s'%status)
-        
-    def test_160(self):
-        '4.16 Update stavu clientUpdateProhibited a pokus o zmenu objektu, smazani stavu'
-        status = 'clientUpdateProhibited'
-        epp_cli.update_domain(FRED_DOMAIN1, {'status':status})
-        unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(1,3))
-        self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se nastavit status: %s'%status)
-        unitest_share.reset_client(epp_cli)
-        # pokus o změnu
-        epp_cli.update_domain(FRED_DOMAIN1, None, None, {'auth_info':'zmena hesla'})
-        unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(2,3))
-        self.assertNotEqual(epp_cli.is_val(), 1000, 'Domena se aktualizovala, prestoze mela nastaven status %s'%status)
-        unitest_share.reset_client(epp_cli)
-        # zrušení stavu
-        epp_cli.update_domain(FRED_DOMAIN1, None, {'status':status})
-        self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se odstranit status: %s'%status)
+##    def test_160(self):
+##        '4.16 Update stavu clientUpdateProhibited a pokus o zmenu objektu, smazani stavu'
+##        status = 'clientUpdateProhibited'
+##        epp_cli.update_domain(FRED_DOMAIN1, {'status':status})
+##        unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(1,3))
+##        self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se nastavit status: %s'%status)
+##        unitest_share.reset_client(epp_cli)
+##        # pokus o změnu
+##        epp_cli.update_domain(FRED_DOMAIN1, None, None, {'auth_info':'zmena hesla'})
+##        unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(2,3))
+##        self.assertNotEqual(epp_cli.is_val(), 1000, 'Domena se aktualizovala, prestoze mela nastaven status %s'%status)
+##        unitest_share.reset_client(epp_cli)
+##        # zrušení stavu
+##        epp_cli.update_domain(FRED_DOMAIN1, None, {'status':status})
+##        self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se odstranit status: %s'%status)
         
     def test_170(self):
         '4.17 Pokus o Renew domain s nespravnym datumem'

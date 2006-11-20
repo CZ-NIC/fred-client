@@ -108,7 +108,7 @@ class FredMainWindow(_main.FredWindow):
         self.epp = epp_client
         self.missing_required = []
         self.src = {} # {'command_name':['command line','XML source','XML response'], ...}
-        self.epp_status = [n[0]for n in self.epp._epp._epp_cmd.update_status]
+##        self.epp_status = [n[0]for n in self.epp._epp._epp_cmd.update_status]
         #--------------------------------------        
         # load data for connection
         #--------------------------------------        
@@ -455,7 +455,7 @@ class FredMainWindow(_main.FredWindow):
         ident={}
         for key in ('type','number'):
             append_key(ident, key, getattr(p,'create_contact_ssn_%s'%key))
-        ident['type'] = ident_types[ident['type']]
+        ident['type'] = FredMainWindow.ident_types[ident['type']]
         if ident.has_key('number'): d['ident'] = ident
         if self.__check_required__(d, (
                     ('id',self.__tr('contact ID')), 
@@ -530,8 +530,8 @@ class FredMainWindow(_main.FredWindow):
         if not self.check_is_online(): return
         d = {}
         p = self.panel_update_contact
-        self.__append_update_status__(p, d, 'add')
-        self.__append_update_status__(p, d, 'rem')
+##        self.__append_update_status__(p, d, 'add')
+##        self.__append_update_status__(p, d, 'rem')
         for key in ('id', 'cltrid'):
             append_key(d, key, getattr(p,'update_contact_%s'%key))
         chg={}
@@ -555,12 +555,12 @@ class FredMainWindow(_main.FredWindow):
         ident={}
         for key in ('type','number'):
             append_key(ident, key, getattr(p,'update_contact_ssn_%s'%key))
-        ident['type'] = ident_types[ident['type']]
+        ident['type'] = FredMainWindow.ident_types[ident['type']]
         if ident.has_key('number'): chg['ident'] = ident
         if len(chg): d['chg'] = chg
         if self.__check_required__(d, (('id',self.__tr('Contact ID')),)) and len(d) > 1:
             try:
-                self.epp.update_contact(d['id'], d.get('add'), d.get('rem'), d.get('chg'), d.get('cltrid'))
+                self.epp.update_contact(d['id'], d.get('chg'), d.get('cltrid'))
             except fred.FredError, err:
                 self.epp._epp._errors.extend(err.args)
             self.__display_answer__('update_contact')
@@ -586,13 +586,13 @@ class FredMainWindow(_main.FredWindow):
         if len(dns): add['dns'] = dns
         for key in ('tech',):
             append_key(add, key, getattr(p, 'add_%s'%key))
-        self.__append_update_status__(p, add, 'add', 'status')
+##        self.__append_update_status__(p, add, 'add', 'status')
         if len(add): d['add'] = add
         #................................
         rem = {}
         for key in ('name','tech'):
             append_key(rem, key, getattr(p, 'rem_%s'%key))
-        self.__append_update_status__(p, rem, 'rem', 'status')
+##        self.__append_update_status__(p, rem, 'rem', 'status')
         if len(rem): d['rem'] = rem
         #................................
         chg = {}
@@ -619,13 +619,13 @@ class FredMainWindow(_main.FredWindow):
         add = {}
         for key in ('admin',):
             append_key(add, key, getattr(p, 'add_%s'%key))
-        self.__append_update_status__(p, add, 'add', 'status')
+##        self.__append_update_status__(p, add, 'add', 'status')
         if len(add): d['add'] = add
         #................................
         rem = {}
         for key in ('admin',):
             append_key(rem, key, getattr(p, 'rem_%s'%key))
-        self.__append_update_status__(p, rem, 'rem', 'status')
+##        self.__append_update_status__(p, rem, 'rem', 'status')
         if len(rem): d['rem'] = rem
         #................................
         chg = {}
@@ -655,6 +655,15 @@ class FredMainWindow(_main.FredWindow):
     def delete_domain(self):
         self.__share_command__('delete_domain')
 
+    def sendauthinfo_contact(self):
+        self.__share_command__('sendauthinfo_contact')
+
+    def sendauthinfo_nsset(self):
+        self.__share_command__('sendauthinfo_nsset')
+
+    def sendauthinfo_domain(self):
+        self.__share_command__('sendauthinfo_domain')
+        
     def transfer_contact(self):
         self.__share_transfer__('transfer_contact')
 
@@ -760,7 +769,13 @@ class FredMainWindow(_main.FredWindow):
         self.__display_sources__('renew_domain')
     def source_list_domain(self):
         self.__display_sources__('list_domain')
-
+    def source_sendauthinfo_contact(self):
+        self.__display_sources__('sendauthinfo_contact')
+    def source_sendauthinfo_nsset(self):
+        self.__display_sources__('sendauthinfo_nsset')
+    def source_sendauthinfo_domain(self):
+        self.__display_sources__('sendauthinfo_domain')
+        
     def credits(self):
         'Display credits'
         wnd = QDialog(self)

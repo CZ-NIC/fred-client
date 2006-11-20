@@ -9,133 +9,12 @@
             <x>0</x>
             <y>0</y>
             <width>574</width>
-            <height>1224</height>
+            <height>1041</height>
         </rect>
     </property>
     <property name="caption">
         <string>Update NSSET panel</string>
     </property>
-    <widget class="Line">
-        <property name="name">
-            <cstring>line1</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>10</x>
-                <y>680</y>
-                <width>530</width>
-                <height>20</height>
-            </rect>
-        </property>
-        <property name="frameShape">
-            <enum>HLine</enum>
-        </property>
-        <property name="frameShadow">
-            <enum>Sunken</enum>
-        </property>
-        <property name="orientation">
-            <enum>Horizontal</enum>
-        </property>
-    </widget>
-    <widget class="QButtonGroup">
-        <property name="name">
-            <cstring>grp_rem_status</cstring>
-        </property>
-        <property name="enabled">
-            <bool>false</bool>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>180</x>
-                <y>980</y>
-                <width>360</width>
-                <height>90</height>
-            </rect>
-        </property>
-        <property name="title">
-            <string>status</string>
-        </property>
-        <widget class="QCheckBox">
-            <property name="name">
-                <cstring>rem_linked</cstring>
-            </property>
-            <property name="geometry">
-                <rect>
-                    <x>10</x>
-                    <y>20</y>
-                    <width>70</width>
-                    <height>20</height>
-                </rect>
-            </property>
-            <property name="text">
-                <string>linked</string>
-            </property>
-        </widget>
-        <widget class="QCheckBox">
-            <property name="name">
-                <cstring>rem_ok</cstring>
-            </property>
-            <property name="geometry">
-                <rect>
-                    <x>10</x>
-                    <y>40</y>
-                    <width>70</width>
-                    <height>20</height>
-                </rect>
-            </property>
-            <property name="text">
-                <string>ok</string>
-            </property>
-        </widget>
-        <widget class="QCheckBox">
-            <property name="name">
-                <cstring>rem_clientUpdateProhibited</cstring>
-            </property>
-            <property name="geometry">
-                <rect>
-                    <x>140</x>
-                    <y>20</y>
-                    <width>210</width>
-                    <height>20</height>
-                </rect>
-            </property>
-            <property name="text">
-                <string>clientUpdateProhibited</string>
-            </property>
-        </widget>
-        <widget class="QCheckBox">
-            <property name="name">
-                <cstring>rem_clientDeleteProhibited</cstring>
-            </property>
-            <property name="geometry">
-                <rect>
-                    <x>140</x>
-                    <y>40</y>
-                    <width>210</width>
-                    <height>20</height>
-                </rect>
-            </property>
-            <property name="text">
-                <string>clientDeleteProhibited</string>
-            </property>
-        </widget>
-        <widget class="QCheckBox">
-            <property name="name">
-                <cstring>rem_clientTransferProhibited</cstring>
-            </property>
-            <property name="geometry">
-                <rect>
-                    <x>140</x>
-                    <y>60</y>
-                    <width>210</width>
-                    <height>20</height>
-                </rect>
-            </property>
-            <property name="text">
-                <string>clientTransferProhibited</string>
-            </property>
-        </widget>
-    </widget>
     <widget class="QLabel">
         <property name="name">
             <cstring>textLabel1</cstring>
@@ -168,41 +47,6 @@
             <string>technical contact</string>
         </property>
     </widget>
-    <widget class="QLabel">
-        <property name="name">
-            <cstring>textLabel3</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>10</x>
-                <y>700</y>
-                <width>530</width>
-                <height>30</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string>&lt;h3&gt;Remove&lt;/h3&gt;</string>
-        </property>
-    </widget>
-    <widget class="QLabel">
-        <property name="name">
-            <cstring>textLabel4</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>10</x>
-                <y>860</y>
-                <width>160</width>
-                <height>100</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string>technical contact</string>
-        </property>
-        <property name="alignment">
-            <set>WordBreak|AlignTop</set>
-        </property>
-    </widget>
     <widget class="QFrame">
         <property name="name">
             <cstring>frame_add_dns</cstring>
@@ -230,111 +74,6 @@
             <rect>
                 <x>10</x>
                 <y>140</y>
-                <width>530</width>
-                <height>20</height>
-            </rect>
-        </property>
-        <property name="frameShape">
-            <enum>HLine</enum>
-        </property>
-        <property name="frameShadow">
-            <enum>Sunken</enum>
-        </property>
-        <property name="orientation">
-            <enum>Horizontal</enum>
-        </property>
-    </widget>
-    <widget class="QLabel">
-        <property name="name">
-            <cstring>textLabel6</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>10</x>
-                <y>1180</y>
-                <width>160</width>
-                <height>20</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string>clTRID</string>
-        </property>
-    </widget>
-    <widget class="QLineEdit">
-        <property name="name">
-            <cstring>cltrid</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>180</x>
-                <y>1180</y>
-                <width>360</width>
-                <height>22</height>
-            </rect>
-        </property>
-    </widget>
-    <widget class="Line">
-        <property name="name">
-            <cstring>line1_2_2_2</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>10</x>
-                <y>1160</y>
-                <width>530</width>
-                <height>20</height>
-            </rect>
-        </property>
-        <property name="frameShape">
-            <enum>HLine</enum>
-        </property>
-        <property name="frameShadow">
-            <enum>Sunken</enum>
-        </property>
-        <property name="orientation">
-            <enum>Horizontal</enum>
-        </property>
-    </widget>
-    <widget class="QLabel">
-        <property name="name">
-            <cstring>textLabel7</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>10</x>
-                <y>1100</y>
-                <width>530</width>
-                <height>21</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string>&lt;h3&gt;Change&lt;/h3&gt;</string>
-        </property>
-    </widget>
-    <widget class="QLabel">
-        <property name="name">
-            <cstring>textLabel8</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>10</x>
-                <y>1130</y>
-                <width>160</width>
-                <height>20</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string>auth. for transfer</string>
-        </property>
-    </widget>
-    <widget class="Line">
-        <property name="name">
-            <cstring>line1_2_2</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>10</x>
-                <y>1080</y>
                 <width>530</width>
                 <height>20</height>
             </rect>
@@ -402,150 +141,6 @@ The EPP "update" command is used to update an instance of an existing object.
             <string></string>
         </property>
     </widget>
-    <widget class="QLineEdit">
-        <property name="name">
-            <cstring>auth_info</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>180</x>
-                <y>1130</y>
-                <width>360</width>
-                <height>22</height>
-            </rect>
-        </property>
-    </widget>
-    <widget class="QButtonGroup">
-        <property name="name">
-            <cstring>grp_add_status</cstring>
-        </property>
-        <property name="enabled">
-            <bool>false</bool>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>180</x>
-                <y>590</y>
-                <width>360</width>
-                <height>90</height>
-            </rect>
-        </property>
-        <property name="title">
-            <string>status</string>
-        </property>
-        <widget class="QCheckBox">
-            <property name="name">
-                <cstring>add_clientDeleteProhibited</cstring>
-            </property>
-            <property name="geometry">
-                <rect>
-                    <x>140</x>
-                    <y>40</y>
-                    <width>210</width>
-                    <height>20</height>
-                </rect>
-            </property>
-            <property name="text">
-                <string>clientDeleteProhibited</string>
-            </property>
-        </widget>
-        <widget class="QCheckBox">
-            <property name="name">
-                <cstring>add_clientTransferProhibited</cstring>
-            </property>
-            <property name="geometry">
-                <rect>
-                    <x>140</x>
-                    <y>60</y>
-                    <width>210</width>
-                    <height>20</height>
-                </rect>
-            </property>
-            <property name="text">
-                <string>clientTransferProhibited</string>
-            </property>
-        </widget>
-        <widget class="QCheckBox">
-            <property name="name">
-                <cstring>add_clientUpdateProhibited</cstring>
-            </property>
-            <property name="geometry">
-                <rect>
-                    <x>140</x>
-                    <y>20</y>
-                    <width>210</width>
-                    <height>20</height>
-                </rect>
-            </property>
-            <property name="text">
-                <string>clientUpdateProhibited</string>
-            </property>
-        </widget>
-        <widget class="QCheckBox">
-            <property name="name">
-                <cstring>add_linked</cstring>
-            </property>
-            <property name="geometry">
-                <rect>
-                    <x>10</x>
-                    <y>20</y>
-                    <width>70</width>
-                    <height>20</height>
-                </rect>
-            </property>
-            <property name="text">
-                <string>linked</string>
-            </property>
-        </widget>
-        <widget class="QCheckBox">
-            <property name="name">
-                <cstring>add_ok</cstring>
-            </property>
-            <property name="geometry">
-                <rect>
-                    <x>10</x>
-                    <y>40</y>
-                    <width>70</width>
-                    <height>20</height>
-                </rect>
-            </property>
-            <property name="text">
-                <string>ok</string>
-            </property>
-        </widget>
-    </widget>
-    <widget class="QCheckBox">
-        <property name="name">
-            <cstring>add_status</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>10</x>
-                <y>600</y>
-                <width>150</width>
-                <height>20</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string>status</string>
-        </property>
-    </widget>
-    <widget class="QCheckBox">
-        <property name="name">
-            <cstring>rem_status</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>10</x>
-                <y>990</y>
-                <width>150</width>
-                <height>20</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string>status</string>
-        </property>
-    </widget>
     <widget class="QTable">
         <column>
             <property name="text">
@@ -582,19 +177,143 @@ The EPP "update" command is used to update an instance of an existing object.
             <enum>SpreadSheet</enum>
         </property>
     </widget>
-    <widget class="QTable">
-        <column>
-            <property name="text">
-                <string>technical contact</string>
-            </property>
-        </column>
+    <widget class="QLabel">
         <property name="name">
-            <cstring>rem_tech</cstring>
+            <cstring>textLabel5</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>10</x>
+                <y>650</y>
+                <width>160</width>
+                <height>100</height>
+            </rect>
+        </property>
+        <property name="text">
+            <string>dns name&lt;br&gt;(max 9 names)</string>
+        </property>
+        <property name="alignment">
+            <set>WordBreak|AlignTop</set>
+        </property>
+    </widget>
+    <widget class="Line">
+        <property name="name">
+            <cstring>line1_2_2_2</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>10</x>
+                <y>970</y>
+                <width>530</width>
+                <height>20</height>
+            </rect>
+        </property>
+        <property name="frameShape">
+            <enum>HLine</enum>
+        </property>
+        <property name="frameShadow">
+            <enum>Sunken</enum>
+        </property>
+        <property name="orientation">
+            <enum>Horizontal</enum>
+        </property>
+    </widget>
+    <widget class="QLabel">
+        <property name="name">
+            <cstring>textLabel3</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>10</x>
+                <y>610</y>
+                <width>530</width>
+                <height>30</height>
+            </rect>
+        </property>
+        <property name="text">
+            <string>&lt;h3&gt;Remove&lt;/h3&gt;</string>
+        </property>
+    </widget>
+    <widget class="QLabel">
+        <property name="name">
+            <cstring>textLabel7</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>10</x>
+                <y>910</y>
+                <width>530</width>
+                <height>21</height>
+            </rect>
+        </property>
+        <property name="text">
+            <string>&lt;h3&gt;Change&lt;/h3&gt;</string>
+        </property>
+    </widget>
+    <widget class="Line">
+        <property name="name">
+            <cstring>line1_2_2</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>10</x>
+                <y>890</y>
+                <width>530</width>
+                <height>20</height>
+            </rect>
+        </property>
+        <property name="frameShape">
+            <enum>HLine</enum>
+        </property>
+        <property name="frameShadow">
+            <enum>Sunken</enum>
+        </property>
+        <property name="orientation">
+            <enum>Horizontal</enum>
+        </property>
+    </widget>
+    <widget class="QLabel">
+        <property name="name">
+            <cstring>textLabel6</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>10</x>
+                <y>990</y>
+                <width>160</width>
+                <height>20</height>
+            </rect>
+        </property>
+        <property name="text">
+            <string>clTRID</string>
+        </property>
+    </widget>
+    <widget class="QLineEdit">
+        <property name="name">
+            <cstring>auth_info</cstring>
         </property>
         <property name="geometry">
             <rect>
                 <x>180</x>
-                <y>860</y>
+                <y>940</y>
+                <width>360</width>
+                <height>22</height>
+            </rect>
+        </property>
+    </widget>
+    <widget class="QTable">
+        <column>
+            <property name="text">
+                <string>dns name</string>
+            </property>
+        </column>
+        <property name="name">
+            <cstring>rem_name</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>180</x>
+                <y>650</y>
                 <width>360</width>
                 <height>110</height>
             </rect>
@@ -621,16 +340,16 @@ The EPP "update" command is used to update an instance of an existing object.
     <widget class="QTable">
         <column>
             <property name="text">
-                <string>dns name</string>
+                <string>technical contact</string>
             </property>
         </column>
         <property name="name">
-            <cstring>rem_name</cstring>
+            <cstring>rem_tech</cstring>
         </property>
         <property name="geometry">
             <rect>
                 <x>180</x>
-                <y>740</y>
+                <y>770</y>
                 <width>360</width>
                 <height>110</height>
             </rect>
@@ -656,37 +375,76 @@ The EPP "update" command is used to update an instance of an existing object.
     </widget>
     <widget class="QLabel">
         <property name="name">
-            <cstring>textLabel5</cstring>
+            <cstring>textLabel4</cstring>
         </property>
         <property name="geometry">
             <rect>
                 <x>10</x>
-                <y>740</y>
+                <y>770</y>
                 <width>160</width>
                 <height>100</height>
             </rect>
         </property>
         <property name="text">
-            <string>dns name&lt;br&gt;(max 9 names)</string>
+            <string>technical contact</string>
         </property>
         <property name="alignment">
             <set>WordBreak|AlignTop</set>
         </property>
     </widget>
+    <widget class="QLabel">
+        <property name="name">
+            <cstring>textLabel8</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>10</x>
+                <y>940</y>
+                <width>160</width>
+                <height>20</height>
+            </rect>
+        </property>
+        <property name="text">
+            <string>auth. for transfer</string>
+        </property>
+    </widget>
+    <widget class="QLineEdit">
+        <property name="name">
+            <cstring>cltrid</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>180</x>
+                <y>990</y>
+                <width>360</width>
+                <height>22</height>
+            </rect>
+        </property>
+    </widget>
+    <widget class="Line">
+        <property name="name">
+            <cstring>line1</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>10</x>
+                <y>590</y>
+                <width>530</width>
+                <height>20</height>
+            </rect>
+        </property>
+        <property name="frameShape">
+            <enum>HLine</enum>
+        </property>
+        <property name="frameShadow">
+            <enum>Sunken</enum>
+        </property>
+        <property name="orientation">
+            <enum>Horizontal</enum>
+        </property>
+    </widget>
 </widget>
 <connections>
-    <connection>
-        <sender>add_status</sender>
-        <signal>toggled(bool)</signal>
-        <receiver>grp_add_status</receiver>
-        <slot>setEnabled(bool)</slot>
-    </connection>
-    <connection>
-        <sender>rem_status</sender>
-        <signal>toggled(bool)</signal>
-        <receiver>grp_rem_status</receiver>
-        <slot>setEnabled(bool)</slot>
-    </connection>
     <connection>
         <sender>add_tech</sender>
         <signal>currentChanged(int,int)</signal>
@@ -727,20 +485,8 @@ The EPP "update" command is used to update an instance of an existing object.
 <tabstops>
     <tabstop>id</tabstop>
     <tabstop>add_tech</tabstop>
-    <tabstop>add_status</tabstop>
-    <tabstop>add_linked</tabstop>
-    <tabstop>add_ok</tabstop>
-    <tabstop>add_clientUpdateProhibited</tabstop>
-    <tabstop>add_clientDeleteProhibited</tabstop>
-    <tabstop>add_clientTransferProhibited</tabstop>
     <tabstop>rem_name</tabstop>
     <tabstop>rem_tech</tabstop>
-    <tabstop>rem_status</tabstop>
-    <tabstop>rem_linked</tabstop>
-    <tabstop>rem_ok</tabstop>
-    <tabstop>rem_clientUpdateProhibited</tabstop>
-    <tabstop>rem_clientDeleteProhibited</tabstop>
-    <tabstop>rem_clientTransferProhibited</tabstop>
     <tabstop>auth_info</tabstop>
     <tabstop>cltrid</tabstop>
 </tabstops>
