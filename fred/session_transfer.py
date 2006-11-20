@@ -363,6 +363,8 @@ class ManagerTransfer(ManagerBase):
                 dct['reason'] = u'%s %s.'%(self._epp_cmd.get_object_handle(), _T('deleted').decode(encoding))
             elif key == 'transfer':
                 dct['reason'] = u'%s %s.'%(self._epp_cmd.get_object_handle(), _T('transfer').decode(encoding))
+            elif key == 'sendauthinfo':
+                dct['reason'] = u'%s %s.'%(self._epp_cmd.get_object_handle(), _T('request for send authorisation info transmited').decode(encoding))
         
     def get_answer(self, dct=None, sep='\n'):
         'Show values parsed from the server answer.'
@@ -386,7 +388,7 @@ class ManagerTransfer(ManagerBase):
             else:
                 if code >= 2000:
                     dct['errors'].insert(0,dct['reason'])
-                elif code not in (1000,1500) or key in ('update','delete','transfer'):
+                elif code not in (1000,1500) or key in ('update','delete','transfer','sendauthinfo'):
                     # 1000 - success,  1500 - success logout
                     report(get_ltext(colored_output.render('${%s}%s${NORMAL}'%(code==1000 and 'GREEN' or 'NORMAL', dct['reason']))))
         else:

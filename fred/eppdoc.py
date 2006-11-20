@@ -199,7 +199,7 @@ class Message:
             node = self.get_element_node(self.dom.documentElement)
             if not node: return name
             name = node.nodeName.lower()
-            if name == 'command':
+            if name in ('command','extension'):
                 # Level 2.
                 node = self.get_element_node(node)
                 if not node: return name

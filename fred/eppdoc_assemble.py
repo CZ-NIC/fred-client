@@ -554,6 +554,39 @@ class Message(eppdoc.Message):
         data.append(('command', 'clTRID', self._dct.get(TAG_clTRID,[params[0]])[0]))
         self.__assemble_cmd__(data)
 
+    def __asseble_extcommand__(self, cols, key, params, namespace='fred'):
+        """Internal fnc for assembly extended commands - sendauthinfo
+        cols=('sendAuthInfo','contact','id' [,list])
+        key = name of key pointed to vlaue in parameters dictionary
+        params must have ('clTRID',('name',['name','name',]))
+        """
+        self._handle_ID = self._dct.has_key(key) and self._dct[key][0] or '' # keep object handle (ID)
+        if len(cols) > 3:
+            col1 = '%s:%s'%(cols[1],cols[3])
+        else:
+            col1 = '%s:%s'%(cols[1],cols[0])
+        col2 = '%s:%s'%(cols[1],cols[2])
+        data=[('epp', 'extension'),
+            ('extension', '%s:extcommand'%namespace, None, (
+                ('xmlns:%s'%namespace, '%s%s-%s'%(eppdoc.nic_cz_xml_epp_path,namespace,eppdoc.nic_cz_version)),
+                ('xsi:schemaLocation','%s%s-%s %s-%s.xsd'%(eppdoc.nic_cz_xml_epp_path,namespace,eppdoc.nic_cz_version,namespace,eppdoc.nic_cz_version)),
+            )),
+            ('%s:extcommand'%namespace, '%s:%s'%(namespace,cols[0])), 
+            ('%s:%s'%(namespace,cols[0]),col1,None,(
+            ('xmlns:%s'%cols[1],'%s%s-%s'%(eppdoc.nic_cz_xml_epp_path,cols[1],eppdoc.nic_cz_version)),
+            ('xsi:schemaLocation','%s%s-1.0 %s-%s.xsd'%(eppdoc.nic_cz_xml_epp_path,cols[1],cols[1],eppdoc.nic_cz_version))
+            ))
+            ]
+        if key:
+            names = self._dct[key]
+            if type(names) not in (list,tuple):
+                names = (names,)
+            for value in names:
+                data.append((col1, col2, value))
+        data.append(('%s:extcommand'%namespace, '%s:clTRID'%namespace, self._dct.get(TAG_clTRID,[params[0]])[0]))
+        self.__assemble_cmd__(data)
+
+        
     #-------------------------------------------
     # Session management
     #-------------------------------------------
@@ -964,6 +997,15 @@ class Message(eppdoc.Message):
             
         data.append(('command', 'clTRID', self._dct.get(TAG_clTRID,[params[0]])[0]))
         self.__assemble_cmd__(data)
+
+    def assemble_sendauthinfo_contact(self, *params):
+        self.__asseble_extcommand__(('sendAuthInfo','contact','id'), 'id', params)
+
+    def assemble_sendauthinfo_domain(self, *params):
+        self.__asseble_extcommand__(('sendAuthInfo','domain','name'), 'name', params)
+
+    def assemble_sendauthinfo_nsset(self, *params):
+        self.__asseble_extcommand__(('sendAuthInfo','nsset','id'), 'id', params)
 
     #===========================================
 

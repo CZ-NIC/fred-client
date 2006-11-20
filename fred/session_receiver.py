@@ -97,6 +97,9 @@ class ManagerReceiver(ManagerCommand):
                 self._dct_answer['reason'] = reason
                 self._dct_answer['command'] = self._command_sent
                 fnc_name = 'answer_response_%s'%self._command_sent.replace(':','_')
+                # Name of command is very important. It is key for choose function dispatching answer:
+                # delete_(contact|nsset|domain) fnc_name: answer_response_contact_delete
+                # sendauthinfo_(contact|nsset|domain) fnc_name: answer_response_fred_sendauthinfo
                 if hasattr(self,fnc_name):
                     getattr(self,fnc_name)((result, code, reason))
                     display_src = 0 # Odpověd byla odchycena, není potřeba ji zobrazovat celou.
@@ -547,6 +550,6 @@ if __name__ == '__main__':
         # Data item has format: ('command:name',"""<?xml ...XML document... >""")
         # For example: ('nsset:info',"""<?xml ...<epp ...><response> ... </epp>""")
         #test(test_incomming_messages.data[0])
-##        test(test_incomming_messages.data[-1])
+        test(test_incomming_messages.data[-2])
         #map(test, test_incomming_messages.data)
-        test(test_incomming_messages.data[9]) # test na contact:info status
+##        test(test_incomming_messages.data[9]) # test na contact:info status

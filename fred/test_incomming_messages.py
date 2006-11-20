@@ -405,4 +405,30 @@ data = ( # 0
   </response>
 </epp>
 """),
+    ('contact:sendauthinfo',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
+<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
+  <response>
+    <result code='1000'>
+      <msg>Command completed successfully</msg>
+    </result>
+    <trID>
+      <clTRID>zqin003#06-11-20at10:20:41</clTRID>
+      <svTRID>ccReg-0000190022</svTRID>
+    </trID>
+  </response>
+</epp>
+"""),
+    ('contact:delete',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
+<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
+  <response>
+    <result code='1000'>
+      <msg>Command completed successfully</msg>
+    </result>
+    <trID>
+      <clTRID>bmjm003#06-11-20at10:30:44</clTRID>
+      <svTRID>ccReg-0000190035</svTRID>
+    </trID>
+  </response>
+</epp>
+"""),
     )

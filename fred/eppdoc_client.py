@@ -6,17 +6,6 @@ from translate import options, encoding
 
 UNBOUNDED = eppdoc_assemble.UNBOUNDED
 
-# transfer op attribute allowed values:
-# transfer_op = ('request','approve','cancel','query','reject')
-##update_status = (
-##    ('clientDeleteProhibited','cdp'), 
-##    ('clientTransferProhibited','ctp'), 
-##    ('clientUpdateProhibited','cup'), 
-##    ('linked','lnk'), 
-##    ('ok',), 
-##    )
-    #'serverDeleteProhibited', 'serverTransferProhibited', 'serverUpdateProhibited')
-
 # Help
 def get_shared_notice():
     'Returns notice for EPP commands'
@@ -180,7 +169,10 @@ will be generated automaticly after succefull transfer."""),('transfer_domain do
             ],'%s\n\n%s\n\n%s'%(_T("""
 The EPP "create_contact" command is used to create an instance of the contact.
 The contact can be created for an indefinite period of time, or
-it can be created for a specific validity period."""),notice['disclose'],notice['ident']),("create_contact CID:ID01 'Jan Novak' info@mymail.cz Praha CZ mypassword 'Firma s.r.o.' 'Narodni trida 1230/12' '' 12000 +420.222745111 +420.222745111 (y (org fax email)) 7035555556 (op 8888888856) info@mymail.cz",)),
+it can be created for a specific validity period."""),notice['disclose'],notice['ident']),(
+            "create_contact CID:ID01 'Jan Novak' info@mymail.cz Praha CZ mypassword 'Firma s.r.o.' 'Narodni trida 1230/12' '' 12000 +420.222745111 +420.222745111 (y (org fax email)) 7035555556 (op 8888888856) info@mymail.cz",
+            "create_contact CID:ID02 'Jan Ban' info@mail.com Brno CZ"
+            )),
         #----------------------------------------------------
         'create_domain': (2,[
             ('name',(1,1),(),_T('Domain name'),'mydomain.cz','',()),
@@ -250,8 +242,6 @@ and maximum allowable period is defined in the Communication rules."""),('renew_
         #----------------------------------------------------
         'update_contact': (1,[
             ('contact_id',(1,1),(),_T('Contact ID'),'CID:ID01','',()),
-##            ('add',(0,5),update_status,_T('Add status'),'','',()),
-##            ('rem',(0,5),update_status,_T('Remove status'),'','',()),
             ('chg',(0,1),(),_T('Change values'),'','',(
                 ('postal_info',(0,1),(),_T('Postal informations'),'','',(
                     ('name',(0,1),(),_T('Name'),u'Jan Novák','',()),
@@ -288,15 +278,7 @@ and maximum allowable period is defined in the Communication rules."""),('renew_
         'update_domain': (1,[
             ('name',(1,1),(),_T('Domain name'),'mydomain.cz','',()),
             ('add_admin',(0,UNBOUNDED),(),_T('Administrative contact ID'),'CID:ID01','',()),
-##            ('add',(0,1),(),_T('Add status'),'','',(
-##                ('admin',(0,UNBOUNDED),(),_T('Administrative contact ID'),'CID:ID01','',()),
-##                ('status',(0,8),update_status,_T('Status'),'','',()),
-##            )),
             ('rem_admin',(0,UNBOUNDED),(),_T('Administrative contact ID'),'CID:ID01','',()),
-##            ('rem',(0,1),(),_T('Remove status'),'','',(
-##                ('admin',(0,UNBOUNDED),(),_T('Administrative contact ID'),'CID:ID01','',()),
-##                ('status',(0,8),update_status,_T('Status'),'','',()),
-##            )),
             ('chg',(0,1),(),_T('Change values'),'','',(
                 ('nsset',(0,1),(),_T('NSSET ID'),'NSSET_ID','',()),
                 ('registrant',(0,1),(),_T('Registrant ID'),'CID:ID01','',()),
@@ -316,12 +298,10 @@ and maximum allowable period is defined in the Communication rules."""),('renew_
                     ('addr',(0,UNBOUNDED),(),_T('Server address'),'217.31.207.130','',()),
                 )),
                 ('tech',(0,UNBOUNDED),(),_T('Technical contact ID'),'CID:ID01','',()),
-##                ('status',(0,6),update_status,_T('Status'),'','',()),
             )),
             ('rem',(0,1),(),_T('Remove values'),'','',(
                 ('name',(0,9),(),_T('Name server'),'my.dns.cz','',()),
                 ('tech',(0,UNBOUNDED),(),_T('Technical contact ID'),'CID:ID01','',()),
-##                ('status',(0,6),update_status,_T('Status'),'','',()),
             )),
             ('auth_info',(0,1),(),_T('Password required by server to authorize the transfer'),'new_password','',()),
             ],_T("""The EPP "update" command is used to update an instance of an existing object."""),(
@@ -331,6 +311,18 @@ and maximum allowable period is defined in the Communication rules."""),('renew_
         'list_contact': (0,[],_T("""The EPP "list" command is used to list all ID of an existing contact owning by registrant."""),()),
         'list_nsset': (0,[],_T("""The EPP "list" command is used to list all ID of an existing NSSET owning by registrant."""),()),
         'list_domain': (0,[],_T("""The EPP "list" command is used to list all domain names owning by registrant."""),()),
+        #----------------------------------------------------
+        'sendauthinfo_contact': (1,[
+             ('id',(1,1),(),_T('Contact ID'),'CID:ID01','',()),
+            ],_T("""The EPP 'sendauthinfo_contact' command transmit request for send authorisation info to contact email."""),('sendauthinfo_contact cid:id',)),
+        #----------------------------------------------------
+        'sendauthinfo_domain': (1,[
+            ('name',(1,1),(),_T('Domain name'),'mydomain.cz','',()),
+            ],_T("""The EPP 'sendauthinfo_domain' command transmit request for send authorisation info to registrant email."""),('sendauthinfo_domain domain.cz',)),
+        #----------------------------------------------------
+        'sendauthinfo_nsset': (1,[
+            ('id',(1,1),(),_T('NSSET ID'),'NSSET_ID','',()),
+            ],_T("""The EPP 'sendauthinfo_nsset' command transmit request for send authorisation info to technical contact email."""),('sendauthinfo_nsset nssid:id',)),
         #----------------------------------------------------
     }
     for k,v in command_params.items():
@@ -492,7 +484,6 @@ class Message(eppdoc_assemble.Message):
 
     def __init__(self):
         eppdoc_assemble.Message.__init__(self)
-##        self.update_status = update_status
         self._command_params = make_command_parameters()
         self.sort_by_names = make_sort_by_names()
     
