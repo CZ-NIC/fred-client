@@ -377,7 +377,9 @@ $fred_client_errors = array(); // errors occuring during communication
         # init from command line options
         self.init_from_options(section_connect)
         self.fill_missing_required(section_connect)
-        self.check_validator() # set validator OFF, if not supported.
+        # dislabled. by cause we dont error message at the beginnig
+        #if self._session[VALIDATE]:
+        #    self.check_validator() # set validator OFF, if not supported.
         return 1 # OK
 
     def parse_verbose_value(self, verbose):
@@ -412,10 +414,10 @@ $fred_client_errors = array(); // errors occuring during communication
     def set_validate(self, value):
         'Set validate mode in session.'
         self._session[VALIDATE] = value
-
+        if value: self.check_validator()
+    
     def check_validator(self):
         'Check if exists external validator (xmllint).'
-        if not self._session[VALIDATE]: return # validate is set OFF
         ok = 0
         try:
             pipes = os.popen3(self._external_validator)
@@ -432,9 +434,8 @@ $fred_client_errors = array(); // errors occuring during communication
             except UnicodeDecodeError:
                 uerr = repr(errors)
             self._session[VALIDATE] = 0 # validator is automaticly switched off
-            if self._session[VERBOSE] > 1:
-                self.append_note(uerr)
-                self.append_note(_T('External validator "%s" not found. XML validation has been disabled.')%self._external_validator)
+            self.append_note(uerr)
+            self.append_note(_T('External validator "%s" not found. XML validation has been disabled.')%self._external_validator)
         return ok
 
     def __get_actual_schema_path__(self):
@@ -462,7 +463,7 @@ $fred_client_errors = array(); // errors occuring during communication
             pipes[0].write(message)
             pipes[0].close()
         except IOError, msg:
-            self.append_note(str(msg),'RED')
+            self.append_note(str(msg),('RED','BOLD'))
         errors = pipes[2].read()
         map(lambda f: f.close(), pipes)
         if re.search(' validates$', errors):
