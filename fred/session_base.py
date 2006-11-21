@@ -377,9 +377,9 @@ $fred_client_errors = array(); // errors occuring during communication
         # init from command line options
         self.init_from_options(section_connect)
         self.fill_missing_required(section_connect)
-        # dislabled. by cause we dont error message at the beginnig
-        #if self._session[VALIDATE]:
-        #    self.check_validator() # set validator OFF, if not supported.
+        if self._session[VALIDATE]:
+            # set validator OFF, if not supported.
+            self.check_validator(1) # 1 - silent (no error message)
         return 1 # OK
 
     def parse_verbose_value(self, verbose):
@@ -416,7 +416,7 @@ $fred_client_errors = array(); // errors occuring during communication
         self._session[VALIDATE] = value
         if value: self.check_validator()
     
-    def check_validator(self):
+    def check_validator(self, silent=0):
         'Check if exists external validator (xmllint).'
         ok = 0
         try:
@@ -434,8 +434,10 @@ $fred_client_errors = array(); // errors occuring during communication
             except UnicodeDecodeError:
                 uerr = repr(errors)
             self._session[VALIDATE] = 0 # validator is automaticly switched off
-            self.append_note(uerr)
-            self.append_note(_T('External validator "%s" not found. XML validation has been disabled.')%self._external_validator)
+            if not silent:
+                # appent error to output if only not silent mode
+                self.append_note(uerr)
+                self.append_note(_T('External validator "%s" not found. XML validation has been disabled.')%self._external_validator)
         return ok
 
     def __get_actual_schema_path__(self):
