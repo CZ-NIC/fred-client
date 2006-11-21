@@ -290,7 +290,7 @@ class ManagerReceiver(ManagerCommand):
             self.__append_note_from_dct__(nsset_infData,('nsset:id','nsset:roid',
                 'nsset:clID','nsset:crID','nsset:trID','nsset:upID',
                 'nsset:crDate','nsset:trDate','nsset:upDate','nsset:authInfo','nsset:tech',
-                'nsset:status s','nsset:status','nsset:authInfo'))
+                'nsset:status s','nsset:status'))
             if nsset_infData.has_key('nsset:ns'):
                 nsset_ns = nsset_infData['nsset:ns']
                 dns = []
@@ -464,6 +464,11 @@ class ManagerReceiver(ManagerCommand):
                 if len(self._errors): raise FredError(self.fetch_errors())
                 xml_answer = self.receive()                                   # receive answer
                 error_validate_answer = self.is_epp_valid(xml_answer)
+                if self.run_as_unittest and not self._session[VALIDATE]:
+                    # TEST: validate the server's answer in unittest:
+                    self._session[VALIDATE] = 1
+                    error_validate_answer = self.is_epp_valid(xml_answer)
+                    self._session[VALIDATE] = 0
                 self.process_answer(xml_answer)                               # process answer
                 if len(error_validate_answer):
                     self._errors.append(error_validate_answer)                # join validate error AFTER process
@@ -550,6 +555,6 @@ if __name__ == '__main__':
         # Data item has format: ('command:name',"""<?xml ...XML document... >""")
         # For example: ('nsset:info',"""<?xml ...<epp ...><response> ... </epp>""")
         #test(test_incomming_messages.data[0])
-        test(test_incomming_messages.data[-2])
+##        test(test_incomming_messages.data[-1])
         #map(test, test_incomming_messages.data)
-##        test(test_incomming_messages.data[9]) # test na contact:info status
+        test(test_incomming_messages.data[9]) # test na contact:info status

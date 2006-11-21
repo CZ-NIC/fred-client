@@ -456,7 +456,6 @@ class Client:
     The EPP "poll" command is used to discover and retrieve service messages queued by a server for individual clients.
 
         """
-        if not type(msg_id) in ('str','unicode'): msg_id = str(msg_id)
         return self._epp.api_command('poll',{'op':op,'msg_id':msg_id, 'cltrid':cltrid})
 
 
@@ -727,7 +726,7 @@ class Client:
 
     def set_validate(self, mode):
         'Set process validate ON/OFF. mode: 0/1.'
-        self._epp._validate = mode
+        self._epp.set_validate(mode)
 
     def is_val(self, names = 'code', dct=None):
         """Returns safetly value form dict (treat missing keys).

@@ -107,11 +107,18 @@ class Test(unittest.TestCase):
         # create client object
         epp_cli = fred.Client()
         epp_cli._epp.load_config()
-        epp_cli._epp.set_validate(0)
+        # validation is possible to switch off throught option -x --no_validate
+        # epp_cli._epp.set_validate(0)
         epp_cli_TRANSF = fred.Client()
         epp_cli_TRANSF._epp.load_config()
-        epp_cli_TRANSF._epp.set_validate(0)
-        
+        # Validation MUST be disabled bycause we test commands with misssing required parameters
+        epp_cli.set_validate(0)
+        epp_cli_TRANSF.set_validate(0)
+        if fred.translate.options['no_validate'] == '':
+            # Set ON validation of the server answer. 
+            # This behavor is possible switch off by option -x --no_validate
+            epp_cli._epp.run_as_unittest = 1
+            epp_cli_TRANSF._epp.run_as_unittest = 1
         # login
         dct = epp_cli._epp.get_default_params_from_config('login')
         epp_cli.login(dct['username'], dct['password'])
@@ -443,14 +450,14 @@ class Test(unittest.TestCase):
 
     def test_170(self):
         '3.17 Druhy registrator: Zmena hesla po prevodu nssetu'
-        epp_cli_TRANSF.update_nsset(handle_nsset, None, None, {'auth_info':'nove-heslo'})
+        epp_cli_TRANSF.update_nsset(handle_nsset, None, None, 'nove-heslo')
         self.assertEqual(epp_cli_TRANSF.is_val(), 1000, unitest_share.get_reason(epp_cli_TRANSF))
 
     def test_180(self):
         '3.18 Pokus o zmenu hesla nssetu, ktery registratorovi jiz nepatri'
         global epp_to_log
         epp_to_log = epp_cli
-        epp_cli.update_nsset(handle_nsset, None, None, {'auth_info':'moje-heslo'})
+        epp_cli.update_nsset(handle_nsset, None, None, 'moje-heslo')
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_190(self):

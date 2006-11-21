@@ -52,6 +52,7 @@ FRED_NSSET1 = unitest_share.create_handle('NSSID:D1') ## 'NSSID:TDOMNSSET01'
 FRED_NSSET2 = unitest_share.create_handle('NSSID:D2') ## 'NSSID:TDOMNSSET02'
 FRED_DOMAIN1 = '%s.cz'%unitest_share.create_handle('test') ## 'hokus-pokus.cz' # hokus-pokus.cz sakra.cz
 FRED_DOMAIN2 = '0.1.1.7.4.5.1.2.2.0.2.4.e164.arpa'
+FRED_DOMAIN3 = '%s.cz'%unitest_share.create_handle('tmp')
 ##VAL_EX_DATE = '2007-02-02'
 FRED_DOMAIN_PASSW = 'heslicko'
 FRED_DOMAIN_PASSW_NEW = 'noveheslo'
@@ -115,6 +116,14 @@ class TestDomain(unittest.TestCase):
         epp_cli._epp.load_config()
         epp_cli_TRANSF = fred.Client()
         epp_cli_TRANSF._epp.load_config()
+        # Validation MUST be disabled bycause we test commands with misssing required parameters
+        epp_cli.set_validate(0)
+        epp_cli_TRANSF.set_validate(0)
+        if fred.translate.options['no_validate'] == '':
+            # Set ON validation of the server answer. 
+            # This behavor is possible switch off by option -x --no_validate
+            epp_cli._epp.run_as_unittest = 1
+            epp_cli_TRANSF._epp.run_as_unittest = 1
         # login
         dct = epp_cli._epp.get_default_params_from_config('login')
         epp_cli.login(dct['username'], dct['password'])
@@ -166,6 +175,13 @@ class TestDomain(unittest.TestCase):
         epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], 'nsset-not-exists', d['period'], d['contact'])
         self.assertNotEqual(epp_cli.is_val(), 1000)
 
+## DEPRECATED: nsset is not required
+##    def test_051(self):
+##        '4.5.2  Pokus o zalozeni domeny bez nssetu'
+##        d = FRED_DATA[DOMAIN_1]
+##        epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], None, d['period'], d['contact'])
+##        self.assertNotEqual(epp_cli.is_val(), 1000)
+        
     def test_060(self):
         '4.6.1  Pokus o zalozeni domeny s neexistujicim registratorem'
         d = FRED_DATA[DOMAIN_1]
@@ -196,6 +212,11 @@ class TestDomain(unittest.TestCase):
         epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], d['nsset'], d['period'], d['contact'])
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
+    def test_082(self):
+        '4.8.1  Zalozeni nove domeny s povinnymi parametry - jen s registrantem'
+        epp_cli.create_domain(FRED_DOMAIN3, FRED_DATA[DOMAIN_2]['registrant'])
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+        
     def test_090(self):
         '4.9.1 Pokus o zalozeni domeny enum bez valExpDate'
         d = FRED_DATA[DOMAIN_2]
@@ -399,6 +420,11 @@ class TestDomain(unittest.TestCase):
         epp_cli_log = epp_cli
         epp_cli.delete_domain(FRED_DOMAIN2)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
+    def test_252(self):
+        '4.25.3 Druhy registrator: Smazani domeny'
+        epp_cli.delete_domain(FRED_DOMAIN3)
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         
     def test_260(self):
         '4.26 Check na smazanou domenu'
@@ -459,7 +485,7 @@ def __check_equality__(cols, data):
     unitest_share.err_not_equal(errors, data, 'domain:clID', ref_value)
     unitest_share.err_not_equal(errors, data, 'domain:name', cols['name'])
     unitest_share.err_not_equal(errors, data, 'domain:nsset', cols['nsset'])
-    unitest_share.err_not_equal(errors, data, 'domain:pw', cols['auth_info'])
+    unitest_share.err_not_equal(errors, data, 'domain:authInfo', cols['auth_info'])
     if not unitest_share.are_equal(data['domain:registrant'], cols['registrant']):
         errors.append('Data domain:registrant nesouhlasi. JSOU:%s MELY BYT:%s'%(unitest_share.make_str(data['domain:registrant']), unitest_share.make_str(cols['registrant'])))
     is_equal, exdate = unitest_share.check_date(data['domain:exDate'], cols['period'])

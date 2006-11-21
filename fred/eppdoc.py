@@ -172,7 +172,11 @@ class Message:
         else:
             master.appendChild(node)
         if value:
-            node.appendChild(self.dom.createTextNode(value))
+            try:
+                node.appendChild(self.dom.createTextNode(value))
+            except TypeError, msg:
+                print "FredClient Internal Error: ",name,type(value),value
+                raise 'TypeError:',msg
         if attribs:
             self.append_attribNS(node, attribs)
         return node

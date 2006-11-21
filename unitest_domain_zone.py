@@ -68,9 +68,14 @@ class Test(unittest.TestCase):
         epp_cli._epp.load_config()
         epp_cli_TRANSF = fred.Client()
         epp_cli_TRANSF._epp.load_config()
-        # vypnutí validátoru
-        #epp_cli._epp.set_validate(0)
+        # Validation MUST be disabled bycause we test commands with misssing required parameters
+        epp_cli.set_validate(0)
         epp_cli_TRANSF.set_validate(0)
+        if fred.translate.options['no_validate'] == '':
+            # Set ON validation of the server answer. 
+            # This behavor is possible switch off by option -x --no_validate
+            epp_cli._epp.run_as_unittest = 1
+            epp_cli_TRANSF._epp.run_as_unittest = 1
         # login
         dct = epp_cli._epp.get_default_params_from_config('login')
         epp_cli.login(dct['username'], dct['password'])

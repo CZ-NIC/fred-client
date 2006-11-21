@@ -73,6 +73,7 @@ class ManagerBase:
         self._section_epp_login = 'epp_login' # section name in config for username and password
         self._config_name = '.fred_client.conf' # name for home folder; for share (etc) is mofified from this name
         self._config_used_files = []
+        self.run_as_unittest = 0 # it can set variables for unittest: validate server answer
 
     def get_session(self, offset):
         return self._session[offset]
@@ -411,7 +412,7 @@ $fred_client_errors = array(); // errors occuring during communication
     def set_validate(self, value):
         'Set validate mode in session.'
         self._session[VALIDATE] = value
-    
+
     def check_validator(self):
         'Check if exists external validator (xmllint).'
         if not self._session[VALIDATE]: return # validate is set OFF
@@ -447,6 +448,8 @@ $fred_client_errors = array(); // errors occuring during communication
     def is_epp_valid(self, message):
         "Check XML EPP by xmllint. OUT: '' - correct; '...' any error occurs."
         if not self._session[VALIDATE]: return '' # validace je vypnutá
+        if message=='':
+            return _T('XML message is empty.')
         # kontrola validity XML
         schema_path = self.__get_actual_schema_path__()
         if not schema_path: return '' # schema path is not set

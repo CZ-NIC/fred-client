@@ -234,7 +234,8 @@ data = ( # 0
       <contact:infData xsi:schemaLocation='http://www.nic.cz/xml/epp/contact-1.0 contact-1.0.xsd'>
         <contact:id>test001</contact:id>
         <contact:roid>C0000000031-CZ</contact:roid>
-        <contact:status s='ok'>Status is valid</contact:status>
+        <contact:status s='ok'>Contact is OK</contact:status>
+        <contact:status s='linked'>Contact is admin or tech</contact:status>
         <contact:postalInfo>
           <contact:name>Řehoř Čížek</contact:name>
           <contact:org>Čížková a spol</contact:org>

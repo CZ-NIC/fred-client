@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-11-20 11:15+0100\n"
+"POT-Creation-Date: 2006-11-21 14:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Zdeněk Böhm <zdenek.bohm@nic.cz>\n"
 "Language-Team: CS <ccreg-devel@lists.nic.cz>\n"
@@ -235,7 +235,7 @@ msgstr "Více informací v README."
 msgid "Unknown command"
 msgstr "Neznámý příkaz"
 
-#: fred/creator.py:34 fred/session_base.py:205 fred/session_command.py:295
+#: fred/creator.py:34 fred/session_base.py:206 fred/session_command.py:295
 #: fred/session_command.py:298 fred/session_command.py:300
 #: fred/session_command.py:302 fred/session_transfer.py:406
 msgid "ERROR"
@@ -896,8 +896,8 @@ msgid ""
 "The EPP 'sendauthinfo_domain' command transmit request for send "
 "authorisation info to registrant email."
 msgstr ""
-"Příkaz 'sendauthinfo_domain' předá požadavek na odeslání autorizačního "
-"hesla na email vlastníka domény."
+"Příkaz 'sendauthinfo_domain' předá požadavek na odeslání autorizačního hesla "
+"na email vlastníka domény."
 
 #: fred/eppdoc_client.py:325
 msgid ""
@@ -1048,7 +1048,7 @@ msgstr "Dokument má chybné kódování. LookupError: %s"
 msgid "Internal error: Master node '%s' doesn't exist."
 msgstr "Interní chyba: Nadřazený uzel '%s' neexistuje."
 
-#: fred/__init__.py:718
+#: fred/__init__.py:754
 msgid "This program requires Python 2.4 or higher. Your version is"
 msgstr "Tento program vyžaduje Python 2.4 nebo vyšší. Vaše verze je"
 
@@ -1080,109 +1080,109 @@ msgstr ""
 "  -o OUTPUT_TYPE, --output=OUTPUT_TYPE\n"
 "                   Zobrazit výstup jako text (default), html, php"
 
-#: fred/session_base.py:112
+#: fred/session_base.py:113
 msgid "Unknown output type. Valid types are"
 msgstr "Neznámý typ výstupu. Platné typy jsou"
 
-#: fred/session_base.py:137
+#: fred/session_base.py:138
 msgid "Command confirmation has been set to"
 msgstr "Potvrzení přikazu bylo nastaveno na"
 
-#: fred/session_base.py:139
+#: fred/session_base.py:140
 msgid "Invalid Command confirmation parametr"
 msgstr "Neplatný parametr příkazu Confirmation"
 
-#: fred/session_base.py:140
+#: fred/session_base.py:141
 msgid "Type 'help confirm' to get more information about confirm commands."
 msgstr "Zadejte 'help confirm' pro zobrazení detailů příkazu."
 
-#: fred/session_base.py:224
+#: fred/session_base.py:225
 msgid "Type \"help\", \"license\" or \"credits\" for more information."
 msgstr ""
 "Zadejte \"help\", \"license\" or \"credits\" pro zobrazení více informací."
 
-#: fred/session_base.py:241
+#: fred/session_base.py:242
 msgid "Invalid format of"
 msgstr "Neplatný formát"
 
-#: fred/session_base.py:241 fred/session_base.py:245
+#: fred/session_base.py:242 fred/session_base.py:246
 msgid "See help for more."
 msgstr "Více informací najdete v helpu."
 
-#: fred/session_base.py:245
+#: fred/session_base.py:246
 msgid "cannot be empty"
 msgstr "nemůže být prázdné"
 
-#: fred/session_base.py:253
+#: fred/session_base.py:254
 msgid "Actual config builded from files"
 msgstr "Aktuální config sestavený ze souborů"
 
-#: fred/session_base.py:255
+#: fred/session_base.py:256
 msgid "No configuration file. Defaults used instead it."
 msgstr "Konfigurační soubor nebyl zadán. Byly použity defaultní hodnoty."
 
-#: fred/session_base.py:257
+#: fred/session_base.py:258
 msgid "No config"
 msgstr "Žádný config"
 
-#: fred/session_base.py:263
+#: fred/session_base.py:264
 msgid "Actual connection HERE"
 msgstr "Aktuální spojení ZDE"
 
-#: fred/session_base.py:292
+#: fred/session_base.py:293
 msgid "Schema in session missing. This is invalid instalation."
 msgstr "Chybí schema v session. Tato instalace je neplatná."
 
-#: fred/session_base.py:342
+#: fred/session_base.py:343
 msgid "Using configuration from"
 msgstr "Použit konfigurační soubor"
 
-#: fred/session_base.py:351
+#: fred/session_base.py:352
 msgid "Fatal error: Default config create failed."
 msgstr "Fatální chyba: Vytvoření defaultního konfiguračního souboru selhalo."
 
-#: fred/session_base.py:355
+#: fred/session_base.py:356
 #, python-format
 msgid "Session \"%s\" without effect. No configuration file."
 msgstr "Session \"%s\" nemá význam. Není načten žádný konfigurační soubor."
 
-#: fred/session_base.py:361
+#: fred/session_base.py:362
 #, python-format
 msgid "Configuration file has no section \"%s\"."
 msgstr "Konfigurační soubor nemá sekci \"%s\"."
 
-#: fred/session_base.py:390
+#: fred/session_base.py:391
 msgid "Invalid verbose parametr"
 msgstr "Neplatný parametr verbose"
 
-#: fred/session_base.py:392 fred/session_base.py:399
+#: fred/session_base.py:393 fred/session_base.py:400
 msgid "Type 'help verbose' to get more information about verbose levels."
 msgstr "Zadejte 'help verbose' pro zobrazení detailů příkazu."
 
-#: fred/session_base.py:398
+#: fred/session_base.py:399
 msgid "Verbose level is out of range. Available values are 1, 2, 3."
 msgstr ""
 "Hodnota módu výstupu je mimo stanovený rozsah. Dostupné hodnoty jsou 1, 2, 3."
 
-#: fred/session_base.py:436
+#: fred/session_base.py:437
 #, python-format
 msgid "External validator \"%s\" not found. XML validation has been disabled."
 msgstr "Externí validátor \"%s\" nebyl nalezen. XML validace byla vypnuta."
 
-#: fred/session_base.py:455
+#: fred/session_base.py:456
 msgid "Client-side validation command:"
 msgstr "Příkaz pro validátor:"
 
-#: fred/session_base.py:472
+#: fred/session_base.py:473
 msgid "Warning: Client-side validation failed."
 msgstr "Pozor: Validace na straně klienta selhala."
 
-#: fred/session_base.py:474
+#: fred/session_base.py:475
 #, python-format
 msgid "Client-side validation has been disabled. Type '%s' to enable it."
 msgstr "Validátor byl deaktivován. Opětná aktivace se provede zadáním %s."
 
-#: fred/session_base.py:519
+#: fred/session_base.py:520
 #, python-format
 msgid ""
 "Warning: Different schema version. Client schemas version is %s and on the "
@@ -1752,11 +1752,11 @@ msgstr "Nedostupný"
 msgid "Available"
 msgstr "Dostupný"
 
-#: fred/session_receiver.py:472
+#: fred/session_receiver.py:477
 msgid "You are not logged. First type login."
 msgstr "Nejste zalogováni. Nejdříve zadejte login."
 
-#: fred/session_receiver.py:475
+#: fred/session_receiver.py:480
 msgid "You are not logged. You must call login() before working on the server."
 msgstr "Nejste zalogováni. Nejdříve musíte zadat login()."
 
@@ -1874,4 +1874,3 @@ msgid ""
 msgstr ""
 "Pro spuštění této aplikace musíte mít nainstalovány PyQt a Qt moduly.Více "
 "informací naleznete v helpu."
-
