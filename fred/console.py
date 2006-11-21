@@ -72,8 +72,9 @@ def make_validation(epp, xml_epp_doc, label):
     """
     error_message = epp.is_epp_valid(xml_epp_doc) # make validation on the XML document
     if error_message:
-        epp.append_error(label)
         v = epp.get_session(VERBOSE)
+        epp.append_error(label)
+        if v < 2: epp.append_error(_T('More details in verbose 2 or higher.'))
         if v > 1: epp.append_error(error_message)
         if v > 2: epp.append_error(xml_epp_doc)
     return (len(error_message) == 0)

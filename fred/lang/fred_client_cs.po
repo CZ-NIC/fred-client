@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-11-21 14:02+0100\n"
+"POT-Creation-Date: 2006-11-21 16:58+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Zdeněk Böhm <zdenek.bohm@nic.cz>\n"
 "Language-Team: CS <ccreg-devel@lists.nic.cz>\n"
@@ -194,24 +194,28 @@ msgstr ""
 "  -n, --nologin    \n"
 "                   Deaktivovat automatické spojení se serverem po startu\n"
 
-#: fred/console.py:130
+#: fred/console.py:75
+msgid "More details in verbose 2 or higher."
+msgstr "Více detailů je ve verbose 2 nebo vyšším."
+
+#: fred/console.py:131
 msgid "Command data XML document failed to validate."
 msgstr "XML dokument příkazu se nepodařilo zvalidovat."
 
-#: fred/console.py:135
+#: fred/console.py:136
 msgid "Do you really want to send this command to the server?"
 msgstr "Opravdu chcete odeslat tento poříkaz na server?"
 
-#: fred/console.py:143
+#: fred/console.py:144
 msgid "Server answer XML document failed to validate."
 msgstr "Odpověď serveru v XML dokumentu se nepodařilo zvalidovat."
 
-#: fred/console.py:159 fred/session_command.py:478
+#: fred/console.py:160 fred/session_command.py:478
 #: fred/session_transfer.py:244 fred/session_transfer.py:271
 msgid "You are not connected."
 msgstr "Nejste připojeni."
 
-#: fred/console.py:173 fred/translate.py:158
+#: fred/console.py:174 fred/translate.py:158
 #, python-format
 msgid ""
 "%s\n"
@@ -222,11 +226,11 @@ msgstr ""
 "Použití: %s [parametry...]\n"
 "Více informací získáze zadáním '%s --help'."
 
-#: fred/console.py:184 fred/creator.py:79 fred/sender.py:146 fred_client.py:14
+#: fred/console.py:185 fred/creator.py:79 fred/sender.py:146 fred_client.py:14
 msgid "Usage"
 msgstr "Použití"
 
-#: fred/console.py:186 fred/creator.py:88 fred/sender.py:159 fred_client.py:23
+#: fred/console.py:187 fred/creator.py:88 fred/sender.py:159 fred_client.py:23
 msgid "For more information, see README."
 msgstr "Více informací v README."
 
@@ -1048,7 +1052,7 @@ msgstr "Dokument má chybné kódování. LookupError: %s"
 msgid "Internal error: Master node '%s' doesn't exist."
 msgstr "Interní chyba: Nadřazený uzel '%s' neexistuje."
 
-#: fred/__init__.py:754
+#: fred/__init__.py:753
 msgid "This program requires Python 2.4 or higher. Your version is"
 msgstr "Tento program vyžaduje Python 2.4 nebo vyšší. Vaše verze je"
 
@@ -1151,38 +1155,42 @@ msgstr "Session \"%s\" nemá význam. Není načten žádný konfigurační soub
 msgid "Configuration file has no section \"%s\"."
 msgstr "Konfigurační soubor nemá sekci \"%s\"."
 
-#: fred/session_base.py:391
+#: fred/session_base.py:393
 msgid "Invalid verbose parametr"
 msgstr "Neplatný parametr verbose"
 
-#: fred/session_base.py:393 fred/session_base.py:400
+#: fred/session_base.py:395 fred/session_base.py:402
 msgid "Type 'help verbose' to get more information about verbose levels."
 msgstr "Zadejte 'help verbose' pro zobrazení detailů příkazu."
 
-#: fred/session_base.py:399
+#: fred/session_base.py:401
 msgid "Verbose level is out of range. Available values are 1, 2, 3."
 msgstr ""
 "Hodnota módu výstupu je mimo stanovený rozsah. Dostupné hodnoty jsou 1, 2, 3."
 
-#: fred/session_base.py:437
+#: fred/session_base.py:440
 #, python-format
 msgid "External validator \"%s\" not found. XML validation has been disabled."
 msgstr "Externí validátor \"%s\" nebyl nalezen. XML validace byla vypnuta."
 
-#: fred/session_base.py:456
+#: fred/session_base.py:455
+msgid "XML message is empty."
+msgstr ""
+
+#: fred/session_base.py:461
 msgid "Client-side validation command:"
 msgstr "Příkaz pro validátor:"
 
-#: fred/session_base.py:473
+#: fred/session_base.py:478
 msgid "Warning: Client-side validation failed."
 msgstr "Pozor: Validace na straně klienta selhala."
 
-#: fred/session_base.py:475
+#: fred/session_base.py:480
 #, python-format
 msgid "Client-side validation has been disabled. Type '%s' to enable it."
 msgstr "Validátor byl deaktivován. Opětná aktivace se provede zadáním %s."
 
-#: fred/session_base.py:520
+#: fred/session_base.py:525
 #, python-format
 msgid ""
 "Warning: Different schema version. Client schemas version is %s and on the "

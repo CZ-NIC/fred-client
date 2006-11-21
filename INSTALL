@@ -25,6 +25,9 @@ prikazu na prikatove radce (vypise se help nebo hlaseni, ze prikaz je neznamy):
 
 Usage : xmllint [options] XMLfiles ... / bash: xmllint: command not found
 
+Instalacni balicky naleznete na http://xmlsoft.org/ (menu Downloads, Windows binaries)
+Pro Ubuntu a Debian je mozne xmllint nainstalovat pomoci balicku libxml2-utils:
+$ sudo apt-get install libxml2-utils
 
 
 ** Instalace:
