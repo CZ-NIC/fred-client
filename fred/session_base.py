@@ -462,7 +462,7 @@ $fred_client_errors = array(); // errors occuring during communication
             pipes[0].write(message)
             pipes[0].close()
         except IOError, msg:
-            self.append_note(str(msg),('RED',c))
+            self.append_note(str(msg),'RED')
         errors = pipes[2].read()
         map(lambda f: f.close(), pipes)
         if re.search(' validates$', errors):
