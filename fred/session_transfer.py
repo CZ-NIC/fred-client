@@ -56,8 +56,10 @@ class ManagerTransfer(ManagerBase):
         'Prepare for next round. Reset internal dict with communication values.'
         self._errors = []
         self._notes = []
+        if self._lorry:
+            self._lorry._notes = self._notes
+            self._lorry._errors = self._errors
         self._notes_afrer_errors = []
-        self._data_post_messages = []
         self._epp_cmd.reset()
         self._epp_response.reset()
         self._command_sent = '' # jméno posledního odeslaného příkazu
@@ -72,10 +74,13 @@ class ManagerTransfer(ManagerBase):
     #---------------------------------
     def __check_is_connected__(self):
         "Control if you are still connected."
-        if self._lorry and not self._lorry.is_connected():
-            # spojení spadlo
-            if self._session[ONLINE]:
-                self.append_error(_T('Connection to %s interrupted.')%self._session[HOST])
+        if self._lorry:
+            if not self._lorry.is_connected():
+                # spojení spadlo
+                if self._session[ONLINE] and self._session[VERBOSE] > 1:
+                    self.append_error(_T('Connection to %s interrupted.')%self._session[HOST])
+                self.close()
+        else:
             self.close()
 
     def grab_command_name_from_xml(self, message):
@@ -218,8 +223,8 @@ class ManagerTransfer(ManagerBase):
             self._lorry = None
         # Messages will be dispalyed after data from server.
         if self._session[ONLINE] == 1:
-            self._data_post_messages.append('%s %s'%(_T('Ending session at'),self._session[HOST]))
-            self._data_post_messages.append(_T('Disconnected.'))
+            self._notes_afrer_errors.append('%s %s'%(_T('Ending session at'),self._session[HOST]))
+            self._notes_afrer_errors.append(_T('Disconnected.'))
         # když se spojení zrušilo, tak o zalogování nemůže být ani řeči
         self._session[ONLINE] = 0
         self._session[USERNAME] = '' # for prompt info
@@ -418,9 +423,6 @@ class ManagerTransfer(ManagerBase):
             body.append(_TP('(%d item)','(%d items)',cnt)%cnt)
         else:
             self.__append_to_body__(body, dct)
-        #... post messages .............................
-        if len(self._data_post_messages):
-            body.extend(self._data_post_messages)
         #... third verbose level .............................
         for n in range(len(body)):
             if type(body[n]) == unicode: body[n] = body[n].encode(encoding)
@@ -483,9 +485,6 @@ class ManagerTransfer(ManagerBase):
             report('<table class="fred_data">')
             body.extend(data)
             report('</table>')
-        #... post messages .............................
-        if len(self._data_post_messages):
-            body.extend(self._data_post_messages)
         # encode to 8bit local
         for n in range(len(body)):
             if type(body[n]) == unicode: body[n] = body[n].encode(encoding)
@@ -575,10 +574,6 @@ $fred_source_answer = '';      // source code (XML) of the answer prepared to di
                 else:
                     report('$fred_labels[%s] = %s;'%(php_string(key),php_string(explain)))
                     report('$fred_data[%s] = %s;'%(php_string(key),php_string(value)))
-        #... post messages .............................
-        if len(self._data_post_messages):
-            for msg in self._data_post_messages:
-                report('$fred_client_notes[] = %s;'%php_string(msg))
         #... third verbose level .............................
         if self._session[VERBOSE] == 3:
             report('$fred_source_command = %s;'%php_string(human_readable(self._raw_cmd)))

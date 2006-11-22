@@ -30,7 +30,6 @@ class ManagerBase:
         self._notes = [] # upozornění na chybné zadání
         self._errors = [] # chybová hlášení při přenosu, parsování
         self._notes_afrer_errors = [] # hlášení po chybách
-        self._data_post_messages = [] # messages shown after displayed data
         self._sep = '\n' # oddělovač jednotlivých zpráv
         #-----------------------------------------
         # Session data:
@@ -452,7 +451,7 @@ $fred_client_errors = array(); // errors occuring during communication
         "Check XML EPP by xmllint. OUT: '' - correct; '...' any error occurs."
         if not self._session[VALIDATE]: return '' # validace je vypnutá
         if message=='':
-            return _T('XML message is empty.')
+            return _T('XML document is empty.')
         # kontrola validity XML
         schema_path = self.__get_actual_schema_path__()
         if not schema_path: return '' # schema path is not set

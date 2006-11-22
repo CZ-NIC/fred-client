@@ -365,7 +365,7 @@ class TestDomain(unittest.TestCase):
         self.assertNotEqual(epp_cli.is_val(), 1000, 'update_domain proslo s val_ex_date o jeden den vetsim nez je povoleno.')
         
     def test_179(self):
-        '4.17.9 Nastavení valExDate presne na posledni povoleny den (6 mes + 13 dni)'
+        '4.17.9 Nastaveni valExDate presne na posledni povoleny den (6 mes + 13 dni)'
         val_ex_date = unitest_share.datedelta_from_now(0, 6, 13)
         epp_cli.update_domain(FRED_DOMAIN2, None, None, None, val_ex_date)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))

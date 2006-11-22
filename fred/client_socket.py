@@ -126,9 +126,10 @@ class Lorry:
 
     def receive(self):
         "Receive answer from EPP server."
+        message = ''
         if self._conn_ssl and self.__receive_header__():
-            return self.__receive__()
-        return ''
+            message = self.__receive__()
+        return message
 
     def __receive_header__(self):
         "Header part of receiving process."
@@ -153,13 +154,13 @@ class Lorry:
                 self._errors.append('ERROR HEADER: %s'%msg)
                 ok = 0
         if not ok: self.close()
-        return self._body_length
+        return ok
         
     def __receive__(self):
         "Body part of receiving process."
         data = ''
+        ok = 0
         if self._body_length:
-            ok = 0
             try:
                 while(len(data) < self._body_length):
                     part = self._conn_ssl.read(self._body_length)
@@ -178,7 +179,10 @@ class Lorry:
                 self._errors.append('READ socket.receive MemoryError: %s'%msg)
             except (KeyboardInterrupt,EOFError):
                 self._errors.append(_T('Interrupted by user'))
-            if not ok: self.close()
+        else:
+            # the answer cannot be zero length
+            self._errors.append(_T("Server returned an empty message."))
+        if not ok: self.close()
         return data.strip()
 
     def fetch_errors(self, sep='\n'):
@@ -224,7 +228,6 @@ class Lorry:
                 self._conn_ssl = None
             except (KeyboardInterrupt,EOFError):
                 self._errors.append(_T('Interrupted by user'))
-            self._notes.append(_T('Connection closed'))
 
 if __name__ == '__main__':
     import sys

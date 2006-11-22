@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-11-21 16:58+0100\n"
+"POT-Creation-Date: 2006-11-22 16:41+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Zdeněk Böhm <zdenek.bohm@nic.cz>\n"
 "Language-Team: CS <ccreg-devel@lists.nic.cz>\n"
@@ -49,8 +49,8 @@ msgid "I cannot connect to the server"
 msgstr "Nemohu se připojit k serveru."
 
 #: fred/client_socket.py:90 fred/client_socket.py:118
-#: fred/client_socket.py:147 fred/client_socket.py:180
-#: fred/client_socket.py:214 fred/client_socket.py:226
+#: fred/client_socket.py:148 fred/client_socket.py:181
+#: fred/client_socket.py:218 fred/client_socket.py:230
 msgid "Interrupted by user"
 msgstr "Přerušeno uživatelem"
 
@@ -86,9 +86,9 @@ msgstr ""
 msgid "SSL layer opened."
 msgstr "SLL vrstva byla aktivována."
 
-#: fred/client_socket.py:227
-msgid "Connection closed"
-msgstr "Spojení uzavřeno"
+#: fred/client_socket.py:184
+msgid "Server returned an empty message."
+msgstr "Server nevrátil žádnou odpověď."
 
 #: fred/cmd_parser.py:72
 msgid "Invalid parameter index"
@@ -194,7 +194,7 @@ msgstr ""
 "  -n, --nologin    \n"
 "                   Deaktivovat automatické spojení se serverem po startu\n"
 
-#: fred/console.py:75
+#: fred/console.py:77
 msgid "More details in verbose 2 or higher."
 msgstr "Více detailů je ve verbose 2 nebo vyšším."
 
@@ -202,20 +202,20 @@ msgstr "Více detailů je ve verbose 2 nebo vyšším."
 msgid "Command data XML document failed to validate."
 msgstr "XML dokument příkazu se nepodařilo zvalidovat."
 
-#: fred/console.py:136
-msgid "Do you really want to send this command to the server?"
-msgstr "Opravdu chcete odeslat tento poříkaz na server?"
-
-#: fred/console.py:144
-msgid "Server answer XML document failed to validate."
-msgstr "Odpověď serveru v XML dokumentu se nepodařilo zvalidovat."
-
-#: fred/console.py:160 fred/session_command.py:478
-#: fred/session_transfer.py:244 fred/session_transfer.py:271
+#: fred/console.py:134 fred/session_command.py:478
+#: fred/session_transfer.py:249 fred/session_transfer.py:276
 msgid "You are not connected."
 msgstr "Nejste připojeni."
 
-#: fred/console.py:174 fred/translate.py:158
+#: fred/console.py:138
+msgid "Do you really want to send this command to the server?"
+msgstr "Opravdu chcete odeslat tento poříkaz na server?"
+
+#: fred/console.py:147
+msgid "Server answer XML document failed to validate."
+msgstr "Odpověď serveru v XML dokumentu se nepodařilo zvalidovat."
+
+#: fred/console.py:177 fred/translate.py:158
 #, python-format
 msgid ""
 "%s\n"
@@ -226,11 +226,11 @@ msgstr ""
 "Použití: %s [parametry...]\n"
 "Více informací získáze zadáním '%s --help'."
 
-#: fred/console.py:185 fred/creator.py:79 fred/sender.py:146 fred_client.py:14
+#: fred/console.py:188 fred/creator.py:79 fred/sender.py:146 fred_client.py:14
 msgid "Usage"
 msgstr "Použití"
 
-#: fred/console.py:187 fred/creator.py:88 fred/sender.py:159 fred_client.py:23
+#: fred/console.py:190 fred/creator.py:88 fred/sender.py:159 fred_client.py:23
 msgid "For more information, see README."
 msgstr "Více informací v README."
 
@@ -239,9 +239,9 @@ msgstr "Více informací v README."
 msgid "Unknown command"
 msgstr "Neznámý příkaz"
 
-#: fred/creator.py:34 fred/session_base.py:206 fred/session_command.py:295
+#: fred/creator.py:34 fred/session_base.py:205 fred/session_command.py:295
 #: fred/session_command.py:298 fred/session_command.py:300
-#: fred/session_command.py:302 fred/session_transfer.py:406
+#: fred/session_command.py:302 fred/session_transfer.py:411
 msgid "ERROR"
 msgstr "CHYBA"
 
@@ -1084,113 +1084,113 @@ msgstr ""
 "  -o OUTPUT_TYPE, --output=OUTPUT_TYPE\n"
 "                   Zobrazit výstup jako text (default), html, php"
 
-#: fred/session_base.py:113
+#: fred/session_base.py:112
 msgid "Unknown output type. Valid types are"
 msgstr "Neznámý typ výstupu. Platné typy jsou"
 
-#: fred/session_base.py:138
+#: fred/session_base.py:137
 msgid "Command confirmation has been set to"
 msgstr "Potvrzení přikazu bylo nastaveno na"
 
-#: fred/session_base.py:140
+#: fred/session_base.py:139
 msgid "Invalid Command confirmation parametr"
 msgstr "Neplatný parametr příkazu Confirmation"
 
-#: fred/session_base.py:141
+#: fred/session_base.py:140
 msgid "Type 'help confirm' to get more information about confirm commands."
 msgstr "Zadejte 'help confirm' pro zobrazení detailů příkazu."
 
-#: fred/session_base.py:225
+#: fred/session_base.py:224
 msgid "Type \"help\", \"license\" or \"credits\" for more information."
 msgstr ""
 "Zadejte \"help\", \"license\" or \"credits\" pro zobrazení více informací."
 
-#: fred/session_base.py:242
+#: fred/session_base.py:241
 msgid "Invalid format of"
 msgstr "Neplatný formát"
 
-#: fred/session_base.py:242 fred/session_base.py:246
+#: fred/session_base.py:241 fred/session_base.py:245
 msgid "See help for more."
 msgstr "Více informací najdete v helpu."
 
-#: fred/session_base.py:246
+#: fred/session_base.py:245
 msgid "cannot be empty"
 msgstr "nemůže být prázdné"
 
-#: fred/session_base.py:254
+#: fred/session_base.py:253
 msgid "Actual config builded from files"
 msgstr "Aktuální config sestavený ze souborů"
 
-#: fred/session_base.py:256
+#: fred/session_base.py:255
 msgid "No configuration file. Defaults used instead it."
 msgstr "Konfigurační soubor nebyl zadán. Byly použity defaultní hodnoty."
 
-#: fred/session_base.py:258
+#: fred/session_base.py:257
 msgid "No config"
 msgstr "Žádný config"
 
-#: fred/session_base.py:264
+#: fred/session_base.py:263
 msgid "Actual connection HERE"
 msgstr "Aktuální spojení ZDE"
 
-#: fred/session_base.py:293
+#: fred/session_base.py:292
 msgid "Schema in session missing. This is invalid instalation."
 msgstr "Chybí schema v session. Tato instalace je neplatná."
 
-#: fred/session_base.py:343
+#: fred/session_base.py:342
 msgid "Using configuration from"
 msgstr "Použit konfigurační soubor"
 
-#: fred/session_base.py:352
+#: fred/session_base.py:351
 msgid "Fatal error: Default config create failed."
 msgstr "Fatální chyba: Vytvoření defaultního konfiguračního souboru selhalo."
 
-#: fred/session_base.py:356
+#: fred/session_base.py:355
 #, python-format
 msgid "Session \"%s\" without effect. No configuration file."
 msgstr "Session \"%s\" nemá význam. Není načten žádný konfigurační soubor."
 
-#: fred/session_base.py:362
+#: fred/session_base.py:361
 #, python-format
 msgid "Configuration file has no section \"%s\"."
 msgstr "Konfigurační soubor nemá sekci \"%s\"."
 
-#: fred/session_base.py:393
+#: fred/session_base.py:392
 msgid "Invalid verbose parametr"
 msgstr "Neplatný parametr verbose"
 
-#: fred/session_base.py:395 fred/session_base.py:402
+#: fred/session_base.py:394 fred/session_base.py:401
 msgid "Type 'help verbose' to get more information about verbose levels."
 msgstr "Zadejte 'help verbose' pro zobrazení detailů příkazu."
 
-#: fred/session_base.py:401
+#: fred/session_base.py:400
 msgid "Verbose level is out of range. Available values are 1, 2, 3."
 msgstr ""
 "Hodnota módu výstupu je mimo stanovený rozsah. Dostupné hodnoty jsou 1, 2, 3."
 
-#: fred/session_base.py:440
+#: fred/session_base.py:439
 #, python-format
 msgid "External validator \"%s\" not found. XML validation has been disabled."
 msgstr "Externí validátor \"%s\" nebyl nalezen. XML validace byla vypnuta."
 
-#: fred/session_base.py:455
-msgid "XML message is empty."
-msgstr ""
+#: fred/session_base.py:454
+msgid "XML document is empty."
+msgstr "XML dokument je prázdný"
 
-#: fred/session_base.py:461
+#: fred/session_base.py:460
 msgid "Client-side validation command:"
 msgstr "Příkaz pro validátor:"
 
-#: fred/session_base.py:478
+#: fred/session_base.py:477
 msgid "Warning: Client-side validation failed."
 msgstr "Pozor: Validace na straně klienta selhala."
 
-#: fred/session_base.py:480
+#: fred/session_base.py:479
 #, python-format
 msgid "Client-side validation has been disabled. Type '%s' to enable it."
 msgstr "Validátor byl deaktivován. Opětná aktivace se provede zadáním %s."
 
-#: fred/session_base.py:525
+#: fred/session_base.py:524
 #, python-format
 msgid ""
 "Warning: Different schema version. Client schemas version is %s and on the "
@@ -1711,8 +1711,8 @@ msgstr "Detaily jsou zobrazeny ve verbose 2 nebo vyšším."
 msgid "Element that caused a server error condition"
 msgstr "Element který způsobil chybu"
 
-#: fred/session_receiver.py:76 fred/session_transfer.py:400
-#: fred/session_transfer.py:459
+#: fred/session_receiver.py:76 fred/session_transfer.py:405
+#: fred/session_transfer.py:461
 msgid "Reason"
 msgstr "Důvod"
 
@@ -1740,122 +1740,122 @@ msgstr "Všechna data jsou veřejná."
 msgid "All data are hidden."
 msgstr "Všechna data jsou skrytá."
 
-#: fred/session_receiver.py:212
+#: fred/session_receiver.py:208
 msgid "Connected!"
 msgstr "Spojení navázáno!"
 
-#: fred/session_receiver.py:214
+#: fred/session_receiver.py:210
 msgid "Login failed."
 msgstr "Login se nezdařil."
 
-#: fred/session_receiver.py:319
+#: fred/session_receiver.py:315
 msgid "Not in registry: Object is available."
 msgstr "Není v registru: Objekt je dostupný."
 
-#: fred/session_receiver.py:343
+#: fred/session_receiver.py:339
 msgid "Not available"
 msgstr "Nedostupný"
 
-#: fred/session_receiver.py:343
+#: fred/session_receiver.py:339
 msgid "Available"
 msgstr "Dostupný"
 
-#: fred/session_receiver.py:477
+#: fred/session_receiver.py:474
 msgid "You are not logged. First type login."
 msgstr "Nejste zalogováni. Nejdříve zadejte login."
 
-#: fred/session_receiver.py:480
+#: fred/session_receiver.py:477
 msgid "You are not logged. You must call login() before working on the server."
 msgstr "Nejste zalogováni. Nejdříve musíte zadat login()."
 
-#: fred/session_transfer.py:78
+#: fred/session_transfer.py:81
 #, python-format
 msgid "Connection to %s interrupted."
 msgstr "Spojení s %s bylo přerušeno."
 
-#: fred/session_transfer.py:154
+#: fred/session_transfer.py:159
 #, python-format
 msgid "Invalid port value: '%s'."
 msgstr "Neplatné číslo portu: '%s'."
 
-#: fred/session_transfer.py:157
+#: fred/session_transfer.py:162
 #, python-format
 msgid "Port is out of range: %d."
 msgstr "Port je mimo rozsah: %d."
 
-#: fred/session_transfer.py:164
+#: fred/session_transfer.py:169
 msgid "Hostname missing"
 msgstr "Chybí hostname"
 
-#: fred/session_transfer.py:166
+#: fred/session_transfer.py:171
 msgid "Server port number missing"
 msgstr "Chybí číslo portu serveru"
 
-#: fred/session_transfer.py:171
+#: fred/session_transfer.py:176
 msgid "Username missing"
 msgstr "Chybí username"
 
-#: fred/session_transfer.py:172
+#: fred/session_transfer.py:177
 msgid "Password missing"
 msgstr "Chybí heslo"
 
-#: fred/session_transfer.py:174
+#: fred/session_transfer.py:179
 msgid "SSL certificate name missing"
 msgstr "Název SSL certifikátu chybí"
 
-#: fred/session_transfer.py:176
+#: fred/session_transfer.py:181
 msgid "SSL certificate file not found"
 msgstr "Soubor se SSL certifikátem nebyl nalezen"
 
-#: fred/session_transfer.py:178
+#: fred/session_transfer.py:183
 msgid "SSL private key name missing"
 msgstr "Název SSL privátního klíče chybí."
 
-#: fred/session_transfer.py:180
+#: fred/session_transfer.py:185
 msgid "SSL private key file not found"
 msgstr "SSL privátní klíč nebyl nalezen"
 
-#: fred/session_transfer.py:182
+#: fred/session_transfer.py:187
 msgid "Can't connect to server"
 msgstr "Nemohu se připojit k serveru"
 
-#: fred/session_transfer.py:211
+#: fred/session_transfer.py:216
 msgid "Server didn't return Greeting message. Contact server administrator."
 msgstr "Server nevrátil Greeting odpověď. Kontaktujte správce serveru."
 
-#: fred/session_transfer.py:221
+#: fred/session_transfer.py:226
 msgid "Ending session at"
 msgstr "Ukončení sezení na"
 
-#: fred/session_transfer.py:222
+#: fred/session_transfer.py:227
 msgid "Disconnected."
 msgstr "Odpojeno."
 
-#: fred/session_transfer.py:254
+#: fred/session_transfer.py:259
 msgid "Logout command sent to server"
 msgstr "Odeslán logout"
 
-#: fred/session_transfer.py:361
+#: fred/session_transfer.py:366
 msgid "updated"
 msgstr "aktualizováno"
 
-#: fred/session_transfer.py:363
+#: fred/session_transfer.py:368
 msgid "deleted"
 msgstr "smazáno"
 
-#: fred/session_transfer.py:365
+#: fred/session_transfer.py:370
 msgid "transfer"
 msgstr ""
 
-#: fred/session_transfer.py:367
+#: fred/session_transfer.py:372
 msgid "request for send authorisation info transmited"
 msgstr "pořadavek na odeslání autorizačního hesla byl odeslán"
 
-#: fred/session_transfer.py:397 fred/session_transfer.py:457
+#: fred/session_transfer.py:402 fred/session_transfer.py:459
 msgid "Return code"
 msgstr "Návratový kód"
 
-#: fred/session_transfer.py:418
+#: fred/session_transfer.py:423
 #, python-format
 msgid "(%d item)"
 msgid_plural "(%d items)"
@@ -1882,3 +1882,4 @@ msgid ""
 msgstr ""
 "Pro spuštění této aplikace musíte mít nainstalovány PyQt a Qt moduly.Více "
 "informací naleznete v helpu."
+

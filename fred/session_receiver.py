@@ -199,10 +199,6 @@ class ManagerReceiver(ManagerCommand):
         #dct['dcp.statement.recipient'] = statement.get('recipient',{}).keys() # public, other, ours, some, unrelated
         #dct['dcp.statement.retention'] = statement.get('retention',{}).keys() # stated, business, indefinite, legal, none
 
-    def answer_response_logout(self, data):
-        "data=(response,result,code,msg)"
-        self.close()
-
     def answer_response_login(self, data):
         "data=(response,result,code,msg)"
         host = self._session[HOST]
@@ -463,7 +459,7 @@ class ManagerReceiver(ManagerCommand):
                 self.send(self._raw_cmd)                                      # send to server
                 if len(self._errors): raise FredError(self.fetch_errors())
                 xml_answer = self.receive()                                   # receive answer
-                error_validate_answer = self.is_epp_valid(xml_answer)
+                error_validate_answer = self.is_epp_valid(xml_answer)         # validate answer
                 if self.run_as_unittest and not self._session[VALIDATE]:
                     # TEST: validate the server's answer in unittest:
                     self._session[VALIDATE] = 1
@@ -472,6 +468,7 @@ class ManagerReceiver(ManagerCommand):
                 self.process_answer(xml_answer)                               # process answer
                 if len(error_validate_answer):
                     self._errors.append(error_validate_answer)                # join validate error AFTER process
+                if command_name == 'logout': self.close()
                 if len(self._errors): raise FredError(self.fetch_errors())
             else:
                 errors = _T('You are not logged. First type login.')

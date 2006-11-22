@@ -130,7 +130,9 @@ def main(options):
         if command_name and epp_doc: # if only command is EPP command
             is_valid = make_validation(epp, epp_doc, _T('Command data XML document failed to validate.'))
             #debug_time.append(('Validation',time.time())) # PROFILER
-            if is_valid and epp.is_online(command_name) and epp.is_connected(): # only if we are online
+            if not (epp.is_online(command_name) and epp.is_connected()):
+                epp.append_note(_T('You are not connected.'),('BOLD','RED'))
+            elif is_valid: # only if we are online and command XML document is valid
                 epp.display() # display errors or notes
                 if epp.is_confirm_cmd_name(command_name):
                     confirmation = raw_input('%s (y/N): '%_T('Do you really want to send this command to the server?'))
@@ -141,22 +143,25 @@ def main(options):
                 #debug_time.append(('SEND to server',time.time())) # PROFILER
                 xml_answer = epp.receive()     # receive answer
                 #debug_time.append(('RECEIVE from server',time.time())) # PROFILER
-                is_valid = make_validation(epp, xml_answer, _T('Server answer XML document failed to validate.'))
-                #debug_time.append(('Validation',time.time())) # PROFILER
-                try:
-                    debug_time_answer = epp.process_answer(xml_answer) # process answer
-                    #debug_time.append(('Parse answer',time.time())) # PROFILER
-                except (KeyboardInterrupt, EOFError):
-                    debug_time_answer = []
-                    break # handle Ctrl+C or Ctrl+D from testy user
-                epp.display() # display errors or notes
-                #debug_time.append(('Prepare answer for display',time.time())) # PROFILER
-                epp.print_answer()
-                #debug_time.append(('Display answer',time.time())) # PROFILER
-                #if options['timer']:
-                #    display_profiler('Main LOOP time profiler','',debug_time)
-                #    display_profiler('From Main LOOP only "Parse answer"','\t',debug_time_answer)
-        if command_name == 'connect': epp.print_answer()
+                if epp.is_connected():
+                    is_valid = make_validation(epp, xml_answer, _T('Server answer XML document failed to validate.'))
+                    #debug_time.append(('Validation',time.time())) # PROFILER
+                    try:
+                        debug_time_answer = epp.process_answer(xml_answer) # process answer
+                        #debug_time.append(('Parse answer',time.time())) # PROFILER
+                    except (KeyboardInterrupt, EOFError):
+                        debug_time_answer = []
+                        break # handle Ctrl+C or Ctrl+D from testy user
+                    epp.display() # display errors or notes
+                    #debug_time.append(('Prepare answer for display',time.time())) # PROFILER
+                    epp.print_answer()
+                    #debug_time.append(('Display answer',time.time())) # PROFILER
+                    #if options['timer']:
+                    #    display_profiler('Main LOOP time profiler','',debug_time)
+                    #    display_profiler('From Main LOOP only "Parse answer"','\t',debug_time_answer)
+            if is_valid and command_name == 'logout':
+                # only if we are online and command XML document is valid
+                epp.close() # close connection but not client
         epp.display() # display errors or notes
     epp.close()
     epp.save_history()
