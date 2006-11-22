@@ -46,14 +46,13 @@ import unitest_share
 ##    1 | 12642 | D0000012642-CZ | 4.4.4.0.2.4.e164.arpa
 
 #-----------------------
-FRED_CONTACT1 = unitest_share.create_handle('CID:D1') ## 'CID:TDOMCONT01'
-FRED_CONTACT2 = unitest_share.create_handle('CID:D2') ## 'CID:TDOMCONT02'
-FRED_NSSET1 = unitest_share.create_handle('NSSID:D1') ## 'NSSID:TDOMNSSET01'
-FRED_NSSET2 = unitest_share.create_handle('NSSID:D2') ## 'NSSID:TDOMNSSET02'
-FRED_DOMAIN1 = '%s.cz'%unitest_share.create_handle('test') ## 'hokus-pokus.cz' # hokus-pokus.cz sakra.cz
+FRED_CONTACT1 = unitest_share.create_handle('CID:D1')
+FRED_CONTACT2 = unitest_share.create_handle('CID:D2')
+FRED_NSSET1 = unitest_share.create_handle('NSSID:D1')
+FRED_NSSET2 = unitest_share.create_handle('NSSID:D2')
+FRED_DOMAIN1 = '%s.cz'%unitest_share.create_handle('test')
 FRED_DOMAIN2 = '0.1.1.7.4.5.1.2.2.0.2.4.e164.arpa'
 FRED_DOMAIN3 = '%s.cz'%unitest_share.create_handle('tmp')
-##VAL_EX_DATE = '2007-02-02'
 FRED_DOMAIN_PASSW = 'heslicko'
 FRED_DOMAIN_PASSW_NEW = 'noveheslo'
 INVALID_DOMAIN_NAME = 'myname.net'
@@ -226,14 +225,14 @@ class TestDomain(unittest.TestCase):
     def test_092(self):
         '4.9.2 Pokus o zalozeni domeny enum s nespravnym valExDate'
         d = FRED_DATA[DOMAIN_2]
-        val_ex_date = time.strftime("%Y-%m-%d",time.localtime(time.time()+60*60*24*30*7)) # sedm měsíců
+        val_ex_date = unitest_share.datedelta_from_now(0, 7) # sedm měsíců
         epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], d['nsset'], d['period'], d['contact'], val_ex_date)
         self.assertNotEqual(epp_cli.is_val(), 1000, 'Domena enum se vytvorila i kdyz valExDate byl neplatny')
         
     def test_096(self):
         '4.9.3  Zalozeni nove domeny enum'
         d = FRED_DATA[DOMAIN_2]
-        val_ex_date = time.strftime("%Y-%m-%d",time.localtime(time.time()+60*60*24*30*2)) # dva měsíce
+        val_ex_date = unitest_share.datedelta_from_now(0, 2) # dva měsíce
         epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], d['nsset'], d['period'], d['contact'], val_ex_date)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         
@@ -329,26 +328,45 @@ class TestDomain(unittest.TestCase):
     def test_172(self):
         '4.17.2 Pokus o nastaveni valExDate na 7 mesicu v Renew enum domain'
         period = {'num':'2','unit':'y'}
-        val_ex_date = time.strftime("%Y-%m-%d",time.localtime(time.time()+60*60*24*30*7)) # sedm měsíců
+        val_ex_date = unitest_share.datedelta_from_now(0, 7) # sedm měsíců
         epp_cli.renew_domain(FRED_DOMAIN2, domain_renew, period, val_ex_date)
         self.assertNotEqual(epp_cli.is_val(), 1000, 'Proslo renew-domain prestoze bylo valExDate zadano na 7 mesicu.')
         
     def test_173(self):
         '4.17.3 Nastaveni valExDate na dva mesice v Renew enum domain'
         period = {'num':'2','unit':'y'}
-        val_ex_date = time.strftime("%Y-%m-%d",time.localtime(time.time()+60*60*24*30*2)) # dva měsíce
+        val_ex_date = unitest_share.datedelta_from_now(0, 2) # dva měsíce
         epp_cli.renew_domain(FRED_DOMAIN2, domain_renew, period, val_ex_date)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_174(self):
         '4.17.4 Pokus o update enum domeny na neplatny valExDate'
-        val_ex_date = time.strftime("%Y-%m-%d",time.localtime(time.time()+60*60*24*30*7)) # sedm měsíců
+        val_ex_date = unitest_share.datedelta_from_now(0, 7) # sedm měsíců
         epp_cli.update_domain(FRED_DOMAIN2, None, None, None, val_ex_date)
         self.assertNotEqual(epp_cli.is_val(), 1000, 'Proslo renew-domain prestoze bylo valExDate zadano na 7 mesicu.')
 
     def test_175(self):
-        '4.17.5 Update enum domeny s valExDate na 5 mesicu.'
-        val_ex_date = time.strftime("%Y-%m-%d",time.localtime(time.time()+60*60*24*30*5)) # pět měsíců
+        '4.17.5 Pokus update domeny, ktera neni ENUM, s valExDate.'
+        # unitest_share.datedelta_from_now(0,6,13) # maximální povolené datum
+        val_ex_date = unitest_share.datedelta_from_now(0, 5) # pět měsíců
+        epp_cli.update_domain(FRED_DOMAIN1, None, None, None, val_ex_date)
+        self.assertNotEqual(epp_cli.is_val(), 1000, 'Probehlo update_domain s valExDate prestoze domena neni ENUM.')
+
+    def test_176(self):
+        '4.17.6 Update enum domeny s valExDate na 5 mesicu.'
+        val_ex_date = unitest_share.datedelta_from_now(0, 5) # pět měsíců
+        epp_cli.update_domain(FRED_DOMAIN2, None, None, None, val_ex_date)
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
+    def test_178(self):        
+        '4.17.8 Pokus o nastaveni valExDate o jeden den vice, nez je pripustne (6 mes + 14 dni)'
+        val_ex_date = unitest_share.datedelta_from_now(0, 6, 14)
+        epp_cli.update_domain(FRED_DOMAIN2, None, None, None, val_ex_date)
+        self.assertNotEqual(epp_cli.is_val(), 1000, 'update_domain proslo s val_ex_date o jeden den vetsim nez je povoleno.')
+        
+    def test_179(self):
+        '4.17.9 Nastavení valExDate presne na posledni povoleny den (6 mes + 13 dni)'
+        val_ex_date = unitest_share.datedelta_from_now(0, 6, 13)
         epp_cli.update_domain(FRED_DOMAIN2, None, None, None, val_ex_date)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         

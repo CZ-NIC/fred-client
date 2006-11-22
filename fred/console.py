@@ -156,8 +156,6 @@ def main(options):
                 #if options['timer']:
                 #    display_profiler('Main LOOP time profiler','',debug_time)
                 #    display_profiler('From Main LOOP only "Parse answer"','\t',debug_time_answer)
-            else:
-                epp.append_note(_T('You are not connected.'),('BOLD','RED'))
         if command_name == 'connect': epp.print_answer()
         epp.display() # display errors or notes
     epp.close()

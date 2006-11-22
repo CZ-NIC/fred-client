@@ -128,8 +128,33 @@ def check_date(date, nu, sql_date=None):
 def create_handle(prefix=''):
     "Generate unique handler in format 'prefix:2006:11:14:10:7:2.44'"
     return '%s%s%s'%(prefix, ''.join(map(str, time.localtime()[2:5])),('%.2f'%time.clock()).replace('.',''))
+
+def add_period(struct_time, year=0, month=0, day=0):
+    """Add period. 
+    IN: 
+        struct_time = (2006, 11, 22, 11, 18, 54, 2, 326, 0)
+        year        int
+        month       int
+        day         int
+    OUT: t_time     float
+    """
+    tt = list(struct_time)
+    tt[0]+=year
+    tt[1]+= month
+    tt[0]+= tt[1]/12
+    tt[1] = tt[1]%12
+    t_time = time.mktime(tt)
+    if day: t_time += 60*60*24*day
+    return t_time
+
+def datedelta_from_now(year=0, month=0, day=0):
+    'Returs date from now to defined date period. OUT: "2006-11-22"'
+    return time.strftime("%Y-%m-%d",time.localtime(add_period(time.localtime(time.time()),year, month, day)))
     
 get_local_text = fred.session_base.get_ltext
 
 if __name__ == '__main__':
     print "This module is used by all fred unittests."
+    print '(0, 6):', datedelta_from_now(0, 6)
+    print '(0, 6, 13):', datedelta_from_now(0, 6, 13)
+    print '(0, 6, 14):', datedelta_from_now(0, 6, 14)
