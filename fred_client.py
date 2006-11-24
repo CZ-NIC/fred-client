@@ -1,5 +1,22 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
+"""
+This is main script handling all functions of this client.
+Here it's deside what type of application will be running.
+Default is console. Next choice is running as a batch - 
+this is suitable using is in some shell scripts or for manage
+web pages (php, html). It also run it in GUI mode GUI with
+Qt environment.
+
+Script check version of python at the beginning. This code is
+in module fred. Next it use options from command line parsed
+in module fred.translate during import.
+
+MODES:
+For console mode is used module fred.console.
+For batch mode is used modules fred.creator and fred.sender.
+For GUI moduel is used module guiqt.
+"""
 import sys
 import fred
 from fred.translate import options, option_errors

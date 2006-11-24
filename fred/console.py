@@ -5,6 +5,21 @@
 #
 # Your terminal should support unicode. Check locale to LANG=cs_CZ.UTF-8
 #
+"""
+This is module with main loop of the client console.
+At the beginning after check Python version and command line
+options module creates fred.ClientSession object witch handles
+whole manipulation with environment variables and communication
+with server.
+
+This module provide console loop, waits for user input,
+hands on user input to the fred.Client object and display out
+all messages or server answers.
+
+For testing purpose is possible to display profiller to show
+duration of the particular processes. For enable this part of code
+you have to uncomment corresponding lines with PROFILER.
+"""
 import sys, re, time
 try:
     import readline

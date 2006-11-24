@@ -334,6 +334,10 @@ class FredMainWindow(_main.FredWindow):
                 getattr(self.epp,key)(d['name'], d.get('cltrid'))
             except fred.FredError, err:
                 self.epp._epp._errors.extend(err.args)
+            # 'info_contact' => 'contact:info'
+            tmp = key.split('_')
+            if len(tmp) == 2:
+                self.epp._epp.reduce_info_status('%s:%s'%(tmp[1],tmp[0]), self.epp._epp._dct_answer['data'])
             self.__display_answer__(key)
         else:
             self.display_error(self.missing_required)

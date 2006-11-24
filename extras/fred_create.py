@@ -12,7 +12,8 @@ try:
     import fred.creator
 except ImportError:
     # run from actual folder with source codes
-    sys.path.insert(0,'../')
+    sys.path.insert(0,'../') # for running from this folder
+    sys.path.insert(0,'./') # for running from upper folder
     try:
         import fred.creator
     except ImportError, msg:

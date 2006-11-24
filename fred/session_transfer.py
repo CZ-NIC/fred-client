@@ -316,10 +316,31 @@ class ManagerTransfer(ManagerBase):
         body=[]
         report = body.append
         dct_data = self._dct_answer['data']
+        self.reduce_info_status(self._dct_answer['command'], dct_data) # join status key and description together
         for key,verbose,explain in self.__get_column_items__(self._dct_answer['command'], dct_data):
             value = dct_data.get(key,u'')
             if value not in ('',[]): __append_into_report__(body,key,value,explain,self._ljust,'',1) # '' - indent; 1 - no terminal tags
         return sep.join(body).decode(encoding)
+
+    def reduce_info_status(self, command, dct_data):
+        """Join status key and description together.
+        For example:
+            'contact:status.s': [u'ok', u'linked'], 
+            'contact:status': [u'Contact is OK', u'Contact is admin or tech']
+        command has value like 'contact:info'
+        so we reduce elements 'contact:status.s' and 'contact:status'
+        """
+        match = re.match('(contact|nsset|domain):info', command)
+        if match:
+            # only for info commands
+            key1 = '%s:status.s'%match.group(1)
+            key2 = '%s:status'%match.group(1)
+            if dct_data.has_key(key1) and dct_data.has_key(key2):
+                if type(dct_data[key1]) in (list,tuple):
+                    dct_data[key1] = map(lambda p:'%s - %s'%p, zip(dct_data[key1], dct_data[key2]))
+                else:
+                    dct_data[key1] = '%s - %s'%(dct_data[key1], dct_data[key2])
+                dct_data.pop(key2)
 
     def __append_to_body__(self, body, dct):
         'Internal support for get_answer()'
@@ -330,6 +351,7 @@ class ManagerTransfer(ManagerBase):
         dct_data = dct['data']
         is_check = re.match('\w+:check',dct['command']) and 1 or 0 # object:check
         column_verbose = {} # dict of keys and their verbose level
+        self.reduce_info_status(dct['command'], dct_data)
         for key,verbose,explain in self.__get_column_items__(dct['command'], dct_data):
             column_verbose[key] = verbose # keep verbose mode for check used item (debug only)
             if verbose > self._session[VERBOSE]:
@@ -472,6 +494,7 @@ class ManagerTransfer(ManagerBase):
         data_indent = ''
         data = []
         dct_data = dct['data']
+        self.reduce_info_status(dct['command'], dct_data) # join status key and description together
         for key,verbose,explain in self.__get_column_items__(dct['command'], dct_data):
             if verbose > self._session[VERBOSE]: continue
             value = dct_data.get(key,u'')
