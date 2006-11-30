@@ -517,7 +517,10 @@ $fred_client_errors = array(); // errors occuring during communication
         if not match: return
         server_version = match.group(0)
         schema_path = self.__get_actual_schema_path__()
-        match = re.search('([\d\.]+)\.xsd$',schema_path)
+        if schema_path:
+            match = re.search('([\d\.]+)\.xsd$',schema_path)
+        else:
+            return
         if not match: return
         local_version = match.group(1)
         if server_version != local_version:
