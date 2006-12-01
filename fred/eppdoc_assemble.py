@@ -175,7 +175,11 @@ class Message(eppdoc.Message):
                         if command_name == 'hello':
                             errors.append(_T('Command does not have any parameters.'))
                         else:
-                            errors.append('%s: %s %d. (%s)'%(scope_name,_T('list of values overflow. Maximum is'),min_max[1],local8bit(', '.join(dct_values[name]))))
+                            errors.append('%s: %s %d. %s'%(scope_name,
+                                _T('list of values overflow. Maximum is'),
+                                min_max[1],
+                                local8bit(join_arrays2unicode(dct_values[name])))
+                                )
                     if allowed:
                         # check allowed values
                         allowed_abrev=[]
@@ -1201,3 +1205,32 @@ def local8bit(text):
         except UnicodeEncodeError, msg:
             text = repr(text)
     return text
+
+def join_arrays2unicode(data, scope=[]):
+    'Join all arrays to the string.'
+    out = u''
+    if type(data) in (tuple, list):
+        tmp = []
+        for value in data:
+            tmp.append(join_arrays2unicode(value, scope))
+        if len(tmp):
+            if len(tmp) == 1:
+                out = tmp[0]
+            else:
+                out = u'(%s)'%u', '.join(tmp)
+    elif type(data) == dict:
+        tmp = []
+        for key,value in data.items():
+            scope.append(key)
+            if len(filter(lambda n:type(n) is dict, value)):
+                # if any of the children is dict type
+                # the key name will be shown with children key together (scope)
+                tmp.append(join_arrays2unicode(value, scope))
+            else:
+                tmp.append(u'--%s = %s'%(u'.'.join(scope), join_arrays2unicode(value, scope)))
+            scope.pop()
+        if len(tmp):
+            out = u' '.join(tmp)
+    else:
+        out = data
+    return out
