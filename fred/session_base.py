@@ -7,7 +7,16 @@ import terminal_controler
 import translate
 import session_config
 import internal_variables
+"""
+Class ManagerBase is a part of one Manager object  what provide client session.
+This base class owns basic variables and functions needed for manage EPP XML 
+document messages. For better orientatiton in the code are functions and data 
+parted into several modules whitch every of them does a couple of similar actions.
 
+This base class is aimed for manage configuration file and external application
+xmllint for validate results.
+Closer descendant is in session_transfer.py
+"""
 # Colored output
 colored_output = terminal_controler.TerminalController()
 

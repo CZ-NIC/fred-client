@@ -11,6 +11,14 @@ import __builtin__
 import os, sys, re
 import getopt
 import gettext
+"""
+This module provide functions for language versions. This is used by all
+moduels in the fred system.
+This module is called as a first module in the application.
+
+Next it provides parsing command line options and hold results for 
+further display.
+"""
 
 def find_valid_encoding():
     """Find valid encoding in system, where sys.stdout.encodig doesnt be right value.

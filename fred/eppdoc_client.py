@@ -3,6 +3,12 @@
 import re
 import eppdoc_assemble
 from translate import options, encoding
+"""
+This module described all EPP commands with their parameters and 
+names of the returned values. Class Message is the top of the Message
+classes in modules eppdoc_. This instance is used by client session Manager
+object for manage with EPP commands and answers.
+"""
 
 UNBOUNDED = eppdoc_assemble.UNBOUNDED
 

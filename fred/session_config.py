@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
-"""Functions for load configuration file.
+"""
+This module collect funcktion for access object to the configuration file.
+It is used by session manager in session_base.py.
 """
 import os
 import ConfigParser

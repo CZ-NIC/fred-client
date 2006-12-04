@@ -9,6 +9,16 @@
 #       errors - pole s chybovými hlášeními
 #       encoding - výstupní kódování
 #
+"""Eppdoc module owns base class of the EPP XML Message.
+This class shares function needed for create XML document.
+There is also defined XMLNS constants and schema version.
+
+This class is parent for classes what manage XML commands
+and XML server's answers.
+
+Second class is Data what build XML elements to the python
+discitionary.
+"""
 import os, re
 import xml.dom.minidom
 try:

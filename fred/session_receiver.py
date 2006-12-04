@@ -6,7 +6,15 @@ from eppdoc_assemble import contact_disclose
 from session_base import *
 from session_command import ManagerCommand
 from translate import encoding
+"""
+This class ManagerReceiver cover all previous ancestors
+base, transfer and command into one session manager object.
+This part provides about the server answers and parse them
+for output process.
 
+There is function  api_command() and class FredError
+what are used in client API.
+"""
 SEPARATOR = '-'*60
 ANSW_RESULT, ANSW_CODE, ANSW_MSG = range(3)
 

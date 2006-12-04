@@ -7,6 +7,12 @@
 # Funkce s prefixem "assemble_" jsou jednotlivé EPP příkazy, které třída
 # Message() umí sestavit. Seznam dostupných příkazů vrací funkce get_client_commands().
 #
+"""This module include class with functions what provides services for main client Manager.
+Class supports interactive input of the command line. Builds help for particular command.
+Create example of the command line from the interactive input.
+It contains set of the assemble functions what create XML document. They are not call directly
+but from Message class interface.
+"""
 import re, sys, os
 import random
 import ConfigParser

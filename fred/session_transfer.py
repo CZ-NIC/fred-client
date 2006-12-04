@@ -6,7 +6,14 @@ import eppdoc_client
 import client_socket
 from session_base import *
 from translate import encoding, options
-
+"""
+Class ManagerTransfer is a part of the one Manager instance what provides
+about input and output. It is descentant of the ManageBase what care about
+config and validation process.
+On the one side is object Lorry with socket handle and function to manage it.
+On the oterr side is function to build output string for display.
+Next descendant is in session_command,py
+"""
 # Tags for scripted outputs:
 d_tag = {
     'html': ('<pre class="fred_messages">','</pre>'),

@@ -11,6 +11,18 @@ from session_base import *
 from session_transfer import ManagerTransfer, human_readable
 
 from eppdoc import nic_cz_version as eppdoc_nic_cz_version
+"""
+This module with ManagerCommand class take care about creation
+of the EPP XML documents. It uses for this purpose class Message 
+from eppdoc_client.py.
+
+Next function of this class is manage session commands for set session 
+variables.
+This class also manage creation of the help messages and provide
+autimatic login if client ask.
+
+Next descendat is in session_receiver.py
+"""
 
 COLOR = 1
 SEPARATOR = '-'*60

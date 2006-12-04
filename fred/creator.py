@@ -1,7 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 # Example: echo -en "check_domain nic.cz\ninfo_domain nic.cz" | ./fred_create.py
-"""Create EPP XML document from command line parameters.
+"""Creator is one of the top modules what deals Fred client system. It can be used
+for create EPP XML document without sending anything to the server. 
+
+Script receive text from standart input and returns XML text on the standard output.
+If any error occurs it is outputed in XML format for better process of the next XML
+parsers.
+
+Srcipt waiting for EPP commands one command on the one line.
 """
 import sys, re
 from cgi import escape as escape_html

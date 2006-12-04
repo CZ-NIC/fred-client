@@ -16,10 +16,11 @@ Změny:
     * při validaci se již neukládá pomocný soubor
 
 Opravy:
+    * oprava výpisu chybového hlášení při nesprávně zadaných parametrech
+    * oprava výpisu chybového hlášení při chybjějící položce schema v konfiguračním souboru
     * oprava výpisu chybového hlášení a přidání chybějící hodnoty elementu
     * oprava chyby v části sender
     * úprava příkladu zadání parametrů u příkazu update_contact
-
 
 
 FredClient 1.2.0

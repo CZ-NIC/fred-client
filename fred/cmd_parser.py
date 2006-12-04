@@ -2,7 +2,15 @@
 #!/usr/bin/env python
 import re
 from translate import encoding
+"""This module provides parsing function parse() thats was written specialy
+for parsing parameters on the EPP console command line. Parser recognize
+tokens as a simple value, string with spaces and list of values.
 
+For running parser needs column names and command line buffer.
+Parser returns dictionary with names of columns as a dictionary keys and values
+fetch out from command line. All values are put in list for unifique reading of the
+results.
+"""
 UNFINITE = None
 MOD_NORMAL, MOD_LIST, MOD_LIST_AGAIN, MOD_CHILD, MOD_CHILD_LIST, MOD_INSIDE_LIST = range(6)
 

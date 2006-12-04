@@ -7,7 +7,13 @@ import time
 import re
 import struct
 from translate import encoding
-
+"""Module client_socket manage connection handler. Create socket, open and close
+connection. Collect the errors and notes for displaying. Method of communication
+is described in RFC3734.txt - Transport Over TCP (4.  Data Unit Format) and
+RFC3730.txt  (2. Protocol Description).
+Class Lorry is managed by ManagerTransfer in session_transfer.py.
+Internal lists self._notes and self._errors are redirected into this class.
+"""
 class Lorry:
     "Socket transfer."
     def __init__(self):

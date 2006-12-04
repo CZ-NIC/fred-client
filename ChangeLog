@@ -16,10 +16,11 @@ Zmeny:
     * pri validaci se jiz neuklada pomocny soubor
 
 Opravy:
+    * oprava vypisu chyboveho hlaseni pri nespravne zadanych parametrech
+    * oprava vypisu chyboveho hlaseni pri chybjejici polozce schema v konfiguracnim souboru
     * oprava vypisu chyboveho hlaseni a pridani chybejici hodnoty elementu
     * oprava chyby v casti sender
     * uprava prikladu zadani parametru u prikazu update_contact
-
 
 
 FredClient 1.2.0

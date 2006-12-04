@@ -1,6 +1,10 @@
 # -*- coding: utf8 -*-
 #!/usr/bin/env python
 # Required default to fit missing config/options
+"""
+Internal variables are used as a default in case if configuration file missing.
+It is used by client session Manager in session_base.py module.
+"""
 required_defaults = {'port':700, 'timeout':10.0}
 config = """
 [connect]
