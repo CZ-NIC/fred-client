@@ -1,0 +1,430 @@
+<ui version="4.0" >
+ <class>FredWindow</class>
+ <widget class="QWidget" name="FredWindow" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>574</width>
+    <height>526</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Create Domain panel</string>
+  </property>
+  <widget class="QLabel" name="textLabel1" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>110</y>
+     <width>160</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>&lt;b>domain name&lt;/b></string>
+   </property>
+   <property name="wordWrap" >
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="textLabel2" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>140</y>
+     <width>160</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>&lt;b>registrant&lt;/b></string>
+   </property>
+   <property name="wordWrap" >
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="textLabel3" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>170</y>
+     <width>160</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>auth. for transfer</string>
+   </property>
+   <property name="wordWrap" >
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="textLabel4" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>200</y>
+     <width>160</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>nsset</string>
+   </property>
+   <property name="wordWrap" >
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="textLabel5" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>230</y>
+     <width>160</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>period</string>
+   </property>
+   <property name="wordWrap" >
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="textLabel7" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>480</y>
+     <width>160</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>clTRID</string>
+   </property>
+   <property name="wordWrap" >
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QGroupBox" name="groupBox2_2" >
+   <property name="geometry" >
+    <rect>
+     <x>180</x>
+     <y>230</y>
+     <width>360</width>
+     <height>90</height>
+    </rect>
+   </property>
+   <property name="title" >
+    <string>period</string>
+   </property>
+   <widget class="QLabel" name="textLabel8" >
+    <property name="geometry" >
+     <rect>
+      <x>10</x>
+      <y>20</y>
+      <width>130</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text" >
+     <string>&lt;b>unit&lt;/b></string>
+    </property>
+    <property name="wordWrap" >
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="textLabel9" >
+    <property name="geometry" >
+     <rect>
+      <x>10</x>
+      <y>50</y>
+      <width>130</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text" >
+     <string>&lt;b>number&lt;/b></string>
+    </property>
+    <property name="wordWrap" >
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="period_unit" >
+    <property name="geometry" >
+     <rect>
+      <x>150</x>
+      <y>20</y>
+      <width>85</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text" >
+      <string>year</string>
+     </property>
+    </item>
+    <item>
+     <property name="text" >
+      <string>month</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QLineEdit" name="period_num" >
+    <property name="geometry" >
+     <rect>
+      <x>150</x>
+      <y>50</y>
+      <width>200</width>
+      <height>22</height>
+     </rect>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QLabel" name="textLabel10" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>450</y>
+     <width>160</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>valExDate</string>
+   </property>
+   <property name="wordWrap" >
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="textLabel11" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>530</width>
+     <height>90</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>&lt;h2>create_domain&lt;/h2>
+The EPP "create" command is used to create an instance of an object.
+An object can be created for an indefinite period of time, or an
+object can be created for a specific validity period.</string>
+   </property>
+   <property name="alignment" >
+    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+   </property>
+   <property name="wordWrap" >
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="name" >
+   <property name="geometry" >
+    <rect>
+     <x>180</x>
+     <y>110</y>
+     <width>360</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="registrant" >
+   <property name="geometry" >
+    <rect>
+     <x>180</x>
+     <y>140</y>
+     <width>360</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="auth_info" >
+   <property name="geometry" >
+    <rect>
+     <x>180</x>
+     <y>170</y>
+     <width>360</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="echoMode" >
+    <enum>QLineEdit::Normal</enum>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="nsset" >
+   <property name="geometry" >
+    <rect>
+     <x>180</x>
+     <y>200</y>
+     <width>360</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="toolTip" >
+    <string>CZ</string>
+   </property>
+   <property name="whatsThis" >
+    <string>pokus</string>
+   </property>
+  </widget>
+  <widget class="QTableWidget" name="admin" >
+   <property name="geometry" >
+    <rect>
+     <x>180</x>
+     <y>330</y>
+     <width>360</width>
+     <height>110</height>
+    </rect>
+   </property>
+   <row>
+    <property name="text" >
+     <string>1</string>
+    </property>
+   </row>
+   <column>
+    <property name="text" >
+     <string>admin</string>
+    </property>
+   </column>
+  </widget>
+  <widget class="QCheckBox" name="check_val_ex_date" >
+   <property name="geometry" >
+    <rect>
+     <x>180</x>
+     <y>450</y>
+     <width>30</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="cltrid" >
+   <property name="geometry" >
+    <rect>
+     <x>180</x>
+     <y>480</y>
+     <width>360</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="textLabel12" >
+   <property name="geometry" >
+    <rect>
+     <x>330</x>
+     <y>450</y>
+     <width>210</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>(required for &lt;b>enum&lt;/b> domains)</string>
+   </property>
+   <property name="wordWrap" >
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="textLabel6" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>330</y>
+     <width>160</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>admin</string>
+   </property>
+   <property name="wordWrap" >
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QDateEdit" name="val_ex_date" >
+   <property name="enabled" >
+    <bool>false</bool>
+   </property>
+   <property name="geometry" >
+    <rect>
+     <x>220</x>
+     <y>450</y>
+     <width>97</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11" />
+ <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
+ <tabstops>
+  <tabstop>name</tabstop>
+  <tabstop>registrant</tabstop>
+  <tabstop>auth_info</tabstop>
+  <tabstop>nsset</tabstop>
+  <tabstop>period_unit</tabstop>
+  <tabstop>period_num</tabstop>
+  <tabstop>admin</tabstop>
+  <tabstop>check_val_ex_date</tabstop>
+  <tabstop>val_ex_date</tabstop>
+  <tabstop>cltrid</tabstop>
+ </tabstops>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>check_val_ex_date</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>val_ex_date</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>admin</sender>
+   <signal>cellChanged(int,int)</signal>
+   <receiver>FredWindow</receiver>
+   <slot>admin_value_changed(int,int)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>admin</sender>
+   <signal>currentCellChanged(int,int,int,int)</signal>
+   <receiver>FredWindow</receiver>
+   <slot>admin_current_changed(int,int)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

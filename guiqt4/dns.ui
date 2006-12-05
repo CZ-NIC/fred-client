@@ -1,0 +1,123 @@
+<ui version="4.0" >
+ <class>FredWindow</class>
+ <widget class="QWidget" name="FredWindow" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>510</width>
+    <height>157</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>dns</string>
+  </property>
+  <widget class="QLabel" name="textLabel_address" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>40</y>
+     <width>130</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>address</string>
+   </property>
+   <property name="wordWrap" >
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="name" >
+   <property name="geometry" >
+    <rect>
+     <x>150</x>
+     <y>10</y>
+     <width>340</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_dns_name" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>12</y>
+     <width>130</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>dns name</string>
+   </property>
+   <property name="wordWrap" >
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QTableWidget" name="addr" >
+   <property name="geometry" >
+    <rect>
+     <x>150</x>
+     <y>40</y>
+     <width>340</width>
+     <height>110</height>
+    </rect>
+   </property>
+   <property name="frameShape" >
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow" >
+    <enum>QFrame::Sunken</enum>
+   </property>
+   <property name="showGrid" >
+    <bool>true</bool>
+   </property>
+   <property name="rowCount" >
+    <number>1</number>
+   </property>
+   <row/>
+   <column>
+    <property name="text" >
+     <string>address</string>
+    </property>
+   </column>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11" />
+ <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>addr</sender>
+   <signal>currentCellChanged(int,int,int,int)</signal>
+   <receiver>FredWindow</receiver>
+   <slot>addr_current_changed(int,int)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>addr</sender>
+   <signal>cellChanged(int,int)</signal>
+   <receiver>FredWindow</receiver>
+   <slot>addr_value_changed(int,int)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

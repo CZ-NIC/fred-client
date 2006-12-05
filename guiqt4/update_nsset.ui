@@ -1,0 +1,505 @@
+<ui version="4.0" >
+ <class>FredWindow</class>
+ <widget class="QWidget" name="FredWindow" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>574</width>
+    <height>1041</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Update NSSET panel</string>
+  </property>
+  <widget class="QLabel" name="textLabel1" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>110</y>
+     <width>160</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>&lt;b>nsset ID&lt;/b></string>
+   </property>
+   <property name="wordWrap" >
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="textLabel2" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>470</y>
+     <width>160</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>technical contact</string>
+   </property>
+   <property name="wordWrap" >
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QFrame" name="frame_add_dns" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>190</y>
+     <width>530</width>
+     <height>270</height>
+    </rect>
+   </property>
+   <property name="frameShape" >
+    <enum>QFrame::Panel</enum>
+   </property>
+   <property name="frameShadow" >
+    <enum>QFrame::Raised</enum>
+   </property>
+  </widget>
+  <widget class="Line" name="line1_2" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>140</y>
+     <width>530</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="frameShape" >
+    <enum>QFrame::HLine</enum>
+   </property>
+   <property name="frameShadow" >
+    <enum>QFrame::Sunken</enum>
+   </property>
+   <property name="orientation" >
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="QLabel" name="textLabel9" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>530</width>
+     <height>90</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>&lt;h2>update_nsset&lt;/h2>
+The EPP "update" command is used to update an instance of an existing object.
+   Names what are not included into disclose list are set to opposite value of the disclose flag value.</string>
+   </property>
+   <property name="alignment" >
+    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+   </property>
+   <property name="wordWrap" >
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="textLabel10" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>160</y>
+     <width>530</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>&lt;h3>Add&lt;/h3></string>
+   </property>
+   <property name="wordWrap" >
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="id" >
+   <property name="geometry" >
+    <rect>
+     <x>180</x>
+     <y>110</y>
+     <width>360</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string/>
+   </property>
+  </widget>
+  <widget class="Line" name="line1_2_2_2" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>970</y>
+     <width>530</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="frameShape" >
+    <enum>QFrame::HLine</enum>
+   </property>
+   <property name="frameShadow" >
+    <enum>QFrame::Sunken</enum>
+   </property>
+   <property name="orientation" >
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="QLabel" name="textLabel3" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>610</y>
+     <width>530</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>&lt;h3>Remove&lt;/h3></string>
+   </property>
+   <property name="wordWrap" >
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="textLabel7" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>910</y>
+     <width>530</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>&lt;h3>Change&lt;/h3></string>
+   </property>
+   <property name="wordWrap" >
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="Line" name="line1_2_2" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>890</y>
+     <width>530</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="frameShape" >
+    <enum>QFrame::HLine</enum>
+   </property>
+   <property name="frameShadow" >
+    <enum>QFrame::Sunken</enum>
+   </property>
+   <property name="orientation" >
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="QLabel" name="textLabel6" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>990</y>
+     <width>160</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>clTRID</string>
+   </property>
+   <property name="wordWrap" >
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="auth_info" >
+   <property name="geometry" >
+    <rect>
+     <x>180</x>
+     <y>940</y>
+     <width>360</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="textLabel4" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>770</y>
+     <width>160</width>
+     <height>100</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>technical contact</string>
+   </property>
+   <property name="alignment" >
+    <set>Qt::AlignTop</set>
+   </property>
+   <property name="wordWrap" >
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="textLabel8" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>940</y>
+     <width>160</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>auth. for transfer</string>
+   </property>
+   <property name="wordWrap" >
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="cltrid" >
+   <property name="geometry" >
+    <rect>
+     <x>180</x>
+     <y>990</y>
+     <width>360</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="Line" name="line1" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>590</y>
+     <width>530</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="frameShape" >
+    <enum>QFrame::HLine</enum>
+   </property>
+   <property name="frameShadow" >
+    <enum>QFrame::Sunken</enum>
+   </property>
+   <property name="orientation" >
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="QTableWidget" name="add_tech" >
+   <property name="geometry" >
+    <rect>
+     <x>180</x>
+     <y>470</y>
+     <width>360</width>
+     <height>110</height>
+    </rect>
+   </property>
+   <property name="frameShape" >
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow" >
+    <enum>QFrame::Sunken</enum>
+   </property>
+   <property name="showGrid" >
+    <bool>true</bool>
+   </property>
+   <property name="rowCount" >
+    <number>1</number>
+   </property>
+   <row/>
+   <column>
+    <property name="text" >
+     <string>technical contact</string>
+    </property>
+   </column>
+  </widget>
+  <widget class="QTableWidget" name="rem_tech" >
+   <property name="geometry" >
+    <rect>
+     <x>180</x>
+     <y>770</y>
+     <width>360</width>
+     <height>110</height>
+    </rect>
+   </property>
+   <property name="frameShape" >
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow" >
+    <enum>QFrame::Sunken</enum>
+   </property>
+   <property name="showGrid" >
+    <bool>true</bool>
+   </property>
+   <property name="rowCount" >
+    <number>1</number>
+   </property>
+   <row/>
+   <column>
+    <property name="text" >
+     <string>technical contact</string>
+    </property>
+   </column>
+  </widget>
+  <widget class="QLabel" name="textLabel5" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>650</y>
+     <width>160</width>
+     <height>100</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>dns name&lt;br>(max 9 names)</string>
+   </property>
+   <property name="alignment" >
+    <set>Qt::AlignTop</set>
+   </property>
+   <property name="wordWrap" >
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QTableWidget" name="rem_dns_name" >
+   <property name="geometry" >
+    <rect>
+     <x>180</x>
+     <y>650</y>
+     <width>360</width>
+     <height>110</height>
+    </rect>
+   </property>
+   <property name="frameShape" >
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow" >
+    <enum>QFrame::Sunken</enum>
+   </property>
+   <property name="showGrid" >
+    <bool>true</bool>
+   </property>
+   <property name="rowCount" >
+    <number>1</number>
+   </property>
+   <row/>
+   <column>
+    <property name="text" >
+     <string>dns name</string>
+    </property>
+   </column>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11" />
+ <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
+ <tabstops>
+  <tabstop>id</tabstop>
+  <tabstop>add_tech</tabstop>
+  <tabstop>rem_dns_name</tabstop>
+  <tabstop>rem_tech</tabstop>
+  <tabstop>auth_info</tabstop>
+  <tabstop>cltrid</tabstop>
+ </tabstops>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>add_tech</sender>
+   <signal>currentCellChanged(int,int,int,int)</signal>
+   <receiver>FredWindow</receiver>
+   <slot>add_tech_current_changed(int,int,int,int)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>add_tech</sender>
+   <signal>cellChanged(int,int)</signal>
+   <receiver>FredWindow</receiver>
+   <slot>add_tech_value_changed(int,int)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rem_dns_name</sender>
+   <signal>currentCellChanged(int,int,int,int)</signal>
+   <receiver>FredWindow</receiver>
+   <slot>rem_dns_name_current_changed(int,int,int,int)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rem_dns_name</sender>
+   <signal>cellChanged(int,int)</signal>
+   <receiver>FredWindow</receiver>
+   <slot>rem_dns_name_value_changed(int,int)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rem_tech</sender>
+   <signal>currentCellChanged(int,int,int,int)</signal>
+   <receiver>FredWindow</receiver>
+   <slot>rem_tech_current_changed(int,int,int,int)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rem_tech</sender>
+   <signal>cellChanged(int,int)</signal>
+   <receiver>FredWindow</receiver>
+   <slot>rem_tech_value_changed(int,int)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
