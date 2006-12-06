@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'create_contact.ui'
 #
-# Created: Tue Dec  5 09:49:57 2006
+# Created: Wed Dec  6 15:38:19 2006
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -121,11 +121,6 @@ class Ui_FredWindow(object):
         self.textLabel16.setWordWrap(False)
         self.textLabel16.setObjectName("textLabel16")
 
-        self.create_contact_street = QtGui.QTableWidget(FredWindow)
-        self.create_contact_street.setGeometry(QtCore.QRect(180,320,360,87))
-        self.create_contact_street.setShowGrid(True)
-        self.create_contact_street.setObjectName("create_contact_street")
-
         self.create_contact_vat = QtGui.QLineEdit(FredWindow)
         self.create_contact_vat.setGeometry(QtCore.QRect(180,690,360,22))
         self.create_contact_vat.setObjectName("create_contact_vat")
@@ -237,8 +232,15 @@ class Ui_FredWindow(object):
         self.textLabel4.setWordWrap(False)
         self.textLabel4.setObjectName("textLabel4")
 
+        self.create_contact_street = QtGui.QTableWidget(FredWindow)
+        self.create_contact_street.setGeometry(QtCore.QRect(180,320,360,87))
+        self.create_contact_street.setShowGrid(True)
+        self.create_contact_street.setObjectName("create_contact_street")
+
         self.retranslateUi(FredWindow)
         QtCore.QObject.connect(self.checkBox8,QtCore.SIGNAL("toggled(bool)"),self.groupBox2.setEnabled)
+        QtCore.QObject.connect(self.create_contact_street,QtCore.SIGNAL("currentCellChanged(int,int,int,int)"),FredWindow.street_current_changed)
+        QtCore.QObject.connect(self.create_contact_street,QtCore.SIGNAL("cellChanged(int,int)"),FredWindow.street_value_changed)
         QtCore.QMetaObject.connectSlotsByName(FredWindow)
         FredWindow.setTabOrder(self.create_contact_id,self.create_contact_name)
         FredWindow.setTabOrder(self.create_contact_name,self.create_contact_email)
@@ -286,13 +288,6 @@ class Ui_FredWindow(object):
         self.textLabel14.setText(QtGui.QApplication.translate("FredWindow", "<b>city</b>", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel15.setText(QtGui.QApplication.translate("FredWindow", "auth. for transfer", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel16.setText(QtGui.QApplication.translate("FredWindow", "<b>name</b>", None, QtGui.QApplication.UnicodeUTF8))
-        self.create_contact_street.clear()
-        self.create_contact_street.setColumnCount(1)
-        self.create_contact_street.setRowCount(0)
-
-        headerItem = QtGui.QTableWidgetItem()
-        headerItem.setText(QtGui.QApplication.translate("FredWindow", "street", None, QtGui.QApplication.UnicodeUTF8))
-        self.create_contact_street.setHorizontalHeaderItem(0,headerItem)
         self.textLabel18.setText(QtGui.QApplication.translate("FredWindow", "organisation name", None, QtGui.QApplication.UnicodeUTF8))
         self.create_contact_org.setToolTip(QtGui.QApplication.translate("FredWindow", "CZ", None, QtGui.QApplication.UnicodeUTF8))
         self.create_contact_org.setWhatsThis(QtGui.QApplication.translate("FredWindow", "pokus", None, QtGui.QApplication.UnicodeUTF8))
@@ -316,4 +311,12 @@ class Ui_FredWindow(object):
         "object can be created for a specific validity period.", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel2.setText(QtGui.QApplication.translate("FredWindow", "<b>contact ID</b>", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel4.setText(QtGui.QApplication.translate("FredWindow", "street", None, QtGui.QApplication.UnicodeUTF8))
+        self.create_contact_street.setRowCount(1)
+        self.create_contact_street.clear()
+        self.create_contact_street.setColumnCount(1)
+        self.create_contact_street.setRowCount(1)
+
+        headerItem = QtGui.QTableWidgetItem()
+        headerItem.setText(QtGui.QApplication.translate("FredWindow", "street", None, QtGui.QApplication.UnicodeUTF8))
+        self.create_contact_street.setHorizontalHeaderItem(0,headerItem)
 

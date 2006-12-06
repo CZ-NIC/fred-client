@@ -354,24 +354,6 @@
     <bool>false</bool>
    </property>
   </widget>
-  <widget class="QTableWidget" name="create_contact_street" >
-   <property name="geometry" >
-    <rect>
-     <x>180</x>
-     <y>320</y>
-     <width>360</width>
-     <height>87</height>
-    </rect>
-   </property>
-   <property name="showGrid" >
-    <bool>true</bool>
-   </property>
-   <column>
-    <property name="text" >
-     <string>street</string>
-    </property>
-   </column>
-  </widget>
   <widget class="QLineEdit" name="create_contact_vat" >
    <property name="geometry" >
     <rect>
@@ -737,6 +719,28 @@ object can be created for a specific validity period.</string>
     <bool>false</bool>
    </property>
   </widget>
+  <widget class="QTableWidget" name="create_contact_street" >
+   <property name="geometry" >
+    <rect>
+     <x>180</x>
+     <y>320</y>
+     <width>360</width>
+     <height>87</height>
+    </rect>
+   </property>
+   <property name="showGrid" >
+    <bool>true</bool>
+   </property>
+   <property name="rowCount" >
+    <number>1</number>
+   </property>
+   <row/>
+   <column>
+    <property name="text" >
+     <string>street</string>
+    </property>
+   </column>
+  </widget>
  </widget>
  <layoutdefault spacing="6" margin="11" />
  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
@@ -781,6 +785,38 @@ object can be created for a specific validity period.</string>
     <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>create_contact_street</sender>
+   <signal>currentCellChanged(int,int,int,int)</signal>
+   <receiver>FredWindow</receiver>
+   <slot>street_current_changed(int,int,int,int)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>359</x>
+     <y>363</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>286</x>
+     <y>445</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>create_contact_street</sender>
+   <signal>cellChanged(int,int)</signal>
+   <receiver>FredWindow</receiver>
+   <slot>street_value_changed(int,int)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>359</x>
+     <y>363</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>286</x>
+     <y>445</y>
     </hint>
    </hints>
   </connection>

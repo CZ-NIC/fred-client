@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'update_contact.ui'
 #
-# Created: Tue Dec  5 17:08:14 2006
+# Created: Wed Dec  6 15:46:20 2006
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -102,56 +102,6 @@ class Ui_FredWindow(object):
         self.update_contact_email.setGeometry(QtCore.QRect(180,520,360,22))
         self.update_contact_email.setObjectName("update_contact_email")
 
-        self.groupBox8 = QtGui.QGroupBox(FredWindow)
-        self.groupBox8.setGeometry(QtCore.QRect(10,200,531,250))
-        self.groupBox8.setObjectName("groupBox8")
-
-        self.textLabel13 = QtGui.QLabel(self.groupBox8)
-        self.textLabel13.setGeometry(QtCore.QRect(10,50,160,20))
-        self.textLabel13.setWordWrap(False)
-        self.textLabel13.setObjectName("textLabel13")
-
-        self.textLabel14 = QtGui.QLabel(self.groupBox8)
-        self.textLabel14.setGeometry(QtCore.QRect(10,80,160,20))
-        self.textLabel14.setWordWrap(False)
-        self.textLabel14.setObjectName("textLabel14")
-
-        self.textLabel15 = QtGui.QLabel(self.groupBox8)
-        self.textLabel15.setGeometry(QtCore.QRect(10,210,160,20))
-        self.textLabel15.setWordWrap(False)
-        self.textLabel15.setObjectName("textLabel15")
-
-        self.textLabel16 = QtGui.QLabel(self.groupBox8)
-        self.textLabel16.setGeometry(QtCore.QRect(10,180,160,20))
-        self.textLabel16.setWordWrap(False)
-        self.textLabel16.setObjectName("textLabel16")
-
-        self.textLabel17 = QtGui.QLabel(self.groupBox8)
-        self.textLabel17.setGeometry(QtCore.QRect(10,20,160,20))
-        self.textLabel17.setWordWrap(False)
-        self.textLabel17.setObjectName("textLabel17")
-
-        self.update_contact_street = QtGui.QTableWidget(self.groupBox8)
-        self.update_contact_street.setGeometry(QtCore.QRect(180,80,330,87))
-        self.update_contact_street.setShowGrid(True)
-        self.update_contact_street.setObjectName("update_contact_street")
-
-        self.update_contact_sp = QtGui.QLineEdit(self.groupBox8)
-        self.update_contact_sp.setGeometry(QtCore.QRect(180,180,330,22))
-        self.update_contact_sp.setObjectName("update_contact_sp")
-
-        self.update_contact_pc = QtGui.QLineEdit(self.groupBox8)
-        self.update_contact_pc.setGeometry(QtCore.QRect(180,210,330,22))
-        self.update_contact_pc.setObjectName("update_contact_pc")
-
-        self.update_contact_cc = QtGui.QLineEdit(self.groupBox8)
-        self.update_contact_cc.setGeometry(QtCore.QRect(180,50,50,22))
-        self.update_contact_cc.setObjectName("update_contact_cc")
-
-        self.update_contact_city = QtGui.QLineEdit(self.groupBox8)
-        self.update_contact_city.setGeometry(QtCore.QRect(180,20,330,22))
-        self.update_contact_city.setObjectName("update_contact_city")
-
         self.groupBox2_2 = QtGui.QGroupBox(FredWindow)
         self.groupBox2_2.setGeometry(QtCore.QRect(180,760,360,90))
         self.groupBox2_2.setObjectName("groupBox2_2")
@@ -236,9 +186,61 @@ class Ui_FredWindow(object):
         self.textLabel3.setWordWrap(False)
         self.textLabel3.setObjectName("textLabel3")
 
+        self.groupBox8 = QtGui.QGroupBox(FredWindow)
+        self.groupBox8.setGeometry(QtCore.QRect(10,200,531,250))
+        self.groupBox8.setObjectName("groupBox8")
+
+        self.textLabel13 = QtGui.QLabel(self.groupBox8)
+        self.textLabel13.setGeometry(QtCore.QRect(10,50,160,20))
+        self.textLabel13.setWordWrap(False)
+        self.textLabel13.setObjectName("textLabel13")
+
+        self.textLabel14 = QtGui.QLabel(self.groupBox8)
+        self.textLabel14.setGeometry(QtCore.QRect(10,80,160,20))
+        self.textLabel14.setWordWrap(False)
+        self.textLabel14.setObjectName("textLabel14")
+
+        self.textLabel15 = QtGui.QLabel(self.groupBox8)
+        self.textLabel15.setGeometry(QtCore.QRect(10,210,160,20))
+        self.textLabel15.setWordWrap(False)
+        self.textLabel15.setObjectName("textLabel15")
+
+        self.textLabel16 = QtGui.QLabel(self.groupBox8)
+        self.textLabel16.setGeometry(QtCore.QRect(10,180,160,20))
+        self.textLabel16.setWordWrap(False)
+        self.textLabel16.setObjectName("textLabel16")
+
+        self.textLabel17 = QtGui.QLabel(self.groupBox8)
+        self.textLabel17.setGeometry(QtCore.QRect(10,20,160,20))
+        self.textLabel17.setWordWrap(False)
+        self.textLabel17.setObjectName("textLabel17")
+
+        self.update_contact_sp = QtGui.QLineEdit(self.groupBox8)
+        self.update_contact_sp.setGeometry(QtCore.QRect(180,180,330,22))
+        self.update_contact_sp.setObjectName("update_contact_sp")
+
+        self.update_contact_pc = QtGui.QLineEdit(self.groupBox8)
+        self.update_contact_pc.setGeometry(QtCore.QRect(180,210,330,22))
+        self.update_contact_pc.setObjectName("update_contact_pc")
+
+        self.update_contact_cc = QtGui.QLineEdit(self.groupBox8)
+        self.update_contact_cc.setGeometry(QtCore.QRect(180,50,50,22))
+        self.update_contact_cc.setObjectName("update_contact_cc")
+
+        self.update_contact_city = QtGui.QLineEdit(self.groupBox8)
+        self.update_contact_city.setGeometry(QtCore.QRect(180,20,330,22))
+        self.update_contact_city.setObjectName("update_contact_city")
+
+        self.update_contact_street = QtGui.QTableWidget(self.groupBox8)
+        self.update_contact_street.setGeometry(QtCore.QRect(180,80,330,87))
+        self.update_contact_street.setShowGrid(True)
+        self.update_contact_street.setObjectName("update_contact_street")
+
         self.retranslateUi(FredWindow)
         QtCore.QObject.connect(self.disclose,QtCore.SIGNAL("toggled(bool)"),self.grp_disclose.setEnabled)
         QtCore.QObject.connect(self.disclose,QtCore.SIGNAL("toggled(bool)"),self.grp_disclose.setEnabled)
+        QtCore.QObject.connect(self.update_contact_street,QtCore.SIGNAL("currentCellChanged(int,int,int,int)"),FredWindow.street_current_changed)
+        QtCore.QObject.connect(self.update_contact_street,QtCore.SIGNAL("cellChanged(int,int)"),FredWindow.street_value_changed)
         QtCore.QMetaObject.connectSlotsByName(FredWindow)
         FredWindow.setTabOrder(self.update_contact_id,self.update_contact_name)
         FredWindow.setTabOrder(self.update_contact_name,self.update_contact_org)
@@ -286,19 +288,6 @@ class Ui_FredWindow(object):
         self.textLabel12.setText(QtGui.QApplication.translate("FredWindow", "notify email", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel9.setText(QtGui.QApplication.translate("FredWindow", "auth. for transfer", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel7.setText(QtGui.QApplication.translate("FredWindow", "+420.123456789", None, QtGui.QApplication.UnicodeUTF8))
-        self.groupBox8.setTitle(QtGui.QApplication.translate("FredWindow", "address", None, QtGui.QApplication.UnicodeUTF8))
-        self.textLabel13.setText(QtGui.QApplication.translate("FredWindow", "<b>country code</b>", None, QtGui.QApplication.UnicodeUTF8))
-        self.textLabel14.setText(QtGui.QApplication.translate("FredWindow", "street", None, QtGui.QApplication.UnicodeUTF8))
-        self.textLabel15.setText(QtGui.QApplication.translate("FredWindow", "postal code", None, QtGui.QApplication.UnicodeUTF8))
-        self.textLabel16.setText(QtGui.QApplication.translate("FredWindow", "state or province", None, QtGui.QApplication.UnicodeUTF8))
-        self.textLabel17.setText(QtGui.QApplication.translate("FredWindow", "<b>city</b>", None, QtGui.QApplication.UnicodeUTF8))
-        self.update_contact_street.clear()
-        self.update_contact_street.setColumnCount(1)
-        self.update_contact_street.setRowCount(0)
-
-        headerItem = QtGui.QTableWidgetItem()
-        headerItem.setText(QtGui.QApplication.translate("FredWindow", "street", None, QtGui.QApplication.UnicodeUTF8))
-        self.update_contact_street.setHorizontalHeaderItem(0,headerItem)
         self.textLabel19.setText(QtGui.QApplication.translate("FredWindow", "number", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel20.setText(QtGui.QApplication.translate("FredWindow", "type", None, QtGui.QApplication.UnicodeUTF8))
         self.update_contact_ssn_type.addItem(QtGui.QApplication.translate("FredWindow", "op", None, QtGui.QApplication.UnicodeUTF8))
@@ -317,4 +306,18 @@ class Ui_FredWindow(object):
         "The EPP \"update\" command is used to update an instance of an existing object.\n"
         "   Names what are not included into disclose list are set to opposite value of the disclose flag value.", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel3.setText(QtGui.QApplication.translate("FredWindow", "organisation name", None, QtGui.QApplication.UnicodeUTF8))
+        self.groupBox8.setTitle(QtGui.QApplication.translate("FredWindow", "address", None, QtGui.QApplication.UnicodeUTF8))
+        self.textLabel13.setText(QtGui.QApplication.translate("FredWindow", "<b>country code</b>", None, QtGui.QApplication.UnicodeUTF8))
+        self.textLabel14.setText(QtGui.QApplication.translate("FredWindow", "street", None, QtGui.QApplication.UnicodeUTF8))
+        self.textLabel15.setText(QtGui.QApplication.translate("FredWindow", "postal code", None, QtGui.QApplication.UnicodeUTF8))
+        self.textLabel16.setText(QtGui.QApplication.translate("FredWindow", "state or province", None, QtGui.QApplication.UnicodeUTF8))
+        self.textLabel17.setText(QtGui.QApplication.translate("FredWindow", "<b>city</b>", None, QtGui.QApplication.UnicodeUTF8))
+        self.update_contact_street.setRowCount(1)
+        self.update_contact_street.clear()
+        self.update_contact_street.setColumnCount(1)
+        self.update_contact_street.setRowCount(1)
+
+        headerItem = QtGui.QTableWidgetItem()
+        headerItem.setText(QtGui.QApplication.translate("FredWindow", "street", None, QtGui.QApplication.UnicodeUTF8))
+        self.update_contact_street.setHorizontalHeaderItem(0,headerItem)
 

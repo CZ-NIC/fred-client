@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'main.ui'
 #
-# Created: Wed Dec  6 11:09:09 2006
+# Created: Wed Dec  6 15:26:01 2006
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -627,15 +627,15 @@ class Ui_FredWindow(object):
         self.tab8 = QtGui.QWidget()
         self.tab8.setObjectName("tab8")
 
-        self.frame_create_contact = QtGui.QFrame(self.tab8)
-        self.frame_create_contact.setGeometry(QtCore.QRect(0,0,590,290))
-        self.frame_create_contact.setFrameShape(QtGui.QFrame.NoFrame)
-        self.frame_create_contact.setFrameShadow(QtGui.QFrame.Raised)
-        self.frame_create_contact.setObjectName("frame_create_contact")
-
         self.send_create_contact = QtGui.QPushButton(self.tab8)
         self.send_create_contact.setGeometry(QtCore.QRect(180,290,170,40))
         self.send_create_contact.setObjectName("send_create_contact")
+
+        self.frame_create_contact = QtGui.QFrame(self.tab8)
+        self.frame_create_contact.setGeometry(QtCore.QRect(0,0,595,290))
+        self.frame_create_contact.setFrameShape(QtGui.QFrame.NoFrame)
+        self.frame_create_contact.setFrameShadow(QtGui.QFrame.Raised)
+        self.frame_create_contact.setObjectName("frame_create_contact")
         self.create_contact_response.addTab(self.tab8,"")
 
         self.TabPage12 = QtGui.QWidget()
@@ -687,15 +687,15 @@ class Ui_FredWindow(object):
         self.tab9 = QtGui.QWidget()
         self.tab9.setObjectName("tab9")
 
-        self.frame_update_contact = QtGui.QFrame(self.tab9)
-        self.frame_update_contact.setGeometry(QtCore.QRect(0,0,590,290))
-        self.frame_update_contact.setFrameShape(QtGui.QFrame.NoFrame)
-        self.frame_update_contact.setFrameShadow(QtGui.QFrame.Raised)
-        self.frame_update_contact.setObjectName("frame_update_contact")
-
         self.send_update_contact = QtGui.QPushButton(self.tab9)
         self.send_update_contact.setGeometry(QtCore.QRect(180,290,170,40))
         self.send_update_contact.setObjectName("send_update_contact")
+
+        self.frame_update_contact = QtGui.QFrame(self.tab9)
+        self.frame_update_contact.setGeometry(QtCore.QRect(0,0,595,290))
+        self.frame_update_contact.setFrameShape(QtGui.QFrame.NoFrame)
+        self.frame_update_contact.setFrameShadow(QtGui.QFrame.Raised)
+        self.frame_update_contact.setObjectName("frame_update_contact")
         self.update_contact_response.addTab(self.tab9,"")
 
         self.TabPage14 = QtGui.QWidget()
@@ -1238,15 +1238,15 @@ class Ui_FredWindow(object):
         self.tab17 = QtGui.QWidget()
         self.tab17.setObjectName("tab17")
 
-        self.frame_create_nsset = QtGui.QFrame(self.tab17)
-        self.frame_create_nsset.setGeometry(QtCore.QRect(0,0,590,290))
-        self.frame_create_nsset.setFrameShape(QtGui.QFrame.NoFrame)
-        self.frame_create_nsset.setFrameShadow(QtGui.QFrame.Raised)
-        self.frame_create_nsset.setObjectName("frame_create_nsset")
-
         self.send_create_nsset = QtGui.QPushButton(self.tab17)
         self.send_create_nsset.setGeometry(QtCore.QRect(180,290,170,40))
         self.send_create_nsset.setObjectName("send_create_nsset")
+
+        self.frame_create_nsset = QtGui.QFrame(self.tab17)
+        self.frame_create_nsset.setGeometry(QtCore.QRect(0,0,595,290))
+        self.frame_create_nsset.setFrameShape(QtGui.QFrame.NoFrame)
+        self.frame_create_nsset.setFrameShadow(QtGui.QFrame.Raised)
+        self.frame_create_nsset.setObjectName("frame_create_nsset")
         self.create_nsset_response.addTab(self.tab17,"")
 
         self.TabPage28 = QtGui.QWidget()
@@ -1298,15 +1298,15 @@ class Ui_FredWindow(object):
         self.tab18 = QtGui.QWidget()
         self.tab18.setObjectName("tab18")
 
-        self.frame_update_nsset = QtGui.QFrame(self.tab18)
-        self.frame_update_nsset.setGeometry(QtCore.QRect(0,0,590,290))
-        self.frame_update_nsset.setFrameShape(QtGui.QFrame.NoFrame)
-        self.frame_update_nsset.setFrameShadow(QtGui.QFrame.Raised)
-        self.frame_update_nsset.setObjectName("frame_update_nsset")
-
         self.send_update_nsset = QtGui.QPushButton(self.tab18)
         self.send_update_nsset.setGeometry(QtCore.QRect(180,290,170,40))
         self.send_update_nsset.setObjectName("send_update_nsset")
+
+        self.frame_update_nsset = QtGui.QFrame(self.tab18)
+        self.frame_update_nsset.setGeometry(QtCore.QRect(0,0,595,290))
+        self.frame_update_nsset.setFrameShape(QtGui.QFrame.NoFrame)
+        self.frame_update_nsset.setFrameShadow(QtGui.QFrame.Raised)
+        self.frame_update_nsset.setObjectName("frame_update_nsset")
         self.update_nsset_response.addTab(self.tab18,"")
 
         self.TabPage30 = QtGui.QWidget()
@@ -1762,15 +1762,15 @@ class Ui_FredWindow(object):
         self.tab25 = QtGui.QWidget()
         self.tab25.setObjectName("tab25")
 
-        self.frame_create_domain = QtGui.QFrame(self.tab25)
-        self.frame_create_domain.setGeometry(QtCore.QRect(0,0,590,290))
-        self.frame_create_domain.setFrameShape(QtGui.QFrame.NoFrame)
-        self.frame_create_domain.setFrameShadow(QtGui.QFrame.Raised)
-        self.frame_create_domain.setObjectName("frame_create_domain")
-
         self.send_create_domain = QtGui.QPushButton(self.tab25)
         self.send_create_domain.setGeometry(QtCore.QRect(220,290,170,40))
         self.send_create_domain.setObjectName("send_create_domain")
+
+        self.frame_create_domain = QtGui.QFrame(self.tab25)
+        self.frame_create_domain.setGeometry(QtCore.QRect(0,0,595,290))
+        self.frame_create_domain.setFrameShape(QtGui.QFrame.NoFrame)
+        self.frame_create_domain.setFrameShadow(QtGui.QFrame.Raised)
+        self.frame_create_domain.setObjectName("frame_create_domain")
         self.create_domain_response.addTab(self.tab25,"")
 
         self.TabPage42 = QtGui.QWidget()
@@ -1822,15 +1822,15 @@ class Ui_FredWindow(object):
         self.tab26 = QtGui.QWidget()
         self.tab26.setObjectName("tab26")
 
-        self.frame_update_domain = QtGui.QFrame(self.tab26)
-        self.frame_update_domain.setGeometry(QtCore.QRect(0,0,590,290))
-        self.frame_update_domain.setFrameShape(QtGui.QFrame.NoFrame)
-        self.frame_update_domain.setFrameShadow(QtGui.QFrame.Raised)
-        self.frame_update_domain.setObjectName("frame_update_domain")
-
         self.send_update_domain = QtGui.QPushButton(self.tab26)
         self.send_update_domain.setGeometry(QtCore.QRect(220,290,170,40))
         self.send_update_domain.setObjectName("send_update_domain")
+
+        self.frame_update_domain = QtGui.QFrame(self.tab26)
+        self.frame_update_domain.setGeometry(QtCore.QRect(0,0,595,290))
+        self.frame_update_domain.setFrameShape(QtGui.QFrame.NoFrame)
+        self.frame_update_domain.setFrameShadow(QtGui.QFrame.Raised)
+        self.frame_update_domain.setObjectName("frame_update_domain")
         self.update_domain_response.addTab(self.tab26,"")
 
         self.TabPage44 = QtGui.QWidget()

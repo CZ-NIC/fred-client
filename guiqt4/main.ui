@@ -1798,22 +1798,6 @@ specified using the EPP extension framework.</string>
         <attribute name="title" >
          <string>command</string>
         </attribute>
-        <widget class="QFrame" name="frame_create_contact" >
-         <property name="geometry" >
-          <rect>
-           <x>0</x>
-           <y>0</y>
-           <width>590</width>
-           <height>290</height>
-          </rect>
-         </property>
-         <property name="frameShape" >
-          <enum>QFrame::NoFrame</enum>
-         </property>
-         <property name="frameShadow" >
-          <enum>QFrame::Raised</enum>
-         </property>
-        </widget>
         <widget class="QPushButton" name="send_create_contact" >
          <property name="geometry" >
           <rect>
@@ -1825,6 +1809,22 @@ specified using the EPP extension framework.</string>
          </property>
          <property name="text" >
           <string>Send command</string>
+         </property>
+        </widget>
+        <widget class="QFrame" name="frame_create_contact" >
+         <property name="geometry" >
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>595</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="frameShape" >
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow" >
+          <enum>QFrame::Raised</enum>
          </property>
         </widget>
        </widget>
@@ -1971,22 +1971,6 @@ specified using the EPP extension framework.</string>
         <attribute name="title" >
          <string>command</string>
         </attribute>
-        <widget class="QFrame" name="frame_update_contact" >
-         <property name="geometry" >
-          <rect>
-           <x>0</x>
-           <y>0</y>
-           <width>590</width>
-           <height>290</height>
-          </rect>
-         </property>
-         <property name="frameShape" >
-          <enum>QFrame::NoFrame</enum>
-         </property>
-         <property name="frameShadow" >
-          <enum>QFrame::Raised</enum>
-         </property>
-        </widget>
         <widget class="QPushButton" name="send_update_contact" >
          <property name="geometry" >
           <rect>
@@ -1998,6 +1982,22 @@ specified using the EPP extension framework.</string>
          </property>
          <property name="text" >
           <string>Send command</string>
+         </property>
+        </widget>
+        <widget class="QFrame" name="frame_update_contact" >
+         <property name="geometry" >
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>595</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="frameShape" >
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow" >
+          <enum>QFrame::Raised</enum>
          </property>
         </widget>
        </widget>
@@ -3581,22 +3581,6 @@ specified using the EPP extension framework.</string>
         <attribute name="title" >
          <string>command</string>
         </attribute>
-        <widget class="QFrame" name="frame_create_nsset" >
-         <property name="geometry" >
-          <rect>
-           <x>0</x>
-           <y>0</y>
-           <width>590</width>
-           <height>290</height>
-          </rect>
-         </property>
-         <property name="frameShape" >
-          <enum>QFrame::NoFrame</enum>
-         </property>
-         <property name="frameShadow" >
-          <enum>QFrame::Raised</enum>
-         </property>
-        </widget>
         <widget class="QPushButton" name="send_create_nsset" >
          <property name="geometry" >
           <rect>
@@ -3608,6 +3592,22 @@ specified using the EPP extension framework.</string>
          </property>
          <property name="text" >
           <string>Send command</string>
+         </property>
+        </widget>
+        <widget class="QFrame" name="frame_create_nsset" >
+         <property name="geometry" >
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>595</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="frameShape" >
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow" >
+          <enum>QFrame::Raised</enum>
          </property>
         </widget>
        </widget>
@@ -3754,22 +3754,6 @@ specified using the EPP extension framework.</string>
         <attribute name="title" >
          <string>command</string>
         </attribute>
-        <widget class="QFrame" name="frame_update_nsset" >
-         <property name="geometry" >
-          <rect>
-           <x>0</x>
-           <y>0</y>
-           <width>590</width>
-           <height>290</height>
-          </rect>
-         </property>
-         <property name="frameShape" >
-          <enum>QFrame::NoFrame</enum>
-         </property>
-         <property name="frameShadow" >
-          <enum>QFrame::Raised</enum>
-         </property>
-        </widget>
         <widget class="QPushButton" name="send_update_nsset" >
          <property name="geometry" >
           <rect>
@@ -3781,6 +3765,22 @@ specified using the EPP extension framework.</string>
          </property>
          <property name="text" >
           <string>Send command</string>
+         </property>
+        </widget>
+        <widget class="QFrame" name="frame_update_nsset" >
+         <property name="geometry" >
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>595</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="frameShape" >
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow" >
+          <enum>QFrame::Raised</enum>
          </property>
         </widget>
        </widget>
@@ -5109,22 +5109,6 @@ specified using the EPP extension framework.</string>
         <attribute name="title" >
          <string>command</string>
         </attribute>
-        <widget class="QFrame" name="frame_create_domain" >
-         <property name="geometry" >
-          <rect>
-           <x>0</x>
-           <y>0</y>
-           <width>590</width>
-           <height>290</height>
-          </rect>
-         </property>
-         <property name="frameShape" >
-          <enum>QFrame::NoFrame</enum>
-         </property>
-         <property name="frameShadow" >
-          <enum>QFrame::Raised</enum>
-         </property>
-        </widget>
         <widget class="QPushButton" name="send_create_domain" >
          <property name="geometry" >
           <rect>
@@ -5136,6 +5120,22 @@ specified using the EPP extension framework.</string>
          </property>
          <property name="text" >
           <string>Send command</string>
+         </property>
+        </widget>
+        <widget class="QFrame" name="frame_create_domain" >
+         <property name="geometry" >
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>595</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="frameShape" >
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow" >
+          <enum>QFrame::Raised</enum>
          </property>
         </widget>
        </widget>
@@ -5282,22 +5282,6 @@ specified using the EPP extension framework.</string>
         <attribute name="title" >
          <string>command</string>
         </attribute>
-        <widget class="QFrame" name="frame_update_domain" >
-         <property name="geometry" >
-          <rect>
-           <x>0</x>
-           <y>0</y>
-           <width>590</width>
-           <height>290</height>
-          </rect>
-         </property>
-         <property name="frameShape" >
-          <enum>QFrame::NoFrame</enum>
-         </property>
-         <property name="frameShadow" >
-          <enum>QFrame::Raised</enum>
-         </property>
-        </widget>
         <widget class="QPushButton" name="send_update_domain" >
          <property name="geometry" >
           <rect>
@@ -5309,6 +5293,22 @@ specified using the EPP extension framework.</string>
          </property>
          <property name="text" >
           <string>Send command</string>
+         </property>
+        </widget>
+        <widget class="QFrame" name="frame_update_domain" >
+         <property name="geometry" >
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>595</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="frameShape" >
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow" >
+          <enum>QFrame::Raised</enum>
          </property>
         </widget>
        </widget>
