@@ -14,6 +14,7 @@ class FredWindowDNS(QtGui.QWidget):
         self.ui.addr.horizontalHeader().resizeSection(0,320)
         self._addr_item = QtCore.QString()
         self.ui.label_dns_name.setText(self.ui.label_dns_name.text()+' [%d/%d]'%rpos)
+        self.setFixedSize(490,157)
 
     def addr_current_changed(self,r,c,x,y):
         self._addr_item = table_current_changed(self.ui.addr, r, c)
