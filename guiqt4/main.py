@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import sys
 import os
+import re
 
 #====================================
 #
@@ -174,7 +175,7 @@ class FredWindow(QtGui.QDialog):
         if len(errors):
             msg.append('<b style="color:red">%s</b>'%'\n'.join(errors))
         getattr(self.ui,'%s_code'%prefix).setText(code)
-        getattr(self.ui,'%s_msg'%prefix).setText('<br>\n'.join(msg))
+        getattr(self.ui,'%s_msg'%prefix).setText(u'<br>\n'.join(map(get_unicode,msg)))
         if not table and getattr(self.ui, '%s_table'%prefix, None):
             table = (2,(self.__tr('name'),self.__tr('value')),(140,260),None,None)
         if table:
@@ -674,13 +675,13 @@ class FredWindow(QtGui.QDialog):
         'Display sources of command'
         wnd = wndSources(self)
         if self.src.has_key(command_name):
-            wnd.ui.message.setText(u'<b>%s</b> %s'%(command_name,self.__tr('sources')))
+            wnd.ui.message.setText(u'%s %s'%(command_name,self.__tr('sources'))) ## u'<b>%s</b> %s'
             src = self.src[command_name]
             wnd.ui.command_line.setText(src[0])
             wnd.ui.command.setText(fred.session_transfer.human_readable(src[1]))
             wnd.ui.response.setText(fred.session_transfer.human_readable(src[2]))
         else:
-            wnd.ui.message.setText(u'<b>%s</b> %s'%(command_name,self.__tr('Sources are not available now. Run command at first.')))
+            wnd.ui.message.setText(u'%s %s'%(command_name,self.__tr('Sources are not available now. Run command at first.')))
         wnd.setModal(True)
         wnd.show()
         

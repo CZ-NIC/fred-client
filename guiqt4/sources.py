@@ -6,7 +6,7 @@ from ui_sources import Ui_FredWindow
 class FredWindow(QtGui.QDialog):
 
     def __init__(self, parent=None):
-        QtGui.QWidget.__init__(self, parent)
+        QtGui.QDialog.__init__(self, parent)
         self.ui = Ui_FredWindow()
         self.ui.setupUi(self)
 
