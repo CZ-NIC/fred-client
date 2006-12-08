@@ -499,8 +499,8 @@ def __check_equality__(cols, data):
     ##    'domain:renew': u'2009-08-10', 
     ##    'domain:contact.type': u'admin'}
     ##____________________________________________________________
-    ref_value = epp_cli._epp.get_config_value('connect','username')
-    unitest_share.err_not_equal(errors, data, 'domain:clID', ref_value)
+    username, password = epp_cli._epp.get_actual_username_and_password()
+    unitest_share.err_not_equal(errors, data, 'domain:clID', username)
     unitest_share.err_not_equal(errors, data, 'domain:name', cols['name'])
     unitest_share.err_not_equal(errors, data, 'domain:nsset', cols['nsset'])
     unitest_share.err_not_equal(errors, data, 'domain:authInfo', cols['auth_info'])

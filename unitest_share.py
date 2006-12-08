@@ -4,6 +4,8 @@
     -s --session  HOST session
     -l --lang     language version
     -g --log      name of log file
+    -x  --no_validate 
+                    disable validation of the XML against schemas
     -h --help     this help
 """
 import sys, re, time

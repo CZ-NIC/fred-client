@@ -31,7 +31,7 @@ except ImportError:
     sys.path.insert(0,'../')
     try:
         import fred
-    except ImportError, msg:
+    except ImportError, e:
         sys.stderr.writelines(
             ( 'Missing module: ',str(e),'\n',
              'For runnig this application you need install fred module. See README and INSATLL.\n'
@@ -65,6 +65,7 @@ class FredWindow(QtGui.QDialog):
 
     def __init__(self, epp_client, parent=None):
         QtGui.QWidget.__init__(self, parent)
+        os.chdir(os.path.dirname(__file__)) # needs for correct load images
         self.ui = uiMainWindow()
         self.ui.setupUi(self)
         self.setFixedSize(694,656)
@@ -75,8 +76,7 @@ class FredWindow(QtGui.QDialog):
         # load data for connection
         #--------------------------------------        
         data = map(lambda v: v is not None and v or '', self.epp._epp.get_connect_defaults())
-        username = self.epp._epp.get_config_value(self.epp._epp._section_epp_login, 'username',1)
-        password = self.epp._epp.get_config_value(self.epp._epp._section_epp_login, 'password',1)
+        username, password = self.epp._epp.get_actual_username_and_password()
         self.ui.connect_host.setText(data[0])
         self.ui.connect_port.setText(str(data[1]))
         self.ui.connect_private_key.setText(data[2])

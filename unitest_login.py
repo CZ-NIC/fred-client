@@ -57,8 +57,7 @@ class TestLogin(unittest.TestCase):
 
         epp_cli = fred.Client()
         epp_cli._epp.load_config()
-        USERNAME = epp_cli._epp.get_config_value(epp_cli._epp._section_epp_login,'username')
-        PASSWORD = epp_cli._epp.get_config_value(epp_cli._epp._section_epp_login,'password')
+        USERNAME, PASSWORD = epp_cli._epp.get_actual_username_and_password()
         self.assert_(USERNAME, 'USERNAME missing')
         self.assert_(PASSWORD, 'PASSWORD missing')
         # logovací soubor

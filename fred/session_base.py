@@ -109,6 +109,13 @@ class ManagerBase:
             self._session[OUTPUT_TYPE] = self.get_valid_output(key)
         if op['no_validate']: self._session[VALIDATE] = 0
 
+    def get_actual_username_and_password(self):
+        'Returns tuple (username, password) what was used to login'
+        return (
+            self.get_config_value(self._section_epp_login,'username',OMIT_ERROR),
+            self.get_config_value(self._section_epp_login,'password',OMIT_ERROR),
+        )
+
     def fill_missing_required(self, section_connect):
         'Fill missing required valurs by defaults.'
         for key in ('port','timeout'):

@@ -523,7 +523,7 @@ Parametry, které jsou &lt;b&gt;tučně&lt;/b&gt;, jsou &lt;b&gt;povinné&lt;/b&
     </message>
     <message>
         <source>&lt;b&gt;private key&lt;/b&gt;</source>
-        <translation>&lt;p&gt;privátní klíč&lt;/p&gt;</translation>
+        <translation>&lt;b&gt;privátní klíč&lt;/b&gt;</translation>
     </message>
     <message>
         <source>&amp;Welcome</source>
