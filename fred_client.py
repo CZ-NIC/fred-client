@@ -34,9 +34,8 @@ if __name__ == '__main__':
                    Send command to server and exit
   -o OUTPUT_TYPE, --output=OUTPUT_TYPE
                    Display output as text (default), html, php"""),
-    '', # GUI dislabled
-##   _T("""  -q,  --qt
-##                   Run client in Qt GUI"""),
+   _T("""  -q,  --qt
+                   Run client in Qt4 GUI"""),
             _T('For more information, see README.'))
         elif options['version']:
             epp = fred.ClientSession()
@@ -56,7 +55,7 @@ if __name__ == '__main__':
                     else:
                         print 'Internal error: epp_doc, xml_error = fred_create.main(options[command])'
             elif options['qt']:
-                from guiqt.main import main
+                from guiqt4.main import main
                 main([],options['lang'])
             else:
                 import fred.console

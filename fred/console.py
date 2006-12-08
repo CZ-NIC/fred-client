@@ -126,7 +126,10 @@ def main(options):
                 online = '%s@%s> '%epp.get_username_and_host()
         try:
             command = raw_input(online).strip()
-        except (KeyboardInterrupt, EOFError):
+        except KeyboardInterrupt: # Ctrl+C
+            break
+        except EOFError: # Ctrl+D
+            epp.send_logout()
             break
         if command == '': continue
         if command in ('q','quit','exit'):
