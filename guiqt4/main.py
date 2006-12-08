@@ -73,18 +73,6 @@ class FredWindow(QtGui.QDialog):
         self.missing_required = []
         self.src = {} # {'command_name':['command line','XML source','XML response'], ...}
         #--------------------------------------        
-        # load data for connection
-        #--------------------------------------        
-        data = map(lambda v: v is not None and v or '', self.epp._epp.get_connect_defaults())
-        username, password = self.epp._epp.get_actual_username_and_password()
-        self.ui.connect_host.setText(data[0])
-        self.ui.connect_port.setText(str(data[1]))
-        self.ui.connect_private_key.setText(data[2])
-        self.ui.connect_certificate.setText(data[3])
-        self.ui.connect_timeout.setText(data[4])
-        if username: self.ui.login_username.setText(username)
-        if password: self.ui.login_password.setText(password)
-        #--------------------------------------        
         # scrolled windows
         #--------------------------------------        
         self.panel_create_contact = self.__add_scroll__(self.ui.frame_create_contact, wndCreateContact)
@@ -110,6 +98,43 @@ class FredWindow(QtGui.QDialog):
         self.ui.renew_domain_val_ex_date.setDate(curd)
         self.panel_create_domain.ui.val_ex_date.setDate(curd)
         self.panel_update_domain.ui.val_ex_date.setDate(curd)
+        # INIT
+        self.load_config_and_autologin()
+        
+
+    def load_config_and_autologin(self):
+        'load data for connection'
+        if not self.epp.load_config():
+            self.display_error(self.epp._epp._errors, self.__tr('Load configuration file failed.'))
+            return
+        data = map(lambda v: v is not None and v or '', self.epp._epp.get_connect_defaults())
+        username, password = self.epp._epp.get_actual_username_and_password()
+        self.ui.connect_host.setText(data[0])
+        self.ui.connect_port.setText(str(data[1]))
+        self.ui.connect_private_key.setText(data[2])
+        self.ui.connect_certificate.setText(data[3])
+        self.ui.connect_timeout.setText(data[4])
+        if username: self.ui.login_username.setText(username)
+        if password: self.ui.login_password.setText(password)
+
+#    def event(self, event):
+#        #print LABEL_EVENT.get(event.type(),event.type()) #+++
+#        if event.type() == QtCore.QEvent.ActivationChange:
+#            if self._init_application:
+#                self._init_application = 0 # run only once at the begining
+#                #--------------------------------------        
+#                # load data for connection
+#                #--------------------------------------        
+#                data = map(lambda v: v is not None and v or '', self.epp._epp.get_connect_defaults())
+#                username, password = self.epp._epp.get_actual_username_and_password()
+#                self.ui.connect_host.setText(data[0])
+#                self.ui.connect_port.setText(str(data[1]))
+#                self.ui.connect_private_key.setText(data[2])
+#                self.ui.connect_certificate.setText(data[3])
+#                self.ui.connect_timeout.setText(data[4])
+#                if username: self.ui.login_username.setText(username)
+#                if password: self.ui.login_password.setText(password)
+#        return QtGui.QWidget.event(self, event)
 
     def __tr(self, text):
         return QtGui.QApplication.translate("FredWindow", text, None, QtGui.QApplication.UnicodeUTF8)
@@ -182,6 +207,9 @@ class FredWindow(QtGui.QDialog):
             columns, labels, col_sizes, only_key, count_rows = table
             wtab = getattr(self.ui, '%s_table'%prefix)
             data = dct_answer.get('data',{})
+            if re.match('\w+:check',dct_answer.get('command')):
+                # overwrite number status by reason message
+                data = overwrite_status_by_reason_message(data)
             for pos in range(columns):
                 header = wtab.horizontalHeaderItem(pos)
                 header.setText(labels[pos])
@@ -247,7 +275,7 @@ class FredWindow(QtGui.QDialog):
     def check_is_online(self):
         'Check online. True - online / False - offline.'
         ret = self.epp.is_logon()
-        if not ret: self.display_error(self.__tr('You are not logged. First do login.'))
+        if not ret: self.display_error(self.__tr('You are not logged. First do login.'), self.__tr('Offline'))
         return ret
 
     #-----------------------------------------------
@@ -290,7 +318,7 @@ class FredWindow(QtGui.QDialog):
         append_key(d,'cltrid', getattr(self.ui,'%s_cltrid'%key))
         if self.__check_required__(d, (('name',self.__tr('name')),)):
             if extends == SPLIT_NAME:
-                d['name'] = re.split('\s+',d['name']) # need for check commands
+                d['name'] = re.split('[,;\s]+',d['name']) # need for check commands
             try:
                 getattr(self.epp,key)(d['name'], d.get('cltrid'))
             except fred.FredError, err:
@@ -756,7 +784,25 @@ class FredWindow(QtGui.QDialog):
         wnd.connect(btn,QtCore.SIGNAL("clicked()"),wnd.close)
         edit.setMinimumSize(500, 300)
         wnd.show()
-        
+
+def overwrite_status_by_reason_message(data):
+    """Modification for object:check answers:
+    Data must be dict type and source like this:
+        cid:test                 1
+        cid:test:reason     Available
+    is modified to:
+        cid:test                 Available
+    """
+    msg = {}
+    patt_reason = re.compile('.+:reason', re.I)
+    for key,status in data.items():
+        if patt_reason.match(key): continue
+        reason = data.get('%s:reason'%key)
+        if reason:
+            msg[key] = reason
+        else:
+            msg[key] = status
+    return msg
 
 def get_str(qtstr):
     'Translate QString. Trip whitespaces at the begining and end. Returns string in local charset.'
@@ -821,9 +867,12 @@ def count_data_rows(dct):
 
 def main(argv, lang):
     epp = fred.Client()
-    if not epp.load_config():
-        epp._epp.display()
-        return
+#    if not epp.load_config():
+#        epp._epp.display()
+#        return
+#    if not epp._epp.automatic_login():
+#        epp.display() # display errors or notes
+#        return
     app = QtGui.QApplication(sys.argv)
     tr = QtCore.QTranslator()
     modul_trans = os.path.join(os.path.split(__file__)[0],'%s%s'%(translation_prefix,lang))
@@ -833,6 +882,36 @@ def main(argv, lang):
     window.show()
     sys.exit(app.exec_())
 
+# === FOR TEST ONLY === !!!
+#PyQt4.QtCore.QChildEvent
+#PyQt4.QtCore.QEvent
+#QEvent::
+#LABEL_EVENT = {
+#    8: 'FocusIn - Widget gains keyboard focus.',
+#    10: 'Enter - Mouse enters widget\'s boundaries.',
+#    11: 'Leave - Mouse leaves widget\'s boundaries.',
+#    12: 'Paint - Screen update necessary (QPaintEvent).',
+#    13: 'Move',
+#    14: 'Resize - Widget\'s size changed (QResizeEvent).',
+#    17: 'Show - Widget was shown on screen (QShowEvent).',
+#    18: 'Hide - Widget was hidden (QHideEvent).',
+#    19: 'Close - Widget was closed (QCloseEvent).',
+#    24: 'WindowActivate', ##!!!
+#    25: 'WindowDeactivate - Window was deactivated.',
+#    26: 'ShowToParent - A child widget has been shown.',
+#    27: 'HideToParent - A child widget has been hidden.',
+#    33: 'WindowTitleChange',
+#    68: 'ChildAdded',
+#    69: 'ChildPolished',
+#    70: '70 nenasel jsem v tabulce',
+#    71: 'ChildRemoved - An object loses a child (QChildEvent).',
+#    74: 'PolishRequest - The widget should be polished.',
+#    75: 'Polish - The widget is polished.',
+#    76: 'LayoutRequest',
+#    77: 'Widget layout needs to be redone.',
+#    99: 'ActivationChange - A widget\'s top-level window activation state has changed.', #!!!
+#    110: 'ToolTip - A tooltip was requested (QHelpEvent).',
+#    }
 
 if __name__ == '__main__':
     msg_invalid = fred.check_python_version()
