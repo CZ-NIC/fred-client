@@ -117,7 +117,11 @@ if len(sys.argv) > 1:
                     if v=='': v='yes'
                     if key == 'lang':
                         options['lang'], error = get_valid_lang(v,'options')
-                        if error: errors.append(error)
+                        if error:
+                            errors.append(error)
+                        else:
+                            # need for overwrite value from config file:
+                            options['lang_option'] = options['lang']
                     else:
                         options[key] = v
 
@@ -126,8 +130,9 @@ if not len(options['lang']):
     code = os.environ.get('LANG') # 'cs_CZ.UTF-8'
     if type(code) is str and len(code) > 1:
         arg = code[:2]
-        options['lang'], error = get_valid_lang(arg,'os.environ.LANG')
+        options['lang_environ'], error = get_valid_lang(arg,'os.environ.LANG')
         if error: warnings.append("%s Set default to: '%s'."%(error, default_lang))
+        options['lang'] = options['lang_environ']
     else:
         options['lang'] = default_lang
 
@@ -146,7 +151,7 @@ for key,value in langs.items():
             sys.exit(1)
         except IOError, (no,msg):
             langs[key] = gettext.NullTranslations() # no translation
-            print 'Translate IOError',no,msg,'\nMISSING:','%s/%s/LC_MESSAGES/%s.mo'%(tpath,options['lang'],domain)
+            print 'Translate IOError',no,msg,'\nMISSING:','%s/%s/LC_MESSAGES/%s.mo'%(tpath,options.get('lang','???'),domain)
     else:
         langs[key] = gettext.NullTranslations() # no translation
 

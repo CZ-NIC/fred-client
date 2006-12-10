@@ -85,6 +85,9 @@ class ManagerBase:
 
     def get_session(self, offset):
         return self._session[offset]
+        
+    def get_language(self):
+        return self._session[LANG]
 
     def init_from_options(self, section_connect):
         'Init variables from options (after loaded config).'
@@ -100,8 +103,6 @@ class ManagerBase:
         # copy variables for individual commands
         self.copy_default_options(self._section_epp_login, section_connect, 'username')
         self.copy_default_options(self._section_epp_login, section_connect, 'password')
-        # selection fo language version
-        self._session[LANG] = op['lang']
         if op['verbose']:
             self.parse_verbose_value(op['verbose'])
         key = op['output'].lower()
@@ -351,9 +352,14 @@ $fred_client_errors = array(); // errors occuring during communication
         # keep options in Manager instance
         if type(options) is dict: self._options = options
         # Load configuration file:
-        self._conf, self._config_used_files, config_errors = session_config.main(self._config_name, self._options, self._session[VERBOSE])
-        # set language version
-        translate.install_translation(self._options['lang'])
+        self._conf, self._config_used_files, config_errors = session_config.main(self._config_name, self._options, self._session[VERBOSE], OMIT_ERROR)
+        # language from environment and configuration file:
+        if len(self._options.get('lang','')): self._session[LANG] = self._options['lang']
+        # overwrite config by option from command line:
+        if self._options.has_key('lang_option'):
+            self._session[LANG] = self._options['lang_option']
+        # SET LANGUAGE VERSION:
+        translate.install_translation(self._session[LANG])
         if len(self._config_used_files):
             self.append_note('%s %s'%(_T('Using configuration from'), ', '.join(self._config_used_files)))
         if len(config_errors):
@@ -374,7 +380,9 @@ $fred_client_errors = array(); // errors occuring during communication
         section_connect = self.config_get_section_connect()
         if not self._conf.has_section(section_connect):
             self._conf.add_section(section_connect)
-            self.append_error(_T('Configuration file has no section "%s".')%section_connect[8:])
+            partname = section_connect[8:]
+            if partname == '': partname = section_connect
+            self.append_error(_T('Configuration file has no section "%s".')%partname)
             return 0 # fatal error
         # session
         section = 'session'

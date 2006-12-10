@@ -77,7 +77,7 @@ def get_config_value(config, section, option, omit_errors=0):
 #---------------------------
 # LOAD CONFIG
 #---------------------------
-def main(config_name, options, verbose):
+def main(config_name, options, verbose, OMIT_ERROR):
     'Load configuration file'
     errors = []
     if options.has_key('config') and len(options['config']):
@@ -85,8 +85,8 @@ def main(config_name, options, verbose):
     else:
         config, config_error, config_names = load_default_config(config_name, verbose)
     if len(config_error): errors.append(config_error)
-    if config and not options.has_key('lang'):
-        key, error = get_config_value(config, 'session','lang',1) # 1 - omit errors
+    if config:
+        key, error = get_config_value(config, 'session','lang', OMIT_ERROR)
         if error:
             errors.append(error)
         elif key:

@@ -37,14 +37,28 @@ except ImportError:
              'For runnig this application you need install fred module. See README and INSATLL.\n'
             ) )
         sys.exit(-1)
-from fred.translate import encoding, options, option_errors
+
+
+#------------------------------------
+# INIT language
+#------------------------------------
+from fred.translate import encoding, options, option_errors, get_valid_lang
+if not (options.has_key('lang_option') or options.has_key('lang_environ')):
+    locale_lang = '%s'%QtCore.QLocale.system().name().toAscii()
+    lang, error = get_valid_lang(locale_lang[:2], 'QtCore.QLocale.system().name()')
+    if error:
+        fred.translate.warning += '\n%s'%error
+    else:
+        options['lang'] = options['lang_environ'] = lang
+        fred.translate.install_translation(options['lang'])
+
 
 #====================================
 #
 #       Fred Dialogs
 #
 #====================================
-from ui_main import Ui_FredWindow as uiMainWindow
+from ui_main import Ui_FredWindow as uiMainFrame
 from create_contact import FredWindow as wndCreateContact
 from update_contact import FredWindow as wndUpdateContact
 from create_domain import FredWindow as wndCreateDomain
@@ -53,20 +67,19 @@ from create_nsset import FredWindow as wndCreateNsset
 from update_nsset import FredWindow as wndUpdateNsset
 from sources import FredWindow as wndSources
 
-# The encoding in MS Windows is different from GUI to console.
-gui_encoding = encoding == 'cp852' and 'cp1250' or encoding
 # prefix of translations
 translation_prefix = 'clientqt_'
 SPLIT_NAME = 1
 
-class FredWindow(QtGui.QDialog):
+class FredMainWindow(QtGui.QDialog):
     'Main frame dialog.'
     ident_types = ('op','rc','passport','mpsv','ico')
 
-    def __init__(self, epp_client, parent=None):
+    def __init__(self, app, epp_client, parent=None):
         QtGui.QWidget.__init__(self, parent)
-        os.chdir(os.path.dirname(__file__)) # needs for correct load images
-        self.ui = uiMainWindow()
+        self._init_config = 1 # run only once
+        self._app = app
+        self.ui = uiMainFrame()
         self.ui.setupUi(self)
         self.setFixedSize(694,656)
         self.epp = epp_client
@@ -98,15 +111,20 @@ class FredWindow(QtGui.QDialog):
         self.ui.renew_domain_val_ex_date.setDate(curd)
         self.panel_create_domain.ui.val_ex_date.setDate(curd)
         self.panel_update_domain.ui.val_ex_date.setDate(curd)
-        # INIT
-        self.load_config_and_autologin()
         
 
     def load_config_and_autologin(self):
         'load data for connection'
+        msg = []
         if not self.epp.load_config():
-            self.display_error(self.epp._epp._errors, self.__tr('Load configuration file failed.'))
+            msg.extend(self.epp._epp._notes)
+            msg.extend(self.epp._epp._errors)
+            msg.extend(self.epp._epp._notes_afrer_errors)
+            self.display_error(msg, self.__tr('Load configuration file failed.'))
             return
+        # Set translation defined in config file or command line option.
+        self.__set_translation__(self.epp._epp.get_language())
+        if fred.translate.warning: msg.append(fred.translate.warning)
         data = map(lambda v: v is not None and v or '', self.epp._epp.get_connect_defaults())
         username, password = self.epp._epp.get_actual_username_and_password()
         self.ui.connect_host.setText(data[0])
@@ -116,9 +134,30 @@ class FredWindow(QtGui.QDialog):
         self.ui.connect_timeout.setText(data[4])
         if username: self.ui.login_username.setText(username)
         if password: self.ui.login_password.setText(password)
+        if not self.epp._epp.automatic_login(1): # 1 - no outout
+            self.epp._epp._errors.append(_T('Login failed'))
+        self.__set_status__()
+        msg.extend(self.epp._epp._notes)
+        msg.extend(self.epp._epp._errors)
+        msg.extend(self.epp._epp._notes_afrer_errors)
+        if len(msg):
+            msg = map(lambda t: re.sub('\$\{\w+\}','',t), msg) # remove terminal color tags
+            self.display_error(msg, self.__tr('Init client'), len(self.epp._epp._errors)==0)
 
-#    def event(self, event):
-#        #print LABEL_EVENT.get(event.type(),event.type()) #+++
+    def __set_translation__(self, lang):
+        'Set translation language.'
+        tr = QtCore.QTranslator()
+        modul_trans = os.path.join(os.path.split(__file__)[0],'%s%s'%(translation_prefix, lang))
+        if tr.load(modul_trans):
+            self._app.installTranslator(tr)
+            self.ui.retranslateUi(self)
+
+    def event(self, event):
+        #print LABEL_EVENT.get(event.type(),event.type()) #+++
+        if self._init_config and event.type() == QtCore.QEvent.ActivationChange:
+            self._init_config = 0 # run only once
+            self.load_config_and_autologin()
+        return QtGui.QWidget.event(self, event)
 #        if event.type() == QtCore.QEvent.ActivationChange:
 #            if self._init_application:
 #                self._init_application = 0 # run only once at the begining
@@ -157,12 +196,16 @@ class FredWindow(QtGui.QDialog):
                 self.missing_required.append(label) # key
         return len(self.missing_required) == 0
 
-    def display_error(self, messages, qs_label=None):
+    def display_error(self, messages, qs_label=None, not_critical=False):
         'Display Warning dialog.'
         # about, warning, critical
         if not qs_label: qs_label = self.__tr('Missing required')
         if type(messages) not in (list,tuple): messages = (messages,)
-        QtGui.QMessageBox.critical(self, qs_label, u'<h2>%s:</h2>\n%s'%(qs_label, u'<br>\n'.join(map(lambda s: get_str(s).decode(encoding),messages))))
+        if not_critical:
+            pass
+        dialog_type = not_critical and 'information' or 'critical'
+        getattr(QtGui.QMessageBox,dialog_type)(self, qs_label, u'<h2>%s:</h2>\n%s'%(qs_label, u'<br>\n'.join(map(lambda s: get_str(s).decode(encoding),messages))))
+        #QtGui.QMessageBox.critical(self, qs_label, u'<h2>%s:</h2>\n%s'%(qs_label, u'<br>\n'.join(map(lambda s: get_str(s).decode(encoding),messages))))
 
     def btn_close(self):
         'Handle click on button Close'
@@ -199,8 +242,8 @@ class FredWindow(QtGui.QDialog):
             msg.append(reason)
         if len(errors):
             msg.append('<b style="color:red">%s</b>'%'\n'.join(errors))
-        getattr(self.ui,'%s_code'%prefix).setText(code)
-        getattr(self.ui,'%s_msg'%prefix).setText(u'<br>\n'.join(map(get_unicode,msg)))
+        getattr(self.ui,'%s_code'%prefix).setText(QtCore.QString(code))
+        getattr(self.ui,'%s_msg'%prefix).insertHtml(u'<br>\n'.join(map(get_unicode,msg)))
         if not table and getattr(self.ui, '%s_table'%prefix, None):
             table = (2,(self.__tr('name'),self.__tr('value')),(140,260),None,None)
         if table:
@@ -237,7 +280,7 @@ class FredWindow(QtGui.QDialog):
                     r = self.__inset_into_table__(wtab, value, 0, r)
                 r+=1
         else:
-            getattr(self.ui,'%s_data'%prefix).setText('<pre>%s</pre>'%self.epp._epp.get_answer_udata())
+            getattr(self.ui,'%s_data'%prefix).insertHtml('<pre>%s</pre>'%self.epp._epp.get_answer_udata())
         # save sources
         self.src[prefix] = (
             self.epp._epp.get_command_line().decode(encoding),
@@ -382,7 +425,7 @@ class FredWindow(QtGui.QDialog):
                 self.epp.login(d['username'], d['password'], d.get('new_password'), d.get('cltrid'))
             except fred.FredError, err:
                 self.epp._epp._errors.extend(err.args)
-                self.epp._epp._errors.append(self.__tr('Process login failed.'))
+                self.epp._epp._errors.append(_T('Process login failed.'))
             self.__display_answer__('login')
         else:
             self.display_error(self.missing_required)
@@ -438,7 +481,7 @@ class FredWindow(QtGui.QDialog):
     def create_contact(self):
         if not self.check_is_online(): return
         d = {}
-        p = self.panel_create_contact
+        p = self.panel_create_contact.ui
         for key in ('id', 'name', 'email', 'city', 'cc', 'auth_info','org','sp', 'street',
                         'pc', 'voice', 'fax', 'vat', 'notify_email', 'cltrid'):
             append_key(d, key, getattr(p,'create_contact_%s'%key))
@@ -473,7 +516,7 @@ class FredWindow(QtGui.QDialog):
     def create_nsset(self):
         if not self.check_is_online(): return
         d = {}
-        p = self.panel_create_nsset
+        p = self.panel_create_nsset.ui
         for key in ('id', 'tech', 'auth_info', 'cltrid'):
             append_key(d, key, getattr(p,key))
         dns = []
@@ -496,7 +539,7 @@ class FredWindow(QtGui.QDialog):
     def create_domain(self):
         if not self.check_is_online(): return
         d = {}
-        p = self.panel_create_domain
+        p = self.panel_create_domain.ui
         for key in ('name', 'registrant', 'auth_info', 'nsset', 'admin','cltrid'):
             append_key(d, key, getattr(p,key))
         #... period ....................
@@ -522,7 +565,7 @@ class FredWindow(QtGui.QDialog):
     def update_contact(self):
         if not self.check_is_online(): return
         d = {}
-        p = self.panel_update_contact
+        p = self.panel_update_contact.ui
 ##        self.__append_update_status__(p, d, 'add')
 ##        self.__append_update_status__(p, d, 'rem')
         for key in ('id', 'cltrid'):
@@ -565,7 +608,7 @@ class FredWindow(QtGui.QDialog):
     def update_nsset(self):
         if not self.check_is_online(): return
         d = {}
-        p = self.panel_update_nsset
+        p = self.panel_update_nsset.ui
         for key in ('id', 'cltrid'):
             append_key(d, key, getattr(p, key))
         #................................
@@ -605,7 +648,7 @@ class FredWindow(QtGui.QDialog):
     def update_domain(self):
         if not self.check_is_online(): return
         d = {}
-        p = self.panel_update_domain
+        p = self.panel_update_domain.ui
         for key in ('name', 'cltrid'):
             append_key(d, key, getattr(p, key))
         #................................
@@ -706,8 +749,8 @@ class FredWindow(QtGui.QDialog):
             wnd.ui.message.setText(u'%s %s'%(command_name,self.__tr('sources'))) ## u'<b>%s</b> %s'
             src = self.src[command_name]
             wnd.ui.command_line.setText(src[0])
-            wnd.ui.command.setText(fred.session_transfer.human_readable(src[1]))
-            wnd.ui.response.setText(fred.session_transfer.human_readable(src[2]))
+            wnd.ui.command.insertPlainText(QtCore.QString(fred.session_transfer.human_readable(src[1])))
+            wnd.ui.response.insertPlainText(QtCore.QString(fred.session_transfer.human_readable(src[2])))
         else:
             wnd.ui.message.setText(u'%s %s'%(command_name,self.__tr('Sources are not available now. Run command at first.')))
         wnd.setModal(True)
@@ -778,7 +821,7 @@ class FredWindow(QtGui.QDialog):
         layout = QtGui.QVBoxLayout(wnd)
         edit = QtGui.QTextEdit(wnd)
         layout.addWidget(edit)
-        edit.setText(self.epp._epp.get_credits())
+        edit.insertPlainText(self.epp._epp.get_credits())
         btn = QtGui.QPushButton(self.__tr('Close'),wnd)
         layout.addWidget(btn)
         wnd.connect(btn,QtCore.SIGNAL("clicked()"),wnd.close)
@@ -808,8 +851,6 @@ def get_str(qtstr):
     'Translate QString. Trip whitespaces at the begining and end. Returns string in local charset.'
     if type(qtstr) is QtCore.QString:
         text = unicode(qtstr.trimmed().toUtf8(),'utf8').encode(encoding)
-        if gui_encoding != encoding:
-            text = text.decode(gui_encoding).encode(encoding)
     else:
         if type(qtstr) is unicode:
             text = qtstr.encode(encoding)
@@ -866,19 +907,11 @@ def count_data_rows(dct):
 
 
 def main(argv, lang):
+    path = os.path.dirname(__file__)
+    if path: os.chdir(path) # needs for correct load resources - images and translation
     epp = fred.Client()
-#    if not epp.load_config():
-#        epp._epp.display()
-#        return
-#    if not epp._epp.automatic_login():
-#        epp.display() # display errors or notes
-#        return
     app = QtGui.QApplication(sys.argv)
-    tr = QtCore.QTranslator()
-    modul_trans = os.path.join(os.path.split(__file__)[0],'%s%s'%(translation_prefix,lang))
-    if tr.load(modul_trans):
-        app.installTranslator(tr)
-    window = FredWindow(epp)
+    window = FredMainWindow(app, epp)
     window.show()
     sys.exit(app.exec_())
 
@@ -886,32 +919,32 @@ def main(argv, lang):
 #PyQt4.QtCore.QChildEvent
 #PyQt4.QtCore.QEvent
 #QEvent::
-#LABEL_EVENT = {
-#    8: 'FocusIn - Widget gains keyboard focus.',
-#    10: 'Enter - Mouse enters widget\'s boundaries.',
-#    11: 'Leave - Mouse leaves widget\'s boundaries.',
-#    12: 'Paint - Screen update necessary (QPaintEvent).',
-#    13: 'Move',
-#    14: 'Resize - Widget\'s size changed (QResizeEvent).',
-#    17: 'Show - Widget was shown on screen (QShowEvent).',
-#    18: 'Hide - Widget was hidden (QHideEvent).',
-#    19: 'Close - Widget was closed (QCloseEvent).',
-#    24: 'WindowActivate', ##!!!
-#    25: 'WindowDeactivate - Window was deactivated.',
-#    26: 'ShowToParent - A child widget has been shown.',
-#    27: 'HideToParent - A child widget has been hidden.',
-#    33: 'WindowTitleChange',
-#    68: 'ChildAdded',
-#    69: 'ChildPolished',
-#    70: '70 nenasel jsem v tabulce',
-#    71: 'ChildRemoved - An object loses a child (QChildEvent).',
-#    74: 'PolishRequest - The widget should be polished.',
-#    75: 'Polish - The widget is polished.',
-#    76: 'LayoutRequest',
-#    77: 'Widget layout needs to be redone.',
-#    99: 'ActivationChange - A widget\'s top-level window activation state has changed.', #!!!
-#    110: 'ToolTip - A tooltip was requested (QHelpEvent).',
-#    }
+LABEL_EVENT = {
+    8: 'FocusIn - Widget gains keyboard focus.',
+    10: 'Enter - Mouse enters widget\'s boundaries.',
+    11: 'Leave - Mouse leaves widget\'s boundaries.',
+    12: 'Paint - Screen update necessary (QPaintEvent).',
+    13: 'Move',
+    14: 'Resize - Widget\'s size changed (QResizeEvent).',
+    17: 'Show - Widget was shown on screen (QShowEvent).',
+    18: 'Hide - Widget was hidden (QHideEvent).',
+    19: 'Close - Widget was closed (QCloseEvent).',
+    24: 'WindowActivate', ##!!!
+    25: 'WindowDeactivate - Window was deactivated.',
+    26: 'ShowToParent - A child widget has been shown.',
+    27: 'HideToParent - A child widget has been hidden.',
+    33: 'WindowTitleChange',
+    68: 'ChildAdded',
+    69: 'ChildPolished',
+    70: '70 nenasel jsem v tabulce',
+    71: 'ChildRemoved - An object loses a child (QChildEvent).',
+    74: 'PolishRequest - The widget should be polished.',
+    75: 'Polish - The widget is polished.',
+    76: 'LayoutRequest',
+    77: 'Widget layout needs to be redone.',
+    99: 'ActivationChange - A widget\'s top-level window activation state has changed.', #!!!
+    110: 'ToolTip - A tooltip was requested (QHelpEvent).',
+    }
 
 if __name__ == '__main__':
     msg_invalid = fred.check_python_version()
@@ -925,3 +958,4 @@ if __name__ == '__main__':
             print option_errors
         else:
             main([], options['lang'])
+

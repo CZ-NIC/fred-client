@@ -661,7 +661,7 @@ sources ad advance, transmited between client and server.
         self._epp_cmd._dct['username'] = [self.get_config_value(self._section_epp_login, 'username', OMIT_ERROR)]
         self._epp_cmd._dct['password'] = [self.get_config_value(self._section_epp_login, 'password', OMIT_ERROR)]
         self.create_login() # connect and get greeting message, than create XML login document
-        self.display() # display errors or notes
+        if not no_outoupt: self.display() # display errors or notes
         epp_doc = self._epp_cmd.get_xml()
         if epp_doc and self.is_connected():
             if self._session[VERBOSE] > 1: self.append_note(_T('Login command sent to the server'))
@@ -673,8 +673,9 @@ sources ad advance, transmited between client and server.
                 self.print_answer() # 2. departure from the rule to print answers
             ok = self._dct_answer.get('code',0) == 1000 and 1 or 0
         else:
-            self.append_error(self._epp_cmd.get_errors())
-            self.display() # display errors or notes
+            if not no_outoupt:
+                self.append_error(self._epp_cmd.get_errors())
+                self.display() # display errors or notes
         return ok
             
         

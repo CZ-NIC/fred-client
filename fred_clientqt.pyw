@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import fred
 from fred.translate import encoding, options, option_errors
-from guiqt.main import main
+from guiqt4.main import main
 
 if __name__ == '__main__':
     msg_invalid = fred.check_python_version()
