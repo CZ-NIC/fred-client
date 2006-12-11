@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'main.ui'
 #
-# Created: Mon Dec 11 09:30:31 2006
+# Created: Mon Dec 11 16:22:57 2006
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -35,71 +35,88 @@ class Ui_FredWindow(object):
         self.TabPage = QtGui.QWidget()
         self.TabPage.setObjectName("TabPage")
 
+        self.btn_credits = QtGui.QPushButton(self.TabPage)
+        self.btn_credits.setGeometry(QtCore.QRect(14,521,120,30))
+        self.btn_credits.setObjectName("btn_credits")
+
+        self.textLabel3_2 = QtGui.QLabel(self.TabPage)
+        self.textLabel3_2.setGeometry(QtCore.QRect(199,359,451,21))
+        self.textLabel3_2.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.textLabel3_2.setWordWrap(False)
+        self.textLabel3_2.setObjectName("textLabel3_2")
+
         self.groupBox1 = QtGui.QGroupBox(self.TabPage)
-        self.groupBox1.setGeometry(QtCore.QRect(20,210,630,240))
+        self.groupBox1.setGeometry(QtCore.QRect(20,110,630,241))
         self.groupBox1.setObjectName("groupBox1")
 
-        self.textLabel2 = QtGui.QLabel(self.groupBox1)
-        self.textLabel2.setGeometry(QtCore.QRect(20,70,180,20))
-        self.textLabel2.setWordWrap(False)
-        self.textLabel2.setObjectName("textLabel2")
-
-        self.connect_certificate = QtGui.QLineEdit(self.groupBox1)
-        self.connect_certificate.setGeometry(QtCore.QRect(210,110,400,22))
-        self.connect_certificate.setObjectName("connect_certificate")
+        self.connect_timeout = QtGui.QLineEdit(self.groupBox1)
+        self.connect_timeout.setGeometry(QtCore.QRect(210,200,400,22))
+        self.connect_timeout.setObjectName("connect_timeout")
 
         self.textLabel3 = QtGui.QLabel(self.groupBox1)
-        self.textLabel3.setGeometry(QtCore.QRect(20,190,180,20))
+        self.textLabel3.setGeometry(QtCore.QRect(20,200,180,20))
         self.textLabel3.setWordWrap(False)
         self.textLabel3.setObjectName("textLabel3")
 
         self.connect_private_key = QtGui.QLineEdit(self.groupBox1)
-        self.connect_private_key.setGeometry(QtCore.QRect(210,150,400,22))
+        self.connect_private_key.setGeometry(QtCore.QRect(210,160,400,22))
         self.connect_private_key.setObjectName("connect_private_key")
 
-        self.connect_port = QtGui.QLineEdit(self.groupBox1)
-        self.connect_port.setGeometry(QtCore.QRect(210,70,400,22))
-        self.connect_port.setObjectName("connect_port")
-
-        self.textLabel4 = QtGui.QLabel(self.groupBox1)
-        self.textLabel4.setGeometry(QtCore.QRect(20,110,180,20))
-        self.textLabel4.setWordWrap(False)
-        self.textLabel4.setObjectName("textLabel4")
-
-        self.connect_host = QtGui.QLineEdit(self.groupBox1)
-        self.connect_host.setGeometry(QtCore.QRect(210,30,400,22))
-        self.connect_host.setObjectName("connect_host")
-
-        self.textLabel5 = QtGui.QLabel(self.groupBox1)
-        self.textLabel5.setGeometry(QtCore.QRect(20,30,180,20))
-        self.textLabel5.setWordWrap(False)
-        self.textLabel5.setObjectName("textLabel5")
-
         self.textLabel6 = QtGui.QLabel(self.groupBox1)
-        self.textLabel6.setGeometry(QtCore.QRect(20,150,180,20))
+        self.textLabel6.setGeometry(QtCore.QRect(20,160,180,20))
         self.textLabel6.setWordWrap(False)
         self.textLabel6.setObjectName("textLabel6")
 
-        self.connect_timeout = QtGui.QLineEdit(self.groupBox1)
-        self.connect_timeout.setGeometry(QtCore.QRect(210,190,400,22))
-        self.connect_timeout.setObjectName("connect_timeout")
+        self.connect_certificate = QtGui.QLineEdit(self.groupBox1)
+        self.connect_certificate.setGeometry(QtCore.QRect(210,120,400,22))
+        self.connect_certificate.setObjectName("connect_certificate")
 
-        self.btn_credits = QtGui.QPushButton(self.TabPage)
-        self.btn_credits.setGeometry(QtCore.QRect(20,510,120,30))
-        self.btn_credits.setObjectName("btn_credits")
+        self.textLabel4 = QtGui.QLabel(self.groupBox1)
+        self.textLabel4.setGeometry(QtCore.QRect(20,120,180,20))
+        self.textLabel4.setWordWrap(False)
+        self.textLabel4.setObjectName("textLabel4")
 
-        self.textLabel1 = QtGui.QLabel(self.TabPage)
-        self.textLabel1.setGeometry(QtCore.QRect(21,110,630,100))
-        self.textLabel1.setAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
-        self.textLabel1.setWordWrap(True)
-        self.textLabel1.setObjectName("textLabel1")
+        self.connect_port = QtGui.QLineEdit(self.groupBox1)
+        self.connect_port.setGeometry(QtCore.QRect(210,85,400,22))
+        self.connect_port.setObjectName("connect_port")
+
+        self.textLabel2 = QtGui.QLabel(self.groupBox1)
+        self.textLabel2.setGeometry(QtCore.QRect(20,85,180,20))
+        self.textLabel2.setWordWrap(False)
+        self.textLabel2.setObjectName("textLabel2")
+
+        self.connect_host = QtGui.QLineEdit(self.groupBox1)
+        self.connect_host.setGeometry(QtCore.QRect(210,50,400,22))
+        self.connect_host.setObjectName("connect_host")
+
+        self.textLabel5 = QtGui.QLabel(self.groupBox1)
+        self.textLabel5.setGeometry(QtCore.QRect(20,50,180,20))
+        self.textLabel5.setWordWrap(False)
+        self.textLabel5.setObjectName("textLabel5")
+
+        self.textLabel3_3 = QtGui.QLabel(self.groupBox1)
+        self.textLabel3_3.setGeometry(QtCore.QRect(211,18,401,21))
+        self.textLabel3_3.setWordWrap(False)
+        self.textLabel3_3.setObjectName("textLabel3_3")
+
+        self.system_messages = QtGui.QTextEdit(self.TabPage)
+        self.system_messages.setEnabled(True)
+        self.system_messages.setGeometry(QtCore.QRect(200,382,450,170))
+        self.system_messages.setReadOnly(True)
+        self.system_messages.setObjectName("system_messages")
 
         self.pixmapLabel3 = QtGui.QLabel(self.TabPage)
-        self.pixmapLabel3.setGeometry(QtCore.QRect(260,20,143,76))
+        self.pixmapLabel3.setGeometry(QtCore.QRect(20,20,143,76))
         self.pixmapLabel3.setPixmap(QtGui.QPixmap("logo_cz_nic.png"))
         self.pixmapLabel3.setScaledContents(True)
         self.pixmapLabel3.setWordWrap(False)
         self.pixmapLabel3.setObjectName("pixmapLabel3")
+
+        self.textLabel1 = QtGui.QLabel(self.TabPage)
+        self.textLabel1.setGeometry(QtCore.QRect(180,20,471,81))
+        self.textLabel1.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.textLabel1.setWordWrap(True)
+        self.textLabel1.setObjectName("textLabel1")
         self.tabWidget.addTab(self.TabPage,"")
 
         self.Widget8 = QtGui.QWidget()
@@ -272,14 +289,14 @@ class Ui_FredWindow(object):
         self.logout_msg.setGeometry(QtCore.QRect(130,40,450,70))
         self.logout_msg.setObjectName("logout_msg")
 
-        self.logout_data = QtGui.QTextEdit(self.TabPage3)
-        self.logout_data.setGeometry(QtCore.QRect(130,119,450,200))
-        self.logout_data.setObjectName("logout_data")
-
         self.btn_source_logout = QtGui.QPushButton(self.TabPage3)
         self.btn_source_logout.setGeometry(QtCore.QRect(10,270,50,50))
         self.btn_source_logout.setIcon(QtGui.QIcon("icon_source.png"))
         self.btn_source_logout.setObjectName("btn_source_logout")
+
+        self.logout_data = QtGui.QTextEdit(self.TabPage3)
+        self.logout_data.setGeometry(QtCore.QRect(130,119,450,200))
+        self.logout_data.setObjectName("logout_data")
         self.logout_response.addTab(self.TabPage3,"")
         self.tabWidget6.addTab(self.TabPage2,"")
 
@@ -2416,17 +2433,17 @@ class Ui_FredWindow(object):
         self.status.setText(QtGui.QApplication.translate("FredWindow", "<b>Status:</b> <span style=\"color:red\">disconnect</span>", None, QtGui.QApplication.UnicodeUTF8))
         self.buttonOk.setText(QtGui.QApplication.translate("FredWindow", "E&xit client", None, QtGui.QApplication.UnicodeUTF8))
         self.buttonOk.setShortcut(QtGui.QApplication.translate("FredWindow", "Alt+X", None, QtGui.QApplication.UnicodeUTF8))
-        self.groupBox1.setTitle(QtGui.QApplication.translate("FredWindow", "Client to EPP server", None, QtGui.QApplication.UnicodeUTF8))
-        self.textLabel2.setText(QtGui.QApplication.translate("FredWindow", "<b>port</b>", None, QtGui.QApplication.UnicodeUTF8))
-        self.textLabel3.setText(QtGui.QApplication.translate("FredWindow", "timeout", None, QtGui.QApplication.UnicodeUTF8))
-        self.textLabel4.setText(QtGui.QApplication.translate("FredWindow", "<b>certificate</b>", None, QtGui.QApplication.UnicodeUTF8))
-        self.textLabel5.setText(QtGui.QApplication.translate("FredWindow", "<b>host</b>", None, QtGui.QApplication.UnicodeUTF8))
-        self.textLabel6.setText(QtGui.QApplication.translate("FredWindow", "<b>private key</b>", None, QtGui.QApplication.UnicodeUTF8))
         self.btn_credits.setText(QtGui.QApplication.translate("FredWindow", "Credits", None, QtGui.QApplication.UnicodeUTF8))
+        self.textLabel3_2.setText(QtGui.QApplication.translate("FredWindow", "System messages:", None, QtGui.QApplication.UnicodeUTF8))
+        self.groupBox1.setTitle(QtGui.QApplication.translate("FredWindow", "Client to EPP server", None, QtGui.QApplication.UnicodeUTF8))
+        self.textLabel3.setText(QtGui.QApplication.translate("FredWindow", "timeout", None, QtGui.QApplication.UnicodeUTF8))
+        self.textLabel6.setText(QtGui.QApplication.translate("FredWindow", "<b>private key</b>", None, QtGui.QApplication.UnicodeUTF8))
+        self.textLabel4.setText(QtGui.QApplication.translate("FredWindow", "<b>certificate</b>", None, QtGui.QApplication.UnicodeUTF8))
+        self.textLabel2.setText(QtGui.QApplication.translate("FredWindow", "<b>port</b>", None, QtGui.QApplication.UnicodeUTF8))
+        self.textLabel5.setText(QtGui.QApplication.translate("FredWindow", "<b>host</b>", None, QtGui.QApplication.UnicodeUTF8))
+        self.textLabel3_3.setText(QtGui.QApplication.translate("FredWindow", "Parameters in <b>bold</b> style are <b>required</b>. Others are optionals.", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel1.setText(QtGui.QApplication.translate("FredWindow", "Welcome on the <b>FredClient</b> GUI interface.<br>\n"
-        "Beta release 0.1.0; (Needs <b>Fred module</b> version 1.3.0)<br>\n"
-        "<br>\n"
-        "Parameters in <b>bold</b> style are <b>required</b>. Others are optionals.", None, QtGui.QApplication.UnicodeUTF8))
+        "Beta release 0.1.0; (Needs <b>Fred module</b> version 1.3.0)", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.TabPage), QtGui.QApplication.translate("FredWindow", "&Welcome", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel7.setText(QtGui.QApplication.translate("FredWindow", "<h2>Connect</h2>\n"
         "This part use to connect and disconnect to the EPP server. You need defined path to the certificates in your configuration file.", None, QtGui.QApplication.UnicodeUTF8))

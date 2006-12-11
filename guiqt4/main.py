@@ -129,11 +129,14 @@ class FredMainWindow(QtGui.QDialog):
     def load_config_and_autologin(self):
         'load data for connection'
         msg = []
+        msg.append(self.epp._epp.version())
         if not self.epp.load_config():
+            msg.append(_T('Load configuration file failed.'))
             msg.extend(self.epp._epp._notes)
             msg.extend(self.epp._epp._errors)
             msg.extend(self.epp._epp._notes_afrer_errors)
-            self.display_error(msg, self.__tr('Load configuration file failed.'))
+#            self.display_error(msg, self.__tr('Load configuration file failed.'))
+            self.ui.system_messages.insertHtml(get_unicode('<br>\n'.join(msg)))
             return
         # Set translation defined in config file or command line option.
         self.__set_translation__(self.epp._epp.get_language())
@@ -154,8 +157,11 @@ class FredMainWindow(QtGui.QDialog):
         msg.extend(self.epp._epp._errors)
         msg.extend(self.epp._epp._notes_afrer_errors)
         if len(msg):
-            msg = map(lambda t: re.sub('\$\{\w+\}','',t), msg) # remove terminal color tags
-            self.display_error(msg, self.__tr('Init client'), len(self.epp._epp._errors)==0)
+#            msg = map(lambda t: re.sub('\$\{\w+\}','',t), msg) # remove terminal color tags
+#            print '!!! msg=',msg
+            msg = [ttytag2html(text) for text in msg]
+            self.ui.system_messages.insertHtml(get_unicode('<br>\n'.join(msg)))
+#            self.display_error(msg, self.__tr('Init client'), len(self.epp._epp._errors)==0)
 
     def __set_translation__(self, lang):
         'Set translation language.'
@@ -967,6 +973,12 @@ def join_items(value):
             value = u''
     return value
 
+def ttytag2html(text):
+    # ${BOLD}, ${NORMAL}, ${COLOR}
+    text = re.sub('\$\{BOLD\}(.*?)\$\{NORMAL\}','<b>\\1</b>',text)
+    text = text.replace('${NORMAL}','</span>')
+    text = re.sub('\$\{(\w+)\}','<span style="color:\\1">',text)
+    return text
 
 def main(argv, lang):
     path = os.path.dirname(__file__)
