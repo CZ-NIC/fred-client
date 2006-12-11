@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'update_nsset.ui'
 #
-# Created: Tue Dec  5 17:45:51 2006
+# Created: Mon Dec 11 11:56:35 2006
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -132,24 +132,24 @@ class Ui_FredWindow(object):
         self.textLabel5.setWordWrap(True)
         self.textLabel5.setObjectName("textLabel5")
 
-        self.rem_dns_name = QtGui.QTableWidget(FredWindow)
-        self.rem_dns_name.setGeometry(QtCore.QRect(180,650,360,110))
-        self.rem_dns_name.setFrameShape(QtGui.QFrame.StyledPanel)
-        self.rem_dns_name.setFrameShadow(QtGui.QFrame.Sunken)
-        self.rem_dns_name.setShowGrid(True)
-        self.rem_dns_name.setObjectName("rem_dns_name")
+        self.rem_name = QtGui.QTableWidget(FredWindow)
+        self.rem_name.setGeometry(QtCore.QRect(180,650,360,110))
+        self.rem_name.setFrameShape(QtGui.QFrame.StyledPanel)
+        self.rem_name.setFrameShadow(QtGui.QFrame.Sunken)
+        self.rem_name.setShowGrid(True)
+        self.rem_name.setObjectName("rem_name")
 
         self.retranslateUi(FredWindow)
         QtCore.QObject.connect(self.add_tech,QtCore.SIGNAL("currentCellChanged(int,int,int,int)"),FredWindow.add_tech_current_changed)
         QtCore.QObject.connect(self.add_tech,QtCore.SIGNAL("cellChanged(int,int)"),FredWindow.add_tech_value_changed)
-        QtCore.QObject.connect(self.rem_dns_name,QtCore.SIGNAL("currentCellChanged(int,int,int,int)"),FredWindow.rem_dns_name_current_changed)
-        QtCore.QObject.connect(self.rem_dns_name,QtCore.SIGNAL("cellChanged(int,int)"),FredWindow.rem_dns_name_value_changed)
+        QtCore.QObject.connect(self.rem_name,QtCore.SIGNAL("currentCellChanged(int,int,int,int)"),FredWindow.rem_name_current_changed)
+        QtCore.QObject.connect(self.rem_name,QtCore.SIGNAL("cellChanged(int,int)"),FredWindow.rem_name_value_changed)
         QtCore.QObject.connect(self.rem_tech,QtCore.SIGNAL("currentCellChanged(int,int,int,int)"),FredWindow.rem_tech_current_changed)
         QtCore.QObject.connect(self.rem_tech,QtCore.SIGNAL("cellChanged(int,int)"),FredWindow.rem_tech_value_changed)
         QtCore.QMetaObject.connectSlotsByName(FredWindow)
         FredWindow.setTabOrder(self.id,self.add_tech)
-        FredWindow.setTabOrder(self.add_tech,self.rem_dns_name)
-        FredWindow.setTabOrder(self.rem_dns_name,self.rem_tech)
+        FredWindow.setTabOrder(self.add_tech,self.rem_name)
+        FredWindow.setTabOrder(self.rem_name,self.rem_tech)
         FredWindow.setTabOrder(self.rem_tech,self.auth_info)
         FredWindow.setTabOrder(self.auth_info,self.cltrid)
 
@@ -183,12 +183,12 @@ class Ui_FredWindow(object):
         headerItem1.setText(QtGui.QApplication.translate("FredWindow", "technical contact", None, QtGui.QApplication.UnicodeUTF8))
         self.rem_tech.setHorizontalHeaderItem(0,headerItem1)
         self.textLabel5.setText(QtGui.QApplication.translate("FredWindow", "dns name<br>(max 9 names)", None, QtGui.QApplication.UnicodeUTF8))
-        self.rem_dns_name.setRowCount(1)
-        self.rem_dns_name.clear()
-        self.rem_dns_name.setColumnCount(1)
-        self.rem_dns_name.setRowCount(1)
+        self.rem_name.setRowCount(1)
+        self.rem_name.clear()
+        self.rem_name.setColumnCount(1)
+        self.rem_name.setRowCount(1)
 
         headerItem2 = QtGui.QTableWidgetItem()
         headerItem2.setText(QtGui.QApplication.translate("FredWindow", "dns name", None, QtGui.QApplication.UnicodeUTF8))
-        self.rem_dns_name.setHorizontalHeaderItem(0,headerItem2)
+        self.rem_name.setHorizontalHeaderItem(0,headerItem2)
 

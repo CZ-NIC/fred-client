@@ -71,6 +71,15 @@ from sources import FredWindow as wndSources
 translation_prefix = 'clientqt_'
 SPLIT_NAME = 1
 
+#class InitClient(QtCore.QThread):
+#    'Run load config in separate thread.'
+#    def __init__(self, parent=None):
+#        QtCore.QThread.__init__(self, parent)
+#        self.parent = parent
+#    def run(self):
+#        'load data for connection'
+#        self.parent.load_config_and_autologin()
+
 class FredMainWindow(QtGui.QDialog):
     'Main frame dialog.'
     ident_types = ('op','rc','passport','mpsv','ico')
@@ -111,6 +120,10 @@ class FredMainWindow(QtGui.QDialog):
         self.ui.renew_domain_val_ex_date.setDate(curd)
         self.panel_create_domain.ui.val_ex_date.setDate(curd)
         self.panel_update_domain.ui.val_ex_date.setDate(curd)
+        # INIT
+        self.load_config_and_autologin()
+        #init_thread = InitClient(self)
+        #init_thread.start()
         
 
     def load_config_and_autologin(self):
@@ -152,27 +165,17 @@ class FredMainWindow(QtGui.QDialog):
             self._app.installTranslator(tr)
             self.ui.retranslateUi(self)
 
-    def event(self, event):
-        #print LABEL_EVENT.get(event.type(),event.type()) #+++
-        if self._init_config and event.type() == QtCore.QEvent.ActivationChange:
-            self._init_config = 0 # run only once
-            self.load_config_and_autologin()
-        return QtGui.QWidget.event(self, event)
-#        if event.type() == QtCore.QEvent.ActivationChange:
-#            if self._init_application:
-#                self._init_application = 0 # run only once at the begining
-#                #--------------------------------------        
-#                # load data for connection
-#                #--------------------------------------        
-#                data = map(lambda v: v is not None and v or '', self.epp._epp.get_connect_defaults())
-#                username, password = self.epp._epp.get_actual_username_and_password()
-#                self.ui.connect_host.setText(data[0])
-#                self.ui.connect_port.setText(str(data[1]))
-#                self.ui.connect_private_key.setText(data[2])
-#                self.ui.connect_certificate.setText(data[3])
-#                self.ui.connect_timeout.setText(data[4])
-#                if username: self.ui.login_username.setText(username)
-#                if password: self.ui.login_password.setText(password)
+#    def event(self, event):
+#        print LABEL_EVENT.get(event.type(),event.type()) #+++
+#        return QtGui.QWidget.event(self, event)
+#    def event(self, event):
+#        #print LABEL_EVENT.get(event.type(),event.type()) #+++
+#        try:
+#            if self._init_config and event.type() == QtCore.QEvent.ActivationChange:
+#                self._init_config = 0 # run only once
+#                self.load_config_and_autologin()
+#        except AttributeError, e:
+#            pass
 #        return QtGui.QWidget.event(self, event)
 
     def __tr(self, text):
@@ -243,7 +246,7 @@ class FredMainWindow(QtGui.QDialog):
         if len(errors):
             msg.append('<b style="color:red">%s</b>'%'\n'.join(errors))
         getattr(self.ui,'%s_code'%prefix).setText(QtCore.QString(code))
-        getattr(self.ui,'%s_msg'%prefix).insertHtml(u'<br>\n'.join(map(get_unicode,msg)))
+        getattr(self.ui,'%s_msg'%prefix).setHtml(u'<br>\n'.join(map(get_unicode,msg)))
         if not table and getattr(self.ui, '%s_table'%prefix, None):
             table = (2,(self.__tr('name'),self.__tr('value')),(140,260),None,None)
         if table:
@@ -267,6 +270,14 @@ class FredMainWindow(QtGui.QDialog):
             if not column_keys:
                 column_keys = map(lambda k:(k,1,k), data.keys()) # default (unsorted)
             #....................................................
+            if prefix == 'info_nsset':
+                # implode nsset
+                nsset = []
+                for ns in data.get('nsset:ns',[]):
+                    sns = join_key_and_values(ns)
+                    if sns: nsset.append(sns)
+                if len(nsset): data['nsset:ns'] = nsset
+            #....................................................
             r=0
             for key,verbose,label in column_keys:
                 if only_key and key != only_key: continue
@@ -280,7 +291,7 @@ class FredMainWindow(QtGui.QDialog):
                     r = self.__inset_into_table__(wtab, value, 0, r)
                 r+=1
         else:
-            getattr(self.ui,'%s_data'%prefix).insertHtml('<pre>%s</pre>'%self.epp._epp.get_answer_udata())
+            getattr(self.ui,'%s_data'%prefix).setHtml('<pre>%s</pre>'%self.epp._epp.get_answer_udata())
         # save sources
         self.src[prefix] = (
             self.epp._epp.get_command_line().decode(encoding),
@@ -293,6 +304,11 @@ class FredMainWindow(QtGui.QDialog):
         if page:
             q_tab_widget.setCurrentWidget (page)
         self.__set_status__()
+        #self.__set_send_button__(prefix,True) # enabled 'Send command' button
+
+    def __set_send_button__(self, key, is_enable=False):
+        'Enabled/disabled "Send command" button'
+        #getattr(self.ui,'send_%s'%key).setEnabled(is_enable)
 
     def __inset_into_table__(self, wtab, value, c, r):
         'Used by __display_answer__()'
@@ -331,6 +347,7 @@ class FredMainWindow(QtGui.QDialog):
         if not self.check_is_online(): return
         d = {}
         append_key(d,'cltrid', getattr(self.ui,'%s_cltrid'%key))
+        self.__set_send_button__(key)
         try:
             getattr(self.epp,key)(d.get('cltrid'))
         except fred.FredError, err:
@@ -360,6 +377,7 @@ class FredMainWindow(QtGui.QDialog):
         append_key(d,'name', getattr(self.ui,'%s_name'%key))
         append_key(d,'cltrid', getattr(self.ui,'%s_cltrid'%key))
         if self.__check_required__(d, (('name',self.__tr('name')),)):
+            self.__set_send_button__(key)
             if extends == SPLIT_NAME:
                 d['name'] = re.split('[,;\s]+',d['name']) # need for check commands
             try:
@@ -414,6 +432,7 @@ class FredMainWindow(QtGui.QDialog):
         append_key(d,'cltrid',self.ui.login_cltrid)
         if self.__check_required__(d, (('username',self.__tr('username')),('password',self.__tr('password')))):
             # Definition from welcome panel:
+            self.__set_send_button__('login')
             dc = {}
             append_key(dc,'host',       self.ui.connect_host)
             append_key(dc,'port',       self.ui.connect_port)
@@ -434,6 +453,7 @@ class FredMainWindow(QtGui.QDialog):
         if not self.check_is_online(): return
         d = {}
         append_key(d,'cltrid',self.ui.logout_cltrid)
+        self.__set_send_button__('logout')
         try:
             self.epp.logout(d.get('cltrid'))
         except fred.FredError, err:
@@ -447,6 +467,7 @@ class FredMainWindow(QtGui.QDialog):
         append_key(d, 'msg_id', self.ui.poll_msg_id)
         append_key(d,'cltrid',self.ui.poll_cltrid)
         d['op'] = ('req','ack')[d['op']]
+        self.__set_send_button__('poll')
         try:
             self.epp.poll(d['op'], d.get('msg_id'), d.get('cltrid'))
         except fred.FredError, err:
@@ -454,6 +475,11 @@ class FredMainWindow(QtGui.QDialog):
         self.__display_answer__('poll')
 
     def hello(self):
+        self.__set_send_button__('hello')
+#        import time #!!!
+#        print 'TIME...!!!'
+#        time.sleep(5) #!!!
+#        print 'TIME DONE!!!'
         try:
             self.epp.hello()
         except fred.FredError, err:
@@ -500,6 +526,7 @@ class FredMainWindow(QtGui.QDialog):
                     ('city',self.__tr('city')), 
                     ('cc',self.__tr('country code')))
                     ):
+            self.__set_send_button__('create_contact')
             try:
                 self.epp.create_contact(d['id'], d['name'], d['email'], 
                     d['city'], d['cc'], d.get('auth_info'),
@@ -516,17 +543,18 @@ class FredMainWindow(QtGui.QDialog):
     def create_nsset(self):
         if not self.check_is_online(): return
         d = {}
-        p = self.panel_create_nsset.ui
+        panel = self.panel_create_nsset
         for key in ('id', 'tech', 'auth_info', 'cltrid'):
-            append_key(d, key, getattr(p,key))
+            append_key(d, key, getattr(panel.ui, key))
         dns = []
-        for wnd in p.dns_sets:
+        for wnd in panel.dns_sets:
             dset = {}
             for key in ('name','addr'):
-                append_key(dset, key, getattr(wnd,key))
+                append_key(dset, key, getattr(wnd.ui, key))
             if dset.has_key('name'): dns.append(dset)
         d['dns'] = dns
         if self.__check_required__(d, (('id',self.__tr('NSSET ID')), ('dns',self.__tr('dns')), ('tech',self.__tr('tech. contact')))):
+            self.__set_send_button__('create_nsset')
             try:
                 self.epp.create_nsset(d['id'], d['dns'], d['tech'], d.get('auth_info'), d.get('cltrid'))
             except fred.FredError, err:
@@ -552,6 +580,7 @@ class FredMainWindow(QtGui.QDialog):
         if p.val_ex_date.isEnabled():
             append_key(d,'val_ex_date', self.renew_domain_val_ex_date)
         if self.__check_required__(d, (('name',self.__tr('name')), ('registrant',self.__tr('registrant')))):
+            self.__set_send_button__('create_domain')
             try:
                 self.epp.create_domain(d['name'], d['registrant'], 
                     d.get('auth_info'), d.get('nsset'), d.get('period'), d.get('admin'), 
@@ -595,6 +624,7 @@ class FredMainWindow(QtGui.QDialog):
         if ident.has_key('number'): chg['ident'] = ident
         if len(chg): d['chg'] = chg
         if self.__check_required__(d, (('id',self.__tr('Contact ID')),)) and len(d) > 1:
+            self.__set_send_button__('update_contact')
             try:
                 self.epp.update_contact(d['id'], d.get('chg'), d.get('cltrid'))
             except fred.FredError, err:
@@ -608,33 +638,34 @@ class FredMainWindow(QtGui.QDialog):
     def update_nsset(self):
         if not self.check_is_online(): return
         d = {}
-        p = self.panel_update_nsset.ui
+        panel = self.panel_update_nsset
         for key in ('id', 'cltrid'):
-            append_key(d, key, getattr(p, key))
+            append_key(d, key, getattr(panel.ui, key))
         #................................
         add = {}
         dns = []
-        for wnd in p.dns_sets:
+        for wnd in panel.dns_sets:
             dset = {}
             for key in ('name','addr'):
-                append_key(dset, key, getattr(wnd,key))
+                append_key(dset, key, getattr(wnd.ui, key))
             if dset.has_key('name'): dns.append(dset)
         if len(dns): add['dns'] = dns
         for key in ('tech',):
-            append_key(add, key, getattr(p, 'add_%s'%key))
+            append_key(add, key, getattr(panel.ui, 'add_%s'%key))
 ##        self.__append_update_status__(p, add, 'add', 'status')
         if len(add): d['add'] = add
         #................................
         rem = {}
         for key in ('name','tech'):
-            append_key(rem, key, getattr(p, 'rem_%s'%key))
+            append_key(rem, key, getattr(panel.ui, 'rem_%s'%key))
 ##        self.__append_update_status__(p, rem, 'rem', 'status')
         if len(rem): d['rem'] = rem
         #................................
         chg = {}
-        append_key(chg, 'auth_info', getattr(p, 'auth_info'))
+        append_key(chg, 'auth_info', getattr(panel.ui, 'auth_info'))
         if len(chg): d['chg'] = chg
         if self.__check_required__(d, (('id',self.__tr('NSSET ID')),)) and len(d) > 1:
+            self.__set_send_button__('update_nsset')
             try:
                 self.epp.update_nsset(d['id'], d.get('add'), d.get('rem'), d.get('chg'), d.get('cltrid'))
             except fred.FredError, err:
@@ -656,13 +687,15 @@ class FredMainWindow(QtGui.QDialog):
         for key in ('admin',):
             append_key(add, key, getattr(p, 'add_%s'%key))
 ##        self.__append_update_status__(p, add, 'add', 'status')
-        if len(add): d['add'] = add
+##        if len(add): d['add'] = add
+        if len(add): d['add'] = add['admin']
         #................................
         rem = {}
         for key in ('admin',):
             append_key(rem, key, getattr(p, 'rem_%s'%key))
 ##        self.__append_update_status__(p, rem, 'rem', 'status')
-        if len(rem): d['rem'] = rem
+##        if len(rem): d['rem'] = rem
+        if len(rem): d['rem'] = rem['admin']
         #................................
         chg = {}
         for key in ('nsset','registrant','auth_info'):
@@ -672,6 +705,7 @@ class FredMainWindow(QtGui.QDialog):
         if p.val_ex_date.isEnabled():
             append_key(d, 'val_ex_date', p.val_ex_date)
         if self.__check_required__(d, (('name',self.__tr('domain name')),)) and len(d) > 1:
+            self.__set_send_button__('update_domain')
             try:
                 self.epp.update_domain(d['name'], d.get('add'), d.get('rem'), d.get('chg'), d.get('val_ex_date'), d.get('cltrid'))
             except fred.FredError, err:
@@ -718,6 +752,7 @@ class FredMainWindow(QtGui.QDialog):
         append_key(period,'num', self.ui.renew_domain_period_num)
         append_key(period,'unit', self.ui.renew_domain_period_unit)
         if self.__check_required__(d, (('name',self.__tr('domain name')),('cur_exp_date',self.__tr('')))):
+            self.__set_send_button__('renew_domain')
             if period.has_key('num'):
                 period['unit'] = ('y','m')[period['unit']]
             else:
@@ -749,8 +784,8 @@ class FredMainWindow(QtGui.QDialog):
             wnd.ui.message.setText(u'%s %s'%(command_name,self.__tr('sources'))) ## u'<b>%s</b> %s'
             src = self.src[command_name]
             wnd.ui.command_line.setText(src[0])
-            wnd.ui.command.insertPlainText(QtCore.QString(fred.session_transfer.human_readable(src[1])))
-            wnd.ui.response.insertPlainText(QtCore.QString(fred.session_transfer.human_readable(src[2])))
+            wnd.ui.command.setPlainText(QtCore.QString(fred.session_transfer.human_readable(src[1])))
+            wnd.ui.response.setPlainText(QtCore.QString(fred.session_transfer.human_readable(src[2])))
         else:
             wnd.ui.message.setText(u'%s %s'%(command_name,self.__tr('Sources are not available now. Run command at first.')))
         wnd.setModal(True)
@@ -821,7 +856,7 @@ class FredMainWindow(QtGui.QDialog):
         layout = QtGui.QVBoxLayout(wnd)
         edit = QtGui.QTextEdit(wnd)
         layout.addWidget(edit)
-        edit.insertPlainText(self.epp._epp.get_credits())
+        edit.setPlainText(self.epp._epp.get_credits())
         btn = QtGui.QPushButton(self.__tr('Close'),wnd)
         layout.addWidget(btn)
         wnd.connect(btn,QtCore.SIGNAL("clicked()"),wnd.close)
@@ -905,6 +940,33 @@ def count_data_rows(dct):
             size += 1
     return size
 
+def join_key_and_values(value):
+    'Join key and values'
+    # [u'ns2.test.cz', [u'127.289.30.63',u'127.289.30.63',]]
+    if type(value) in (list, tuple):
+        if len(value) == 2 and type(value[0]) in (str, unicode):
+            key, addr = value
+            value = '%s %s'%(key, join_items(addr))
+        else:
+            value = join_items(value)
+    return value
+
+def join_items(value):
+    'Join items into string'
+    if type(value) in (list, tuple):
+        items = []
+        for item in value:
+            text = join_items(item)
+            if text: items.append(text)
+        if len(items):
+            if len(items) > 1:
+                value = u'(%s)'%u', '.join(items) 
+            else:
+                value = items[0]
+        else:
+            value = u''
+    return value
+
 
 def main(argv, lang):
     path = os.path.dirname(__file__)
@@ -919,32 +981,32 @@ def main(argv, lang):
 #PyQt4.QtCore.QChildEvent
 #PyQt4.QtCore.QEvent
 #QEvent::
-LABEL_EVENT = {
-    8: 'FocusIn - Widget gains keyboard focus.',
-    10: 'Enter - Mouse enters widget\'s boundaries.',
-    11: 'Leave - Mouse leaves widget\'s boundaries.',
-    12: 'Paint - Screen update necessary (QPaintEvent).',
-    13: 'Move',
-    14: 'Resize - Widget\'s size changed (QResizeEvent).',
-    17: 'Show - Widget was shown on screen (QShowEvent).',
-    18: 'Hide - Widget was hidden (QHideEvent).',
-    19: 'Close - Widget was closed (QCloseEvent).',
-    24: 'WindowActivate', ##!!!
-    25: 'WindowDeactivate - Window was deactivated.',
-    26: 'ShowToParent - A child widget has been shown.',
-    27: 'HideToParent - A child widget has been hidden.',
-    33: 'WindowTitleChange',
-    68: 'ChildAdded',
-    69: 'ChildPolished',
-    70: '70 nenasel jsem v tabulce',
-    71: 'ChildRemoved - An object loses a child (QChildEvent).',
-    74: 'PolishRequest - The widget should be polished.',
-    75: 'Polish - The widget is polished.',
-    76: 'LayoutRequest',
-    77: 'Widget layout needs to be redone.',
-    99: 'ActivationChange - A widget\'s top-level window activation state has changed.', #!!!
-    110: 'ToolTip - A tooltip was requested (QHelpEvent).',
-    }
+#LABEL_EVENT = {
+#    8: 'FocusIn - Widget gains keyboard focus.',
+#    10: 'Enter - Mouse enters widget\'s boundaries.',
+#    11: 'Leave - Mouse leaves widget\'s boundaries.',
+#    12: 'Paint - Screen update necessary (QPaintEvent).',
+#    13: 'Move',
+#    14: 'Resize - Widget\'s size changed (QResizeEvent).',
+#    17: 'Show - Widget was shown on screen (QShowEvent).',
+#    18: 'Hide - Widget was hidden (QHideEvent).',
+#    19: 'Close - Widget was closed (QCloseEvent).',
+#    24: 'WindowActivate', ##!!!
+#    25: 'WindowDeactivate - Window was deactivated.',
+#    26: 'ShowToParent - A child widget has been shown.',
+#    27: 'HideToParent - A child widget has been hidden.',
+#    33: 'WindowTitleChange',
+#    68: 'ChildAdded',
+#    69: 'ChildPolished',
+#    70: '70 nenasel jsem v tabulce',
+#    71: 'ChildRemoved - An object loses a child (QChildEvent).',
+#    74: 'PolishRequest - The widget should be polished.',
+#    75: 'Polish - The widget is polished.',
+#    76: 'LayoutRequest',
+#    77: 'Widget layout needs to be redone.',
+#    99: 'ActivationChange - A widget\'s top-level window activation state has changed.', #!!!
+#    110: 'ToolTip - A tooltip was requested (QHelpEvent).',
+#    }
 
 if __name__ == '__main__':
     msg_invalid = fred.check_python_version()

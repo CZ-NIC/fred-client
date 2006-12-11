@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'main.ui'
 #
-# Created: Wed Dec  6 15:26:01 2006
+# Created: Mon Dec 11 09:30:31 2006
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -14,6 +14,7 @@ class Ui_FredWindow(object):
     def setupUi(self, FredWindow):
         FredWindow.setObjectName("FredWindow")
         FredWindow.resize(QtCore.QSize(QtCore.QRect(0,0,694,656).size()).expandedTo(FredWindow.minimumSizeHint()))
+        FredWindow.setWindowIcon(QtGui.QIcon("icon.png"))
         FredWindow.setSizeGripEnabled(True)
 
         self.status = QtGui.QLabel(FredWindow)

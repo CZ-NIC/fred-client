@@ -58,6 +58,7 @@ class Message:
         self.__reset_dom__()
         self.errors = []
         self._handle_ID = ''
+        self._dct = {}  # parsed parameters from command line
 
     def get_params(self):
         'Returns dict of the command params.'

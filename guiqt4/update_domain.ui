@@ -129,22 +129,6 @@ The EPP "update" command is used to update an instance of an existing object.
     <bool>false</bool>
    </property>
   </widget>
-  <widget class="QLabel" name="textLabel13" >
-   <property name="geometry" >
-    <rect>
-     <x>10</x>
-     <y>590</y>
-     <width>160</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text" >
-    <string>pasword</string>
-   </property>
-   <property name="wordWrap" >
-    <bool>false</bool>
-   </property>
-  </widget>
   <widget class="Line" name="line2" >
    <property name="geometry" >
     <rect>
@@ -260,16 +244,6 @@ The EPP "update" command is used to update an instance of an existing object.
     <string/>
    </property>
   </widget>
-  <widget class="QLineEdit" name="chg_nsset" >
-   <property name="geometry" >
-    <rect>
-     <x>180</x>
-     <y>530</y>
-     <width>360</width>
-     <height>22</height>
-    </rect>
-   </property>
-  </widget>
   <widget class="QLineEdit" name="cltrid" >
    <property name="geometry" >
     <rect>
@@ -294,16 +268,6 @@ The EPP "update" command is used to update an instance of an existing object.
    </property>
    <property name="wordWrap" >
     <bool>false</bool>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="chg_registrant" >
-   <property name="geometry" >
-    <rect>
-     <x>180</x>
-     <y>560</y>
-     <width>360</width>
-     <height>22</height>
-    </rect>
    </property>
   </widget>
   <widget class="QLabel" name="textLabel6" >
@@ -370,16 +334,6 @@ The EPP "update" command is used to update an instance of an existing object.
     </rect>
    </property>
   </widget>
-  <widget class="QLineEdit" name="chg_pw" >
-   <property name="geometry" >
-    <rect>
-     <x>180</x>
-     <y>590</y>
-     <width>360</width>
-     <height>22</height>
-    </rect>
-   </property>
-  </widget>
   <widget class="QTableWidget" name="add_admin" >
    <property name="geometry" >
     <rect>
@@ -436,6 +390,52 @@ The EPP "update" command is used to update an instance of an existing object.
     </property>
    </column>
   </widget>
+  <widget class="QLineEdit" name="chg_registrant" >
+   <property name="geometry" >
+    <rect>
+     <x>180</x>
+     <y>560</y>
+     <width>360</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="chg_nsset" >
+   <property name="geometry" >
+    <rect>
+     <x>180</x>
+     <y>530</y>
+     <width>360</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="chg_auth_info" >
+   <property name="geometry" >
+    <rect>
+     <x>180</x>
+     <y>590</y>
+     <width>360</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="textLabel13" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>590</y>
+     <width>160</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>pasword</string>
+   </property>
+   <property name="wordWrap" >
+    <bool>false</bool>
+   </property>
+  </widget>
  </widget>
  <layoutdefault spacing="6" margin="11" />
  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
@@ -445,7 +445,7 @@ The EPP "update" command is used to update an instance of an existing object.
   <tabstop>rem_admin</tabstop>
   <tabstop>chg_nsset</tabstop>
   <tabstop>chg_registrant</tabstop>
-  <tabstop>chg_pw</tabstop>
+  <tabstop>chg_auth_info</tabstop>
   <tabstop>check_val_ex_date</tabstop>
   <tabstop>val_ex_date</tabstop>
   <tabstop>cltrid</tabstop>

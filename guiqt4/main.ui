@@ -12,6 +12,9 @@
   <property name="windowTitle" >
    <string>FredClient</string>
   </property>
+  <property name="windowIcon" >
+   <iconset>icon.png</iconset>
+  </property>
   <property name="sizeGripEnabled" >
    <bool>true</bool>
   </property>

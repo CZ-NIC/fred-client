@@ -364,7 +364,7 @@ The EPP "update" command is used to update an instance of an existing object.
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QTableWidget" name="rem_dns_name" >
+  <widget class="QTableWidget" name="rem_name" >
    <property name="geometry" >
     <rect>
      <x>180</x>
@@ -398,7 +398,7 @@ The EPP "update" command is used to update an instance of an existing object.
  <tabstops>
   <tabstop>id</tabstop>
   <tabstop>add_tech</tabstop>
-  <tabstop>rem_dns_name</tabstop>
+  <tabstop>rem_name</tabstop>
   <tabstop>rem_tech</tabstop>
   <tabstop>auth_info</tabstop>
   <tabstop>cltrid</tabstop>
@@ -438,10 +438,10 @@ The EPP "update" command is used to update an instance of an existing object.
    </hints>
   </connection>
   <connection>
-   <sender>rem_dns_name</sender>
+   <sender>rem_name</sender>
    <signal>currentCellChanged(int,int,int,int)</signal>
    <receiver>FredWindow</receiver>
-   <slot>rem_dns_name_current_changed(int,int,int,int)</slot>
+   <slot>rem_name_current_changed(int,int,int,int)</slot>
    <hints>
     <hint type="sourcelabel" >
      <x>20</x>
@@ -454,10 +454,10 @@ The EPP "update" command is used to update an instance of an existing object.
    </hints>
   </connection>
   <connection>
-   <sender>rem_dns_name</sender>
+   <sender>rem_name</sender>
    <signal>cellChanged(int,int)</signal>
    <receiver>FredWindow</receiver>
-   <slot>rem_dns_name_value_changed(int,int)</slot>
+   <slot>rem_name_value_changed(int,int)</slot>
    <hints>
     <hint type="sourcelabel" >
      <x>20</x>

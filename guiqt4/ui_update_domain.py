@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'update_domain.ui'
 #
-# Created: Tue Dec  5 17:22:42 2006
+# Created: Mon Dec 11 13:52:26 2006
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -53,11 +53,6 @@ class Ui_FredWindow(object):
         self.textLabel7.setWordWrap(False)
         self.textLabel7.setObjectName("textLabel7")
 
-        self.textLabel13 = QtGui.QLabel(FredWindow)
-        self.textLabel13.setGeometry(QtCore.QRect(10,590,160,20))
-        self.textLabel13.setWordWrap(False)
-        self.textLabel13.setObjectName("textLabel13")
-
         self.line2 = QtGui.QFrame(FredWindow)
         self.line2.setGeometry(QtCore.QRect(10,310,530,20))
         self.line2.setFrameShape(QtGui.QFrame.HLine)
@@ -98,10 +93,6 @@ class Ui_FredWindow(object):
         self.check_val_ex_date.setGeometry(QtCore.QRect(180,640,30,20))
         self.check_val_ex_date.setObjectName("check_val_ex_date")
 
-        self.chg_nsset = QtGui.QLineEdit(FredWindow)
-        self.chg_nsset.setGeometry(QtCore.QRect(180,530,360,22))
-        self.chg_nsset.setObjectName("chg_nsset")
-
         self.cltrid = QtGui.QLineEdit(FredWindow)
         self.cltrid.setGeometry(QtCore.QRect(180,670,360,22))
         self.cltrid.setObjectName("cltrid")
@@ -110,10 +101,6 @@ class Ui_FredWindow(object):
         self.textLabel10.setGeometry(QtCore.QRect(10,670,160,20))
         self.textLabel10.setWordWrap(False)
         self.textLabel10.setObjectName("textLabel10")
-
-        self.chg_registrant = QtGui.QLineEdit(FredWindow)
-        self.chg_registrant.setGeometry(QtCore.QRect(180,560,360,22))
-        self.chg_registrant.setObjectName("chg_registrant")
 
         self.textLabel6 = QtGui.QLabel(FredWindow)
         self.textLabel6.setGeometry(QtCore.QRect(10,330,530,30))
@@ -138,10 +125,6 @@ class Ui_FredWindow(object):
         self.val_ex_date.setGeometry(QtCore.QRect(220,640,97,22))
         self.val_ex_date.setObjectName("val_ex_date")
 
-        self.chg_pw = QtGui.QLineEdit(FredWindow)
-        self.chg_pw.setGeometry(QtCore.QRect(180,590,360,22))
-        self.chg_pw.setObjectName("chg_pw")
-
         self.add_admin = QtGui.QTableWidget(FredWindow)
         self.add_admin.setGeometry(QtCore.QRect(180,190,360,110))
         self.add_admin.setFrameShape(QtGui.QFrame.StyledPanel)
@@ -156,6 +139,23 @@ class Ui_FredWindow(object):
         self.rem_admin.setShowGrid(True)
         self.rem_admin.setObjectName("rem_admin")
 
+        self.chg_registrant = QtGui.QLineEdit(FredWindow)
+        self.chg_registrant.setGeometry(QtCore.QRect(180,560,360,22))
+        self.chg_registrant.setObjectName("chg_registrant")
+
+        self.chg_nsset = QtGui.QLineEdit(FredWindow)
+        self.chg_nsset.setGeometry(QtCore.QRect(180,530,360,22))
+        self.chg_nsset.setObjectName("chg_nsset")
+
+        self.chg_auth_info = QtGui.QLineEdit(FredWindow)
+        self.chg_auth_info.setGeometry(QtCore.QRect(180,590,360,22))
+        self.chg_auth_info.setObjectName("chg_auth_info")
+
+        self.textLabel13 = QtGui.QLabel(FredWindow)
+        self.textLabel13.setGeometry(QtCore.QRect(10,590,160,20))
+        self.textLabel13.setWordWrap(False)
+        self.textLabel13.setObjectName("textLabel13")
+
         self.retranslateUi(FredWindow)
         QtCore.QObject.connect(self.add_admin,QtCore.SIGNAL("cellChanged(int,int)"),FredWindow.add_admin_value_changed)
         QtCore.QObject.connect(self.add_admin,QtCore.SIGNAL("currentCellChanged(int,int,int,int)"),FredWindow.add_admin_current_changed)
@@ -167,8 +167,8 @@ class Ui_FredWindow(object):
         FredWindow.setTabOrder(self.add_admin,self.rem_admin)
         FredWindow.setTabOrder(self.rem_admin,self.chg_nsset)
         FredWindow.setTabOrder(self.chg_nsset,self.chg_registrant)
-        FredWindow.setTabOrder(self.chg_registrant,self.chg_pw)
-        FredWindow.setTabOrder(self.chg_pw,self.check_val_ex_date)
+        FredWindow.setTabOrder(self.chg_registrant,self.chg_auth_info)
+        FredWindow.setTabOrder(self.chg_auth_info,self.check_val_ex_date)
         FredWindow.setTabOrder(self.check_val_ex_date,self.val_ex_date)
         FredWindow.setTabOrder(self.val_ex_date,self.cltrid)
 
@@ -181,7 +181,6 @@ class Ui_FredWindow(object):
         self.textLabel4.setText(QtGui.QApplication.translate("FredWindow", "<h3>Add</h3>", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel5.setText(QtGui.QApplication.translate("FredWindow", "admin handle", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel7.setText(QtGui.QApplication.translate("FredWindow", "admin handle", None, QtGui.QApplication.UnicodeUTF8))
-        self.textLabel13.setText(QtGui.QApplication.translate("FredWindow", "pasword", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel8.setText(QtGui.QApplication.translate("FredWindow", "<h3>Change</h3>", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel9.setText(QtGui.QApplication.translate("FredWindow", "valExDate", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel1.setText(QtGui.QApplication.translate("FredWindow", "(required for <b>enum</b> domains)", None, QtGui.QApplication.UnicodeUTF8))
@@ -205,4 +204,5 @@ class Ui_FredWindow(object):
         headerItem1 = QtGui.QTableWidgetItem()
         headerItem1.setText(QtGui.QApplication.translate("FredWindow", "admin", None, QtGui.QApplication.UnicodeUTF8))
         self.rem_admin.setHorizontalHeaderItem(0,headerItem1)
+        self.textLabel13.setText(QtGui.QApplication.translate("FredWindow", "pasword", None, QtGui.QApplication.UnicodeUTF8))
 

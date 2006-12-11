@@ -13,7 +13,7 @@ class FredWindow(QtGui.QWidget):
         self.ui.setupUi(self)
         self.ui.tech.horizontalHeader().resizeSection(0,320)
         self._tech_item = QtCore.QString()
-        self.dns_sets = add_dns_sets(self.ui.frame_dns, FredWindowDNS)
+        self.dns_sets = add_dns_sets(self.ui.frame_dns, FredWindowDNS, 2)
 
     def tech_current_changed(self,r,c,x,y):
         self._tech_item = table_current_changed(self.ui.tech, r, c)

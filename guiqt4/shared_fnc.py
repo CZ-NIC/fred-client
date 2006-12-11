@@ -24,7 +24,7 @@ def table_current_changed(wndQTable, r, c):
     table_item = wndQTable.item (r,c)
     return table_item and table_item.text().trimmed() or QtCore.QString()
 
-def add_dns_sets(parent_frame, FredWindowDNS):
+def add_dns_sets(parent_frame, FredWindowDNS, num_required=0):
     'Add scrolled view window.'
     dns_sets = []
     scroll = QtGui.QScrollArea(parent_frame)
@@ -33,7 +33,9 @@ def add_dns_sets(parent_frame, FredWindowDNS):
     layout = QtGui.QVBoxLayout()
     max = 9
     for n in range(max):
-        layout.addWidget(FredWindowDNS((n+1,max)))
+        wnd = FredWindowDNS((n+1,max), n < num_required)
+        dns_sets.append(wnd)
+        layout.addWidget(wnd)
     panel = QtGui.QFrame(scroll)
     panel.setLayout(layout)
     scroll.setWidget(panel)
