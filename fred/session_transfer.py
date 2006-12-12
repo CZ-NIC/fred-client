@@ -360,7 +360,8 @@ class ManagerTransfer(ManagerBase):
         column_verbose = {} # dict of keys and their verbose level
         self.reduce_info_status(dct['command'], dct_data)
         for key,verbose,explain in self.__get_column_items__(dct['command'], dct_data):
-            column_verbose[key] = verbose # keep verbose mode for check used item (debug only)
+            ## column_verbose[key] = verbose # keep verbose mode for check used item (debug only)
+            key = key.strip() # client normaly trim whitespaces, but if you use sender, you can send everything...
             if verbose > self._session[VERBOSE]:
                 in_higher_verbose += 1
                 used.append(key)
@@ -504,6 +505,7 @@ class ManagerTransfer(ManagerBase):
         self.reduce_info_status(dct['command'], dct_data) # join status key and description together
         for key,verbose,explain in self.__get_column_items__(dct['command'], dct_data):
             if verbose > self._session[VERBOSE]: continue
+            key = key.strip() # client normaly trim whitespaces, but if you use sender, you can send everything...
             value = dct_data.get(key,u'')
             if value not in ('',[]):
                 if is_check:
@@ -586,6 +588,7 @@ $fred_source_answer = '';      // source code (XML) of the answer prepared to di
         is_check = re.match('\w+:check',dct['command']) and 1 or 0 # object:check
         for key,verbose,explain in self.__get_column_items__(dct['command'], dct_data):
             if verbose > self._session[VERBOSE]: continue
+            key = key.strip() # client normaly trim whitespaces, but if you use sender, you can send everything...
             if not explain: explain = key
             value = dct_data.get(key,u'')
             if value not in ('',[]):
