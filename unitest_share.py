@@ -9,6 +9,7 @@
     -h --help     this help
 """
 import sys, re, time
+import random
 import fred
 from fred.translate import encoding
 
@@ -128,8 +129,13 @@ def check_date(date, nu, sql_date=None):
     return exdate == date[:10], exdate
 
 def create_handle(prefix=''):
-    "Generate unique handler in format 'prefix:2006:11:14:10:7:2.44'"
-    return '%s%s%s'%(prefix, ''.join(map(str, time.localtime()[2:5])),('%.2f'%time.clock()).replace('.',''))
+          return '%s%s'%(  prefix , random.randint( 0 , 1000000 )  )
+#     return '%s%s'%( prefix , random.randint( 0 ,1000000 ) , )
+# 'time.strftime( "%s" ,  time.gmtime() )' )
+
+
+def create_enumdomain():
+    return '%s.%s.%s.%s.%s.%s.%s.%s.%s.0.2.4.e164.arpa'%(  random.randint( 0 , 9 ) ,  random.randint( 0 , 9 ) ,  random.randint( 0 , 9 ) , random.randint( 0 , 9 ) ,  random.randint( 0 , 9 ) ,  random.randint( 0 , 9 ) , random.randint( 0 , 9 ) ,  random.randint( 0 , 9 ) ,  random.randint( 0 , 9 ) , )
 
 def add_period(struct_time, year=0, month=0, day=0):
     """Add period. 

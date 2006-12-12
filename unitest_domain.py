@@ -51,7 +51,8 @@ FRED_CONTACT2 = unitest_share.create_handle('CID:D2')
 FRED_NSSET1 = unitest_share.create_handle('NSSID:D1')
 FRED_NSSET2 = unitest_share.create_handle('NSSID:D2')
 FRED_DOMAIN1 = '%s.cz'%unitest_share.create_handle('test')
-FRED_DOMAIN2 = '0.1.1.7.4.5.1.2.2.0.2.4.e164.arpa'
+FRED_DOMAIN2 = unitest_share.create_enumdomain(); 
+# old  '0.1.1.7.4.5.1.2.2.0.2.4.e164.arpa'
 FRED_DOMAIN3 = '%s.cz'%unitest_share.create_handle('tmp')
 FRED_DOMAIN_PASSW = 'heslicko'
 FRED_DOMAIN_PASSW_NEW = 'noveheslo'
