@@ -330,6 +330,20 @@ and maximum allowable period is defined in the Communication rules."""),('renew_
             ('id',(1,1),(),_T('NSSET ID'),'NSSET_ID','',()),
             ],_T("""The EPP 'sendauthinfo_nsset' command transmit request for send authorisation info to technical contact email."""),('sendauthinfo_nsset nssid:id',)),
         #----------------------------------------------------
+        'credit_info': (0,[],_T("""The EPP 'credit_info' command returns credit information."""),('credit_info',)),
+#        #----------------------------------------------------
+#        'creditinfo_contact': (1,[
+#             ('id',(1,1),(),_T('Contact ID'),'CID:ID01','',()),
+#            ],_T("""The EPP 'creditinfo_contact' command returns contact credit information."""),('creditinfo_contact cid:id',)),
+#        #----------------------------------------------------
+#        'creditinfo_domain': (1,[
+#            ('name',(1,1),(),_T('Domain name'),'mydomain.cz','',()),
+#            ],_T("""The EPP 'creditinfo_domain' command returns domain credit information."""),('creditinfo_domain domain.cz',)),
+#        #----------------------------------------------------
+#        'creditinfo_nsset': (1,[
+#            ('id',(1,1),(),_T('NSSET ID'),'NSSET_ID','',()),
+#            ],_T("""The EPP 'creditinfo_nsset' command returns nsset credit information."""),('creditinfo_nsset nssid:id',)),
+        #----------------------------------------------------
     }
     for k,v in command_params.items():
         if k == 'hello': continue

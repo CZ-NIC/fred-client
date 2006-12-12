@@ -494,6 +494,43 @@ class Client:
 
         """
         return self._epp.api_command('sendauthinfo_nsset',{'id':nsset_id, 'cltrid':cltrid})
+
+    def creditinfo_contact(self, contact_id, cltrid=None):
+        """Usage: creditinfo_contact id
+
+    PARAMS:
+
+    id (required)
+
+    RETURN data: {}
+
+        """
+        return self._epp.api_command('creditinfo_contact',{'id':contact_id, 'cltrid':cltrid})
+
+    def creditinfo_domain(self, name, cltrid=None):
+        """Usage: creditinfo_domain name
+
+    PARAMS:
+
+    name (required)
+
+    RETURN data: {}
+
+        """
+        return self._epp.api_command('creditinfo_domain',{'name':name, 'cltrid':cltrid})
+
+    def creditinfo_nsset(self, nsset_id, cltrid=None):
+        """Usage: creditinfo_nsset id
+
+    PARAMS:
+
+    id (required)
+
+    RETURN data: {}
+
+        """
+        return self._epp.api_command('creditinfo_nsset',{'id':nsset_id, 'cltrid':cltrid})
+
         
     def renew_domain(self, name, cur_exp_date, period=None, val_ex_date=None, cltrid=None):
         """Usage: renew_domain name cur_exp_date
