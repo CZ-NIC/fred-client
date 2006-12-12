@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'sources.ui'
 #
-# Created: Thu Dec  7 16:22:59 2006
+# Created: Tue Dec 12 14:10:25 2006
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,15 +26,15 @@ class Ui_FredWindow(object):
         self.tab = QtGui.QWidget()
         self.tab.setObjectName("tab")
 
+        self.command = QtGui.QTextEdit(self.tab)
+        self.command.setGeometry(QtCore.QRect(10,60,570,350))
+        self.command.setObjectName("command")
+
         self.textLabel2 = QtGui.QLabel(self.tab)
         self.textLabel2.setGeometry(QtCore.QRect(10,10,570,40))
         self.textLabel2.setAlignment(QtCore.Qt.AlignTop)
         self.textLabel2.setWordWrap(False)
         self.textLabel2.setObjectName("textLabel2")
-
-        self.command = QtGui.QTextEdit(self.tab)
-        self.command.setGeometry(QtCore.QRect(10,60,570,350))
-        self.command.setObjectName("command")
         self.tabWidget.addTab(self.tab,"")
 
         self.tab1 = QtGui.QWidget()
@@ -65,10 +65,6 @@ class Ui_FredWindow(object):
         self.textLabel4.setObjectName("textLabel4")
         self.tabWidget.addTab(self.TabPage,"")
 
-        self.message = QtGui.QLineEdit(FredWindow)
-        self.message.setGeometry(QtCore.QRect(10,10,461,30))
-        self.message.setObjectName("message")
-
         self.retranslateUi(FredWindow)
         self.tabWidget.setCurrentIndex(0)
         QtCore.QObject.connect(self.btn_close,QtCore.SIGNAL("clicked()"),FredWindow.close)
@@ -84,5 +80,4 @@ class Ui_FredWindow(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab1), QtGui.QApplication.translate("FredWindow", "Response XML", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel4.setText(QtGui.QApplication.translate("FredWindow", "This example was build from input. It can be used in fred_client console.", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.TabPage), QtGui.QApplication.translate("FredWindow", "Command line", None, QtGui.QApplication.UnicodeUTF8))
-        self.message.setText(QtGui.QApplication.translate("FredWindow", "command name", None, QtGui.QApplication.UnicodeUTF8))
 

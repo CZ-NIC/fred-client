@@ -81,6 +81,7 @@ class ManagerBase:
         self._section_epp_login = 'epp_login' # section name in config for username and password
         self._config_name = '.fred_client.conf' # name for home folder; for share (etc) is mofified from this name
         self._config_used_files = []
+        self._message_missing_config = [] # messages with missing config filenames
         self.run_as_unittest = 0 # it can set variables for unittest: validate server answer
 
     def get_session(self, offset):
@@ -344,6 +345,12 @@ $fred_client_errors = array(); // errors occuring during communication
             section = 'connect'
         return section
 
+    def join_missing_config_messages(self, verbose = None):
+        'Join missing config message, if is any.'
+        if verbose is None: verbose = self._session[VERBOSE]
+        if verbose > 1 and  len(self._message_missing_config):
+            self._errors.extend(self._message_missing_config)
+
     def load_config(self, options=None):
         "Load config file and init internal variables. Returns 0 if fatal error occured."
         # 1. first load values from config
@@ -352,7 +359,7 @@ $fred_client_errors = array(); // errors occuring during communication
         # keep options in Manager instance
         if type(options) is dict: self._options = options
         # Load configuration file:
-        self._conf, self._config_used_files, config_errors = session_config.main(self._config_name, self._options, self._session[VERBOSE], OMIT_ERROR)
+        self._conf, self._config_used_files, config_errors, self._message_missing_config = session_config.main(self._config_name, self._options, self._session[VERBOSE], OMIT_ERROR)
         # language from environment and configuration file:
         if len(self._options.get('lang','')): self._session[LANG] = self._options['lang']
         # overwrite config by option from command line:

@@ -109,6 +109,7 @@ def main(options):
     prompt = '> '
     online = prompt
     if not epp.automatic_login():
+        epp.join_missing_config_messages()
         epp.display() # display errors or notes
         return
     epp.restore_history()
