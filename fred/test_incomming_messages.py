@@ -432,4 +432,31 @@ data = ( # 0
   </response>
 </epp>
 """),
+    # fred:extcommand, fred:creditInfo
+    # command: fred:creditinfo fnc_name: answer_response_fred_creditinfo
+    ('fred:creditinfo',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
+<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:fred='http://www.nic.cz/xml/epp/fred-1.0' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
+  <response>
+    <result code='1000'>
+      <msg lang='cs'>P\u0159\u00edkaz \u00fasp\u011b\u0161n\u011b proveden</msg>
+    </result>
+    <resData>
+      <fred:resCreditInfo xsi:schemaLocation='http://www.nic.cz/xml/epp/fred-1.0 fred-1.0.xsd'>
+        <fred:zoneCredit>
+          <fred:zone>0.2.4.e164.arpa</fred:zone>
+          <fred:credit>201.50</fred:credit>
+        </fred:zoneCredit>
+        <fred:zoneCredit>
+          <fred:zone>cz</fred:zone>
+          <fred:credit>603873.00</fred:credit>
+        </fred:zoneCredit>
+      </fred:resCreditInfo>
+    </resData>
+    <trID>
+      <clTRID>rimq002#06-12-13at08:54:46</clTRID>
+      <svTRID>ccReg-0001059227</svTRID>
+    </trID>
+  </response>
+</epp>
+"""),
     )

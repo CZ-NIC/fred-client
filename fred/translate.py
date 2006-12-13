@@ -54,6 +54,8 @@ def install_translation(lang):
     gt.install()
     __builtin__.__dict__['_T'] = gt.gettext
     __builtin__.__dict__['_TP'] = gt.ngettext
+    __builtin__.__dict__['_TU'] = gt.ugettext  # used in GUI
+    __builtin__.__dict__['_TPU'] = gt.ungettext  # used in GUI
 
 #---------------------------
 # INIT options:

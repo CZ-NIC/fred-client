@@ -105,6 +105,7 @@ class ManagerReceiver(ManagerCommand):
                 self._dct_answer['reason'] = reason
                 self._dct_answer['command'] = self._command_sent
                 fnc_name = 'answer_response_%s'%self._command_sent.replace(':','_')
+                # 'command:',self._command_sent,'fnc_name:',fnc_name #TEST
                 # Name of command is very important. It is key for choose function dispatching answer:
                 # delete_(contact|nsset|domain) fnc_name: answer_response_contact_delete
                 # sendauthinfo_(contact|nsset|domain) fnc_name: answer_response_fred_sendauthinfo
@@ -444,7 +445,22 @@ class ManagerReceiver(ManagerCommand):
         "data=(response,result,code,msg)"
         self.__answer_response_list__(data, ('domain','name'))
         
-        
+    def answer_response_fred_creditinfo(self, data):
+        'Prepare creditinfo for display'
+        if self.__code_isnot_1000__(data, 'fred:creditinfo'): return
+        try:
+            resData = self._dict_answer['response'].get('resData',{})
+            res_credit_info = resData.get('fred:resCreditInfo',{})
+        except KeyError, msg:
+            self.append_error('answer_response_fred_creditinfo KeyError: %s'%msg)
+        else:
+            for zone in res_credit_info.get('fred:zoneCredit',[]):
+                # {'fred:zone': {'data': u'0.2.4.e164.arpa'},  'fred:credit': {'data': u'201.50'} }, 
+                key    = eppdoc.get_dct_value(zone, 'fred:zone')
+                value = eppdoc.get_dct_value(zone, 'fred:credit')
+                self._dct_answer['data'][key] = value
+
+
     #-------------------------------------------------
     #
     # Main API function
@@ -560,6 +576,6 @@ if __name__ == '__main__':
         # Data item has format: ('command:name',"""<?xml ...XML document... >""")
         # For example: ('nsset:info',"""<?xml ...<epp ...><response> ... </epp>""")
         #test(test_incomming_messages.data[0])
-##        test(test_incomming_messages.data[-1])
+        test(test_incomming_messages.data[-1])
         #map(test, test_incomming_messages.data)
-        test(test_incomming_messages.data[9]) # test na contact:info status
+        #test(test_incomming_messages.data[9]) # test na contact:info status

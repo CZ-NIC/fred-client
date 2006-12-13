@@ -72,19 +72,6 @@
     <attribute name="title" >
      <string>&amp;Welcome</string>
     </attribute>
-    <widget class="QPushButton" name="btn_credits" >
-     <property name="geometry" >
-      <rect>
-       <x>14</x>
-       <y>521</y>
-       <width>120</width>
-       <height>30</height>
-      </rect>
-     </property>
-     <property name="text" >
-      <string>Credits</string>
-     </property>
-    </widget>
     <widget class="QLabel" name="textLabel3_2" >
      <property name="geometry" >
       <rect>
@@ -263,22 +250,6 @@
       </property>
      </widget>
     </widget>
-    <widget class="QTextEdit" name="system_messages" >
-     <property name="enabled" >
-      <bool>true</bool>
-     </property>
-     <property name="geometry" >
-      <rect>
-       <x>200</x>
-       <y>382</y>
-       <width>450</width>
-       <height>170</height>
-      </rect>
-     </property>
-     <property name="readOnly" >
-      <bool>true</bool>
-     </property>
-    </widget>
     <widget class="QLabel" name="pixmapLabel3" >
      <property name="geometry" >
       <rect>
@@ -315,6 +286,35 @@ Beta release 0.1.0; (Needs &lt;b>Fred module&lt;/b> version 1.3.0)</string>
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
      </property>
      <property name="wordWrap" >
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_credits" >
+     <property name="geometry" >
+      <rect>
+       <x>14</x>
+       <y>521</y>
+       <width>120</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="text" >
+      <string>Credits</string>
+     </property>
+    </widget>
+    <widget class="QTextEdit" name="system_messages" >
+     <property name="enabled" >
+      <bool>true</bool>
+     </property>
+     <property name="geometry" >
+      <rect>
+       <x>200</x>
+       <y>382</y>
+       <width>450</width>
+       <height>170</height>
+      </rect>
+     </property>
+     <property name="readOnly" >
       <bool>true</bool>
      </property>
     </widget>
@@ -603,6 +603,25 @@ The "login" command establishes an ongoing server session that preserves client 
           </rect>
          </property>
         </widget>
+        <widget class="QPushButton" name="btn_source_login" >
+         <property name="geometry" >
+          <rect>
+           <x>10</x>
+           <y>280</y>
+           <width>50</width>
+           <height>50</height>
+          </rect>
+         </property>
+         <property name="toolTip" >
+          <string/>
+         </property>
+         <property name="text" >
+          <string/>
+         </property>
+         <property name="icon" >
+          <iconset>icon_source.png</iconset>
+         </property>
+        </widget>
         <widget class="QTableWidget" name="login_table" >
          <property name="geometry" >
           <rect>
@@ -622,25 +641,6 @@ The "login" command establishes an ongoing server session that preserves client 
            <string>value</string>
           </property>
          </column>
-        </widget>
-        <widget class="QPushButton" name="btn_source_login" >
-         <property name="geometry" >
-          <rect>
-           <x>10</x>
-           <y>280</y>
-           <width>50</width>
-           <height>50</height>
-          </rect>
-         </property>
-         <property name="toolTip" >
-          <string/>
-         </property>
-         <property name="text" >
-          <string/>
-         </property>
-         <property name="icon" >
-          <iconset>icon_source.png</iconset>
-         </property>
         </widget>
        </widget>
       </widget>
@@ -691,6 +691,19 @@ The "login" command establishes an ongoing server session that preserves client 
           </rect>
          </property>
         </widget>
+        <widget class="QPushButton" name="send_logout" >
+         <property name="geometry" >
+          <rect>
+           <x>220</x>
+           <y>270</y>
+           <width>170</width>
+           <height>40</height>
+          </rect>
+         </property>
+         <property name="text" >
+          <string>Send command</string>
+         </property>
+        </widget>
         <widget class="QLabel" name="textLabel17" >
          <property name="geometry" >
           <rect>
@@ -709,19 +722,6 @@ The EPP "logout" command is used to end a session with an EPP server.</string>
          </property>
          <property name="wordWrap" >
           <bool>true</bool>
-         </property>
-        </widget>
-        <widget class="QPushButton" name="send_logout" >
-         <property name="geometry" >
-          <rect>
-           <x>220</x>
-           <y>270</y>
-           <width>170</width>
-           <height>40</height>
-          </rect>
-         </property>
-         <property name="text" >
-          <string>Send command</string>
          </property>
         </widget>
        </widget>
@@ -1299,6 +1299,209 @@ The EPP "hello" request a "greeting" response message from an EPP server at any 
          </property>
          <property name="icon" >
           <iconset>icon_source.png</iconset>
+         </property>
+        </widget>
+       </widget>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="tab_2" >
+      <attribute name="title" >
+       <string>credit info</string>
+      </attribute>
+      <widget class="QTabWidget" name="creditinfo_fred_response" >
+       <property name="geometry" >
+        <rect>
+         <x>12</x>
+         <y>20</y>
+         <width>600</width>
+         <height>360</height>
+        </rect>
+       </property>
+       <property name="currentIndex" >
+        <number>0</number>
+       </property>
+       <widget class="QWidget" name="tab_3" >
+        <attribute name="title" >
+         <string>command</string>
+        </attribute>
+        <widget class="QLabel" name="textLabel16_2" >
+         <property name="geometry" >
+          <rect>
+           <x>20</x>
+           <y>230</y>
+           <width>190</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text" >
+          <string>clTRID</string>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
+        <widget class="QLabel" name="textLabel17_2" >
+         <property name="geometry" >
+          <rect>
+           <x>10</x>
+           <y>10</y>
+           <width>570</width>
+           <height>100</height>
+          </rect>
+         </property>
+         <property name="text" >
+          <string>&lt;h2>credit info&lt;/h2>
+The EPP "credit info" command returns credit information.</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="send_creditinfo" >
+         <property name="geometry" >
+          <rect>
+           <x>220</x>
+           <y>270</y>
+           <width>170</width>
+           <height>40</height>
+          </rect>
+         </property>
+         <property name="text" >
+          <string>Send command</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="creditinfo_cltrid" >
+         <property name="geometry" >
+          <rect>
+           <x>220</x>
+           <y>230</y>
+           <width>360</width>
+           <height>22</height>
+          </rect>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QWidget" name="TabPage_2" >
+        <attribute name="title" >
+         <string>response</string>
+        </attribute>
+        <widget class="QLabel" name="textLabel18_2" >
+         <property name="geometry" >
+          <rect>
+           <x>10</x>
+           <y>10</y>
+           <width>110</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text" >
+          <string>&lt;b>logout&lt;/b></string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QLabel" name="textLabel19_2" >
+         <property name="geometry" >
+          <rect>
+           <x>7</x>
+           <y>42</y>
+           <width>110</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text" >
+          <string>message</string>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
+        <widget class="QLabel" name="textLabel20_2" >
+         <property name="geometry" >
+          <rect>
+           <x>7</x>
+           <y>132</y>
+           <width>110</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text" >
+          <string>data</string>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
+        <widget class="QLabel" name="creditinfo_fred_code" >
+         <property name="geometry" >
+          <rect>
+           <x>130</x>
+           <y>10</y>
+           <width>450</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text" >
+          <string>code</string>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
+        <widget class="QTableWidget" name="creditinfo_fred_table" >
+         <property name="geometry" >
+          <rect>
+           <x>129</x>
+           <y>122</y>
+           <width>450</width>
+           <height>199</height>
+          </rect>
+         </property>
+         <column>
+          <property name="text" >
+           <string>name</string>
+          </property>
+         </column>
+         <column>
+          <property name="text" >
+           <string>value</string>
+          </property>
+         </column>
+        </widget>
+        <widget class="QPushButton" name="btn_source_creditinfo" >
+         <property name="geometry" >
+          <rect>
+           <x>10</x>
+           <y>270</y>
+           <width>50</width>
+           <height>50</height>
+          </rect>
+         </property>
+         <property name="toolTip" >
+          <string/>
+         </property>
+         <property name="text" >
+          <string/>
+         </property>
+         <property name="icon" >
+          <iconset>icon_source.png</iconset>
+         </property>
+        </widget>
+        <widget class="QTextEdit" name="creditinfo_fred_msg" >
+         <property name="geometry" >
+          <rect>
+           <x>130</x>
+           <y>40</y>
+           <width>450</width>
+           <height>70</height>
+          </rect>
          </property>
         </widget>
        </widget>
@@ -6800,8 +7003,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>delete_contact()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>263</x>
+     <y>463</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -6816,8 +7019,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>delete_domain()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>263</x>
+     <y>463</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -6832,8 +7035,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>delete_nsset()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>263</x>
+     <y>463</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -6848,8 +7051,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>hello()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>269</x>
+     <y>492</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -6864,8 +7067,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>check_contact()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>263</x>
+     <y>463</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -6880,8 +7083,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>check_domain()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>263</x>
+     <y>463</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -6896,8 +7099,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>check_nsset()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>263</x>
+     <y>463</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -6912,8 +7115,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>info_contact()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>263</x>
+     <y>463</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -6928,8 +7131,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>info_domain()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>263</x>
+     <y>463</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -6944,8 +7147,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>info_nsset()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>263</x>
+     <y>463</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -6960,8 +7163,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>list_contact()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>263</x>
+     <y>463</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -6976,8 +7179,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>list_domain()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>263</x>
+     <y>463</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -6992,8 +7195,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>list_nsset()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>263</x>
+     <y>463</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7008,8 +7211,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>login()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>259</x>
+     <y>492</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7024,8 +7227,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>logout()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>269</x>
+     <y>482</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7040,8 +7243,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>poll()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>269</x>
+     <y>502</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7056,8 +7259,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>transfer_contact()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>263</x>
+     <y>463</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7072,8 +7275,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>transfer_domain()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>263</x>
+     <y>463</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7088,8 +7291,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>create_contact()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>223</x>
+     <y>463</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7104,8 +7307,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>create_domain()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>263</x>
+     <y>463</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7120,8 +7323,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>create_nsset()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>223</x>
+     <y>463</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7136,8 +7339,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>update_contact()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>223</x>
+     <y>463</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7152,8 +7355,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>update_domain()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>263</x>
+     <y>463</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7168,8 +7371,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>update_nsset()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>223</x>
+     <y>463</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7184,8 +7387,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>renew_domain()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>263</x>
+     <y>463</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7200,12 +7403,12 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>263</x>
+     <y>393</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>293</x>
+     <y>393</y>
     </hint>
    </hints>
   </connection>
@@ -7216,8 +7419,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>source_login()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>57</x>
+     <y>497</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7232,8 +7435,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>source_logout()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>57</x>
+     <y>487</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7248,8 +7451,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>source_poll()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>57</x>
+     <y>497</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7264,8 +7467,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>source_hello()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>57</x>
+     <y>487</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7280,8 +7483,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>source_check_contact()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>53</x>
+     <y>443</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7296,8 +7499,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>source_info_contact()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>53</x>
+     <y>443</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7312,8 +7515,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>source_create_contact()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>53</x>
+     <y>443</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7328,8 +7531,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>source_update_contact()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>53</x>
+     <y>443</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7344,8 +7547,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>source_delete_contact()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>53</x>
+     <y>443</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7360,8 +7563,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>source_transfer_contact()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>53</x>
+     <y>443</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7376,8 +7579,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>source_list_contact()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>53</x>
+     <y>453</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7392,8 +7595,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>source_check_nsset()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>53</x>
+     <y>443</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7408,8 +7611,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>source_info_nsset()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>53</x>
+     <y>443</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7424,8 +7627,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>source_create_nsset()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>53</x>
+     <y>443</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7440,8 +7643,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>source_update_nsset()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>53</x>
+     <y>443</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7456,8 +7659,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>source_delete_nsset()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>53</x>
+     <y>443</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7472,8 +7675,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>source_list_nsset()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>53</x>
+     <y>453</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7488,8 +7691,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>source_check_domain()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>53</x>
+     <y>443</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7504,8 +7707,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>source_info_domain()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>53</x>
+     <y>443</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7520,8 +7723,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>source_create_domain()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>53</x>
+     <y>443</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7536,8 +7739,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>source_update_domain()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>53</x>
+     <y>443</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7552,8 +7755,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>source_delete_domain()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>53</x>
+     <y>443</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7568,8 +7771,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>source_transfer_domain()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>53</x>
+     <y>443</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7584,8 +7787,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>source_renew_domain()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>53</x>
+     <y>443</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7600,8 +7803,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>source_list_domain()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>53</x>
+     <y>443</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7632,8 +7835,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>credits()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>27</x>
+     <y>554</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7648,8 +7851,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>sendauthinfo_contact()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>263</x>
+     <y>463</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7664,8 +7867,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>sendauthinfo_nsset()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>263</x>
+     <y>463</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7680,8 +7883,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>sendauthinfo_domain()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>263</x>
+     <y>463</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7696,8 +7899,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>source_sendauthinfo_contact()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>53</x>
+     <y>443</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7712,8 +7915,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>source_sendauthinfo_nsset()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>53</x>
+     <y>443</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7728,12 +7931,60 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>source_sendauthinfo_domain()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>20</x>
-     <y>20</y>
+     <x>53</x>
+     <y>443</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
      <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>send_creditinfo</sender>
+   <signal>clicked()</signal>
+   <receiver>FredWindow</receiver>
+   <slot>credit_info()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>348</x>
+     <y>492</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>144</x>
+     <y>647</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_source_creditinfo</sender>
+   <signal>clicked()</signal>
+   <receiver>FredWindow</receiver>
+   <slot>source_creditinfo()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>94</x>
+     <y>502</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>90</x>
+     <y>632</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>system_messages</sender>
+   <signal>textChanged()</signal>
+   <receiver>FredWindow</receiver>
+   <slot>system_messages_changed()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>285</x>
+     <y>500</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>237</x>
+     <y>639</y>
     </hint>
    </hints>
   </connection>
