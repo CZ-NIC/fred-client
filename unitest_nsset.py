@@ -39,6 +39,7 @@ import unitest_share
 # FRED_DATA[3] - modified
 FRED_NSSET1 = unitest_share.create_handle('NSSID:U1') ## 'NSSID:examp2134'
 FRED_HANDLE = unitest_share.create_handle('NSSID:U2') ## 'NSSID:unittest2'
+FRED_DOMAIN = '%s.cz'%unitest_share.create_handle('nssetest')
 FRED_NOTEXIST = unitest_share.create_handle('NSSID:NE')
 FRED_CONTACT1 = unitest_share.create_handle('CID:U1') ## 'CID:UNITTEST1'
 FRED_CONTACT2 = unitest_share.create_handle('CID:U2') ## 'CID:UNITTEST2'
@@ -416,7 +417,7 @@ class Test(unittest.TestCase):
 
     def test_130(self):
         '3.12 Vytvoreni domeny napojene na nsset'
-        epp_cli.create_domain('test-nsset.cz', handle_contact, 'heslo', handle_nsset)
+        epp_cli.create_domain(FRED_DOMAIN, handle_contact, 'heslo', handle_nsset)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         
     def test_135(self):
@@ -462,7 +463,7 @@ class Test(unittest.TestCase):
 
     def test_190(self):
         '3.19 Smazani domeny'
-        epp_cli.delete_domain('test-nsset.cz')
+        epp_cli.delete_domain(FRED_DOMAIN )
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_200(self):
