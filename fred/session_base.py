@@ -178,6 +178,11 @@ class ManagerBase:
         self._notes = []
         return msg
 
+    def fetch_notes_afrer_errors(self, sep='\n'):
+        msg = join_unicode(self._notes_afrer_errors, sep)
+        self._notes_afrer_errors = []
+        return msg
+
     def is_error(self):
         "Check if any error occurs."
         return len(self._errors)

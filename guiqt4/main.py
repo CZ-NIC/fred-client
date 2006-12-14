@@ -146,7 +146,7 @@ class FredMainWindow(QtGui.QDialog):
         self._btn_send = [obj for name, obj in self.ui.__dict__.items() if re.match('send_',name)]
         # Redirect output:
         self.output = RedirectOutput(self.ui.system_messages)
-        sys.stdout = self.output
+        #sys.stdout = self.output
         sys.stderr = self.output
         # INIT
         self.load_config_and_autologin()
@@ -259,11 +259,17 @@ class FredMainWindow(QtGui.QDialog):
         # }
         dct_answer = self.epp._epp._dct_answer
         command_name = dct_answer['command']
+        if not command_name:
+            # if command was not sent or created
+            command_name = self.thread_epp.command_name
         matches = re.match('(\w+):(.+)', command_name)
         # convert value: contact:list -> list_contact
         if matches: command_name = '%s_%s'%(matches.group(2),matches.group(1))
         errors = []
+        notes = self.epp._epp.fetch_notes()
         error = self.epp._epp.fetch_errors()
+        notes_afrer_errors = self.epp._epp.fetch_notes_afrer_errors()
+        #
         if(error): errors.append(error)
         if len(dct_answer.get('errors',[])):
             errors.extend(dct_answer['errors'])
@@ -273,8 +279,12 @@ class FredMainWindow(QtGui.QDialog):
         if reason:
             if type(reason) is str: reason = reason.decode(encoding)
             msg.append(reason)
+        if len(notes):
+            msg.append('\n'.join(notes))
         if len(errors):
             msg.append('<b style="color:red">%s</b>'%'\n'.join(errors))
+        if len(notes_afrer_errors):
+            msg.append('\n'.join(notes_afrer_errors))
         getattr(self.ui,'%s_code'%command_name).setText(QtCore.QString(code))
         getattr(self.ui,'%s_msg'%command_name).setHtml(u'<br>\n'.join(map(get_unicode,msg)))
         # Prepare data headers and resolve widget type:
