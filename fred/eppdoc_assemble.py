@@ -16,10 +16,19 @@ but from Message class interface.
 import re, sys, os
 import random
 import ConfigParser
-import eppdoc
 import cmd_parser
 import session_base
 from translate import encoding
+#import eppdoc
+from eppdoc import Message as MessageBase, nic_cz_xml_epp_path, EPP_VERSION, EPP_CONTACT, EPP_DOMAIN, EPP_NSSET, EPP_ENUMVAL
+
+# Namespaces version:
+NS_VERSION = {
+    'contact': EPP_CONTACT, 
+    'domain': EPP_DOMAIN, 
+    'nsset': EPP_NSSET, 
+    'enum': EPP_ENUMVAL,
+}
 
 try:
     import readline
@@ -35,11 +44,11 @@ history_filename = os.path.join(os.path.expanduser('~'),'.fred_history') # compa
 TAG_clTRID = 'cltrid' # Definition for --key-name = clTRID value.
 
 
-class Message(eppdoc.Message):
+class Message(MessageBase):
     "Client EPP commands."
 
     def __init__(self):
-        eppdoc.Message.__init__(self)
+        MessageBase.__init__(self)
         self.make_param_required_types()
 
     def make_param_required_types(self):
@@ -542,6 +551,7 @@ class Message(eppdoc.Message):
         key = name of key pointed to vlaue in parameters dictionary
         params must have ('clTRID',('name',['name','name',]))
         """
+        VERSION = NS_VERSION[cols[1]]
         self._handle_ID = self._dct.has_key(key) and self._dct[key][0] or '' # keep object handle (ID)
         if len(cols) > 3:
             col1 = '%s:%s'%(cols[1],cols[3])
@@ -551,8 +561,8 @@ class Message(eppdoc.Message):
         data=[('epp', 'command'),
             ('command', cols[0]),
             (cols[0],col1,None,(
-            ('xmlns:%s'%cols[1],'%s%s-%s'%(eppdoc.nic_cz_xml_epp_path,cols[1],eppdoc.nic_cz_version)),
-            ('xsi:schemaLocation','%s%s-1.0 %s-%s.xsd'%(eppdoc.nic_cz_xml_epp_path,cols[1],cols[1],eppdoc.nic_cz_version))
+            ('xmlns:%s'%cols[1],'%s%s-%s'%(nic_cz_xml_epp_path, cols[1], VERSION)),
+            ('xsi:schemaLocation','%s%s-%s %s-%s.xsd'%(nic_cz_xml_epp_path, cols[1], VERSION, cols[1], VERSION))
             ))
             ]
         if key:
@@ -572,11 +582,12 @@ class Message(eppdoc.Message):
         """
         self._handle_ID = self._dct.has_key(key) and self._dct[key][0] or '' # keep object handle (ID)
         if len(cols) < 2:
+            # TODO: overit, jestli nema byt EPP_ENUMVAL, nebo fred?
             # for credit_info ------------------------------------------------
             data=[('epp', 'extension'),
             ('extension', '%s:extcommand'%namespace, None, (
-                ('xmlns:%s'%namespace, '%s%s-%s'%(eppdoc.nic_cz_xml_epp_path,namespace,eppdoc.nic_cz_version)),
-                ('xsi:schemaLocation','%s%s-%s %s-%s.xsd'%(eppdoc.nic_cz_xml_epp_path,namespace,eppdoc.nic_cz_version,namespace,eppdoc.nic_cz_version)),
+                ('xmlns:%s'%namespace, '%s%s-%s'%(nic_cz_xml_epp_path, namespace, EPP_VERSION)),
+                ('xsi:schemaLocation','%s%s-%s %s-%s.xsd'%(nic_cz_xml_epp_path, namespace, EPP_VERSION, namespace, EPP_VERSION)),
             )),
             ('%s:extcommand'%namespace, '%s:%s'%(namespace,cols[0]))
             ]
@@ -587,15 +598,16 @@ class Message(eppdoc.Message):
             else:
                 col1 = '%s:%s'%(cols[1],cols[0])
             col2 = '%s:%s'%(cols[1],cols[2])
+            VERSION = NS_VERSION[cols[1]]
             data=[('epp', 'extension'),
                 ('extension', '%s:extcommand'%namespace, None, (
-                    ('xmlns:%s'%namespace, '%s%s-%s'%(eppdoc.nic_cz_xml_epp_path,namespace,eppdoc.nic_cz_version)),
-                    ('xsi:schemaLocation','%s%s-%s %s-%s.xsd'%(eppdoc.nic_cz_xml_epp_path,namespace,eppdoc.nic_cz_version,namespace,eppdoc.nic_cz_version)),
+                    ('xmlns:%s'%namespace, '%s%s-%s'%(nic_cz_xml_epp_path, namespace, EPP_VERSION)),
+                    ('xsi:schemaLocation','%s%s-%s %s-%s.xsd'%(nic_cz_xml_epp_path, namespace, EPP_VERSION, namespace, EPP_VERSION)),
                 )),
                 ('%s:extcommand'%namespace, '%s:%s'%(namespace,cols[0])), 
                 ('%s:%s'%(namespace,cols[0]),col1,None,(
-                ('xmlns:%s'%cols[1],'%s%s-%s'%(eppdoc.nic_cz_xml_epp_path,cols[1],eppdoc.nic_cz_version)),
-                ('xsi:schemaLocation','%s%s-1.0 %s-%s.xsd'%(eppdoc.nic_cz_xml_epp_path,cols[1],cols[1],eppdoc.nic_cz_version))
+                ('xmlns:%s'%cols[1],'%s%s-%s'%(nic_cz_xml_epp_path, cols[1], VERSION)),
+                ('xsi:schemaLocation','%s%s-%s %s-%s.xsd'%(nic_cz_xml_epp_path, cols[1], VERSION, cols[1], VERSION))
                 ))
                 ]
             if key:
@@ -712,10 +724,11 @@ class Message(eppdoc.Message):
 
     def __assemble_transfer__(self, names, params):
         "Assemble transfer XML EPP command."
+        VERSION = NS_VERSION[names[0]]
         self._handle_ID = self._dct['name'][0] # keep object handle (ID)
-        ns = '%s%s-%s'%(eppdoc.nic_cz_xml_epp_path,names[0],eppdoc.nic_cz_version)
+        ns = '%s%s-%s'%(nic_cz_xml_epp_path, names[0], VERSION)
         attr = (('xmlns:%s'%names[0],ns),
-                ('xsi:schemaLocation','%s %s-%s.xsd'%(ns,names[0],eppdoc.nic_cz_version)))
+                ('xsi:schemaLocation','%s %s-%s.xsd'%(ns, names[0], VERSION)))
         self.__assemble_cmd__((
             ('epp', 'command'),
             ('command', 'transfer', '', (('op','request'),)), # self._dct['op'][0]
@@ -741,9 +754,9 @@ class Message(eppdoc.Message):
         'Enum extension for (creste|renew)-domain commands.'
         if not __has_key__(self._dct,'val_ex_date'): return
         names = ('enumval',type)
-        ns = '%s%s-%s'%(eppdoc.nic_cz_xml_epp_path,names[0],eppdoc.nic_cz_version)
+        ns = '%s%s-%s'%(nic_cz_xml_epp_path, names[0],EPP_VERSION) # ??? EPP_ENUMVAL
         attr = (('xmlns:%s'%names[0],ns),
-            ('xsi:schemaLocation','%s %s-%s.xsd'%(ns,names[0],eppdoc.nic_cz_version)))
+            ('xsi:schemaLocation','%s %s-%s.xsd'%(ns,names[0],EPP_VERSION)))
         data.extend((
             ('command','extension'),
             ('extension','%s:%s'%names,'',attr)
@@ -780,9 +793,9 @@ class Message(eppdoc.Message):
         dct = self._dct
         self._handle_ID = dct['contact_id'][0] # keep object handle (ID)
         names = ('contact',)
-        ns = '%s%s-%s'%(eppdoc.nic_cz_xml_epp_path,names[0],eppdoc.nic_cz_version)
+        ns = '%s%s-%s'%(nic_cz_xml_epp_path, names[0],EPP_CONTACT)
         attr = (('xmlns:%s'%names[0],ns),
-                ('xsi:schemaLocation','%s %s-%s.xsd'%(ns,names[0],eppdoc.nic_cz_version)))
+                ('xsi:schemaLocation','%s %s-%s.xsd'%(ns,names[0],EPP_CONTACT)))
         data = [
             ('epp', 'command'),
             ('command', 'create'),
@@ -822,9 +835,9 @@ class Message(eppdoc.Message):
         dct = self._dct
         self._handle_ID = dct['name'][0] # keep object handle (ID)
         names = ('domain',)
-        ns = '%s%s-%s'%(eppdoc.nic_cz_xml_epp_path,names[0],eppdoc.nic_cz_version)
+        ns = '%s%s-%s'%(nic_cz_xml_epp_path, names[0],EPP_DOMAIN)
         attr = (('xmlns:%s'%names[0],ns),
-                ('xsi:schemaLocation','%s %s-%s.xsd'%(ns,names[0],eppdoc.nic_cz_version)))
+                ('xsi:schemaLocation','%s %s-%s.xsd'%(ns,names[0],EPP_DOMAIN)))
         data = [
             ('epp', 'command'),
             ('command', 'create'),
@@ -857,9 +870,9 @@ class Message(eppdoc.Message):
         dct = self._dct
         self._handle_ID = dct['id'][0] # keep object handle (ID)
         names = ('nsset',)
-        ns = '%s%s-%s'%(eppdoc.nic_cz_xml_epp_path,names[0],eppdoc.nic_cz_version)
+        ns = '%s%s-%s'%(nic_cz_xml_epp_path, names[0],EPP_NSSET)
         attr = (('xmlns:%s'%names[0],ns),
-                ('xsi:schemaLocation','%s %s-%s.xsd'%(ns,names[0],eppdoc.nic_cz_version)))
+                ('xsi:schemaLocation','%s %s-%s.xsd'%(ns,names[0],EPP_NSSET)))
         data = [
             ('epp', 'command'),
             ('command', 'create'),
@@ -882,9 +895,9 @@ class Message(eppdoc.Message):
         dct = self._dct
         self._handle_ID = dct['name'][0] # keep object handle (ID)
         names = ('domain',)
-        ns = '%s%s-%s'%(eppdoc.nic_cz_xml_epp_path,names[0],eppdoc.nic_cz_version)
+        ns = '%s%s-%s'%(nic_cz_xml_epp_path, names[0],EPP_DOMAIN)
         attr = (('xmlns:%s'%names[0],ns),
-                ('xsi:schemaLocation','%s %s-%s.xsd'%(ns,names[0],eppdoc.nic_cz_version)))
+                ('xsi:schemaLocation','%s %s-%s.xsd'%(ns,names[0],EPP_DOMAIN)))
         data = [
             ('epp', 'command'),
             ('command', 'renew'),
@@ -907,9 +920,9 @@ class Message(eppdoc.Message):
         dct = self._dct
         self._handle_ID = dct['contact_id'][0] # keep object handle (ID)
         names = ('contact',)
-        ns = '%s%s-%s'%(eppdoc.nic_cz_xml_epp_path,names[0],eppdoc.nic_cz_version)
+        ns = '%s%s-%s'%(nic_cz_xml_epp_path, names[0],EPP_CONTACT)
         attr = (('xmlns:%s'%names[0],ns),
-                ('xsi:schemaLocation','%s %s-%s.xsd'%(ns,names[0],eppdoc.nic_cz_version)))
+                ('xsi:schemaLocation','%s %s-%s.xsd'%(ns,names[0],EPP_CONTACT)))
         data = [
             ('epp', 'command'),
             ('command', 'update'),
@@ -955,9 +968,9 @@ class Message(eppdoc.Message):
         dct = self._dct
         self._handle_ID = dct['name'][0] # keep object handle (ID)
         names = ('domain',)
-        ns = '%s%s-%s'%(eppdoc.nic_cz_xml_epp_path,names[0],eppdoc.nic_cz_version)
+        ns = '%s%s-%s'%(nic_cz_xml_epp_path, names[0],EPP_DOMAIN)
         attr = (('xmlns:%s'%names[0],ns),
-                ('xsi:schemaLocation','%s %s-%s.xsd'%(ns,names[0],eppdoc.nic_cz_version)))
+                ('xsi:schemaLocation','%s %s-%s.xsd'%(ns,names[0],EPP_DOMAIN)))
         data = [
             ('epp', 'command'),
             ('command', 'update'),
@@ -987,9 +1000,9 @@ class Message(eppdoc.Message):
         dct = self._dct
         self._handle_ID = dct['id'][0] # keep object handle (ID)
         names = ('nsset',)
-        ns = '%s%s-%s'%(eppdoc.nic_cz_xml_epp_path,names[0],eppdoc.nic_cz_version)
+        ns = '%s%s-%s'%(nic_cz_xml_epp_path, names[0],EPP_NSSET)
         attr = (('xmlns:%s'%names[0],ns),
-                ('xsi:schemaLocation','%s %s-%s.xsd'%(ns,names[0],eppdoc.nic_cz_version)))
+                ('xsi:schemaLocation','%s %s-%s.xsd'%(ns, names[0], EPP_NSSET)))
         data = [
             ('epp', 'command'),
             ('command', 'update'),

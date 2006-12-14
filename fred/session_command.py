@@ -10,7 +10,7 @@ import translate
 from session_base import *
 from session_transfer import ManagerTransfer, human_readable
 
-from eppdoc import nic_cz_version as eppdoc_nic_cz_version
+from eppdoc import EPP_VERSION # nic_cz_version as eppdoc_nic_cz_version
 """
 This module with ManagerCommand class take care about creation
 of the EPP XML documents. It uses for this purpose class Message 
@@ -638,7 +638,7 @@ sources ad advance, transmited between client and server.
             # prefix 4 ASCII znaků pro clTRID (pro každé sezení nový)
             self._session[CMD_ID] = 0
             self.defs[PREFIX] = ''.join([chr(random.randint(97,122)) for n in range(4)])
-            self._epp_cmd.assemble_login(self.__next_clTRID__(), (eppdoc_nic_cz_version, self.defs[objURI], self.defs[extURI], self._session[LANG]))
+            self._epp_cmd.assemble_login(self.__next_clTRID__(), (EPP_VERSION, self.defs[objURI], self.defs[extURI], self._session[LANG]))
             if self._epp_cmd._dct.has_key('username'):
                 self._session[USERNAME] = self._epp_cmd._dct['username'][0] # for prompt info
 

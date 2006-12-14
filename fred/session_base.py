@@ -560,7 +560,7 @@ $fred_client_errors = array(); // errors occuring during communication
         if not match: return
         local_version = match.group(1)
         if server_version != local_version:
-            self.append_note(_T('Warning: Different schema version. Client schemas version is %s and on the server is %s.')%(local_version, server_version))
+            self.append_note(_T('Warning: Different schema version. Client schemas version is %s and on the server is %s.')%(local_version, get_ltext(server_version)))
 
 def append_with_colors(list_of_messages, msg, color):
     "Used by Manager::append_error() and Manager::append_note() functions"
