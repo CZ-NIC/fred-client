@@ -28,60 +28,24 @@ except ImportError:
 from xml.dom import Node
 import StringIO
 
-#<?xml version='1.0' encoding='utf-8' standalone="no"?>
-#<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' 
-#        xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' 
-#        xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
-#  <greeting>
-#    <svID>EPP server of cz.nic (SVN session BUILD Dec 14 2006 15:21:08)</svID>
-#    <svDate>2006-12-14T16:34:03+01:00</svDate>
-#    <svcMenu>
-#      <version>1.0</version>
-#      <lang>en</lang>
-#      <lang>cs</lang>
-#      <objURI>http://www.nic.cz/xml/epp/contact-1.1</objURI>
-#      <objURI>http://www.nic.cz/xml/epp/domain-1.1</objURI>
-#      <objURI>http://www.nic.cz/xml/epp/nsset-1.1</objURI>
-#      <svcExtension>
-#        <extURI>http://www.nic.cz/xml/epp/enumval-1.0</extURI>
-#      </svcExtension>
-#    </svcMenu>
-#    <dcp>
-#      <access>
-#        <all/>
-#      </access>
-#      <statement>
-#        <purpose>
-#          <admin/>
-#          <prov/>
-#        </purpose>
-#        <recipient>
-#          <public/>
-#        </recipient>
-#        <retention>
-#          <stated/>
-#        </retention>
-#      </statement>
-#    </dcp>
-#  </greeting>
-#</epp>
-
 #========================================================
-# Jmenné prostory EPP
-# společné pro všechny šablony
+# Namespaces for  EPP
+# shared for all templates
 #========================================================
+SCHEMA_PREFIX = 'http://www.nic.cz/xml/epp/'
 EPP_VERSION   = '1.0'
-EPP_CONTACT = '1.1'
+EPP_CONTACT  = '1.1'
 EPP_DOMAIN    = '1.1'
-EPP_NSSET       = '1.1'
-EPP_ENUMVAL  = '1.0'
+EPP_NSSET      = '1.1'
+EPP_ENUMVAL = '1.0'
+EPP_FRED         = '1.0'
 
-xmlns="urn:ietf:params:xml:ns:epp-%s"%EPP_VERSION
+obj_uri = "urn:ietf:params:xml:ns:"
+xmlns="%sepp-%s"%(obj_uri, EPP_VERSION)
 xmlns_xsi="http://www.w3.org/2001/XMLSchema-instance"
-xsi_schemaLocation="%s epp-%s.xsd"%(xmlns, xmlns)
+xsi_schemaLocation="%s epp-%s.xsd"%(xmlns, EPP_VERSION)
 default_encoding = 'utf-8' # default document output encoding
-nic_cz_xml_epp_path = 'http://www.nic.cz/xml/epp/'
-#nic_cz_version = '1.0'
+# nic_cz_xml_epp_path = 'http://www.nic.cz/xml/epp/'
 #========================================================
 
 class Message:
@@ -654,16 +618,15 @@ def correct_unbound_prefix(xml):
                 names.append(token)
     patt = re.compile(r'<([^\?][^>]+)>',re.DOTALL)
     if len(names):
-        return re.sub(r'<([^\?][^>]+)>', '<\\1 %s>'%' '.join(['xmlns:%s="urn:ietf:params:xml:ns:epp-%s"'%(n, EPP_VERSION) for n in names]), xml, 1)
+        return re.sub(r'<([^\?][^>]+)>', '<\\1 %s>'%' '.join(['xmlns:%s="%sepp-%s"'%(n, obj_uri, EPP_VERSION) for n in names]), xml, 1)
     else:
         return xml
 
 
 def test_display():
     exampe1 = {'attr': [(u'xmlns:xsi', u'http://www.w3.org/2001/XMLSchema-instance'),
-          ('xmlns', u'urn:ietf:params:xml:ns:epp-1.0'),
-          (u'xsi:schemaLocation',
-           u'urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd')],
+          ('xmlns', xmlns),
+          (u'xsi:schemaLocation', xsi_schemaLocation)],
  'greeting': {'dcp': {'access': {'all': {}},
                       'statement': {'purpose': {'admin': {}, 'prov': {}},
                                     'recipient': {'public': {}},
@@ -678,8 +641,8 @@ def test_display():
                                   {'data': u'http://www.nic.cz/xml/epp/nsset-1.0'}]}}}
 
     exampe2 = {'attr': [(u'xmlns:xsi', u'http://www.w3.org/2001/XMLSchema-instance'), 
-        ('xmlns', u'urn:ietf:params:xml:ns:epp-1.0'), 
-        (u'xsi:schemaLocation', u'urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd')], 
+        ('xmlns', xmlns), 
+        (u'xsi:schemaLocation', xsi_schemaLocation)], 
     'response': {'trID': 
     {'clTRID': {'data': u'jzqq002#06-07-07at14:08:37'}, 
      'svTRID': {'data': u'fred-0000010021'}}, 

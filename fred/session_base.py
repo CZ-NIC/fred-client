@@ -1,4 +1,5 @@
 # -*- coding: utf8 -*-
+# -*- coding: utf8 -*-
 #!/usr/bin/env python
 import re, time
 import sys, os, StringIO
@@ -7,6 +8,7 @@ import terminal_controler
 import translate
 import session_config
 import internal_variables
+from eppdoc import EPP_CONTACT, EPP_DOMAIN, EPP_NSSET, EPP_ENUMVAL, SCHEMA_PREFIX
 """
 Class ManagerBase is a part of one Manager object  what provide client session.
 This base class owns basic variables and functions needed for manage EPP XML 
@@ -36,10 +38,10 @@ class ManagerBase:
     Class collects messages and prepares them for output.
     """
     def __init__(self):
-        self._notes = [] # upozornění na chybné zadání
-        self._errors = [] # chybová hlášení při přenosu, parsování
-        self._notes_afrer_errors = [] # hlášení po chybách
-        self._sep = '\n' # oddělovač jednotlivých zpráv
+        self._notes = [] # notes or warnings, it are show first, before errors
+        self._errors = [] # error messages
+        self._notes_afrer_errors = [] # notes witch must be displayed after error messages
+        self._sep = '\n' # separator of the messages
         #-----------------------------------------
         # Session data:
         #-----------------------------------------
@@ -63,11 +65,13 @@ class ManagerBase:
         self._external_validator = 'xmllint'
         # defaults
         self.defs = ['']*DEFS_LENGTH
-        # Values objURI a extURI are loaded from greeting message.
-        self.defs[objURI] = ['http://www.nic.cz/xml/epp/contact-1.0',
-                'http://www.nic.cz/xml/epp/domain-1.0',
-                'http://www.nic.cz/xml/epp/nsset-1.0']
-        self.defs[extURI] = ['http://www.nic.cz/xml/epp/enumval-1.0']
+        # Values objURI a extURI for comparation with the greeting message.
+        self.defs[objURI] = [
+                '%scontact-%s'%(SCHEMA_PREFIX, EPP_CONTACT),
+                '%snsset-%s'%(SCHEMA_PREFIX, EPP_NSSET),
+                '%sdomain-%s'%(SCHEMA_PREFIX, EPP_DOMAIN),
+        ]
+        self.defs[extURI] = ['%senumval-%s'%(SCHEMA_PREFIX, EPP_ENUMVAL)]
         self.defs[PREFIX] = '' # pro každé sezení nový prefix
         self._conf = None ## <ConfigParser object> from session_config.py
         self._auto_connect = 1 # auto connection during login or hello
@@ -543,24 +547,33 @@ $fred_client_errors = array(); // errors occuring during communication
         if colored_output.CLEAR_EOL and cmd[5:] == colored_output.get_term_vers():
             self.__do_help__(self.__prepare_help__(terminal_controler.supported_versions))
 
-    def check_schemas_version(self, list_schemas):
-        'Check version number of used schemas between local and server version'
-        # objURI= [u'http://www.nic.cz/xml/epp/contact-1.0', ...]
-        if self._session[VERBOSE] < 2: return # no comparation in verbose 1
-        # check once only or if schemas loaded:
-        if not len(list_schemas): return
-        match = re.search('[\d\.]+$', list_schemas[0]) # check first list item only
-        if not match: return
-        server_version = match.group(0)
-        schema_path = self.__get_actual_schema_path__()
-        if schema_path:
-            match = re.search('([\d\.]+)\.xsd$',schema_path)
-        else:
-            return
-        if not match: return
-        local_version = match.group(1)
-        if server_version != local_version:
-            self.append_note(_T('Warning: Different schema version. Client schemas version is %s and on the server is %s.')%(local_version, get_ltext(server_version)))
+    def check_schemas(self, name, local_obj, server_obj):
+        """Check schema version and write diferrences to the standard error list.
+        for example:
+        name = 'objURI'
+        local_obj = self.defs[objURI]
+        server_obj = dct['objURI']
+        """
+        locals, servers  = self.check_schema_versions(local_obj, server_obj)
+        if len(locals) or len(servers):
+            self.append_error(_T('Different %s schema version.')%name)
+            self.append_error(_TP('Client schema version is%s\t%s%sand on the server is%s\t%s','Client schema versions are%s\t%s%sand on the server are%s\t%s',len(locals))%(
+                self._sep, ('%s\t'%self._sep).join(locals), 
+                self._sep, self._sep, ('%s\t'%self._sep).join(servers))
+            )
+
+    def check_schema_versions(self, local_schema, server_schema):
+        """Check versions between local and server schemas. Returns differences.
+        local_schema / server_schema:
+            ['http://www.nic.cz/xml/epp/contact-1.1', 'http://www.nic.cz/xml/epp/domain-1.1',  ... ]
+            ['http://www.nic.cz/xml/epp/enumval-1.0']
+        server_schema are in unicode
+        """
+        return (
+            [get_ltext(name) for name in local_schema if name not in server_schema], # local names what are not on the server
+            [get_ltext(name) for name in server_schema if name not in local_schema], # server names what are not eqal with local version
+        )
+        
 
 def append_with_colors(list_of_messages, msg, color):
     "Used by Manager::append_error() and Manager::append_note() functions"

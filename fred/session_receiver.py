@@ -179,13 +179,15 @@ class ManagerReceiver(ManagerCommand):
         self.defs[LANGS] = dct['lang'] = dct['lang'].split('\n')
         if type(self.defs[LANGS]) in (str,unicode):
             self.defs[LANGS] = (self.defs[LANGS],)
+        # check objURI and extURI
+        msg_invalid_schema_version = []
         dct['objURI'] = dct.get('objURI','').split('\n')
         if dct['objURI']:
-            self.defs[objURI] = dct['objURI']
-            self.check_schemas_version(dct['objURI'])
-        self.defs[extURI] = eppdoc.get_dct_values(svcMenu, ('svcExtension','extURI'))
+            self.check_schemas('objURI', self.defs[objURI], dct['objURI'])
+        dct['extURI'] = eppdoc.get_dct_values(svcMenu, ('svcExtension','extURI'))
         if self.defs[extURI]:
-            dct['extURI'] = self.defs[extURI]
+            self.check_schemas('extURI', self.defs[extURI], dct['extURI'])
+        #
         adjust_dct_keys(dct,('lang','objURI','extURI'))
         # data collection policy, access
         dcp = greeting.get('dcp',{})

@@ -21,7 +21,7 @@ timeout = 10.0
 
 [session]
 validate = on
-schema = all-1.0.xsd
+schema = all-1.1.xsd
 poll_autoack = off
 confirm_send_commands = on
 # colors = yes

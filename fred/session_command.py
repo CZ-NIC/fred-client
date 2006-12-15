@@ -10,7 +10,7 @@ import translate
 from session_base import *
 from session_transfer import ManagerTransfer, human_readable
 
-from eppdoc import EPP_VERSION # nic_cz_version as eppdoc_nic_cz_version
+from eppdoc import EPP_VERSION
 """
 This module with ManagerCommand class take care about creation
 of the EPP XML documents. It uses for this purpose class Message 
@@ -183,12 +183,13 @@ sources ad advance, transmited between client and server.
                 if command_name in self._available_commands:
                     type = 'EPP'
             if type:
-                if re.match('(\?|h(elp)?\s+)\s*\S+\s+\S+',command):
-                    # no parameters are alowed: '?','command'
-                    self.append_error(_T('Help command can have only one parameter'))
-                    self._notes_afrer_errors.append(_T("Type 'help ?' to get more information about help usage."))
-                else:
-                    self.__make_help_details__(command_name, type)
+                #if re.match('(\?|h(elp)?\s+)\s*\S+\s+\S+',command):
+                #    # no parameters are alowed: '?','command'
+                #    self.append_error(_T('Help command can have only one parameter'))
+                #    self._notes_afrer_errors.append(_T("Type 'help ?' to get more information about help usage."))
+                #else:
+                #    self.__make_help_details__(command_name, type)
+                self.__make_help_details__(command_name, type)
             else:
                 self.append_note('%s: %s'%(_T('No help available for'),command_name))
                 self.__display_help__(command)
@@ -364,11 +365,12 @@ sources ad advance, transmited between client and server.
         # Resolve three command types: 1. help; 2. session command; 3. EPP command
         if help:
             # 1. help
-            if len(cmd.split()) > 2:
-                self.append_error(_T('Help command can have only one parameter'))
-                self._notes_afrer_errors.append(_T("Type 'help ?' to get more information about help usage."))
-            else:
-                self.display_help(help_item, command)
+            #if len(cmd.split()) > 2:
+            #    self.append_error(_T('Help command can have only one parameter'))
+            #    self._notes_afrer_errors.append(_T("Type 'help ?' to get more information about help usage."))
+            #else:
+            #    self.display_help(help_item, command)
+            self.display_help(help_item, command)
         elif session_command in self._pattern_session_commands:
             # 2. Session commands
             for names,func,req,p,e,x in self._session_commands:

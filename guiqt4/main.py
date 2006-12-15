@@ -111,6 +111,7 @@ class FredMainWindow(QtGui.QDialog):
         self.ui.setupUi(self)
         self.setFixedSize(694,656)
         self.epp = epp_client
+        self.epp._epp._sep = '<br>\n' # separator for display lines in QtGui.QTextEdit as HTML
         self.missing_required = []
         self.src = {} # {'command_name':['command line','XML source','XML response'], ...}
         #--------------------------------------        
