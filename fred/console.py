@@ -193,9 +193,9 @@ def check_options(epp):
     if options['verbose']:
         if epp.parse_verbose_value(options['verbose']) is None:
             retval=0
-            print _T("""%s
-Usage: %s [OPTIONS...]
-Try '%s --help' for more information.""")%(epp.fetch_errors(),script_name,script_name)
+            print epp.fetch_errors()
+            print _T("""Usage: %s [OPTIONS...]
+Try '%s --help' for more information.""")%(script_name, script_name)
     return retval
 
 if __name__ == '__main__':
