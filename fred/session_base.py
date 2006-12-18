@@ -1,6 +1,5 @@
-# -*- coding: utf8 -*-
-# -*- coding: utf8 -*-
 #!/usr/bin/env python
+# -*- coding: utf8 -*-
 import re, time
 import sys, os, StringIO
 import ConfigParser
@@ -8,7 +7,6 @@ import terminal_controler
 import translate
 import session_config
 import internal_variables
-from eppdoc import EPP_CONTACT, EPP_DOMAIN, EPP_NSSET, EPP_ENUMVAL, SCHEMA_PREFIX
 """
 Class ManagerBase is a part of one Manager object  what provide client session.
 This base class owns basic variables and functions needed for manage EPP XML 
@@ -65,13 +63,6 @@ class ManagerBase:
         self._external_validator = 'xmllint'
         # defaults
         self.defs = ['']*DEFS_LENGTH
-        # Values objURI a extURI for comparation with the greeting message.
-        self.defs[objURI] = [
-                '%scontact-%s'%(SCHEMA_PREFIX, EPP_CONTACT),
-                '%snsset-%s'%(SCHEMA_PREFIX, EPP_NSSET),
-                '%sdomain-%s'%(SCHEMA_PREFIX, EPP_DOMAIN),
-        ]
-        self.defs[extURI] = ['%senumval-%s'%(SCHEMA_PREFIX, EPP_ENUMVAL)]
         self.defs[PREFIX] = '' # pro každé sezení nový prefix
         self._conf = None ## <ConfigParser object> from session_config.py
         self._auto_connect = 1 # auto connection during login or hello
@@ -114,6 +105,11 @@ class ManagerBase:
         if key:
             self._session[OUTPUT_TYPE] = self.get_valid_output(key)
         if op['no_validate']: self._session[VALIDATE] = 0
+        self.__init_versions_from_options__(op)
+        # We need reconfigure defaults by values fom config or options:
+        self.defs[objURI] = self._epp_cmd.get_objURI()
+        self.defs[extURI] = self._epp_cmd.get_extURI()
+
 
     def get_actual_username_and_password(self):
         'Returns tuple (username, password) what was used to login'
@@ -336,6 +332,39 @@ $fred_client_errors = array(); // errors occuring during communication
                     self.copy_default_options(new_section, section, option)
         return ok 
 
+    def __init_versions_from_config__(self, section):
+        'Overwrite default schema versions by values from config (if any)'
+        pref = 'schema_version_%s'
+        for key in self._epp_cmd.get_schema_names(): ## ('contact','nsset','domain','enum','fred','epp'):
+            name = pref%key
+            value = self.get_config_value(section, name, OMIT_ERROR)
+            if value:
+                # overwtite schema version
+                self._epp_cmd.set_schema_version(key, value)
+                self._epp_response.set_schema_version(key, value)
+        ## print "CONFIG schema_version:\n",'\n'.join( ['\t%s: %s'%(k,v) for k,v in self._epp_cmd.schema_version.items()])
+
+    def __init_versions_from_options__(self, options):
+        """Overwrite default schema versions by values from command line option (if any)
+        versions:  contact:1.0,nsset:1.1,domain:1.1
+        """
+        versions = options.get('versions')
+        if not versions: return
+        names = self._epp_cmd.get_schema_names()
+        for item in versions.split(','):
+            data = item.split(':')
+            if len(data) == 2:
+                key, value = data
+                if key in names:
+                    # overwtite schema version
+                    self._epp_cmd.set_schema_version(key, value)
+                    self._epp_response.set_schema_version(key, value)
+                else:
+                    self.append_error(_T('Invalid version name %s. It must be one from (%s).')%(key, ', '.join(names)))
+            else:
+                self.append_error('%s: %s'%(_T('Invalid version format'),item))
+
+
     def get_config_value(self, section, option, omit_errors=0):
         'Get value from config and catch exceptions.'
         value=None
@@ -413,6 +442,7 @@ $fred_client_errors = array(); // errors occuring during communication
         # set NULL value
         value = self.get_config_value(section,'null_value',OMIT_ERROR)
         if value: self.set_null_value(value)
+        self.__init_versions_from_config__(section_connect)
         # init from command line options
         self.init_from_options(section_connect)
         self.fill_missing_required(section_connect)

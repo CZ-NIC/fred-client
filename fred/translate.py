@@ -74,6 +74,7 @@ optcols = (
     'f:config',   # define your own config file
     'g:log',      # save log in unittest.
     'h:host',
+    'i:versions',   # schmea versions "contact:1.0,nsset:1.1,domain:1.1"
     'k:privkey',
     'l:lang',
     'n nologin',  # turn off automatic login process after start up

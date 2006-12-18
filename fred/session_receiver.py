@@ -129,7 +129,7 @@ class ManagerReceiver(ManagerCommand):
             self._raw_answer = epp_server_answer
             # create XML DOM tree:
             self._epp_response.reset()
-            self._epp_response.parse_xml(eppdoc.correct_unbound_prefix(epp_server_answer))
+            self._epp_response.parse_xml(eppdoc.correct_unbound_prefix(epp_server_answer, self._epp_response.schema_version['epp']))
             debug_time.append(('Parse XML',time.time())) # PROFILER
             # Exception for LIST commands.
             try:

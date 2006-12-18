@@ -19,17 +19,7 @@ import ConfigParser
 import cmd_parser
 import session_base
 from translate import encoding
-#import eppdoc
-from eppdoc import Message as MessageBase, SCHEMA_PREFIX, EPP_VERSION, EPP_CONTACT, EPP_DOMAIN, EPP_NSSET, EPP_ENUMVAL, EPP_FRED
-
-# Namespaces version:
-NS_VERSION = {
-    'contact': EPP_CONTACT, 
-    'domain': EPP_DOMAIN, 
-    'nsset': EPP_NSSET, 
-    'enum': EPP_ENUMVAL,
-    'fred': EPP_FRED,
-}
+from eppdoc import Message as MessageBase, SCHEMA_PREFIX
 
 try:
     import readline
@@ -552,7 +542,7 @@ class Message(MessageBase):
         key = name of key pointed to vlaue in parameters dictionary
         params must have ('clTRID',('name',['name','name',]))
         """
-        VERSION = NS_VERSION[cols[1]]
+        VERSION = self.schema_version[cols[1]]
         self._handle_ID = self._dct.has_key(key) and self._dct[key][0] or '' # keep object handle (ID)
         if len(cols) > 3:
             col1 = '%s:%s'%(cols[1],cols[3])
@@ -582,7 +572,7 @@ class Message(MessageBase):
         params must have ('clTRID',('name',['name','name',]))
         """
         self._handle_ID = self._dct.has_key(key) and self._dct[key][0] or '' # keep object handle (ID)
-        NAMESPACE_VERSION = NS_VERSION.get(namespace, EPP_VERSION)
+        NAMESPACE_VERSION = self.schema_version.get(namespace, self.schema_version['epp'])
         if len(cols) < 2:
             # for credit_info ------------------------------------------------
             data=[('epp', 'extension'),
@@ -599,7 +589,7 @@ class Message(MessageBase):
             else:
                 col1 = '%s:%s'%(cols[1],cols[0])
             col2 = '%s:%s'%(cols[1],cols[2])
-            VERSION = NS_VERSION[cols[1]]
+            VERSION = self.schema_version[cols[1]]
             data=[('epp', 'extension'),
                 ('extension', '%s:extcommand'%namespace, None, (
                     ('xmlns:%s'%namespace, '%s%s-%s'%(SCHEMA_PREFIX, namespace, NAMESPACE_VERSION)),
@@ -729,7 +719,7 @@ class Message(MessageBase):
 
     def __assemble_transfer__(self, names, params):
         "Assemble transfer XML EPP command."
-        VERSION = NS_VERSION[names[0]]
+        VERSION = self.schema_version[names[0]]
         self._handle_ID = self._dct['name'][0] # keep object handle (ID)
         ns = '%s%s-%s'%(SCHEMA_PREFIX, names[0], VERSION)
         attr = (('xmlns:%s'%names[0],ns),
@@ -759,9 +749,9 @@ class Message(MessageBase):
         'Enum extension for (create|renew)-domain commands.'
         if not __has_key__(self._dct,'val_ex_date'): return
         names = ('enumval',type)
-        ns = '%s%s-%s'%(SCHEMA_PREFIX, names[0], EPP_ENUMVAL)
+        ns = '%s%s-%s'%(SCHEMA_PREFIX, names[0], self.schema_version['enum'])
         attr = (('xmlns:%s'%names[0],ns),
-            ('xsi:schemaLocation','%s %s-%s.xsd'%(ns,names[0], EPP_ENUMVAL)))
+            ('xsi:schemaLocation','%s %s-%s.xsd'%(ns,names[0], self.schema_version['enum'])))
         data.extend((
             ('command','extension'),
             ('extension','%s:%s'%names,'',attr)
@@ -798,9 +788,9 @@ class Message(MessageBase):
         dct = self._dct
         self._handle_ID = dct['contact_id'][0] # keep object handle (ID)
         names = ('contact',)
-        ns = '%s%s-%s'%(SCHEMA_PREFIX, names[0],EPP_CONTACT)
+        ns = '%s%s-%s'%(SCHEMA_PREFIX, names[0], self.schema_version['contact'])
         attr = (('xmlns:%s'%names[0],ns),
-                ('xsi:schemaLocation','%s %s-%s.xsd'%(ns,names[0],EPP_CONTACT)))
+                ('xsi:schemaLocation','%s %s-%s.xsd'%(ns,names[0], self.schema_version['contact'])))
         data = [
             ('epp', 'command'),
             ('command', 'create'),
@@ -840,9 +830,9 @@ class Message(MessageBase):
         dct = self._dct
         self._handle_ID = dct['name'][0] # keep object handle (ID)
         names = ('domain',)
-        ns = '%s%s-%s'%(SCHEMA_PREFIX, names[0], EPP_DOMAIN)
+        ns = '%s%s-%s'%(SCHEMA_PREFIX, names[0], self.schema_version['domain'])
         attr = (('xmlns:%s'%names[0],ns),
-                ('xsi:schemaLocation','%s %s-%s.xsd'%(ns,names[0],EPP_DOMAIN)))
+                ('xsi:schemaLocation','%s %s-%s.xsd'%(ns,names[0], self.schema_version['domain'])))
         data = [
             ('epp', 'command'),
             ('command', 'create'),
@@ -875,9 +865,9 @@ class Message(MessageBase):
         dct = self._dct
         self._handle_ID = dct['id'][0] # keep object handle (ID)
         names = ('nsset',)
-        ns = '%s%s-%s'%(SCHEMA_PREFIX, names[0], EPP_NSSET)
+        ns = '%s%s-%s'%(SCHEMA_PREFIX, names[0], self.schema_version['nsset'])
         attr = (('xmlns:%s'%names[0],ns),
-                ('xsi:schemaLocation','%s %s-%s.xsd'%(ns,names[0],EPP_NSSET)))
+                ('xsi:schemaLocation','%s %s-%s.xsd'%(ns,names[0], self.schema_version['nsset'])))
         data = [
             ('epp', 'command'),
             ('command', 'create'),
@@ -900,9 +890,9 @@ class Message(MessageBase):
         dct = self._dct
         self._handle_ID = dct['name'][0] # keep object handle (ID)
         names = ('domain',)
-        ns = '%s%s-%s'%(SCHEMA_PREFIX, names[0], EPP_DOMAIN)
+        ns = '%s%s-%s'%(SCHEMA_PREFIX, names[0], self.schema_version['domain'])
         attr = (('xmlns:%s'%names[0],ns),
-                ('xsi:schemaLocation','%s %s-%s.xsd'%(ns,names[0],EPP_DOMAIN)))
+                ('xsi:schemaLocation','%s %s-%s.xsd'%(ns,names[0], self.schema_version['domain'])))
         data = [
             ('epp', 'command'),
             ('command', 'renew'),
@@ -925,9 +915,9 @@ class Message(MessageBase):
         dct = self._dct
         self._handle_ID = dct['contact_id'][0] # keep object handle (ID)
         names = ('contact',)
-        ns = '%s%s-%s'%(SCHEMA_PREFIX, names[0], EPP_CONTACT)
+        ns = '%s%s-%s'%(SCHEMA_PREFIX, names[0], self.schema_version['contact'])
         attr = (('xmlns:%s'%names[0],ns),
-                ('xsi:schemaLocation','%s %s-%s.xsd'%(ns,names[0],EPP_CONTACT)))
+                ('xsi:schemaLocation','%s %s-%s.xsd'%(ns,names[0], self.schema_version['contact'])))
         data = [
             ('epp', 'command'),
             ('command', 'update'),
@@ -973,9 +963,9 @@ class Message(MessageBase):
         dct = self._dct
         self._handle_ID = dct['name'][0] # keep object handle (ID)
         names = ('domain',)
-        ns = '%s%s-%s'%(SCHEMA_PREFIX, names[0], EPP_DOMAIN)
+        ns = '%s%s-%s'%(SCHEMA_PREFIX, names[0], self.schema_version['domain'])
         attr = (('xmlns:%s'%names[0],ns),
-                ('xsi:schemaLocation','%s %s-%s.xsd'%(ns,names[0],EPP_DOMAIN)))
+                ('xsi:schemaLocation','%s %s-%s.xsd'%(ns,names[0], self.schema_version['domain'])))
         data = [
             ('epp', 'command'),
             ('command', 'update'),
@@ -1005,9 +995,9 @@ class Message(MessageBase):
         dct = self._dct
         self._handle_ID = dct['id'][0] # keep object handle (ID)
         names = ('nsset',)
-        ns = '%s%s-%s'%(SCHEMA_PREFIX, names[0], EPP_NSSET)
+        ns = '%s%s-%s'%(SCHEMA_PREFIX, names[0], self.schema_version['nsset'])
         attr = (('xmlns:%s'%names[0],ns),
-                ('xsi:schemaLocation','%s %s-%s.xsd'%(ns, names[0], EPP_NSSET)))
+                ('xsi:schemaLocation','%s %s-%s.xsd'%(ns, names[0], self.schema_version['nsset'])))
         data = [
             ('epp', 'command'),
             ('command', 'update'),

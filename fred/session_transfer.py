@@ -30,6 +30,8 @@ class ManagerTransfer(ManagerBase):
         ManagerBase.__init__(self)
         self._epp_cmd = eppdoc_client.Message()
         self._epp_response = eppdoc_client.Message()
+        self.defs[objURI] = self._epp_cmd.get_objURI()
+        self.defs[extURI] = self._epp_cmd.get_extURI()
         self._available_commands = self._epp_cmd.get_client_commands()
         self._lorry = None
         # Typ očekávané odpovědi serveru. Zde si Manager pamatuje jaký příkaz

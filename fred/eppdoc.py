@@ -31,21 +31,19 @@ import StringIO
 #========================================================
 # Namespaces for  EPP
 # shared for all templates
+# Defaults - can overwrite by values from config or command line option
 #========================================================
 SCHEMA_PREFIX = 'http://www.nic.cz/xml/epp/'
-EPP_VERSION   = '1.0'
-EPP_CONTACT  = '1.1'
-EPP_DOMAIN    = '1.1'
-EPP_NSSET      = '1.1'
-EPP_ENUMVAL = '1.0'
-EPP_FRED         = '1.0'
+VERSION_CONTACT  = '1.1'
+VERSION_DOMAIN    = '1.1'
+VERSION_NSSET      = '1.1'
+VERSION_ENUMVAL = '1.0'
+VERSION_FRED         = '1.0'
+VERSION_VERSION   = '1.0'
 
 obj_uri = "urn:ietf:params:xml:ns:"
-xmlns="%sepp-%s"%(obj_uri, EPP_VERSION)
 xmlns_xsi="http://www.w3.org/2001/XMLSchema-instance"
-xsi_schemaLocation="%s epp-%s.xsd"%(xmlns, EPP_VERSION)
 default_encoding = 'utf-8' # default document output encoding
-# nic_cz_xml_epp_path = 'http://www.nic.cz/xml/epp/'
 #========================================================
 
 class Message:
@@ -61,7 +59,40 @@ class Message:
         self._verbose = 1  # verbose interactive params input
         self.server_disclose_policy = 1 # Data collection policy: Access; default: 1 - disclosed
         self._handle_ID = '' # keep object handle (ID)
-        
+        self.schema_version = {
+            'contact': VERSION_CONTACT, 
+            'nsset':     VERSION_NSSET, 
+            'domain':   VERSION_DOMAIN, 
+            'enum':       VERSION_ENUMVAL, 
+            'fred':       VERSION_FRED, 
+            'epp':         VERSION_VERSION,
+        }
+        self.set_schema_version('epp', VERSION_VERSION)
+
+    def get_schema_names(self):
+        return self.schema_version.keys()
+
+    def set_schema_version(self, key, value):
+        'Set schema version'
+        self.schema_version[key] = value
+        if key == 'epp':
+            self.xmlns = "%sepp-%s"%(obj_uri, value)
+            self.xsi_schemaLocation = "%s epp-%s.xsd"%(self.xmlns, value)
+
+    def get_objURI(self):
+        'Returns the list of the objURI namesapces.'
+        return ['%s%s-%s'%(SCHEMA_PREFIX, name, self.schema_version[name]) for name in ('contact','nsset','domain',)]
+##        return (
+##                '%scontact-%s'%(SCHEMA_PREFIX, self.schema_version['contact']),
+##                '%snsset-%s'%(SCHEMA_PREFIX, self.schema_version['nsset']),
+##                '%sdomain-%s'%(SCHEMA_PREFIX, self.schema_version['domain']),
+##        )
+
+    def get_extURI(self):
+        'Returns the list of the extURI namesapces.'
+        return ['%senumval-%s'%(SCHEMA_PREFIX, self.schema_version['enum'])]
+
+
     def reset(self):
         self.__reset_dom__()
         self.errors = []
@@ -152,9 +183,9 @@ class Message:
 
     def join_top_attribs(self):
         ns=(
-            ('xmlns',xmlns),
+            ('xmlns',self.xmlns),
             ('xmlns:xsi',xmlns_xsi),
-            ('xsi:schemaLocation',xsi_schemaLocation),
+            ('xsi:schemaLocation',self.xsi_schemaLocation),
         )
         self.append_attribNS(self.dom.documentElement, ns)
 
@@ -608,17 +639,17 @@ def prepare_for_display(dict_values,color=0,indent=0):
                     body.append(patt[1]%(ind,key,dict_values[key]))
     return '\n'.join(body)
 
-def correct_unbound_prefix(xml):
+def correct_unbound_prefix(xml, epp_schema_version):
     'Input missing prefix definitions.'
     names = []
     for token in re.findall('<([\w-]+):',xml):
         if token not in names:
-            if not re.search('%s-%s.xsd'%(token,EPP_VERSION),xml):
+            if not re.search('%s-%s.xsd'%(token, epp_schema_version), xml):
                 # if namespace is not defined...
                 names.append(token)
     patt = re.compile(r'<([^\?][^>]+)>',re.DOTALL)
     if len(names):
-        return re.sub(r'<([^\?][^>]+)>', '<\\1 %s>'%' '.join(['xmlns:%s="%sepp-%s"'%(n, obj_uri, EPP_VERSION) for n in names]), xml, 1)
+        return re.sub(r'<([^\?][^>]+)>', '<\\1 %s>'%' '.join(['xmlns:%s="%sepp-%s"'%(n, obj_uri, epp_schema_version) for n in names]), xml, 1)
     else:
         return xml
 
@@ -626,7 +657,7 @@ def correct_unbound_prefix(xml):
 def test_display():
     exampe1 = {'attr': [(u'xmlns:xsi', u'http://www.w3.org/2001/XMLSchema-instance'),
           ('xmlns', xmlns),
-          (u'xsi:schemaLocation', xsi_schemaLocation)],
+          (u'xsi:schemaLocation', 'urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd')],
  'greeting': {'dcp': {'access': {'all': {}},
                       'statement': {'purpose': {'admin': {}, 'prov': {}},
                                     'recipient': {'public': {}},
@@ -642,7 +673,7 @@ def test_display():
 
     exampe2 = {'attr': [(u'xmlns:xsi', u'http://www.w3.org/2001/XMLSchema-instance'), 
         ('xmlns', xmlns), 
-        (u'xsi:schemaLocation', xsi_schemaLocation)], 
+        (u'xsi:schemaLocation', 'urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd')], 
     'response': {'trID': 
     {'clTRID': {'data': u'jzqq002#06-07-07at14:08:37'}, 
      'svTRID': {'data': u'fred-0000010021'}}, 

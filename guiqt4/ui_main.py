@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'main.ui'
 #
-# Created: Wed Dec 13 10:54:00 2006
+# Created: Mon Dec 18 12:05:32 2006
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -55,44 +55,45 @@ class Ui_FredWindow(object):
         self.textLabel3.setObjectName("textLabel3")
 
         self.connect_private_key = QtGui.QLineEdit(self.groupBox1)
-        self.connect_private_key.setGeometry(QtCore.QRect(210,160,400,22))
+        self.connect_private_key.setGeometry(QtCore.QRect(210,166,400,22))
         self.connect_private_key.setObjectName("connect_private_key")
 
         self.textLabel6 = QtGui.QLabel(self.groupBox1)
-        self.textLabel6.setGeometry(QtCore.QRect(20,160,180,20))
+        self.textLabel6.setGeometry(QtCore.QRect(20,166,180,20))
         self.textLabel6.setWordWrap(False)
         self.textLabel6.setObjectName("textLabel6")
 
         self.connect_certificate = QtGui.QLineEdit(self.groupBox1)
-        self.connect_certificate.setGeometry(QtCore.QRect(210,120,400,22))
+        self.connect_certificate.setGeometry(QtCore.QRect(210,130,400,22))
         self.connect_certificate.setObjectName("connect_certificate")
 
         self.textLabel4 = QtGui.QLabel(self.groupBox1)
-        self.textLabel4.setGeometry(QtCore.QRect(20,120,180,20))
+        self.textLabel4.setGeometry(QtCore.QRect(20,130,180,20))
         self.textLabel4.setWordWrap(False)
         self.textLabel4.setObjectName("textLabel4")
 
         self.connect_port = QtGui.QLineEdit(self.groupBox1)
-        self.connect_port.setGeometry(QtCore.QRect(210,85,400,22))
+        self.connect_port.setGeometry(QtCore.QRect(210,93,400,22))
         self.connect_port.setObjectName("connect_port")
 
         self.textLabel2 = QtGui.QLabel(self.groupBox1)
-        self.textLabel2.setGeometry(QtCore.QRect(20,85,180,20))
+        self.textLabel2.setGeometry(QtCore.QRect(20,93,180,20))
         self.textLabel2.setWordWrap(False)
         self.textLabel2.setObjectName("textLabel2")
 
         self.connect_host = QtGui.QLineEdit(self.groupBox1)
-        self.connect_host.setGeometry(QtCore.QRect(210,50,400,22))
+        self.connect_host.setGeometry(QtCore.QRect(210,57,400,22))
         self.connect_host.setObjectName("connect_host")
 
         self.textLabel5 = QtGui.QLabel(self.groupBox1)
-        self.textLabel5.setGeometry(QtCore.QRect(20,50,180,20))
+        self.textLabel5.setGeometry(QtCore.QRect(20,57,180,20))
         self.textLabel5.setWordWrap(False)
         self.textLabel5.setObjectName("textLabel5")
 
         self.textLabel3_3 = QtGui.QLabel(self.groupBox1)
-        self.textLabel3_3.setGeometry(QtCore.QRect(211,18,401,21))
-        self.textLabel3_3.setWordWrap(False)
+        self.textLabel3_3.setGeometry(QtCore.QRect(211,16,401,41))
+        self.textLabel3_3.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.textLabel3_3.setWordWrap(True)
         self.textLabel3_3.setObjectName("textLabel3_3")
 
         self.pixmapLabel3 = QtGui.QLabel(self.TabPage)

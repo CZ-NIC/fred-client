@@ -133,7 +133,7 @@
       <property name="geometry" >
        <rect>
         <x>210</x>
-        <y>160</y>
+        <y>166</y>
         <width>400</width>
         <height>22</height>
        </rect>
@@ -143,7 +143,7 @@
       <property name="geometry" >
        <rect>
         <x>20</x>
-        <y>160</y>
+        <y>166</y>
         <width>180</width>
         <height>20</height>
        </rect>
@@ -159,7 +159,7 @@
       <property name="geometry" >
        <rect>
         <x>210</x>
-        <y>120</y>
+        <y>130</y>
         <width>400</width>
         <height>22</height>
        </rect>
@@ -169,7 +169,7 @@
       <property name="geometry" >
        <rect>
         <x>20</x>
-        <y>120</y>
+        <y>130</y>
         <width>180</width>
         <height>20</height>
        </rect>
@@ -185,7 +185,7 @@
       <property name="geometry" >
        <rect>
         <x>210</x>
-        <y>85</y>
+        <y>93</y>
         <width>400</width>
         <height>22</height>
        </rect>
@@ -195,7 +195,7 @@
       <property name="geometry" >
        <rect>
         <x>20</x>
-        <y>85</y>
+        <y>93</y>
         <width>180</width>
         <height>20</height>
        </rect>
@@ -211,7 +211,7 @@
       <property name="geometry" >
        <rect>
         <x>210</x>
-        <y>50</y>
+        <y>57</y>
         <width>400</width>
         <height>22</height>
        </rect>
@@ -221,7 +221,7 @@
       <property name="geometry" >
        <rect>
         <x>20</x>
-        <y>50</y>
+        <y>57</y>
         <width>180</width>
         <height>20</height>
        </rect>
@@ -237,16 +237,19 @@
       <property name="geometry" >
        <rect>
         <x>211</x>
-        <y>18</y>
+        <y>16</y>
         <width>401</width>
-        <height>21</height>
+        <height>41</height>
        </rect>
       </property>
       <property name="text" >
        <string>Parameters in &lt;b>bold&lt;/b> style are &lt;b>required&lt;/b>. Others are optionals.</string>
       </property>
+      <property name="alignment" >
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+      </property>
       <property name="wordWrap" >
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
      </widget>
     </widget>

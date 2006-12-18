@@ -154,8 +154,8 @@ class FredMainWindow(QtGui.QDialog):
 
     def append_system_messages(self, messages):
         'Appent text to the System message window'
-        msg = [ttytag2html(text) for text in messages]
-        self.ui.system_messages.insertHtml(get_unicode('<br>\n'.join(msg)))
+        msg = [get_unicode(ttytag2html(text)) for text in messages]
+        self.ui.system_messages.insertHtml(u'<br>\n'.join(msg))
 
     def load_config_and_autologin(self):
         'load data for connection'
