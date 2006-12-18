@@ -1,6 +1,6 @@
 # -*- coding: utf8 -*-
 #!/usr/bin/env python
-import os
+import os, sys
 import socket
 import threading
 import time
@@ -14,6 +14,12 @@ RFC3730.txt  (2. Protocol Description).
 Class Lorry is managed by ManagerTransfer in session_transfer.py.
 Internal lists self._notes and self._errors are redirected into this class.
 """
+
+if not getattr(socket, 'ssl', None):
+    # Protect to missing SSL support
+    print _T("This version of Python doesn't support SSL. Reinstall it with SLL support.")
+    sys.exit(-1)
+
 class Lorry:
     "Socket transfer."
     def __init__(self):

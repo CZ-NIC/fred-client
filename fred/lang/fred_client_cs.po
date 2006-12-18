@@ -2022,6 +2022,9 @@ msgstr ""
 "Pro spuštění této aplikace musíte mít nainstalovány PyQt a Qt moduly.Více "
 "informací naleznete v helpu."
 
+msgid "This version of Python doesn't support SSL. Reinstall it with SLL support."
+msgstr "Tato verze Pythonu nepodporuje SSL. Reinstalujte jej se SSL podporou."
+
 #~ msgid "Help command can have only one parameter"
 #~ msgstr "Příkaz help má jen jeden parametr"
 
