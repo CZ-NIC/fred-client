@@ -1,0 +1,208 @@
+Instalace FredClient
+
+OBSAH:
+
+    * Instalace jazyka python
+    * Externi validator xmllint
+    * Instalace FredClient
+    * Instalace GUI nadstavby Qt4
+    * Odinstalovani
+
+*** Instalace jazyka Python
+
+FredClient potrebuje ke svemu behu jazyk Python nejmene ve verzi 2.4. 
+Tento jazyk je na soucasnych linuxovych distribucich jiz vetsinou nainstalovan.
+
+Instalace na linuxu:
+    $ sudo apt-get install python2.4
+nebo:
+    stahnete si instalacni soubor pro vasi distribuci a zkompilujte standardnim zpusobem:
+    $ tar -xf Python-x.x.tgz
+    $ cd Python-x.x
+    $ ./configure
+    $ make
+    $ sudo make install
+
+Instalace na MS Windows:
+    - stahnete si instalacni soubor pro MS Windows z www.python.org, 
+      najdete jej na strane Download.
+    - kliknete na stazeny soubor a nainstalujte Python
+
+
+
+*** Externi validator xmllint
+
+FredClient pouziva "xmllint" pro validaci XML. Tento program ale neni
+nutnou podminkou funkcnosti klienta. Pokud se v systemu nenachazi, tak 
+se overovani automaticky vypne. Jestli mate xmllint instalovan, zjistite zadanim
+prikazu na prikazove radce:
+
+    $ xmllint
+    Usage : xmllint [options] XMLfiles ...
+
+Instalace na linuxu:
+    $ sudo apt-get install libxml2-utils
+nebo:
+    - ze strany http://xmlsoft.org/ is stahnete instalacni soubor pro vasi distribuci
+      a zkompilujte standardnim zpusobem.
+
+Instalace na MS Windows:
+    - Ze strany http://xmlsoft.org/ si stahnete instalacni soubor urceny pro MS Windows:
+      Related links -> Windows binaries -> http://www.zlatkovic.com/libxml.en.html -> 
+      http://www.zlatkovic.com/pub/libxml/ -> libxml2-2.6.27.win32.zip
+      Rozbalte jej a nainstalujte.
+
+
+*** Instalace FredClient
+
+Instalace FredClient programu se provede nasledovne:
+
+    $ tar -xf FredClient-X.Y.Z.tar.gz        - rozbalite archiv
+    $ cd FredClient-X.Y.Z                    - prejdete se do vznikleho adresare
+    $ sudo ./install.sh                      - spustite instalaci (musite mit prava roota)
+
+Tim je instalace dokoncena. Klienta spustite prikazem:
+
+    $ fred_client.py
+
+
+Program lze spustit i bez instalace primo z daneho adresare. Nebo lze instalaci
+provest s vlastnim nastavenim. Viz help:
+
+    $ python setup.py --help install
+
+
+*** Instalace GUI nadstavby Qt4
+
+FredClient ma okenni nadstavbu postavenou na frameworku Qt4. K tomu je jeste nutne naistalovat
+si rozhrani pro python a prekladac.
+
+Instalace na linuxu:
+
+Instalace na linuxu se sklada ze 3 kroku:
+    1. Framework Qt4/Windows Open Source Edition
+    2. SIP - A Tool for Generating Python Bindings for C and C++ Libraries
+    3. PyQt4
+
+KROK 1:
+
+Pro Qt4 neni v soucasne dobe jeste vydan balicek. Stahnete si tedy instalacni soubor ze strany
+http://www.trolltech.com/developer/downloads/qt/index
+qt-x11-opensource-src-4.2.x.tar.gz (35.4 MB) - Qt/X11 Open Source Edition
+
+Pred kompilaci si overte, ze mate nainstalovany zdrojove soubory pro X11:
+Xlib.h, Xutil.h Xos.h Xatom.h a dalsi. Pokud ne, tak je nainstalujte:
+
+    $ sudo apt-get install libx11-dev
+    $ sudo apt-get install libxext-dev
+
+pak system zkompilujete standardnim postupem:
+
+    $ taf -xf qt-x11-opensource-src-4.2.x.tar.gz
+    $ cd qt-x11-opensource-src-4.2.x
+    $ ./configure (potvrdite, ze jste cetli licenci: yes)
+    $ make (proces trva asi 20-30 minut)
+    $ sudo make install
+
+Detaily o instalaci a ruzna dalsi nastaveni jsou v README
+
+Nastavte cestu k frameworku (.bashrc, .profile, ...):
+PATH=/usr/local/Trolltech/Qt-4.2.1/bin:$PATH
+export PATH
+
+a overte, ze je system funkcni:
+    $ qmake --version
+    QMake version 2.01a
+    Using Qt version 4.2.1 in /usr/local/Trolltech/Qt-4.2.1/lib
+
+KROK 2:
+
+Pro beh PyQt4 se musi naistalovat SIP verze 4.5.0 nebo vyssi:
+Stahnete si instalacni soubor ze strany
+http://www.riverbankcomputing.co.uk/sip/download.php
+sip-4.5.2.tar.gz (406 kB) 	for UNIX, Linux, MacOS/X
+
+Nez zacnete kompilovat, presvedcte se, ze mate nainstalovany zdrojove soubory Pythonu
+(/usr/include/python2.4/Python.h a dalsi)
+Pokud ne, tak si je nainstalujte:
+
+    $ sudo atp-get install python2.4-dev  (asi 1.5 MB)
+
+SIP nainstalujete nasledujicim zpusobem (Popis instalace je v doc/sipref.html):
+
+    $ cd sip-4.5
+    $ python configure.py
+    $ make
+    $ sudo make install
+
+
+KROK 3:
+
+Ze strany http://www.riverbankcomputing.co.uk/pyqt/download.php si stahnete
+PyQt-x11-gpl-4.1.1.tar.gz  (5.2 MB)	PyQt v4 GPL Linux, UNIX a instalujeme:
+
+    $ tar -xf PyQt-x11-gpl-4.1.1.tar.gz
+    $ cd PyQt-x11-gpl-4.1.1
+    $ python configure.py (potvrdite, ze souhlasite s licenci)
+    $ make
+    $ sudo make install
+
+
+
+Instalace na MS Windows:
+
+Instalace v MS Windows se sklada ze 3 kroku:
+    1. Framework Qt4/Windows Open Source Edition + MinGw
+    2. Nastaveni promenne PATH
+    3. PyQt4
+
+Ze strany http://www.trolltech.com/developer/downloads/qt/index si stahnete soubor 
+qt-win-opensource-4.2.2-mingw.exe (56.2 MB) - Qt/Windows Open Source Edition
+
+KROK 1:
+- Kliknutim na instalacni soubor spustite instalaci frameworku Qt4.
+- Potvrdite, ze souhlasite s GPL licenci
+- Muzete vybrat adresar, kde bude Qt4 umisten. Pozor, adresar nesmi obsahovat mezeru!
+  Pokud si nejste jisti, ponechte prednastaveny.
+- Na panelu MinGW Installation zatrhnete prepinac "Download and install MinGW inststallation"
+- V okne MinGW Download Mirror vyberte server pro download - Trolltech a stisknete Next.
+  Tim se stahne (asi 57.5 MB) a nainstaluje MinGW.
+- Dokoncete instalaci Qt4.
+
+KROK 2:
+Nyni musite nastavit promennou PATH. Je to nutne pro spravne fungovani rozhrani PyQt4.
+Promenna PATH je ulozena ve tvaru:
+
+    PATH=%SystemRoot%\System32;C:\Program Files
+
+Pokud jste Qt4 framework nainstalovali napriklad do adresare C:\system\Qt\4.2.1, 
+tak do PATH pridate:
+
+    PATH=%SystemRoot%\System32;C:\Program Files;C:\system\Qt\4.2.1
+
+V zavislosti na verzi vasich Windows naleznete PATH na tomto miste:
+
+Windows 95/98- c:\autoexec.bat
+Windows NT4.0- "Start | Settings | Control Panel | System Properties | Environment | Path"
+Windows 2000 and Windows XP- "Start | Settings | Control Panel | System | Advanced | Environment Variables | Path"
+
+V ceske verzi MS Windows XP to je cesta:
+"Start | Ovladaci panely | (Vykon a udrzba |) System | Upresnit | Promenne prostredi |
+ Systemove promenne: Path"
+
+Aby Windows zaznamenala, ze promenna PATH byla zmenena, tak je nutne v Win9x zrestartovat.
+Ve Windows NT/2000/XP staci jen se odhlasit a znovu prihlasit.
+
+KROK 3:
+
+Ze strany http://www.riverbankcomputing.co.uk/pyqt/download.php si stahnete
+PyQt-win-gpl-4.1.1.zip  (6.1 MB)	PyQt v4 GPL for Windows
+Kliknutim na instalacni soubor jej nainstalujete.
+
+
+*** Odinstalovani
+
+Program FredClient se ze systemu odinstaluje prikazem:
+
+    $ sudo ./uninstall.py
+
