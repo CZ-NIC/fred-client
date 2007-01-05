@@ -1,6 +1,7 @@
 FredClient 1.3.0
 
 Změny:
+    * Přidán příkaz credit_info
     * Přidány příkazy sendAuthInfo
     * Odebrání příznaků status v update příkazech
     * Přesun elementu pw do authInfo
