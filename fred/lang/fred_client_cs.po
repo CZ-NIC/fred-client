@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-12-18 11:52+0100\n"
+"POT-Creation-Date: 2007-01-05 14:34+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Zdeněk Böhm <zdenek.bohm@nic.cz>\n"
 "Language-Team: CS <ccreg-devel@lists.nic.cz>\n"
@@ -16,65 +16,68 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3;  plural=n==1 ? 0 : n>=2 && n<=4 ? 1 : 2;\n"
 
-#: fred/client_socket.py:37
+#: fred/client_socket2-5.py:43 fred/client_socket.py:43
 msgid "Certificate names not set."
 msgstr "Jména certifikátů nejsou zadána."
 
-#: fred/client_socket.py:39
+#: fred/client_socket2-5.py:45 fred/client_socket.py:45
 msgid "Private key file not found."
 msgstr "Privátní klíč nebyl nalezen"
 
-#: fred/client_socket.py:42
+#: fred/client_socket2-5.py:48 fred/client_socket.py:48
 msgid "Certificate key file not found."
 msgstr "Soubor s certifikátem nebyl nalezen"
 
-#: fred/client_socket.py:47
+#: fred/client_socket2-5.py:53 fred/client_socket.py:53
 msgid "Invalid port value"
 msgstr "Neplatné číslo portu"
 
-#: fred/client_socket.py:57
+#: fred/client_socket2-5.py:63 fred/client_socket.py:63
 msgid "Socket type IPv6 (AF_INET6) is not present in socket module."
 msgstr "Soket typu IPv6 (AF_INET6) není v modulu socket dostupný."
 
-#: fred/client_socket.py:76
+#: fred/client_socket2-5.py:82 fred/client_socket.py:82
 msgid "Used socket type"
 msgstr "Použitý typ soketu"
 
-#: fred/client_socket.py:89
+#: fred/client_socket2-5.py:95 fred/client_socket.py:95
 msgid "Connecting to"
 msgstr "Připojuji se k"
 
-#: fred/client_socket.py:93
+#: fred/client_socket2-5.py:99 fred/client_socket.py:99
 msgid "I cannot connect to the server"
 msgstr "Nemohu se připojit k serveru."
 
-#: fred/client_socket.py:96 fred/client_socket.py:124
-#: fred/client_socket.py:154 fred/client_socket.py:187
-#: fred/client_socket.py:224 fred/client_socket.py:236
+#: fred/client_socket2-5.py:102 fred/client_socket2-5.py:130
+#: fred/client_socket2-5.py:160 fred/client_socket2-5.py:193
+#: fred/client_socket2-5.py:230 fred/client_socket2-5.py:242
+#: fred/client_socket.py:102 fred/client_socket.py:130
+#: fred/client_socket.py:160 fred/client_socket.py:193
+#: fred/client_socket.py:230 fred/client_socket.py:242
 msgid "Interrupted by user"
 msgstr "Přerušeno uživatelem"
 
-#: fred/client_socket.py:99
+#: fred/client_socket2-5.py:105 fred/client_socket.py:105
 msgid "Connection established."
 msgstr "Spojení bylo navázáno."
 
-#: fred/client_socket.py:100
+#: fred/client_socket2-5.py:106 fred/client_socket.py:106
 msgid "Try to open SSL layer..."
 msgstr "Otevírám SSL vrstvu..."
 
-#: fred/client_socket.py:107
+#: fred/client_socket2-5.py:113 fred/client_socket.py:113
 msgid "Certificates missing. Trying to connect without SSL!"
 msgstr "Certifikát chybí. Zkouším spojení bez SSL!"
 
-#: fred/client_socket.py:114
+#: fred/client_socket2-5.py:120 fred/client_socket.py:120
 msgid "Certificate not signed by verified certificate authority."
 msgstr "Použitý certifikát není podepsán uznávanou certifikační autoritou."
 
-#: fred/client_socket.py:115
+#: fred/client_socket2-5.py:121 fred/client_socket.py:121
 msgid "Server configuration is not valid. Contact administrator."
 msgstr "Server není správně nakonfigurován. Obraťte se na správce serveru."
 
-#: fred/client_socket.py:116
+#: fred/client_socket2-5.py:122 fred/client_socket.py:122
 msgid ""
 "If this client runs under MS Windows and timeout is not zero, it is probably "
 "SLL bug! Set timeout back to zero."
@@ -82,13 +85,18 @@ msgstr ""
 "Jestliže tento klient běží v MS Windows a timeout není nula, tak se "
 "pravděpodobně jedná o SSL bug! Nastavte timeout zpět na nulu."
 
-#: fred/client_socket.py:126
+#: fred/client_socket2-5.py:132 fred/client_socket.py:132
 msgid "SSL layer opened."
 msgstr "SLL vrstva byla aktivována."
 
-#: fred/client_socket.py:190
+#: fred/client_socket2-5.py:196 fred/client_socket.py:196
 msgid "Server returned an empty message."
 msgstr "Server nevrátil žádnou odpověď."
+
+#: fred/client_socket.py:20
+msgid ""
+"This version of Python doesn't support SSL. Reinstall it with SLL support."
+msgstr "Tato verze Pythonu nepodporuje SSL. Reinstalujte jej se SSL podporou."
 
 #: fred/cmd_parser.py:80
 msgid "Invalid parameter index"
@@ -215,14 +223,12 @@ msgstr "Opravdu chcete odeslat tento poříkaz na server?"
 msgid "Server answer XML document failed to validate."
 msgstr "Odpověď serveru v XML dokumentu se nepodařilo zvalidovat."
 
-#: fred/console.py:196 fred/translate.py:174
+#: fred/console.py:197
 #, python-format
 msgid ""
-"%s\n"
 "Usage: %s [OPTIONS...]\n"
 "Try '%s --help' for more information."
 msgstr ""
-"%s\n"
 "Použití: %s [parametry...]\n"
 "Více informací získáze zadáním '%s --help'."
 
@@ -241,7 +247,7 @@ msgstr "Neznámý příkaz"
 
 #: fred/creator.py:41 fred/session_base.py:228 fred/session_command.py:307
 #: fred/session_command.py:310 fred/session_command.py:312
-#: fred/session_command.py:314 fred/session_transfer.py:443
+#: fred/session_command.py:314 fred/session_transfer.py:445
 msgid "ERROR"
 msgstr "CHYBA"
 
@@ -403,7 +409,7 @@ msgstr[0] "Chybí povinná hodnota"
 msgstr[1] "Chybí povinné hodnoty"
 msgstr[2] "Chybí povinné hodnoty"
 
-#: fred/eppdoc_assemble.py:1049
+#: fred/eppdoc_assemble.py:1060
 #, python-format
 msgid "Value can be a list of max %d value."
 msgid_plural "Value can be a list of max %d values."
@@ -411,11 +417,11 @@ msgstr[0] "Hodnota může být seznam o max. velikosti %d položky."
 msgstr[1] "Hodnota může být seznam o max. velikosti %d položek."
 msgstr[2] "Hodnota může být seznam o max. velikosti %d položek."
 
-#: fred/eppdoc_assemble.py:1051
+#: fred/eppdoc_assemble.py:1062
 msgid "Value can be an unbouded list of values."
 msgstr "Hodnota může být libovolně velký seznam."
 
-#: fred/eppdoc_assemble.py:1053
+#: fred/eppdoc_assemble.py:1064
 msgid "Minimum is"
 msgstr "Minimum je"
 
@@ -511,8 +517,8 @@ msgstr ""
 
 #: fred/eppdoc_client.py:64 fred/eppdoc_client.py:89 fred/eppdoc_client.py:127
 #: fred/eppdoc_client.py:153 fred/eppdoc_client.py:219
-#: fred/eppdoc_client.py:250 fred/eppdoc_client.py:322
-#: fred/eppdoc_client.py:354 fred/eppdoc_client.py:420 guiqt4/main.py:642
+#: fred/eppdoc_client.py:250 fred/eppdoc_client.py:323
+#: fred/eppdoc_client.py:363 fred/eppdoc_client.py:430 guiqt4/main.py:642
 msgid "Contact ID"
 msgstr "Kontakt ID"
 
@@ -533,9 +539,9 @@ msgstr ""
 
 #: fred/eppdoc_client.py:72 fred/eppdoc_client.py:97 fred/eppdoc_client.py:184
 #: fred/eppdoc_client.py:223 fred/eppdoc_client.py:231
-#: fred/eppdoc_client.py:285 fred/eppdoc_client.py:326
-#: fred/eppdoc_client.py:384 fred/eppdoc_client.py:430
-#: fred/eppdoc_client.py:464
+#: fred/eppdoc_client.py:285 fred/eppdoc_client.py:327
+#: fred/eppdoc_client.py:338 fred/eppdoc_client.py:393
+#: fred/eppdoc_client.py:440 fred/eppdoc_client.py:474
 msgid "Domain name"
 msgstr "Název domény"
 
@@ -543,9 +549,9 @@ msgstr "Název domény"
 #: fred/eppdoc_client.py:135 fred/eppdoc_client.py:187
 #: fred/eppdoc_client.py:203 fred/eppdoc_client.py:227
 #: fred/eppdoc_client.py:289 fred/eppdoc_client.py:300
-#: fred/eppdoc_client.py:330 fred/eppdoc_client.py:395
-#: fred/eppdoc_client.py:404 fred/eppdoc_client.py:425 guiqt4/main.py:582
-#: guiqt4/main.py:679
+#: fred/eppdoc_client.py:331 fred/eppdoc_client.py:337
+#: fred/eppdoc_client.py:404 fred/eppdoc_client.py:413
+#: fred/eppdoc_client.py:435 guiqt4/main.py:582 guiqt4/main.py:679
 msgid "NSSET ID"
 msgstr "NSSET ID"
 
@@ -619,7 +625,7 @@ msgid "Domain name of domain to change sponsorship"
 msgstr "Doménové jméno u kterého se změní editor"
 
 #: fred/eppdoc_client.py:154 fred/eppdoc_client.py:253
-#: fred/eppdoc_client.py:362
+#: fred/eppdoc_client.py:371
 msgid "Name"
 msgstr "Jméno"
 
@@ -628,12 +634,12 @@ msgid "Email"
 msgstr ""
 
 #: fred/eppdoc_client.py:156 fred/eppdoc_client.py:256
-#: fred/eppdoc_client.py:365
+#: fred/eppdoc_client.py:374
 msgid "City"
 msgstr "Město"
 
 #: fred/eppdoc_client.py:157 fred/eppdoc_client.py:257
-#: fred/eppdoc_client.py:368
+#: fred/eppdoc_client.py:377
 msgid "Country code"
 msgstr "Kód země"
 
@@ -646,22 +652,22 @@ msgid "password"
 msgstr "heslo"
 
 #: fred/eppdoc_client.py:159 fred/eppdoc_client.py:254
-#: fred/eppdoc_client.py:363
+#: fred/eppdoc_client.py:372
 msgid "Organisation"
 msgstr "Název organizace"
 
 #: fred/eppdoc_client.py:160 fred/eppdoc_client.py:258
-#: fred/eppdoc_client.py:364
+#: fred/eppdoc_client.py:373
 msgid "Street"
 msgstr "Ulice"
 
 #: fred/eppdoc_client.py:161 fred/eppdoc_client.py:259
-#: fred/eppdoc_client.py:366
+#: fred/eppdoc_client.py:375
 msgid "State or province"
 msgstr "Stát nebo kraj"
 
 #: fred/eppdoc_client.py:162 fred/eppdoc_client.py:260
-#: fred/eppdoc_client.py:367
+#: fred/eppdoc_client.py:376
 msgid "Postal code"
 msgstr "PSČ"
 
@@ -670,7 +676,7 @@ msgid "postal code"
 msgstr "PSČ"
 
 #: fred/eppdoc_client.py:163 fred/eppdoc_client.py:263
-#: fred/eppdoc_client.py:370
+#: fred/eppdoc_client.py:379
 msgid "Phone"
 msgstr "Telefon"
 
@@ -679,7 +685,7 @@ msgid "Fax"
 msgstr ""
 
 #: fred/eppdoc_client.py:165 fred/eppdoc_client.py:267
-#: fred/eppdoc_client.py:376
+#: fred/eppdoc_client.py:385
 msgid "Disclose"
 msgstr "Zveřejnit"
 
@@ -696,12 +702,12 @@ msgid "VAT (Value-added tax)"
 msgstr "VAT (daňový identifikátor)"
 
 #: fred/eppdoc_client.py:170 fred/eppdoc_client.py:272
-#: fred/eppdoc_client.py:380
+#: fred/eppdoc_client.py:389
 msgid "Identificator"
 msgstr "Identifikátor"
 
 #: fred/eppdoc_client.py:171 fred/eppdoc_client.py:273
-#: fred/eppdoc_client.py:379
+#: fred/eppdoc_client.py:388
 msgid "Identificator type"
 msgstr "Typ identifikátoru"
 
@@ -710,7 +716,7 @@ msgid "Identificator number"
 msgstr "Čislo identifikátoru"
 
 #: fred/eppdoc_client.py:174 fred/eppdoc_client.py:276
-#: fred/eppdoc_client.py:373
+#: fred/eppdoc_client.py:382
 msgid "Notification email"
 msgstr "Oznámení na email"
 
@@ -728,7 +734,7 @@ msgstr ""
 "definované období."
 
 #: fred/eppdoc_client.py:185 fred/eppdoc_client.py:290
-#: fred/eppdoc_client.py:399
+#: fred/eppdoc_client.py:408
 msgid "Registrant ID"
 msgstr "ID držitele"
 
@@ -750,7 +756,7 @@ msgid "Administrative contact ID"
 msgstr "Administrativní kontakt ID"
 
 #: fred/eppdoc_client.py:193 fred/eppdoc_client.py:237
-#: fred/eppdoc_client.py:293 fred/eppdoc_client.py:393
+#: fred/eppdoc_client.py:293 fred/eppdoc_client.py:402
 msgid "Validation expires at"
 msgstr "Validace platná do"
 
@@ -779,9 +785,13 @@ msgstr "Jmenný server"
 msgid "Server address"
 msgstr "Adresa serveru"
 
-#: fred/eppdoc_client.py:208 fred/eppdoc_client.py:415
+#: fred/eppdoc_client.py:208 fred/eppdoc_client.py:424
 msgid "Technical contact"
 msgstr "Technický kontakt"
+
+#: fred/eppdoc_client.py:210 fred/eppdoc_client.py:313
+msgid "Report level. Range 0 - 10"
+msgstr "Report level. Rozmezí 0 - 10"
 
 #: fred/eppdoc_client.py:220 fred/eppdoc_client.py:224
 #: fred/eppdoc_client.py:228
@@ -791,8 +801,8 @@ msgid ""
 msgstr ""
 "EPP příkaz \"delete\" se používá pro odebrání instance vybraného objektu."
 
-#: fred/eppdoc_client.py:232 fred/eppdoc_client.py:392
-#: fred/eppdoc_client.py:432 fred/eppdoc_client.py:465 guiqt4/main.py:756
+#: fred/eppdoc_client.py:232 fred/eppdoc_client.py:401
+#: fred/eppdoc_client.py:442 fred/eppdoc_client.py:475 guiqt4/main.py:756
 msgid "Expiration date"
 msgstr "Datum expirace"
 
@@ -835,12 +845,12 @@ msgstr "Adresa"
 msgid "data for with is set the flag value"
 msgstr "data, pro které se nastaví příznak"
 
-#: fred/eppdoc_client.py:271 fred/eppdoc_client.py:378
+#: fred/eppdoc_client.py:271 fred/eppdoc_client.py:387
 msgid "VAT"
 msgstr "DPH"
 
 #: fred/eppdoc_client.py:278 fred/eppdoc_client.py:294
-#: fred/eppdoc_client.py:313
+#: fred/eppdoc_client.py:314
 msgid ""
 "The EPP \"update\" command is used to update an instance of an existing "
 "object."
@@ -864,7 +874,7 @@ msgstr "Technický kontakt ID"
 msgid "Remove values"
 msgstr "Odebrat hodnoty"
 
-#: fred/eppdoc_client.py:317
+#: fred/eppdoc_client.py:318
 msgid ""
 "The EPP \"list\" command is used to list all ID of an existing contact "
 "owning by registrant."
@@ -872,7 +882,7 @@ msgstr ""
 "EPP příkaz \"list\" se používá pro zobrazení seznamu všech ID kontaktů, "
 "které ragistrátor vlastní."
 
-#: fred/eppdoc_client.py:318
+#: fred/eppdoc_client.py:319
 msgid ""
 "The EPP \"list\" command is used to list all ID of an existing NSSET owning "
 "by registrant."
@@ -880,7 +890,7 @@ msgstr ""
 "EPP příkaz \"list\" se používá pro zobrazení seznamu všech ID NSSETů, které "
 "ragistrátor vlastní."
 
-#: fred/eppdoc_client.py:319
+#: fred/eppdoc_client.py:320
 msgid ""
 "The EPP \"list\" command is used to list all domain names owning by "
 "registrant."
@@ -888,7 +898,7 @@ msgstr ""
 "EPP příkaz \"list\" se používá pro zobrazení seznamu všech domén, které "
 "ragistrátor vlastní."
 
-#: fred/eppdoc_client.py:323
+#: fred/eppdoc_client.py:324
 msgid ""
 "The EPP 'sendauthinfo_contact' command transmit request for send "
 "authorisation info to contact email."
@@ -896,7 +906,7 @@ msgstr ""
 "Příkaz 'sendauthinfo_contact' předá požadavek na odeslání autorizačního "
 "hesla na email kontaktu."
 
-#: fred/eppdoc_client.py:327
+#: fred/eppdoc_client.py:328
 msgid ""
 "The EPP 'sendauthinfo_domain' command transmit request for send "
 "authorisation info to registrant email."
@@ -904,7 +914,7 @@ msgstr ""
 "Příkaz 'sendauthinfo_domain' předá požadavek na odeslání autorizačního hesla "
 "na email vlastníka domény."
 
-#: fred/eppdoc_client.py:331
+#: fred/eppdoc_client.py:332
 msgid ""
 "The EPP 'sendauthinfo_nsset' command transmit request for send authorisation "
 "info to technical contact email."
@@ -912,133 +922,150 @@ msgstr ""
 "Příkaz 'sendauthinfo_contact' předá požadavek na odeslání autorizačního "
 "hesla na email technického kontaktu."
 
-#: fred/eppdoc_client.py:333
+#: fred/eppdoc_client.py:334
 msgid "The EPP 'credit_info' command returns credit information."
 msgstr "Příkaz 'credit_info' zobrazí informace o kreditu."
 
-#: fred/eppdoc_client.py:338
+#: fred/eppdoc_client.py:339
+msgid ""
+"\n"
+"The EPP 'technical_test' command transmit request for technical test for "
+"particular NSSET and domain.\n"
+"The result of the test will be saved into the message queue from where the "
+"registrant can fetch it by poll command.\n"
+msgstr "\n"
+"Příkaz 'technical_test' předá požadavek na provedení technického testu pro "
+"příslušný NSSET a doménu.\n"
+"Po skončení testu bude výsledek uložen do zpráv, "
+"které si registrátor vybírá příkazem poll.\n"
+
+#: fred/eppdoc_client.py:347
 msgid "Client transaction ID"
 msgstr ""
 
-#: fred/eppdoc_client.py:355 fred/eppdoc_client.py:385
-#: fred/eppdoc_client.py:405
+#: fred/eppdoc_client.py:364 fred/eppdoc_client.py:394
+#: fred/eppdoc_client.py:414
 msgid "Repository object ID"
 msgstr "ID objektu v rep."
 
-#: fred/eppdoc_client.py:356 fred/eppdoc_client.py:386
-#: fred/eppdoc_client.py:406
+#: fred/eppdoc_client.py:365 fred/eppdoc_client.py:395
+#: fred/eppdoc_client.py:415
 msgid "Created by"
 msgstr "Vytvořil"
 
-#: fred/eppdoc_client.py:357 fred/eppdoc_client.py:387
-#: fred/eppdoc_client.py:407
+#: fred/eppdoc_client.py:366 fred/eppdoc_client.py:396
+#: fred/eppdoc_client.py:416
 msgid "Designated registrar"
 msgstr "Určený registrátor"
 
-#: fred/eppdoc_client.py:358 fred/eppdoc_client.py:388
-#: fred/eppdoc_client.py:408
+#: fred/eppdoc_client.py:367 fred/eppdoc_client.py:397
+#: fred/eppdoc_client.py:417
 msgid "Updated by"
 msgstr "Změnil"
 
-#: fred/eppdoc_client.py:359 fred/eppdoc_client.py:389
-#: fred/eppdoc_client.py:409 fred/eppdoc_client.py:421
-#: fred/eppdoc_client.py:426 fred/eppdoc_client.py:431
+#: fred/eppdoc_client.py:368 fred/eppdoc_client.py:398
+#: fred/eppdoc_client.py:418 fred/eppdoc_client.py:431
+#: fred/eppdoc_client.py:436 fred/eppdoc_client.py:441
 msgid "Created on"
 msgstr "Vytvořeno dne"
 
-#: fred/eppdoc_client.py:360 fred/eppdoc_client.py:390
-#: fred/eppdoc_client.py:410
+#: fred/eppdoc_client.py:369 fred/eppdoc_client.py:399
+#: fred/eppdoc_client.py:419
 msgid "Last transfer on"
 msgstr "Poslední transfer dne"
 
-#: fred/eppdoc_client.py:361 fred/eppdoc_client.py:391
+#: fred/eppdoc_client.py:370 fred/eppdoc_client.py:400
 msgid "Last update on"
 msgstr "Poslední změna dne"
 
-#: fred/eppdoc_client.py:369 fred/eppdoc_client.py:396
-#: fred/eppdoc_client.py:412
+#: fred/eppdoc_client.py:378 fred/eppdoc_client.py:405
+#: fred/eppdoc_client.py:421
 msgid "Password for transfer"
 msgstr "Heslo pro transfer"
 
-#: fred/eppdoc_client.py:374 fred/eppdoc_client.py:397
-#: fred/eppdoc_client.py:413
+#: fred/eppdoc_client.py:383 fred/eppdoc_client.py:406
+#: fred/eppdoc_client.py:422
 msgid "Status"
 msgstr "Stav"
 
-#: fred/eppdoc_client.py:375 fred/eppdoc_client.py:398
-#: fred/eppdoc_client.py:414
+#: fred/eppdoc_client.py:384 fred/eppdoc_client.py:407
+#: fred/eppdoc_client.py:423
 msgid "Status message"
 msgstr "Popis stavu"
 
-#: fred/eppdoc_client.py:377
+#: fred/eppdoc_client.py:386
 msgid "Hide"
 msgstr "Skrýt"
 
-#: fred/eppdoc_client.py:394
+#: fred/eppdoc_client.py:403
 msgid "Last renew on"
 msgstr "Poslední prodloužení dne"
 
-#: fred/eppdoc_client.py:400
+#: fred/eppdoc_client.py:409
 msgid "Administrative contact"
 msgstr "Administrativní kontakt"
 
-#: fred/eppdoc_client.py:411
+#: fred/eppdoc_client.py:420
 msgid "Last updated on"
 msgstr "Poslední změna dne"
 
-#: fred/eppdoc_client.py:416
+#: fred/eppdoc_client.py:425
 msgid "Name servers"
 msgstr "Jmenné servery"
 
-#: fred/eppdoc_client.py:436
+#: fred/eppdoc_client.py:426
+msgid "Report level"
+msgstr ""
+
+#: fred/eppdoc_client.py:446
 msgid "Available languages"
 msgstr "Podporované jazyky"
 
-#: fred/eppdoc_client.py:437
+#: fred/eppdoc_client.py:447
 msgid "Server ID"
 msgstr "ID serveru"
 
-#: fred/eppdoc_client.py:438
+#: fred/eppdoc_client.py:448
 msgid "Server date"
 msgstr "Datum serveru"
 
-#: fred/eppdoc_client.py:439
+#: fred/eppdoc_client.py:449
 msgid "Server version"
 msgstr "Verze serveru"
 
-#: fred/eppdoc_client.py:440
+#: fred/eppdoc_client.py:450
 msgid "Objects URI"
 msgstr "URI objekt"
 
-#: fred/eppdoc_client.py:441
+#: fred/eppdoc_client.py:451
 msgid "Extensions URI"
 msgstr "URI rozšíření"
 
-#: fred/eppdoc_client.py:442
+#: fred/eppdoc_client.py:452
 msgid "Data Collection policy"
 msgstr ""
 
-#: fred/eppdoc_client.py:452
+#: fred/eppdoc_client.py:462
 msgid "List"
 msgstr "Seznam"
 
-#: fred/eppdoc_client.py:453
+#: fred/eppdoc_client.py:463
 msgid "Count"
 msgstr "Počet"
 
-#: fred/eppdoc_client.py:457
+#: fred/eppdoc_client.py:467
 msgid "Queue size"
 msgstr "Počet zpráv"
 
-#: fred/eppdoc_client.py:458
+#: fred/eppdoc_client.py:468
 msgid "Message ID"
 msgstr "ID zprávy"
 
-#: fred/eppdoc_client.py:459
+#: fred/eppdoc_client.py:469
 msgid "Message date"
 msgstr "Zpráva vložena"
 
-#: fred/eppdoc_client.py:460
+#: fred/eppdoc_client.py:470
 msgid "Message content"
 msgstr "Text zprávy"
 
@@ -1721,8 +1748,8 @@ msgstr "Detaily jsou zobrazeny ve verbose 2 nebo vyšším."
 msgid "Element that caused a server error condition"
 msgstr "Element který způsobil chybu"
 
-#: fred/session_receiver.py:84 fred/session_transfer.py:437
-#: fred/session_transfer.py:493
+#: fred/session_receiver.py:84 fred/session_transfer.py:439
+#: fred/session_transfer.py:495
 msgid "Reason"
 msgstr "Důvod"
 
@@ -1861,17 +1888,32 @@ msgstr ""
 msgid "request for send authorisation info transmited"
 msgstr "pořadavek na odeslání autorizačního hesla byl odeslán"
 
-#: fred/session_transfer.py:434 fred/session_transfer.py:491
+#: fred/session_transfer.py:406
+msgid "request for technical test was successfulli submited"
+msgstr "požadavek na technický test byl úspěšně odeslán"
+
+#: fred/session_transfer.py:436 fred/session_transfer.py:493
 msgid "Return code"
 msgstr "Návratový kód"
 
-#: fred/session_transfer.py:455
+#: fred/session_transfer.py:457
 #, python-format
 msgid "(%d item)"
 msgid_plural "(%d items)"
 msgstr[0] "(%d položka)"
 msgstr[1] "(%d položky)"
 msgstr[2] "(%d položek)"
+
+#: fred/translate.py:174
+#, python-format
+msgid ""
+"%s\n"
+"Usage: %s [OPTIONS...]\n"
+"Try '%s --help' for more information."
+msgstr ""
+"%s\n"
+"Použití: %s [parametry...]\n"
+"Více informací získáze zadáním '%s --help'."
 
 #: fred_client.py:33
 msgid ""
@@ -2021,9 +2063,6 @@ msgid ""
 msgstr ""
 "Pro spuštění této aplikace musíte mít nainstalovány PyQt a Qt moduly.Více "
 "informací naleznete v helpu."
-
-msgid "This version of Python doesn't support SSL. Reinstall it with SLL support."
-msgstr "Tato verze Pythonu nepodporuje SSL. Reinstalujte jej se SSL podporou."
 
 #~ msgid "Help command can have only one parameter"
 #~ msgstr "Příkaz help má jen jeden parametr"

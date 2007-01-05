@@ -207,7 +207,7 @@ object can be created for a specific validity period."""),(
             )),
             ('tech',(1,UNBOUNDED),(),_T('Technical contact'),'CID:ID01','',()),
             ('auth_info',(0,1),(),_T('Password required by server to authorize the transfer'),'mypassword','',()),
-
+            ('reportlevel',(0,1),(),_T('Report level. Range 0 - 10'),'1','',()),
             ],_T("""
 The EPP "create" command is used to create an instance of an object.
 An object can be created for an indefinite period of time, or an
@@ -310,6 +310,7 @@ and maximum allowable period is defined in the Communication rules."""),('renew_
                 ('tech',(0,UNBOUNDED),(),_T('Technical contact ID'),'CID:ID01','',()),
             )),
             ('auth_info',(0,1),(),_T('Password required by server to authorize the transfer'),'new_password','',()),
+            ('reportlevel',(0,1),(),_T('Report level. Range 0 - 10'),'1','',()),
             ],_T("""The EPP "update" command is used to update an instance of an existing object."""),(
                 "update_nsset nssid:ns1 (((ns1.dns.cz (217.31.207.130, 217.31.207.131, 217.31.207.132)), (ns2.dns.cz (217.31.207.130, 217.31.207.131, 217.31.207.132))) (cid:tech1, cid:tech2, cid:tech3)) (((rem1.dns.cz, rem2.dns.cz) (cid:tech_rem01, cid:tech_rem02))) password",
             )),
@@ -327,10 +328,18 @@ and maximum allowable period is defined in the Communication rules."""),('renew_
             ],_T("""The EPP 'sendauthinfo_domain' command transmit request for send authorisation info to registrant email."""),('sendauthinfo_domain domain.cz',)),
         #----------------------------------------------------
         'sendauthinfo_nsset': (1,[
-            ('id',(1,1),(),_T('NSSET ID'),'NSSET_ID','',()),
+            ('id',(1,1),(),_T('NSSET ID'),'NSSID:MYID','',()),
             ],_T("""The EPP 'sendauthinfo_nsset' command transmit request for send authorisation info to technical contact email."""),('sendauthinfo_nsset nssid:id',)),
         #----------------------------------------------------
         'credit_info': (0,[],_T("""The EPP 'credit_info' command returns credit information."""),('credit_info',)),
+        #----------------------------------------------------
+        'technical_test': (2,[
+            ('id',(1,1),(),_T('NSSET ID'),'NSSID:MYID','',()),
+            ('name',(1,1),(),_T('Domain name'),'mydomain.cz','',()),
+            ],_T("""
+The EPP 'technical_test' command transmit request for technical test for particular NSSET and domain.
+The result of the test will be saved into the message queue from where the registrant can fetch it by poll command.
+"""),('technical_test nssid:id mydomain.cz',)),
         #----------------------------------------------------
     }
     for k,v in command_params.items():
@@ -414,6 +423,7 @@ def make_sort_by_names():
          ('status',      1,  _T('Status message')),
          ('tech',        1,  _T('Technical contact')),
          ('ns',          1,  _T('Name servers')),
+         ('reportlevel', 1,  _T('Report level')),
          )),
 
        'contact:create': ('contact',(

@@ -9,11 +9,15 @@ include ChangeLog
 include fred_client_sample.conf
 include fred/CREDITS
 include fred/LICENSE
+include guiqt4/*.py
+include guiqt4/*.png
+include guiqt4/*.qm
+include guiqt4/*.ts
+include guiqt4/*.ui
+include guiqt4/qt_client.project
+prune guiqt4/.svn
 graft fred/schemas
 graft fred/lang
 prune .svn
 prune fred/.svn
 prune  qt3doc
-# prune guiqt/.svn
-# include guiqt/*.ts
-# include guiqt/*.qm

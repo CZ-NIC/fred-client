@@ -402,6 +402,8 @@ class ManagerTransfer(ManagerBase):
                 dct['reason'] = u'%s %s.'%(self._epp_cmd.get_object_handle(), _T('transfer').decode(encoding))
             elif key == 'sendauthinfo':
                 dct['reason'] = u'%s %s.'%(self._epp_cmd.get_object_handle(), _T('request for send authorisation info transmited').decode(encoding))
+            elif key == 'test':
+                dct['reason'] = u'%s %s.'%(self._epp_cmd.get_object_handle(), _T('request for technical test was successfulli submited').decode(encoding))
         
     def get_answer(self, dct=None, sep='\n'):
         'Show values parsed from the server answer.'

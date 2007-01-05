@@ -602,11 +602,13 @@ class Message(MessageBase):
                 ))
                 ]
             if key:
-                names = self._dct[key]
-                if type(names) not in (list,tuple):
-                    names = (names,)
-                for value in names:
-                    data.append((col1, col2, value))
+                if type(key) not in (list,tuple): key = (key,)
+                for key_name in key:
+                    names = self._dct[key_name]
+                    nscol = '%s:%s'%(cols[1],key_name)
+                    if type(names) not in (list,tuple): names = (names,)
+                    for value in names:
+                        data.append((col1, nscol, value))
             # ------------------------------------------------
         data.append(('%s:extcommand'%namespace, '%s:clTRID'%namespace, self._dct.get(TAG_clTRID,[params[0]])[0]))
         self.__assemble_cmd__(data)
@@ -881,6 +883,8 @@ class Message(MessageBase):
             self.__append_values__(data, dct, 'tech', 'nsset:create', 'nsset:tech')
         if dct.has_key('auth_info'): 
             data.append(('nsset:create','nsset:authInfo', dct['auth_info'][0]))
+        if dct.has_key('reportlevel'): 
+            data.append(('nsset:create','nsset:reportlevel', dct['reportlevel'][0]))
         data.append(('command', 'clTRID', self._dct.get(TAG_clTRID,[params[0]])[0]))
         self.__assemble_cmd__(data)
 
@@ -1021,10 +1025,13 @@ class Message(MessageBase):
             self.__append_values__(data, dct_rem, 'name', 'nsset:rem', 'nsset:name')
             self.__append_values__(data, dct_rem, 'tech', 'nsset:rem', 'nsset:tech')
 
-        if __has_key_dict__(dct,'auth_info'):
+        if __has_key_dict__(dct,'auth_info') or __has_key_dict__(dct,'reportlevel'):
             data.append(('nsset:update','nsset:chg'))
-            data.append(('nsset:chg','nsset:authInfo',dct['auth_info'][0]))
-            
+            if dct.has_key('auth_info'): 
+                data.append(('nsset:chg','nsset:authInfo', dct['auth_info'][0]))
+            if dct.has_key('reportlevel'): 
+                data.append(('nsset:chg','nsset:reportlevel', dct['reportlevel'][0]))
+
         data.append(('command', 'clTRID', self._dct.get(TAG_clTRID,[params[0]])[0]))
         self.__assemble_cmd__(data)
 
@@ -1039,6 +1046,10 @@ class Message(MessageBase):
 
     def assemble_credit_info(self, *params):
         self.__asseble_extcommand__(('creditInfo',), params)
+
+    def assemble_technical_test(self, *params):
+        'Create technical_test document'
+        self.__asseble_extcommand__(('test','nsset','id'), params, ('id','name'))
 
     #===========================================
 

@@ -7,16 +7,15 @@ setup(name = 'FredClient',
     author = 'Zdenek Bohm, CZ.NIC',
     author_email = 'zdenek.bohm@nic.cz',
     url = 'http://www.nic.cz',
-    version = '1.2.0',
+    version = '1.3.0',
     license = 'GNU GPL',
-    packages = ['fred'], ## ,'guiqt' temporary disabled
+    packages = ['fred','guiqt4'],
     package_data={
         'fred': ['INSTALL','LICENSE','CREDITS','*.txt','schemas/*.xsd',
             'lang/fred_client_cs.po',
             'lang/cs/LC_MESSAGES/fred_client.mo'],
-## temporary disabled
-##        'guiqt': ['*.py','*.ui','*.ts','*.qm','*.png','qt_client.project'],
-
+        'guiqt4': ['*.py','*.png','*.qm'],
     },
     scripts = ['fred_client.py'],
 )
+
