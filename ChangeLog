@@ -1,6 +1,7 @@
 FredClient 1.3.0
 
 Zmeny:
+    * Pridan prikaz credit_info
     * Pridany prikazy sendAuthInfo
     * Odebrani priznaku status v update prikazech
     * Presun elementu pw do authInfo
