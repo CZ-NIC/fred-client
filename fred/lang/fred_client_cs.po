@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-01-05 14:34+0100\n"
+"POT-Creation-Date: 2007-01-05 15:25+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Zdeněk Böhm <zdenek.bohm@nic.cz>\n"
 "Language-Team: CS <ccreg-devel@lists.nic.cz>\n"
@@ -247,7 +247,7 @@ msgstr "Neznámý příkaz"
 
 #: fred/creator.py:41 fred/session_base.py:228 fred/session_command.py:307
 #: fred/session_command.py:310 fred/session_command.py:312
-#: fred/session_command.py:314 fred/session_transfer.py:445
+#: fred/session_command.py:314 fred/session_transfer.py:449
 msgid "ERROR"
 msgstr "CHYBA"
 
@@ -933,11 +933,12 @@ msgid ""
 "particular NSSET and domain.\n"
 "The result of the test will be saved into the message queue from where the "
 "registrant can fetch it by poll command.\n"
-msgstr "\n"
+msgstr ""
+"\n"
 "Příkaz 'technical_test' předá požadavek na provedení technického testu pro "
 "příslušný NSSET a doménu.\n"
-"Po skončení testu bude výsledek uložen do zpráv, "
-"které si registrátor vybírá příkazem poll.\n"
+"Po skončení testu bude výsledek uložen do zpráv, které si registrátor vybírá "
+"příkazem poll.\n"
 
 #: fred/eppdoc_client.py:347
 msgid "Client transaction ID"
@@ -1748,8 +1749,8 @@ msgstr "Detaily jsou zobrazeny ve verbose 2 nebo vyšším."
 msgid "Element that caused a server error condition"
 msgstr "Element který způsobil chybu"
 
-#: fred/session_receiver.py:84 fred/session_transfer.py:439
-#: fred/session_transfer.py:495
+#: fred/session_receiver.py:84 fred/session_transfer.py:443
+#: fred/session_transfer.py:499
 msgid "Reason"
 msgstr "Důvod"
 
@@ -1872,31 +1873,31 @@ msgstr "Odpojeno."
 msgid "Logout command sent to server"
 msgstr "Odeslán logout"
 
-#: fred/session_transfer.py:398
+#: fred/session_transfer.py:402
 msgid "updated"
 msgstr "aktualizováno"
 
-#: fred/session_transfer.py:400
+#: fred/session_transfer.py:404
 msgid "deleted"
 msgstr "smazáno"
 
-#: fred/session_transfer.py:402
+#: fred/session_transfer.py:406
 msgid "transfer"
 msgstr ""
 
-#: fred/session_transfer.py:404
+#: fred/session_transfer.py:408
 msgid "request for send authorisation info transmited"
 msgstr "pořadavek na odeslání autorizačního hesla byl odeslán"
 
-#: fred/session_transfer.py:406
-msgid "request for technical test was successfulli submited"
-msgstr "požadavek na technický test byl úspěšně odeslán"
+#: fred/session_transfer.py:410
+msgid "The Request for technical test was successfully submitted."
+msgstr "Požadavek na technický test byl úspěšně odeslán."
 
-#: fred/session_transfer.py:436 fred/session_transfer.py:493
+#: fred/session_transfer.py:440 fred/session_transfer.py:497
 msgid "Return code"
 msgstr "Návratový kód"
 
-#: fred/session_transfer.py:457
+#: fred/session_transfer.py:461
 #, python-format
 msgid "(%d item)"
 msgid_plural "(%d items)"
@@ -2056,13 +2057,12 @@ msgstr "Kredity"
 msgid "Close"
 msgstr "Zavřít"
 
-#: guiqt4/main_qt3.py:33
-msgid ""
-"For runnig this application you need install PyQt and Qt modules. For more "
-"see help."
-msgstr ""
-"Pro spuštění této aplikace musíte mít nainstalovány PyQt a Qt moduly.Více "
-"informací naleznete v helpu."
+#~ msgid ""
+#~ "For runnig this application you need install PyQt and Qt modules. For "
+#~ "more see help."
+#~ msgstr ""
+#~ "Pro spuštění této aplikace musíte mít nainstalovány PyQt a Qt moduly.Více "
+#~ "informací naleznete v helpu."
 
 #~ msgid "Help command can have only one parameter"
 #~ msgstr "Příkaz help má jen jeden parametr"

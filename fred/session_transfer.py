@@ -392,7 +392,11 @@ class ManagerTransfer(ManagerBase):
         #---------------------
 
     def __modify__reason_message__(self, code, key, dct):
-        'Modify reason message from standard answer to more fit message.'
+        """Modify reason message from standard answer to more fit message.
+        READ HERE! These keys must be declared in function get_answer() a few lines above
+        on the line 433: elif code not in (1000,1500) or key in (... HERE...).
+        If they not, in the verbose level 1 is displayed nothing.
+        """
         if code == 1000:
             if key == 'update':
                 dct['reason'] = u'%s %s.'%(self._epp_cmd.get_object_handle(), _T('updated').decode(encoding))
@@ -403,7 +407,7 @@ class ManagerTransfer(ManagerBase):
             elif key == 'sendauthinfo':
                 dct['reason'] = u'%s %s.'%(self._epp_cmd.get_object_handle(), _T('request for send authorisation info transmited').decode(encoding))
             elif key == 'test':
-                dct['reason'] = u'%s %s.'%(self._epp_cmd.get_object_handle(), _T('request for technical test was successfulli submited').decode(encoding))
+                dct['reason'] = _T('The Request for technical test was successfully submitted.').decode(encoding)
         
     def get_answer(self, dct=None, sep='\n'):
         'Show values parsed from the server answer.'
@@ -427,7 +431,7 @@ class ManagerTransfer(ManagerBase):
             else:
                 if code >= 2000:
                     dct['errors'].insert(0,dct['reason'])
-                elif code not in (1000,1500) or key in ('update','delete','transfer','sendauthinfo'):
+                elif code not in (1000,1500) or key in ('update','delete','transfer','sendauthinfo','test'):
                     # 1000 - success,  1500 - success logout
                     report(get_ltext(colored_output.render('${%s}%s${NORMAL}'%(code==1000 and 'GREEN' or 'NORMAL', dct['reason']))))
         else:
