@@ -447,6 +447,9 @@ class ManagerReceiver(ManagerCommand):
         "data=(response,result,code,msg)"
         self.__answer_response_list__(data, ('domain','name'))
         
+    def answer_response_credit_info(self, data):
+        self.answer_response_fred_creditinfo(data)
+
     def answer_response_fred_creditinfo(self, data):
         'Prepare creditinfo for display'
         if self.__code_isnot_1000__(data, 'fred:creditinfo'): return
@@ -479,17 +482,18 @@ class ManagerReceiver(ManagerCommand):
         self._raw_cmd = self._epp_cmd.get_xml()                               # get EPP in XML (string)
         if len(self._errors): raise FredError(self.fetch_errors())
         if self.is_online(command_name):                                      # go only if session is online.
-            errors = self.is_epp_valid(self._raw_cmd)                         # check doc for EPP validation
+            # check doc for EPP validation
+            errors = self.is_epp_valid(self._raw_cmd, _T('Command data XML document failed to validate.'))
             if len(errors): raise FredError(errors)
             if self.is_connected(): # if we are connect, lets communicate with the server
                 self.send(self._raw_cmd)                                      # send to server
                 if len(self._errors): raise FredError(self.fetch_errors())
                 xml_answer = self.receive()                                   # receive answer
-                error_validate_answer = self.is_epp_valid(xml_answer)         # validate answer
+                error_validate_answer = self.is_epp_valid(xml_answer, _T('Server answer XML document failed to validate.')) # validate answer
                 if self.run_as_unittest and not self._session[VALIDATE]:
                     # TEST: validate the server's answer in unittest:
                     self._session[VALIDATE] = 1
-                    error_validate_answer = self.is_epp_valid(xml_answer)
+                    error_validate_answer = self.is_epp_valid(xml_answer, _T('Server answer XML document failed to validate.'))
                     self._session[VALIDATE] = 0
                 self.process_answer(xml_answer)                               # process answer
                 if len(error_validate_answer):

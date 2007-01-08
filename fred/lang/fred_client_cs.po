@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-01-05 15:25+0100\n"
+"POT-Creation-Date: 2007-01-08 13:23+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Zdeněk Böhm <zdenek.bohm@nic.cz>\n"
 "Language-Team: CS <ccreg-devel@lists.nic.cz>\n"
@@ -206,7 +206,7 @@ msgstr ""
 msgid "More details in verbose 2 or higher."
 msgstr "Více detailů je ve verbose 2 nebo vyšším."
 
-#: fred/console.py:150
+#: fred/console.py:150 fred/session_receiver.py:486
 msgid "Command data XML document failed to validate."
 msgstr "XML dokument příkazu se nepodařilo zvalidovat."
 
@@ -219,7 +219,8 @@ msgstr "Nejste připojeni."
 msgid "Do you really want to send this command to the server?"
 msgstr "Opravdu chcete odeslat tento poříkaz na server?"
 
-#: fred/console.py:166
+#: fred/console.py:166 fred/session_receiver.py:492
+#: fred/session_receiver.py:496
 msgid "Server answer XML document failed to validate."
 msgstr "Odpověď serveru v XML dokumentu se nepodařilo zvalidovat."
 
@@ -518,7 +519,7 @@ msgstr ""
 #: fred/eppdoc_client.py:64 fred/eppdoc_client.py:89 fred/eppdoc_client.py:127
 #: fred/eppdoc_client.py:153 fred/eppdoc_client.py:219
 #: fred/eppdoc_client.py:250 fred/eppdoc_client.py:323
-#: fred/eppdoc_client.py:363 fred/eppdoc_client.py:430 guiqt4/main.py:642
+#: fred/eppdoc_client.py:363 fred/eppdoc_client.py:430 guiqt4/main.py:645
 msgid "Contact ID"
 msgstr "Kontakt ID"
 
@@ -551,7 +552,8 @@ msgstr "Název domény"
 #: fred/eppdoc_client.py:289 fred/eppdoc_client.py:300
 #: fred/eppdoc_client.py:331 fred/eppdoc_client.py:337
 #: fred/eppdoc_client.py:404 fred/eppdoc_client.py:413
-#: fred/eppdoc_client.py:435 guiqt4/main.py:582 guiqt4/main.py:679
+#: fred/eppdoc_client.py:435 guiqt4/main.py:585 guiqt4/main.py:682
+#: guiqt4/main.py:793
 msgid "NSSET ID"
 msgstr "NSSET ID"
 
@@ -643,11 +645,11 @@ msgstr "Město"
 msgid "Country code"
 msgstr "Kód země"
 
-#: fred/eppdoc_client.py:157 guiqt4/main.py:559
+#: fred/eppdoc_client.py:157 guiqt4/main.py:562
 msgid "country code"
 msgstr "kód země"
 
-#: fred/eppdoc_client.py:158 guiqt4/main.py:479
+#: fred/eppdoc_client.py:158 guiqt4/main.py:482
 msgid "password"
 msgstr "heslo"
 
@@ -802,7 +804,7 @@ msgstr ""
 "EPP příkaz \"delete\" se používá pro odebrání instance vybraného objektu."
 
 #: fred/eppdoc_client.py:232 fred/eppdoc_client.py:401
-#: fred/eppdoc_client.py:442 fred/eppdoc_client.py:475 guiqt4/main.py:756
+#: fred/eppdoc_client.py:442 fred/eppdoc_client.py:475 guiqt4/main.py:759
 msgid "Expiration date"
 msgstr "Datum expirace"
 
@@ -1223,21 +1225,25 @@ msgstr "XML dokument je prázdný"
 msgid "Client-side validation command:"
 msgstr "Příkaz pro validátor:"
 
-#: fred/session_base.py:547
+#: fred/session_base.py:549
+msgid "Reading xmllint errors result failed."
+msgstr "Čtení zprávy o chybách z xmllintu selhalo."
+
+#: fred/session_base.py:559
 msgid "Warning: Client-side validation failed."
 msgstr "Pozor: Validace na straně klienta selhala."
 
-#: fred/session_base.py:549
+#: fred/session_base.py:561
 #, python-format
 msgid "Client-side validation has been disabled. Type '%s' to enable it."
 msgstr "Validátor byl deaktivován. Opětná aktivace se provede zadáním %s."
 
-#: fred/session_base.py:589
+#: fred/session_base.py:601
 #, python-format
 msgid "Different %s schema version."
 msgstr "Odlišná verze %s schemat."
 
-#: fred/session_base.py:590
+#: fred/session_base.py:602
 #, python-format
 msgid "Client schema version is%s\t%s%sand on the server is%s\t%s"
 msgid_plural "Client schema versions are%s\t%s%sand on the server are%s\t%s"
@@ -1729,7 +1735,7 @@ msgstr "Znove se připojte k serveru chcete-li změnit jazyk i na něm."
 msgid "User interface language is"
 msgstr "Jazyková verze je"
 
-#: fred/session_command.py:630 guiqt4/main.py:472
+#: fred/session_command.py:630 guiqt4/main.py:475
 msgid "You are logged already."
 msgstr "Jste již zalogován"
 
@@ -1798,11 +1804,11 @@ msgstr "Nedostupný"
 msgid "Available"
 msgstr "Dostupný"
 
-#: fred/session_receiver.py:500
+#: fred/session_receiver.py:504
 msgid "You are not logged. First type login."
 msgstr "Nejste zalogováni. Nejdříve zadejte login."
 
-#: fred/session_receiver.py:503
+#: fred/session_receiver.py:507
 msgid "You are not logged. You must call login() before working on the server."
 msgstr "Nejste zalogováni. Nejdříve musíte zadat login()."
 
@@ -1952,76 +1958,76 @@ msgstr "Zavřít klienta"
 msgid "Do you wand realy close client?"
 msgstr "Opravdu chcete zavřít klienta?"
 
-#: guiqt4/main.py:297
+#: guiqt4/main.py:300
 msgid "zone"
 msgstr "Zóna"
 
-#: guiqt4/main.py:297
+#: guiqt4/main.py:300
 msgid "credit"
 msgstr "Kredit"
 
-#: guiqt4/main.py:299 guiqt4/main.py:419 guiqt4/main.py:432 guiqt4/main.py:556
-#: guiqt4/main.py:605
+#: guiqt4/main.py:302 guiqt4/main.py:422 guiqt4/main.py:435 guiqt4/main.py:559
+#: guiqt4/main.py:608
 msgid "name"
 msgstr "Jméno"
 
-#: guiqt4/main.py:299
+#: guiqt4/main.py:302
 msgid "value"
 msgstr "Hodnota"
 
-#: guiqt4/main.py:387 guiqt4/main.py:389
+#: guiqt4/main.py:390 guiqt4/main.py:392
 msgid "status"
 msgstr "Stav"
 
-#: guiqt4/main.py:389
+#: guiqt4/main.py:392
 msgid "disconnect"
 msgstr "Odpojeno"
 
-#: guiqt4/main.py:395
+#: guiqt4/main.py:398
 msgid "You are not logged. First do login."
 msgstr "Nejste zalogováni. Nejdříve zadejte login."
 
-#: guiqt4/main.py:395
+#: guiqt4/main.py:398
 msgid "Offline"
 msgstr ""
 
-#: guiqt4/main.py:419
+#: guiqt4/main.py:422
 msgid "Authorization info"
 msgstr "Autorizační heslo"
 
-#: guiqt4/main.py:472
+#: guiqt4/main.py:475
 msgid "Invalid command usage"
 msgstr "Neplatné použití příkazu"
 
-#: guiqt4/main.py:479
+#: guiqt4/main.py:482
 msgid "username"
 msgstr "Uživatelské jméno"
 
-#: guiqt4/main.py:555
+#: guiqt4/main.py:558
 msgid "contact ID"
 msgstr "Kontakt ID"
 
-#: guiqt4/main.py:557
+#: guiqt4/main.py:560
 msgid "email"
 msgstr ""
 
-#: guiqt4/main.py:558
+#: guiqt4/main.py:561
 msgid "city"
 msgstr "Město"
 
-#: guiqt4/main.py:582
+#: guiqt4/main.py:585
 msgid "dns"
 msgstr ""
 
-#: guiqt4/main.py:582
+#: guiqt4/main.py:585
 msgid "tech. contact"
 msgstr "Technický kontakt"
 
-#: guiqt4/main.py:605
+#: guiqt4/main.py:608
 msgid "registrant"
 msgstr "držitel"
 
-#: guiqt4/main.py:631
+#: guiqt4/main.py:634
 msgid ""
 "In a part of address must be set both city and country code. For disabled "
 "this part leave both empty."
@@ -2029,43 +2035,31 @@ msgstr ""
 "V části adresa musí být zadáno jméno města a kód země. Chcete-li tuto část "
 "vynechat, nechte obě hodnoty prázdné."
 
-#: guiqt4/main.py:649 guiqt4/main.py:685 guiqt4/main.py:718
+#: guiqt4/main.py:652 guiqt4/main.py:688 guiqt4/main.py:721
 msgid "No values to update."
 msgstr "Žádné hodnoty pro aktualizaci."
 
-#: guiqt4/main.py:712 guiqt4/main.py:756
+#: guiqt4/main.py:715 guiqt4/main.py:759 guiqt4/main.py:793
 msgid "domain name"
 msgstr "Název domény"
 
-#: guiqt4/main.py:776
+#: guiqt4/main.py:779
 msgid "contact"
 msgstr "Kontakt"
 
-#: guiqt4/main.py:779
+#: guiqt4/main.py:782
 msgid "nsset"
 msgstr ""
 
-#: guiqt4/main.py:782
+#: guiqt4/main.py:785
 msgid "domain"
 msgstr "doména"
 
-#: guiqt4/main.py:865
+#: guiqt4/main.py:884
 msgid "Credits"
 msgstr "Kredity"
 
-#: guiqt4/main.py:871
+#: guiqt4/main.py:890
 msgid "Close"
 msgstr "Zavřít"
 
-#~ msgid ""
-#~ "For runnig this application you need install PyQt and Qt modules. For "
-#~ "more see help."
-#~ msgstr ""
-#~ "Pro spuštění této aplikace musíte mít nainstalovány PyQt a Qt moduly.Více "
-#~ "informací naleznete v helpu."
-
-#~ msgid "Help command can have only one parameter"
-#~ msgstr "Příkaz help má jen jeden parametr"
-
-#~ msgid "Type 'help ?' to get more information about help usage."
-#~ msgstr "Zadejte 'help ?' pro zobrazení detailů príkazu."

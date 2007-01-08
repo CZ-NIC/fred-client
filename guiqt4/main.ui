@@ -34,28 +34,6 @@
     <bool>false</bool>
    </property>
   </widget>
-  <widget class="QPushButton" name="buttonOk" >
-   <property name="geometry" >
-    <rect>
-     <x>550</x>
-     <y>610</y>
-     <width>130</width>
-     <height>30</height>
-    </rect>
-   </property>
-   <property name="text" >
-    <string>E&amp;xit client</string>
-   </property>
-   <property name="shortcut" >
-    <string>Alt+X</string>
-   </property>
-   <property name="autoDefault" >
-    <bool>false</bool>
-   </property>
-   <property name="default" >
-    <bool>false</bool>
-   </property>
-  </widget>
   <widget class="QTabWidget" name="tabWidget" >
    <property name="geometry" >
     <rect>
@@ -347,6 +325,25 @@ This part use to connect and disconnect to the EPP server. You need defined path
      </property>
      <property name="wordWrap" >
       <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="pixmapLabel2" >
+     <property name="geometry" >
+      <rect>
+       <x>20</x>
+       <y>10</y>
+       <width>120</width>
+       <height>120</height>
+      </rect>
+     </property>
+     <property name="pixmap" >
+      <pixmap>logo_connect.png</pixmap>
+     </property>
+     <property name="scaledContents" >
+      <bool>true</bool>
+     </property>
+     <property name="wordWrap" >
+      <bool>false</bool>
      </property>
     </widget>
     <widget class="QTabWidget" name="tabWidget6" >
@@ -1311,7 +1308,7 @@ The EPP "hello" request a "greeting" response message from an EPP server at any 
       <attribute name="title" >
        <string>credit info</string>
       </attribute>
-      <widget class="QTabWidget" name="creditinfo_fred_response" >
+      <widget class="QTabWidget" name="credit_info_response" >
        <property name="geometry" >
         <rect>
          <x>12</x>
@@ -1363,7 +1360,7 @@ The EPP "credit info" command returns credit information.</string>
           <bool>true</bool>
          </property>
         </widget>
-        <widget class="QPushButton" name="send_creditinfo" >
+        <widget class="QPushButton" name="send_credit_info" >
          <property name="geometry" >
           <rect>
            <x>220</x>
@@ -1376,7 +1373,7 @@ The EPP "credit info" command returns credit information.</string>
           <string>Send command</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="creditinfo_cltrid" >
+        <widget class="QLineEdit" name="credit_info_cltrid" >
          <property name="geometry" >
           <rect>
            <x>220</x>
@@ -1442,23 +1439,26 @@ The EPP "credit info" command returns credit information.</string>
           <bool>false</bool>
          </property>
         </widget>
-        <widget class="QLabel" name="creditinfo_fred_code" >
+        <widget class="QPushButton" name="btn_source_credit_info" >
          <property name="geometry" >
           <rect>
-           <x>130</x>
-           <y>10</y>
-           <width>450</width>
-           <height>20</height>
+           <x>10</x>
+           <y>270</y>
+           <width>50</width>
+           <height>50</height>
           </rect>
          </property>
-         <property name="text" >
-          <string>code</string>
+         <property name="toolTip" >
+          <string/>
          </property>
-         <property name="wordWrap" >
-          <bool>false</bool>
+         <property name="text" >
+          <string/>
+         </property>
+         <property name="icon" >
+          <iconset>icon_source.png</iconset>
          </property>
         </widget>
-        <widget class="QTableWidget" name="creditinfo_fred_table" >
+        <widget class="QTableWidget" name="credit_info_table" >
          <property name="geometry" >
           <rect>
            <x>129</x>
@@ -1478,26 +1478,7 @@ The EPP "credit info" command returns credit information.</string>
           </property>
          </column>
         </widget>
-        <widget class="QPushButton" name="btn_source_creditinfo" >
-         <property name="geometry" >
-          <rect>
-           <x>10</x>
-           <y>270</y>
-           <width>50</width>
-           <height>50</height>
-          </rect>
-         </property>
-         <property name="toolTip" >
-          <string/>
-         </property>
-         <property name="text" >
-          <string/>
-         </property>
-         <property name="icon" >
-          <iconset>icon_source.png</iconset>
-         </property>
-        </widget>
-        <widget class="QTextEdit" name="creditinfo_fred_msg" >
+        <widget class="QTextEdit" name="credit_info_msg" >
          <property name="geometry" >
           <rect>
            <x>130</x>
@@ -1507,28 +1488,25 @@ The EPP "credit info" command returns credit information.</string>
           </rect>
          </property>
         </widget>
+        <widget class="QLabel" name="credit_info_code" >
+         <property name="geometry" >
+          <rect>
+           <x>130</x>
+           <y>10</y>
+           <width>450</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text" >
+          <string>code</string>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
        </widget>
       </widget>
      </widget>
-    </widget>
-    <widget class="QLabel" name="pixmapLabel2" >
-     <property name="geometry" >
-      <rect>
-       <x>20</x>
-       <y>10</y>
-       <width>120</width>
-       <height>120</height>
-      </rect>
-     </property>
-     <property name="pixmap" >
-      <pixmap>logo_connect.png</pixmap>
-     </property>
-     <property name="scaledContents" >
-      <bool>true</bool>
-     </property>
-     <property name="wordWrap" >
-      <bool>false</bool>
-     </property>
     </widget>
    </widget>
    <widget class="QWidget" name="Widget9" >
@@ -3136,14 +3114,17 @@ The EPP 'sendauthinfo_contact' command transmit request for send authorisation i
           <bool>false</bool>
          </property>
         </widget>
-        <widget class="QLineEdit" name="sendauthinfo_contact_name" >
+        <widget class="QPushButton" name="send_sendauthinfo_contact" >
          <property name="geometry" >
           <rect>
            <x>220</x>
-           <y>210</y>
-           <width>360</width>
-           <height>22</height>
+           <y>290</y>
+           <width>170</width>
+           <height>40</height>
           </rect>
+         </property>
+         <property name="text" >
+          <string>Send command</string>
          </property>
         </widget>
         <widget class="QLineEdit" name="sendauthinfo_contact_cltrid" >
@@ -3156,17 +3137,14 @@ The EPP 'sendauthinfo_contact' command transmit request for send authorisation i
           </rect>
          </property>
         </widget>
-        <widget class="QPushButton" name="send_sendauthinfo_contact" >
+        <widget class="QLineEdit" name="sendauthinfo_contact_id" >
          <property name="geometry" >
           <rect>
            <x>220</x>
-           <y>290</y>
-           <width>170</width>
-           <height>40</height>
+           <y>210</y>
+           <width>360</width>
+           <height>22</height>
           </rect>
-         </property>
-         <property name="text" >
-          <string>Send command</string>
          </property>
         </widget>
        </widget>
@@ -3339,6 +3317,25 @@ Nsset is set of informations about domain name servers and their address and adm
      </property>
      <property name="wordWrap" >
       <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="pixmapLabel2_2_2" >
+     <property name="geometry" >
+      <rect>
+       <x>20</x>
+       <y>10</y>
+       <width>120</width>
+       <height>120</height>
+      </rect>
+     </property>
+     <property name="pixmap" >
+      <pixmap>logo_nsset.png</pixmap>
+     </property>
+     <property name="scaledContents" >
+      <bool>true</bool>
+     </property>
+     <property name="wordWrap" >
+      <bool>false</bool>
      </property>
     </widget>
     <widget class="QTabWidget" name="tabWidget6_2_2" >
@@ -4644,39 +4641,6 @@ The EPP "list" command is used to list all ID of an existing object owning by re
           <bool>false</bool>
          </property>
         </widget>
-        <widget class="QLineEdit" name="sendauthinfo_nsset_name" >
-         <property name="geometry" >
-          <rect>
-           <x>220</x>
-           <y>210</y>
-           <width>360</width>
-           <height>22</height>
-          </rect>
-         </property>
-        </widget>
-        <widget class="QLineEdit" name="sendauthinfo_nsset_cltrid" >
-         <property name="geometry" >
-          <rect>
-           <x>220</x>
-           <y>250</y>
-           <width>360</width>
-           <height>22</height>
-          </rect>
-         </property>
-        </widget>
-        <widget class="QPushButton" name="send_sendauthinfo_nsset" >
-         <property name="geometry" >
-          <rect>
-           <x>220</x>
-           <y>290</y>
-           <width>170</width>
-           <height>40</height>
-          </rect>
-         </property>
-         <property name="text" >
-          <string>Send command</string>
-         </property>
-        </widget>
         <widget class="QLabel" name="textLabel51_2_2" >
          <property name="geometry" >
           <rect>
@@ -4695,6 +4659,39 @@ The EPP 'sendauthinfo_nsset' command transmit request for send authorisation inf
          </property>
          <property name="wordWrap" >
           <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="sendauthinfo_nsset_cltrid" >
+         <property name="geometry" >
+          <rect>
+           <x>220</x>
+           <y>250</y>
+           <width>360</width>
+           <height>22</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="sendauthinfo_nsset_id" >
+         <property name="geometry" >
+          <rect>
+           <x>220</x>
+           <y>210</y>
+           <width>360</width>
+           <height>22</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="send_sendauthinfo_nsset" >
+         <property name="geometry" >
+          <rect>
+           <x>220</x>
+           <y>290</y>
+           <width>170</width>
+           <height>40</height>
+          </rect>
+         </property>
+         <property name="text" >
+          <string>Send command</string>
          </property>
         </widget>
        </widget>
@@ -4821,25 +4818,260 @@ The EPP 'sendauthinfo_nsset' command transmit request for send authorisation inf
        </widget>
       </widget>
      </widget>
-    </widget>
-    <widget class="QLabel" name="pixmapLabel2_2_2" >
-     <property name="geometry" >
-      <rect>
-       <x>20</x>
-       <y>10</y>
-       <width>120</width>
-       <height>120</height>
-      </rect>
-     </property>
-     <property name="pixmap" >
-      <pixmap>logo_nsset.png</pixmap>
-     </property>
-     <property name="scaledContents" >
-      <bool>true</bool>
-     </property>
-     <property name="wordWrap" >
-      <bool>false</bool>
-     </property>
+     <widget class="QWidget" name="tab_4" >
+      <attribute name="title" >
+       <string>technical test</string>
+      </attribute>
+      <widget class="QTabWidget" name="technical_test_response" >
+       <property name="geometry" >
+        <rect>
+         <x>13</x>
+         <y>16</y>
+         <width>600</width>
+         <height>370</height>
+        </rect>
+       </property>
+       <property name="currentIndex" >
+        <number>0</number>
+       </property>
+       <widget class="QWidget" name="tab_5" >
+        <attribute name="title" >
+         <string>command</string>
+        </attribute>
+        <widget class="QLabel" name="textLabel60_2" >
+         <property name="geometry" >
+          <rect>
+           <x>20</x>
+           <y>250</y>
+           <width>190</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text" >
+          <string>clTRID</string>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="technical_test_name" >
+         <property name="geometry" >
+          <rect>
+           <x>220</x>
+           <y>210</y>
+           <width>360</width>
+           <height>22</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="technical_test_cltrid" >
+         <property name="geometry" >
+          <rect>
+           <x>220</x>
+           <y>250</y>
+           <width>360</width>
+           <height>22</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QLabel" name="textLabel59_2" >
+         <property name="geometry" >
+          <rect>
+           <x>20</x>
+           <y>210</y>
+           <width>190</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text" >
+          <string>&lt;b>domain name&lt;/b></string>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
+        <widget class="QLabel" name="textLabel58_2" >
+         <property name="geometry" >
+          <rect>
+           <x>20</x>
+           <y>170</y>
+           <width>190</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text" >
+          <string>&lt;b>nsset id&lt;/b></string>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="technical_test_id" >
+         <property name="geometry" >
+          <rect>
+           <x>220</x>
+           <y>170</y>
+           <width>360</width>
+           <height>22</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QLabel" name="textLabel57_2" >
+         <property name="geometry" >
+          <rect>
+           <x>10</x>
+           <y>10</y>
+           <width>570</width>
+           <height>150</height>
+          </rect>
+         </property>
+         <property name="text" >
+          <string>&lt;h2>technical test&lt;/h2>The EPP 'technical_test' command transmit request for technical test for particular NSSET and domain. The result of the test will be saved into the message queue from where the registrant can fetch it by poll command.</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="send_technical_test" >
+         <property name="geometry" >
+          <rect>
+           <x>220</x>
+           <y>290</y>
+           <width>170</width>
+           <height>40</height>
+          </rect>
+         </property>
+         <property name="text" >
+          <string>Send command</string>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QWidget" name="TabPage_3" >
+        <attribute name="title" >
+         <string>response</string>
+        </attribute>
+        <widget class="QLabel" name="textLabel62_2" >
+         <property name="geometry" >
+          <rect>
+           <x>7</x>
+           <y>42</y>
+           <width>110</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text" >
+          <string>message</string>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
+        <widget class="QLabel" name="textLabel63_2" >
+         <property name="geometry" >
+          <rect>
+           <x>10</x>
+           <y>10</y>
+           <width>125</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text" >
+          <string>&lt;b>transfer_contact&lt;/b></string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QLabel" name="textLabel61_2" >
+         <property name="geometry" >
+          <rect>
+           <x>7</x>
+           <y>132</y>
+           <width>110</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text" >
+          <string>data</string>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
+        <widget class="QLabel" name="technical_test_code" >
+         <property name="geometry" >
+          <rect>
+           <x>140</x>
+           <y>10</y>
+           <width>440</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text" >
+          <string>code</string>
+         </property>
+         <property name="wordWrap" >
+          <bool>false</bool>
+         </property>
+        </widget>
+        <widget class="QTextEdit" name="technical_test_msg" >
+         <property name="geometry" >
+          <rect>
+           <x>130</x>
+           <y>40</y>
+           <width>450</width>
+           <height>70</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QTableWidget" name="technical_test_table" >
+         <property name="geometry" >
+          <rect>
+           <x>130</x>
+           <y>120</y>
+           <width>450</width>
+           <height>210</height>
+          </rect>
+         </property>
+         <column>
+          <property name="text" >
+           <string>name</string>
+          </property>
+         </column>
+         <column>
+          <property name="text" >
+           <string>value</string>
+          </property>
+         </column>
+        </widget>
+        <widget class="QPushButton" name="btn_source_technical_test" >
+         <property name="geometry" >
+          <rect>
+           <x>10</x>
+           <y>270</y>
+           <width>50</width>
+           <height>50</height>
+          </rect>
+         </property>
+         <property name="toolTip" >
+          <string/>
+         </property>
+         <property name="text" >
+          <string/>
+         </property>
+         <property name="icon" >
+          <iconset>icon_source.png</iconset>
+         </property>
+        </widget>
+       </widget>
+      </widget>
+     </widget>
     </widget>
    </widget>
    <widget class="QWidget" name="TabPage" >
@@ -6995,8 +7227,248 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
     </widget>
    </widget>
   </widget>
+  <widget class="QPushButton" name="buttonOk" >
+   <property name="geometry" >
+    <rect>
+     <x>550</x>
+     <y>610</y>
+     <width>130</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>E&amp;xit client</string>
+   </property>
+   <property name="shortcut" >
+    <string>Alt+X</string>
+   </property>
+   <property name="autoDefault" >
+    <bool>false</bool>
+   </property>
+   <property name="default" >
+    <bool>false</bool>
+   </property>
+  </widget>
  </widget>
  <layoutdefault spacing="6" margin="11" />
+ <tabstops>
+  <tabstop>buttonOk</tabstop>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>connect_host</tabstop>
+  <tabstop>connect_port</tabstop>
+  <tabstop>connect_certificate</tabstop>
+  <tabstop>connect_private_key</tabstop>
+  <tabstop>connect_timeout</tabstop>
+  <tabstop>system_messages</tabstop>
+  <tabstop>btn_credits</tabstop>
+  <tabstop>tabWidget6</tabstop>
+  <tabstop>login_response</tabstop>
+  <tabstop>login_username</tabstop>
+  <tabstop>login_password</tabstop>
+  <tabstop>login_new_password</tabstop>
+  <tabstop>login_cltrid</tabstop>
+  <tabstop>send_login</tabstop>
+  <tabstop>login_msg</tabstop>
+  <tabstop>login_table</tabstop>
+  <tabstop>btn_source_login</tabstop>
+  <tabstop>logout_response</tabstop>
+  <tabstop>logout_cltrid</tabstop>
+  <tabstop>send_logout</tabstop>
+  <tabstop>logout_msg</tabstop>
+  <tabstop>logout_data</tabstop>
+  <tabstop>btn_source_logout</tabstop>
+  <tabstop>poll_response</tabstop>
+  <tabstop>poll_op_req</tabstop>
+  <tabstop>poll_op_ack</tabstop>
+  <tabstop>poll_msg_id</tabstop>
+  <tabstop>poll_cltrid</tabstop>
+  <tabstop>send_poll</tabstop>
+  <tabstop>poll_msg</tabstop>
+  <tabstop>poll_table</tabstop>
+  <tabstop>btn_source_poll</tabstop>
+  <tabstop>hello_response</tabstop>
+  <tabstop>send_hello</tabstop>
+  <tabstop>credit_info_response</tabstop>
+  <tabstop>credit_info_cltrid</tabstop>
+  <tabstop>send_credit_info</tabstop>
+  <tabstop>credit_info_msg</tabstop>
+  <tabstop>credit_info_table</tabstop>
+  <tabstop>btn_source_credit_info</tabstop>
+  <tabstop>tabWidget6_2</tabstop>
+  <tabstop>check_contact_response</tabstop>
+  <tabstop>check_contact_name</tabstop>
+  <tabstop>check_contact_cltrid</tabstop>
+  <tabstop>send_check_contact</tabstop>
+  <tabstop>check_contact_msg</tabstop>
+  <tabstop>check_contact_table</tabstop>
+  <tabstop>btn_source_check_contact</tabstop>
+  <tabstop>info_contact_response</tabstop>
+  <tabstop>info_contact_name</tabstop>
+  <tabstop>info_contact_cltrid</tabstop>
+  <tabstop>send_info_contact</tabstop>
+  <tabstop>info_contact_msg</tabstop>
+  <tabstop>info_contact_table</tabstop>
+  <tabstop>btn_source_info_contact</tabstop>
+  <tabstop>create_contact_response</tabstop>
+  <tabstop>send_create_contact</tabstop>
+  <tabstop>create_contact_msg</tabstop>
+  <tabstop>create_contact_table</tabstop>
+  <tabstop>btn_source_create_contact</tabstop>
+  <tabstop>update_contact_response</tabstop>
+  <tabstop>send_update_contact</tabstop>
+  <tabstop>update_contact_msg</tabstop>
+  <tabstop>update_contact_table</tabstop>
+  <tabstop>btn_source_update_contact</tabstop>
+  <tabstop>delete_contact_response</tabstop>
+  <tabstop>delete_contact_name</tabstop>
+  <tabstop>delete_contact_cltrid</tabstop>
+  <tabstop>send_delete_contact</tabstop>
+  <tabstop>delete_contact_msg</tabstop>
+  <tabstop>delete_contact_table</tabstop>
+  <tabstop>btn_source_delete_contact</tabstop>
+  <tabstop>transfer_contact_response</tabstop>
+  <tabstop>transfer_contact_name</tabstop>
+  <tabstop>transfer_contact_password</tabstop>
+  <tabstop>transfer_contact_cltrid</tabstop>
+  <tabstop>send_transfer_contact</tabstop>
+  <tabstop>transfer_contact_msg</tabstop>
+  <tabstop>transfer_contact_table</tabstop>
+  <tabstop>btn_source_transfer_contact</tabstop>
+  <tabstop>list_contact_response</tabstop>
+  <tabstop>list_contact_cltrid</tabstop>
+  <tabstop>send_list_contact</tabstop>
+  <tabstop>list_contact_msg</tabstop>
+  <tabstop>list_contact_table</tabstop>
+  <tabstop>btn_source_list_contact</tabstop>
+  <tabstop>sendauthinfo_contact_response</tabstop>
+  <tabstop>sendauthinfo_contact_id</tabstop>
+  <tabstop>sendauthinfo_contact_cltrid</tabstop>
+  <tabstop>send_sendauthinfo_contact</tabstop>
+  <tabstop>sendauthinfo_contact_msg</tabstop>
+  <tabstop>sendauthinfo_contact_table</tabstop>
+  <tabstop>btn_source_sendauthinfo_contact</tabstop>
+  <tabstop>tabWidget6_2_2</tabstop>
+  <tabstop>check_nsset_response</tabstop>
+  <tabstop>check_nsset_name</tabstop>
+  <tabstop>check_nsset_cltrid</tabstop>
+  <tabstop>send_check_nsset</tabstop>
+  <tabstop>check_nsset_msg</tabstop>
+  <tabstop>check_nsset_table</tabstop>
+  <tabstop>btn_source_check_nsset</tabstop>
+  <tabstop>info_nsset_response</tabstop>
+  <tabstop>info_nsset_name</tabstop>
+  <tabstop>info_nsset_cltrid</tabstop>
+  <tabstop>send_info_nsset</tabstop>
+  <tabstop>info_nsset_msg</tabstop>
+  <tabstop>info_nsset_table</tabstop>
+  <tabstop>btn_source_info_nsset</tabstop>
+  <tabstop>create_nsset_response</tabstop>
+  <tabstop>send_create_nsset</tabstop>
+  <tabstop>create_nsset_msg</tabstop>
+  <tabstop>create_nsset_table</tabstop>
+  <tabstop>btn_source_create_nsset</tabstop>
+  <tabstop>update_nsset_response</tabstop>
+  <tabstop>send_update_nsset</tabstop>
+  <tabstop>update_nsset_msg</tabstop>
+  <tabstop>update_nsset_table</tabstop>
+  <tabstop>btn_source_update_nsset</tabstop>
+  <tabstop>delete_nsset_response</tabstop>
+  <tabstop>delete_nsset_name</tabstop>
+  <tabstop>delete_nsset_cltrid</tabstop>
+  <tabstop>send_delete_nsset</tabstop>
+  <tabstop>delete_nsset_msg</tabstop>
+  <tabstop>delete_nsset_table</tabstop>
+  <tabstop>btn_source_delete_nsset</tabstop>
+  <tabstop>list_nsset_response</tabstop>
+  <tabstop>list_nsset_cltrid</tabstop>
+  <tabstop>send_list_nsset</tabstop>
+  <tabstop>list_nsset_msg</tabstop>
+  <tabstop>list_nsset_table</tabstop>
+  <tabstop>btn_source_list_nsset</tabstop>
+  <tabstop>sendauthinfo_nsset_response</tabstop>
+  <tabstop>sendauthinfo_nsset_id</tabstop>
+  <tabstop>sendauthinfo_nsset_cltrid</tabstop>
+  <tabstop>send_sendauthinfo_nsset</tabstop>
+  <tabstop>sendauthinfo_nsset_msg</tabstop>
+  <tabstop>sendauthinfo_nsset_table</tabstop>
+  <tabstop>btn_source_sendauthinfo_nsset</tabstop>
+  <tabstop>technical_test_response</tabstop>
+  <tabstop>technical_test_id</tabstop>
+  <tabstop>technical_test_name</tabstop>
+  <tabstop>technical_test_cltrid</tabstop>
+  <tabstop>send_technical_test</tabstop>
+  <tabstop>technical_test_msg</tabstop>
+  <tabstop>technical_test_table</tabstop>
+  <tabstop>btn_source_technical_test</tabstop>
+  <tabstop>tabWidget6_2_2_2</tabstop>
+  <tabstop>check_domain_response</tabstop>
+  <tabstop>check_domain_name</tabstop>
+  <tabstop>check_domain_cltrid</tabstop>
+  <tabstop>send_check_domain</tabstop>
+  <tabstop>check_domain_msg</tabstop>
+  <tabstop>check_domain_table</tabstop>
+  <tabstop>btn_source_check_domain</tabstop>
+  <tabstop>info_domain_response</tabstop>
+  <tabstop>info_domain_name</tabstop>
+  <tabstop>info_domain_cltrid</tabstop>
+  <tabstop>send_info_domain</tabstop>
+  <tabstop>info_domain_msg</tabstop>
+  <tabstop>info_domain_table</tabstop>
+  <tabstop>btn_source_info_domain</tabstop>
+  <tabstop>create_domain_response</tabstop>
+  <tabstop>send_create_domain</tabstop>
+  <tabstop>create_domain_msg</tabstop>
+  <tabstop>create_domain_table</tabstop>
+  <tabstop>btn_source_create_domain</tabstop>
+  <tabstop>update_domain_response</tabstop>
+  <tabstop>send_update_domain</tabstop>
+  <tabstop>update_domain_msg</tabstop>
+  <tabstop>update_domain_table</tabstop>
+  <tabstop>btn_source_update_domain</tabstop>
+  <tabstop>delete_domain_response</tabstop>
+  <tabstop>delete_domain_name</tabstop>
+  <tabstop>delete_domain_cltrid</tabstop>
+  <tabstop>send_delete_domain</tabstop>
+  <tabstop>delete_domain_msg</tabstop>
+  <tabstop>delete_domain_table</tabstop>
+  <tabstop>btn_source_delete_domain</tabstop>
+  <tabstop>transfer_domain_response</tabstop>
+  <tabstop>transfer_domain_name</tabstop>
+  <tabstop>transfer_domain_password</tabstop>
+  <tabstop>transfer_domain_cltrid</tabstop>
+  <tabstop>send_transfer_domain</tabstop>
+  <tabstop>renew_domain_response</tabstop>
+  <tabstop>renew_domain_name</tabstop>
+  <tabstop>renew_domain_cur_exp_date</tabstop>
+  <tabstop>renew_domain_period_num</tabstop>
+  <tabstop>renew_domain_period_unit</tabstop>
+  <tabstop>renew_domain_use_exdate</tabstop>
+  <tabstop>renew_domain_val_ex_date</tabstop>
+  <tabstop>renew_domain_cltrid</tabstop>
+  <tabstop>send_renew_domain</tabstop>
+  <tabstop>renew_domain_msg</tabstop>
+  <tabstop>renew_domain_table</tabstop>
+  <tabstop>btn_source_renew_domain</tabstop>
+  <tabstop>list_domain_response</tabstop>
+  <tabstop>list_domain_cltrid</tabstop>
+  <tabstop>send_list_domain</tabstop>
+  <tabstop>list_domain_msg</tabstop>
+  <tabstop>list_domain_table</tabstop>
+  <tabstop>btn_source_list_domain</tabstop>
+  <tabstop>sendauthinfo_domain_response</tabstop>
+  <tabstop>sendauthinfo_domain_name</tabstop>
+  <tabstop>sendauthinfo_domain_cltrid</tabstop>
+  <tabstop>send_sendauthinfo_domain</tabstop>
+  <tabstop>sendauthinfo_domain_msg</tabstop>
+  <tabstop>sendauthinfo_domain_table</tabstop>
+  <tabstop>btn_source_sendauthinfo_domain</tabstop>
+  <tabstop>btn_source_transfer_domain</tabstop>
+  <tabstop>hello_table</tabstop>
+  <tabstop>transfer_domain_table</tabstop>
+  <tabstop>hello_msg</tabstop>
+  <tabstop>transfer_domain_msg</tabstop>
+  <tabstop>btn_source_hello</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
@@ -7022,8 +7494,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>delete_domain()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>263</x>
-     <y>463</y>
+     <x>267</x>
+     <y>507</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7038,8 +7510,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>delete_nsset()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>263</x>
-     <y>463</y>
+     <x>267</x>
+     <y>507</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7086,8 +7558,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>check_domain()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>263</x>
-     <y>463</y>
+     <x>269</x>
+     <y>529</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7102,8 +7574,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>check_nsset()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>263</x>
-     <y>463</y>
+     <x>269</x>
+     <y>529</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7134,8 +7606,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>info_domain()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>263</x>
-     <y>463</y>
+     <x>267</x>
+     <y>507</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7150,8 +7622,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>info_nsset()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>263</x>
-     <y>463</y>
+     <x>267</x>
+     <y>507</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7182,8 +7654,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>list_domain()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>263</x>
-     <y>463</y>
+     <x>267</x>
+     <y>507</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7198,8 +7670,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>list_nsset()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>263</x>
-     <y>463</y>
+     <x>267</x>
+     <y>507</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7278,8 +7750,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>transfer_domain()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>263</x>
-     <y>463</y>
+     <x>267</x>
+     <y>507</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7310,8 +7782,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>create_domain()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>263</x>
-     <y>463</y>
+     <x>267</x>
+     <y>507</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7326,8 +7798,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>create_nsset()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>223</x>
-     <y>463</y>
+     <x>227</x>
+     <y>507</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7358,8 +7830,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>update_domain()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>263</x>
-     <y>463</y>
+     <x>267</x>
+     <y>507</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7374,8 +7846,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>update_nsset()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>223</x>
-     <y>463</y>
+     <x>227</x>
+     <y>507</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7390,8 +7862,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>renew_domain()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>263</x>
-     <y>463</y>
+     <x>267</x>
+     <y>507</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7406,12 +7878,12 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>263</x>
-     <y>393</y>
+     <x>267</x>
+     <y>434</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>293</x>
-     <y>393</y>
+     <x>297</x>
+     <y>436</y>
     </hint>
    </hints>
   </connection>
@@ -7598,8 +8070,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>source_check_nsset()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>53</x>
-     <y>443</y>
+     <x>59</x>
+     <y>509</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7614,8 +8086,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>source_info_nsset()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>53</x>
-     <y>443</y>
+     <x>57</x>
+     <y>487</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7630,8 +8102,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>source_create_nsset()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>53</x>
-     <y>443</y>
+     <x>57</x>
+     <y>487</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7646,8 +8118,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>source_update_nsset()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>53</x>
-     <y>443</y>
+     <x>57</x>
+     <y>487</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7662,8 +8134,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>source_delete_nsset()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>53</x>
-     <y>443</y>
+     <x>57</x>
+     <y>487</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7678,8 +8150,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>source_list_nsset()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>53</x>
-     <y>453</y>
+     <x>57</x>
+     <y>497</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7694,8 +8166,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>source_check_domain()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>53</x>
-     <y>443</y>
+     <x>59</x>
+     <y>509</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7710,8 +8182,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>source_info_domain()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>53</x>
-     <y>443</y>
+     <x>57</x>
+     <y>487</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7726,8 +8198,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>source_create_domain()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>53</x>
-     <y>443</y>
+     <x>57</x>
+     <y>487</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7742,8 +8214,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>source_update_domain()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>53</x>
-     <y>443</y>
+     <x>57</x>
+     <y>487</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7758,8 +8230,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>source_delete_domain()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>53</x>
-     <y>443</y>
+     <x>57</x>
+     <y>487</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7774,8 +8246,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>source_transfer_domain()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>53</x>
-     <y>443</y>
+     <x>57</x>
+     <y>487</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7790,8 +8262,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>source_renew_domain()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>53</x>
-     <y>443</y>
+     <x>57</x>
+     <y>487</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7806,8 +8278,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>source_list_domain()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>53</x>
-     <y>443</y>
+     <x>57</x>
+     <y>487</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7870,8 +8342,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>sendauthinfo_nsset()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>263</x>
-     <y>463</y>
+     <x>269</x>
+     <y>529</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7886,8 +8358,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>sendauthinfo_domain()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>263</x>
-     <y>463</y>
+     <x>267</x>
+     <y>507</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7918,8 +8390,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>source_sendauthinfo_nsset()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>53</x>
-     <y>443</y>
+     <x>59</x>
+     <y>509</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7934,8 +8406,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>source_sendauthinfo_domain()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>53</x>
-     <y>443</y>
+     <x>57</x>
+     <y>487</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -7944,7 +8416,7 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    </hints>
   </connection>
   <connection>
-   <sender>send_creditinfo</sender>
+   <sender>send_credit_info</sender>
    <signal>clicked()</signal>
    <receiver>FredWindow</receiver>
    <slot>credit_info()</slot>
@@ -7960,10 +8432,10 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    </hints>
   </connection>
   <connection>
-   <sender>btn_source_creditinfo</sender>
+   <sender>btn_source_credit_info</sender>
    <signal>clicked()</signal>
    <receiver>FredWindow</receiver>
-   <slot>source_creditinfo()</slot>
+   <slot>source_credit_info()</slot>
    <hints>
     <hint type="sourcelabel" >
      <x>94</x>
@@ -7988,6 +8460,38 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
     <hint type="destinationlabel" >
      <x>237</x>
      <y>639</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>send_technical_test</sender>
+   <signal>clicked()</signal>
+   <receiver>FredWindow</receiver>
+   <slot>technical_test()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>324</x>
+     <y>536</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>255</x>
+     <y>633</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_source_technical_test</sender>
+   <signal>clicked()</signal>
+   <receiver>FredWindow</receiver>
+   <slot>source_technical_test()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>85</x>
+     <y>519</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>14</x>
+     <y>640</y>
     </hint>
    </hints>
   </connection>

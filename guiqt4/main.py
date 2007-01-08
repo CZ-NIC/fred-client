@@ -69,7 +69,7 @@ from sources import FredWindow as wndSources
 
 # prefix of translations
 translation_prefix = 'clientqt_'
-SPLIT_NAME = 1
+NO_SPLIT_NAME, SPLIT_NAME = (0,1)
 
 class RunEPPCommunication(QtCore.QThread):
     'Run Epp communication in separate thread'
@@ -281,11 +281,14 @@ class FredMainWindow(QtGui.QDialog):
             if type(reason) is str: reason = reason.decode(encoding)
             msg.append(reason)
         if len(notes):
-            msg.append('\n'.join(notes))
+            if type(notes) not in (list, tuple): notes = (notes,)
+            msg.append(ttytag2html('\n'.join(notes)))
         if len(errors):
-            msg.append('<b style="color:red">%s</b>'%'\n'.join(errors))
+            if type(errors) not in (list, tuple): errors = (errors,)
+            msg.append('<b style="color:red">%s</b>'%ttytag2html('\n'.join(errors)))
         if len(notes_afrer_errors):
-            msg.append('\n'.join(notes_afrer_errors))
+            if type(notes_afrer_errors) not in (list, tuple): notes_afrer_errors = (notes_afrer_errors,)
+            msg.append(ttytag2html('\n'.join(notes_afrer_errors)))
         getattr(self.ui,'%s_code'%command_name).setText(QtCore.QString(code))
         getattr(self.ui,'%s_msg'%command_name).setHtml(u'<br>\n'.join(map(get_unicode,msg)))
         # Prepare data headers and resolve widget type:
@@ -293,7 +296,7 @@ class FredMainWindow(QtGui.QDialog):
             matches = re.match('\w+_(.+)',command_name)
             label  = matches and matches.group(1) or ''
             table = (1,(label,),(380,),'list','count')
-        elif command_name == 'creditinfo_fred':
+        elif command_name == 'credit_info':
             table = (2,(_TU('zone'),_TU('credit')),(140,260),None,None)
         elif getattr(self.ui, '%s_table'%command_name, None):
             table = (2,(_TU('name'),_TU('value')),(140,260),None,None)
@@ -423,15 +426,15 @@ class FredMainWindow(QtGui.QDialog):
         else:
             self.display_error(self.missing_required)
 
-    def __share_command__(self, key, extends=0):
+    def __share_command__(self, key, extends=0, anchor = 'name'):
         'Shared for command handlers check, info, delete.'
         if not self.check_is_online(): return
         d = {}
-        append_key(d,'name', getattr(self.ui,'%s_name'%key))
+        append_key(d, anchor, getattr(self.ui,'%s_%s'%(key,anchor)))
         append_key(d,'cltrid', getattr(self.ui,'%s_cltrid'%key))
-        if self.__check_required__(d, (('name',_TU('name')),)):
+        if self.__check_required__(d, ((anchor, _TU('name')),)):
             if extends == SPLIT_NAME:
-                d['name'] = re.split('[,;\s]+',d['name']) # need for check commands
+                d[anchor] = re.split('[,;\s]+', d[anchor]) # need for check commands
             self.disable_send_buttons()
             self.thread_epp.set_command(key, d)
             self.thread_epp.start()
@@ -728,10 +731,10 @@ class FredMainWindow(QtGui.QDialog):
         self.__share_command__('delete_domain')
 
     def sendauthinfo_contact(self):
-        self.__share_command__('sendauthinfo_contact')
+        self.__share_command__('sendauthinfo_contact', NO_SPLIT_NAME, 'id')
 
     def sendauthinfo_nsset(self):
-        self.__share_command__('sendauthinfo_nsset')
+        self.__share_command__('sendauthinfo_nsset', NO_SPLIT_NAME, 'id')
 
     def sendauthinfo_domain(self):
         self.__share_command__('sendauthinfo_domain')
@@ -767,7 +770,7 @@ class FredMainWindow(QtGui.QDialog):
     def credit_info(self):
         if not self.check_is_online(): return
         d = {}
-        append_key(d,'cltrid', self.ui.creditinfo_cltrid)
+        append_key(d,'cltrid', self.ui.credit_info_cltrid)
         self.disable_send_buttons()
         self.thread_epp.set_command('credit_info', d)
         self.thread_epp.start()
@@ -780,6 +783,20 @@ class FredMainWindow(QtGui.QDialog):
 
     def list_domain(self):
         self.__share_list__('list_domain', _TU('domain'))
+
+    def technical_test(self):
+        if not self.check_is_online(): return
+        d = {}
+        append_key(d,'id', self.ui.technical_test_id)
+        append_key(d,'name', self.ui.technical_test_name)
+        append_key(d,'cltrid', self.ui.technical_test_cltrid)
+        if self.__check_required__(d, (('id',_TU('NSSET ID')),('name',_TU('domain name')))):
+            self.disable_send_buttons()
+            self.thread_epp.set_command('technical_test', d)
+            self.thread_epp.start()
+        else:
+            self.display_error(self.missing_required)
+
 
     #==============================
     # Sources
@@ -855,8 +872,10 @@ class FredMainWindow(QtGui.QDialog):
         self.__display_sources__('sendauthinfo_nsset')
     def source_sendauthinfo_domain(self):
         self.__display_sources__('sendauthinfo_domain')
-    def source_creditinfo(self):
-        self.__display_sources__('creditinfo_fred')
+    def source_credit_info(self):
+        self.__display_sources__('credit_info')
+    def source_technical_test(self):
+        self.__display_sources__('technical_test')
 
         
     def credits(self):

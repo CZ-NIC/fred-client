@@ -1,21 +1,32 @@
-global-include doc/*.*
+
 global-include extras/*.py
 global-exclude test_*.*
 global-exclude *.*~
-include INSTALL
+
+include doc/README_CS.docbook
+include doc/README_CS.html
+include doc/README_CS.txt
+include doc/client_example.php
+
+include INSTALL_CS.ASCII
+include INSTALL_CS.UTF8
 include install.sh
 include uninstall.py
 include ChangeLog
+include ChangeLog_cs
 include fred_client_sample.conf
 include fred/CREDITS
 include fred/LICENSE
+include fred_clientqt.pyw
 include guiqt4/*.py
 include guiqt4/*.png
 include guiqt4/*.qm
 include guiqt4/*.ts
 include guiqt4/*.ui
 include guiqt4/qt_client.project
+
 prune guiqt4/.svn
+
 graft fred/schemas
 graft fred/lang
 prune .svn

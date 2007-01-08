@@ -384,11 +384,11 @@ class ManagerTransfer(ManagerBase):
         #--- INTERNAL USE ----
         # POZOR!!! V ostré verzi musí být deaktivováno!!!
         # ALERT!!! MUST be disabled in release version!!!
-        if self._session[SORT_BY_COLUMNS] and not is_check:
-            # in mode SORT_BY_COLUMNS check if all names was used
-            missing = [k for k in dct_data.keys() if k not in used and column_verbose.get(k,0) >= self._session[VERBOSE]]
-            if len(missing):
-                body.append(colored_output.render('\n${BOLD}${RED}Here needs FIX code: %s${NORMAL}'%'(%s)'%', '.join(missing)))
+#        if self._session[SORT_BY_COLUMNS] and not is_check:
+#            # in mode SORT_BY_COLUMNS check if all names was used
+#            missing = [k for k in dct_data.keys() if k not in used and column_verbose.get(k,0) >= self._session[VERBOSE]]
+#            if len(missing):
+#                body.append(colored_output.render('\n${BOLD}${RED}Here needs FIX code: %s${NORMAL}'%'(%s)'%', '.join(missing)))
         #---------------------
 
     def __modify__reason_message__(self, code, key, dct):
@@ -406,7 +406,7 @@ class ManagerTransfer(ManagerBase):
                 dct['reason'] = u'%s %s.'%(self._epp_cmd.get_object_handle(), _T('transfer').decode(encoding))
             elif key == 'sendauthinfo':
                 dct['reason'] = u'%s %s.'%(self._epp_cmd.get_object_handle(), _T('request for send authorisation info transmited').decode(encoding))
-            elif key == 'test':
+            elif key == 'technical_test':
                 dct['reason'] = _T('The Request for technical test was successfully submitted.').decode(encoding)
         
     def get_answer(self, dct=None, sep='\n'):
@@ -431,7 +431,7 @@ class ManagerTransfer(ManagerBase):
             else:
                 if code >= 2000:
                     dct['errors'].insert(0,dct['reason'])
-                elif code not in (1000,1500) or key in ('update','delete','transfer','sendauthinfo','test'):
+                elif code not in (1000,1500) or key in ('update','delete','transfer','sendauthinfo','technical_test'):
                     # 1000 - success,  1500 - success logout
                     report(get_ltext(colored_output.render('${%s}%s${NORMAL}'%(code==1000 and 'GREEN' or 'NORMAL', dct['reason']))))
         else:

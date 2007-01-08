@@ -517,7 +517,7 @@ $fred_client_errors = array(); // errors occuring during communication
             schema_path = self.get_config_value('session','schema')
         return schema_path
     
-    def is_epp_valid(self, message):
+    def is_epp_valid(self, message, note=''):
         "Check XML EPP by xmllint. OUT: '' - correct; '...' any error occurs."
         if not self._session[VALIDATE]: return '' # validace je vypnutá
         if message=='':
@@ -535,7 +535,19 @@ $fred_client_errors = array(); // errors occuring during communication
             pipes[0].close()
         except IOError, msg:
             self.append_note(str(msg),('RED','BOLD'))
-        errors = pipes[2].read()
+        limit = 5 # maximal allowed steps for reading xmllint error result.
+        while limit > 0:
+            # wait for finishing validation process
+            time.sleep(0.2)
+            try:
+                errors = pipes[2].read()
+                break
+            except IOError, msg:
+                pass
+            limit -= 1
+        if not limit:
+            errors = _T('Reading xmllint errors result failed.')
+            if note: errors += self._sep + note
         map(lambda f: f.close(), pipes)
         if re.search(' validates$', errors):
             errors = '' # it seems be OK...

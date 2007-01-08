@@ -246,6 +246,7 @@ class Message:
         Level 1: epp.command 
         Level 2:     info, check, create, ....
         Level 3:        contact:create
+        Level 4:        fred:sendauthinfo, fred:creditinfo, fred:test
         """
         name = ''
         if self.dom:
@@ -263,6 +264,15 @@ class Message:
                     node = self.get_element_node(node)
                     if not node: return name
                     name = node.nodeName.lower()
+                    if name == 'fred:sendauthinfo':
+                        # Level 4.
+                        node = self.get_element_node(node)
+                        if not node: return name
+                        name = node.nodeName.lower()
+                    elif name == 'fred:creditinfo':
+                        name = 'credit_info'
+                    elif name == 'fred:test':
+                        name = 'technical_test'
         return name
 
     def get_check_names(self, type):
