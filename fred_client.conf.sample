@@ -1,7 +1,7 @@
 ;; Example of configuration file.
 ;; Modify line with schema=... and dir=... set real path of your files.
 ;; and save into /etc/fred_client.conf or ~/.fred_client.conf
-;;
+;; EXPLANATION: Double semicolon (;;) means comment. Single semicolon (;) means disabled value.
 
 [connect]
 dir=/home/username/certificates
@@ -12,7 +12,7 @@ ssl_key  = %(dir)s/private_key.pem
 username = MYUSERNAME
 password = MYPASSWORD
 
-;; Every XML namespace can have the version independet to others:
+;; Every XML namespace can have the version independent to others:
 schema_version_contact = 1.1
 schema_version_nsset   = 1.1
 schema_version_domain  = 1.1
@@ -23,8 +23,8 @@ schema_version_epp     = 1.0
 ;; socket timeout in sec. In MS Windows MUST be set to 0.0 (timeout bug)
 timeout = 10.0
 
-;; Force socket type. Valid values are: IPv4 and IPv6.
-;; othervice used type from offer of the server
+;; Force socket type. Valid value is: IPv4 or IPv6.
+;; Default is to use server's socket type.
 ;socket = IPv6
 
 ;; turn off automatic login process after start up
@@ -48,11 +48,8 @@ colors = yes
 ;; set verbose level 1,2,3
 verbose = 2
 
-;; if lang is not set, ti used value from os.environ.LANG
+;; if lang is not set, it used value from os.environ.LANG
 ;lang = en
 
 ;; substitution of NULL value
 ;null_value = None
-
-;; disable automatic login after start client (default is ON)
-;auto_login = off
