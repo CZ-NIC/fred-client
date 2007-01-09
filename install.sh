@@ -17,7 +17,7 @@ MINIMAL_PYTHON_VERSION=2.4
 
 if [ `python -V 2>&1 | sed 's/Python \([0-9]\+\).\([0-9]\+\).*/\1\2/'` -lt `echo $MINIMAL_PYTHON_VERSION | sed 's/\([0-9]\+\).\([0-9]\+\)/\1\2/'` ]
     then
-        echo "Invalid python version. You need minimal $MINIMAL_PYTHON_VERSION but you have" `python -V 2>&1 | sed 's/Python \(.+\).*/\1/'`
+        echo "Invalid python version. You need minimal $MINIMAL_PYTHON_VERSION but you have" `python -V 2>&1`
         exit -1
 fi
 echo "Python version: OK"

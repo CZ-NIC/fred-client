@@ -12,7 +12,8 @@ def load_config_from_file(filename, verbose):
     'Load config file from specifiend filename only.'
     config = ConfigParser.SafeConfigParser()
     error = ''
-    names = missing = []
+    names = []
+    missing = []
     filename = os.path.expanduser(filename)
     if os.path.isfile(filename):
         try:
