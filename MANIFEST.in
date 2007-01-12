@@ -12,8 +12,8 @@ include INSTALL_CS.ASCII
 include INSTALL_CS.UTF8
 include install.sh
 include uninstall.py
-include ChangeLog
-include ChangeLog_cs
+include ChangeLog_cs.utf8
+include ChangeLog_cs.ascii
 include fred_client.conf.sample
 include fred/CREDITS
 include fred/LICENSE
