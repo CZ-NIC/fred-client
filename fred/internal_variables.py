@@ -11,8 +11,8 @@ config = """
 dir = ~
 # host = epp-test.ccreg.nic.cz
 port = 700
-# ssl_key = %(dir)s/epp_test_ccreg_nic_cz_key.pem
-# ssl_cert = %(dir)s/epp_test_ccreg_nic_cz_cert.pem
+# ssl_key = %(dir)s/epp_privatekey.pem
+# ssl_cert = %(dir)s/epp_certificate.pem
 timeout = 10.0
 # registrant:
 # username = regname

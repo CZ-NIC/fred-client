@@ -325,7 +325,7 @@ and maximum allowable period is defined in the Communication rules."""),('renew_
         #----------------------------------------------------
         'sendauthinfo_domain': (1,[
             ('name',(1,1),(),_T('Domain name'),'mydomain.cz','',()),
-            ],_T("""The EPP 'sendauthinfo_domain' command transmit request for send authorisation info to registrant email."""),('sendauthinfo_domain domain.cz',)),
+            ],_T("""The EPP 'sendauthinfo_domain' command transmit request for send password to registrant email."""),('sendauthinfo_domain domain.cz',)),
         #----------------------------------------------------
         'sendauthinfo_nsset': (1,[
             ('id',(1,1),(),_T('NSSET ID'),'NSSID:MYID','',()),

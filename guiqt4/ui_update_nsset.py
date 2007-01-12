@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'update_nsset.ui'
 #
-# Created: Mon Dec 11 11:56:35 2006
+# Created: Fri Jan 12 16:42:21 2007
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -13,12 +13,7 @@ from PyQt4 import QtCore, QtGui
 class Ui_FredWindow(object):
     def setupUi(self, FredWindow):
         FredWindow.setObjectName("FredWindow")
-        FredWindow.resize(QtCore.QSize(QtCore.QRect(0,0,574,1041).size()).expandedTo(FredWindow.minimumSizeHint()))
-
-        self.textLabel1 = QtGui.QLabel(FredWindow)
-        self.textLabel1.setGeometry(QtCore.QRect(10,110,160,20))
-        self.textLabel1.setWordWrap(False)
-        self.textLabel1.setObjectName("textLabel1")
+        FredWindow.resize(QtCore.QSize(QtCore.QRect(0,0,574,945).size()).expandedTo(FredWindow.minimumSizeHint()))
 
         self.textLabel2 = QtGui.QLabel(FredWindow)
         self.textLabel2.setGeometry(QtCore.QRect(10,470,160,20))
@@ -139,6 +134,11 @@ class Ui_FredWindow(object):
         self.rem_name.setShowGrid(True)
         self.rem_name.setObjectName("rem_name")
 
+        self.textLabel1 = QtGui.QLabel(FredWindow)
+        self.textLabel1.setGeometry(QtCore.QRect(10,110,160,20))
+        self.textLabel1.setWordWrap(False)
+        self.textLabel1.setObjectName("textLabel1")
+
         self.retranslateUi(FredWindow)
         QtCore.QObject.connect(self.add_tech,QtCore.SIGNAL("currentCellChanged(int,int,int,int)"),FredWindow.add_tech_current_changed)
         QtCore.QObject.connect(self.add_tech,QtCore.SIGNAL("cellChanged(int,int)"),FredWindow.add_tech_value_changed)
@@ -155,7 +155,6 @@ class Ui_FredWindow(object):
 
     def retranslateUi(self, FredWindow):
         FredWindow.setWindowTitle(QtGui.QApplication.translate("FredWindow", "Update NSSET panel", None, QtGui.QApplication.UnicodeUTF8))
-        self.textLabel1.setText(QtGui.QApplication.translate("FredWindow", "<b>nsset ID</b>", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel2.setText(QtGui.QApplication.translate("FredWindow", "technical contact", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel9.setText(QtGui.QApplication.translate("FredWindow", "<h2>update_nsset</h2>\n"
         "The EPP \"update\" command is used to update an instance of an existing object.\n"
@@ -191,4 +190,5 @@ class Ui_FredWindow(object):
         headerItem2 = QtGui.QTableWidgetItem()
         headerItem2.setText(QtGui.QApplication.translate("FredWindow", "dns name", None, QtGui.QApplication.UnicodeUTF8))
         self.rem_name.setHorizontalHeaderItem(0,headerItem2)
+        self.textLabel1.setText(QtGui.QApplication.translate("FredWindow", "<b>NSSET ID</b>", None, QtGui.QApplication.UnicodeUTF8))
 

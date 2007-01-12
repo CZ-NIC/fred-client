@@ -14,7 +14,7 @@ include install.sh
 include uninstall.py
 include ChangeLog
 include ChangeLog_cs
-include fred_client_sample.conf
+include fred_client.conf.sample
 include fred/CREDITS
 include fred/LICENSE
 include fred_clientqt.pyw

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-01-08 13:23+0100\n"
+"POT-Creation-Date: 2007-01-12 16:27+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Zdeněk Böhm <zdenek.bohm@nic.cz>\n"
 "Language-Team: CS <ccreg-devel@lists.nic.cz>\n"
@@ -16,68 +16,70 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3;  plural=n==1 ? 0 : n>=2 && n<=4 ? 1 : 2;\n"
 
-#: fred/client_socket2-5.py:43 fred/client_socket.py:43
+#: fred/client_socket.py:20
+msgid ""
+"This version of Python doesn't support SSL. Reinstall it with SLL support."
+msgstr "Tato verze Pythonu nepodporuje SSL. Reinstalujte jej se SSL podporou."
+
+#: fred/client_socket.py:43
 msgid "Certificate names not set."
 msgstr "Jména certifikátů nejsou zadána."
 
-#: fred/client_socket2-5.py:45 fred/client_socket.py:45
+#: fred/client_socket.py:45
 msgid "Private key file not found."
 msgstr "Privátní klíč nebyl nalezen"
 
-#: fred/client_socket2-5.py:48 fred/client_socket.py:48
+#: fred/client_socket.py:48
 msgid "Certificate key file not found."
 msgstr "Soubor s certifikátem nebyl nalezen"
 
-#: fred/client_socket2-5.py:53 fred/client_socket.py:53
+#: fred/client_socket.py:53
 msgid "Invalid port value"
 msgstr "Neplatné číslo portu"
 
-#: fred/client_socket2-5.py:63 fred/client_socket.py:63
+#: fred/client_socket.py:63
 msgid "Socket type IPv6 (AF_INET6) is not present in socket module."
 msgstr "Soket typu IPv6 (AF_INET6) není v modulu socket dostupný."
 
-#: fred/client_socket2-5.py:82 fred/client_socket.py:82
+#: fred/client_socket.py:82
 msgid "Used socket type"
 msgstr "Použitý typ soketu"
 
-#: fred/client_socket2-5.py:95 fred/client_socket.py:95
+#: fred/client_socket.py:95
 msgid "Connecting to"
 msgstr "Připojuji se k"
 
-#: fred/client_socket2-5.py:99 fred/client_socket.py:99
+#: fred/client_socket.py:99
 msgid "I cannot connect to the server"
 msgstr "Nemohu se připojit k serveru."
 
-#: fred/client_socket2-5.py:102 fred/client_socket2-5.py:130
-#: fred/client_socket2-5.py:160 fred/client_socket2-5.py:193
-#: fred/client_socket2-5.py:230 fred/client_socket2-5.py:242
 #: fred/client_socket.py:102 fred/client_socket.py:130
 #: fred/client_socket.py:160 fred/client_socket.py:193
 #: fred/client_socket.py:230 fred/client_socket.py:242
 msgid "Interrupted by user"
 msgstr "Přerušeno uživatelem"
 
-#: fred/client_socket2-5.py:105 fred/client_socket.py:105
+#: fred/client_socket.py:105
 msgid "Connection established."
 msgstr "Spojení bylo navázáno."
 
-#: fred/client_socket2-5.py:106 fred/client_socket.py:106
+#: fred/client_socket.py:106
 msgid "Try to open SSL layer..."
 msgstr "Otevírám SSL vrstvu..."
 
-#: fred/client_socket2-5.py:113 fred/client_socket.py:113
+#: fred/client_socket.py:113
 msgid "Certificates missing. Trying to connect without SSL!"
 msgstr "Certifikát chybí. Zkouším spojení bez SSL!"
 
-#: fred/client_socket2-5.py:120 fred/client_socket.py:120
+#: fred/client_socket.py:120
 msgid "Certificate not signed by verified certificate authority."
 msgstr "Použitý certifikát není podepsán uznávanou certifikační autoritou."
 
-#: fred/client_socket2-5.py:121 fred/client_socket.py:121
+#: fred/client_socket.py:121
 msgid "Server configuration is not valid. Contact administrator."
 msgstr "Server není správně nakonfigurován. Obraťte se na správce serveru."
 
-#: fred/client_socket2-5.py:122 fred/client_socket.py:122
+#: fred/client_socket.py:122
 msgid ""
 "If this client runs under MS Windows and timeout is not zero, it is probably "
 "SLL bug! Set timeout back to zero."
@@ -85,18 +87,13 @@ msgstr ""
 "Jestliže tento klient běží v MS Windows a timeout není nula, tak se "
 "pravděpodobně jedná o SSL bug! Nastavte timeout zpět na nulu."
 
-#: fred/client_socket2-5.py:132 fred/client_socket.py:132
+#: fred/client_socket.py:132
 msgid "SSL layer opened."
 msgstr "SLL vrstva byla aktivována."
 
-#: fred/client_socket2-5.py:196 fred/client_socket.py:196
+#: fred/client_socket.py:196
 msgid "Server returned an empty message."
 msgstr "Server nevrátil žádnou odpověď."
-
-#: fred/client_socket.py:20
-msgid ""
-"This version of Python doesn't support SSL. Reinstall it with SLL support."
-msgstr "Tato verze Pythonu nepodporuje SSL. Reinstalujte jej se SSL podporou."
 
 #: fred/cmd_parser.py:80
 msgid "Invalid parameter index"
@@ -238,8 +235,8 @@ msgid "Usage"
 msgstr "Použití"
 
 #: fred/console.py:209 fred/creator.py:95 fred/sender.py:159 fred_client.py:39
-msgid "For more information, see README."
-msgstr "Více informací v README."
+msgid "See README for more information."
+msgstr "Více informací najdete v README."
 
 #: fred/creator.py:30 fred/eppdoc_assemble.py:435 fred/session_command.py:312
 #: fred/session_command.py:314
@@ -519,7 +516,7 @@ msgstr ""
 #: fred/eppdoc_client.py:64 fred/eppdoc_client.py:89 fred/eppdoc_client.py:127
 #: fred/eppdoc_client.py:153 fred/eppdoc_client.py:219
 #: fred/eppdoc_client.py:250 fred/eppdoc_client.py:323
-#: fred/eppdoc_client.py:363 fred/eppdoc_client.py:430 guiqt4/main.py:645
+#: fred/eppdoc_client.py:363 fred/eppdoc_client.py:430 guiqt4/main.py:657
 msgid "Contact ID"
 msgstr "Kontakt ID"
 
@@ -552,8 +549,8 @@ msgstr "Název domény"
 #: fred/eppdoc_client.py:289 fred/eppdoc_client.py:300
 #: fred/eppdoc_client.py:331 fred/eppdoc_client.py:337
 #: fred/eppdoc_client.py:404 fred/eppdoc_client.py:413
-#: fred/eppdoc_client.py:435 guiqt4/main.py:585 guiqt4/main.py:682
-#: guiqt4/main.py:793
+#: fred/eppdoc_client.py:435 guiqt4/main.py:597 guiqt4/main.py:694
+#: guiqt4/main.py:805
 msgid "NSSET ID"
 msgstr "NSSET ID"
 
@@ -645,11 +642,11 @@ msgstr "Město"
 msgid "Country code"
 msgstr "Kód země"
 
-#: fred/eppdoc_client.py:157 guiqt4/main.py:562
+#: fred/eppdoc_client.py:157 guiqt4/main.py:574
 msgid "country code"
 msgstr "kód země"
 
-#: fred/eppdoc_client.py:158 guiqt4/main.py:482
+#: fred/eppdoc_client.py:158 guiqt4/main.py:494
 msgid "password"
 msgstr "heslo"
 
@@ -804,7 +801,7 @@ msgstr ""
 "EPP příkaz \"delete\" se používá pro odebrání instance vybraného objektu."
 
 #: fred/eppdoc_client.py:232 fred/eppdoc_client.py:401
-#: fred/eppdoc_client.py:442 fred/eppdoc_client.py:475 guiqt4/main.py:759
+#: fred/eppdoc_client.py:442 fred/eppdoc_client.py:475 guiqt4/main.py:771
 msgid "Expiration date"
 msgstr "Datum expirace"
 
@@ -910,8 +907,8 @@ msgstr ""
 
 #: fred/eppdoc_client.py:328
 msgid ""
-"The EPP 'sendauthinfo_domain' command transmit request for send "
-"authorisation info to registrant email."
+"The EPP 'sendauthinfo_domain' command transmit request for send password to "
+"registrant email."
 msgstr ""
 "Příkaz 'sendauthinfo_domain' předá požadavek na odeslání autorizačního hesla "
 "na email vlastníka domény."
@@ -1091,7 +1088,7 @@ msgstr "Interní chyba: Nadřazený uzel '%s' neexistuje."
 msgid "This program requires Python 2.4 or higher. Your version is"
 msgstr "Tento program vyžaduje Python 2.4 nebo vyšší. Vaše verze je"
 
-#: fred/sender.py:23 guiqt4/main.py:186
+#: fred/sender.py:23 guiqt4/main.py:193
 msgid "Login failed"
 msgstr "Login se nezdařil"
 
@@ -1114,10 +1111,12 @@ msgstr "Modul pro odeslání souborů na EPP server."
 #: fred/sender.py:149
 msgid ""
 "  -o OUTPUT_TYPE, --output=OUTPUT_TYPE\n"
-"                   Display output as text (default), html, php"
+"                   Display output as text (default), html, xml, php (Beware! "
+"For experimental only!)"
 msgstr ""
 "  -o OUTPUT_TYPE, --output=OUTPUT_TYPE\n"
-"                   Zobrazit výstup jako text (default), html, php"
+"                   Zobrazit výstup jako text (default), html, xml, php "
+"(Pozor! Jen pro testování!)"
 
 #: fred/session_base.py:130
 msgid "Unknown output type. Valid types are"
@@ -1735,7 +1734,7 @@ msgstr "Znove se připojte k serveru chcete-li změnit jazyk i na něm."
 msgid "User interface language is"
 msgstr "Jazyková verze je"
 
-#: fred/session_command.py:630 guiqt4/main.py:475
+#: fred/session_command.py:630 guiqt4/main.py:487
 msgid "You are logged already."
 msgstr "Jste již zalogován"
 
@@ -1743,11 +1742,11 @@ msgstr "Jste již zalogován"
 msgid "Login command sent to the server"
 msgstr "Příkaz login byl odeslán na server"
 
-#: fred/session_config.py:21 fred/session_config.py:63
+#: fred/session_config.py:22 fred/session_config.py:64
 msgid "File contains parsing errors."
 msgstr "Při parsování souboru se vyskytly chyby."
 
-#: fred/session_config.py:22 fred/session_config.py:64
+#: fred/session_config.py:23 fred/session_config.py:65
 msgid "See details in verbose 2 or higher."
 msgstr "Detaily jsou zobrazeny ve verbose 2 nebo vyšším."
 
@@ -1927,107 +1926,118 @@ msgid ""
 "  -d COMMAND, --command=COMMAND\n"
 "                   Send command to server and exit\n"
 "  -o OUTPUT_TYPE, --output=OUTPUT_TYPE\n"
-"                   Display output as text (default), html, php"
+"                   Display output as text (default), html, xml, php (Beware! "
+"For experimental only!)"
 msgstr ""
 "  -d COMMAND, --command=COMMAND\n"
 "                   Odeslat příkaz na server a skončit\n"
 "  -o OUTPUT_TYPE, --output=OUTPUT_TYPE\n"
-"                   Zobrazit výstup jako text (default), html, php"
+"                   Zobrazit výstup jako text (default), html, xml, php "
+"(Pozor! Jen pro testování!)"
 
 #: fred_client.py:37
 msgid ""
 "  -q,  --qt\n"
-"                   Run client in Qt4 GUI"
+"                   Run client in Qt4 GUI  (Beware! For experimental only!)"
 msgstr ""
 "  -q,  --qt\n"
-"                   Spustit klienta v Qt4 GUI"
+"                   Spustit klienta v Qt4 GUI "
+"(Pozor! Jen pro testování!)"
 
-#: guiqt4/main.py:165
+#: guiqt4/main.py:160
+msgid "Some internal error occured. See <b>Error log</b> on the first panel."
+msgstr "Vyskytla se interní chyba. Podívejte se do <b>Error log</b> na prvním panelu."
+
+#: guiqt4/main.py:160
+msgid "Internal error"
+msgstr "Interní chyba"
+
+#: guiqt4/main.py:172
 msgid "Load configuration file failed."
 msgstr "Nepodařilo se načíst konfigurační soubor."
 
-#: guiqt4/main.py:226
+#: guiqt4/main.py:230
 msgid "Missing required"
 msgstr "Chybí povinná hodnota"
 
-#: guiqt4/main.py:242
+#: guiqt4/main.py:247
 msgid "Close client"
 msgstr "Zavřít klienta"
 
-#: guiqt4/main.py:243
+#: guiqt4/main.py:248
 msgid "Do you wand realy close client?"
 msgstr "Opravdu chcete zavřít klienta?"
 
-#: guiqt4/main.py:300
+#: guiqt4/main.py:314
 msgid "zone"
 msgstr "Zóna"
 
-#: guiqt4/main.py:300
+#: guiqt4/main.py:314
 msgid "credit"
 msgstr "Kredit"
 
-#: guiqt4/main.py:302 guiqt4/main.py:422 guiqt4/main.py:435 guiqt4/main.py:559
-#: guiqt4/main.py:608
+#: guiqt4/main.py:316 guiqt4/main.py:434 guiqt4/main.py:447 guiqt4/main.py:571
+#: guiqt4/main.py:620
 msgid "name"
 msgstr "Jméno"
 
-#: guiqt4/main.py:302
+#: guiqt4/main.py:316
 msgid "value"
 msgstr "Hodnota"
 
-#: guiqt4/main.py:390 guiqt4/main.py:392
+#: guiqt4/main.py:402 guiqt4/main.py:404
 msgid "status"
 msgstr "Stav"
 
-#: guiqt4/main.py:392
+#: guiqt4/main.py:404
 msgid "disconnect"
 msgstr "Odpojeno"
 
-#: guiqt4/main.py:398
+#: guiqt4/main.py:410
 msgid "You are not logged. First do login."
 msgstr "Nejste zalogováni. Nejdříve zadejte login."
 
-#: guiqt4/main.py:398
+#: guiqt4/main.py:410
 msgid "Offline"
 msgstr ""
 
-#: guiqt4/main.py:422
+#: guiqt4/main.py:434
 msgid "Authorization info"
 msgstr "Autorizační heslo"
 
-#: guiqt4/main.py:475
+#: guiqt4/main.py:487
 msgid "Invalid command usage"
 msgstr "Neplatné použití příkazu"
 
-#: guiqt4/main.py:482
+#: guiqt4/main.py:494
 msgid "username"
 msgstr "Uživatelské jméno"
 
-#: guiqt4/main.py:558
+#: guiqt4/main.py:570
 msgid "contact ID"
 msgstr "Kontakt ID"
 
-#: guiqt4/main.py:560
+#: guiqt4/main.py:572
 msgid "email"
 msgstr ""
 
-#: guiqt4/main.py:561
+#: guiqt4/main.py:573
 msgid "city"
 msgstr "Město"
 
-#: guiqt4/main.py:585
+#: guiqt4/main.py:597
 msgid "dns"
 msgstr ""
 
-#: guiqt4/main.py:585
+#: guiqt4/main.py:597
 msgid "tech. contact"
 msgstr "Technický kontakt"
 
-#: guiqt4/main.py:608
+#: guiqt4/main.py:620
 msgid "registrant"
 msgstr "držitel"
 
-#: guiqt4/main.py:634
+#: guiqt4/main.py:646
 msgid ""
 "In a part of address must be set both city and country code. For disabled "
 "this part leave both empty."
@@ -2035,31 +2045,38 @@ msgstr ""
 "V části adresa musí být zadáno jméno města a kód země. Chcete-li tuto část "
 "vynechat, nechte obě hodnoty prázdné."
 
-#: guiqt4/main.py:652 guiqt4/main.py:688 guiqt4/main.py:721
+#: guiqt4/main.py:664 guiqt4/main.py:700 guiqt4/main.py:733
 msgid "No values to update."
 msgstr "Žádné hodnoty pro aktualizaci."
 
-#: guiqt4/main.py:715 guiqt4/main.py:759 guiqt4/main.py:793
+#: guiqt4/main.py:727 guiqt4/main.py:771 guiqt4/main.py:805
 msgid "domain name"
 msgstr "Název domény"
 
-#: guiqt4/main.py:779
+#: guiqt4/main.py:791
 msgid "contact"
 msgstr "Kontakt"
 
-#: guiqt4/main.py:782
+#: guiqt4/main.py:794
 msgid "nsset"
 msgstr ""
 
-#: guiqt4/main.py:785
+#: guiqt4/main.py:797
 msgid "domain"
 msgstr "doména"
 
-#: guiqt4/main.py:884
-msgid "Credits"
-msgstr "Kredity"
-
-#: guiqt4/main.py:890
+#: guiqt4/main.py:901
 msgid "Close"
 msgstr "Zavřít"
 
+#: guiqt4/main.py:909
+msgid "Credits"
+msgstr "Kredity"
+
+#: guiqt4/main.py:916
+msgid "(No record.)"
+msgstr "(Žádný záznam.)"
+
+#: guiqt4/main.py:917
+msgid "Internal errors"
+msgstr "Interní chyby"

@@ -1100,7 +1100,7 @@ def remove_from_history(count=1):
 #-----------------------------------------------------
 
 def get_history_length():
-    return (0, readline.get_current_history_length())[readline_is_present]
+    return readline_is_present and readline.get_current_history_length() or 0
             
 def __has_key__(dct, key):
     'Check if key exists and if any value is set. (dct MUST be in format: dct[key] = [{...}, ...])'

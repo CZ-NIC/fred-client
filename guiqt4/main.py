@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-import sys
+# -*- coding: utf8 -*-
+import sys, traceback
 import os
 import re
 
@@ -114,6 +115,7 @@ class FredMainWindow(QtGui.QDialog):
         self.epp._epp._sep = '<br>\n' # separator for display lines in QtGui.QTextEdit as HTML
         self.missing_required = []
         self.src = {} # {'command_name':['command line','XML source','XML response'], ...}
+        self._stderr_errors = [] # Keep internal errors for display.
         #--------------------------------------        
         # scrolled windows
         #--------------------------------------        
@@ -142,15 +144,20 @@ class FredMainWindow(QtGui.QDialog):
         self.panel_update_domain.ui.val_ex_date.setDate(curd)
         # Class for running EPP communication in separate thread
         self.thread_epp = RunEPPCommunication(self.epp)
-        self.connect(self.thread_epp, QtCore.SIGNAL("epp_command_finished()"), self.display_answer)
+        self.connect(self.thread_epp, QtCore.SIGNAL("epp_command_finished()"), self.process_answer)
         # Window handlers of the 'Send command' buttons:
         self._btn_send = [obj for name, obj in self.ui.__dict__.items() if re.match('send_',name)]
         # Redirect output:
         self.output = RedirectOutput(self.ui.system_messages)
-        #sys.stdout = self.output
-        sys.stderr = self.output
+        sys.stdout = self.output
+        sys.stderr = self.write
         # INIT
         self.load_config_and_autologin()
+
+    def write(self, message):
+        'Catch error messages from stderr.'
+        self._stderr_errors.append(message)
+        self.display_error(_TU('Some internal error occured. See <b>Error log</b> on the first panel.'), _TU('Internal error'))
 
     def append_system_messages(self, messages):
         'Appent text to the System message window'
@@ -198,9 +205,12 @@ class FredMainWindow(QtGui.QDialog):
         if tr.load(modul_trans):
             self._app.installTranslator(tr)
             self.ui.retranslateUi(self)
-
-#    def __tr(self, text):
-#        return QtGui.QApplication.translate("FredWindow", text, None, QtGui.QApplication.UnicodeUTF8)
+            self.panel_create_contact.ui.retranslateUi(self)
+            self.panel_update_contact.ui.retranslateUi(self)
+            self.panel_create_domain.ui.retranslateUi(self)
+            self.panel_update_domain.ui.retranslateUi(self)
+            self.panel_create_nsset.ui.retranslateUi(self)
+            self.panel_update_nsset.ui.retranslateUi(self)
 
     def __add_scroll__(self, parent_frame, classWindow):
         'Add scrolled view window. Module must have class FredWindow.'
@@ -235,7 +245,8 @@ class FredMainWindow(QtGui.QDialog):
         It means any error occurs. Function toggle to the first tab page for
         give a notice to user about some problem.
         """
-        self.ui.tabWidget.setCurrentWidget (self.ui.tabWidget.widget(0)) # Set to Welcome page on the main panel.
+        # DISABLED:
+        # self.ui.tabWidget.setCurrentWidget (self.ui.tabWidget.widget(0)) # Set to Welcome page on the main panel.
 
     def btn_close(self):
         'Handle click on button Close'
@@ -248,6 +259,15 @@ class FredMainWindow(QtGui.QDialog):
         'Finalize when dialog is closed.'
         self.epp.logout()
         QtGui.QWidget.closeEvent(self, e)
+
+    def process_answer(self):
+        'Process answer and catch exceptions.'
+        try:
+            self.display_answer()
+        except:
+            self.write(get_exception())
+        self.__set_status__()
+        self.enable_send_buttons()
 
     def display_answer(self):
         'Display answer from EPP server.'
@@ -341,7 +361,7 @@ class FredMainWindow(QtGui.QDialog):
                 if value is None: continue
                 if columns > 1:
                     if not label: label = key
-                    wtab.setItem(r, 0, QtGui.QTableWidgetItem(label.decode(encoding)))
+                    wtab.setItem(r, 0, QtGui.QTableWidgetItem(get_unicode(label)))
                     r = self.__inset_into_table__(wtab, value, 1, r)
                 else:
                     r = self.__inset_into_table__(wtab, value, 0, r)
@@ -359,8 +379,6 @@ class FredMainWindow(QtGui.QDialog):
         page = q_tab_widget.widget(1)
         if page:
             q_tab_widget.setCurrentWidget (page)
-        self.__set_status__()
-        self.enable_send_buttons()
 
     def __set_send_buttons__(self, is_enable=False):
         'Enabled/disabled all "Send command" buttons.'
@@ -877,22 +895,33 @@ class FredMainWindow(QtGui.QDialog):
     def source_technical_test(self):
         self.__display_sources__('technical_test')
 
-        
-    def credits(self):
-        'Display credits'
+    def __display_text_wnd__(self, text, label=''):
+        'Display window with any text'
         wnd = QtGui.QDialog(self)
-        wnd.setWindowTitle(_TU('Credits'))
+        wnd.setWindowTitle(label)
         wnd.setModal(True)
         layout = QtGui.QVBoxLayout(wnd)
         edit = QtGui.QTextEdit(wnd)
         layout.addWidget(edit)
-        edit.setPlainText(self.epp._epp.get_credits())
+        edit.setPlainText(text)
         btn = QtGui.QPushButton(_TU('Close'),wnd)
         layout.addWidget(btn)
         wnd.connect(btn,QtCore.SIGNAL("clicked()"),wnd.close)
         edit.setMinimumSize(500, 300)
         wnd.show()
 
+    def credits(self):
+        'Display credits'
+        self.__display_text_wnd__(self.epp._epp.get_credits(), _TU('Credits'))
+
+    def show_errorlog(self):
+        'Display error logs'
+        if len(self._stderr_errors):
+            text = ''.join(self._stderr_errors)
+        else:
+            text = _TU('(No record.)')
+        self.__display_text_wnd__(text, _TU('Internal errors'))
+        
 def overwrite_status_by_reason_message(data):
     """Modification for object:check answers:
     Data must be dict type and source like this:
@@ -917,6 +946,7 @@ def get_str(qtstr):
     if type(qtstr) is QtCore.QString:
         text = unicode(qtstr.trimmed().toUtf8(),'utf8').encode(encoding)
     else:
+        if type(qtstr) not in (str, unicode): qtstr = str(qtstr)
         if type(qtstr) is unicode:
             text = qtstr.encode(encoding)
         else:
@@ -1004,6 +1034,17 @@ def ttytag2html(text):
     text = text.replace('${NORMAL}','</span>')
     text = re.sub('\$\{(\w+)\}','<span style="color:\\1">',text)
     return text
+
+def get_exception():
+    'Fetch excption for recording.'
+    msg = ['Traceback (most recent call last):']
+    ex = sys.exc_info()
+    sys.exc_clear()
+    for trace in traceback.extract_tb(ex[2]):
+        msg.append(' File "%s", line %d, in %s'%(trace[0], trace[1], trace[2]))
+        msg.append('    %s'%trace[3])
+    msg.append('%s: %s'%(ex[0], ex[1]))
+    return '\n'.join(msg)
 
 def main(argv, lang):
     path = os.path.dirname(__file__)

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'create_nsset.ui'
 #
-# Created: Tue Dec  5 14:50:34 2006
+# Created: Fri Jan 12 16:42:06 2007
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -23,11 +23,6 @@ class Ui_FredWindow(object):
         self.tech.setGeometry(QtCore.QRect(180,140,360,110))
         self.tech.setShowGrid(True)
         self.tech.setObjectName("tech")
-
-        self.textLabel2 = QtGui.QLabel(FredWindow)
-        self.textLabel2.setGeometry(QtCore.QRect(10,110,160,20))
-        self.textLabel2.setWordWrap(False)
-        self.textLabel2.setObjectName("textLabel2")
 
         self.textLabel1 = QtGui.QLabel(FredWindow)
         self.textLabel1.setGeometry(QtCore.QRect(10,10,530,90))
@@ -69,6 +64,11 @@ class Ui_FredWindow(object):
         self.frame_dns.setFrameShadow(QtGui.QFrame.Raised)
         self.frame_dns.setObjectName("frame_dns")
 
+        self.textLabel2 = QtGui.QLabel(FredWindow)
+        self.textLabel2.setGeometry(QtCore.QRect(10,110,160,20))
+        self.textLabel2.setWordWrap(False)
+        self.textLabel2.setObjectName("textLabel2")
+
         self.retranslateUi(FredWindow)
         QtCore.QObject.connect(self.tech,QtCore.SIGNAL("currentCellChanged(int,int,int,int)"),FredWindow.tech_current_changed)
         QtCore.QObject.connect(self.tech,QtCore.SIGNAL("cellChanged(int,int)"),FredWindow.tech_value_changed)
@@ -90,7 +90,6 @@ class Ui_FredWindow(object):
         headerItem1 = QtGui.QTableWidgetItem()
         headerItem1.setText(QtGui.QApplication.translate("FredWindow", "contact", None, QtGui.QApplication.UnicodeUTF8))
         self.tech.setHorizontalHeaderItem(0,headerItem1)
-        self.textLabel2.setText(QtGui.QApplication.translate("FredWindow", "<b>nsset ID</b>", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel1.setText(QtGui.QApplication.translate("FredWindow", "<h2>create_nsset</h2>\n"
         "The EPP \"create\" command is used to create an instance of an object.\n"
         "An object can be created for an indefinite period of time, or an\n"
@@ -99,4 +98,5 @@ class Ui_FredWindow(object):
         self.textLabel4.setText(QtGui.QApplication.translate("FredWindow", "<b>dns</b>", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel5.setText(QtGui.QApplication.translate("FredWindow", "clTRID", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel6.setText(QtGui.QApplication.translate("FredWindow", "auth. for transfer", None, QtGui.QApplication.UnicodeUTF8))
+        self.textLabel2.setText(QtGui.QApplication.translate("FredWindow", "<b>NSSET ID</b>", None, QtGui.QApplication.UnicodeUTF8))
 

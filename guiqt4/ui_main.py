@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'main.ui'
 #
-# Created: Mon Jan  8 11:02:52 2007
+# Created: Fri Jan 12 16:41:49 2007
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -21,6 +21,12 @@ class Ui_FredWindow(object):
         self.status.setGeometry(QtCore.QRect(10,600,530,30))
         self.status.setWordWrap(False)
         self.status.setObjectName("status")
+
+        self.buttonOk = QtGui.QPushButton(FredWindow)
+        self.buttonOk.setGeometry(QtCore.QRect(550,610,130,30))
+        self.buttonOk.setAutoDefault(False)
+        self.buttonOk.setDefault(False)
+        self.buttonOk.setObjectName("buttonOk")
 
         self.tabWidget = QtGui.QTabWidget(FredWindow)
         self.tabWidget.setGeometry(QtCore.QRect(11,11,670,590))
@@ -103,15 +109,19 @@ class Ui_FredWindow(object):
         self.textLabel1.setWordWrap(True)
         self.textLabel1.setObjectName("textLabel1")
 
-        self.btn_credits = QtGui.QPushButton(self.TabPage)
-        self.btn_credits.setGeometry(QtCore.QRect(14,521,120,30))
-        self.btn_credits.setObjectName("btn_credits")
-
         self.system_messages = QtGui.QTextEdit(self.TabPage)
         self.system_messages.setEnabled(True)
         self.system_messages.setGeometry(QtCore.QRect(200,382,450,170))
         self.system_messages.setReadOnly(True)
         self.system_messages.setObjectName("system_messages")
+
+        self.btn_credits = QtGui.QPushButton(self.TabPage)
+        self.btn_credits.setGeometry(QtCore.QRect(14,521,120,30))
+        self.btn_credits.setObjectName("btn_credits")
+
+        self.btn_errorlog = QtGui.QPushButton(self.TabPage)
+        self.btn_errorlog.setGeometry(QtCore.QRect(14,484,120,30))
+        self.btn_errorlog.setObjectName("btn_errorlog")
         self.tabWidget.addTab(self.TabPage,"")
 
         self.Widget8 = QtGui.QWidget()
@@ -637,11 +647,6 @@ class Ui_FredWindow(object):
         self.textLabel39.setWordWrap(True)
         self.textLabel39.setObjectName("textLabel39")
 
-        self.textLabel40 = QtGui.QLabel(self.tab6)
-        self.textLabel40.setGeometry(QtCore.QRect(20,210,190,20))
-        self.textLabel40.setWordWrap(False)
-        self.textLabel40.setObjectName("textLabel40")
-
         self.info_contact_name = QtGui.QLineEdit(self.tab6)
         self.info_contact_name.setGeometry(QtCore.QRect(220,210,360,22))
         self.info_contact_name.setObjectName("info_contact_name")
@@ -658,6 +663,11 @@ class Ui_FredWindow(object):
         self.send_info_contact = QtGui.QPushButton(self.tab6)
         self.send_info_contact.setGeometry(QtCore.QRect(220,290,170,40))
         self.send_info_contact.setObjectName("send_info_contact")
+
+        self.textLabel40 = QtGui.QLabel(self.tab6)
+        self.textLabel40.setGeometry(QtCore.QRect(20,210,190,20))
+        self.textLabel40.setWordWrap(False)
+        self.textLabel40.setObjectName("textLabel40")
         self.info_contact_response.addTab(self.tab6,"")
 
         self.TabPage11 = QtGui.QWidget()
@@ -835,11 +845,6 @@ class Ui_FredWindow(object):
         self.textLabel51.setWordWrap(True)
         self.textLabel51.setObjectName("textLabel51")
 
-        self.textLabel52 = QtGui.QLabel(self.tab10)
-        self.textLabel52.setGeometry(QtCore.QRect(20,210,190,20))
-        self.textLabel52.setWordWrap(False)
-        self.textLabel52.setObjectName("textLabel52")
-
         self.delete_contact_name = QtGui.QLineEdit(self.tab10)
         self.delete_contact_name.setGeometry(QtCore.QRect(220,210,360,22))
         self.delete_contact_name.setObjectName("delete_contact_name")
@@ -856,6 +861,11 @@ class Ui_FredWindow(object):
         self.send_delete_contact = QtGui.QPushButton(self.tab10)
         self.send_delete_contact.setGeometry(QtCore.QRect(220,290,170,40))
         self.send_delete_contact.setObjectName("send_delete_contact")
+
+        self.textLabel52 = QtGui.QLabel(self.tab10)
+        self.textLabel52.setGeometry(QtCore.QRect(20,210,190,20))
+        self.textLabel52.setWordWrap(False)
+        self.textLabel52.setObjectName("textLabel52")
         self.delete_contact_response.addTab(self.tab10,"")
 
         self.TabPage16 = QtGui.QWidget()
@@ -907,11 +917,6 @@ class Ui_FredWindow(object):
         self.tab11 = QtGui.QWidget()
         self.tab11.setObjectName("tab11")
 
-        self.textLabel58 = QtGui.QLabel(self.tab11)
-        self.textLabel58.setGeometry(QtCore.QRect(20,170,190,20))
-        self.textLabel58.setWordWrap(False)
-        self.textLabel58.setObjectName("textLabel58")
-
         self.textLabel59 = QtGui.QLabel(self.tab11)
         self.textLabel59.setGeometry(QtCore.QRect(20,210,190,20))
         self.textLabel59.setWordWrap(False)
@@ -943,6 +948,11 @@ class Ui_FredWindow(object):
         self.textLabel57.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.textLabel57.setWordWrap(True)
         self.textLabel57.setObjectName("textLabel57")
+
+        self.textLabel58 = QtGui.QLabel(self.tab11)
+        self.textLabel58.setGeometry(QtCore.QRect(20,170,190,20))
+        self.textLabel58.setWordWrap(False)
+        self.textLabel58.setObjectName("textLabel58")
         self.transfer_contact_response.addTab(self.tab11,"")
 
         self.TabPage18 = QtGui.QWidget()
@@ -1074,11 +1084,6 @@ class Ui_FredWindow(object):
         self.textLabel53_2.setWordWrap(False)
         self.textLabel53_2.setObjectName("textLabel53_2")
 
-        self.textLabel52_2 = QtGui.QLabel(self.tab13)
-        self.textLabel52_2.setGeometry(QtCore.QRect(20,210,190,20))
-        self.textLabel52_2.setWordWrap(False)
-        self.textLabel52_2.setObjectName("textLabel52_2")
-
         self.send_sendauthinfo_contact = QtGui.QPushButton(self.tab13)
         self.send_sendauthinfo_contact.setGeometry(QtCore.QRect(220,290,170,40))
         self.send_sendauthinfo_contact.setObjectName("send_sendauthinfo_contact")
@@ -1090,6 +1095,11 @@ class Ui_FredWindow(object):
         self.sendauthinfo_contact_id = QtGui.QLineEdit(self.tab13)
         self.sendauthinfo_contact_id.setGeometry(QtCore.QRect(220,210,360,22))
         self.sendauthinfo_contact_id.setObjectName("sendauthinfo_contact_id")
+
+        self.textLabel52_2 = QtGui.QLabel(self.tab13)
+        self.textLabel52_2.setGeometry(QtCore.QRect(20,210,190,20))
+        self.textLabel52_2.setWordWrap(False)
+        self.textLabel52_2.setObjectName("textLabel52_2")
         self.sendauthinfo_contact_response.addTab(self.tab13,"")
 
         self.TabPage22 = QtGui.QWidget()
@@ -1254,11 +1264,6 @@ class Ui_FredWindow(object):
         self.textLabel76.setWordWrap(False)
         self.textLabel76.setObjectName("textLabel76")
 
-        self.textLabel77 = QtGui.QLabel(self.tab16)
-        self.textLabel77.setGeometry(QtCore.QRect(20,210,190,20))
-        self.textLabel77.setWordWrap(False)
-        self.textLabel77.setObjectName("textLabel77")
-
         self.info_nsset_name = QtGui.QLineEdit(self.tab16)
         self.info_nsset_name.setGeometry(QtCore.QRect(220,210,360,22))
         self.info_nsset_name.setObjectName("info_nsset_name")
@@ -1276,6 +1281,11 @@ class Ui_FredWindow(object):
         self.textLabel78.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.textLabel78.setWordWrap(True)
         self.textLabel78.setObjectName("textLabel78")
+
+        self.textLabel77 = QtGui.QLabel(self.tab16)
+        self.textLabel77.setGeometry(QtCore.QRect(20,210,190,20))
+        self.textLabel77.setWordWrap(False)
+        self.textLabel77.setObjectName("textLabel77")
         self.info_nsset_response.addTab(self.tab16,"")
 
         self.TabPage26 = QtGui.QWidget()
@@ -1447,11 +1457,6 @@ class Ui_FredWindow(object):
         self.tab19 = QtGui.QWidget()
         self.tab19.setObjectName("tab19")
 
-        self.textLabel88 = QtGui.QLabel(self.tab19)
-        self.textLabel88.setGeometry(QtCore.QRect(20,210,190,20))
-        self.textLabel88.setWordWrap(False)
-        self.textLabel88.setObjectName("textLabel88")
-
         self.textLabel89 = QtGui.QLabel(self.tab19)
         self.textLabel89.setGeometry(QtCore.QRect(20,250,190,20))
         self.textLabel89.setWordWrap(False)
@@ -1474,6 +1479,11 @@ class Ui_FredWindow(object):
         self.delete_nsset_name = QtGui.QLineEdit(self.tab19)
         self.delete_nsset_name.setGeometry(QtCore.QRect(220,210,360,22))
         self.delete_nsset_name.setObjectName("delete_nsset_name")
+
+        self.textLabel88 = QtGui.QLabel(self.tab19)
+        self.textLabel88.setGeometry(QtCore.QRect(20,210,190,20))
+        self.textLabel88.setWordWrap(False)
+        self.textLabel88.setObjectName("textLabel88")
         self.delete_nsset_response.addTab(self.tab19,"")
 
         self.TabPage32 = QtGui.QWidget()
@@ -1599,11 +1609,6 @@ class Ui_FredWindow(object):
         self.textLabel53_2_2.setWordWrap(False)
         self.textLabel53_2_2.setObjectName("textLabel53_2_2")
 
-        self.textLabel52_2_2 = QtGui.QLabel(self.tab21)
-        self.textLabel52_2_2.setGeometry(QtCore.QRect(20,210,190,20))
-        self.textLabel52_2_2.setWordWrap(False)
-        self.textLabel52_2_2.setObjectName("textLabel52_2_2")
-
         self.textLabel51_2_2 = QtGui.QLabel(self.tab21)
         self.textLabel51_2_2.setGeometry(QtCore.QRect(10,10,570,100))
         self.textLabel51_2_2.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
@@ -1621,6 +1626,11 @@ class Ui_FredWindow(object):
         self.send_sendauthinfo_nsset = QtGui.QPushButton(self.tab21)
         self.send_sendauthinfo_nsset.setGeometry(QtCore.QRect(220,290,170,40))
         self.send_sendauthinfo_nsset.setObjectName("send_sendauthinfo_nsset")
+
+        self.textLabel52_2_2 = QtGui.QLabel(self.tab21)
+        self.textLabel52_2_2.setGeometry(QtCore.QRect(20,210,190,20))
+        self.textLabel52_2_2.setWordWrap(False)
+        self.textLabel52_2_2.setObjectName("textLabel52_2_2")
         self.sendauthinfo_nsset_response.addTab(self.tab21,"")
 
         self.TabPage36 = QtGui.QWidget()
@@ -1666,7 +1676,7 @@ class Ui_FredWindow(object):
         self.tab_4.setObjectName("tab_4")
 
         self.technical_test_response = QtGui.QTabWidget(self.tab_4)
-        self.technical_test_response.setGeometry(QtCore.QRect(13,16,600,370))
+        self.technical_test_response.setGeometry(QtCore.QRect(13,14,600,370))
         self.technical_test_response.setObjectName("technical_test_response")
 
         self.tab_5 = QtGui.QWidget()
@@ -1690,24 +1700,24 @@ class Ui_FredWindow(object):
         self.textLabel59_2.setWordWrap(False)
         self.textLabel59_2.setObjectName("textLabel59_2")
 
+        self.technical_test_id = QtGui.QLineEdit(self.tab_5)
+        self.technical_test_id.setGeometry(QtCore.QRect(220,170,360,22))
+        self.technical_test_id.setObjectName("technical_test_id")
+
+        self.send_technical_test = QtGui.QPushButton(self.tab_5)
+        self.send_technical_test.setGeometry(QtCore.QRect(220,290,170,40))
+        self.send_technical_test.setObjectName("send_technical_test")
+
         self.textLabel58_2 = QtGui.QLabel(self.tab_5)
         self.textLabel58_2.setGeometry(QtCore.QRect(20,170,190,20))
         self.textLabel58_2.setWordWrap(False)
         self.textLabel58_2.setObjectName("textLabel58_2")
-
-        self.technical_test_id = QtGui.QLineEdit(self.tab_5)
-        self.technical_test_id.setGeometry(QtCore.QRect(220,170,360,22))
-        self.technical_test_id.setObjectName("technical_test_id")
 
         self.textLabel57_2 = QtGui.QLabel(self.tab_5)
         self.textLabel57_2.setGeometry(QtCore.QRect(10,10,570,150))
         self.textLabel57_2.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.textLabel57_2.setWordWrap(True)
         self.textLabel57_2.setObjectName("textLabel57_2")
-
-        self.send_technical_test = QtGui.QPushButton(self.tab_5)
-        self.send_technical_test.setGeometry(QtCore.QRect(220,290,170,40))
-        self.send_technical_test.setObjectName("send_technical_test")
         self.technical_test_response.addTab(self.tab_5,"")
 
         self.TabPage_3 = QtGui.QWidget()
@@ -1858,11 +1868,6 @@ class Ui_FredWindow(object):
         self.textLabel106.setWordWrap(False)
         self.textLabel106.setObjectName("textLabel106")
 
-        self.textLabel107 = QtGui.QLabel(self.tab24)
-        self.textLabel107.setGeometry(QtCore.QRect(20,210,190,20))
-        self.textLabel107.setWordWrap(False)
-        self.textLabel107.setObjectName("textLabel107")
-
         self.info_domain_name = QtGui.QLineEdit(self.tab24)
         self.info_domain_name.setGeometry(QtCore.QRect(220,210,360,22))
         self.info_domain_name.setObjectName("info_domain_name")
@@ -1880,6 +1885,11 @@ class Ui_FredWindow(object):
         self.textLabel108.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.textLabel108.setWordWrap(True)
         self.textLabel108.setObjectName("textLabel108")
+
+        self.textLabel107 = QtGui.QLabel(self.tab24)
+        self.textLabel107.setGeometry(QtCore.QRect(20,210,190,20))
+        self.textLabel107.setWordWrap(False)
+        self.textLabel107.setObjectName("textLabel107")
         self.info_domain_response.addTab(self.tab24,"")
 
         self.TabPage40 = QtGui.QWidget()
@@ -2056,11 +2066,6 @@ class Ui_FredWindow(object):
         self.textLabel118.setWordWrap(False)
         self.textLabel118.setObjectName("textLabel118")
 
-        self.textLabel119 = QtGui.QLabel(self.tab27)
-        self.textLabel119.setGeometry(QtCore.QRect(20,210,190,20))
-        self.textLabel119.setWordWrap(False)
-        self.textLabel119.setObjectName("textLabel119")
-
         self.textLabel120 = QtGui.QLabel(self.tab27)
         self.textLabel120.setGeometry(QtCore.QRect(10,10,570,100))
         self.textLabel120.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
@@ -2078,6 +2083,11 @@ class Ui_FredWindow(object):
         self.delete_domain_name = QtGui.QLineEdit(self.tab27)
         self.delete_domain_name.setGeometry(QtCore.QRect(220,210,360,22))
         self.delete_domain_name.setObjectName("delete_domain_name")
+
+        self.textLabel119 = QtGui.QLabel(self.tab27)
+        self.textLabel119.setGeometry(QtCore.QRect(20,210,190,20))
+        self.textLabel119.setWordWrap(False)
+        self.textLabel119.setObjectName("textLabel119")
         self.delete_domain_response.addTab(self.tab27,"")
 
         self.TabPage46 = QtGui.QWidget()
@@ -2139,11 +2149,6 @@ class Ui_FredWindow(object):
         self.textLabel125.setWordWrap(False)
         self.textLabel125.setObjectName("textLabel125")
 
-        self.textLabel126 = QtGui.QLabel(self.tab28)
-        self.textLabel126.setGeometry(QtCore.QRect(20,170,190,20))
-        self.textLabel126.setWordWrap(False)
-        self.textLabel126.setObjectName("textLabel126")
-
         self.transfer_domain_cltrid = QtGui.QLineEdit(self.tab28)
         self.transfer_domain_cltrid.setGeometry(QtCore.QRect(220,250,360,22))
         self.transfer_domain_cltrid.setObjectName("transfer_domain_cltrid")
@@ -2165,6 +2170,11 @@ class Ui_FredWindow(object):
         self.textLabel127.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.textLabel127.setWordWrap(True)
         self.textLabel127.setObjectName("textLabel127")
+
+        self.textLabel126 = QtGui.QLabel(self.tab28)
+        self.textLabel126.setGeometry(QtCore.QRect(20,170,190,20))
+        self.textLabel126.setWordWrap(False)
+        self.textLabel126.setObjectName("textLabel126")
         self.transfer_domain_response.addTab(self.tab28,"")
 
         self.TabPage48 = QtGui.QWidget()
@@ -2260,11 +2270,6 @@ class Ui_FredWindow(object):
         self.renew_domain_name.setGeometry(QtCore.QRect(220,90,360,22))
         self.renew_domain_name.setObjectName("renew_domain_name")
 
-        self.textLabel135 = QtGui.QLabel(self.tab29)
-        self.textLabel135.setGeometry(QtCore.QRect(20,90,190,20))
-        self.textLabel135.setWordWrap(False)
-        self.textLabel135.setObjectName("textLabel135")
-
         self.textLabel136 = QtGui.QLabel(self.tab29)
         self.textLabel136.setGeometry(QtCore.QRect(20,120,190,20))
         self.textLabel136.setWordWrap(False)
@@ -2288,6 +2293,11 @@ class Ui_FredWindow(object):
         self.renew_domain_val_ex_date.setEnabled(False)
         self.renew_domain_val_ex_date.setGeometry(QtCore.QRect(250,220,97,22))
         self.renew_domain_val_ex_date.setObjectName("renew_domain_val_ex_date")
+
+        self.textLabel135 = QtGui.QLabel(self.tab29)
+        self.textLabel135.setGeometry(QtCore.QRect(20,90,190,20))
+        self.textLabel135.setWordWrap(False)
+        self.textLabel135.setObjectName("textLabel135")
         self.renew_domain_response.addTab(self.tab29,"")
 
         self.TabPage50 = QtGui.QWidget()
@@ -2413,11 +2423,6 @@ class Ui_FredWindow(object):
         self.textLabel53_2_2_2.setWordWrap(False)
         self.textLabel53_2_2_2.setObjectName("textLabel53_2_2_2")
 
-        self.textLabel52_2_2_2 = QtGui.QLabel(self.tab31)
-        self.textLabel52_2_2_2.setGeometry(QtCore.QRect(20,210,190,20))
-        self.textLabel52_2_2_2.setWordWrap(False)
-        self.textLabel52_2_2_2.setObjectName("textLabel52_2_2_2")
-
         self.textLabel51_2_2_2 = QtGui.QLabel(self.tab31)
         self.textLabel51_2_2_2.setGeometry(QtCore.QRect(10,10,570,100))
         self.textLabel51_2_2_2.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
@@ -2435,6 +2440,11 @@ class Ui_FredWindow(object):
         self.send_sendauthinfo_domain = QtGui.QPushButton(self.tab31)
         self.send_sendauthinfo_domain.setGeometry(QtCore.QRect(220,290,170,40))
         self.send_sendauthinfo_domain.setObjectName("send_sendauthinfo_domain")
+
+        self.textLabel52_2_2_2 = QtGui.QLabel(self.tab31)
+        self.textLabel52_2_2_2.setGeometry(QtCore.QRect(20,210,190,20))
+        self.textLabel52_2_2_2.setWordWrap(False)
+        self.textLabel52_2_2_2.setObjectName("textLabel52_2_2_2")
         self.sendauthinfo_domain_response.addTab(self.tab31,"")
 
         self.TabPage54 = QtGui.QWidget()
@@ -2483,12 +2493,6 @@ class Ui_FredWindow(object):
         self.pixmapLabel2_2_2_2.setWordWrap(False)
         self.pixmapLabel2_2_2_2.setObjectName("pixmapLabel2_2_2_2")
         self.tabWidget.addTab(self.TabPage37,"")
-
-        self.buttonOk = QtGui.QPushButton(FredWindow)
-        self.buttonOk.setGeometry(QtCore.QRect(550,610,130,30))
-        self.buttonOk.setAutoDefault(False)
-        self.buttonOk.setDefault(False)
-        self.buttonOk.setObjectName("buttonOk")
 
         self.retranslateUi(FredWindow)
         self.tabWidget.setCurrentIndex(0)
@@ -2590,6 +2594,7 @@ class Ui_FredWindow(object):
         QtCore.QObject.connect(self.system_messages,QtCore.SIGNAL("textChanged()"),FredWindow.system_messages_changed)
         QtCore.QObject.connect(self.send_technical_test,QtCore.SIGNAL("clicked()"),FredWindow.technical_test)
         QtCore.QObject.connect(self.btn_source_technical_test,QtCore.SIGNAL("clicked()"),FredWindow.source_technical_test)
+        QtCore.QObject.connect(self.btn_errorlog,QtCore.SIGNAL("clicked()"),FredWindow.show_errorlog)
         QtCore.QMetaObject.connectSlotsByName(FredWindow)
         FredWindow.setTabOrder(self.buttonOk,self.tabWidget)
         FredWindow.setTabOrder(self.tabWidget,self.connect_host)
@@ -2810,6 +2815,8 @@ class Ui_FredWindow(object):
     def retranslateUi(self, FredWindow):
         FredWindow.setWindowTitle(QtGui.QApplication.translate("FredWindow", "FredClient", None, QtGui.QApplication.UnicodeUTF8))
         self.status.setText(QtGui.QApplication.translate("FredWindow", "<b>Status:</b> <span style=\"color:red\">disconnect</span>", None, QtGui.QApplication.UnicodeUTF8))
+        self.buttonOk.setText(QtGui.QApplication.translate("FredWindow", "E&xit client", None, QtGui.QApplication.UnicodeUTF8))
+        self.buttonOk.setShortcut(QtGui.QApplication.translate("FredWindow", "Alt+X", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel3_2.setText(QtGui.QApplication.translate("FredWindow", "System messages:", None, QtGui.QApplication.UnicodeUTF8))
         self.groupBox1.setTitle(QtGui.QApplication.translate("FredWindow", "Client to EPP server", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel3.setText(QtGui.QApplication.translate("FredWindow", "timeout", None, QtGui.QApplication.UnicodeUTF8))
@@ -2821,6 +2828,7 @@ class Ui_FredWindow(object):
         self.textLabel1.setText(QtGui.QApplication.translate("FredWindow", "Welcome on the <b>FredClient</b> GUI interface.<br>\n"
         "Beta release 0.1.0; (Needs <b>Fred module</b> version 1.3.0)", None, QtGui.QApplication.UnicodeUTF8))
         self.btn_credits.setText(QtGui.QApplication.translate("FredWindow", "Credits", None, QtGui.QApplication.UnicodeUTF8))
+        self.btn_errorlog.setText(QtGui.QApplication.translate("FredWindow", "Errors log", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.TabPage), QtGui.QApplication.translate("FredWindow", "&Welcome", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel7.setText(QtGui.QApplication.translate("FredWindow", "<h2>Connect</h2>\n"
         "This part use to connect and disconnect to the EPP server. You need defined path to the certificates in your configuration file.", None, QtGui.QApplication.UnicodeUTF8))
@@ -2937,8 +2945,8 @@ class Ui_FredWindow(object):
         "The EPP \"check\" command is used to determine if an object can be provisioned within a repository.  It provides a hint that allows a client to anticipate the success or failure of provisioning an object using the \"create\" command as object provisioning requirements are ultimately a matter of server policy.", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel34.setText(QtGui.QApplication.translate("FredWindow", "clTRID", None, QtGui.QApplication.UnicodeUTF8))
         self.send_check_contact.setText(QtGui.QApplication.translate("FredWindow", "Send command", None, QtGui.QApplication.UnicodeUTF8))
-        self.textLabel35.setText(QtGui.QApplication.translate("FredWindow", "<b>names</b><br>\n"
-        "Type one or more names (handles) what you want to check. Separate names by spaces or new lines.", None, QtGui.QApplication.UnicodeUTF8))
+        self.textLabel35.setText(QtGui.QApplication.translate("FredWindow", "<b>contact ID</b><br>\n"
+        "Type one or more contact handles what you want to check. Separate names by spaces or new lines.", None, QtGui.QApplication.UnicodeUTF8))
         self.check_contact_response.setTabText(self.check_contact_response.indexOf(self.tab5), QtGui.QApplication.translate("FredWindow", "command", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel36.setText(QtGui.QApplication.translate("FredWindow", "data", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel37.setText(QtGui.QApplication.translate("FredWindow", "message", None, QtGui.QApplication.UnicodeUTF8))
@@ -2963,9 +2971,9 @@ class Ui_FredWindow(object):
         "and the type of information associated with an object are both\n"
         "object-specific, so the child elements of the <info> command are\n"
         "specified using the EPP extension framework.", None, QtGui.QApplication.UnicodeUTF8))
-        self.textLabel40.setText(QtGui.QApplication.translate("FredWindow", "<b>name</b>", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel41.setText(QtGui.QApplication.translate("FredWindow", "clTRID", None, QtGui.QApplication.UnicodeUTF8))
         self.send_info_contact.setText(QtGui.QApplication.translate("FredWindow", "Send command", None, QtGui.QApplication.UnicodeUTF8))
+        self.textLabel40.setText(QtGui.QApplication.translate("FredWindow", "<b>contact ID</b>", None, QtGui.QApplication.UnicodeUTF8))
         self.info_contact_response.setTabText(self.info_contact_response.indexOf(self.tab6), QtGui.QApplication.translate("FredWindow", "command", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel42.setText(QtGui.QApplication.translate("FredWindow", "data", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel43.setText(QtGui.QApplication.translate("FredWindow", "message", None, QtGui.QApplication.UnicodeUTF8))
@@ -3024,9 +3032,9 @@ class Ui_FredWindow(object):
         self.tabWidget6_2.setTabText(self.tabWidget6_2.indexOf(self.TabPage13), QtGui.QApplication.translate("FredWindow", "update", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel51.setText(QtGui.QApplication.translate("FredWindow", "<h2>delete_contact</h2>\n"
         "The EPP \"delete\" command is used to remove an instance of an existing object.", None, QtGui.QApplication.UnicodeUTF8))
-        self.textLabel52.setText(QtGui.QApplication.translate("FredWindow", "<b>name</b>", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel53.setText(QtGui.QApplication.translate("FredWindow", "clTRID", None, QtGui.QApplication.UnicodeUTF8))
         self.send_delete_contact.setText(QtGui.QApplication.translate("FredWindow", "Send command", None, QtGui.QApplication.UnicodeUTF8))
+        self.textLabel52.setText(QtGui.QApplication.translate("FredWindow", "<b>contact ID</b>", None, QtGui.QApplication.UnicodeUTF8))
         self.delete_contact_response.setTabText(self.delete_contact_response.indexOf(self.tab10), QtGui.QApplication.translate("FredWindow", "command", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel54.setText(QtGui.QApplication.translate("FredWindow", "message", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel55.setText(QtGui.QApplication.translate("FredWindow", "data", None, QtGui.QApplication.UnicodeUTF8))
@@ -3045,12 +3053,12 @@ class Ui_FredWindow(object):
         self.delete_contact_table.setHorizontalHeaderItem(1,headerItem17)
         self.delete_contact_response.setTabText(self.delete_contact_response.indexOf(self.TabPage16), QtGui.QApplication.translate("FredWindow", "response", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget6_2.setTabText(self.tabWidget6_2.indexOf(self.TabPage15), QtGui.QApplication.translate("FredWindow", "delete", None, QtGui.QApplication.UnicodeUTF8))
-        self.textLabel58.setText(QtGui.QApplication.translate("FredWindow", "<b>name</b>", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel59.setText(QtGui.QApplication.translate("FredWindow", "<b>password</b>", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel60.setText(QtGui.QApplication.translate("FredWindow", "clTRID", None, QtGui.QApplication.UnicodeUTF8))
         self.send_transfer_contact.setText(QtGui.QApplication.translate("FredWindow", "Send command", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel57.setText(QtGui.QApplication.translate("FredWindow", "<h2>transfer_contact</h2>\n"
         "The EPP \"transfer\" command makes change in client sponsorship of an existing object. The new owner becomes registrant what called transfer command. New auhtorization info is generated automaticly after successfully transfer.", None, QtGui.QApplication.UnicodeUTF8))
+        self.textLabel58.setText(QtGui.QApplication.translate("FredWindow", "<b>contact ID</b>", None, QtGui.QApplication.UnicodeUTF8))
         self.transfer_contact_response.setTabText(self.transfer_contact_response.indexOf(self.tab11), QtGui.QApplication.translate("FredWindow", "command", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel62.setText(QtGui.QApplication.translate("FredWindow", "message", None, QtGui.QApplication.UnicodeUTF8))
         self.transfer_contact_table.clear()
@@ -3090,8 +3098,8 @@ class Ui_FredWindow(object):
         self.textLabel51_2.setText(QtGui.QApplication.translate("FredWindow", "<h2>sendauthinfo_contact</h2>\n"
         "The EPP \'sendauthinfo_contact\' command transmit request for send authorisation info to contact email.", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel53_2.setText(QtGui.QApplication.translate("FredWindow", "clTRID", None, QtGui.QApplication.UnicodeUTF8))
-        self.textLabel52_2.setText(QtGui.QApplication.translate("FredWindow", "<b>name</b>", None, QtGui.QApplication.UnicodeUTF8))
         self.send_sendauthinfo_contact.setText(QtGui.QApplication.translate("FredWindow", "Send command", None, QtGui.QApplication.UnicodeUTF8))
+        self.textLabel52_2.setText(QtGui.QApplication.translate("FredWindow", "<b>contact ID</b>", None, QtGui.QApplication.UnicodeUTF8))
         self.sendauthinfo_contact_response.setTabText(self.sendauthinfo_contact_response.indexOf(self.tab13), QtGui.QApplication.translate("FredWindow", "command", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel54_2.setText(QtGui.QApplication.translate("FredWindow", "message", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel55_2.setText(QtGui.QApplication.translate("FredWindow", "data", None, QtGui.QApplication.UnicodeUTF8))
@@ -3117,8 +3125,8 @@ class Ui_FredWindow(object):
         "The EPP \"check\" command is used to determine if an object can be provisioned within a repository.  It provides a hint that allows a client to anticipate the success or failure of provisioning an object using the \"create\" command as object provisioning requirements are ultimately a matter of server policy.", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel71.setText(QtGui.QApplication.translate("FredWindow", "clTRID", None, QtGui.QApplication.UnicodeUTF8))
         self.send_check_nsset.setText(QtGui.QApplication.translate("FredWindow", "Send command", None, QtGui.QApplication.UnicodeUTF8))
-        self.textLabel72.setText(QtGui.QApplication.translate("FredWindow", "<b>names</b><br>\n"
-        "Type one or more names (handles) what you want to check. Separate names by spaces or new lines.", None, QtGui.QApplication.UnicodeUTF8))
+        self.textLabel72.setText(QtGui.QApplication.translate("FredWindow", "<b>NSSET ID</b><br>\n"
+        "Type one or more handles what you want to check. Separate names by spaces or new lines.", None, QtGui.QApplication.UnicodeUTF8))
         self.check_nsset_response.setTabText(self.check_nsset_response.indexOf(self.tab15), QtGui.QApplication.translate("FredWindow", "command", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel73.setText(QtGui.QApplication.translate("FredWindow", "message", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel74.setText(QtGui.QApplication.translate("FredWindow", "data", None, QtGui.QApplication.UnicodeUTF8))
@@ -3138,7 +3146,6 @@ class Ui_FredWindow(object):
         self.check_nsset_response.setTabText(self.check_nsset_response.indexOf(self.TabPage24), QtGui.QApplication.translate("FredWindow", "response", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget6_2_2.setTabText(self.tabWidget6_2_2.indexOf(self.tab14), QtGui.QApplication.translate("FredWindow", "check", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel76.setText(QtGui.QApplication.translate("FredWindow", "clTRID", None, QtGui.QApplication.UnicodeUTF8))
-        self.textLabel77.setText(QtGui.QApplication.translate("FredWindow", "<b>name</b>", None, QtGui.QApplication.UnicodeUTF8))
         self.send_info_nsset.setText(QtGui.QApplication.translate("FredWindow", "Send command", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel78.setText(QtGui.QApplication.translate("FredWindow", "<h2>info_nsset</h2>\n"
         "The EPP \"info\" command is used to retrieve information associated\n"
@@ -3146,6 +3153,7 @@ class Ui_FredWindow(object):
         "and the type of information associated with an object are both\n"
         "object-specific, so the child elements of the <info> command are\n"
         "specified using the EPP extension framework.", None, QtGui.QApplication.UnicodeUTF8))
+        self.textLabel77.setText(QtGui.QApplication.translate("FredWindow", "<b>NSSET ID</b>", None, QtGui.QApplication.UnicodeUTF8))
         self.info_nsset_response.setTabText(self.info_nsset_response.indexOf(self.tab16), QtGui.QApplication.translate("FredWindow", "command", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel79.setText(QtGui.QApplication.translate("FredWindow", "message", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel80.setText(QtGui.QApplication.translate("FredWindow", "data", None, QtGui.QApplication.UnicodeUTF8))
@@ -3202,11 +3210,11 @@ class Ui_FredWindow(object):
         self.update_nsset_table.setHorizontalHeaderItem(1,headerItem30)
         self.update_nsset_response.setTabText(self.update_nsset_response.indexOf(self.TabPage30), QtGui.QApplication.translate("FredWindow", "response", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget6_2_2.setTabText(self.tabWidget6_2_2.indexOf(self.TabPage29), QtGui.QApplication.translate("FredWindow", "update", None, QtGui.QApplication.UnicodeUTF8))
-        self.textLabel88.setText(QtGui.QApplication.translate("FredWindow", "<b>name</b>", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel89.setText(QtGui.QApplication.translate("FredWindow", "clTRID", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel90.setText(QtGui.QApplication.translate("FredWindow", "<h2>delete_nsset</h2>\n"
         "The EPP \"delete\" command is used to remove an instance of an existing object.", None, QtGui.QApplication.UnicodeUTF8))
         self.send_delete_nsset.setText(QtGui.QApplication.translate("FredWindow", "Send command", None, QtGui.QApplication.UnicodeUTF8))
+        self.textLabel88.setText(QtGui.QApplication.translate("FredWindow", "<b>NSSET ID</b>", None, QtGui.QApplication.UnicodeUTF8))
         self.delete_nsset_response.setTabText(self.delete_nsset_response.indexOf(self.tab19), QtGui.QApplication.translate("FredWindow", "command", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel91.setText(QtGui.QApplication.translate("FredWindow", "data", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel92.setText(QtGui.QApplication.translate("FredWindow", "message", None, QtGui.QApplication.UnicodeUTF8))
@@ -3244,10 +3252,10 @@ class Ui_FredWindow(object):
         self.list_nsset_response.setTabText(self.list_nsset_response.indexOf(self.TabPage34), QtGui.QApplication.translate("FredWindow", "response", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget6_2_2.setTabText(self.tabWidget6_2_2.indexOf(self.TabPage33), QtGui.QApplication.translate("FredWindow", "list", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel53_2_2.setText(QtGui.QApplication.translate("FredWindow", "clTRID", None, QtGui.QApplication.UnicodeUTF8))
-        self.textLabel52_2_2.setText(QtGui.QApplication.translate("FredWindow", "<b>name</b>", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel51_2_2.setText(QtGui.QApplication.translate("FredWindow", "<h2>sendauthinfo_nsset</h2>\n"
         "The EPP \'sendauthinfo_nsset\' command transmit request for send authorisation info to technical contact email.", None, QtGui.QApplication.UnicodeUTF8))
         self.send_sendauthinfo_nsset.setText(QtGui.QApplication.translate("FredWindow", "Send command", None, QtGui.QApplication.UnicodeUTF8))
+        self.textLabel52_2_2.setText(QtGui.QApplication.translate("FredWindow", "<b>NSSET ID</b>", None, QtGui.QApplication.UnicodeUTF8))
         self.sendauthinfo_nsset_response.setTabText(self.sendauthinfo_nsset_response.indexOf(self.tab21), QtGui.QApplication.translate("FredWindow", "command", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel54_2_2.setText(QtGui.QApplication.translate("FredWindow", "message", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel55_2_2.setText(QtGui.QApplication.translate("FredWindow", "data", None, QtGui.QApplication.UnicodeUTF8))
@@ -3268,9 +3276,9 @@ class Ui_FredWindow(object):
         self.tabWidget6_2_2.setTabText(self.tabWidget6_2_2.indexOf(self.TabPage35), QtGui.QApplication.translate("FredWindow", "sendAuthInfo", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel60_2.setText(QtGui.QApplication.translate("FredWindow", "clTRID", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel59_2.setText(QtGui.QApplication.translate("FredWindow", "<b>domain name</b>", None, QtGui.QApplication.UnicodeUTF8))
-        self.textLabel58_2.setText(QtGui.QApplication.translate("FredWindow", "<b>nsset id</b>", None, QtGui.QApplication.UnicodeUTF8))
-        self.textLabel57_2.setText(QtGui.QApplication.translate("FredWindow", "<h2>technical test</h2>The EPP \'technical_test\' command transmit request for technical test for particular NSSET and domain. The result of the test will be saved into the message queue from where the registrant can fetch it by poll command.", None, QtGui.QApplication.UnicodeUTF8))
         self.send_technical_test.setText(QtGui.QApplication.translate("FredWindow", "Send command", None, QtGui.QApplication.UnicodeUTF8))
+        self.textLabel58_2.setText(QtGui.QApplication.translate("FredWindow", "<b>NSSET ID</b>", None, QtGui.QApplication.UnicodeUTF8))
+        self.textLabel57_2.setText(QtGui.QApplication.translate("FredWindow", "<h2>technical test</h2>The EPP \'technical_test\' command transmit request for technical test for particular NSSET and domain. The result of the test will be saved into the message queue from where the registrant can fetch it by poll command.", None, QtGui.QApplication.UnicodeUTF8))
         self.technical_test_response.setTabText(self.technical_test_response.indexOf(self.tab_5), QtGui.QApplication.translate("FredWindow", "command", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel62_2.setText(QtGui.QApplication.translate("FredWindow", "message", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel63_2.setText(QtGui.QApplication.translate("FredWindow", "<b>transfer_contact</b>", None, QtGui.QApplication.UnicodeUTF8))
@@ -3296,8 +3304,8 @@ class Ui_FredWindow(object):
         self.textLabel101.setText(QtGui.QApplication.translate("FredWindow", "<h2>check_domain</h2>\n"
         "The EPP \"check\" command is used to determine if an object can be provisioned within a repository.  It provides a hint that allows a client to anticipate the success or failure of provisioning an object using the \"create\" command as object provisioning requirements are ultimately a matter of server policy.", None, QtGui.QApplication.UnicodeUTF8))
         self.send_check_domain.setText(QtGui.QApplication.translate("FredWindow", "Send command", None, QtGui.QApplication.UnicodeUTF8))
-        self.textLabel102.setText(QtGui.QApplication.translate("FredWindow", "<b>names</b><br>\n"
-        "Type one or more names what you want to check. Separate names by spaces or new lines.", None, QtGui.QApplication.UnicodeUTF8))
+        self.textLabel102.setText(QtGui.QApplication.translate("FredWindow", "<b>domain names</b><br>\n"
+        "Type one or more domain names what you want to check. Separate names by spaces or new lines.", None, QtGui.QApplication.UnicodeUTF8))
         self.check_domain_response.setTabText(self.check_domain_response.indexOf(self.tab23), QtGui.QApplication.translate("FredWindow", "command", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel103.setText(QtGui.QApplication.translate("FredWindow", "data", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel104.setText(QtGui.QApplication.translate("FredWindow", "message", None, QtGui.QApplication.UnicodeUTF8))
@@ -3317,7 +3325,6 @@ class Ui_FredWindow(object):
         self.check_domain_response.setTabText(self.check_domain_response.indexOf(self.TabPage38), QtGui.QApplication.translate("FredWindow", "response", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget6_2_2_2.setTabText(self.tabWidget6_2_2_2.indexOf(self.tab22), QtGui.QApplication.translate("FredWindow", "check", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel106.setText(QtGui.QApplication.translate("FredWindow", "clTRID", None, QtGui.QApplication.UnicodeUTF8))
-        self.textLabel107.setText(QtGui.QApplication.translate("FredWindow", "<b>name</b>", None, QtGui.QApplication.UnicodeUTF8))
         self.send_info_domain.setText(QtGui.QApplication.translate("FredWindow", "Send command", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel108.setText(QtGui.QApplication.translate("FredWindow", "<h2>info_domain</h2>\n"
         "The EPP \"info\" command is used to retrieve information associated\n"
@@ -3325,6 +3332,7 @@ class Ui_FredWindow(object):
         "and the type of information associated with an object are both\n"
         "object-specific, so the child elements of the <info> command are\n"
         "specified using the EPP extension framework.", None, QtGui.QApplication.UnicodeUTF8))
+        self.textLabel107.setText(QtGui.QApplication.translate("FredWindow", "<b>domain name</b>", None, QtGui.QApplication.UnicodeUTF8))
         self.info_domain_response.setTabText(self.info_domain_response.indexOf(self.tab24), QtGui.QApplication.translate("FredWindow", "command", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel109.setText(QtGui.QApplication.translate("FredWindow", "message", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel110.setText(QtGui.QApplication.translate("FredWindow", "data", None, QtGui.QApplication.UnicodeUTF8))
@@ -3382,10 +3390,10 @@ class Ui_FredWindow(object):
         self.update_domain_response.setTabText(self.update_domain_response.indexOf(self.TabPage44), QtGui.QApplication.translate("FredWindow", "response", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget6_2_2_2.setTabText(self.tabWidget6_2_2_2.indexOf(self.TabPage43), QtGui.QApplication.translate("FredWindow", "update", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel118.setText(QtGui.QApplication.translate("FredWindow", "clTRID", None, QtGui.QApplication.UnicodeUTF8))
-        self.textLabel119.setText(QtGui.QApplication.translate("FredWindow", "<b>name</b>", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel120.setText(QtGui.QApplication.translate("FredWindow", "<h2>delete_domain</h2>\n"
         "The EPP \"delete\" command is used to remove an instance of an existing object.", None, QtGui.QApplication.UnicodeUTF8))
         self.send_delete_domain.setText(QtGui.QApplication.translate("FredWindow", "Send command", None, QtGui.QApplication.UnicodeUTF8))
+        self.textLabel119.setText(QtGui.QApplication.translate("FredWindow", "<b>domain name</b>", None, QtGui.QApplication.UnicodeUTF8))
         self.delete_domain_response.setTabText(self.delete_domain_response.indexOf(self.tab27), QtGui.QApplication.translate("FredWindow", "command", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel121.setText(QtGui.QApplication.translate("FredWindow", "data", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel122.setText(QtGui.QApplication.translate("FredWindow", "message", None, QtGui.QApplication.UnicodeUTF8))
@@ -3406,10 +3414,10 @@ class Ui_FredWindow(object):
         self.tabWidget6_2_2_2.setTabText(self.tabWidget6_2_2_2.indexOf(self.TabPage45), QtGui.QApplication.translate("FredWindow", "delete", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel124.setText(QtGui.QApplication.translate("FredWindow", "<b>password</b>", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel125.setText(QtGui.QApplication.translate("FredWindow", "clTRID", None, QtGui.QApplication.UnicodeUTF8))
-        self.textLabel126.setText(QtGui.QApplication.translate("FredWindow", "<b>name</b>", None, QtGui.QApplication.UnicodeUTF8))
         self.send_transfer_domain.setText(QtGui.QApplication.translate("FredWindow", "Send command", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel127.setText(QtGui.QApplication.translate("FredWindow", "<h2>transfer_domain</h2>\n"
         "The EPP \"transfer\" command makes change in client sponsorship of an existing object. The new owner becomes registrant what called transfer command. New auhtorization info is generated automaticly after successfully transfer.", None, QtGui.QApplication.UnicodeUTF8))
+        self.textLabel126.setText(QtGui.QApplication.translate("FredWindow", "<b>domain name</b>", None, QtGui.QApplication.UnicodeUTF8))
         self.transfer_domain_response.setTabText(self.transfer_domain_response.indexOf(self.tab28), QtGui.QApplication.translate("FredWindow", "command", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel128.setText(QtGui.QApplication.translate("FredWindow", "data", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel129.setText(QtGui.QApplication.translate("FredWindow", "message", None, QtGui.QApplication.UnicodeUTF8))
@@ -3435,10 +3443,10 @@ class Ui_FredWindow(object):
         self.renew_domain_period_unit.addItem(QtGui.QApplication.translate("FredWindow", "month", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel133.setText(QtGui.QApplication.translate("FredWindow", "<b>number</b>", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel134.setText(QtGui.QApplication.translate("FredWindow", "period", None, QtGui.QApplication.UnicodeUTF8))
-        self.textLabel135.setText(QtGui.QApplication.translate("FredWindow", "<b>name</b>", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel136.setText(QtGui.QApplication.translate("FredWindow", "<b>current expiration date</b>", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel137.setText(QtGui.QApplication.translate("FredWindow", "<h2>renew_domain</h2>\n"
         "The EPP \"renew\" command is used to extend validity of an existing object.", None, QtGui.QApplication.UnicodeUTF8))
+        self.textLabel135.setText(QtGui.QApplication.translate("FredWindow", "<b>domain name</b>", None, QtGui.QApplication.UnicodeUTF8))
         self.renew_domain_response.setTabText(self.renew_domain_response.indexOf(self.tab29), QtGui.QApplication.translate("FredWindow", "command", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel138.setText(QtGui.QApplication.translate("FredWindow", "message", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel139.setText(QtGui.QApplication.translate("FredWindow", "data", None, QtGui.QApplication.UnicodeUTF8))
@@ -3476,10 +3484,10 @@ class Ui_FredWindow(object):
         self.list_domain_response.setTabText(self.list_domain_response.indexOf(self.TabPage52), QtGui.QApplication.translate("FredWindow", "response", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget6_2_2_2.setTabText(self.tabWidget6_2_2_2.indexOf(self.TabPage51), QtGui.QApplication.translate("FredWindow", "list", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel53_2_2_2.setText(QtGui.QApplication.translate("FredWindow", "clTRID", None, QtGui.QApplication.UnicodeUTF8))
-        self.textLabel52_2_2_2.setText(QtGui.QApplication.translate("FredWindow", "<b>name</b>", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel51_2_2_2.setText(QtGui.QApplication.translate("FredWindow", "<h2>sendauthinfo_domain</h2>\n"
         "The EPP \'sendauthinfo_domain\' command transmit request for send authorisation info to registrant email.", None, QtGui.QApplication.UnicodeUTF8))
         self.send_sendauthinfo_domain.setText(QtGui.QApplication.translate("FredWindow", "Send command", None, QtGui.QApplication.UnicodeUTF8))
+        self.textLabel52_2_2_2.setText(QtGui.QApplication.translate("FredWindow", "<b>domain name</b>", None, QtGui.QApplication.UnicodeUTF8))
         self.sendauthinfo_domain_response.setTabText(self.sendauthinfo_domain_response.indexOf(self.tab31), QtGui.QApplication.translate("FredWindow", "command", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel54_2_2_2.setText(QtGui.QApplication.translate("FredWindow", "message", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel55_2_2_2.setText(QtGui.QApplication.translate("FredWindow", "data", None, QtGui.QApplication.UnicodeUTF8))
@@ -3499,6 +3507,4 @@ class Ui_FredWindow(object):
         self.sendauthinfo_domain_response.setTabText(self.sendauthinfo_domain_response.indexOf(self.TabPage54), QtGui.QApplication.translate("FredWindow", "response", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget6_2_2_2.setTabText(self.tabWidget6_2_2_2.indexOf(self.TabPage53), QtGui.QApplication.translate("FredWindow", "sendAuthInfo", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.TabPage37), QtGui.QApplication.translate("FredWindow", "&domain", None, QtGui.QApplication.UnicodeUTF8))
-        self.buttonOk.setText(QtGui.QApplication.translate("FredWindow", "E&xit client", None, QtGui.QApplication.UnicodeUTF8))
-        self.buttonOk.setShortcut(QtGui.QApplication.translate("FredWindow", "Alt+X", None, QtGui.QApplication.UnicodeUTF8))
 

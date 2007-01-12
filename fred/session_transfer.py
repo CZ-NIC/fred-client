@@ -562,6 +562,10 @@ $fred_source_answer = '';      // source code (XML) of the answer prepared to di
         else: # text
             msg = message
         return msg
+
+    def get_answer_xml(self, dct=None):
+        'Returns raw XML'
+        return self._raw_answer
         
     def get_answer_php(self, dct=None):
         """Returns data as a PHP code:

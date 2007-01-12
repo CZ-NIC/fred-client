@@ -147,7 +147,7 @@ def main():
                 _T('Module for sending files to the EPP server.'),
                 help_option,
                 _T("""  -o OUTPUT_TYPE, --output=OUTPUT_TYPE
-                   Display output as text (default), html, php"""),
+                   Display output as text (default), html, xml, php (Beware! For experimental only!)"""),
                 _T('EXAMPLES'),
 """
   ./fred_create.py info_domain nic.cz > cmd1.xml
@@ -156,7 +156,7 @@ def main():
   ./fred_sender.py -s epp_host -l cs cmd1.xml cmd2.xml
     
   echo -en "check_domain nic.cz\\ninfo_domain nic.cz" | ./fred_create.py | ./fred_sender.py""",
-   _T('For more information, see README.'))
+   _T('See README for more information.'))
 
 if __name__ == '__main__':
     main()

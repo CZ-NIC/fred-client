@@ -29,7 +29,7 @@ DEFS_LENGTH = 4
 LANGS,objURI,extURI,PREFIX = range(DEFS_LENGTH)
 OMIT_ERROR = 1
 
-OUTPUT_TYPES = ('text','html','php')
+OUTPUT_TYPES = ('text','html','php','xml')
 
 class ManagerBase:
     """This class holds buffers with error and note messages.
@@ -247,7 +247,7 @@ $fred_client_errors = array(); // errors occuring during communication
         return '%s\n%s\n'%(self.version(),_T('Type "help", "license" or "credits" for more information.'))
 
     def version(self):
-        return 'FredClient 1.3.0' # version of the client
+        return 'FredClient 1.3.1' # version of the client
 
     def __next_clTRID__(self):
         """Generate next clTRID value.

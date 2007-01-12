@@ -33,10 +33,10 @@ if __name__ == '__main__':
    _T("""  -d COMMAND, --command=COMMAND
                    Send command to server and exit
   -o OUTPUT_TYPE, --output=OUTPUT_TYPE
-                   Display output as text (default), html, php"""),
+                   Display output as text (default), html, xml, php (Beware! For experimental only!)"""),
    _T("""  -q,  --qt
-                   Run client in Qt4 GUI"""),
-            _T('For more information, see README.'))
+                   Run client in Qt4 GUI  (Beware! For experimental only!)"""),
+            _T('See README for more information.'))
         elif options['version']:
             epp = fred.ClientSession()
             print epp.version()

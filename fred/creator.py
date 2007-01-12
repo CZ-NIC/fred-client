@@ -92,7 +92,7 @@ def main():
 echo -en "check_domain nic.cz\\ninfo_domain nic.cz" | ./fred_create.py
 cat file-with-commands.txt | ./fred_create.py
 """,
-                _T('For more information, see README.')
+                _T('See README for more information.')
                 )
 
 if __name__ == '__main__':

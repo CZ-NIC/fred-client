@@ -206,7 +206,7 @@ if __name__ == '__main__':
         if options['help']:
             print '%s: %s [OPTIONS...]\n%s\n%s\n'%(_T('Usage'), 'fred_console',
             help_option,
-            _T('For more information, see README.'))
+            _T('See README for more information.'))
         elif options['version']:
             epp = fred.ClientSession()
             print epp.version()

@@ -1,7 +1,20 @@
+FredClient 1.3.1
+
+Změny:
+    * V GUI ukládání chybových hlášení do samostatného oka.
+
+Nové funkce:
+    * Výstup zdrojových XML odpovědí ze serveru.
+    * Při instalaci kontrola verze pythonu a admin práv.
+
+Opravy:
+    * Oprava chyby readline v interaktivním režimu zadávání parametrů.
+
+
 FredClient 1.3.0
 
 Změny:
-    * Přidána GUI nadstavba pro Qt4
+    * Přidána GUI nadstavba pro Qt4 (Pozor! Pouze experimentální verze)
     * Přidána funkce technical_test
     * Pro NSSETy přidána hodnota Report level
     * Přidán příkaz creditInfo
@@ -38,7 +51,7 @@ Nové funkce:
     * zavedeny zkratky pro statusy: clientDeleteProhibited -> cdp atd.
     * možnost nastavení typu socketu
     * automaticke zalogovani pro spusteni klienta (lze vypnout)
-    * podpora integrace s PHP (vývojová verze)
+    * podpora integrace s PHP (Pozor! Pouze experimentální verze)
 
 Změny:
     * změny v povinných a nepovinných parametrech příkazů: Všechny položky password
