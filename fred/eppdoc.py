@@ -1,14 +1,23 @@
 #!/usr/bin/env python
-# -*- coding: utf8 -*-
+# -*- coding: utf-8 -*-
 #
-# Tento modul obsahuje funkce a data, která jsou potřebná
-# na sestavení EPP dokumentu.
-# Funkce i data jsou společná jak pro klienta, tak pro server:
+#This file is part of FredClient.
 #
-#       dom - stromová struktura XML
-#       errors - pole s chybovými hlášeními
-#       encoding - výstupní kódování
+#    FredClient is free software; you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation; either version 2 of the License, or
+#    (at your option) any later version.
 #
+#    FredClient is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with FredClient; if not, write to the Free Software
+#    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+#
+# This module owns functions and values needed for build EPP document.
 """Eppdoc module owns base class of the EPP XML Message.
 This class shares function needed for create XML document.
 There is also defined XMLNS constants and schema version.

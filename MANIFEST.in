@@ -8,6 +8,7 @@ include doc/README_CS.html
 include doc/README_CS.txt
 include doc/client_example.php
 
+include INSTALL
 include INSTALL_CS.ascii
 include INSTALL_CS.utf8
 include install.sh
