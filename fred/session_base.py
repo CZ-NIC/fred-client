@@ -119,7 +119,7 @@ class ManagerBase:
         )
 
     def fill_missing_required(self, section_connect):
-        'Fill missing required valurs by defaults.'
+        'Fill missing required values by defaults.'
         for key in ('port','timeout'):
             if self.get_config_value(section_connect,key,OMIT_ERROR) is None:
                 self._conf.set(section_connect,key,str(internal_variables.required_defaults[key]))

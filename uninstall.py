@@ -21,10 +21,20 @@ def remove_all(top):
                 print 'OSError:',msg
                 return 0
     return 1
-    
+
+def check_root_privileges():
+    try:
+        import pwd
+    except ImportError:
+        return 1 # platform is not Unix
+    if pwd.getpwuid(os.getuid())[0] != 'root':
+        print 'Error: Unsufficient privileges. For uninstallation you need root privileges.'
+        return 0
+    return 1
+
 def main():
+    if not check_root_privileges(): return 0
     filelog = 'install.log'
-    print 'Uninstall process. Run as root. Needs %s file.'%filelog
     try:
         body = open(filelog).read()
     except IOError, msg:
