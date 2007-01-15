@@ -8,8 +8,8 @@ include doc/README_CS.html
 include doc/README_CS.txt
 include doc/client_example.php
 
-include INSTALL_CS.ASCII
-include INSTALL_CS.UTF8
+include INSTALL_CS.ascii
+include INSTALL_CS.utf8
 include install.sh
 include uninstall.py
 include ChangeLog_cs.utf8
@@ -24,6 +24,8 @@ include guiqt4/*.qm
 include guiqt4/*.ts
 include guiqt4/*.ui
 include guiqt4/qt_client.project
+include guiqt4/INSTALL_CS.ascii
+include guiqt4/INSTALL_CS.utf8
 
 prune guiqt4/.svn
 

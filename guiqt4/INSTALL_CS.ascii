@@ -1,88 +1,25 @@
-Instalace FredClient
+Instalace GUI nadstavby Qt4
 
-OBSAH:
-
-    * Instalace jazyka python
-    * Externi validator xmllint
-    * Instalace FredClient
-    * Instalace GUI nadstavby Qt4
-    * Odinstalovani
-
-*** Instalace jazyka Python
-
-FredClient potrebuje ke svemu behu jazyk Python nejmene ve verzi 2.4. 
-Tento jazyk je na soucasnych linuxovych distribucich jiz vetsinou nainstalovan.
-
-Instalace na linuxu:
-    $ sudo apt-get install python2.4
-nebo:
-    stahnete si instalacni soubor pro vasi distribuci a zkompilujte standardnim zpusobem:
-    $ tar -xf Python-x.x.tgz
-    $ cd Python-x.x
-    $ ./configure
-    $ make
-    $ sudo make install
-
-Instalace na MS Windows:
-    - stahnete si instalacni soubor pro MS Windows z www.python.org, 
-      najdete jej na strane Download.
-    - kliknete na stazeny soubor a nainstalujte Python
-
-
-
-*** Externi validator xmllint
-
-FredClient pouziva "xmllint" pro validaci XML. Tento program ale neni
-nutnou podminkou funkcnosti klienta. Pokud se v systemu nenachazi, tak 
-se overovani automaticky vypne. Jestli mate xmllint instalovan, zjistite zadanim
-prikazu na prikazove radce:
-
-    $ xmllint
-    Usage : xmllint [options] XMLfiles ...
-
-Instalace na linuxu:
-    $ sudo apt-get install libxml2-utils
-nebo:
-    - ze strany http://xmlsoft.org/ is stahnete instalacni soubor pro vasi distribuci
-      a zkompilujte standardnim zpusobem.
-
-Instalace na MS Windows:
-    - Ze strany http://xmlsoft.org/ si stahnete instalacni soubor urceny pro MS Windows:
-      Related links -> Windows binaries -> http://www.zlatkovic.com/libxml.en.html -> 
-      http://www.zlatkovic.com/pub/libxml/ -> libxml2-2.6.27.win32.zip
-      Rozbalte jej a nainstalujte.
-
-
-*** Instalace FredClient
-
-Instalace FredClient programu se provede nasledovne:
-
-    $ tar -xf FredClient-X.Y.Z.tar.gz        - rozbalite archiv
-    $ cd FredClient-X.Y.Z                    - prejdete se do vznikleho adresare
-    $ sudo ./install.sh                      - spustite instalaci (musite mit prava roota)
-
-Tim je instalace dokoncena. Klienta spustite prikazem:
-
-    $ fred_client.py
-
-
-Program lze spustit i bez instalace primo z daneho adresare. Nebo lze instalaci
-provest s vlastnim nastavenim. Viz help:
-
-    $ python setup.py --help install
-
-
-*** Instalace GUI nadstavby Qt4
+Popis instalace behoveho prostredi pro GUI nadstavbu klinta FredClient
 
 FredClient ma okenni nadstavbu postavenou na frameworku Qt4. K tomu je jeste nutne naistalovat
 si rozhrani pro python a prekladac.
 
-Instalace na linuxu:
+
+OBSAH:
+    * Instalace na linuxu
+    * Instalace v MS Windows
+
+
+
+*** Instalace na linuxu:
 
 Instalace na linuxu se sklada ze 3 kroku:
+
     1. Framework Qt4/Windows Open Source Edition
     2. SIP - A Tool for Generating Python Bindings for C and C++ Libraries
     3. PyQt4
+
 
 KROK 1:
 
@@ -149,15 +86,17 @@ PyQt-x11-gpl-4.1.1.tar.gz  (5.2 MB)	PyQt v4 GPL Linux, UNIX a instalujeme:
 
 
 
-Instalace na MS Windows:
+*** Instalace na MS Windows:
 
 Instalace v MS Windows se sklada ze 3 kroku:
+
     1. Framework Qt4/Windows Open Source Edition + MinGw
     2. Nastaveni promenne PATH
     3. PyQt4
 
 Ze strany http://www.trolltech.com/developer/downloads/qt/index si stahnete soubor 
 qt-win-opensource-4.2.2-mingw.exe (56.2 MB) - Qt/Windows Open Source Edition
+
 
 KROK 1:
 - Kliknutim na instalacni soubor spustite instalaci frameworku Qt4.
@@ -199,10 +138,4 @@ Ze strany http://www.riverbankcomputing.co.uk/pyqt/download.php si stahnete
 PyQt-win-gpl-4.1.1.zip  (6.1 MB)	PyQt v4 GPL for Windows
 Kliknutim na instalacni soubor jej nainstalujete.
 
-
-*** Odinstalovani
-
-Program FredClient se ze systemu odinstaluje prikazem:
-
-    $ sudo ./uninstall.py
 

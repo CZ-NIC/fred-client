@@ -1,58 +1,81 @@
-Instalace FredClient
+Description of the FredClient installation
+
+CONTENT:
+   
+    * Check python version
+    * External validation xmllint
+    * Install FredClient
+    * Uninstall FredClient
 
 
+*** Check python version
 
-** Pozadavky na system:
+FredClient needs pyhon framework at the minimal version 2.4. This framework
+is usually instaled in the common linux distribution.
 
-FredClient je napsan v jazyce Python. Pokud se ve vasem systemu Python nenachazi, 
-tak si jej nainstalujte. Instalacni soubory jsou v obvyklych repozitarich 
-nebo na www.python.org. Pro beh skriptu potrebujete Python verzi 2.4 (nevo vyssi).
+Check if you have python in necessary version. Type on the command line:
 
-Existenci Pythonu a jeho verze si overite tak, ze na prikazove radce zadate prikaz:
+    $ python -V
 
-    $ python
+If you use MS Windows open python console - select menu item Python.
+First lines on the opened console described version.
 
-Vypise se verze: Python 2.4.3 (...). Beh ukoncite Ctrl+D (nebo Ctrl+Z na Win), ktera
-sekvence to je vam vypise prikaz exit nebo quit.
+If you have not version 2.4 or higher you install it. Install README and
+installation files you find at http://www.python.org/.
 
 
-FredClient pouziva "xmllint" pro validaci XML. Tento program ale neni
-nutnou podminkou funkcnosti klienta. Pokud se v systemu nenachazi, tak 
-se overovani automaticky vypne. Jestli mate xmllint instalovan, zjistite zadanim
-prikazu na prikatove radce (vypise se help nebo hlaseni, ze prikaz je neznamy):
+*** External validation xmllint
+
+FredClient use 'xmllint' for validation of the XML documents. But this program
+is not necessary for running FredClient. Validation is set off automatically, 
+if is not present in your system.
+
+For check xmllint type:
 
     $ xmllint
 
-Usage : xmllint [options] XMLfiles ... / bash: xmllint: command not found
+In success case the help will be shown. This begins on this line:
+Usage : xmllint [options] XMLfiles ...
 
-Instalacni balicky naleznete na http://xmlsoft.org/ (menu Downloads, Windows binaries)
-Pro Ubuntu a Debian je mozne xmllint nainstalovat pomoci balicku libxml2-utils:
-$ sudo apt-get install libxml2-utils
+IF you want to install xmllint you make this:
 
+Linux:
+    $ sudo apt-get install libxml2-utils
+or download install file from page http://xmlsoft.org/ and compile in the standard way.
 
-** Instalace:
-
-Instalace FredClient programu se provede nasledovne:
-
-    $ tar -xf FredClient-X.Y.Z.tar.gz        - rozbalite archiv
-    $ cd FredClient-X.Y.Z                    - prejdete se do vznikleho adresare
-    $ sudo ./install.sh                      - spustite instalaci (musite mit prava roota)
-
-Tim je instalace dokoncena. Klienta spustite prikazem:
-
-    $ fred_client.py
+MS Windows:
+Download install file dedicated for MS Windows:
+Related links -> Windows binaries -> http://www.zlatkovic.com/libxml.en.html -> 
+http://www.zlatkovic.com/pub/libxml/ -> libxml2-2.6.27.win32.zip
+Unpack it and make install.
 
 
-Program lze spustit i bez instalace primo z daneho adresare. Nebo lze instalaci
-provest s vlastnim nastavenim. Viz help:
+*** Install FredClient
+It is not necessary install FredClient if you want it just try for test. It is possible
+run program directly from folder where it has been unpacked.
 
-    $ python setup.py --help install
+But if you need run FredClient from any folder or need run it for others users
+you need install.
+
+Do this steps:
+
+    $ tar -xf FredClient-X.Y.Z.tar.gz        - unpack archive
+    $ cd FredClient-X.Y.Z                    - go to folder
+    $ sudo ./install.sh                      - run installation with root privileges
+
+Install script writes file paths for all files what has been installed into
+install.log. This log file is important for uninstallation. Don't delete it
+and save for this purpose.
+
+That is all, installation is finised. For start client type:
+
+    $ ./fred_client.py
 
 
+*** Uninstall FredClient
 
-** Odinstalovani:
-
-Program se ze systemu odinstaluje prikazem:
+For uninstall FredClient type command:
 
     $ sudo ./uninstall.py
+
 
