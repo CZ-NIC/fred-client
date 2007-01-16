@@ -1227,7 +1227,7 @@ Parametry, které jsou &lt;b&gt;tučně&lt;/b&gt;, jsou &lt;b&gt;povinné&lt;/b&
         <location filename="" line="0"/>
         <source>Welcome on the &lt;b&gt;FredClient&lt;/b&gt; GUI interface.&lt;br&gt;
 Beta release 0.1.0; (Needs &lt;b&gt;Fred module&lt;/b&gt; version 1.3.0)</source>
-        <translation type="unfinished">Vítejte v grafické nadstavbě programu &lt;b&gt;FredClient&lt;/b&gt;&lt;br&gt;
+        <translation type="obsolete">Vítejte v grafické nadstavbě programu &lt;b&gt;FredClient&lt;/b&gt;&lt;br&gt;
 Beta release 0.1.0; (Vyžaduje &lt;b&gt;Fred module&lt;/b&gt; verzi 1.3.0)</translation>
     </message>
     <message>
@@ -1321,6 +1321,13 @@ Type one or more handles what you want to check. Separate names by spaces or new
         <source>&lt;b&gt;domain names&lt;/b&gt;&lt;br&gt;
 Type one or more domain names what you want to check. Separate names by spaces or new lines.</source>
         <translation type="unfinished">&lt;b&gt;doménová jména&lt;/b&gt;&lt;br&gt;Zadejte jedno nebo více doménových jmen, které chcete ověřit. Jména oddělujte mezerou nebo novým řádkem.</translation>
+    </message>
+    <message>
+        <location filename="" line="0"/>
+        <source>Welcome on the &lt;b&gt;FredClient&lt;/b&gt; GUI interface.&lt;br&gt;
+Beta release 0.1.1; (Needs &lt;b&gt;Fred module&lt;/b&gt; version at least 1.3.0)</source>
+        <translation>Vítejte v grafické nadstavbě programu &lt;b&gt;FredClient&lt;/b&gt;&lt;br&gt;
+Beta release 0.1.1; (Vyžaduje &lt;b&gt;Fred module&lt;/b&gt; verzi minimálně 1.3.0)</translation>
     </message>
 </context>
 </TS>

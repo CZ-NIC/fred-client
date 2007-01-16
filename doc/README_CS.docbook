@@ -5,7 +5,7 @@
 
 <bookinfo>
     <title>Manuál pro FredClient konzoli a knihovnu fred</title>
-    <subtitle>Verze 1.2</subtitle>
+    <subtitle>Verze 1.3.1</subtitle>
     <copyright>
       <year>2006</year>
       <holder>CZ.NIC</holder>
@@ -20,6 +20,7 @@
     27. 9.2006;
      1.11.2006;
      7.11.2006;
+     15.1.2007;
     </releaseinfo>
   </bookinfo>
 
@@ -61,8 +62,7 @@ Dostupné skripty jsou následující:
 </para>
 
 <simplelist>
-    <member>fred_client.py   - spouští EPP konzoli nebo sekvenci crate+send (pro shell)</member>
-    <member>fred_console.py  - EPP konzole, komunikuje s EPP serverem</member>
+    <member>fred_client.py   - EPP konzole, komunikuje s EPP serverem</member>
     <member>fred_create.py   - Vytboří zdrojový EPP XML příkaz</member>
     <member>fred_sender.py   - Odešle soubor na EPP server</member>
 </simplelist>
@@ -82,7 +82,7 @@ zadáním parametru --help nebo -?:
     $ fred_client.py --help
     $ fred_client.py -?
 
-Použití: fred_console [parametry...]
+Použití: fred_client [parametry...]
 
 Hlavní parametry:
   -?, --help       Zobrazit tuto nápovědu a skončit
@@ -140,7 +140,7 @@ načíst z libovolného souboru.
 </para>
 <para>
 Pro založení nového konfiguračního souboru je k dispozici příklad 
-<emphasis>config_example.txt</emphasis>. Tento příklad můžete použít jako základ pro váš
+<emphasis>fred_client.conf.sample</emphasis>. Tento příklad můžete použít jako základ pro váš
 konfigurační soubor.
 </para>
 <para>
@@ -150,40 +150,8 @@ Pokud se tyto hodnoty v konfiguračním souboru nacházejí, tak je příkaz
 <emphasis>login</emphasis> použije jako parametry příkazu, které mu nebyly zadány.
 </para>
 <para>
-Zde je příklad konfigu:
 
-<programlisting>
-# Example of configuration file.
-# Modify line with schema and dir=... set real path of your files.
-# and save into /etc/fred_client.conf or ~/.fred_client.conf
-#
-
-[connect]
-dir=/home/username/certificates
-host = epp-test.ccreg.nic.cz
-port = 700
-ssl_cert = %(dir)s/certificate.pem
-ssl_key  = %(dir)s/private_key.pem
-username = MYUSERNAME
-password = MYPASSWORD
-timeout = 10.0      # socket timeout in sec.
-# socket = IPv6     # Force socket type. Valid values are: IPv4 and IPv6. 
-                    # othervice used type from offer of the server
-# nologin = y       # turn off automatic login process after start up
-
-[session]
-schema = $python-site-packages/fred/schemas/all-1.0.xsd
-poll_autoack = off           # send "poll ack" right after to "poll req"
-confirm_send_commands = on   # confirm all editable commands
-validate = on                # enable/disable xmllint
-colors = yes                 # display colors on tty console
-verbose = 2                  # set verbose level 1,2,3
-# lang = en                  # if lang is not set, ti used value from os.environ.LANG
-# null_value = None          # substitution of NULL value
-# auto_login = off           # disable automatic login after start client (default is ON)
-</programlisting>
-
-Sekcí <emphasis>connect</emphasis> může být více. Která z nich se při startu použije se nastaví
+Sekcí <emphasis>connect</emphasis> může být v konfiguračním souboru více. Která z nich se při startu použije se nastaví
 pomocí parametru <emphasis>-s --session</emphasis>. Například si vytvoříte sekci [connect_myeppserver]
 tu pak aktivujete: 
 
@@ -350,16 +318,16 @@ V sekci <emphasis>session</emphasis> jsou tato nastavení:</para>
 
 <chapter>
     <title>
-    Program fred_console.py
+    Program fred_client.py
     </title>
 
 <para>
-fred_console.py je konzole, která komunikuje s EPP serverem. Konzoli spustíte
+fred_client.py je konzole, která komunikuje s EPP serverem. Konzoli spustíte
 příkazem:
 </para>
 
 <programlisting>
-    $ fred_console.py
+    $ fred_client.py
 </programlisting>
 
 <para>
@@ -376,7 +344,7 @@ Jaké příkazy máte k dispozici zjistíte zadáním příkazu "help" (nebo h, 
 </para>
 
 <programlisting>
-    FredClient verze 1.2.0 Zadejte "help", "license" nebo "credits" pro zobrazení více informací.
+    FredClient verze 1.3.1 Zadejte "help", "license" nebo "credits" pro zobrazení více informací.
     &gt; help
 </programlisting>
 
@@ -844,80 +812,6 @@ ještě navíc XML zdrojové dokumenty, které si klient se serverem předává.
 </para>
 </section>
 
-<section>
-<title>Testovací příkazy</title>
-<para>
-
-Konzole má několik testovacích příkazů, které je možné použít k daným účelům.
-Testovací příkazy se v helpu nezobrazují.
-
-<programlisting>
-&gt; raw-command [dict]
-&gt; raw-answer [dict]
-</programlisting>
-
-Tento příkaz má podobnou funkci jako verbose úroveň 3. Příkaz vypisuje zdrojový XML
-dokument posledního příkazu nebo odpovědi. Pokud tedy nemáte verbose úroveň právě nastavenu
-a chcete se na zdrojový dokument podívat, tak právě k tomu je tento příkaz určen.
-Místo "raw" lze zadat i "src" a oba příkazy fungují ve zkrácené verzi:
-
-<programlisting>
-    raw-c, raw-c d, src-c, src-c d, raw-a, raw-a d, src-a, src-a d
-</programlisting>
-
-Vysvětlení:
-Každý příkaz, který zadáte v promptu se sestaví do XML EPP dokumentu. Pokud si chcete tento
-XML dokument prohlédnout, tak zadáte "src-c" a na výstup se vypíše vygenerované zdojové XML. 
-Chcete-li vidět XML zdojový dokument od serveru, zadejte "src-a".
-Pokud je XML dokument nepřehledný a vy chcete vidět jasněji strukturu jednotlivých XML uzlů,
-tak zadejte "src-c d" (nebo "src-a d"). Konzole vypíše hodnoty uzlů v přehlednější formě s odsazením.
-
-<programlisting>
-&gt; config
-</programlisting>
-
-Příkaz zobrazuje jméno a cestu použitého konfiguračního souboru a interní proměnné 
-z něj načetené.
-
-<programlisting>
-&gt; send [filename]
-</programlisting>
-
-Send je ryzí testovací příkaz a slouží k posílání libovolného souboru na EPP server. 
-Pokud jej zadáte bez parametrů, tak vypíše aktuální adresář. Když "send" zadáte se
-jménem platného souboru, tak tento soubor odešle na EPP server:
-
-<programlisting>
-    send some-folder/my-test-file.xml
-</programlisting>
-
-<programlisting>
-&gt; colors [on/off]
-</programlisting>
-
-Pokud to konzole umožňuje, tak tímto příkazem lze zapnout zvýraznění výtupu.
-To je v některých hlášeních zapsáno tučně a barevně. Například chyby jsou červeně,
-kladné vyřízení příkazu zeleně.
-
-<programlisting id="null_value">
-&gt; null_value [nějaká_hodnota]
-</programlisting>
-
-Nastavení reprezentace <quote>žádné hodnoty</quote>. Viz <link linkend='null_or_empty' endterm="null_or_empty.title"/>
-a <link linkend='config_null_value'>Formát hodnoty NULL</link>.
-
-<programlisting>
-&gt; output [typ_výstupu]
-</programlisting>
-
-Příkaz output není přímo testovací. Je určen k nastavení typu výstupu.
-Platné honodty jsou text, php, html.
-Podrobnější popis je na <link linkend='output_types' endterm="output_types.title"/>
-
-</para>
-
-</section>
-
 </chapter>
 
 <chapter>
@@ -996,7 +890,7 @@ Finální řešení se může od tohoto vývojového ještě lišit.
 
 <para>
 Součástí distribuce klienta je i ukázkový PHP skript, který demonstruje,
-jak lze klienta začlenit do PHP: <emphasis role='bold'>client_example.php</emphasis>.
+jak lze klienta začlenit do PHP: <emphasis role='bold'>doc/client_example.php</emphasis>.
 V příkladu je nutné správně nastavit cestu ke klientovi <emphasis>$exec_path</emphasis> (pokud ten nebyl nainstalován
 standardním způsobem a systém jej nenalezne).
 Proměnou <emphasis>$php_module_name</emphasis> se nastavuje přesměrování do souboru a <emphasis>$command_options</emphasis> umožňují
@@ -1102,7 +996,7 @@ pracující s knihovnou fred, tak celý proces spuštění udělejte stejně, al
 spustíte z adresáře, kde máte tyto skripty uložené. Pak se v helpu zobrazí i ony:
 
 <programlisting>
-    $ cd FredClient-1.2.0
+    $ cd FredClient-1.3.1
     $ pydoc -p 8080
 </programlisting>
 

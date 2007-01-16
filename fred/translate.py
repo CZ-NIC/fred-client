@@ -100,6 +100,7 @@ optcols = (
     'q qt',       # run in Qt
     's:session',
     #'t timer',   # for debug only; display duration of processes
+    't:cltrid', # define clTrID
     'u:user',
     'v:verbose',
     'w:password',

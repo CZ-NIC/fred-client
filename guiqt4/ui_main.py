@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'main.ui'
 #
-# Created: Fri Jan 12 16:41:49 2007
+# Created: Tue Jan 16 10:04:28 2007
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -103,12 +103,6 @@ class Ui_FredWindow(object):
         self.pixmapLabel3.setWordWrap(False)
         self.pixmapLabel3.setObjectName("pixmapLabel3")
 
-        self.textLabel1 = QtGui.QLabel(self.TabPage)
-        self.textLabel1.setGeometry(QtCore.QRect(180,20,471,81))
-        self.textLabel1.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
-        self.textLabel1.setWordWrap(True)
-        self.textLabel1.setObjectName("textLabel1")
-
         self.system_messages = QtGui.QTextEdit(self.TabPage)
         self.system_messages.setEnabled(True)
         self.system_messages.setGeometry(QtCore.QRect(200,382,450,170))
@@ -122,6 +116,12 @@ class Ui_FredWindow(object):
         self.btn_errorlog = QtGui.QPushButton(self.TabPage)
         self.btn_errorlog.setGeometry(QtCore.QRect(14,484,120,30))
         self.btn_errorlog.setObjectName("btn_errorlog")
+
+        self.textLabel1 = QtGui.QLabel(self.TabPage)
+        self.textLabel1.setGeometry(QtCore.QRect(180,20,471,81))
+        self.textLabel1.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.textLabel1.setWordWrap(True)
+        self.textLabel1.setObjectName("textLabel1")
         self.tabWidget.addTab(self.TabPage,"")
 
         self.Widget8 = QtGui.QWidget()
@@ -845,10 +845,6 @@ class Ui_FredWindow(object):
         self.textLabel51.setWordWrap(True)
         self.textLabel51.setObjectName("textLabel51")
 
-        self.delete_contact_name = QtGui.QLineEdit(self.tab10)
-        self.delete_contact_name.setGeometry(QtCore.QRect(220,210,360,22))
-        self.delete_contact_name.setObjectName("delete_contact_name")
-
         self.delete_contact_cltrid = QtGui.QLineEdit(self.tab10)
         self.delete_contact_cltrid.setGeometry(QtCore.QRect(220,250,360,22))
         self.delete_contact_cltrid.setObjectName("delete_contact_cltrid")
@@ -866,6 +862,10 @@ class Ui_FredWindow(object):
         self.textLabel52.setGeometry(QtCore.QRect(20,210,190,20))
         self.textLabel52.setWordWrap(False)
         self.textLabel52.setObjectName("textLabel52")
+
+        self.delete_contact_id = QtGui.QLineEdit(self.tab10)
+        self.delete_contact_id.setGeometry(QtCore.QRect(220,210,360,22))
+        self.delete_contact_id.setObjectName("delete_contact_id")
         self.delete_contact_response.addTab(self.tab10,"")
 
         self.TabPage16 = QtGui.QWidget()
@@ -1476,14 +1476,14 @@ class Ui_FredWindow(object):
         self.send_delete_nsset.setGeometry(QtCore.QRect(220,290,170,40))
         self.send_delete_nsset.setObjectName("send_delete_nsset")
 
-        self.delete_nsset_name = QtGui.QLineEdit(self.tab19)
-        self.delete_nsset_name.setGeometry(QtCore.QRect(220,210,360,22))
-        self.delete_nsset_name.setObjectName("delete_nsset_name")
-
         self.textLabel88 = QtGui.QLabel(self.tab19)
         self.textLabel88.setGeometry(QtCore.QRect(20,210,190,20))
         self.textLabel88.setWordWrap(False)
         self.textLabel88.setObjectName("textLabel88")
+
+        self.delete_nsset_id = QtGui.QLineEdit(self.tab19)
+        self.delete_nsset_id.setGeometry(QtCore.QRect(220,210,360,22))
+        self.delete_nsset_id.setObjectName("delete_nsset_id")
         self.delete_nsset_response.addTab(self.tab19,"")
 
         self.TabPage32 = QtGui.QWidget()
@@ -2080,14 +2080,14 @@ class Ui_FredWindow(object):
         self.send_delete_domain.setGeometry(QtCore.QRect(220,290,170,40))
         self.send_delete_domain.setObjectName("send_delete_domain")
 
-        self.delete_domain_name = QtGui.QLineEdit(self.tab27)
-        self.delete_domain_name.setGeometry(QtCore.QRect(220,210,360,22))
-        self.delete_domain_name.setObjectName("delete_domain_name")
-
         self.textLabel119 = QtGui.QLabel(self.tab27)
         self.textLabel119.setGeometry(QtCore.QRect(20,210,190,20))
         self.textLabel119.setWordWrap(False)
         self.textLabel119.setObjectName("textLabel119")
+
+        self.delete_domain_name = QtGui.QLineEdit(self.tab27)
+        self.delete_domain_name.setGeometry(QtCore.QRect(220,210,360,22))
+        self.delete_domain_name.setObjectName("delete_domain_name")
         self.delete_domain_response.addTab(self.tab27,"")
 
         self.TabPage46 = QtGui.QWidget()
@@ -2663,8 +2663,8 @@ class Ui_FredWindow(object):
         FredWindow.setTabOrder(self.update_contact_msg,self.update_contact_table)
         FredWindow.setTabOrder(self.update_contact_table,self.btn_source_update_contact)
         FredWindow.setTabOrder(self.btn_source_update_contact,self.delete_contact_response)
-        FredWindow.setTabOrder(self.delete_contact_response,self.delete_contact_name)
-        FredWindow.setTabOrder(self.delete_contact_name,self.delete_contact_cltrid)
+        FredWindow.setTabOrder(self.delete_contact_response,self.delete_contact_id)
+        FredWindow.setTabOrder(self.delete_contact_id,self.delete_contact_cltrid)
         FredWindow.setTabOrder(self.delete_contact_cltrid,self.send_delete_contact)
         FredWindow.setTabOrder(self.send_delete_contact,self.delete_contact_msg)
         FredWindow.setTabOrder(self.delete_contact_msg,self.delete_contact_table)
@@ -2716,8 +2716,8 @@ class Ui_FredWindow(object):
         FredWindow.setTabOrder(self.update_nsset_msg,self.update_nsset_table)
         FredWindow.setTabOrder(self.update_nsset_table,self.btn_source_update_nsset)
         FredWindow.setTabOrder(self.btn_source_update_nsset,self.delete_nsset_response)
-        FredWindow.setTabOrder(self.delete_nsset_response,self.delete_nsset_name)
-        FredWindow.setTabOrder(self.delete_nsset_name,self.delete_nsset_cltrid)
+        FredWindow.setTabOrder(self.delete_nsset_response,self.delete_nsset_id)
+        FredWindow.setTabOrder(self.delete_nsset_id,self.delete_nsset_cltrid)
         FredWindow.setTabOrder(self.delete_nsset_cltrid,self.send_delete_nsset)
         FredWindow.setTabOrder(self.send_delete_nsset,self.delete_nsset_msg)
         FredWindow.setTabOrder(self.delete_nsset_msg,self.delete_nsset_table)
@@ -2825,10 +2825,10 @@ class Ui_FredWindow(object):
         self.textLabel2.setText(QtGui.QApplication.translate("FredWindow", "<b>port</b>", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel5.setText(QtGui.QApplication.translate("FredWindow", "<b>host</b>", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel3_3.setText(QtGui.QApplication.translate("FredWindow", "Parameters in <b>bold</b> style are <b>required</b>. Others are optionals.", None, QtGui.QApplication.UnicodeUTF8))
-        self.textLabel1.setText(QtGui.QApplication.translate("FredWindow", "Welcome on the <b>FredClient</b> GUI interface.<br>\n"
-        "Beta release 0.1.0; (Needs <b>Fred module</b> version 1.3.0)", None, QtGui.QApplication.UnicodeUTF8))
         self.btn_credits.setText(QtGui.QApplication.translate("FredWindow", "Credits", None, QtGui.QApplication.UnicodeUTF8))
         self.btn_errorlog.setText(QtGui.QApplication.translate("FredWindow", "Errors log", None, QtGui.QApplication.UnicodeUTF8))
+        self.textLabel1.setText(QtGui.QApplication.translate("FredWindow", "Welcome on the <b>FredClient</b> GUI interface.<br>\n"
+        "Beta release 0.1.1; (Needs <b>Fred module</b> version at least 1.3.0)", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.TabPage), QtGui.QApplication.translate("FredWindow", "&Welcome", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel7.setText(QtGui.QApplication.translate("FredWindow", "<h2>Connect</h2>\n"
         "This part use to connect and disconnect to the EPP server. You need defined path to the certificates in your configuration file.", None, QtGui.QApplication.UnicodeUTF8))

@@ -91,9 +91,9 @@ NO_SPLIT_NAME, SPLIT_NAME = (0,1)
 class RunEPPCommunication(QtCore.QThread):
     'Run Epp communication in separate thread'
 
-    def __init__(self, epp_client, parent=None):
+    def __init__(self, fred_client, parent=None):
         QtCore.QThread.__init__(self, parent)
-        self.client = epp_client
+        self.client = fred_client
         self.command_name = ''
         self.params = None
 
@@ -103,18 +103,27 @@ class RunEPPCommunication(QtCore.QThread):
 
     def run(self):
         'Run EPP command.'
+        exception_msg = ''
         try:
             self.client._epp.api_command(self.command_name, self.params)
         except fred.FredError, err:
             self.client._epp._errors.extend(err.args)
+        except:
+            # stderr is redirected into Internal Error Log window
+            sys.stderr.write(get_exception())
         self.emit(QtCore.SIGNAL("epp_command_finished()"))
 
 class RedirectOutput:
-    'Redirect output to the window.'
-    def __init__(self, wndEdit):
+    'Redirect output to the window or list.'
+    def __init__(self, wndEdit, list_messages = None):
         self.wndEdit = wndEdit
+        self.list_messages = list_messages
     def write(self, message):
-        self.wndEdit.insertPlainText(message)
+        if self.wndEdit is not None:
+            self.wndEdit.insertPlainText(message)
+        if self.list_messages is not None:
+            self.list_messages.append(message)
+
 
 class FredMainWindow(QtGui.QDialog):
     'Main frame dialog.'
@@ -132,6 +141,7 @@ class FredMainWindow(QtGui.QDialog):
         self.missing_required = []
         self.src = {} # {'command_name':['command line','XML source','XML response'], ...}
         self._stderr_errors = [] # Keep internal errors for display.
+        self._thread_errors = [] # Temporary list of errors generated inside different thread.
         #--------------------------------------        
         # scrolled windows
         #--------------------------------------        
@@ -163,17 +173,16 @@ class FredMainWindow(QtGui.QDialog):
         self.connect(self.thread_epp, QtCore.SIGNAL("epp_command_finished()"), self.process_answer)
         # Window handlers of the 'Send command' buttons:
         self._btn_send = [obj for name, obj in self.ui.__dict__.items() if re.match('send_',name)]
-        # Redirect output:
-        self.output = RedirectOutput(self.ui.system_messages)
-        sys.stdout = self.output
-        sys.stderr = self.write
+        # Redirect output and errors:
+        sys.stdout = RedirectOutput(self.ui.system_messages)
+        sys.stderr  = RedirectOutput(None, self._thread_errors)
         # INIT
         self.load_config_and_autologin()
 
     def write(self, message):
         'Catch error messages from stderr.'
         self._stderr_errors.append(message)
-        self.display_error(_TU('Some internal error occured. See <b>Error log</b> on the first panel.'), _TU('Internal error'))
+        self.display_error(_TU('Some internal error occured. See <b>Error log</b> on the first panel. Reset application else some unexpected behavior can occurs.'), _TU('Internal error'))
 
     def append_system_messages(self, messages):
         'Appent text to the System message window'
@@ -278,6 +287,10 @@ class FredMainWindow(QtGui.QDialog):
 
     def process_answer(self):
         'Process answer and catch exceptions.'
+        if len(self._thread_errors):
+            # erorrs catched in command thread
+            self.write('\n'.join(self._thread_errors))
+            self._thread_errors = [] # reset temporaty list
         try:
             self.display_answer()
         except:
@@ -756,10 +769,10 @@ class FredMainWindow(QtGui.QDialog):
             self.display_error(self.missing_required)
 
     def delete_contact(self):
-        self.__share_command__('delete_contact')
+        self.__share_command__('delete_contact', NO_SPLIT_NAME, 'id')
 
     def delete_nsset(self):
-        self.__share_command__('delete_nsset')
+        self.__share_command__('delete_nsset', NO_SPLIT_NAME, 'id')
 
     def delete_domain(self):
         self.__share_command__('delete_domain')

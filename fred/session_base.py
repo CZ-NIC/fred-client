@@ -39,7 +39,7 @@ colored_output = terminal_controler.TerminalController()
 # názvy sloupců pro data sestavené při spojení se serverem
 ONLINE, CMD_ID, LANG, POLL_AUTOACK, CONFIRM_SEND_COMMAND, \
    USERNAME, SESSION, HOST, COLORS, VALIDATE, VERBOSE, SORT_BY_COLUMNS, NULL_VALUE, \
-   TRANSLATE_ANSWER_COLUMN_NAMES, OUTPUT_TYPE = range(15)
+   TRANSLATE_ANSWER_COLUMN_NAMES, OUTPUT_TYPE, CLTRID = range(16)
 # názvy sloupců pro defaultní hodnoty
 DEFS_LENGTH = 4
 LANGS,objURI,extURI,PREFIX = range(DEFS_LENGTH)
@@ -75,6 +75,7 @@ class ManagerBase:
                 'NULL', # NULL_VALUE
                 1,      # TRANSLATE_ANSWER_COLUMN_NAMES, TEST only
                 'text', # OUTPUT_TYPE (text, html)
+                None,  # CLTRID
                 ]
         self._external_validator = 'xmllint'
         # defaults
@@ -125,6 +126,8 @@ class ManagerBase:
         # We need reconfigure defaults by values fom config or options:
         self.defs[objURI] = self._epp_cmd.get_objURI()
         self.defs[extURI] = self._epp_cmd.get_extURI()
+        if op['cltrid']:
+            self._session[CLTRID] = op['cltrid']
 
 
     def get_actual_username_and_password(self):
@@ -270,7 +273,15 @@ $fred_client_errors = array(); // errors occuring during communication
         format: [4 random ASCII chars][3 digits of the commands order]#[date and time]
         """
         self._session[CMD_ID]+=1 
-        return ('%s%03d#%s'%(self.defs[PREFIX],self._session[CMD_ID],time.strftime('%y-%m-%dat%H:%M:%S')))
+        if self._session[CLTRID]:
+            # if user defines his own identificator
+            cltrid = self._session[CLTRID]
+            if re.search('%\d*d',cltrid):
+                # insert ID client transaction
+                cltrid = cltrid%self._session[CMD_ID]
+        else:
+            cltrid = ('%s%03d#%s'%(self.defs[PREFIX], self._session[CMD_ID], time.strftime('%y-%m-%dat%H:%M:%S')))
+        return cltrid
 
     def set_null_value(self, value):
         'Set string what represents NULL value'
@@ -465,6 +476,13 @@ $fred_client_errors = array(); // errors occuring during communication
         if self._session[VALIDATE]:
             # set validator OFF, if not supported.
             self.check_validator(1) # 1 - silent (no error message)
+        # try get individual for specific connect
+        cltrid = self.get_config_value(section_connect, 'cltrid', OMIT_ERROR)
+        if not cltrid:
+            # shared for all session if individual was not defined
+            cltrid = self.get_config_value(section, 'cltrid', OMIT_ERROR)
+        if cltrid and len(cltrid):
+            self._session[CLTRID] = cltrid
         return 1 # OK
 
     def parse_verbose_value(self, verbose):
