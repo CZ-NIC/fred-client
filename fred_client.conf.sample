@@ -53,3 +53,8 @@ verbose = 2
 
 ;; substitution of NULL value
 ;null_value = None
+
+;; cltrID - client transaction ID for all communication
+;; Symbol %d is replaced by number of the command.
+;; Value 04 between % and d pads all numbers to four digits (leading zero).
+; cltrid = myid%04d

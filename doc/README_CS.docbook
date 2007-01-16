@@ -53,8 +53,7 @@
 
 <chapter>
     <title>
-    Popis jednotlivých programů,
-       parametry a config
+    Popis jednotlivých programů, parametry a konfigurační soubor
     </title>
 
 <para>
@@ -67,16 +66,14 @@ Dostupné skripty jsou následující:
     <member>fred_sender.py   - Odešle soubor na EPP server</member>
 </simplelist>
 
-    <section>
+    <section id="options">
     <title>
-    Parametry (OPTIONS)
+    Parametry při spuštění (OPTIONS)
     </title>
-
 
 <para>
 Skripty se dají spouštět s parametry. Jaké parametry lze použít zjistíte 
 zadáním parametru --help nebo -?:
-</para>
 
 <programlisting>
     $ fred_client.py --help
@@ -121,11 +118,18 @@ Parametry pro spojení:
   -d COMMAND, --command=COMMAND
                    Odeslat příkaz na server a skončit
   -o OUTPUT_TYPE, --output=OUTPUT_TYPE
-                   Zobrazit výstup jako text (default), html, php
+                   Zobrazit výstup jako text (default), html, xml, php (Pozor! Jen pro testování!)
+  -q,  --qt
+                   Spustit klienta v Qt4 GUI (Pozor! Jen pro testování!)
+
+Speciální parametry, které se v helpu nezobrazují:
+   -r, --cltrid    --cltrid=mycID_%04d
+                   Definice <link linkend="cltrid">vlastního clTrID</link> s přidáním čísla příkazu
 </programlisting>
+</para>
 </section>
 
-    <section>
+    <section id="config">
     <title>
     Konfigurační soubor
     </title>
@@ -173,7 +177,7 @@ V sekci <emphasis>session</emphasis> jsou tato nastavení:</para>
 
 <itemizedlist>
     <listitem>
-    <para><emphasis role='bold'>poll_ack</emphasis> = on/off </para>
+    <para><emphasis role='bold'>poll_autoack</emphasis> = on/off </para>
     <para>
         Při <emphasis>on</emphasis> se po odeslání příkazu <emphasis>poll req</emphasis> automaticky
         pošle i <emphasis>poll ack</emphasis>.
@@ -240,6 +244,15 @@ V sekci <emphasis>session</emphasis> jsou tato nastavení:</para>
         <quote><link linkend='null_or_empty' endterm="null_or_empty.title"/></quote>
     </para>
     </listitem>
+
+    <listitem>
+    <para><emphasis role='bold' id="config_cltrid">cltrid</emphasis> = myid%04d</para>
+    <para>Vlastní hodnota cltrID - <link linkend="cltrid">Client client transaction ID</link>.
+    Symbol %d je nahrazen číslem příkazu.
+    Hodnota mezi % a d zarovnává číslo na čtyři číslice (doplní se nula).
+    </para>
+    </listitem>
+
 </itemizedlist>
 
 <para>V sekci <emphasis>connect</emphasis> jsou tato nastavení:</para>
@@ -304,6 +317,14 @@ V sekci <emphasis>session</emphasis> jsou tato nastavení:</para>
         tak se použije typ soketu, který nabízí server.
     </para>
     </listitem>
+
+    <listitem>
+    <para><emphasis role='bold'>schema_version_[name]</emphasis> = 1.0</para>
+    <para>Individuální nastavení verze schemat pro objekty contact, nsset, domain, enum, fred a epp.
+    </para>
+    </listitem>
+
+
     <listitem>
     <para><emphasis role='bold'>nologin</emphasis> = on/off</para>
     <para>
@@ -331,7 +352,7 @@ příkazem:
 </programlisting>
 
 <para>
-Pokud máte v configu správně nadefinovánu cestu k certifikátům a uložené login a heslo, 
+Pokud máte v konfiguračním souboru správně nadefinovánu cestu k certifikátům a uložené login a heslo, 
 tak můžete jednoduše zadat <emphasis>login</emphasis> a tím se spojíte s EPP serverem.
 Konzole se ukončuje příkazem "quit" nebo jen krátce "q".
 </para>
@@ -362,12 +383,15 @@ Jaké příkazy máte k dispozici zjistíte zadáním příkazu "help" (nebo h, 
 <title>EPP příkazy</title>
 
 <para>
-EPP příkaz zadáváte společně s jeho parametry. Jaké parametry příkaz
-požaduje zjistíte, když zadáte "help příkaz" nebo zkráceně "h příkaz"
-nebo také "? příkaz".
+Všechny EPP příkazy (kromě hello), mají své parametry. Jaké parametry to jsou
+a v jakém pořadí se zadávají naleznete v helpu daného příkazu. Help příkazu si zobrazíte zadáním
+"help příkaz" nebo zkráceně "h příkaz" nebo také "? příkaz".
+Například když chcete znát parametry příkazu login, zadáte: "help login".
 </para>
-<para>Například:</para>
 
+<para>Příklad:</para>
+
+    <programlisting>&gt; help login</programlisting>
     <programlisting>&gt; ?login</programlisting>
 
 <para>
@@ -381,224 +405,181 @@ Samotný příkaz zadáte tak, že napíšete název příkazu a za ním jeho pa
 
 
 <section>
-<title>Typy paramerů příkazu</title>
+<title>Syntaxe zadávání paramerů příkazu</title>
 
-<para><emphasis>INSTRUKCE:</emphasis></para>
+<para>
+Na zadání parametrů EPP příkazu jsou kladeny zvláštní požadavky, kvůli kterým
+byla zavedena speciální syntaxe. 
+
+Parametry, na které není nutné použít tuto syntaxi nazýváme <emphasis>jednoduché hodnoty</emphasis>.
+To jsou hodnoty, ve kterých se nevyskytuje mezera a ani to nejsou seznamy.
+Například:
+<programlisting>
+username password
+</programlisting>
+Parametry jsou odděleny mezerou nebo mohou být odděleny i více mezerami.
+</para>
+
+<para>Syntaxe obsahuje tyto prvky:</para>
+
+<itemizedlist>
+    <listitem><emphasis role='bold'>' " uvozovky (jednoduché nebo dvojité)</emphasis></listitem>
+    <listitem><emphasis role='bold'>( ) závorky</emphasis></listitem>
+    <listitem><emphasis role='bold'>- spojovník (divis)</emphasis></listitem>
+    <listitem><emphasis role='bold'>. tečka</emphasis></listitem>
+    <listitem><emphasis role='bold'>[] hranaté závorky</emphasis></listitem>
+</itemizedlist>
+
+<para>Popis jednotlivých prvků:</para>
+<itemizedlist>
+
+    <listitem>
+    <para><emphasis role='bold'>' " uvozovky</emphasis> řeší požadavek na zadání hodnoty, která obsahuje mezery.
+Taková hodnota se uzavře do uvozovek. Je jedno jestli jednoduchých nebo dvojitých.
+Uvnitř uvozovek se pak mohou nacházet libovolné znaky včetně závorek, spojovníku a
+dalších uvozovek. Pokud to jsou ale uvozovky shodné s těmi, které jsou použity na uzavření
+textu, tak se před ně musí dát zpětné lomítko \ (backslash):
+</para>
+<programlisting>"text \"uvozovky\" text"</programlisting>
+<para>Jinak mohou být bez něj:</para>
+<programlisting>"text s 'jednoduchými' uvozovkami"</programlisting> 
+<para>nebo</para> 
+<programlisting>'text s "dvojtými" uvozovkami'</programlisting>
+    </listitem>
+    <listitem>
+    <para><emphasis role='bold'>( ) závorky</emphasis> se používají pro parametr, který může obsahovat seznam hodnot.
+Například parametr <emphasis>street</emphasis> v příkazu <emphasis>create_contact</emphasis> může 
+být seznam až o třech položkách.
+Když chcete zadat jen jednu ulici, stačí zadat pouze:
+<programlisting>ulice1</programlisting>
+Program ví, že parametr má být seznam a tak tuto hodnotu vyhodnotí jako seznam s jednou položkou.
+Nemusíte tedy zadávat: (ulice1).
+</para>
+<para>
+Když chcete zadat více ulic, tak napíšete:
+<programlisting>(ulice1 ulice2 ulice3)</programlisting> 
+Lze samozřejmě kombinovat se syntaxí s uvozovkami:
+<programlisting>("ulice 1" "ulice 2" "ulice 3")</programlisting>
+</para>
+<para>
+Položky seznamu je možné kromě mezer oddělit i čárkou:
+<programlisting>
+(ulice1,ulice2,ulice3)
+(ulice1, ulice2, ulice3)
+("ulice 1", "ulice 2", "ulice 3")
+</programlisting>
+    </para>
+
+    <para>Některé příkazy mají parametr typu seznam, který dále obsahuje další seznamy. Takový seznam také nazýváme
+<emphasis role='bold'>jmenný prostor</emphasis>, protože obsahuje další položky, které lze definovat
+jménem. Ty mohou být jednoduché nebo to mohou být další seznamy.
+Je potřeba zadávat závorky tak, aby zápis odpovídal struktuře parametru. 
+Strukturu zanořených seznamů zjistíte také z helpu příkazu. Každá úroveň je odsazena.
+    </para>
+    <para>
+Například příkaz <emphasis>update_contact</emphasis> obsahuje seznam <emphasis>chg</emphasis>,
+který dále obsahuje senzam <emphasis>postal_info</emphasis>, který obsahuje hodnoty
+<emphasis>name</emphasis>, <emphasis>org</emphasis> a ještě další seznam <emphasis>addr</emphasis>.
+Seznam <emphasis>addr</emphasis> obsahuje položky <emphasis>city</emphasis>, <emphasis>cc</emphasis>, <emphasis>street</emphasis>, atd.
+
+Takový seznam se zapíše asi takto:
+
+<programlisting>
+((name, org, (city, cc, street, sp, pc)) voice, fax, ...)
+</programlisting>
+
+Porovnejte s příklady, které jsou uvedeny v helpu u každého příkazu.
+    </para>
+
+    </listitem>
+
+    <listitem>
+    <para><emphasis role='bold'>- spojovník (divis).</emphasis>
+Parametry se musí zadávat ve stanoveném pořadí. Nejdříve se vždy zadávají povinné položky
+a pak nepovinné. Zadávání příkazu tedy můžete ukončit za posledním povinným parametrem.
+Pokud ale chcete zadat ještě nějaký nepovinný, který se shodou okolností nachází
+někde vzadu nebo na konci řady parametrů, museli byste zapsat i ty nepovinné parametry, které
+se nacházejí před ním, aby se zachovalo správné pořadí. To však není nutné pokud hodnotu
+zadáte pomocí <quote>pojmenovaného parametru</quote>.
+</para>
+<para>
+<emphasis role='bold'>Pojmenovaný parametr</emphasis> je způsob, jak vložit hodnotu parametru 
+<emphasis>mimo pořadí</emphasis>. Princip je ten, že se uvede jméno parametru, kterému hodnota patří.
+Toto jméno zjistíte z helpu příkazu. Pak jméno a hodnotu zadáte ve tvaru
+<programlisting>
+-jmeno hodnota
+</programlisting>
+Podle spojovníku na začátku slova parser pozná, že se jedná o jméno parametru. Za ním pak
+následuje hodnota. Tato syntaxe je volná v tom směru, že je možné zadat spojovníků více a
+mezi jménem a hodnotou může být rovnítko. Pak takový zápis vypadá takto:
+<programlisting>
+--jmeno = hodnota
+</programlisting>
+</para>
+
+<para>Hodnoty, které jsou definovány pomocí <emphasis>pojmenovaného parametru</emphasis>,
+stojí MIMO pořadí ostatních parametrů. To znamená, že mohou být uvedeny na kterékoliv
+pozici mezi parametry a hodnoty za nimi mají stále stejnou pozici, jako kdyby tam nic
+uvedeno nebylo (viz následující příklad).
+</para>
+
+
+<para>
+Například když si vypíšete help pro příkaz 
+<emphasis>create_contact</emphasis>, tak předposlední parametr se jmenuje 
+<emphasis>notify_email</emphasis>. Kromě povinných chcete zadat již pouze tuto hodnotu
+(povinných je prvních pět parametrů: ID, jméno, email, město a kód země). Pak zadáte:
+<programlisting>
+create_contact CID:ID jméno email@email město CZ <emphasis role='bold'>--notify_email = muj@email.net</emphasis>
+</programlisting>
+Na pozici pojmenovaného parametru nezáleží:
+<programlisting>
+create_contact <emphasis role='bold'>--notify_email = muj@email.net</emphasis> CID:ID jméno email@email město CZ
+</programlisting>
+</para>
+    </listitem>
+
+    <listitem>
+<para><emphasis role='bold'>Tečka.</emphasis> Složitější případ nastane, když chcete definovat hodnotu, která se nachází v nějakém
+<quote>zanořeném seznamu</quote>, tj. seznamu v jiném seznamu. Pak se jednotlivá jména seznamů spojují pomocí <emphasis role='bold'>tečky</emphasis>.
+Například:
+<programlisting>
+create_contact CID:ID jméno email@email město CZ <emphasis role='bold'>--disclose.flag</emphasis> = y
+</programlisting>
+</para>
+    </listitem>
+
+    <listitem>
+<para><emphasis role='bold'>[] hranaté závorky.</emphasis> V případě, že hodnota je položkou v seznamu, je možné zadat i <emphasis>index</emphasis> seznamu.
+Ten se zadává pomocí čísla v hranatých závorkách:
+
+<programlisting>
+create_nsset nssid:nsset1 ((ns1.domain.cz (217.31.207.130 217.31.207.129))) --dns.addr<emphasis role='bold'>[1]</emphasis> = tato_hodnota_prepise_druhou_adresu_217.31.207.129 cid:regid
+</programlisting>
+
+</para>
+
+
+    </listitem>
+</itemizedlist>
+
+
+
+<para><emphasis>Shrnutí:</emphasis></para>
 
 <simplelist>
-    <member>parametry zadávejte v pořadí, v jakém jsou vypsané v helpu</member>
-    <member>hodnoty s mezerami dejte do uvozovek</member>
-    <member>seznamy se definují pomocí závorek, položky seznamu můžou 
-      (ale nemusí) být odděleny čárkami</member>
-    <member>pokud je v seznamu jen jedna položka, nemusí se závorky zadávat</member>
-    <member>jmenné prostory se také jako seznamy definují pomocí závorek</member>
-    <member>chcete-li seznam nebo jmenný porostor vynechat, zadejte jen
-      prázdné závorky</member>
-    <member>Hodnotu, kterou chcete přeskočit zadejte jako <quote>žádnou hodnotu</quote> (<link linkend='null_or_empty' endterm="null_or_empty.title"/>).</member>
-    <member>hodnoty mimo pořadí zadávejte pomocí klíče</member>
+    <member>Parametry zadávejte v pořadí, v jakém jsou vypsané v helpu.</member>
+    <member>Počet mezer mezi hodnotami může být libovolný.</member>
+    <member>Hodnoty s mezerami dejte do uvozovek.</member>
+    <member>Seznamy se definují pomocí závorek, položky seznamu můžou být odděleny čárkami.</member>
+    <member>Pokud je v seznamu jen jedna položka, nemusí se závorky zadávat.</member>
+    <member>Hodnoty mimo pořadí zadávejte pomocí <quote>pojmenovaného parametru.</quote></member>
+    <member>Jména položek zanořených do více seznamů spojíte pomocí tečky.</member>
 </simplelist>
 
-<para><emphasis>VYSVĚTLENÍ:</emphasis></para>
-
-<simplelist>
-    <member>jednoduchá hodnota:  my-value01</member>
-    <member>hodnota s mezerou:   'lorem ipsum'   "some value"</member>
-    <member>seznam:              (one two three)</member>
-    <member>jmenný prostor:      ((one two three) my-value01 'lorem ipsum' (enyky benyky) end-value)</member>
-</simplelist>
-
-<para>
-Pokud hodnota parametru obsahuje mezeru, tak ji napište do uvozovek. 
-Například:
-
-    <programlisting>&gt; login username "moje heslo s mezerami"</programlisting>
-
-Některé parametry můžou obsahovat seznam hodnot. Například parametr 
-"street" v příkazu create_contact.
-Výpis části helpu:
-
-    <programlisting>
-    ?create_contact
-    ...
-    ... street                   Ulice (seznam o maximálně 3 položkách.)
-    ...
-    </programlisting>
-
-Seznam zadáte tak, že hodnoty uzavřete do závorek:
-
-    <programlisting>&gt; create_contact CID:MYID ... (Vodičkova, "Na příkopě", "U přívozu") ...
-    </programlisting>
-
-Pokud zadáváte jen jednu hodnotu ze seznamu, tak závorky zadávat
-nemusíte:
-
-    <programlisting>
-    &gt; create_contact CID:MYID ... Vodičkova ...
-    </programlisting>
-
-Parametry musíte zadávat v pořadí, v jakém jsou v helpu vypsány. Povinné
-jsou vždy na začátku a nepovinné tak není nutné zadávat. Pokud byste kromě
-povinných hodnot chtěli zadat i nějakou nepovinnou, tak byste museli nejprve zadat 
-všechny hodnoty předcházející té, kterou chcete zadat. Pro tento případ
-umožňuje klient zadat hodnotu pomocí pojmenovaného parametru - klíče.
-Řeší se tím tak situace, kdy chcete například zadat jen jeden údaj, který je
-ještě k tomu někde na konci seznamu parametrů.
-</para>
-<para>
-Klíč (jméno parametru) se definuje pomocí jedné nebo dvou pomlček, přesněji 
-řečeno spojovníků. Například chcete v příkazu create_contact zadat kromě 
-povinných údajů už jen hodnotu notify_email (Oznámení na email), která se 
-nachází právě na úplném konci seznamu parametrů. Pak tuto hodnotu zadáte takto:
-
-  <programlisting>
-  &gt; create_contact CID:ID myname my@mail.com city cc --notify_email = muj@mail.cz
-  </programlisting>
-
-Jaký má být klíč (název parametru) zjistíte z helpu daného příkazu.
-Parametr s klíčem pak již nemusí být na "své" pozici, ale může být
-kdekoliv v řadě mezi ostatními parametry. Takový parametr stojí "mimo"
-pořadí a nenarušuje pozice ostatních parametrů bez klíče. Zde jsou 
-do řady parametrů vloženy hodnoty s klíči "vat" a "notify_email":
-
-    <programlisting>
-    &gt; create_contact CID:ID myname my@mail.com --vat = 12346 --notify_email = muj@mail.cz city cc
-    </programlisting>
-
-Některé příkazy mají parametry vnořené do dalších parametrů. Ty vytvářejí
-tak zvané jmenné prostory. Například v příkazu "create_contact" je parametr 
-"disclose". Ten obsahuje další parametry "flag", "data". Samotný
-název "disclose" není v tomto případě název klíče, ale název jmenného
-prostoru, ve kterém se nacházejí klíče "flag" a "data". Jmenné
-prostory se definují stejně jako seznamy pomocí závorek:
-
-  <programlisting>
-  &gt; create_contact my-ID my-name mail city cc org street sp pc 
-        voice fax (n (name org addr voice fax email)) vat ssn
-  </programlisting>
-
-Pokud jmenný prostor nechcete zadávat, napište prostě jen prázdné
-závorky. To platí i pro seznamy:
-
-  <programlisting>
-  &gt; create_contact CID:ID myname my@mail.com City CC Organisation Street SP PC Voice Fax () Vat Ssn notify@email.com
-  </programlisting>
-
-Některé příkazy mají v parametrech seznamy jmenných prostorů. V takovém
-případě pak závorky mají své významy podle toho, jak jsou hodnoty
-seskupeny. Například příkaz "update_nsset" má jeden 
-nepovinný parametr "add" (Přidat hodnoty). Pokud jej nechcete zadávat, tak napíšete:
-
-  <programlisting>
-  &gt; update_nsset id () ...    - parametr add je nyní prázdný
-  </programlisting>
-
-Pokud ale "add" zadat chcete, tak "add" (jak vidíte v helpu) obsahuje
-seznam devíti jmenných prostorů "dns"! Každý "dns" prostor pak dále
-obsahuje parametr "name" a seznam "addr". Pokud chete tyto hodnoty zadat, 
-tak musíte zapsat všechny závorky, které jsou nutné: První závorka pro definování 
-jmenného prostoru "add". Druhá závorka pro začátek seznamu jmenných prostorů "dns".
-Třetí závorka pro samotný jmenný prostor "dns". Teprve pak následuje
-hodnota parametru "name". Za ním pak následuje závorka seznamu "addr":
-
-  <programlisting>
-  &gt;  update_nsset NSSID:nsset1 (((ns1.dns.cz (217.31.207.130, 217.31.207.131, 217.31.207.132)), 
-        (ns2.dns.cz (217.31.207.130, 217.31.207.131, 217.31.207.132))) (tech1, tech2, tech3) 
-        (ok, clientTransferProhibited)) (((rem1.dns.cz, rem2.dns.cz) (CID:rem01, CID:rem02) 
-            serverUpdateProhibited)) (password)
-  </programlisting>
-
-Pokud "addr" není seznam, ale jen jedna hodnota, tak se závorky pro
-"addr" zadávat nemusí:
-(To je pravidlo již zmíněné v předchozím textu.)
-
-  <programlisting>
-  &gt; update_nsset nsset-ID (((ns1.dns.cz 217.31.207.130),(ns2.dns.cz 217.31.207.130))
-        tech status) ...
-  </programlisting>
-
-Takto složité zadávání naštěstí existuje jen v malém množství příkazů a
-tento uvedený příklad zadání je vůbec nejsložitější ze všech. Kromě
-toho máte možnost zadávat parametry příkazu v interaktivním módu. Ten umožňuje zadávat
-parametry postupně - klient vyzve k zadání parametru a uživatel je vyplňuje
-jeden za druhým. Na konci helpu u každého příkazu je uveden
-příklad zadání všech parametrů. 
-</para>
-<para>
-<emphasis role="bold">Interaktivní mód</emphasis> vkládání parametrů se spouští pomocí vykřičníku, který
-se napíše před příkaz:
-
-  <programlisting>&gt; !update_nsset</programlisting>
-
-Tím spustíte režim interaktivního vkládání parametrů. Konzole vždy
-vypíše jméno parametru a čeká na zadání hodnoty. Pokud hodnotu nechcete
-zadat, tak prostě stisknete enter a hodnota se přeskočí. Interaktivní
-režim můžete kdykoliv zrušit stisknutím kláves Ctrl+C (C jako Cancel). 
-Po zadání všech povinných parametrů, kdy už nechcete zadávat další nepovinné
-hodnoty, lze interaktivní režim dokončit stiknutím kláves Ctrl+D (D jako Done nebo Dokončit).
-
-V případě zrušení interaktivního módu se žádný příkaz nesestaví a nic se
-na server neposílá. V případě dokončení módu se sestaví příkaz 
-a na konzoli se vypíše tak, jako byste jej zadali přímo bez interaktivního režimu.
-Pak se příkaz odešle na server. V případě, že se jedná o <quote>editační</quote> příkaz
-a je zapnutá funkce potvrzování (confirm), tak se příkaz musí před odesláním
-na server ještě potvrdit:
-
-    <programlisting>
-REG-LRR@epp-test.ccreg.nic.cz&gt; !update_nsset
-Start interaktivního módu. Mód zrušíte stisknutím Ctrl+C. Příkaz dokončíte kombinací Ctrl+D.
-NSSET ID [povinný]: nssid:id01
-Přidat hodnoty / Seznam DNS[1/9] / Jmenný server [povinný jen je-li tato část zadána]: ns1.dns.cz
-Přidat hodnoty / Seznam DNS[1/9] / Adresa serveru[1/oo] [nepovinný]: 217.31.207.130
-Přidat hodnoty / Seznam DNS[1/9] / Adresa serveru[2/oo] [nepovinný]: 217.31.207.131
-Přidat hodnoty / Seznam DNS[1/9] / Adresa serveru[3/oo] [nepovinný]:
-Přidat hodnoty / Seznam DNS[2/9] / Jmenný server [nepovinný]:
-Přidat hodnoty / Technický kontakt ID[1/oo] [nepovinný]: cid:myid01
-Přidat hodnoty / Technický kontakt ID[2/oo] [nepovinný]:
-Přidat hodnoty / Stav[1/6] [nepovinný]:
-Interaktivní mód ukončen. [stiskněte Enter]
-Příkaz k odeslání:
-update_nsset nssid:id01 (((ns1.dns.cz (217.31.207.130, 217.31.207.131))) cid:myid01)
-Opravdu chcete odeslat tento poříkaz na server? (y/N): y
-nssid:id01 aktualizováno.
-REG-LRR@epp-test.ccreg.nic.cz&gt;
-    </programlisting>
-
-Ještě jednou zpět k zadávání pomocí klíče: Klíč se zadává ve tvaru 
--[název parametru] [hodnota].
-Například:
-
-<programlisting>
-     -heslo "toto je moje heslo"
-</programlisting>
-
-Toto zadání lze napsat i takto se stejným účinkem:
-
-<programlisting>
-     --heslo = "toto je moje heslo"
-</programlisting>
-
-Záleží na vás, který zápis se vám bude zdát čitelnější. Jak ale zadat
-honodotu, která je součástí jmenného prostoru? Jednoduše pomocí tečkové
-koncence:
-
-<programlisting>
-    --add.dns.name = nsset_name
-</programlisting>
-
-Takto jste definovali hodnotu nsset_name do jmenného porostoru "add", 
-do první položky seznamu "dns", do parametru "name". Chcete-li uložit
-hodnotu například do třetí položky seznamu "dns", tak zadejte:
-
-<programlisting>
-    --add.dns[2].name = nsset_name
-</programlisting>
-
-Dvojka je index seznamu v tomto případě o max. devíti položkách
-(indexy 0 - 8).
-</para>
 </section>
 
-<section>
+<section id="cltrid">
 <title>Společný parametr cltrid (Client transaction ID)</title>
 <para>
 Každý EPP příkaz, kromě příkazu <emphasis>hello</emphasis>, obsahuje 
@@ -608,6 +589,20 @@ Tato hodnota je identifikátor transakce. Ten si stanovuje klient a
 může být libovolný v rámci formátovacích pravidel definovaných ve
 schematech pro tuto hodnotu. Identifikátor je nepovinný a pokud 
 není zadán, tak jej klient automaticky doplní.
+</para>
+<para>Další možnost, jak zadat tento parametr je nadefinovat jej v <link linkend="config_cltrid">konfiguračním souboru</link>
+nebo při spuštění klienta v <link linkend="options">parametrech při spuštění (options)</link>.
+</para>
+<para>Jednotlivé příkazy jsou v rámci relace číslovány.
+Pokud se v hodnotě <emphasis>cltrid</emphasis> vyskytne zástupce %d, je tento symbol nahrazen pořadovým číslem příkazu:
+<programlisting>
+myCtrlID%d  - je zkonvertován na myCtrlID1, myCtrlID2, myCtrlID3, ...
+</programlisting>
+
+Chcete-li aby pořadové číslo mělo vždy stejný počet číslic, je možné zadat:
+<programlisting>
+myCtrlID%04d  - je zkonvertován na myCtrlID0001, myCtrlID0002, myCtrlID0003, ...
+</programlisting>
 </para>
 </section>
 
@@ -622,11 +617,12 @@ není zadán, tak jej klient automaticky doplní.
 <para>
 Výraz <emphasis>Žádná hodnota</emphasis> představuje hodnotu, kterou 
 jste nezadali. Slouží nám k tomu, abychom mohli přeskakovat parametry,
-které nechceme zadávat. Defaultě je výraz nastaven na NULL.
+které nechceme zadávat. Je to alternativa k zadávání hodnot pomocí <emphasis>pojmenovaného parametru</emphasis>.
+Defaultě je zástupce <emphasis>žádné hodnoty</emphasis> nastaven na NULL.
 </para>
 <para>
 Například, když v příkazu <emphasis>create_contact</emphasis> 
-chtece kromě povinných parametrů uvést už jen telefonní číslo 
+chcete kromě povinných parametrů uvést už jen telefonní číslo 
 (parametr <emphasis>voice</emphasis>). Mezi posledním povinným parametrem
 <emphasis>pw</emphasis> a pořadovaným <emphasis>voice</emphasis> leží ještě další čtyři parametry:
 <emphasis>org, street, sp, cp</emphasis>. Místo nich zadáte "žádnou hodnotu" 
@@ -662,7 +658,7 @@ prostě tak, že jenom stisknete ENTER.
 
 <para>
 Definici <emphasis>žádné hodnoty</emphasis> lze v konzoli změnit příkazem 
-<link linkend='null_value'>null_value</link>
+<emphasis>null_value</emphasis>
 a také je možné si ji definovat v <link linkend='config_null_value'>konfiguračním souboru</link>.
 </para>
 </section>
@@ -671,7 +667,7 @@ a také je možné si ji definovat v <link linkend='config_null_value'>konfigura
 <title>Prázdná hodnota: '', ""</title>
 <para>
 Výraz <emphasis>Prázdná hodnota</emphasis> představuje hodnotu, která je prázdná.
-Je to tedy text o nulové délce. Ten zapisujeme práznými uvozovkami '' nebo "".
+Je to tedy <emphasis role="bold">text o nulové délce</emphasis>. Ten zapisujeme práznými uvozovkami '' nebo "".
 Tato hodnota nám slouží k tomu, abychom mohli zadávat hodnoty nulové délky.
 Rozdíl mezi práznou hodnotou a žádnou je v tom, že tato hodnota generuje tag v XML
 dokumentu. Protože je prázdná, tak daný XML tag bude také prázdný.
@@ -705,22 +701,90 @@ V <emphasis>interaktivním módu</emphasis> zadávání parametru zadáme <quote
 že zapíšeme prázdné uvozovky '' nebo "".
 </para>
 </section>
+
+</section>
+
+<section>
+
+<title>Interaktivní mód vkládání parametrů</title>
+
+<para>
+<emphasis role="bold">Interaktivní mód</emphasis> umožňuje zadávat hodnoty jednu za druhou, podle
+toho co prompt aktuálně požaduje. Tento způsob je vhodný zejména pokud nevíte přesně jak máte parametry
+zadat.
+
+Interaktivní mód se spouští pomocí vykřičníku, který
+se napíše před příkaz:
+
+  <programlisting>&gt; !update_nsset</programlisting>
+
+Konzole vždy vypíše jméno parametru a čeká na zadání hodnoty. Pokud hodnotu nechcete
+zadat, tak prostě stisknete enter a hodnota se přeskočí.
+Interaktivní mód můžete kdykoliv zrušit stisknutím kláves Ctrl+C (C jako Cancel). 
+Po zadání všech povinných parametrů, kdy už nechcete zadávat další nepovinné
+hodnoty, lze interaktivní režim dokončit stiknutím kláves Ctrl+D (D jako Done nebo Dokončit).
+</para>
+<para>
+V případě zrušení interaktivního módu se žádný příkaz nesestaví a nic se
+na server neposílá. V případě dokončení módu se sestaví příkaz 
+a na konzoli se vypíše tak, jako byste jej zadali přímo bez interaktivního režimu.
+Pak se příkaz odešle na server. V případě, že se jedná o <quote>editační</quote> příkaz
+a je zapnutá funkce potvrzování (confirm), tak se příkaz musí před odesláním
+na server ještě potvrdit:
+</para>
+
+    <programlisting>
+REG-LRR@epp-test.ccreg.nic.cz&gt; !update_nsset
+Start interaktivního módu. Mód zrušíte stisknutím Ctrl+C. Příkaz dokončíte kombinací Ctrl+D.
+NSSET ID [povinný]: nssid:id01
+Přidat hodnoty / Seznam DNS[1/9] / Jmenný server [povinný jen je-li tato část zadána]: ns1.dns.cz
+Přidat hodnoty / Seznam DNS[1/9] / Adresa serveru[1/oo] [nepovinný]: 217.31.207.130
+Přidat hodnoty / Seznam DNS[1/9] / Adresa serveru[2/oo] [nepovinný]: 217.31.207.131
+Přidat hodnoty / Seznam DNS[1/9] / Adresa serveru[3/oo] [nepovinný]:
+Přidat hodnoty / Seznam DNS[2/9] / Jmenný server [nepovinný]:
+Přidat hodnoty / Technický kontakt ID[1/oo] [nepovinný]: cid:myid01
+Přidat hodnoty / Technický kontakt ID[2/oo] [nepovinný]:
+Přidat hodnoty / Stav[1/6] [nepovinný]:
+Interaktivní mód ukončen. [stiskněte Enter]
+Příkaz k odeslání:
+update_nsset nssid:id01 (((ns1.dns.cz (217.31.207.130, 217.31.207.131))) cid:myid01)
+Opravdu chcete odeslat tento poříkaz na server? (y/N): y
+nssid:id01 aktualizováno.
+REG-LRR@epp-test.ccreg.nic.cz&gt;
+    </programlisting>
+
 </section>
 
 <section>
 <title>Příkazy relace (session)</title>
 
 <para>
-Konzole má svá vnitřní nastavení, která můžete nastavit. Pokud zadáte
-příkaz bez parametrů, tak se pouze vypíše aktuální stav nastavení.
+Konzole má svá vnitřní nastavení, která můžete změnit přímo z promptu. K tomu slouží
+příkazy, které nazýváme <emphasis>příkazy relace</emphasis>. Nejsou to EPP příkazy
+a neslouží ke komunikaci se serverem. Jsou určeny z nastavení vnitřních proměnných
+konzole a nebo k zobrazení již nastavených hodnot. 
+Takto nastavené hodnoty se neukládají. Jsou platné jen po dobu relace - spuštění
+konzole. S ukončením aplikace zanikají. Pokud chcete tato nastavení mít trvalá,
+musíte je nastavit v <link linkend='config'>konfiguračním souboru</link>.
+</para>
+<para>
+Hodnoty se nastavují tak, že se zadá příkaz relace a za ním hodnota, která se má přiřadit:
 
 <programlisting>
-&gt; ! epp_příkaz
+&gt; poll_autoack on
 </programlisting>
 
-Tímto příkazem se spouští interaktivní mód zadávání parametrů. Mód funguje jen pro EPP příkazy.
-Vkládání se ukončí automaticky po zadání všech parametrů nebo jej lze ukončit stisknutím
-kombinace kláves Ctrl+D (Done) nebo zrušit Ctrl+C (Cancel).
+Pokud příkaz zadáte bez parametrů, tak se pouze vypíše aktuální stav nastavení.
+
+<programlisting>
+&gt; poll_autoack
+poll_autoack je ON
+</programlisting>
+</para>
+
+<para><emphasis role="bold">Seznam příkazů relace:</emphasis></para>
+
+<para>
 
 <programlisting>
 &gt; poll_autoack [on/off]
@@ -962,6 +1026,11 @@ $fred_labels['domain:renew'] = 'Last renew on';
 
 </chapter>
 
+<chapter>
+<title>Grafická nadstavba v Qt4.</title>
+<para>Popis grafické nadstavby klienta je v samostatném souboru. Hledejte README_QT4...
+</para>
+</chapter>
 
 <chapter>
     <title>

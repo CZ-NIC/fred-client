@@ -1,9 +1,10 @@
 FredClient 1.3.2
 
 Změny:
-    * Přidána možnost zadání vlastní hodnoty clTRID přes OPTIONS nebo config.
+    * Interní chyby jsou v GUI vypisovány do okna Error log.
 
 Nové funkce:
+    * Přidána možnost zadání vlastní hodnoty clTRID přes OPTIONS nebo config.
 
 Opravy:
     * V GUI opravena funkce delete_contact a delete_nsset

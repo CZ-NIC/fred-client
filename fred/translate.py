@@ -98,9 +98,9 @@ optcols = (
     'o:output',
     'p:port',
     'q qt',       # run in Qt
+    'r:cltrid', # define clTrID
     's:session',
     #'t timer',   # for debug only; display duration of processes
-    't:cltrid', # define clTrID
     'u:user',
     'v:verbose',
     'w:password',

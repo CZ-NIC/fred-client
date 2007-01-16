@@ -206,11 +206,13 @@ it can be created for a specific validity period."""),notice['disclose'],notice[
                 ('unit',(1,1),(('y',),('m',)),_T('Period unit (y year(default), m month)'),'','',()),
             )),
             ('admin',(0,UNBOUNDED),(),_T('Administrative contact ID'),'CID:ADMIN_ID','',()),
-            ('val_ex_date',(0,1),(),_T('Validation expires at'),'2008-12-03','',()),
+            ('val_ex_date',(0,1),(),_T('Validation expires at date. This value is required for ENUM domains.'),'2008-12-03','',()),
             ],_T("""
-The EPP "create" command is used to create an instance of an object.
+The EPP "create_domain" command is used to create an instance of an object.
 An object can be created for an indefinite period of time, or an
-object can be created for a specific validity period."""),(
+object can be created for a specific validity period.
+
+Parameter val_ex_date is required for ENUM domains."""),(
                 'create_domain domain.cz cid:regid password nssid:nsid (3 y) (cid:admin1,cid:admin2)',
                 'create_domain 1.1.1.7.4.5.2.2.2.0.2.4.e164.arpa cid:regid password nssid:nsid (3 y) (cid:admin1,cid:admin2) 2006-06-08'
             )),
@@ -225,9 +227,16 @@ object can be created for a specific validity period."""),(
             ('auth_info',(0,1),(),_T('Password required by server to authorize the transfer'),'mypassword','',()),
             ('reportlevel',(0,1),(),_T('Report level. Range 0 - 10'),'1','',()),
             ],_T("""
-The EPP "create" command is used to create an instance of an object.
+The EPP "create_nsset" command is used to create an instance of an object.
 An object can be created for an indefinite period of time, or an
-object can be created for a specific validity period."""),(
+object can be created for a specific validity period.
+
+Report level sets depth level of the technical test. These tests are maintained 
+in regular intervals and in case of the problem the technical contact is informed.
+Report level is also applied on the test executed by the request throught EPP.
+Every test has report level (number) and run just a parts what have equal or
+lower level number. Valid range is from 0 to 10.
+"""),(
                 'create_nsset nssid:nsset1 ((ns1.domain.cz (217.31.207.130 217.31.207.129)),(ns2.domain.cz (217.31.206.130 217.31.206.129)),(ns3.domain.cz (217.31.205.130 217.31.205.129))) cid:regid passw',
             )),
         #----------------------------------------------------
@@ -337,15 +346,24 @@ and maximum allowable period is defined in the Communication rules."""),('renew_
         #----------------------------------------------------
         'sendauthinfo_contact': (1,[
              ('id',(1,1),(),_T('Contact ID'),'CID:ID01','',()),
-            ],_T("""The EPP 'sendauthinfo_contact' command transmit request for send authorisation info to contact email."""),('sendauthinfo_contact cid:id',)),
+            ],_T("""
+The EPP 'sendauthinfo_contact' command transmit request for send password 
+to contact email. This command is usefull during transfer 
+when owner and new registrar needn't require previous registrar for password."""),('sendauthinfo_contact cid:id',)),
         #----------------------------------------------------
         'sendauthinfo_domain': (1,[
             ('name',(1,1),(),_T('Domain name'),'mydomain.cz','',()),
-            ],_T("""The EPP 'sendauthinfo_domain' command transmit request for send password to registrant email."""),('sendauthinfo_domain domain.cz',)),
+            ],_T("""
+The EPP 'sendauthinfo_domain' command transmit request for send password 
+to registrant email. This command is usefull during transfer 
+when owner and new registrar needn't require previous registrar for password."""),('sendauthinfo_domain domain.cz',)),
         #----------------------------------------------------
         'sendauthinfo_nsset': (1,[
             ('id',(1,1),(),_T('NSSET ID'),'NSSID:MYID','',()),
-            ],_T("""The EPP 'sendauthinfo_nsset' command transmit request for send authorisation info to technical contact email."""),('sendauthinfo_nsset nssid:id',)),
+            ],_T("""
+The EPP 'sendauthinfo_nsset' command transmit request for send password 
+to technical contact email. This command is usefull during transfer 
+when owner and new registrar needn't require previous registrar for password."""),('sendauthinfo_nsset nssid:id',)),
         #----------------------------------------------------
         'credit_info': (0,[],_T("""The EPP 'credit_info' command returns credit information."""),('credit_info',)),
         #----------------------------------------------------
@@ -353,8 +371,13 @@ and maximum allowable period is defined in the Communication rules."""),('renew_
             ('id',(1,1),(),_T('NSSET ID'),'NSSID:MYID','',()),
             ('name',(1,1),(),_T('Domain name'),'mydomain.cz','',()),
             ],_T("""
-The EPP 'technical_test' command transmit request for technical test for particular NSSET and domain.
-The result of the test will be saved into the message queue from where the registrant can fetch it by poll command.
+The EPP 'technical_test' command transmit request for technical test 
+for particular NSSET and domain. The result of the test will be saved 
+into the message queue from where the registrant can fetch it 
+by poll command. Every test has report level (number) and run just 
+a parts what have equal or lower level number. Valid range 
+is from 0 to 10. Set report level in the command create_nsset 
+and update_nsset.
 """),('technical_test nssid:id mydomain.cz',)),
         #----------------------------------------------------
     }

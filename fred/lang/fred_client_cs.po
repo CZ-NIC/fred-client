@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-01-16 10:07+0100\n"
+"POT-Creation-Date: 2007-01-16 12:25+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Zdeněk Böhm <zdenek.bohm@nic.cz>\n"
 "Language-Team: CS <ccreg-devel@lists.nic.cz>\n"
@@ -517,9 +517,9 @@ msgstr ""
 
 #: fred/eppdoc_client.py:80 fred/eppdoc_client.py:105
 #: fred/eppdoc_client.py:143 fred/eppdoc_client.py:169
-#: fred/eppdoc_client.py:235 fred/eppdoc_client.py:266
-#: fred/eppdoc_client.py:339 fred/eppdoc_client.py:379
-#: fred/eppdoc_client.py:446 guiqt4/main.py:692
+#: fred/eppdoc_client.py:244 fred/eppdoc_client.py:275
+#: fred/eppdoc_client.py:348 fred/eppdoc_client.py:402
+#: fred/eppdoc_client.py:469 guiqt4/main.py:692
 msgid "Contact ID"
 msgstr "Kontakt ID"
 
@@ -539,21 +539,21 @@ msgstr ""
 "typu info příkazu a případném použití EPP extension rozšíření."
 
 #: fred/eppdoc_client.py:88 fred/eppdoc_client.py:113
-#: fred/eppdoc_client.py:200 fred/eppdoc_client.py:239
-#: fred/eppdoc_client.py:247 fred/eppdoc_client.py:301
-#: fred/eppdoc_client.py:343 fred/eppdoc_client.py:354
-#: fred/eppdoc_client.py:409 fred/eppdoc_client.py:456
-#: fred/eppdoc_client.py:490
+#: fred/eppdoc_client.py:200 fred/eppdoc_client.py:248
+#: fred/eppdoc_client.py:256 fred/eppdoc_client.py:310
+#: fred/eppdoc_client.py:355 fred/eppdoc_client.py:372
+#: fred/eppdoc_client.py:432 fred/eppdoc_client.py:479
+#: fred/eppdoc_client.py:513
 msgid "Domain name"
 msgstr "Název domény"
 
 #: fred/eppdoc_client.py:96 fred/eppdoc_client.py:121
 #: fred/eppdoc_client.py:151 fred/eppdoc_client.py:203
-#: fred/eppdoc_client.py:219 fred/eppdoc_client.py:243
-#: fred/eppdoc_client.py:305 fred/eppdoc_client.py:316
-#: fred/eppdoc_client.py:347 fred/eppdoc_client.py:353
-#: fred/eppdoc_client.py:420 fred/eppdoc_client.py:429
-#: fred/eppdoc_client.py:451 guiqt4/main.py:632 guiqt4/main.py:729
+#: fred/eppdoc_client.py:221 fred/eppdoc_client.py:252
+#: fred/eppdoc_client.py:314 fred/eppdoc_client.py:325
+#: fred/eppdoc_client.py:362 fred/eppdoc_client.py:371
+#: fred/eppdoc_client.py:443 fred/eppdoc_client.py:452
+#: fred/eppdoc_client.py:474 guiqt4/main.py:632 guiqt4/main.py:729
 #: guiqt4/main.py:840
 msgid "NSSET ID"
 msgstr "NSSET ID"
@@ -605,9 +605,9 @@ msgstr ""
 
 #: fred/eppdoc_client.py:144 fred/eppdoc_client.py:153
 #: fred/eppdoc_client.py:162 fred/eppdoc_client.py:174
-#: fred/eppdoc_client.py:202 fred/eppdoc_client.py:225
-#: fred/eppdoc_client.py:282 fred/eppdoc_client.py:307
-#: fred/eppdoc_client.py:328
+#: fred/eppdoc_client.py:202 fred/eppdoc_client.py:227
+#: fred/eppdoc_client.py:291 fred/eppdoc_client.py:316
+#: fred/eppdoc_client.py:337
 msgid "Password required by server to authorize the transfer"
 msgstr "Heslo požadované serverem pro autorizaci transferu"
 
@@ -628,22 +628,22 @@ msgstr ""
 msgid "Domain name of domain to change sponsorship"
 msgstr "Doménové jméno u kterého se změní editor"
 
-#: fred/eppdoc_client.py:170 fred/eppdoc_client.py:269
-#: fred/eppdoc_client.py:387
+#: fred/eppdoc_client.py:170 fred/eppdoc_client.py:278
+#: fred/eppdoc_client.py:410
 msgid "Name"
 msgstr "Jméno"
 
-#: fred/eppdoc_client.py:171 fred/eppdoc_client.py:281
+#: fred/eppdoc_client.py:171 fred/eppdoc_client.py:290
 msgid "Email"
 msgstr ""
 
-#: fred/eppdoc_client.py:172 fred/eppdoc_client.py:272
-#: fred/eppdoc_client.py:390
+#: fred/eppdoc_client.py:172 fred/eppdoc_client.py:281
+#: fred/eppdoc_client.py:413
 msgid "City"
 msgstr "Město"
 
-#: fred/eppdoc_client.py:173 fred/eppdoc_client.py:273
-#: fred/eppdoc_client.py:393
+#: fred/eppdoc_client.py:173 fred/eppdoc_client.py:282
+#: fred/eppdoc_client.py:416
 msgid "Country code"
 msgstr "Kód země"
 
@@ -655,23 +655,23 @@ msgstr "kód země"
 msgid "password"
 msgstr "heslo"
 
-#: fred/eppdoc_client.py:175 fred/eppdoc_client.py:270
-#: fred/eppdoc_client.py:388
+#: fred/eppdoc_client.py:175 fred/eppdoc_client.py:279
+#: fred/eppdoc_client.py:411
 msgid "Organisation"
 msgstr "Název organizace"
 
-#: fred/eppdoc_client.py:176 fred/eppdoc_client.py:274
-#: fred/eppdoc_client.py:389
+#: fred/eppdoc_client.py:176 fred/eppdoc_client.py:283
+#: fred/eppdoc_client.py:412
 msgid "Street"
 msgstr "Ulice"
 
-#: fred/eppdoc_client.py:177 fred/eppdoc_client.py:275
-#: fred/eppdoc_client.py:391
+#: fred/eppdoc_client.py:177 fred/eppdoc_client.py:284
+#: fred/eppdoc_client.py:414
 msgid "State or province"
 msgstr "Stát nebo kraj"
 
-#: fred/eppdoc_client.py:178 fred/eppdoc_client.py:276
-#: fred/eppdoc_client.py:392
+#: fred/eppdoc_client.py:178 fred/eppdoc_client.py:285
+#: fred/eppdoc_client.py:415
 msgid "Postal code"
 msgstr "PSČ"
 
@@ -679,21 +679,21 @@ msgstr "PSČ"
 msgid "postal code"
 msgstr "PSČ"
 
-#: fred/eppdoc_client.py:179 fred/eppdoc_client.py:279
-#: fred/eppdoc_client.py:395
+#: fred/eppdoc_client.py:179 fred/eppdoc_client.py:288
+#: fred/eppdoc_client.py:418
 msgid "Phone"
 msgstr "Telefon"
 
-#: fred/eppdoc_client.py:180 fred/eppdoc_client.py:280
+#: fred/eppdoc_client.py:180 fred/eppdoc_client.py:289
 msgid "Fax"
 msgstr ""
 
-#: fred/eppdoc_client.py:181 fred/eppdoc_client.py:283
-#: fred/eppdoc_client.py:401
+#: fred/eppdoc_client.py:181 fred/eppdoc_client.py:292
+#: fred/eppdoc_client.py:424
 msgid "Disclose"
 msgstr "Zveřejnit"
 
-#: fred/eppdoc_client.py:182 fred/eppdoc_client.py:284
+#: fred/eppdoc_client.py:182 fred/eppdoc_client.py:293
 msgid "Disclose flag (default y)"
 msgstr "Přepínač zveřejnit (default y)"
 
@@ -705,22 +705,22 @@ msgstr "Data, pro které se nastaví příznak"
 msgid "VAT (Value-added tax)"
 msgstr "VAT (daňový identifikátor)"
 
-#: fred/eppdoc_client.py:186 fred/eppdoc_client.py:288
-#: fred/eppdoc_client.py:405
+#: fred/eppdoc_client.py:186 fred/eppdoc_client.py:297
+#: fred/eppdoc_client.py:428
 msgid "Identificator"
 msgstr "Identifikátor"
 
-#: fred/eppdoc_client.py:187 fred/eppdoc_client.py:289
-#: fred/eppdoc_client.py:404
+#: fred/eppdoc_client.py:187 fred/eppdoc_client.py:298
+#: fred/eppdoc_client.py:427
 msgid "Identificator type"
 msgstr "Typ identifikátoru"
 
-#: fred/eppdoc_client.py:188 fred/eppdoc_client.py:290
+#: fred/eppdoc_client.py:188 fred/eppdoc_client.py:299
 msgid "Identificator number"
 msgstr "Čislo identifikátoru"
 
-#: fred/eppdoc_client.py:190 fred/eppdoc_client.py:292
-#: fred/eppdoc_client.py:398
+#: fred/eppdoc_client.py:190 fred/eppdoc_client.py:301
+#: fred/eppdoc_client.py:421
 msgid "Notification email"
 msgstr "Oznámení na email"
 
@@ -737,80 +737,117 @@ msgstr ""
 "Objekt může být vytvořen na neučitý časový úsek nebo na přesně\n"
 "definované období."
 
-#: fred/eppdoc_client.py:201 fred/eppdoc_client.py:306
-#: fred/eppdoc_client.py:424
+#: fred/eppdoc_client.py:201 fred/eppdoc_client.py:315
+#: fred/eppdoc_client.py:447
 msgid "Registrant ID"
 msgstr "ID držitele"
 
-#: fred/eppdoc_client.py:204 fred/eppdoc_client.py:249
+#: fred/eppdoc_client.py:204 fred/eppdoc_client.py:258
 msgid "Period"
 msgstr "Období"
 
-#: fred/eppdoc_client.py:205 fred/eppdoc_client.py:250
+#: fred/eppdoc_client.py:205 fred/eppdoc_client.py:259
 msgid "Number of months or years"
 msgstr "Počet měsíců nebo roků"
 
-#: fred/eppdoc_client.py:206 fred/eppdoc_client.py:251
+#: fred/eppdoc_client.py:206 fred/eppdoc_client.py:260
 msgid "Period unit (y year(default), m month)"
 msgstr "Jednotka období (y rok(default), m měsíc)"
 
-#: fred/eppdoc_client.py:208 fred/eppdoc_client.py:302
-#: fred/eppdoc_client.py:303
+#: fred/eppdoc_client.py:208 fred/eppdoc_client.py:311
+#: fred/eppdoc_client.py:312
 msgid "Administrative contact ID"
 msgstr "Administrativní kontakt ID"
 
-#: fred/eppdoc_client.py:209 fred/eppdoc_client.py:253
-#: fred/eppdoc_client.py:309 fred/eppdoc_client.py:418
-msgid "Validation expires at"
-msgstr "Validace platná do"
+#: fred/eppdoc_client.py:209
+msgid "Validation expires at date. This value is required for ENUM domains."
+msgstr "Validace platná do data. Tato hodnota je pro ENUM domény povinná."
 
-#: fred/eppdoc_client.py:210 fred/eppdoc_client.py:227
+#: fred/eppdoc_client.py:210
 msgid ""
 "\n"
-"The EPP \"create\" command is used to create an instance of an object.\n"
+"The EPP \"create_domain\" command is used to create an instance of an "
+"object.\n"
 "An object can be created for an indefinite period of time, or an\n"
-"object can be created for a specific validity period."
+"object can be created for a specific validity period.\n"
+"\n"
+"Parameter val_ex_date is required for ENUM domains."
 msgstr ""
 "\n"
-"EPP příkaz \"create\" se používá pro vytvoření instance objektu.\n"
+"EPP příkaz \"create_domain\" se používá pro vytvoření instance objektu.\n"
 "Objekt může být vytvořen na neučitý časový úsek nebo na přesně\n"
-"definované období."
+"definované období. Pro ENUM domény je parametr val_ex_date povinný."
 
-#: fred/eppdoc_client.py:220
+#: fred/eppdoc_client.py:222
 msgid "LIST of DNS"
 msgstr "Seznam DNS"
 
-#: fred/eppdoc_client.py:221 fred/eppdoc_client.py:319
-#: fred/eppdoc_client.py:325
+#: fred/eppdoc_client.py:223 fred/eppdoc_client.py:328
+#: fred/eppdoc_client.py:334
 msgid "Name server"
 msgstr "Jmenný server"
 
-#: fred/eppdoc_client.py:222 fred/eppdoc_client.py:320
+#: fred/eppdoc_client.py:224 fred/eppdoc_client.py:329
 msgid "Server address"
 msgstr "Adresa serveru"
 
-#: fred/eppdoc_client.py:224 fred/eppdoc_client.py:440
+#: fred/eppdoc_client.py:226 fred/eppdoc_client.py:463
 msgid "Technical contact"
 msgstr "Technický kontakt"
 
-#: fred/eppdoc_client.py:226 fred/eppdoc_client.py:329
+#: fred/eppdoc_client.py:228 fred/eppdoc_client.py:338
 msgid "Report level. Range 0 - 10"
 msgstr "Report level. Rozmezí 0 - 10"
 
-#: fred/eppdoc_client.py:236 fred/eppdoc_client.py:240
-#: fred/eppdoc_client.py:244
+#: fred/eppdoc_client.py:229
+msgid ""
+"\n"
+"The EPP \"create_nsset\" command is used to create an instance of an "
+"object.\n"
+"An object can be created for an indefinite period of time, or an\n"
+"object can be created for a specific validity period.\n"
+"\n"
+"Report level sets depth level of the technical test. These tests are "
+"maintained \n"
+"in regular intervals and in case of the problem the technical contact is "
+"informed.\n"
+"Report level is also applied on the test executed by the request throught "
+"EPP.\n"
+"Every test has report level (number) and run just a parts what have equal "
+"or\n"
+"lower level number. Valid range is from 0 to 10.\n"
+msgstr ""
+"\n"
+"EPP příkaz \"create_nsset\" se používá pro vytvoření instance nssetu.\n"
+"Objekt může být vytvořen na neučitý časový úsek nebo na přesně\n"
+"definované období.\n"
+"Reportlevel nastavuje úroveň prováděných technických testů na nssetu. Tyto "
+"testy jsou prováděny v pravidelných intervalech a technický kontakt nssetu "
+"je informován o jejich výsledcích v případě neúspěchu. Reportlevel se "
+"vztahuje i na testy prováděné na vyžádání přes EPP. Každý prováděný test má "
+"přidělenou úroveň (číslo) a provádějí se jen ty části, které mají úroveň "
+"stejnou nebo nižší než reportlevel. Číslo se pohybuje v intervalu od 0 do "
+"10.\n"
+
+#: fred/eppdoc_client.py:245 fred/eppdoc_client.py:249
+#: fred/eppdoc_client.py:253
 msgid ""
 "The EPP \"delete\" command is used to remove an instance of an existing "
 "object."
 msgstr ""
 "EPP příkaz \"delete\" se používá pro odebrání instance vybraného objektu."
 
-#: fred/eppdoc_client.py:248 fred/eppdoc_client.py:417
-#: fred/eppdoc_client.py:458 fred/eppdoc_client.py:491 guiqt4/main.py:806
+#: fred/eppdoc_client.py:257 fred/eppdoc_client.py:440
+#: fred/eppdoc_client.py:481 fred/eppdoc_client.py:514 guiqt4/main.py:806
 msgid "Expiration date"
 msgstr "Datum expirace"
 
-#: fred/eppdoc_client.py:254
+#: fred/eppdoc_client.py:262 fred/eppdoc_client.py:318
+#: fred/eppdoc_client.py:441
+msgid "Validation expires at"
+msgstr "Validace platná do"
+
+#: fred/eppdoc_client.py:263
 msgid ""
 "\n"
 "A domain name object MAY have a specified validity period. If server\n"
@@ -833,28 +870,28 @@ msgstr ""
 "Minimálí a maximální hodnota období platnosti je definována\n"
 "v Pravidlech komunikace."
 
-#: fred/eppdoc_client.py:267 fred/eppdoc_client.py:304
+#: fred/eppdoc_client.py:276 fred/eppdoc_client.py:313
 msgid "Change values"
 msgstr "Změna hodnot"
 
-#: fred/eppdoc_client.py:268
+#: fred/eppdoc_client.py:277
 msgid "Postal informations"
 msgstr "Poštovní informace"
 
-#: fred/eppdoc_client.py:271
+#: fred/eppdoc_client.py:280
 msgid "Address"
 msgstr "Adresa"
 
-#: fred/eppdoc_client.py:285
+#: fred/eppdoc_client.py:294
 msgid "data for with is set the flag value"
 msgstr "data, pro které se nastaví příznak"
 
-#: fred/eppdoc_client.py:287 fred/eppdoc_client.py:403
+#: fred/eppdoc_client.py:296 fred/eppdoc_client.py:426
 msgid "VAT"
 msgstr "DPH"
 
-#: fred/eppdoc_client.py:294 fred/eppdoc_client.py:310
-#: fred/eppdoc_client.py:330
+#: fred/eppdoc_client.py:303 fred/eppdoc_client.py:319
+#: fred/eppdoc_client.py:339
 msgid ""
 "The EPP \"update\" command is used to update an instance of an existing "
 "object."
@@ -862,23 +899,23 @@ msgstr ""
 "EPP příkaz \"update\" se používá pro aktualizaci hodnot instance vybraného "
 "objektu."
 
-#: fred/eppdoc_client.py:317
+#: fred/eppdoc_client.py:326
 msgid "Add values"
 msgstr "Přidat hodnoty"
 
-#: fred/eppdoc_client.py:318
+#: fred/eppdoc_client.py:327
 msgid "List of DNS"
 msgstr "Seznam DNS"
 
-#: fred/eppdoc_client.py:322 fred/eppdoc_client.py:326
+#: fred/eppdoc_client.py:331 fred/eppdoc_client.py:335
 msgid "Technical contact ID"
 msgstr "Technický kontakt ID"
 
-#: fred/eppdoc_client.py:324
+#: fred/eppdoc_client.py:333
 msgid "Remove values"
 msgstr "Odebrat hodnoty"
 
-#: fred/eppdoc_client.py:334
+#: fred/eppdoc_client.py:343
 msgid ""
 "The EPP \"list\" command is used to list all ID of an existing contact "
 "owning by registrant."
@@ -886,7 +923,7 @@ msgstr ""
 "EPP příkaz \"list\" se používá pro zobrazení seznamu všech ID kontaktů, "
 "které ragistrátor vlastní."
 
-#: fred/eppdoc_client.py:335
+#: fred/eppdoc_client.py:344
 msgid ""
 "The EPP \"list\" command is used to list all ID of an existing NSSET owning "
 "by registrant."
@@ -894,7 +931,7 @@ msgstr ""
 "EPP příkaz \"list\" se používá pro zobrazení seznamu všech ID NSSETů, které "
 "ragistrátor vlastní."
 
-#: fred/eppdoc_client.py:336
+#: fred/eppdoc_client.py:345
 msgid ""
 "The EPP \"list\" command is used to list all domain names owning by "
 "registrant."
@@ -902,175 +939,196 @@ msgstr ""
 "EPP příkaz \"list\" se používá pro zobrazení seznamu všech domén, které "
 "ragistrátor vlastní."
 
-#: fred/eppdoc_client.py:340
+#: fred/eppdoc_client.py:349
 msgid ""
-"The EPP 'sendauthinfo_contact' command transmit request for send "
-"authorisation info to contact email."
+"\n"
+"The EPP 'sendauthinfo_contact' command transmit request for send password \n"
+"to contact email. This command is usefull during transfer \n"
+"when owner and new registrar needn't require previous registrar for password."
 msgstr ""
-"Příkaz 'sendauthinfo_contact' předá požadavek na odeslání autorizačního "
-"hesla na email kontaktu."
+"\n"
+"Příkaz 'sendauthinfo_contact' předá požadavek na odeslání autorizačního\n"
+"hesla na email kontaktu.\n"
+"Tento příkaz je užitečný při transferu kdy vlastník a nový registrátor\n"
+"nemusí žádat původního registrátora o zaslání hesla."
 
-#: fred/eppdoc_client.py:344
+#: fred/eppdoc_client.py:356
 msgid ""
-"The EPP 'sendauthinfo_domain' command transmit request for send password to "
-"registrant email."
+"\n"
+"The EPP 'sendauthinfo_domain' command transmit request for send password \n"
+"to registrant email. This command is usefull during transfer \n"
+"when owner and new registrar needn't require previous registrar for password."
 msgstr ""
-"Příkaz 'sendauthinfo_domain' předá požadavek na odeslání autorizačního hesla "
-"na email vlastníka domény."
+"\n"
+"Příkaz 'sendauthinfo_domain' předá požadavek na odeslání autorizačního "
+"hesla\n"
+"na email vlastníka domény.\n"
+"Tento příkaz je užitečný při transferu kdy vlastník a nový registrátor\n"
+"nemusí žádat původního registrátora o zaslání hesla."
 
-#: fred/eppdoc_client.py:348
+#: fred/eppdoc_client.py:363
 msgid ""
-"The EPP 'sendauthinfo_nsset' command transmit request for send authorisation "
-"info to technical contact email."
+"\n"
+"The EPP 'sendauthinfo_nsset' command transmit request for send password \n"
+"to technical contact email. This command is usefull during transfer \n"
+"when owner and new registrar needn't require previous registrar for password."
 msgstr ""
-"Příkaz 'sendauthinfo_contact' předá požadavek na odeslání autorizačního "
-"hesla na email technického kontaktu."
+"\n"
+"Příkaz 'sendauthinfo_contact' předá požadavek na odeslání autorizačního\n"
+"hesla na email technického kontaktu.\n"
+"Tento příkaz je užitečný při transferu kdy vlastník a nový registrátor\n"
+"nemusí žádat původního registrátora o zaslání hesla."
 
-#: fred/eppdoc_client.py:350
+#: fred/eppdoc_client.py:368
 msgid "The EPP 'credit_info' command returns credit information."
 msgstr "Příkaz 'credit_info' zobrazí informace o kreditu."
 
-#: fred/eppdoc_client.py:355
+#: fred/eppdoc_client.py:373
 msgid ""
 "\n"
-"The EPP 'technical_test' command transmit request for technical test for "
-"particular NSSET and domain.\n"
-"The result of the test will be saved into the message queue from where the "
-"registrant can fetch it by poll command.\n"
+"The EPP 'technical_test' command transmit request for technical test \n"
+"for particular NSSET and domain. The result of the test will be saved \n"
+"into the message queue from where the registrant can fetch it \n"
+"by poll command. Every test has report level (number) and run just \n"
+"a parts what have equal or lower level number. Valid range \n"
+"is from 0 to 10. Set report level in the command create_nsset \n"
+"and update_nsset.\n"
 msgstr ""
 "\n"
-"Příkaz 'technical_test' předá požadavek na provedení technického testu pro "
-"příslušný NSSET a doménu.\n"
-"Po skončení testu bude výsledek uložen do zpráv, které si registrátor vybírá "
-"příkazem poll.\n"
+"Příkaz 'technical_test' předá požadavek na provedení technického testu\n"
+"pro příslušný NSSET a doménu. Po skončení testu bude výsledek uložen\n"
+"do zpráv, které si registrátor vybírá příkazem poll.\n"
+"Každý test má svůj report level (číslo) a spouští jen ty čáti testu,\n"
+"které mají toto číslo shodé nebo nižší. Platný rozsah je 0 až 10.\n"
+"Nastavit report level je možné v příkazech create_nsset a update_nsset.\n"
 
-#: fred/eppdoc_client.py:363
+#: fred/eppdoc_client.py:386
 msgid "Client transaction ID"
 msgstr ""
 
-#: fred/eppdoc_client.py:380 fred/eppdoc_client.py:410
-#: fred/eppdoc_client.py:430
+#: fred/eppdoc_client.py:403 fred/eppdoc_client.py:433
+#: fred/eppdoc_client.py:453
 msgid "Repository object ID"
 msgstr "ID objektu v rep."
 
-#: fred/eppdoc_client.py:381 fred/eppdoc_client.py:411
-#: fred/eppdoc_client.py:431
+#: fred/eppdoc_client.py:404 fred/eppdoc_client.py:434
+#: fred/eppdoc_client.py:454
 msgid "Created by"
 msgstr "Vytvořil"
 
-#: fred/eppdoc_client.py:382 fred/eppdoc_client.py:412
-#: fred/eppdoc_client.py:432
+#: fred/eppdoc_client.py:405 fred/eppdoc_client.py:435
+#: fred/eppdoc_client.py:455
 msgid "Designated registrar"
 msgstr "Určený registrátor"
 
-#: fred/eppdoc_client.py:383 fred/eppdoc_client.py:413
-#: fred/eppdoc_client.py:433
+#: fred/eppdoc_client.py:406 fred/eppdoc_client.py:436
+#: fred/eppdoc_client.py:456
 msgid "Updated by"
 msgstr "Změnil"
 
-#: fred/eppdoc_client.py:384 fred/eppdoc_client.py:414
-#: fred/eppdoc_client.py:434 fred/eppdoc_client.py:447
-#: fred/eppdoc_client.py:452 fred/eppdoc_client.py:457
+#: fred/eppdoc_client.py:407 fred/eppdoc_client.py:437
+#: fred/eppdoc_client.py:457 fred/eppdoc_client.py:470
+#: fred/eppdoc_client.py:475 fred/eppdoc_client.py:480
 msgid "Created on"
 msgstr "Vytvořeno dne"
 
-#: fred/eppdoc_client.py:385 fred/eppdoc_client.py:415
-#: fred/eppdoc_client.py:435
+#: fred/eppdoc_client.py:408 fred/eppdoc_client.py:438
+#: fred/eppdoc_client.py:458
 msgid "Last transfer on"
 msgstr "Poslední transfer dne"
 
-#: fred/eppdoc_client.py:386 fred/eppdoc_client.py:416
+#: fred/eppdoc_client.py:409 fred/eppdoc_client.py:439
 msgid "Last update on"
 msgstr "Poslední změna dne"
 
-#: fred/eppdoc_client.py:394 fred/eppdoc_client.py:421
-#: fred/eppdoc_client.py:437
+#: fred/eppdoc_client.py:417 fred/eppdoc_client.py:444
+#: fred/eppdoc_client.py:460
 msgid "Password for transfer"
 msgstr "Heslo pro transfer"
 
-#: fred/eppdoc_client.py:399 fred/eppdoc_client.py:422
-#: fred/eppdoc_client.py:438
+#: fred/eppdoc_client.py:422 fred/eppdoc_client.py:445
+#: fred/eppdoc_client.py:461
 msgid "Status"
 msgstr "Stav"
 
-#: fred/eppdoc_client.py:400 fred/eppdoc_client.py:423
-#: fred/eppdoc_client.py:439
+#: fred/eppdoc_client.py:423 fred/eppdoc_client.py:446
+#: fred/eppdoc_client.py:462
 msgid "Status message"
 msgstr "Popis stavu"
 
-#: fred/eppdoc_client.py:402
+#: fred/eppdoc_client.py:425
 msgid "Hide"
 msgstr "Skrýt"
 
-#: fred/eppdoc_client.py:419
+#: fred/eppdoc_client.py:442
 msgid "Last renew on"
 msgstr "Poslední prodloužení dne"
 
-#: fred/eppdoc_client.py:425
+#: fred/eppdoc_client.py:448
 msgid "Administrative contact"
 msgstr "Administrativní kontakt"
 
-#: fred/eppdoc_client.py:436
+#: fred/eppdoc_client.py:459
 msgid "Last updated on"
 msgstr "Poslední změna dne"
 
-#: fred/eppdoc_client.py:441
+#: fred/eppdoc_client.py:464
 msgid "Name servers"
 msgstr "Jmenné servery"
 
-#: fred/eppdoc_client.py:442
+#: fred/eppdoc_client.py:465
 msgid "Report level"
 msgstr ""
 
-#: fred/eppdoc_client.py:462
+#: fred/eppdoc_client.py:485
 msgid "Available languages"
 msgstr "Podporované jazyky"
 
-#: fred/eppdoc_client.py:463
+#: fred/eppdoc_client.py:486
 msgid "Server ID"
 msgstr "ID serveru"
 
-#: fred/eppdoc_client.py:464
+#: fred/eppdoc_client.py:487
 msgid "Server date"
 msgstr "Datum serveru"
 
-#: fred/eppdoc_client.py:465
+#: fred/eppdoc_client.py:488
 msgid "Server version"
 msgstr "Verze serveru"
 
-#: fred/eppdoc_client.py:466
+#: fred/eppdoc_client.py:489
 msgid "Objects URI"
 msgstr "URI objekt"
 
-#: fred/eppdoc_client.py:467
+#: fred/eppdoc_client.py:490
 msgid "Extensions URI"
 msgstr "URI rozšíření"
 
-#: fred/eppdoc_client.py:468
+#: fred/eppdoc_client.py:491
 msgid "Data Collection policy"
 msgstr ""
 
-#: fred/eppdoc_client.py:478
+#: fred/eppdoc_client.py:501
 msgid "List"
 msgstr "Seznam"
 
-#: fred/eppdoc_client.py:479
+#: fred/eppdoc_client.py:502
 msgid "Count"
 msgstr "Počet"
 
-#: fred/eppdoc_client.py:483
+#: fred/eppdoc_client.py:506
 msgid "Queue size"
 msgstr "Počet zpráv"
 
-#: fred/eppdoc_client.py:484
+#: fred/eppdoc_client.py:507
 msgid "Message ID"
 msgstr "ID zprávy"
 
-#: fred/eppdoc_client.py:485
+#: fred/eppdoc_client.py:508
 msgid "Message date"
 msgstr "Zpráva vložena"
 
-#: fred/eppdoc_client.py:486
+#: fred/eppdoc_client.py:509
 msgid "Message content"
 msgstr "Text zprávy"
 
@@ -1953,8 +2011,8 @@ msgid ""
 "Some internal error occured. See <b>Error log</b> on the first panel. Reset "
 "application else some unexpected behavior can occurs."
 msgstr ""
-"Vyskytla se interní chyba. Podívejte se do <b>Error log</b> na prvním panelu. "
-"Zresetujte program jinak může dojít k nesprávnému fungování aplikace."
+"Vyskytla se interní chyba. Podívejte se do <b>Error log</b> na prvním "
+"panelu. Zresetujte program jinak může dojít k nesprávnému fungování aplikace."
 
 #: guiqt4/main.py:185
 msgid "Internal error"
