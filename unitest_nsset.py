@@ -123,7 +123,7 @@ class Test(unittest.TestCase):
         # login
         dct = epp_cli._epp.get_default_params_from_config('login')
         epp_cli.login(dct['username'], dct['password'])
-        epp_cli_TRANSF.login('REG-LRR2', dct['password'])
+        epp_cli_TRANSF.login('REG-UNITTEST2', dct['password'])
         # Tady se da nalezt prazdny handle (misto pevne definovaneho):
         # handle_contact = unitest_share.find_available_handle(epp_cli, 'contact','nexcon')
         # handle_nsset = unitest_share.find_available_handle(epp_cli, 'nsset','nexns')
@@ -131,7 +131,7 @@ class Test(unittest.TestCase):
         # self.assert_(len(handle_nsset), 'Nepodarilo se nalezt volny handle nsset.')
         # kontrola:
         self.assert_(epp_cli.is_logon(), 'Nepodarilo se zalogovat.')
-        self.assert_(epp_cli_TRANSF.is_logon(), 'Nepodarilo se zalogovat uzivatele "REG-LRR2" pro transfer.')
+        self.assert_(epp_cli_TRANSF.is_logon(), 'Nepodarilo se zalogovat uzivatele "REG-UNITTEST2" pro transfer.')
         # logovací soubor
         if fred.translate.options['log']: # zapnuti/vypuni ukladani prikazu do logu
             log_fp = open(fred.translate.options['log'],'w')
@@ -483,7 +483,7 @@ class Test(unittest.TestCase):
         global epp_to_log
         epp_to_log = epp_cli
         epp_cli.check_nsset(handle_nsset)
-        self.assertEqual(epp_cli.is_val(('data',handle_nsset)), 1)
+        self.assertEqual(epp_cli.is_val(('data',handle_nsset)), 0)
 
     def test_230(self):
         '3.23 Smazani pomocnych kontaktu'
@@ -508,19 +508,19 @@ def __check_equality__(cols, data):
     ##    'auth_info': 'heslo'}
     ##------------------------------------------------------------
     ##DATA:
-    ##    saved_data = {'nsset:upID': u'REG-LRR', 
+    ##    saved_data = {'nsset:upID': u'REG-UNITTEST1', 
     ##        'nsset:status.s': u'ok', 
     ##        'nsset:id': u'test001', 
     ##        'nsset:crDate': u'2006-08-03T09:38:05.0Z', 
     ##        'nsset:ns': [
     ##            [u'ns.name2.cz', [u'126.0.0.1', u'126.1.1.1', u'126.2.2.2']], 
     ##            [u'ns.name1.cz', [u'127.0.0.1', u'127.1.1.1', u'127.2.2.2']]], 
-    ##        'nsset:clID': u'REG-LRR', 
+    ##        'nsset:clID': u'REG-UNITTEST1', 
     ##        'nsset:roid': u'N0000000027-CZ', 
     ##        'nsset:tech': u'CONTACT1'}
     ##____________________________________________________________
     # not checked: 
-    #   nsset:upID          u'REG-LRR'
+    #   nsset:upID          u'REG-UNITTEST1'
     #   nsset:status.s      u'ok'
     #   nsset:crDate        u'2006-08-03T09:38:05.0Z'
     #   nsset:roid          u'N0000000027-CZ'
@@ -567,7 +567,7 @@ if 0:
     epp_cli = fred.Client()
     if fred.translate.options['session']: epp_cli._epp.set_session_name(fred.translate.options['session']) # nastavení serveru
     epp_cli._epp.load_config()
-    saved_data = {'nsset:upID': u'REG-LRR', 
+    saved_data = {'nsset:upID': u'REG-UNITTEST1', 
         'nsset:status.s': u'ok', 
         'nsset:id': u'test001', 
         'nsset:crDate': u'2006-08-03T09:38:05.0Z', 
@@ -575,7 +575,7 @@ if 0:
             [u'ns.name2.cz', [u'126.0.0.1', u'126.1.1.1', u'126.2.2.2']], 
             [u'ns.name1.cz', [u'127.0.0.1', u'127.1.1.1', u'127.2.2.2']],
            ],  
-        'nsset:clID': u'REG-LRR', 
+        'nsset:clID': u'REG-UNITTEST1', 
         'nsset:roid': u'N0000000027-CZ', 
         'nsset:tech': (u'CONTACT1',)}
     errors = __check_equality__(FRED_DATA[1], saved_data)

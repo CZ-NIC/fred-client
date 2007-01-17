@@ -127,11 +127,11 @@ class TestDomain(unittest.TestCase):
         # login
         dct = epp_cli._epp.get_default_params_from_config('login')
         epp_cli.login(dct['username'], dct['password'])
-        epp_cli_TRANSF.login('REG-LRR2', dct['password'])
+        epp_cli_TRANSF.login('REG-UNITTEST2', dct['password'])
         epp_cli_log = epp_cli
         # kontrola:
         self.assert_(epp_cli.is_logon(), 'Nepodarilo se zalogovat.')
-        self.assert_(epp_cli_TRANSF.is_logon(), 'Nepodarilo se zalogovat uzivatele "REG-LRR2" pro transfer.')
+        self.assert_(epp_cli_TRANSF.is_logon(), 'Nepodarilo se zalogovat uzivatele "REG-UNITTEST2" pro transfer.')
         # logovací soubor
         if fred.translate.options['log']: # zapnuti/vypuni ukladani prikazu do logu
             log_fp = open(fred.translate.options['log'],'w')
@@ -487,8 +487,8 @@ def __check_equality__(cols, data):
     ##------------------------------------------------------------
     ##DATA:
     ##{   'domain:contact': u'TDOMCONT01', 
-    ##    'domain:crID': u'REG-LRR', 
-    ##    'domain:clID': u'REG-LRR', 
+    ##    'domain:crID': u'REG-UNITTEST1', 
+    ##    'domain:clID': u'REG-UNITTEST1', 
     ##    'domain:name': u'hokus-pokus.cz', 
     ##    'domain:status.s': u'ok', 
     ##    'domain:exDate': u'2009-08-10T00:00:00.0Z', 
