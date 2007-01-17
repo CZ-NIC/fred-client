@@ -229,13 +229,13 @@ class FredMainWindow(QtGui.QDialog):
         modul_trans = os.path.join(os.path.split(__file__)[0],'%s%s'%(translation_prefix, lang))
         if tr.load(modul_trans):
             self._app.installTranslator(tr)
-            self.ui.retranslateUi(self)
             self.panel_create_contact.ui.retranslateUi(self)
             self.panel_update_contact.ui.retranslateUi(self)
             self.panel_create_domain.ui.retranslateUi(self)
             self.panel_update_domain.ui.retranslateUi(self)
             self.panel_create_nsset.ui.retranslateUi(self)
             self.panel_update_nsset.ui.retranslateUi(self)
+            self.ui.retranslateUi(self)
 
     def __add_scroll__(self, parent_frame, classWindow):
         'Add scrolled view window. Module must have class FredWindow.'

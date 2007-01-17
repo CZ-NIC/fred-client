@@ -1,0 +1,228 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE book PUBLIC '-//OASIS//DTD DocBook XML V4.2//EN' 
+          'http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd'>
+<book lang="cs">
+
+<bookinfo>
+    <title>Manuál pro grafickou nadstavbu FredClient na frameworku Qt4</title>
+    <subtitle>Verze 0.1.1</subtitle>
+    <copyright>
+      <year>2007</year>
+      <holder>CZ.NIC</holder>
+    </copyright>
+    <releaseinfo>
+    Vzniklo: 17.1.2007;
+    </releaseinfo>
+  </bookinfo>
+
+  <preface>
+    <title>Co je FredClient/Qt4:</title>
+    <para>
+    FredClient/Qt4 je okenní nadstavba konzolové aplikace FredClient, která
+    je postavena na frameworku Qt4.
+    </para>
+  </preface>
+
+  <chapter>
+    <title>Licence</title>
+    <para>Licence je v souboru fred/LICENSE.</para>
+  </chapter>
+
+  <chapter>
+    <title>Požadavky na systém a instalace</title>
+    <para>Pokyny k instalaci jsou v souborech guiqt4/INSTALL[_CS.(utf8|ascii)].</para>
+  </chapter>
+
+  <chapter id="start_applilcation">
+    <title>Spuštění aplikace</title>
+    <para>Spustit grafickou nadstavbu lze z příkazového řádku pomocí přepínače <quote>q</quote>:
+    <programlisting>
+    $ fred_client.py -q
+    </programlisting>
+    Nebo klikněte na soubor fred_client_qt4.pyw
+    </para>
+<figure float="0">
+    <title>Ikona aplikace.</title>
+    <mediaobject><imageobject><imagedata fileref="img/app_icon.gif" scale="100" width="3cm" /></imageobject></mediaobject>
+</figure>
+    <para>Okenní nadstavba používá stejný konfigurační soubor, 
+    jako konzolová aplikace <emphasis role='bold'>FredClient</emphasis>.
+    Pokud je konfigurační soubor nalezen a všechny přihlašovací informace
+    jsou k dispozici, tak se applikace automaticky přihlásí k EPP erveru.
+    Zpráva o tomto procesu je vypsána v prvním panelu <emphasis>Welcome</emphasis> v okně
+    <emphasis>Systémová hlášení</emphasis>:
+    <programlisting>
+    Použit konfigurační soubor...
+    Připojuji se...
+    Spojení navázáno!
+    </programlisting>
+    </para>
+    <para>
+    V dolní části se zobrazuje aktuální stav: ONLINE (zeleně) nebo OFFLINE (červeně).
+    </para>
+<figure float="0">
+    <title>Panel Welcome s oknem "Systémová hlášení" kde vypisují hlášení procesy po spuštění aplikace.</title>
+    <mediaobject><imageobject><imagedata fileref="img/welcome.gif" scale="100" width="14cm" /></imageobject></mediaobject>
+</figure>
+  </chapter>
+
+  <chapter>
+    <title>Rozdělení na panely</title>
+    <para>Aplikace je rozdělena na panely. Každy panel odpovídá jednomu tematickému celku:
+    </para>
+
+  <section>
+    <title>Welcome</title>
+    <para>Na panelu <emphasis>Welcome</emphasis> se nacházejí údaje, které jsou nutné
+    k připojení k EPP serveru. Tyto údaje jsou při startu automaticky doplněny z konfiguračního
+    souboru.
+    </para>
+    <para>Dále se zde nachází okno <emphasis>Systémová hlášení</emphasis>, kde se zobrazují
+    hlášení od procesů, které se během spouštění aplikace spustily.
+    </para>
+    <para>Tlačítko <emphasis>Error log</emphasis> otevírá okno se záznamem interních chybových hlášení.
+    Viz. kapitola <link linkend="internal_errors">Interní chybová hlášení</link>.
+    </para>
+    <para>Tlačítko <emphasis>Credits</emphasis> vypisuje soubor CREDITS, který je umístěn v adresáři
+    knihovny fred.
+    </para>
+<figure float="0">
+    <title>Panel Welcome s možností nastavení údajů pro připojení.</title>
+    <mediaobject><imageobject><imagedata fileref="img/welcome_offline.gif" scale="100" width="14cm" /></imageobject></mediaobject>
+</figure>
+  </section>
+
+  <section>
+    <title>Connect</title>
+    <para>Panel <emphasis>connect</emphasis> obsahuje příkazy pro připojení k serveru a odpojení.
+    Kromě toho je zde také příkaz <emphasis>hello</emphasis>, kterým můžete ověřit, že server
+    je dosažitelný, jaké verze schemat podporuje, a další informace. 
+    Dále je zde příkaz <emphasis>poll</emphasis>, kterým si vybíráte zprávy
+    ze serveru a <emphasis>credit_info</emphasis> s informacemi o vašem kreditu.
+    </para>
+    <para>Hodnoty v příkazu <emphasis>login</emphasis> jsou automaticky doplněny z konfiguračního
+    souboru. Příkaz login se obvykle zadávat nemusí, protože aplikace se připojuje při startu
+    automaticky. Viz kapitola <link linkend="start_applilcation">Spuštění aplikace</link>.
+    </para>
+<figure float="0">
+    <title>Panel connect pro připojení se k serveru.</title>
+    <mediaobject><imageobject><imagedata fileref="img/connect_offline.gif" scale="100" width="14cm" /></imageobject></mediaobject>
+</figure>
+  </section>
+
+  <section>
+    <title>Contact</title>
+    <para>Zde se nacházejí všechny příkazy, které lze použít pro správu záznamu o kontaktu.
+    </para>
+<figure float="0">
+    <title>Panel contact pro správu kontaktů.</title>
+    <mediaobject><imageobject><imagedata fileref="img/contact.gif" scale="100" width="14cm" /></imageobject></mediaobject>
+</figure>
+  </section>
+
+  <section>
+    <title>NSSET</title>
+    <para>Zde se nacházejí všechny příkazy, které lze použít pro správu záznamu NSSETu.
+    </para>
+<figure float="0">
+    <title>Panel NSSET pro správu záznamů o nssetech.</title>
+    <mediaobject><imageobject><imagedata fileref="img/nsset.gif" scale="100" width="14cm" /></imageobject></mediaobject>
+</figure>
+  </section>
+
+  <section>
+    <title>Domain</title>
+    <para>Zde se nacházejí všechny příkazy, které lze použít pro správu záznamu o doméně.
+    </para>
+<figure float="0">
+    <title>Panel Domain pro správu záznamů o doménách.</title>
+    <mediaobject><imageobject><imagedata fileref="img/domain.gif" scale="100" width="14cm" /></imageobject></mediaobject>
+</figure>
+  </section>
+
+  </chapter>
+
+  <chapter>
+    <title>Odeslání příkazu na server a příjem odpovědi</title>
+    <para>Každý příkaz má svůj vlastní panel. Například <emphasis>contact/info</emphasis>.
+    Přejděte na tento panel a do panelu <emphasis role='bold'>Příkaz</emphasis> 
+    do okna <emphasis>kontakt ID</emphasis> zadejte ID kontaktu,
+    který chcete zobrazit:
+    </para>
+<figure float="0">
+    <title>Panel "Příkaz", kde se zadávají parametry příkazu.</title>
+    <mediaobject><imageobject><imagedata fileref="img/contact_info_command.gif" scale="100" width="14cm" /></imageobject></mediaobject>
+</figure>
+    <para>Pak stiskněte tlačítko <emphasis role='bold'>Odeslat příkaz</emphasis>.
+    Příkaz se odešle na server. Jakmile ze serveru přijde odpověď, aplikace se 
+    automaticky přepne do panelu <emphasis>Odpověď</emphasis>, kde se zobrazí odpověď:
+    </para>
+<figure float="0">
+    <title>Panel "Odpověď", kde se zobrazuje odpověď serveru.</title>
+    <mediaobject><imageobject><imagedata fileref="img/contact_info_answer.gif" scale="100" width="14cm" /></imageobject></mediaobject>
+</figure>
+    <para>V části <emphasis role='bold'>code</emphasis> se zobrazuje číslo typu odpovědi.
+    Například hodnota 1000 znamená OK.
+    Pod ním je okno <emphasis>Hlášení</emphasis>, kde se zobrazuje jednak textová reprezentace
+    typu a dále chybová hlášení, která poslal server nebo vznikla během komunikace.
+    A konečně okno <emphasis>Data</emphasis>, kde se nacházejí hodnoty samotné odpovědi.
+    </para>
+    
+  </chapter>
+
+
+  <chapter>
+    <title>Výpis zdrojových XML dokumentů</title>
+    <para>U každého příkazu je možné si vypsat jeho zdrojový dokument.
+    Stiskněte tlačítko <emphasis>source</emphasis>:
+    </para>
+<figure float="0">
+    <title>Tlačítko Source se symbolem zdrojového dokumentu.</title>
+    <mediaobject><imageobject><imagedata fileref="img/button_source.gif" scale="100" width="2cm" /></imageobject></mediaobject>
+</figure>
+    <para>Otevře se dialogové okno <emphasis>Sources</emphasis>. Je rozděleno na tři panely:
+    V prvním panelu <emphasis>Command XML</emphasis> je zdrojový dokument příkazu, ve druhém
+    <emphasis>Response XML</emphasis> je zrdojový dokument odpovědi a ve třetím <emphasis>Command line</emphasis>
+    je ukázka příkazové řádky pro konzoli <emphasis>FredClient</emphasis>.
+    </para>
+
+<figure float="0">
+    <title>Panel se zdrojovým dokumentem příkazu.</title>
+    <mediaobject><imageobject><imagedata fileref="img/source_command.gif" scale="100" width="14cm" /></imageobject></mediaobject>
+  </figure>
+<figure float="0">
+    <title>Panel se zdrojovým dokumentem odpovědi.</title>
+    <mediaobject><imageobject><imagedata fileref="img/source_answer.gif" scale="100" width="14cm" /></imageobject></mediaobject>
+  </figure>
+<figure float="0">
+    <title>Panel s ukázkovým příkazem pro konzoli.</title>
+    <mediaobject><imageobject><imagedata fileref="img/source_cmdline.gif" scale="100" width="14cm" /></imageobject></mediaobject>
+  </figure>
+
+  </chapter>
+
+  <chapter id="internal_errors">
+    <title>Interní chybová hlášení</title>
+    <para>Pokud se v aplikaci vyskytne nějaká interní chyba, je informace o ní ukládána
+    do okna <emphasis>Interní chyby</emphasis>. Pokud chcete, můžete nám tuto chybu poslat.
+    Přispějete tím k lepšímu chodu aplikace.
+    </para>
+<figure float="0">
+    <title>Zobrazení interních chyb.</title>
+    <mediaobject><imageobject><imagedata fileref="img/internal_errors.gif" scale="100" width="14cm" /></imageobject></mediaobject>
+</figure>
+  </chapter>
+
+  <chapter>
+    <title>Ukončení aplikace</title>
+    <para>Stiskněte tlačítko <emphasis role='bold'>Exit client</emphasis>.
+    Pokud jste <emphasis>online</emphasis>, tak aplikace před uzavřením automaticky
+    pošle příkaz <emphasis>logout</emphasis>.
+    </para>
+<figure float="0">
+    <title>Uzavření aplikace.</title>
+    <mediaobject><imageobject><imagedata fileref="img/close_client.gif" scale="100" width="14cm" /></imageobject></mediaobject>
+</figure>
+  </chapter>
+
+</book>

@@ -1,10 +1,12 @@
 
+Manual pro FredClient konzoli a knihovnu fred
 
+Verze 1.3.1
 
    Vzniklo: 11. 7.2006; Revize: 18. 8.2006; 1. 9.2006; 4. 9.2006; 14. 9.2006;
-   27. 9.2006; 1.11.2006; 7.11.2006; 15.1.2007;
+   27. 9.2006; 1.11.2006; 7.11.2006; 17.1.2007;
 
-   Copyright (c) 2006 CZ.NIC
+   Copyright (c) 2007 CZ.NIC
      _________________________________________________________________
 
    Obsah
@@ -39,18 +41,22 @@
         Online dokumentace:
         Priklady prace s knihovnou
 
+Co je FredClient:
 
    FredClient je sada scriptu v jazyce Python postavenych na fred knihovne a
    urcenych ke komunikaci s EPP serverem.
 
    Sada obsahuje EPP konzoli a skripty urcene pro pouziti v shellu.
 
+Kapitola 1. Licence
 
    Licence je v souboru fred/LICENSE.
 
+Kapitola 2. Pozadavky na system a instalace
 
    Pokyny k instalaci jsou v souboru INSTALL.
 
+Kapitola 3. Popis jednotlivych programu, parametry a konfiguracni soubor
 
    Obsah
 
@@ -62,13 +68,16 @@
    fred_create.py - Vytbori zdrojovy EPP XML prikaz
    fred_sender.py - Odesle soubor na EPP server
 
+Parametry pri spusteni (OPTIONS)
 
    Skripty se daji spoustet s parametry. Jake parametry lze pouzit zjistite
    zadanim parametru --help nebo -?:
     $ fred_client.py --help
     $ fred_client.py -?
 
+Pouziti: fred_client [parametry...]
 
+Hlavni parametry:
   -?, --help       Zobrazit tuto napovedu a skoncit
   -V, --version    Zobrazit verzi programu a skoncit
   -l LANGUAGE, --lang=LANGUAGE
@@ -81,6 +90,7 @@
   -x, --no_validate
                    Deaktivovat XML validaci na strane klienta
 
+Parametry pro spojeni:
   -f CONFIG, --config=CONFIG
                    Nacteni konfigurace ze souboru
   -s SESSION, --session=SESSION
@@ -111,9 +121,11 @@
   -q,  --qt
                    Spustit klienta v Qt4 GUI (Pozor! Jen pro testovani!)
 
+Specialni parametry, ktere se v helpu nezobrazuji:
    -r, --cltrid    --cltrid=mycID_%04d
                    Definice vlastniho clTrID s pridanim cisla prikazu
 
+Konfiguracni soubor
 
    Konfiguracni soubor se implicitne hleda nejdrive v home uzivatele
    (~/.fred_client.conf), ktery skript spustil. Pokud tam neni nalezen, hleda
@@ -216,6 +228,7 @@
        Klient se ihned po spusteni pokusi spojit se serverem a zalogovat se.
        Tuto funkci je mozne vypnout nastavenim nologin = off.
 
+Kapitola 4. Program fred_client.py
 
    Obsah
 
@@ -239,6 +252,7 @@
    a ulozene login a heslo, tak muzete jednoduse zadat login a tim se spojite s
    EPP serverem. Konzole se ukoncuje prikazem "quit" nebo jen kratce "q".
 
+Zobrazeni helpu
 
    Jake prikazy mate k dispozici zjistite zadanim prikazu "help" (nebo h, ?).
     FredClient verze 1.3.1 Zadejte "help", "license" nebo "credits" pro zobraze
@@ -251,6 +265,7 @@
    1) Dostupne EPP prikazy
    2) Prikazy relace (session) pro nastaveni vnitrnich promennych konzole
 
+EPP prikazy
 
    Vsechny EPP prikazy (krome hello), maji sve parametry. Jake parametry to
    jsou a v jakem poradi se zadavaji naleznete v helpu daneho prikazu. Help
@@ -268,6 +283,7 @@
 
    > login username password
 
+Syntaxe zadavani parameru prikazu
 
    Na zadani parametru EPP prikazu jsou kladeny zvlastni pozadavky, kvuli
    kterym byla zavedena specialni syntaxe. Parametry, na ktere neni nutne
@@ -400,6 +416,7 @@
    Hodnoty mimo poradi zadavejte pomoci """pojmenovaneho parametru."""
    Jmena polozek zanorenych do vice seznamu spojite pomoci tecky.
 
+Spolecny parametr cltrid (Client transaction ID)
 
    Kazdy EPP prikaz, krome prikazu hello, obsahuje tag <clTRID>. Ten je vzdy
    jako posledni z parametru a jmenuje se cltrid. Tato hodnota je identifikator
@@ -421,7 +438,9 @@
    myCtrlID%04d  - je zkonvertovan na myCtrlID0001, myCtrlID0002, myCtrlID0003, ..
    .
 
+Zadna hodnota / Prazdna hodnota
 
+Zadna hodnota: NULL
 
    Vyraz Zadna hodnota predstavuje hodnotu, kterou jste nezadali. Slouzi nam k
    tomu, abychom mohli preskakovat parametry, ktere nechceme zadavat. Je to
@@ -458,6 +477,7 @@
    Definici zadne hodnoty lze v konzoli zmenit prikazem null_value a take je
    mozne si ji definovat v konfiguracnim souboru.
 
+Prazdna hodnota: '', ""
 
    Vyraz Prazdna hodnota predstavuje hodnotu, ktera je prazdna. Je to tedy text
    o nulove delce. Ten zapisujeme praznymi uvozovkami '' nebo "". Tato hodnota
@@ -487,6 +507,7 @@
    V interaktivnim modu zadavani parametru zadame """prazdnou hodnotu""" tak, ze
    zapiseme prazdne uvozovky '' nebo "".
 
+Interaktivni mod vkladani parametru
 
    Interaktivni mod umoznuje zadavat hodnoty jednu za druhou, podle toho co
    prompt aktualne pozaduje. Tento zpusob je vhodny zejmena pokud nevite
@@ -533,6 +554,7 @@
    REG-LRR@epp-test.ccreg.nic.cz>
 
 
+Prikazy relace (session)
 
    Konzole ma sva vnitrni nastaveni, ktera muzete zmenit primo z promptu. K
    tomu slouzi prikazy, ktere nazyvame prikazy relace. Nejsou to EPP prikazy a
@@ -555,6 +577,7 @@
 
    Seznam prikazu relace:
 
+> poll_autoack [on/off]
 
    Pokud je tento prepinac ON, tak se po odeslani prikazu "poll req"
    automaticky odesila i "poll ack". Tuhle funkci asi nejvice ocenite, kdyz
@@ -622,6 +645,7 @@
    2 - vsechno
    3 - vsechno a XML zdroje.
 
+Kapitola 5. Skripty fred_create.py a fred_sender.py
 
    Skripty fred_create.py a fred_sender.py jsou urceny pro pouziti v shell
    batchi. fred_create.py prijima parametry se standardniho vstupu a vygeneruje
@@ -655,6 +679,7 @@
 
     /fred_sender.py
 
+Kapitola 6. Integrace klienta do PHP kodu
 
    Pozor! Rozsireni klienta o podporu PHP je v teto verzi ve vyvojovem a
    testovacim stadiu. Finalni reseni se muze od tohoto vyvojoveho jeste lisit.
@@ -726,10 +751,12 @@
    $fred_data['domain:exDate'] = '2009-10-31T01:00:00+01:00';
    $fred_labels['domain:renew'] = 'Last renew on';
 
+Kapitola 7. Graficka nadstavba v Qt4.
 
    Popis graficke nadstavby klienta je v samostatnem souboru. Hledejte
    README_QT4...
 
+Kapitola 8. Knihovna fred a popis API
 
    Obsah
 
@@ -740,6 +767,7 @@
    Knihova i jednotlive funkce obsahuji komentare, podle kterych se muzete pri
    implementaci ridit. V casti __init__.py naleznete i ukazky kodu.
 
+Online dokumentace:
 
    Pokud si chcete projit jednotlive tridy a funkce knihovny, tak k tomu muzete
    vyuzit generator dokumentace, ktery je standardni soucasti pythonu: Zadejte
@@ -761,6 +789,7 @@
 
    Server ukoncite stiskem Ctrl+C.
 
+Priklady prace s knihovnou
 
    Import knihovny provedete prikazem:
     >>> import fred
