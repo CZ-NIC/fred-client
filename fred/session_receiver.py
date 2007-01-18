@@ -313,7 +313,7 @@ class ManagerReceiver(ManagerCommand):
             self.__append_note_from_dct__(nsset_infData,('nsset:id','nsset:roid',
                 'nsset:clID','nsset:crID','nsset:trID','nsset:upID',
                 'nsset:crDate','nsset:trDate','nsset:upDate','nsset:authInfo','nsset:tech',
-                'nsset:status s','nsset:status'))
+                'nsset:status s','nsset:status','nsset:reportlevel'))
             if nsset_infData.has_key('nsset:ns'):
                 nsset_ns = nsset_infData['nsset:ns']
                 dns = []

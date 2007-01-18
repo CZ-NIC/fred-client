@@ -22,6 +22,14 @@ import eppdoc_client
 import client_socket
 from session_base import *
 from translate import encoding, options
+
+try:
+    # This module mustn't be included in release!
+    # It is used for internal test only.
+    import fred_debug
+except ImportError:
+    pass
+
 """
 Class ManagerTransfer is a part of the one Manager instance what provides
 about input and output. It is descentant of the ManageBase what care about
@@ -397,15 +405,9 @@ class ManagerTransfer(ManagerBase):
         if len(data):
             if len(body) and body[-1] != '': body.append('') # empty line
             body.extend(data)
-        #--- INTERNAL USE ----
-        # POZOR!!! V ostré verzi musí být deaktivováno!!!
-        # ALERT!!! MUST be disabled in release version!!!
-#        if self._session[SORT_BY_COLUMNS] and not is_check:
-#            # in mode SORT_BY_COLUMNS check if all names was used
-#            missing = [k for k in dct_data.keys() if k not in used and column_verbose.get(k,0) >= self._session[VERBOSE]]
-#            if len(missing):
-#                body.append(colored_output.render('\n${BOLD}${RED}Here needs FIX code: %s${NORMAL}'%'(%s)'%', '.join(missing)))
-        #---------------------
+        if globals().has_key('fred_debug') :
+            # ONLY FOR INTERNAL USE
+            fred_debug.check_missing_names(body, self._session[SORT_BY_COLUMNS],  self._session[VERBOSE], is_check, dct_data, used, column_verbose)
 
     def __modify__reason_message__(self, code, key, dct):
         """Modify reason message from standard answer to more fit message.
@@ -829,6 +831,7 @@ def run_test_server():
     except (KeyboardInterrupt, EOFError):
         pass
     if conn: conn.close()
+
 
 DEBUG_HOST = 'localhost'
 DEBUG_PORT = 50007

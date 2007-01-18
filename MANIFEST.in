@@ -7,6 +7,10 @@ include doc/README_CS.docbook
 include doc/README_CS.html
 include doc/README_CS.txt
 include doc/client_example.php
+include doc/README_QT4_CS.docbook
+include doc/README_QT4_CS.html
+include doc/README_QT4_CS.pdf
+include doc/img/*.gif
 
 include INSTALL
 include INSTALL_CS.ascii
