@@ -122,7 +122,7 @@ class Test(unittest.TestCase):
             epp_cli_TRANSF._epp.run_as_unittest = 1
         # login
         dct = epp_cli._epp.get_default_params_from_config('login')
-        epp_cli.login(dct['username'], dct['password'])
+        epp_cli.login( 'REG-UNITTEST1', dct['password'])
         epp_cli_TRANSF.login('REG-UNITTEST2', dct['password'])
         # Tady se da nalezt prazdny handle (misto pevne definovaneho):
         # handle_contact = unitest_share.find_available_handle(epp_cli, 'contact','nexcon')
