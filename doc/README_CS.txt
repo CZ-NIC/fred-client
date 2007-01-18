@@ -127,6 +127,11 @@ Specialni parametry, ktere se v helpu nezobrazuji:
 
 Konfiguracni soubor
 
+   Konfiguracni soubor slouzi k ulozeni ruznych nastaveni klienta tak, aby pri
+   kazdem spusteni byly hodnoty takove, jake je potrebujete mit. Napriklad se
+   zde definuji jmena a umisteni souboru s certifikaty, adresa serveru, na
+   ktery se ma klient pripojit, verze schemat a dalsi nastaveni.
+
    Konfiguracni soubor se implicitne hleda nejdrive v home uzivatele
    (~/.fred_client.conf), ktery skript spustil. Pokud tam neni nalezen, hleda
    se v adresari etc (/etc/fred_client.conf). Na POSIX systemech je to /etc, v

@@ -134,6 +134,12 @@ Speciální parametry, které se v helpu nezobrazují:
     Konfigurační soubor
     </title>
 <para>
+Konfigurační soubor slouží k uložení různých nastavení klienta tak, aby při každém
+spuštění byly hodnoty takové, jaké je potřebujete mít. Například se zde definují
+jména a umistění souborů s certifikáty, adresa serveru, na který se má klient připojit,
+verze schemat a další nastavení.
+</para>
+<para>
 Konfigurační soubor se implicitně hledá nejdříve v home uživatele (~/.fred_client.conf), 
 který skript spustil. Pokud tam není nalezen, hledá se v adresáři etc
 (/etc/fred_client.conf). Na POSIX systémech je to /etc, v MS Windows 

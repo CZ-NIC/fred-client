@@ -16,6 +16,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with FredClient; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
 from distutils.core import setup
 
 setup(name = 'FredClient',
@@ -33,5 +34,9 @@ setup(name = 'FredClient',
         'guiqt4': ['*.py','*.png','*.qm'],
     },
     scripts = ['fred_client.py'],
+    windows=[
+        {'script': 'fred_client_qt4.pyw'},
+        {'icon_resources': [(1, 'guiqt4/niccz.ico')]},
+    ],
 )
 

@@ -22,7 +22,8 @@ include ChangeLog_cs.ascii
 include fred_client.conf.sample
 include fred/CREDITS
 include fred/LICENSE
-include fred_clientqt.pyw
+include fred_client_qt4.pyw
+include guiqt4/niccz.ico
 include guiqt4/*.py
 include guiqt4/*.png
 include guiqt4/*.qm

@@ -25,6 +25,7 @@ but from Message class interface.
 """
 import re, sys, os
 import random
+import time
 import ConfigParser
 import cmd_parser
 import session_base
@@ -450,7 +451,7 @@ class Message(MessageBase):
             if interactive:
                 error.append(_T('Command %s does not have any parameters, skipping interactive input mode.')%command_name)
             elif len(cmd.split(' ')) > 1:
-                error.append(_T('Command %s does not have any parameters.')%command_name)
+                error.append(_T('Command %s does not have any parameters.')%local8bit(command_name))
             return error, example, stop # bez parametrů
         columns = [(command_name,(1,1),(),'','','',())]
         columns.extend(self._command_params[command_name][1])
@@ -1060,6 +1061,116 @@ class Message(MessageBase):
     def assemble_technical_test(self, *params):
         'Create technical_test document'
         self.__asseble_extcommand__(('test','nsset','id'), params, ('id','name'))
+
+    #===========================================
+
+    def build_command_line(self, command_type, info_type, answer, null_value):
+        'Create command line from INFO data.'
+        epp_command = '%s_%s'%(command_type, info_type)
+        self._dct = {'command': [epp_command], epp_command: [epp_command] }
+        dct = answer['data']
+        for name, verbose, note in self.sort_by_names[answer['command']][1]: ## columns[info_type]:
+            key =  '%s:%s'%(info_type, name)
+            value = dct.get(key,None)
+            if value is not None:
+                if type(value) not in (list, tuple): value = [value]
+                # replace all occurences like 'authInfo' from 'authInfo' to 'auth_info'
+                self._dct[re.sub('([A-Z])','_\\1',name, re.I).lower()] = value
+        if epp_command == 'create_contact':
+            self._dct = self.__build_modify_contact_create__(self._dct)
+        elif epp_command == 'update_contact':
+            self._dct = self.__build_modify_contact_update__(self._dct)
+        elif epp_command == 'create_nsset':
+            self._dct = self.__build_modify_nsset_create__(self._dct)
+        elif epp_command == 'update_nsset':
+            self._dct = self.__build_modify_nsset_update__(self._dct)
+        elif epp_command == 'create_domain':
+            self._dct = self.__build_modify_domain_create__(self._dct)
+        elif epp_command == 'update_domain':
+            self._dct = self.__build_modify_domain_update__(self._dct)
+        return self.get_command_line(null_value)
+
+    def __build_modify_domain_create__(self, dct):
+        """This is support of the build_command_line(). 
+        Individual modification of the contact."""
+        # from exDate value count years
+        if dct.has_key('ex_date'):
+            try:
+                year = int(dct['ex_date'][0][:4])
+            except (ValueError, TypeError):
+                pass
+            else:
+                period_num = year - time.localtime()[0]
+                if period_num > 0:
+                    dct['period'] = [{'unit':['y'], 'num': [str(period_num)]}]
+        return dct
+
+    def __build_modify_domain_update__(self, dct):
+        """This is support of the build_command_line(). 
+        Individual modification of the contact."""
+        chg ={}
+        for key in ('nsset','registrant','auth_info'):
+            if dct.has_key(key): chg[key] = dct[key]
+        if len(chg): dct['chg'] = [chg]
+        if dct.has_key('admin'): dct['rem_admin'] = dct['admin']
+        return dct
+
+    def __build_modify_nsset_create__(self, dct):
+        """This is support of the build_command_line(). 
+        Individual modification of the contact."""
+        dns = []
+        for name, addr in dct.get('ns',[]):
+            dns.append({'name':[name], 'addr':addr})
+        if len(dns): dct['dns'] = dns
+        return dct
+
+    def __build_modify_nsset_update__(self, dct):
+        """This is support of the build_command_line(). 
+        Individual modification of the contact."""
+        dct = self.__build_modify_nsset_create__(dct)
+        rem = {}
+        if dct.has_key('dns'):
+            names = []
+            for dns in dct['dns']:
+                names.append(dns['name'][0])
+            rem['name']  = names
+        if dct.has_key('tech'): rem['tech'] = dct['tech']
+        if len(rem): dct['rem'] = [rem]
+        return dct
+
+    def __build_modify_contact_update__(self, dct):
+        """This is support of the build_command_line(). 
+        Individual modification of the contact."""
+        dct = self.__build_modify_contact_create__(dct)
+        chg = {}
+        for key in ('voice','fax','email','vat','auth_info','notify_email'):
+            if dct.has_key(key): chg[key] = dct[key]
+        if dct.has_key('ident'): chg['ident'] = dct['ident']
+        if dct.has_key('disclose'): chg['disclose'] = dct['disclose']
+        postal_info = {}
+        for key in ('name','org'):
+            if dct.has_key(key): postal_info[key] = dct[key]
+        addr = {}
+        for key in ('city','cc','street','sp','pc'):
+            if dct.has_key(key): addr[key] = dct[key]
+        if len(addr): postal_info['addr'] = [addr]
+        if len(postal_info): chg['postal_info'] = [postal_info]
+        if len(chg): dct['chg'] = [chg]
+        return dct
+
+    def __build_modify_contact_create__(self, dct):
+        """This is support of the build_command_line(). 
+        Individual modification of the contact."""
+        if dct.has_key('disclose'):
+            flag = self.server_disclose_policy and 'y' or 'n'
+            dct['disclose'] = [{'flag': [flag], 'data':dct['disclose']}]
+        if dct.has_key('ident'):
+            dct['ident'] = [{'number':dct['ident']}]
+        if dct.has_key('ident.type'):
+            ident_type = dct.pop('ident.type')
+            dct['ident'][0]['type'] = ident_type
+        dct['contact_id'] = dct.pop('id')
+        return dct
 
     #===========================================
 

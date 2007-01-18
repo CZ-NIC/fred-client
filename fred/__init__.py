@@ -726,6 +726,80 @@ class Client:
         """
         return self._epp.api_command('list_domain',{'cltrid':cltrid})
 
+    def sendauthinfo_contact(self, id, cltrid=None):
+        """Usage: sendauthinfo_contact id
+
+    PARAMS:
+        id      contact ID
+
+    RETURN:
+    
+  The EPP 'sendauthinfo_contact' command transmit request for send password
+  to contact email. This command is usefull during transfer
+  when owner and new registrar needn't require previous registrar for password.
+        """
+        return self._epp.api_command('sendauthinfo_contact',{'id':id, 'cltrid':cltrid})
+
+    def sendauthinfo_nsset(self, id, cltrid=None):
+        """Usage: sendauthinfo_nsset id
+
+    PARAMS:
+        id      NSSET ID
+
+    RETURN:
+    
+  The EPP 'sendauthinfo_nsset' command transmit request for send password
+  to contact email. This command is usefull during transfer
+  when owner and new registrar needn't require previous registrar for password.
+        """
+        return self._epp.api_command('sendauthinfo_nsset',{'id':id, 'cltrid':cltrid})
+
+    def sendauthinfo_domain(self, name, cltrid=None):
+        """Usage: sendauthinfo_domain name
+
+    PARAMS:
+        name      domain name
+
+    RETURN:
+    
+  The EPP 'sendauthinfo_domain' command transmit request for send password
+  to contact email. This command is usefull during transfer
+  when owner and new registrar needn't require previous registrar for password.
+        """
+        return self._epp.api_command('sendauthinfo_domain',{'name':name, 'cltrid':cltrid})
+
+    def credit_info(self, cltrid=None):
+        """Usage: credit_info
+
+    PARAMS:
+
+    RETURN:
+        zone
+        credit
+
+    The EPP 'credit_info' command returns credit information.
+        """
+        return self._epp.api_command('credit_info',{'cltrid':cltrid})
+
+    def technical_test(self, id, name, cltrid=None):
+        """Usage: technical_test id name
+
+    PARAMS:
+        id            NSSET ID
+        name    domain name
+
+    RETURN:
+
+    The EPP 'technical_test' command transmit request for technical test
+    for particular NSSET and domain. The result of the test will be saved
+    into the message queue from where the registrant can fetch it
+    by poll command. Every test has report level (number) and run just
+    a parts what have equal or lower level number. Valid range
+    is from 0 to 10. Set report level in the command create_nsset
+    and update_nsset.
+    """
+        return self._epp.api_command('technical_test',{'id':id, 'name':name, 'cltrid':cltrid})
+
     #==============================================================
         
     def get_answer_dct(self):

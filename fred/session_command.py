@@ -18,7 +18,6 @@
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 import re, random, math
 import dircache # jen pro testování. v ostré verzi to nebude
-
 import eppdoc
 import eppdoc_client
 import translate
@@ -150,8 +149,20 @@ sources ad advance, transmited between client and server.
     1 - brief (default)
     2 - full
     3 - full & XML sources"""), ('verbose 2',)),
+            (('build_command',), self.__session_build_command__, REQUIRED, ('command_type', _T('Command type.')), _T("""
+This function creates command from values returned by commands 
+info_[contact|nsset|domain]. It is usefull if you want create new record 
+very similar of the some saved in the server. Or if you want update 
+a lot of values in the record. You have to do four steps:
+
+  1. get values  - call info_[...] command
+  2. create command line - build_command  create
+  3. modify values what you needs
+  4. send this commant to the server 
+"""), ('build_command create',)),
         )
         
+
     def __put_raw_into_note__(self, data):
         "Use pprint for displaying structured data (dict, XML-EPP)."
         if data is None:
@@ -194,7 +205,7 @@ sources ad advance, transmited between client and server.
             if command_name in self._pattern_session_commands:
                 type = 'session'
             else:
-                command_name = command_name.replace('-','_')
+                # command_name = command_name.replace('-','_') # OBSOLETE
                 if command_name in self._available_commands:
                     type = 'EPP'
             if type:
@@ -362,7 +373,8 @@ sources ad advance, transmited between client and server.
         # Možnost zadání pomlčky místo podtržítka:
         m = re.match('(\S+)(.*)',cmd)
         if m:
-            EPP_command = '%s%s'%(m.group(1).replace('-','_'), m.group(2))
+            # EPP_command = '%s%s'%(m.group(1).replace('-','_'), m.group(2)) OBSOLETE
+            EPP_command = '%s%s'%(m.group(1), m.group(2))
             session_command = m.group(1)
             command_params = m.group(2)
         if cmd == '!':
@@ -627,7 +639,33 @@ sources ad advance, transmited between client and server.
                     if self._session[ONLINE]: self.append_note(_T('Reconnect to change server language too.'))
         else:
             self.append_note('%s ${BOLD}%s${NORMAL}'%(_T('User interface language is'), self._session[LANG]))
-        
+
+    def __session_build_command__(self, param):
+        'Create command line from previous info'
+        allowed = ('create','update','delete')
+        # check if user sets param
+        if not param:
+            self.append_error('%s: %s.'%(_T('Missing command type. Available types'),', '.join(allowed)))
+            return
+        # check valid param
+        if param not in allowed:
+            self.append_error('%s: %s.'%(_T('Invalid command type. Valid types'),', '.join(allowed)))
+            return
+        # check if previous command was info
+        match = re.match('^(\w+):info$', self._dct_answer['command'])
+        if match is None:
+            self.append_error(_T('At first you must receive values from info_[contact|nsset|domain].'))
+            return
+        info_type = match.group(1)
+        # check if info returned valid data
+        if not len(self._dct_answer['data']):
+            self.append_error(_T("Previous info_%s didn't return data.")%get_ltext(info_type))
+            return
+        # create command
+        eppdoc = eppdoc_client.Message()
+        self.append_note(eppdoc.build_command_line(param, info_type, self._dct_answer, self._session[NULL_VALUE]))
+
+
     #==================================================
     #
     #    EPP commands
