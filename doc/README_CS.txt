@@ -650,6 +650,30 @@ Prikazy relace (session)
    2 - vsechno
    3 - vsechno a XML zdroje.
 
+   Uroven vypisu lze nastavit i pri spusteni prikazoveho radku. Viz
+   konfiguracni soubor.
+
+   > fetch_from_info typ_prikazu [ne-do-prikazove-radky]
+
+   Funkce fetch_from_info umoznuje vytvorit prikaz z hodnot, ktere byly nacteny
+   z jednoho z prikazu typu info v predchozim kroku. To je napriklad uzitecne,
+   kdyz chcete vytvorit novy zaznam s velmi podobnymi udaji, jake jsou jiz v
+   nejakem zzaznamu pouzity. Platne typy prikazu, ktere muzete pomoci
+   fetch_from_info vytvorit jsou: create, update, delete.
+
+   Napriklad, kdyz chcete vytvorit create_contact, provedte tyto tri kroky:
+   1. Nactete hodnoty: info_contact CID:ID
+   2. Vytvorte prikaz: fetch_from_info create
+   3. Upravte prikaz jak potrebujete a pak jej odeslete na server.
+
+   Pokud vas terminal podporuje vkladani textu do prikazove radky (Unix), bude
+   vytvoreny prikaz vlozen primo do nej. Chcete-li prikaz misto do prikazove
+   radky zobrazit jen na vystup, zadejte parametr noprompt (nebo jen n).
+
+   Pokud vas terminal vkladani do promptu nepodporuje (Windows), bude prikaz
+   zobrazen normalne na vystupu a musite si jej do prikazove radky zkopirovat
+   nebo prepsat.
+
 Kapitola 5. Skripty fred_create.py a fred_sender.py
 
    Skripty fred_create.py a fred_sender.py jsou urceny pro pouziti v shell

@@ -1064,7 +1064,7 @@ class Message(MessageBase):
 
     #===========================================
 
-    def build_command_line(self, command_type, info_type, answer, null_value):
+    def fetch_from_info(self, command_type, info_type, answer, null_value):
         'Create command line from INFO data.'
         epp_command = '%s_%s'%(command_type, info_type)
         self._dct = {'command': [epp_command], epp_command: [epp_command] }
@@ -1076,22 +1076,11 @@ class Message(MessageBase):
                 if type(value) not in (list, tuple): value = [value]
                 # replace all occurences like 'authInfo' from 'authInfo' to 'auth_info'
                 self._dct[re.sub('([A-Z])','_\\1',name, re.I).lower()] = value
-        if epp_command == 'create_contact':
-            self._dct = self.__build_modify_contact_create__(self._dct)
-        elif epp_command == 'update_contact':
-            self._dct = self.__build_modify_contact_update__(self._dct)
-        elif epp_command == 'create_nsset':
-            self._dct = self.__build_modify_nsset_create__(self._dct)
-        elif epp_command == 'update_nsset':
-            self._dct = self.__build_modify_nsset_update__(self._dct)
-        elif epp_command == 'create_domain':
-            self._dct = self.__build_modify_domain_create__(self._dct)
-        elif epp_command == 'update_domain':
-            self._dct = self.__build_modify_domain_update__(self._dct)
+        self._dct = getattr(self, '__ffi_%s__'%epp_command, lambda d:d)(self._dct)
         return self.get_command_line(null_value)
 
-    def __build_modify_domain_create__(self, dct):
-        """This is support of the build_command_line(). 
+    def __ffi_create_domain__(self, dct):
+        """This is support of the fetch_from_info(). 
         Individual modification of the contact."""
         # from exDate value count years
         if dct.has_key('ex_date'):
@@ -1105,8 +1094,8 @@ class Message(MessageBase):
                     dct['period'] = [{'unit':['y'], 'num': [str(period_num)]}]
         return dct
 
-    def __build_modify_domain_update__(self, dct):
-        """This is support of the build_command_line(). 
+    def __ffi_update_domain__(self, dct):
+        """This is support of the fetch_from_info(). 
         Individual modification of the contact."""
         chg ={}
         for key in ('nsset','registrant','auth_info'):
@@ -1115,8 +1104,8 @@ class Message(MessageBase):
         if dct.has_key('admin'): dct['rem_admin'] = dct['admin']
         return dct
 
-    def __build_modify_nsset_create__(self, dct):
-        """This is support of the build_command_line(). 
+    def __ffi_create_nsset__(self, dct):
+        """This is support of the fetch_from_info(). 
         Individual modification of the contact."""
         dns = []
         for name, addr in dct.get('ns',[]):
@@ -1124,10 +1113,10 @@ class Message(MessageBase):
         if len(dns): dct['dns'] = dns
         return dct
 
-    def __build_modify_nsset_update__(self, dct):
-        """This is support of the build_command_line(). 
+    def __ffi_update_nsset__(self, dct):
+        """This is support of the fetch_from_info(). 
         Individual modification of the contact."""
-        dct = self.__build_modify_nsset_create__(dct)
+        dct = self.__ffi_create_nsset__(dct)
         rem = {}
         if dct.has_key('dns'):
             names = []
@@ -1138,10 +1127,10 @@ class Message(MessageBase):
         if len(rem): dct['rem'] = [rem]
         return dct
 
-    def __build_modify_contact_update__(self, dct):
-        """This is support of the build_command_line(). 
+    def __ffi_update_contact__(self, dct):
+        """This is support of the fetch_from_info(). 
         Individual modification of the contact."""
-        dct = self.__build_modify_contact_create__(dct)
+        dct = self.__ffi_create_contact__(dct)
         chg = {}
         for key in ('voice','fax','email','vat','auth_info','notify_email'):
             if dct.has_key(key): chg[key] = dct[key]
@@ -1158,8 +1147,8 @@ class Message(MessageBase):
         if len(chg): dct['chg'] = [chg]
         return dct
 
-    def __build_modify_contact_create__(self, dct):
-        """This is support of the build_command_line(). 
+    def __ffi_create_contact__(self, dct):
+        """This is support of the fetch_from_info(). 
         Individual modification of the contact."""
         if dct.has_key('disclose'):
             flag = self.server_disclose_policy and 'y' or 'n'

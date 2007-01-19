@@ -68,6 +68,7 @@ class ManagerTransfer(ManagerBase):
         self.readline = None
         self.readline_prefix = None
         self.readline_words = []
+        self._startup_hook = '' # text what will be put in prompt
         #......................................
         self.reset_src()
         #test_init_client() # TEST ONLY
@@ -675,6 +676,7 @@ $fred_source_answer = '';      // source code (XML) of the answer prepared to di
         if readline:
             readline.parse_and_bind("tab: complete")
             readline.set_completer(self.complete)
+            readline.set_startup_hook(self.readline_startup_hook)
             self.readline = readline
 
     def __get_readline_words__(self, buffer):
@@ -738,6 +740,12 @@ $fred_source_answer = '';      // source code (XML) of the answer prepared to di
             word = None
         #writelog("complete(%s, %d) WORD='%s'"%(prefix,index,word))
         return word
+
+    def readline_startup_hook(self):
+        'It is called with no arguments just before readline prints the first prompt.'
+        if len(self._startup_hook):
+            self.readline.insert_text(self._startup_hook)
+            self._startup_hook = ''
     #-------------------------------------
 
         

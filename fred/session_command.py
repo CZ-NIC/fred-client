@@ -40,7 +40,7 @@ Next descendat is in session_receiver.py
 
 COLOR = 1
 SEPARATOR = '-'*60
-OPTIONAL,REQUIRED = range(2)
+OPTIONAL, REQUIRED = range(2)
 
 def __find_index__(array, key):
     index=-1
@@ -68,7 +68,8 @@ class ManagerCommand(ManagerTransfer):
         self._hidden_commands = ('answer-cols','hidden','colors','config','null_value','raw-command','raw-answer','send','output')
         self._pattern_session_commands = [] # for recognize command
         self._available_session_commands = [] # for display list of command names
-        for n,f,r,p,e,x in self._session_commands:
+##        for n,f,r,p,e,x in self._session_commands:
+        for n,f,p,e,x in self._session_commands:
             if n[0] not in self._hidden_commands:
                 self._available_session_commands.append(n[0])
             self._pattern_session_commands.extend(n)
@@ -76,68 +77,111 @@ class ManagerCommand(ManagerTransfer):
 
     def init_session_commands(self):
         'Returns tuple of the session commands.'
-        # SESSION_COMMANDS: (
-        #   (command_name,command_name,command_name)
-        #   function
-        #   (parameter, parameter)   parameter: (req/opt, name, description, available)
-        #   'Description'
-        #   (example, example)
-        # )
+        # LIST OF:
+        #   Command_names
+        #       (command_name, alternate, alternate, ...)
+        #   Parameters
+        #       (parametr_name, required|optional, description)
+        #   Descriptions
+        #       string
+        #   Examples
+        #       (example, example, ...)
         self._session_commands = (
-            (('!',), None, REQUIRED, (_T('command'),_T('Start interactive input mode on this command')), _T("""
+            (('!',), None, 
+                ((_T('command'), REQUIRED, _T('Start interactive input mode on this command')),), 
+                _T("""
 ! starts interactive input mode. In interactive input mode the program asks
 to fill in all command parameters one by one to help users construct proper
 syntax. After going through all parameters actual command syntax is displayed
 before issuing command to server. 
 
 Interactive mode can be used with EPP commands only."""), ('!create_domain',)),
-            (('colors',), self.__session_colors__, OPTIONAL, (_T('switch'),_T('Turn function on/off.')), _T('Turn on/off colored output.'), ('colors on',)),
-            (('config',), self.manage_config, OPTIONAL, (), _T('Display or create config file.'), ('config',)),
-            (('confirm',), self.__session_confirm__, OPTIONAL, (_T('switch'),_T('Turn function on/off.')), _T('Set on/off command confirmation for sending editable commands to the server.'), ('confirm off',)),
-            #(('connect',), self.__session_connect__, OPTIONAL, (), _T('Make connection between client and server without login.'), ()),
-            #(('disconnect',), self.__session_disconnect__, OPTIONAL, (), _T('Disconnect from the EPP server.'), ()),
-            (('credits',), self.__session_credits__, OPTIONAL, (), _T('Display credits.'), ()),
-            (('help','h','?'), None, OPTIONAL, (_T('command'),_T('Get detailed help for this command.')), _T("""
+
+            (('colors',), self.__session_colors__, 
+                ((_T('switch'), OPTIONAL, _T('Turn function on/off.')),), 
+                _T('Turn on/off colored output.'), ('colors on',)),
+
+            (('config',), self.manage_config, (), _T('Display actual configuration.'), ('config',)),
+
+            (('confirm',), self.__session_confirm__, 
+                ((_T('switch'), OPTIONAL, _T('Turn function on/off.')),), 
+                _T('Set on/off command confirmation for sending editable commands to the server.'), ('confirm off',)),
+
+            #(('connect',), self.__session_connect__, (), _T('Make connection between client and server without login.'), ()),
+            #(('disconnect',), self.__session_disconnect__, (), _T('Disconnect from the EPP server.'), ()),
+
+            (('credits',), self.__session_credits__, (), _T('Display credits.'), ()),
+
+            (('help','h','?'), None, 
+                ((_T('command'), OPTIONAL, _T('Get detailed help for this command.')),), 
+                _T("""
 Help displays all available commands (type 'help') or displays 
 detailed help for selected command (type 'help command'). 
 Help uses synonyms 'help', '?' or 'h'."""), ('help','? update_nsset')),
-            (('lang',), self.__session_language__, OPTIONAL, (_T('code'),_T('Set user interface language.')), _T("""
+
+            (('lang',), self.__session_language__, 
+                ((_T('code'), OPTIONAL, _T('Set user interface language.')),), 
+                _T("""
 Set the client language and server together. If you are online 
 and want to change the server language too, you have to logout 
 and login again. Language is also possible to change by 'login'
 command or specify in configuration file or set in options on
 the command line."""), ('lang en','lang cs',)),
-            (('license',), self.__session_license__, OPTIONAL, (), _T('Displays license terms of this application.'), ()),
-            (('null_value','null'), self.__session_null__, OPTIONAL, (), _T("""
+
+            (('license',), self.__session_license__, (), _T('Displays license terms of this application.'), ()),
+
+            (('null_value','null'), self.__session_null__, (), _T("""
 Set representation of the value what is used to mean nothing. Default is NULL.
 This value we use if we want to skip over any column in the command parameters. 
 Type NULL means we did not put any value in contrast to '' or "" where we put
 value of zero length. Synonym of the 'null_value' is 'null'. 
 See help for more details."""), ('null_value None','null EMPTY',)),
-            (('output',), self.__session_output__, OPTIONAL, (_T('type'),_T('Set the output type.')), _T('Display output in type.'), ('output html',)),
-            (('poll_autoack',), self.__session_poll_ack__, OPTIONAL, (_T('switch'),_T('Turn function on/off.')), _T("""
+
+            (('output',), self.__session_output__, 
+                ((_T('type'), OPTIONAL, _T('Set the output type.')),), 
+                _T('Display output in type.'), ('output html',)),
+
+            (('poll_autoack',), self.__session_poll_ack__, 
+                ((_T('switch'), OPTIONAL, _T('Turn function on/off.')),), 
+                _T("""
 First see 'help poll' for understanding how to manage the server messages.
 Funcion poll_autoack causes the client will send two poll commands instead 
 of the one only. First poll is sent as 'poll req' and second as 'poll ack'.
 The result is a message what has been removed from the message queue."""), ('poll_autoack on','poll_autoack off')),
-            (('quit','q','exit'), None, OPTIONAL, (), _T("""
+
+            (('quit','q','exit'), None, (), _T("""
 Disconnects from the server and exits the application. Synonyms 'q' and 'exit'
 can be used to invoke same functionality."""), ()),
-            (('raw-answer','raw-a','src-answer','src-a'), self.__session_raw_answer__, OPTIONAL, (_T('mode'),_T('Define display mode. XML (default) or DICT (dict or d).')), _T("""
+
+            (('raw-answer','raw-a','src-answer','src-a'), self.__session_raw_answer__, 
+                ((_T('mode'), OPTIONAL, _T('Define display mode. XML (default) or DICT (dict or d).')),), 
+                _T("""
 Display XML source of the EPP answer. If you would display source
 without XML tag, type parametr 'dict' or simple 'd'.
 Synonyms of 'raw-answer' are 'raw-a', 'src-answer' and 'src-a'."""), ('raw-a','raw-a d','src-a','src-a d')),
-            (('raw-command','raw-c','src-command','src-c'), self.__session_raw_command__, 0, (_T('mode'),_T('Define display mode. XML (default) or DICT (dict or d).')), _T("""
+
+            (('raw-command','raw-c','src-command','src-c'), self.__session_raw_command__, 
+                ((_T('mode'), OPTIONAL, _T('Define display mode. XML (default) or DICT (dict or d).')),), 
+                _T("""
 Display XML source of the EPP command. If you would display source
 without XML tag, type parametr 'dict' or simple 'd'.
 Synonyms of 'raw-command' are 'raw-c', 'src-command' and 'src-c'."""), ('raw-c','raw-c d','src-c','src-c d')),
-            (('send',), self.__session_send__, REQUIRED, (_T('filename'),_T('any filename'),), _T('Send any file to the server. If filename missing command shows actual folder.'), ('send mydoc.xml',)),
-            (('validate',), self.__session_validate__, OPTIONAL, (_T('switch'),_T('Turn validation on/off.')), _T("""
+
+            (('send',), self.__session_send__, 
+                ((_T('filename'), REQUIRED, _T('any filename')),), 
+                _T('Send any file to the server. If filename missing command shows actual folder.'), ('send mydoc.xml',)),
+
+            (('validate',), self.__session_validate__, 
+                ((_T('switch'), OPTIONAL, _T('Turn validation on/off.')),), 
+                _T("""
 Client doesn't check command parameters itself. It uses for that external application
 'xmllint' whats checks all parameters against to schema defined in XML specification.
 Switch turns validations ON or OFF. Default is ON. If xmllint is not present 
 validation is turned off automaticly."""), ('validate off',)),
-            (('verbose',), self.__session_verbose__, OPTIONAL, (_T('level'),_T('Set verbose level. Available levels are 1, 2, 3.')), _T("""
+
+            (('verbose',), self.__session_verbose__, 
+                ((_T('level'), OPTIONAL, _T('Set verbose level. Available levels are 1, 2, 3.')),), 
+                _T("""
 Client displays various informations. They are disparted to verbose levels.
 First verbose level (default) is designed to common user and give the output
 at the minimum has needed to work with. For inquiring users is aimed second
@@ -149,17 +193,30 @@ sources ad advance, transmited between client and server.
     1 - brief (default)
     2 - full
     3 - full & XML sources"""), ('verbose 2',)),
-            (('build_command',), self.__session_build_command__, REQUIRED, ('command_type', _T('Command type.')), _T("""
-This function creates command from values returned by commands 
-info_[contact|nsset|domain]. It is usefull if you want create new record 
-very similar of the some saved in the server. Or if you want update 
-a lot of values in the record. You have to do four steps:
 
-  1. get values  - call info_[...] command
-  2. create command line - build_command  create
-  3. modify values what you needs
-  4. send this commant to the server 
-"""), ('build_command create',)),
+            (('fetch_from_info','ffi'), self.__session_fetch_from_info__, 
+                (('command_type', REQUIRED, _T('Command type.')),
+                 ('noprompt', OPTIONAL, _T('Display on the output (no on the prompt).'))
+                ), 
+                _T("""
+This function creates command from values returned by command 
+info_[contact|nsset|domain]. It is usefull if you want create new record 
+with very similar values as some one saved on the server. 
+
+Make these three steps:
+  1. Load values:    info_contact CID:ID
+  2. Create command: fetch_from_info create
+  3. Modify command as you need and you can send it to the server.
+
+Valid command types what you can create by fetch_from_info are:
+  create
+  update
+  delete
+
+The result is put directly into prompt if your terminal support this.
+When you want not result in your prompt join option 'noprompt'
+(or simply 'n') and result will be displayed on the output.
+"""), ('fetch_from_info create','ffi update noprompt')),
         )
         
 
@@ -236,23 +293,29 @@ a lot of values in the record. You have to do four steps:
         examples = ()
         command_lines = []
         space = ' '*self._indent_left
-        for names,func,required,params,explain,ex in self._session_commands:
+        type_names = (u'', u' (%s)'%get_unicode(_T('required')))
+        for names, func, params, explain, ex in self._session_commands:
             if command_name in names:
                 notice = explain
                 examples = ex
-                options = ''
-                #if len(names)>1:
-                #    command_line += ' (${BOLD}%s:${NORMAL} %s)'%(_T('synonyms'),', '.join(names[1:]))
-                # params: (name, description)
-                if len(params):
-                    if required:
-                        options = ' %s'%params[0]
-                    else:
-                        options = ' [%s]'%params[0]
-                    name = ('%s%s'%(space,params[0])).ljust(self._ljust+2) # +bracket '(required) '
-                    command_help = '%s%s'%(name,params[1])
-                command_lines = map(lambda name: '%s%s'%(name,options), names)
+                options = []
+                phelp = []
+                reguired = 1
+                for name, type, descript in params:
+                    prefix=''
+                    if reguired and type == OPTIONAL:
+                        prefix='['
+                        reguired = 0
+                    options.append('%s%s'%(prefix,name))
+                    name_and_type = get_ltext((u'%s%s'%(get_unicode(name),type_names[type])).ljust(self._ljust+2))
+                    phelp.append('%s%s%s'%(space, name_and_type, descript))
+                if not reguired:
+                    options[-1] += ']'
+                command_help = '\n'.join(phelp)
+                cmd_options = ' '.join(options)
+                command_lines = map(lambda name: '%s %s'%(name,cmd_options), names)
                 break
+        #           SYNTAX,             OPTIONS,          DESCRIPTION
         return command_lines, command_help, notice, examples
 
     def __repalce_static_null_examples__(self, examples):
@@ -400,7 +463,8 @@ a lot of values in the record. You have to do four steps:
             self.display_help(help_item, command)
         elif session_command in self._pattern_session_commands:
             # 2. Session commands
-            for names,func,req,p,e,x in self._session_commands:
+##            for names,func,req,p,e,x in self._session_commands:
+            for names,func,p,e,x in self._session_commands:
                 if session_command in names:
                     if func:
                         name = func(command_params.strip())
@@ -640,15 +704,19 @@ a lot of values in the record. You have to do four steps:
         else:
             self.append_note('%s ${BOLD}%s${NORMAL}'%(_T('User interface language is'), self._session[LANG]))
 
-    def __session_build_command__(self, param):
+    def __session_fetch_from_info__(self, param):
         'Create command line from previous info'
         allowed = ('create','update','delete')
+        params = re.split('\s+',param)
         # check if user sets param
-        if not param:
+        if not len(params):
             self.append_error('%s: %s.'%(_T('Missing command type. Available types'),', '.join(allowed)))
             return
+        display_as_note = 0
+        command_type = params[0]
+        if len(params)>1: display_as_note = params[1][0] == 'n' and 1 or 0
         # check valid param
-        if param not in allowed:
+        if command_type not in allowed:
             self.append_error('%s: %s.'%(_T('Invalid command type. Valid types'),', '.join(allowed)))
             return
         # check if previous command was info
@@ -663,7 +731,11 @@ a lot of values in the record. You have to do four steps:
             return
         # create command
         eppdoc = eppdoc_client.Message()
-        self.append_note(eppdoc.build_command_line(param, info_type, self._dct_answer, self._session[NULL_VALUE]))
+        cmd = eppdoc.fetch_from_info(command_type, info_type, self._dct_answer, self._session[NULL_VALUE])
+        if self.readline and display_as_note == 0:
+            self._startup_hook = cmd # display directly on the prompt
+        else:
+            self.append_note(cmd) # display as a note if tty doesn't support readline (Windows)
 
 
     #==================================================

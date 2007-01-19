@@ -19,11 +19,11 @@
     Konfigurační soubor
     </a></span></dt></dl></dd><dt><span class="chapter"><a href="#id2453193">4. 
     Program fred_client.py
-    </a></span></dt><dd><dl><dt><span class="section"><a href="#id2453227">Zobrazení helpu</a></span></dt><dt><span class="section"><a href="#id2453270">EPP příkazy</a></span></dt><dt><span class="section"><a href="#id2498995">Syntaxe zadávání paramerů příkazu</a></span></dt><dt><span class="section"><a href="#cltrid">Společný parametr cltrid (Client transaction ID)</a></span></dt><dt><span class="section"><a href="#null_or_empty">Žádná hodnota / Prázdná hodnota</a></span></dt><dd><dl><dt><span class="section"><a href="#id2499646">Žádná hodnota: NULL</a></span></dt><dt><span class="section"><a href="#id2499778">Prázdná hodnota: '', ""</a></span></dt></dl></dd><dt><span class="section"><a href="#id2499863">Interaktivní mód vkládání parametrů</a></span></dt><dt><span class="section"><a href="#id2499968">Příkazy relace (session)</a></span></dt></dl></dd><dt><span class="chapter"><a href="#id2500205">5. 
+    </a></span></dt><dd><dl><dt><span class="section"><a href="#id2453227">Zobrazení helpu</a></span></dt><dt><span class="section"><a href="#id2453270">EPP příkazy</a></span></dt><dt><span class="section"><a href="#id2498995">Syntaxe zadávání paramerů příkazu</a></span></dt><dt><span class="section"><a href="#cltrid">Společný parametr cltrid (Client transaction ID)</a></span></dt><dt><span class="section"><a href="#null_or_empty">Žádná hodnota / Prázdná hodnota</a></span></dt><dd><dl><dt><span class="section"><a href="#id2499646">Žádná hodnota: NULL</a></span></dt><dt><span class="section"><a href="#id2499778">Prázdná hodnota: '', ""</a></span></dt></dl></dd><dt><span class="section"><a href="#id2499863">Interaktivní mód vkládání parametrů</a></span></dt><dt><span class="section"><a href="#id2499968">Příkazy relace (session)</a></span></dt></dl></dd><dt><span class="chapter"><a href="#id2500314">5. 
     Skripty fred_create.py a fred_sender.py
-    </a></span></dt><dt><span class="chapter"><a href="#output_types">6. Integrace klienta do PHP kódu</a></span></dt><dt><span class="chapter"><a href="#id2500571">7. Grafická nadstavba v Qt4.</a></span></dt><dt><span class="chapter"><a href="#id2500585">8. 
+    </a></span></dt><dt><span class="chapter"><a href="#output_types">6. Integrace klienta do PHP kódu</a></span></dt><dt><span class="chapter"><a href="#id2500680">7. Grafická nadstavba v Qt4.</a></span></dt><dt><span class="chapter"><a href="#id2500694">8. 
     Knihovna fred a popis API
-    </a></span></dt><dd><dl><dt><span class="section"><a href="#id2500602">Online dokumentace:</a></span></dt><dt><span class="section"><a href="#id2500656">Příklady práce s knihovnou</a></span></dt></dl></dd></dl></div><div class="preface" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2489581"></a>Co je FredClient:</h2></div></div></div><p>
+    </a></span></dt><dd><dl><dt><span class="section"><a href="#id2500711">Online dokumentace:</a></span></dt><dt><span class="section"><a href="#id2500766">Příklady práce s knihovnou</a></span></dt></dl></dd></dl></div><div class="preface" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2489581"></a>Co je FredClient:</h2></div></div></div><p>
     FredClient je sada scriptů v jazyce Python postavených na fred knihovně
     a určených ke komunikaci s EPP serverem.
     </p><p>Sada obsahuje EPP konzoli a skripty určené pro použití v shellu.</p></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2489600"></a>Kapitola 1. Licence</h2></div></div></div><p>Licence je v souboru fred/LICENSE.</p></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2489610"></a>Kapitola 2. Požadavky na systém a instalace</h2></div></div></div><p>Pokyny k instalaci jsou v souboru INSTALL.</p></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2489621"></a>Kapitola 3. 
@@ -556,7 +556,28 @@ ještě navíc XML zdrojové dokumenty, které si klient se serverem předává.
 
 </p><table class="simplelist" border="0" summary="Simple list"><tr><td><span class="emphasis"><em>Úrovně výpisu detailů:</em></span></td></tr><tr><td>1 - stručná (default)</td></tr><tr><td>2 - všechno</td></tr><tr><td>3 - všechno a XML zdroje.</td></tr></table><p>
 
-</p></div></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2500205"></a>Kapitola 5. 
+Úroveň výpisu lze nastavit i při spuštění příkazového řádku. Viz <a href="#config" title="&#10;    Konfigurační soubor&#10;    ">konfigurační soubor</a>.
+
+</p><pre class="programlisting">
+&gt; fetch_from_info typ_příkazu [ne-do-příkazové-řádky]
+</pre><p>
+
+Funkce <span class="emphasis"><em>fetch_from_info</em></span> umožňuje vytvořit příkaz z hodnot, které byly načteny
+z jednoho z příkazů typu <span class="emphasis"><em>info</em></span> v předchozím kroku. To je například užitečné, 
+když chcete vytvořit nový záznam s velmi podobnými údaji, jaké jsou již v nějakém zzáznamu použity.
+Platné typy příkazů, které můžete pomocí <span class="emphasis"><em>fetch_from_info</em></span> vytvořit jsou:
+<span class="bold"><strong>  create, update, delete</strong></span>.
+</p><p>
+Například, když chcete vytvořit <span class="emphasis"><em>create_contact</em></span>, proveďte tyto tři kroky:
+</p><table class="simplelist" border="0" summary="Simple list"><tr><td>  1. Načtěte hodnoty: <span class="bold"><strong>info_contact CID:ID</strong></span></td></tr><tr><td>  2. Vytvořte příkaz: <span class="bold"><strong>fetch_from_info create</strong></span></td></tr><tr><td>  3. Upravte příkaz jak potřebujete a pak jej odešlete na server.</td></tr></table><p>
+Pokud váš terminál podporuje vkládání textu do příkazové řádky (Unix),
+bude vytvořený příkaz vložen přímo do něj.
+Chcete-li příkaz místo do příkazové řádky zobrazit jen na výstup, zadejte parametr 
+<span class="emphasis"><em>noprompt</em></span> (nebo jen <span class="emphasis"><em>n</em></span>).
+</p><p>
+Pokud váš terminál vkládání do promptu nepodporuje (Windows), bude příkaz zobrazen normálně na výstupu
+a musíte si jej do příkazové řádky zkopírovat nebo přepsat.
+</p></div></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2500314"></a>Kapitola 5. 
     Skripty fred_create.py a fred_sender.py
     </h2></div></div></div><p>
 
@@ -631,15 +652,15 @@ $fred_data['domain:crDate'] = '2006-10-31T16:51:56+01:00';
 $fred_labels['domain:exDate'] = 'Expiration date';
 $fred_data['domain:exDate'] = '2009-10-31T01:00:00+01:00';
 $fred_labels['domain:renew'] = 'Last renew on';
-</pre></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2500571"></a>Kapitola 7. Grafická nadstavba v Qt4.</h2></div></div></div><p>Popis grafické nadstavby klienta je v samostatném souboru. Hledejte README_QT4...
-</p></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2500585"></a>Kapitola 8. 
+</pre></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2500680"></a>Kapitola 7. Grafická nadstavba v Qt4.</h2></div></div></div><p>Popis grafické nadstavby klienta je v samostatném souboru. Hledejte README_QT4...
+</p></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2500694"></a>Kapitola 8. 
     Knihovna fred a popis API
-    </h2></div></div></div><div class="toc"><p><b>Obsah</b></p><dl><dt><span class="section"><a href="#id2500602">Online dokumentace:</a></span></dt><dt><span class="section"><a href="#id2500656">Příklady práce s knihovnou</a></span></dt></dl></div><p>
+    </h2></div></div></div><div class="toc"><p><b>Obsah</b></p><dl><dt><span class="section"><a href="#id2500711">Online dokumentace:</a></span></dt><dt><span class="section"><a href="#id2500766">Příklady práce s knihovnou</a></span></dt></dl></div><p>
 
 Knihovna "fred" vám umoňuje implmentovat API rozhraní do vašich aplikací. Knihova i jednotlivé funkce
 obsahují komentáře, podle kterých se můžete při implementaci řídit. V části __init__.py naleznete
 i ukázky kódu.
-</p><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2500602"></a>Online dokumentace:</h2></div></div></div><p>
+</p><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2500711"></a>Online dokumentace:</h2></div></div></div><p>
 Pokud si chcete projít jednotlivé třídy a funkce knihovny, tak k tomu můžete využít generátor
 dokumentace, který je standardní součástí pythonu: Zadejte na příkazové řádce příkaz:
 
@@ -662,7 +683,7 @@ spustíte z adresáře, kde máte tyto skripty uložené. Pak se v helpu zobraz�
 </pre><p>
 
 Server ukončíte stiskem Ctrl+C.
-</p></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2500656"></a>Příklady práce s knihovnou</h2></div></div></div><p>
+</p></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2500766"></a>Příklady práce s knihovnou</h2></div></div></div><p>
 Import knihovny provedete příkazem:
 
 </p><pre class="programlisting">

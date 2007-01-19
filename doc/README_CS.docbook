@@ -879,6 +879,33 @@ ještě navíc XML zdrojové dokumenty, které si klient se serverem předává.
       <member>3 - všechno a XML zdroje.</member>
 </simplelist>
 
+Úroveň výpisu lze nastavit i při spuštění příkazového řádku. Viz <link linkend="config">konfigurační soubor</link>.
+
+<programlisting>
+&gt; fetch_from_info typ_příkazu [ne-do-příkazové-řádky]
+</programlisting>
+
+Funkce <emphasis>fetch_from_info</emphasis> umožňuje vytvořit příkaz z hodnot, které byly načteny
+z jednoho z příkazů typu <emphasis>info</emphasis> v předchozím kroku. To je například užitečné, 
+když chcete vytvořit nový záznam s velmi podobnými údaji, jaké jsou již v nějakém zzáznamu použity.
+Platné typy příkazů, které můžete pomocí <emphasis>fetch_from_info</emphasis> vytvořit jsou:
+<emphasis role='bold'>  create, update, delete</emphasis>.
+</para>
+<para>
+Například, když chcete vytvořit <emphasis>create_contact</emphasis>, proveďte tyto tři kroky:
+<simplelist>
+<member>  1. Načtěte hodnoty: <emphasis role='bold'>info_contact CID:ID</emphasis></member>
+<member>  2. Vytvořte příkaz: <emphasis role='bold'>fetch_from_info create</emphasis></member>
+<member>  3. Upravte příkaz jak potřebujete a pak jej odešlete na server.</member>
+</simplelist>
+Pokud váš terminál podporuje vkládání textu do příkazové řádky (Unix),
+bude vytvořený příkaz vložen přímo do něj.
+Chcete-li příkaz místo do příkazové řádky zobrazit jen na výstup, zadejte parametr 
+<emphasis>noprompt</emphasis> (nebo jen <emphasis>n</emphasis>).
+</para>
+<para>
+Pokud váš terminál vkládání do promptu nepodporuje (Windows), bude příkaz zobrazen normálně na výstupu
+a musíte si jej do příkazové řádky zkopírovat nebo přepsat.
 </para>
 </section>
 
