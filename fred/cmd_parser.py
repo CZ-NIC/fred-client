@@ -189,7 +189,7 @@ def parse(dct_root, cols_root, text_line):
         token = tokens[pos]
         if token=='': continue
         if not len(mode):
-            errors.append(_T('Invalid bracket definition (mode).'))
+            errors.append(_T('Invalid bracket definition (Missing close).'))
             break
         if sep:
             # part string token
@@ -294,6 +294,8 @@ def parse(dct_root, cols_root, text_line):
                 else:
                     __append_token__(dct,cols,current,mode,token)
                     explicit_key = ''
+    if len(mode) > 1:
+        errors.append(_T('Invalid bracket definition (missing close).'))
     return errors
 
 #----------------------------------

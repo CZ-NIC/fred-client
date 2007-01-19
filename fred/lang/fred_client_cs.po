@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-01-19 13:37+0100\n"
+"POT-Creation-Date: 2007-01-19 16:41+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Zdeněk Böhm <zdenek.bohm@nic.cz>\n"
 "Language-Team: CS <ccreg-devel@lists.nic.cz>\n"
@@ -108,8 +108,8 @@ msgid "Misplaced list or key"
 msgstr "Chybně umístěný seznam nebo klíč"
 
 #: fred/cmd_parser.py:192
-msgid "Invalid bracket definition (mode)."
-msgstr "Nesprávné použití závorek (mode)."
+msgid "Invalid bracket definition (Missing close)."
+msgstr "Nesprávné použití závorek (Chybí uzavření)."
 
 #: fred/cmd_parser.py:235
 msgid "Invalid bracket. Only value or simple list allowed in key definition."
@@ -124,6 +124,10 @@ msgstr "Nesprávné použití závorek (list)."
 #: fred/cmd_parser.py:255
 msgid "Invalid bracket definition (childs)."
 msgstr "Nesprávné použití závorek (childs)."
+
+#: fred/cmd_parser.py:298
+msgid "Invalid bracket definition (missing close)."
+msgstr "Nesprávné použití závorek (chybí uzavření)."
 
 #: fred/console.py:49
 msgid ""
@@ -1624,10 +1628,11 @@ msgstr ""
 "  update\n"
 "  delete\n"
 "\n"
-"Pokud to váš terminál podporuje je výsledek je vložen přímo do příkazové řádky.\n"
-"Nechcete-li jej mít v příkazové řádce připojte parametr 'noprompt' (nebo jen 'n')\n"
+"Pokud to váš terminál podporuje je výsledek je vložen přímo do příkazové "
+"řádky.\n"
+"Nechcete-li jej mít v příkazové řádce připojte parametr 'noprompt' (nebo jen "
+"'n')\n"
 "a výsledek bude zobrazen na výstupu.\n"
-
 
 #: fred/session_command.py:226
 msgid "No data"
@@ -2213,3 +2218,4 @@ msgstr "(Žádný záznam.)"
 #: guiqt4/main.py:952
 msgid "Internal errors"
 msgstr "Interní chyby"
+
