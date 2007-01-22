@@ -360,8 +360,14 @@ class FredMainWindow(QtGui.QDialog):
             wtab = getattr(self.ui, '%s_table'%command_name)
             data = dct_answer.get('data',{})
             if re.match('\w+:check',dct_answer.get('command')):
-                # overwrite number status by reason message
-                data = overwrite_status_by_reason_message(data)
+                # Strip suffix :reason from key names.
+                data = trim_suffix_reasion_and_pop_others(data)
+                # Count row number by names put by user. It is necessary,
+                # bycause user can type same names more than once, but server
+                # returns only one reason. Than we need count lines not by server answer, 
+                # but list of paramters.
+                count_rows = 'count_rows'
+                data[count_rows] = len(self.epp._epp.get_keys_sort_by_columns())
             for pos in range(columns):
                 header = wtab.horizontalHeaderItem(pos)
                 header.setText(labels[pos])
@@ -376,7 +382,8 @@ class FredMainWindow(QtGui.QDialog):
                 column_keys = map(lambda k:(k,1,k), data.keys()) # default (unsorted)
             #....................................................
             if command_name == 'info_nsset':
-                # implode nsset
+                # Implode DNS list and IP address together into one string.
+                # [u'ns2.test.cz', [u'127.289.30.63',u'127.289.30.63',]]                
                 nsset = []
                 for ns in data.get('nsset:ns',[]):
                     sns = join_key_and_values(ns)
@@ -387,6 +394,7 @@ class FredMainWindow(QtGui.QDialog):
             for key,verbose,label in column_keys:
                 if only_key and key != only_key: continue
                 value = data.get(key)
+                ## print get_str(u"[%s] %d '%s': %s"%(key,verbose,label, get_unicode(value))) #DEBUG
                 if value is None: continue
                 if columns > 1:
                     if not label: label = key
@@ -950,24 +958,21 @@ class FredMainWindow(QtGui.QDialog):
         else:
             text = _TU('(No record.)')
         self.__display_text_wnd__(text, _TU('Internal errors'))
-        
-def overwrite_status_by_reason_message(data):
-    """Modification for object:check answers:
-    Data must be dict type and source like this:
-        cid:test                 1
-        cid:test:reason     Available
-    is modified to:
-        cid:test                 Available
+
+def trim_suffix_reasion_and_pop_others(data):
+    """Remove suffix :reason from key names and pop others.
+    IN:
+    data = {u'name.cz:reason': 'Message...', u'test.cz:reason': 'Message...', ...}
+    columns = [(u'test.cz', 1, u'test.cz'), (u'name.cz', 1, u'name.cz'),  ...]
+    OUT:
+    data = {u'test.cz': 'Message...', u'name.cz': 'Message...',  ...}
     """
     msg = {}
-    patt_reason = re.compile('.+:reason', re.I)
-    for key,status in data.items():
-        if patt_reason.match(key): continue
-        reason = data.get('%s:reason'%key)
-        if reason:
-            msg[key] = reason
-        else:
-            msg[key] = status
+    patt_reason = re.compile('(.+):reason$')
+    for key, value in data.items():
+        match = patt_reason.search(key)
+        if match:
+            msg[match.group(1)] = value
     return msg
 
 def get_str(qtstr):
@@ -1030,7 +1035,7 @@ def count_data_rows(dct):
     return size
 
 def join_key_and_values(value):
-    'Join key and values'
+    'Implode DNS list and IP address together into one string.'
     # [u'ns2.test.cz', [u'127.289.30.63',u'127.289.30.63',]]
     if type(value) in (list, tuple):
         if len(value) == 2 and type(value[0]) in (str, unicode):
