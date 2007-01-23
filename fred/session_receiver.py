@@ -475,7 +475,10 @@ class ManagerReceiver(ManagerCommand):
         except KeyError, msg:
             self.append_error('answer_response_fred_creditinfo KeyError: %s'%msg)
         else:
-            for zone in res_credit_info.get('fred:zoneCredit',[]):
+            # if answer returns only one zone, we need simualte list of zones.
+            zones = res_credit_info.get('fred:zoneCredit',[])
+            if type(zones) is dict: zones = [zones]
+            for zone in zones:
                 # {'fred:zone': {'data': u'0.2.4.e164.arpa'},  'fred:credit': {'data': u'201.50'} }, 
                 key    = eppdoc.get_dct_value(zone, 'fred:zone')
                 value = eppdoc.get_dct_value(zone, 'fred:credit')

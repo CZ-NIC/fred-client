@@ -4,9 +4,12 @@ Změny:
     * Interní chyby jsou v GUI vypisovány do okna Error log.
 
 Nové funkce:
+    * Přidána funkce fetch_from_info
     * Přidána možnost zadání vlastní hodnoty clTRID přes OPTIONS nebo config.
 
 Opravy:
+    * Oprava chyby u výpisu z credit_info
+    * V GUI oprava výstupu z check funkcí
     * V GUI opravena funkce delete_contact a delete_nsset
 
 

@@ -1,7 +1,7 @@
 
 Manual pro FredClient konzoli a knihovnu fred
 
-Verze 1.3.1
+Verze 1.3.x
 
    Vzniklo: 11. 7.2006; Revize: 18. 8.2006; 1. 9.2006; 4. 9.2006; 14. 9.2006;
    27. 9.2006; 1.11.2006; 7.11.2006; 17.1.2007;
@@ -260,7 +260,7 @@ Kapitola 4. Program fred_client.py
 Zobrazeni helpu
 
    Jake prikazy mate k dispozici zjistite zadanim prikazu "help" (nebo h, ?).
-    FredClient verze 1.3.1 Zadejte "help", "license" nebo "credits" pro zobraze
+    FredClient verze 1.3.x Zadejte "help", "license" nebo "credits" pro zobraze
 
     ni vice informaci.
 
@@ -813,7 +813,7 @@ Online dokumentace:
    podivat i na skripty pracujici s knihovnou fred, tak cely proces spusteni
    udelejte stejne, ale s tim rozdilem, ze pydoc spustite z adresare, kde mate
    tyto skripty ulozene. Pak se v helpu zobrazi i ony:
-    $ cd FredClient-1.3.1
+    $ cd FredClient-1.3.x
     $ pydoc -p 8080
 
    Server ukoncite stiskem Ctrl+C.

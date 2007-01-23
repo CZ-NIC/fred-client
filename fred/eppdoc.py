@@ -545,6 +545,9 @@ def get_dct_values(dict_data, names, attr_name=''):
         for i in range(len(names)):
             name = names[i]
             if name in ('data','attr'): continue
+            if type(dict_data) is not dict:
+                ret.append('%s %s'%(_T('Internal error: Value is not dict type:'),str(dict_data)))
+                continue
             if not dict_data.get(name,None): continue
             inames = names[i+1:]
             if type(dict_data[name]) in (list,tuple):

@@ -5,7 +5,7 @@
 
 <bookinfo>
     <title>Manuál pro FredClient konzoli a knihovnu fred</title>
-    <subtitle>Verze 1.3.1</subtitle>
+    <subtitle>Verze 1.3.x</subtitle>
     <copyright>
       <year>2007</year>
       <holder>CZ.NIC</holder>
@@ -371,7 +371,7 @@ Jaké příkazy máte k dispozici zjistíte zadáním příkazu "help" (nebo h, 
 </para>
 
 <programlisting>
-    FredClient verze 1.3.1 Zadejte "help", "license" nebo "credits" pro zobrazení více informací.
+    FredClient verze 1.3.x Zadejte "help", "license" nebo "credits" pro zobrazení více informací.
     &gt; help
 </programlisting>
 
@@ -1098,7 +1098,7 @@ pracující s knihovnou fred, tak celý proces spuštění udělejte stejně, al
 spustíte z adresáře, kde máte tyto skripty uložené. Pak se v helpu zobrazí i ony:
 
 <programlisting>
-    $ cd FredClient-1.3.1
+    $ cd FredClient-1.3.x
     $ pydoc -p 8080
 </programlisting>
 
