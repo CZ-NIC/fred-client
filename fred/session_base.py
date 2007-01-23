@@ -223,42 +223,73 @@ $fred_client_errors = array(); // errors occuring during communication
         if msg and self._session[VERBOSE]: print msg
 
     def get_messages(self, sep='\n'):
-        'Same as display but returns as local string.'
+        """Same as display but returns as local string.
+        In xml output mode collect only errors.
+        """
         #TODO: log file
         msg = []
         is_php = self._session[OUTPUT_TYPE] == 'php'
+        is_xml = self._session[OUTPUT_TYPE] == 'xml'
+        xml_close_tag = 0
+        if is_xml:
+            if self.is_note() or self.is_error() or self._notes_afrer_errors:
+                msg.append('<?xml version="1.0" encoding="utf-8"?>')
+                msg.append('<FredClient>')
+                xml_close_tag = 1
         if self.is_note():
             # hlášení, poznámka, hodnoty
 ##            if self._notes[-1] != '': msg.append('') # empty line
+            if is_xml:
+                msg.append('<notes>')
             for text in self._notes:
                 if is_php:
                     msg.append('$fred_client_notes[] = %s;'%php_string(text))
+                elif is_xml:
+                    msg.append('<note>%s</note>'%strip_colors(text))
                 else:
                     msg.append(get_ltext(colored_output.render(text)))
+            if is_xml:
+                msg.append('</notes>')
             self._notes = []
         if self.is_error():
             # chybová hlášení
+            if is_xml:
+                msg.append('<errors>')
 ##            if len(msg): msg.append('') # empty line - indent errors
-            if len(msg) and msg[-1] != '': msg.append('')
-            self._errors[-1] += colored_output.render('${NORMAL}')
             if is_php:
                 msg.append('$fred_client_errors[] = %s;'%php_string(self._errors[0]))
+            elif is_xml:
+                msg.append('<error>%s</error>'%strip_colors(self._errors[0]))
             else:
+                if len(msg) and msg[-1] != '': msg.append('')
+                self._errors[-1] += colored_output.render('${NORMAL}')
                 label = _T('ERROR')
                 msg.append('%s%s: %s'%(colored_output.render('${RED}${BOLD}'),label, self._errors[0]))
             for text in self._errors[1:]:
                 if is_php:
                     msg.append('$fred_client_errors[] = %s;'%php_string(text))
+                elif is_xml:
+                    msg.append('<error>%s</error>'%strip_colors(text))
                 else:
                     msg.append(get_ltext(text))
+            if is_xml:
+                msg.append('</errors>')
             self._errors = []
         if len(self._notes_afrer_errors):
-            if is_php: 
+            if is_xml:
+                msg.append('<remarks>')
+            if is_php:
                 msg.extend(map(lambda s: '$fred_client_notes[] = %s;'%php_string(s), self._notes_afrer_errors))
+            elif is_xml:
+                msg.extend(map(lambda s: '<remark>%s</remark>'%strip_colors(s), self._notes_afrer_errors))
             else:
                 msg.extend(map(get_ltext, self._notes_afrer_errors))
             self._notes_afrer_errors = []
 ##        if len(msg) and msg[-1] != '': msg.append('') # empty line at the end of all output
+            if is_xml:
+                msg.append('</remarks>')
+        if xml_close_tag:
+            msg.append('</FredClient>')
         return sep.join(msg)
 
     def welcome(self):
@@ -714,6 +745,9 @@ def php_string(value):
         ret = value # int or float
     return ret
 
+def strip_colors(text):
+    'Remove ${COLOR} from text'
+    return re.sub(r'\$\{[A-Z]+\}', '', text)
     
 if __name__ == '__main__':
     mb = ManagerBase()
