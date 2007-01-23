@@ -481,13 +481,18 @@ class FredMainWindow(QtGui.QDialog):
         else:
             self.display_error(self.missing_required)
 
-    def __share_command__(self, key, extends=0, anchor = 'name'):
-        'Shared for command handlers check, info, delete.'
+    def __share_command__(self, key, name_label, extends = NO_SPLIT_NAME):
+        """Shared for command handlers check, info, delete.
+        key = 'check_contact'  - a part of the UI widget name
+        name_label = ('id', 'contact ID') - apart of the widget name "anchor" and its label
+        extends = 0/1 - split names
+        """
         if not self.check_is_online(): return
         d = {}
+        anchor, label = name_label
         append_key(d, anchor, getattr(self.ui,'%s_%s'%(key,anchor)))
         append_key(d,'cltrid', getattr(self.ui,'%s_cltrid'%key))
-        if self.__check_required__(d, ((anchor, _TU('name')),)):
+        if self.__check_required__(d, ((anchor, _TU(label)),)):
             if extends == SPLIT_NAME:
                 d[anchor] = re.split('[,;\s]+', d[anchor]) # need for check commands
             self.disable_send_buttons()
@@ -577,22 +582,22 @@ class FredMainWindow(QtGui.QDialog):
         self.thread_epp.start()
 
     def check_contact(self):
-        self.__share_command__('check_contact',SPLIT_NAME)
+        self.__share_command__('check_contact', ('name', 'contact ID'), SPLIT_NAME)
 
     def check_nsset(self):
-        self.__share_command__('check_nsset',SPLIT_NAME)
+        self.__share_command__('check_nsset', ('name', 'NSSET ID'), SPLIT_NAME)
 
     def check_domain(self):
-        self.__share_command__('check_domain',SPLIT_NAME)
+        self.__share_command__('check_domain', ('name', 'domain name'), SPLIT_NAME)
 
     def info_contact(self):
-        self.__share_command__('info_contact')
+        self.__share_command__('info_contact', ('name', 'contact ID'))
 
     def info_nsset(self):
-        self.__share_command__('info_nsset')
+        self.__share_command__('info_nsset', ('name', 'NSSET ID'))
 
     def info_domain(self):
-        self.__share_command__('info_domain')
+        self.__share_command__('info_domain', ('name', 'domain name'))
 
     def create_contact(self):
         if not self.check_is_online(): return
@@ -777,22 +782,22 @@ class FredMainWindow(QtGui.QDialog):
             self.display_error(self.missing_required)
 
     def delete_contact(self):
-        self.__share_command__('delete_contact', NO_SPLIT_NAME, 'id')
+        self.__share_command__('delete_contact', ('id', 'contact ID'))
 
     def delete_nsset(self):
-        self.__share_command__('delete_nsset', NO_SPLIT_NAME, 'id')
+        self.__share_command__('delete_nsset', ('id', 'NSSET ID'))
 
     def delete_domain(self):
-        self.__share_command__('delete_domain')
+        self.__share_command__('delete_domain', ('name', 'domain name'))
 
     def sendauthinfo_contact(self):
-        self.__share_command__('sendauthinfo_contact', NO_SPLIT_NAME, 'id')
+        self.__share_command__('sendauthinfo_contact', ('id', 'contact ID'))
 
     def sendauthinfo_nsset(self):
-        self.__share_command__('sendauthinfo_nsset', NO_SPLIT_NAME, 'id')
+        self.__share_command__('sendauthinfo_nsset', ('id', 'NSSET ID'))
 
     def sendauthinfo_domain(self):
-        self.__share_command__('sendauthinfo_domain')
+        self.__share_command__('sendauthinfo_domain', ('name', 'domain name'))
         
     def transfer_contact(self):
         self.__share_transfer__('transfer_contact')
