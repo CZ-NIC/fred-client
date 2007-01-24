@@ -18,13 +18,14 @@
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 from distutils.core import setup
+from fred.internal_variables import fred_version
 
 setup(name = 'FredClient',
     description = 'Client FRED (Free Registry for enum and domain)',
     author = 'Zdenek Bohm, CZ.NIC',
     author_email = 'zdenek.bohm@nic.cz',
     url = 'http://www.nic.cz',
-    version = '1.3.2',
+    version = fred_version,
     license = 'GNU GPL',
     packages = ['fred','guiqt4'],
     package_data={

@@ -788,6 +788,8 @@ When you want not result in your prompt join option 'noprompt'
         self._epp_cmd._dct['username'] = [self.get_config_value(self._section_epp_login, 'username', OMIT_ERROR)]
         self._epp_cmd._dct['password'] = [self.get_config_value(self._section_epp_login, 'password', OMIT_ERROR)]
         self.create_login() # connect and get greeting message, than create XML login document
+        # remove notes 'Using configuration ...' and 'Connecting to HODT, port NNN ...'
+        self.remove_notes_from_no_text_ouptut()
         if not no_outoupt: self.display() # display errors or notes
         epp_doc = self._epp_cmd.get_xml()
         if epp_doc and self.is_connected():

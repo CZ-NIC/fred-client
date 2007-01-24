@@ -22,6 +22,12 @@
 Internal variables are used as a default in case if configuration file missing.
 It is used by client session Manager in session_base.py module.
 """
+
+#---------------------------------------------------
+# Here is defined FRED VERSION:
+#---------------------------------------------------
+fred_version = '1.3.3'
+
 required_defaults = {'port':700, 'timeout':10.0}
 config = """
 [connect]

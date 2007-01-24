@@ -53,6 +53,8 @@ def run_creation(options):
             str_error = '<div class="fred_errors">\n<strong>%s errors:</strong>\n<pre>\n%s</pre><div>'%(command_name,escape_html(errors))
         elif options['output'] == 'php':
             str_error = '<?php\n$fred_error_create_name = %s;\n$fred_error_create_value = %s;\n%s\n?>'%(php_string(command_name),php_string(errors),epp.get_empty_php_code())
+        elif options['output'] == 'xml':
+            str_error = "<?xml version='1.0' encoding='%s'?>\n<errors>\n\t<error>%s</error>\n</errors>"%(encoding, errors)
         else:
             # default 'text'
             str_error = "%s: %s"%(_T('ERROR'),errors)
@@ -94,7 +96,7 @@ def main():
                         epp_doc, str_error = run_creation(options)
                         display(epp_doc, str_error)
                 else:
-                    print "<?xml encoding='utf-8'?><errors>Invalid range pattern: %s</errors>"%options['range']
+                    print "<?xml encoding='%s'?><errors>Invalid range pattern: %s</errors>"%(encoding, options['range'])
             else:
                 options['command'] = command
                 epp_doc, str_error = run_creation(options)

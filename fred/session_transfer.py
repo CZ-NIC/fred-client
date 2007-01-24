@@ -263,6 +263,8 @@ class ManagerTransfer(ManagerBase):
         self._session[ONLINE] = 0
         self._session[USERNAME] = '' # for prompt info
         self._session[HOST] = '' # for prompt info
+        # remove notes 'Ending session at ...' and 'Disconnected.'
+        self.remove_notes_from_no_text_ouptut()
 
     def is_connected(self):
         "Check if the manager is connected."
@@ -386,6 +388,7 @@ class ManagerTransfer(ManagerBase):
         is_check = re.match('\w+:check',dct['command']) and 1 or 0 # object:check
         column_verbose = {} # dict of keys and their verbose level
         self.reduce_info_status(dct['command'], dct_data)
+
         for key,verbose,explain in self.__get_column_items__(dct['command'], dct_data):
             ## column_verbose[key] = verbose # keep verbose mode for check used item (debug only)
             key = key.strip() # client normaly trim whitespaces, but if you use sender, you can send everything...
@@ -537,8 +540,7 @@ class ManagerTransfer(ManagerBase):
             if value not in ('',[]):
                 if is_check:
                     # Tighten check response by code.
-                    if type(value) is int: continue
-                    key = re.sub(':reason$','',key)
+                    value = dct_data.get(key+':reason',u'')
                 __append_into_report__(data,key,value,explain,self._ljust,'',2) # 2 - use HTML pattern;
         if len(data):
             report('<table class="fred_data">')
@@ -578,6 +580,9 @@ $fred_source_answer = '';      // source code (XML) of the answer prepared to di
             msg = '$fred_client_%s[] = %s;'%(type == 1 and 'errors' or 'notes', php_string(message))
         elif self._session[OUTPUT_TYPE] == 'html':
             msg = '<div class="fred_%s">%s<div>'%(type == 1 and 'errors' or 'notes', message)
+        elif self._session[OUTPUT_TYPE] == 'xml':
+            tags = type == 1 and ('errors','error') or ('notes', 'note')
+            msg = '<?xml version="1.0" encoding="%s"?>\n<%s>\n\t<%s>%s</%s>\n</%s>'%(encoding, tags[0], tags[1], message, tags[1], tags[0])
         else: # text
             msg = message
         return msg
@@ -742,7 +747,9 @@ $fred_source_answer = '';      // source code (XML) of the answer prepared to di
         return word
 
     def readline_startup_hook(self):
-        'It is called with no arguments just before readline prints the first prompt.'
+        """It is called with no arguments just before readline prints the first prompt.
+        This function is used for display result from command fetch_from_info.
+        """
         if len(self._startup_hook):
             self.readline.insert_text(self._startup_hook)
             self._startup_hook = ''

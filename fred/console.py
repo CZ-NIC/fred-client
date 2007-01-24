@@ -116,7 +116,7 @@ def main(options):
         print colored_output.render("${BOLD}${RED}%s${NORMAL}"%__init__.translate.warning)
     epp = __init__.ClientSession()
     if not check_options(epp): return # any option error occurs
-    print epp.welcome()
+    epp.append_note(epp.welcome())
     if not epp.load_config():
         epp.display() # display errors or notes
         return
@@ -201,7 +201,6 @@ def main(options):
     epp.close()
     epp.save_history()
     epp.display() # display logout messages
-    print "[END]"
 
 def check_options(epp):
     'Check options what needs epp object for validate.'

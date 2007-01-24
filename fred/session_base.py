@@ -19,6 +19,7 @@
 import re, time
 import sys, os, StringIO
 import ConfigParser
+from cgi import escape as escape_html
 import terminal_controler
 import translate
 import session_config
@@ -230,66 +231,101 @@ $fred_client_errors = array(); // errors occuring during communication
         msg = []
         is_php = self._session[OUTPUT_TYPE] == 'php'
         is_xml = self._session[OUTPUT_TYPE] == 'xml'
+        is_html = self._session[OUTPUT_TYPE] == 'html'
         xml_close_tag = 0
+
         if is_xml:
             if self.is_note() or self.is_error() or self._notes_afrer_errors:
-                msg.append('<?xml version="1.0" encoding="utf-8"?>')
+                msg.append('<?xml version="1.0" encoding="%s"?>'%translate.encoding)
                 msg.append('<FredClient>')
                 xml_close_tag = 1
+        #elif is_html:
+        #    sep = '<br/>\n'
+
         if self.is_note():
             # hlášení, poznámka, hodnoty
 ##            if self._notes[-1] != '': msg.append('') # empty line
             if is_xml:
                 msg.append('<notes>')
+            elif is_html:
+                msg.append('<div class="notes">')
+
             for text in self._notes:
                 if is_php:
                     msg.append('$fred_client_notes[] = %s;'%php_string(text))
                 elif is_xml:
-                    msg.append('<note>%s</note>'%strip_colors(text))
+                    msg.append('\t<note>%s</note>'%strip_colors(text))
+                elif is_html:
+                    msg.append(escape_html(strip_colors(text)))
                 else:
                     msg.append(get_ltext(colored_output.render(text)))
             if is_xml:
                 msg.append('</notes>')
+            elif is_html:
+                msg.append('</div>')
             self._notes = []
+
         if self.is_error():
             # chybová hlášení
             if is_xml:
                 msg.append('<errors>')
+            elif is_html:
+                msg.append('<div class="errors">')
 ##            if len(msg): msg.append('') # empty line - indent errors
+
             if is_php:
                 msg.append('$fred_client_errors[] = %s;'%php_string(self._errors[0]))
             elif is_xml:
-                msg.append('<error>%s</error>'%strip_colors(self._errors[0]))
+                msg.append('\t<error>%s</error>'%strip_colors(self._errors[0]))
+            elif is_html:
+                msg.append(escape_html(strip_colors(self._errors[0])))
             else:
                 if len(msg) and msg[-1] != '': msg.append('')
                 self._errors[-1] += colored_output.render('${NORMAL}')
                 label = _T('ERROR')
                 msg.append('%s%s: %s'%(colored_output.render('${RED}${BOLD}'),label, self._errors[0]))
+
             for text in self._errors[1:]:
                 if is_php:
                     msg.append('$fred_client_errors[] = %s;'%php_string(text))
                 elif is_xml:
-                    msg.append('<error>%s</error>'%strip_colors(text))
+                    msg.append('\t<error>%s</error>'%strip_colors(text))
+                elif is_html:
+                    msg.append(escape_html(strip_colors(text)))
                 else:
                     msg.append(get_ltext(text))
+
             if is_xml:
                 msg.append('</errors>')
+            elif is_html:
+                msg.append('</div>')
             self._errors = []
+
         if len(self._notes_afrer_errors):
             if is_xml:
                 msg.append('<remarks>')
+            elif is_html:
+                msg.append('<div class="remark">')
+
             if is_php:
                 msg.extend(map(lambda s: '$fred_client_notes[] = %s;'%php_string(s), self._notes_afrer_errors))
             elif is_xml:
-                msg.extend(map(lambda s: '<remark>%s</remark>'%strip_colors(s), self._notes_afrer_errors))
+                msg.extend(map(lambda s: '\t<remark>%s</remark>'%strip_colors(s), self._notes_afrer_errors))
+            elif is_html:
+                msg.extend(map(lambda s: escape_html(strip_colors(s)), self._notes_afrer_errors))
             else:
                 msg.extend(map(get_ltext, self._notes_afrer_errors))
             self._notes_afrer_errors = []
 ##        if len(msg) and msg[-1] != '': msg.append('') # empty line at the end of all output
+
             if is_xml:
                 msg.append('</remarks>')
+            elif is_html:
+                msg.append('</div>')
+
         if xml_close_tag:
             msg.append('</FredClient>')
+        
         return sep.join(msg)
 
     def welcome(self):
@@ -297,7 +333,7 @@ $fred_client_errors = array(); // errors occuring during communication
         return '%s\n%s\n'%(self.version(),_T('Type "help", "license" or "credits" for more information.'))
 
     def version(self):
-        return 'FredClient 1.3.2' # version of the client
+        return 'FredClient %s'%internal_variables.fred_version # version of the client
 
     def __next_clTRID__(self):
         """Generate next clTRID value.
@@ -541,6 +577,13 @@ $fred_client_errors = array(); // errors occuring during communication
         'Set verbose mode.'
         self.parse_verbose_value(verbose)
         return self._session[VERBOSE]
+
+    def remove_notes_from_no_text_ouptut(self):
+        """In special output mode (xml, html, php) we don't need display notes.
+        """
+        if self._session[OUTPUT_TYPE] != 'text' and self._session[VERBOSE] < 2:
+            self._notes = []
+            self._notes_afrer_errors = []
     
     #---------------------------
     # validation

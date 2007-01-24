@@ -236,6 +236,8 @@ class ManagerReceiver(ManagerCommand):
         else:
             self.append_error(_T('Login failed.'))
             self.__code_isnot_1000__(data, 'login')
+        # Don't display messages 'Connecting to HOST, port NNN ...' and 'Connected!'
+        self.remove_notes_from_no_text_ouptut()
 
     #-------------------------------------
     # *** info ***
