@@ -1,6 +1,7 @@
 FredClient 1.3.2
 
 Zmeny:
+    * Povinny parametr val_ex_date pri zadani ENUM domeny v create_domain.
     * Interni chyby jsou v GUI vypisovany do okna Error log.
 
 Nove funkce:

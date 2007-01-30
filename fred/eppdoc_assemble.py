@@ -329,12 +329,15 @@ class Message(MessageBase):
         stop = previous_value_is_set = 0
         previous_min = [n[1]for n in parents]
         is_poll = command_name == 'poll' # compile boolean for more faster comparation
+        is_create_domain = command_name == 'create_domain'
         for row in columns:
             name,min_max,allowed,msg_help,example,pattern,children = row
             if is_poll and name == 'msg_id' and dct.get('op',[''])[0] == 'req':
                 # exception on the 'poll req' type where msg_id is jumped
                 continue
             min,max = min_max
+            if is_create_domain and name == 'val_ex_date' and re.search('\.arpa$', dct.get('name',[''])[0], re.I):
+                min = 1 # Parameter val_ex_date is required for ENUM domain type.
             utext,error = text_to_unicode(msg_help)
             parents.append([name,min,max,0,utext]) # name,min,max,counter
             # Když je hodnota povinná jen v této sekci, tak se req=1 nastaví na req=2
@@ -487,6 +490,10 @@ class Message(MessageBase):
         if not stop:
             # check list and allowed values if only 'stop' was not set
             errors, miss_req = self.__check_required__(command_name, columns, dct, null_value)
+            if command_name == 'create_domain' and re.search('\.arpa$', dct['name'][0], re.I) and not dct.get('val_ex_date'):
+                    # Exception for ENUM domain.
+                    errors.append(_T('Parameter val_ex_date is required dor ENUM domain.'))
+                    miss_req += 1
             if errors:
                 if miss_req:
                     error.append(_TP('Missing required value.','Missing required values.',miss_req))
