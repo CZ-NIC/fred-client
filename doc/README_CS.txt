@@ -141,7 +141,30 @@ Konfiguracni soubor
 
    Pro zalozeni noveho konfiguracniho souboru je k dispozici priklad
    fred_client.conf.sample. Tento priklad muzete pouzit jako zaklad pro vas
-   konfiguracni soubor.
+   konfiguracni soubor. V prikladu jsou pro definici plne cesty k souborum
+   pouzity promenne, ktere slouzi jako hodnoty, ktere lze vlozit do jinych
+   polozek v dane sekci.
+
+   Promenne se zapisuji ve tvaru %(nazev promenne)s. Napriklad:
+   %(dir)s
+
+   V tomto prikladu je definovana promenna jmenem dir. Ta musi byt v dane sekci
+   take definovana:
+   dir = /home/username/certificates
+
+   Pak se takovyto zapis
+   %(dir)s/private_key.pem
+
+   po nacteni konfiguracniho souboru rozvine na:
+   /home/username/certificates/private_key.pem
+
+   Tato metoda umoznuje mit plnou adresu k souborum na jednom miste a doplnovat
+   k ni jen jmeno potrebneho souboru. Pokud se vam ale tento zpusob zda prilis
+   slozity, tak promenne pouzivat nemusite a v prislusnych polozkach zadejte
+   misto promenne vzdy adresu celou.
+
+   V prikladu konfiguracniho souboru se takto musi nastavit dve cesty: Jedna k
+   certifikatum (pro dva soubory) a druha ke schematum.
 
    V konfiguracnim souboru se nachazi sekce connect, kde jsou ulozeny cesty k
    certifikatum a informace o serveru. Take tam jsou dalsi hodnoty napriklad

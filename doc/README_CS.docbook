@@ -136,7 +136,7 @@ Speciální parametry, které se v helpu nezobrazují:
 <para>
 Konfigurační soubor slouží k uložení různých nastavení klienta tak, aby při každém
 spuštění byly hodnoty takové, jaké je potřebujete mít. Například se zde definují
-jména a umistění souborů s certifikáty, adresa serveru, na který se má klient připojit,
+jména a umístění souborů s certifikáty, adresa serveru, na který se má klient připojit,
 verze schemat a další nastavení.
 </para>
 <para>
@@ -151,10 +151,37 @@ načíst z libovolného souboru.
 <para>
 Pro založení nového konfiguračního souboru je k dispozici příklad 
 <emphasis>fred_client.conf.sample</emphasis>. Tento příklad můžete použít jako základ pro váš
-konfigurační soubor.
+konfigurační soubor. V příkladu jsou pro definici plné cesty k souborům použity
+<emphasis>proměnné</emphasis>, které slouží jako hodnoty, které lze vložit do jiných položek v dané sekci.
 </para>
 <para>
-V konfiguračním souboru se nachází sekce connect, kde jsou uloženy cesty k certifikátům
+Proměnné se zapisují ve tvaru <emphasis>%(název proměnné)s</emphasis>. 
+Například: 
+<programlisting>
+   %(dir)s
+</programlisting>
+V tomto příkladu je definována proměnná jménem <emphasis>dir</emphasis>. Ta musí být v dané sekci také definována:
+<programlisting>
+   dir = /home/username/certificates
+</programlisting>
+Pak se takovýto zápis 
+<programlisting>
+   %(dir)s/private_key.pem
+</programlisting>
+po načtení konfiguračního souboru rozvine na: 
+<programlisting>
+   /home/username/certificates/private_key.pem
+</programlisting>
+Tato metoda umožňuje mít plnou adresu k souborům na jednom místě a doplňovat k ní jen jméno potřebného souboru.
+Pokud se vám ale tento způsob zdá příliš složitý, tak proměnné používat nemusíte 
+a v příslušných položkách zadejte místo proměnné vždy adresu celou.
+</para>
+<para>
+V příkladu konfiguračního souboru se takto musí nastavit dvě cesty: Jedna k <emphasis>certifikátům</emphasis> (pro dva soubory)
+a druhá ke <emphasis>schematům</emphasis>.
+</para>
+<para>
+V konfiguračním souboru se nachází sekce <emphasis>connect</emphasis>, kde jsou uloženy cesty k certifikátům
 a informace o serveru. Také tam jsou další hodnoty například username a password.
 Pokud se tyto hodnoty v konfiguračním souboru nacházejí, tak je příkaz 
 <emphasis>login</emphasis> použije jako parametry příkazu, které mu nebyly zadány.
