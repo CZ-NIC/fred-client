@@ -490,7 +490,7 @@ class Message(MessageBase):
         if not stop:
             # check list and allowed values if only 'stop' was not set
             errors, miss_req = self.__check_required__(command_name, columns, dct, null_value)
-            if command_name == 'create_domain' and re.search('\.arpa$', dct['name'][0], re.I) and not dct.get('val_ex_date'):
+            if command_name == 'create_domain' and dct.has_key('name') and re.search('\.arpa$', dct['name'][0], re.I) and not dct.get('val_ex_date'):
                     # Exception for ENUM domain.
                     errors.append(_T('Parameter val_ex_date is required dor ENUM domain.'))
                     miss_req += 1
