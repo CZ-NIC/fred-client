@@ -1,63 +1,4 @@
-Popis instalace FredClient
-
-OBSAH:
-
-    * Ověření verze pythonu
-    * Externí validátor xmllint
-    * Instalace FredClient
-    * Odinstalování FredClient
-
-*** Ověření verze pythonu
-
-FredClient potřebuje ke svému běhu jazyk Python nejméně ve verzi 2.4. 
-Tento jazyk je na současných linuxových distribucích již většinou nainstalován.
-
-Ověřte si, jestli máte python v požadované verzi:
-
-Zadejte na příkazové řádce:
-
-    $ python -V
-
-V MS Windows si spusťe python konzoli - v menu vyberte položku Python.
-Hned po spuštění se vypisuje informace o verzi.
-Pokud nemáte požadovanou verzi, tak si ji nainstalujte. Popis instalace
-a instalační soubory naleznete na http://www.python.org/.
-
-
-*** Externí validátor xmllint
-
-FredClient používá "xmllint" pro validaci XML. Tento program ale není
-nutnou podmínkou funkčnosti klienta. Pokud se v systému nenachází, tak 
-se ověřování automaticky vypne. Jestli máte xmllint instalován, zjistíte zadáním
-příkazu na příkazové řádce:
-
-    $ xmllint
-
-Pokud je program nainstalován, vypíše se jeho help, který začíná řádkem:
-Usage : xmllint [options] XMLfiles ...
-Jestli program nainstalován nemáte, tak jej můžete nainstalovat takto:
-
-Instalace na linuxu:
-    $ sudo apt-get install libxml2-utils
-nebo:
-    - ze strany http://xmlsoft.org/ is stáhněte instalační soubor pro vaši distribuci
-      a zkompilujte standardním způsobem.
-
-Instalace na MS Windows:
-    - Ze strany http://xmlsoft.org/ si stáhněte instalační soubor určený pro MS Windows:
-      Related links -> Windows binaries -> http://www.zlatkovic.com/libxml.en.html -> 
-      http://www.zlatkovic.com/pub/libxml/ -> libxml2-2.6.27.win32.zip
-      Rozbalte jej a nainstalujte.
-
-
-*** Instalace FredClient
-
-Program FredClient není nezbytně nutné instalovat. Je možné jej spustit ihned po
-rozbalení instalačního souboru. Podmínkou ale je, že musí být spuštěn z adresáře,
-do kterého jste program rozbalili.
-
-Aby se program mohl spustit odkudkoliv a aby jej mohli spouštět i ostatní uživatelé, 
-je nutné jej nainstalovat.
+Instalace FredClient
 
 
 Instalace FredClient programu se provede následovně:
@@ -67,16 +8,31 @@ Instalace FredClient programu se provede následovně:
     $ sudo ./install.sh                      - spustíte instalaci (musíte mít práva roota)
 
 Instalační skript si zapíše cestu ke všem souborům, které se instalovaly, do souboru
-install.log. Tento soubor je nutný pro odinstalování klienta. Proto jej nemažte
-a uschovejte si jej pro tento účel.
+install.log. Tento soubor je použit při odinstalování klienta.
 
 Tím je instalace dokončena. Klienta spustíte příkazem:
 
     $ ./fred_client.py
 
 
+Program FredClient není nezbytně nutné instalovat. Je možné jej spustit ihned po
+rozbalení instalačního souboru. Podmínkou ale je, že musí být spuštěn z adresáře,
+do kterého jste program rozbalili.
 
-*** Odinstalování FredClient
+Aby se program mohl spustit odkudkoliv a aby jej mohli spouštět i ostatní uživatelé, 
+je nutné jej nainstalovat.
+
+FredClient používá "xmllint" pro validaci XML. Tento program ale není
+nutnou podmínkou funkčnosti klienta. Pokud se v systému nenachází, tak 
+se ověřování automaticky vypne.
+
+
+
+
+
+
+Odinstalování FredClient
+
 
 Program FredClient se ze systému odinstaluje příkazem:
 

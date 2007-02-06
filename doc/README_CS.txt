@@ -826,6 +826,9 @@ Online dokumentace:
    na prikazove radce prikaz:
     $ pydoc -p 8080
 
+   Pokud se server nespusti, tak zkuste:
+    $ python `which pydoc` -p 8080
+
    Tim jste spustili webovy server, ktery generuje strany dokumentace primo ze
    zdrojovych souboru. Parametr -p udava na jakem portu je server spusten.
    Cislo portu muzete zadat jakekoliv jine. Nyni si otevrete prohlizec a

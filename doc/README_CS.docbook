@@ -1114,6 +1114,12 @@ dokumentace, který je standardní součástí pythonu: Zadejte na příkazové 
     $ pydoc -p 8080
 </programlisting>
 
+Pokud se server nespustí, tak zkuste:
+
+<programlisting>
+    $ python `which pydoc` -p 8080
+</programlisting>
+
 Tím jste spustili webový server, který generuje strany dokumentace přímo ze zdrojových souborů.
 Parametr -p udává na jakém portu je server spuštěn. Číslo portu můžete zadat jakékoliv jiné.
 Nyní si otevřete prohlížeč a zadejte adresu: http://localhost:8080/. Otevře se strana, na které

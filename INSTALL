@@ -1,78 +1,35 @@
-Description of the FredClient installation
-
-CONTENT:
-   
-    * Check python version
-    * External validation xmllint
-    * Install FredClient
-    * Uninstall FredClient
+Install FredClient
 
 
-*** Check python version
-
-FredClient needs pyhon framework at the minimal version 2.4. This framework
-is usually instaled in the common linux distribution.
-
-Check if you have python in necessary version. Type on the command line:
-
-    $ python -V
-
-If you use MS Windows open python console - select menu item Python.
-First lines on the opened console described version.
-
-If you have not version 2.4 or higher you install it. Install README and
-installation files you find at http://www.python.org/.
+    $ tar -xf FredClient-X.Y.Z.tar.gz        - unpack archive
+    $ cd FredClient-X.Y.Z                    - go to folder
+    $ sudo ./install.sh                      - run installation with root privileges
 
 
-*** External validation xmllint
+Install script writes file paths for all files what has been installed into
+install.log. This log file is used by uninstall process. Don't delete it
+and save for this purpose.
 
-FredClient use 'xmllint' for validation of the XML documents. But this program
-is not necessary for running FredClient. Validation is set off automatically, 
-if is not present in your system.
-
-For check xmllint type:
-
-    $ xmllint
-
-In success case the help will be shown. This begins on this line:
-Usage : xmllint [options] XMLfiles ...
-
-IF you want to install xmllint you make this:
-
-Linux:
-    $ sudo apt-get install libxml2-utils
-or download install file from page http://xmlsoft.org/ and compile in the standard way.
-
-MS Windows:
-Download install file dedicated for MS Windows:
-Related links -> Windows binaries -> http://www.zlatkovic.com/libxml.en.html -> 
-http://www.zlatkovic.com/pub/libxml/ -> libxml2-2.6.27.win32.zip
-Unpack it and make install.
+That is all, installation is finised. For start client type:
 
 
-*** Install FredClient
+    $ ./fred_client.py
+
+
+
 It is not necessary install FredClient if you want it just try for test. It is possible
 run program directly from folder where it has been unpacked.
 
 But if you need run FredClient from any folder or need run it for others users
 you need install.
 
-Do this steps:
-
-    $ tar -xf FredClient-X.Y.Z.tar.gz        - unpack archive
-    $ cd FredClient-X.Y.Z                    - go to folder
-    $ sudo ./install.sh                      - run installation with root privileges
-
-Install script writes file paths for all files what has been installed into
-install.log. This log file is important for uninstallation. Don't delete it
-and save for this purpose.
-
-That is all, installation is finised. For start client type:
-
-    $ ./fred_client.py
+FredClient use 'xmllint' for validation of the XML documents. But this program
+is not necessary for running FredClient. Validation is set off automatically, 
+if is not present in your system.
 
 
-*** Uninstall FredClient
+
+Uninstall FredClient
 
 For uninstall FredClient type command:
 

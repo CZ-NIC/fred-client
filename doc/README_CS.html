@@ -23,7 +23,7 @@
     Skripty fred_create.py a fred_sender.py
     </a></span></dt><dt><span class="chapter"><a href="#output_types">6. Integrace klienta do PHP kódu</a></span></dt><dt><span class="chapter"><a href="#id2500899">7. Grafická nadstavba v Qt4.</a></span></dt><dt><span class="chapter"><a href="#id2500912">8. 
     Knihovna fred a popis API
-    </a></span></dt><dd><dl><dt><span class="section"><a href="#id2500929">Online dokumentace:</a></span></dt><dt><span class="section"><a href="#id2500984">Příklady práce s knihovnou</a></span></dt></dl></dd></dl></div><div class="preface" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2489581"></a>Co je FredClient:</h2></div></div></div><p>
+    </a></span></dt><dd><dl><dt><span class="section"><a href="#id2500929">Online dokumentace:</a></span></dt><dt><span class="section"><a href="#id2500992">Příklady práce s knihovnou</a></span></dt></dl></dd></dl></div><div class="preface" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2489581"></a>Co je FredClient:</h2></div></div></div><p>
     FredClient je sada scriptů v jazyce Python postavených na fred knihovně
     a určených ke komunikaci s EPP serverem.
     </p><p>Sada obsahuje EPP konzoli a skripty určené pro použití v shellu.</p></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2489600"></a>Kapitola 1. Licence</h2></div></div></div><p>Licence je v souboru fred/LICENSE.</p></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2489610"></a>Kapitola 2. Požadavky na systém a instalace</h2></div></div></div><p>Pokyny k instalaci jsou v souboru INSTALL.</p></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2489621"></a>Kapitola 3. 
@@ -680,7 +680,7 @@ $fred_labels['domain:renew'] = 'Last renew on';
 </pre></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2500899"></a>Kapitola 7. Grafická nadstavba v Qt4.</h2></div></div></div><p>Popis grafické nadstavby klienta je v samostatném souboru. Hledejte README_QT4...
 </p></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2500912"></a>Kapitola 8. 
     Knihovna fred a popis API
-    </h2></div></div></div><div class="toc"><p><b>Obsah</b></p><dl><dt><span class="section"><a href="#id2500929">Online dokumentace:</a></span></dt><dt><span class="section"><a href="#id2500984">Příklady práce s knihovnou</a></span></dt></dl></div><p>
+    </h2></div></div></div><div class="toc"><p><b>Obsah</b></p><dl><dt><span class="section"><a href="#id2500929">Online dokumentace:</a></span></dt><dt><span class="section"><a href="#id2500992">Příklady práce s knihovnou</a></span></dt></dl></div><p>
 
 Knihovna "fred" vám umoňuje implmentovat API rozhraní do vašich aplikací. Knihova i jednotlivé funkce
 obsahují komentáře, podle kterých se můžete při implementaci řídit. V části __init__.py naleznete
@@ -691,6 +691,12 @@ dokumentace, který je standardní součástí pythonu: Zadejte na příkazové 
 
 </p><pre class="programlisting">
     $ pydoc -p 8080
+</pre><p>
+
+Pokud se server nespustí, tak zkuste:
+
+</p><pre class="programlisting">
+    $ python `which pydoc` -p 8080
 </pre><p>
 
 Tím jste spustili webový server, který generuje strany dokumentace přímo ze zdrojových souborů.
@@ -708,7 +714,7 @@ spustíte z adresáře, kde máte tyto skripty uložené. Pak se v helpu zobraz�
 </pre><p>
 
 Server ukončíte stiskem Ctrl+C.
-</p></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2500984"></a>Příklady práce s knihovnou</h2></div></div></div><p>
+</p></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2500992"></a>Příklady práce s knihovnou</h2></div></div></div><p>
 Import knihovny provedete příkazem:
 
 </p><pre class="programlisting">
