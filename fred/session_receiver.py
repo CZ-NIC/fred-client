@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 #This file is part of FredClient.
 #
@@ -41,7 +40,7 @@ class ManagerReceiver(ManagerCommand):
 
     #==================================================
     #
-    # funkce pro uložení hodnot z odpovědi od serveru
+    # function for save values from the server answer
     # process_answer() -> answer_response() -> answer_response_result()
     #                  -> answer_greeting()
     #
@@ -104,9 +103,9 @@ class ManagerReceiver(ManagerCommand):
         
     def answer_response(self):
         "Part of process answer - parse response node."
-        # Zde se hledá, jestli na odpověd existuje funkce, ketrá ji zpracuje.
-        # Pokud, ne, tak se odpověd zobrací celá standardním způsobem.
-        display_src = 1 # Má se odpověd zobrazit celá? 1-ano, 0-ne
+        # Here we are fooking for particular function to parse answer.
+        # If it doesn't exist we display whole answer by default method
+        display_src = 1 # Dislapy whole answer?  1 - yes, 0 - no
         response = self._dict_answer.get('response',None)
         if response:
             result = response.get('result',None)
@@ -127,7 +126,7 @@ class ManagerReceiver(ManagerCommand):
                 # sendauthinfo_(contact|nsset|domain) fnc_name: answer_response_fred_sendauthinfo
                 if hasattr(self,fnc_name):
                     getattr(self,fnc_name)((result, code, reason))
-                    display_src = 0 # Odpověd byla odchycena, není potřeba ji zobrazovat celou.
+                    display_src = 0 # Answer has been catch, we haven't display it again.
                 else:
                     self.__code_isnot_1000__((result, code, reason), self._command_sent) # 'info:contact'
             else:
@@ -137,8 +136,8 @@ class ManagerReceiver(ManagerCommand):
 
     def process_answer(self, epp_server_answer):
         'Main function. Process incomming EPP messages. This funcion is called by listen socket.'
-        # Hlavní funkce pro zpracování odpovědi. Rozparsuje XML, provede validaci a pak pokračuje
-        # funkcí answer_response().
+        # Main function for parsing the answer. Parse XML, make validation and continue
+        # to function answer_response().
         debug_time = [('START',time.time())] # PROFILER
         self.reset_src()
         if epp_server_answer:
@@ -153,10 +152,10 @@ class ManagerReceiver(ManagerCommand):
             except AttributeError:
                 list_type = ''
             if self._epp_response.is_error():
-                # při parsování se vyskytly chyby
+                # Errors occurs during parsing
                 self.append_error(self._epp_response.get_errors())
             if not self._epp_response.is_error():
-                # když přišla nějaká odpověd a podařilo se jí zparsovat:
+                # When is comming some answer and it is valid and parsed succefully:
                 # HOOK for contact:list, nsset:list, domain:list
                 if list_type:
                     # TODO: Hook. Must be done over.
@@ -179,8 +178,8 @@ class ManagerReceiver(ManagerCommand):
 
     #==================================================
     #
-    # Zpracování jednotlivých příchozích zpráv
-    # funkce jsou ve tvaru [prefix]_[jméno příkazu]
+    # Process incomming messages
+    # function names are in format [prefix]_[command_name]
     # answer_response_[command]
     #==================================================
     def answer_greeting(self):
@@ -230,8 +229,8 @@ class ManagerReceiver(ManagerCommand):
         "data=(response,result,code,msg)"
         host = self._session[HOST]
         if data[ANSW_CODE] == 1000:
-            self._session[ONLINE] = 1 # indikátor zalogování
-            self._session[CMD_ID] = 1 # reset - první command byl login
+            self._session[ONLINE] = 1 # login indicator
+            self._session[CMD_ID] = 1 # reset - first command was login
             self.append_note(_T('Connected!'))
         else:
             self.append_error(_T('Login failed.'))

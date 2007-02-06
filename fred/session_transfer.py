@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 #This file is part of FredClient.
 #
@@ -58,11 +57,11 @@ class ManagerTransfer(ManagerBase):
         self.defs[extURI] = self._epp_cmd.get_extURI()
         self._available_commands = self._epp_cmd.get_client_commands()
         self._lorry = None
-        # Typ očekávané odpovědi serveru. Zde si Manager pamatuje jaký příkaz
-        # odeslal a podle toho pak zařadí návratové hodnoty.
-        self._command_sent = '' # jméno posledního odeslaného příkazu
-        self._raw_cmd = '' # XML EPP příkaz odeslaný serveru
-        self._raw_answer = '' # XML EPP odpověd serveru
+        # Type of the answer. Here manager remembers what command sent
+        # and along to this value sorted returned variables.
+        self._command_sent = '' # the name of the last sent command
+        self._raw_cmd = '' # XML EPP command sent to the server
+        self._raw_answer = '' # XML EPP server answer
         self._dct_answer = {} # API response
         #... readline variables ...............
         self.readline = None
@@ -78,8 +77,8 @@ class ManagerTransfer(ManagerBase):
 
     def reset_src(self):
         'Reset buffers of sources.'
-        self._raw_answer = '' # XML EPP odpověd serveru
-        self._dict_answer = '' # dict - slovník vytvořený z XML EPP odpovědi
+        self._raw_answer = '' # XML EPP server answer
+        self._dict_answer = '' # dictionnary created from XML EPP server answer
         self._dct_answer = {'code':0,'command':'',  'reason':'', 'errors':[], 'data':{}} # API response
         # Set output SORT BY and VEROBOSE names:
         if self._session[TRANSLATE_ANSWER_COLUMN_NAMES] and not len(self._session[SORT_BY_COLUMNS]):
@@ -96,7 +95,7 @@ class ManagerTransfer(ManagerBase):
         self._notes_afrer_errors = []
         self._epp_cmd.reset()
         self._epp_response.reset()
-        self._command_sent = '' # jméno posledního odeslaného příkazu
+        self._command_sent = '' # name of the last command sent to the server
         self._session[SORT_BY_COLUMNS] = [] # used to sort output values
 
     def get_command_line(self):
@@ -104,13 +103,13 @@ class ManagerTransfer(ManagerBase):
         return self._epp_cmd.get_command_line(self._session[NULL_VALUE])
 
     #---------------------------------
-    # funkce pro nastavení session
+    # function for set session
     #---------------------------------
     def __check_is_connected__(self):
         "Control if you are still connected."
         if self._lorry:
             if not self._lorry.is_connected():
-                # spojení spadlo
+                # broken connection
                 if self._session[ONLINE] and self._session[VERBOSE] > 1:
                     self.append_error(_T('Connection to %s interrupted.')%self._session[HOST])
                 self.close()
@@ -119,10 +118,10 @@ class ManagerTransfer(ManagerBase):
 
     def grab_command_name_from_xml(self, message):
         "Save EPP command type for recognize server answer."
-        # manager si zapamatuje jakého typu příkaz byl a podle toho 
-        # pak pracuje s hodnotami, které mu server vrátí
-        # Tady se typ musí vytáhnout přímo z XML, jiná možnost není. 
-        # Protože lze posílat i XML již vytvořené dříve nebo z jiného programu.
+        # The Manager remember the type of the command and it is used
+        # for method how to interpret received variables.
+        # The type of the command must be grab directly from XML because
+        # it is possible to send any XML from any unknown source or application.
         epp_xml = eppdoc_client.Message()
         epp_xml.parse_xml(message)
         err = epp_xml.fetch_errors()
@@ -141,7 +140,7 @@ class ManagerTransfer(ManagerBase):
     #==================================================
     #
     #    Transfer functions
-    #    funkce pro komunikaci se socketem
+    #    for communication with socket
     #
     #==================================================
     def set_data_connect(self, dc):
@@ -225,7 +224,7 @@ class ManagerTransfer(ManagerBase):
         
     def connect(self):
         "Connect transfer socket. data=(host,port,ssl_key,ssl_cert,timeout,socket,username,password)"
-        if self.is_connected(): return 1 # spojení je již navázáno
+        if self.is_connected(): return 1 # connection is established already
         self._lorry = client_socket.Lorry()
         self._lorry._notes = self._notes
         self._lorry._errors = self._errors
@@ -259,7 +258,7 @@ class ManagerTransfer(ManagerBase):
         if self._session[ONLINE] == 1:
             self._notes_afrer_errors.append('%s %s'%(_T('Ending session at'),self._session[HOST]))
             self._notes_afrer_errors.append(_T('Disconnected.'))
-        # když se spojení zrušilo, tak o zalogování nemůže být ani řeči
+        # if the connection has been broken we are not online already
         self._session[ONLINE] = 0
         self._session[USERNAME] = '' # for prompt info
         self._session[HOST] = '' # for prompt info
@@ -287,15 +286,15 @@ class ManagerTransfer(ManagerBase):
 
     def send_logout(self, no_outoupt=None):
         'Send EPP logout command.'
-        if not self._session[ONLINE]: return # session zalogována nebyla
+        if not self._session[ONLINE]: return # session has not been login
         self.reset_round()
         self._epp_cmd.assemble_logout(self.__next_clTRID__())
         epp_doc = self._epp_cmd.get_xml()
         if epp_doc and self.is_connected():
             self.append_note(_T('Logout command sent to server'))
-            self.send(epp_doc)          # odeslání dokumentu na server
-            answer = self.receive()     # příjem odpovědi
-            self.process_answer(answer) # zpracování odpovědi
+            self.send(epp_doc)          # send document to the server
+            answer = self.receive()     # receiving answer
+            self.process_answer(answer) # process answer
             if not no_outoupt:
                 self.display() # display errors or notes
                 self.print_answer() # 2. departure from the rule to print answers

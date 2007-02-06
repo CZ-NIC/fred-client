@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 #This file is part of FredClient.
 #
@@ -44,6 +43,9 @@ contact_disclose = map(lambda n: (n,), ('name','org','addr','voice','fax','email
 history_filename = os.path.join(os.path.expanduser('~'),'.fred_history') # compatibility s MS Win
 
 TAG_clTRID = 'cltrid' # Definition for --key-name = clTRID value.
+
+# Pattern (re.search(pattern)) for resolve ENUM domain type:
+ENUM_DOMAIN_TYPE_PATT = '\.e164\.arpa$'
 
 
 class Message(MessageBase):
@@ -107,11 +109,11 @@ class Message(MessageBase):
         help=[]
         notice=''
         examples = ()
-        # v příkazu zrušit spojovníky
+        # remove hyphen in the command
         m = re.match('(\S+)(.*)',command_name)
         if m: command_name = '%s%s'%(m.group(1).replace('-','_'), m.group(2))
         if self._command_params.has_key(command_name):
-            # příkaz existuje
+            # command exists
             required,params,notice,examples = self._command_params[command_name]
             command_line = ['${BOLD}%s${NORMAL}'%command_name]
             if params:
@@ -121,7 +123,7 @@ class Message(MessageBase):
                 if command_name != 'hello': command_line.append('[%s]'%_T('other_options'))
             help = self.__get_help_scope__(params)
         else:
-            # neznámý příkaz
+            # unknown command
             help.append(_T('Unknown EPP command. Select one from EPP commands list (Type help).'))
             self.help_check_name(help,command_name)
         return ' '.join(command_line), '\n'.join(help), notice, examples
@@ -336,12 +338,13 @@ class Message(MessageBase):
                 # exception on the 'poll req' type where msg_id is jumped
                 continue
             min,max = min_max
-            if is_create_domain and name == 'val_ex_date' and re.search('\.arpa$', dct.get('name',[''])[0], re.I):
+            if is_create_domain and name == 'val_ex_date' and re.search(ENUM_DOMAIN_TYPE_PATT, dct.get('name',[''])[0], re.I):
                 min = 1 # Parameter val_ex_date is required for ENUM domain type.
             utext,error = text_to_unicode(msg_help)
             parents.append([name,min,max,0,utext]) # name,min,max,counter
-            # Když je hodnota povinná jen v této sekci, tak se req=1 nastaví na req=2
-            # když je hodnota s req=2 zadána, tak se všechny ostatní req hodnoty nastaví na req=1
+            # Mechanism for toggle section to required/optional:
+            # When a value is required only in this section, then req=1 switchs to req=2
+            # when a value with req=2 is put, then all others req values sets to req=1
             if already_done:
                 min = 0 # reset required values
             if min:
@@ -455,7 +458,7 @@ class Message(MessageBase):
                 error.append(_T('Command %s does not have any parameters, skipping interactive input mode.')%command_name)
             elif len(cmd.split(' ')) > 1:
                 error.append(_T('Command %s does not have any parameters.')%local8bit(command_name))
-            return error, example, stop # bez parametrů
+            return error, example, stop # no parameters
         columns = [(command_name,(1,1),(),'','','',())]
         columns.extend(self._command_params[command_name][1])
         dct['command'] = [command_name]
@@ -490,7 +493,7 @@ class Message(MessageBase):
         if not stop:
             # check list and allowed values if only 'stop' was not set
             errors, miss_req = self.__check_required__(command_name, columns, dct, null_value)
-            if command_name == 'create_domain' and dct.has_key('name') and re.search('\.arpa$', dct['name'][0], re.I) and not dct.get('val_ex_date'):
+            if command_name == 'create_domain' and dct.has_key('name') and re.search(ENUM_DOMAIN_TYPE_PATT, dct['name'][0], re.I) and not dct.get('val_ex_date'):
                     # Exception for ENUM domain.
                     errors.append(_T('Parameter val_ex_date is required dor ENUM domain.'))
                     miss_req += 1
@@ -684,7 +687,7 @@ class Message(MessageBase):
         ))
 
     #-------------------------------------------
-    # Dotazovací (query)
+    # Questions (query)
     #-------------------------------------------
     def assemble_check_contact(self, *params):
         self.__asseble_command__(('check','contact','id'), 'name', params)
@@ -725,7 +728,7 @@ class Message(MessageBase):
         ))
 
     #-------------------------------------------
-    # Editační (query)
+    # Edit (query)
     #-------------------------------------------
     def assemble_delete_contact(self, *params):
         self.__asseble_command__(('delete','contact','id'), 'id', params)
@@ -763,7 +766,7 @@ class Message(MessageBase):
         self.__assemble_transfer__(('nsset','id'),params)
 
     #-------------------------------------------
-    # Výkonné
+    # Executives
     #-------------------------------------------
     def __enum_extensions__(self, type, data, params, tag_name=''):
         'Enum extension for (create|renew)-domain commands.'

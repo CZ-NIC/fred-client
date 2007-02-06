@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 #This file is part of FredClient.
 #
@@ -17,7 +16,7 @@
 #    along with FredClient; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 import re, random, math
-import dircache # jen pro testování. v ostré verzi to nebude
+import dircache # for TEST only, NOT present in release version
 import eppdoc
 import eppdoc_client
 import translate
@@ -232,7 +231,7 @@ When you want not result in your prompt join option 'noprompt'
             edoc = eppdoc_client.Message()
             edoc.parse_xml(data)
             if edoc.is_error():
-                self.append_note(data,'GREEN') # při parsování se vyskytly chyby
+                self.append_note(data,'GREEN') # Some errors occured during parsing process.
             else:
                 self.append_note(edoc.get_xml(),'GREEN')
 
@@ -345,7 +344,7 @@ When you want not result in your prompt join option 'noprompt'
             m = re.match('(\S+)', command_name)
             if m:command_name = m.group(1)
         if command_name:
-            # s parametrem - zobrazí se help na vybraný příkaz
+            # with parameter - display help for selected command
             self.append_note('%s: ${BOLD}${GREEN}%s${NORMAL}'%(_T("Help for command"),command_name))
             if type == 'EPP':
                 command_line, command_help, notice, examples = self._epp_cmd.get_help(command_name, self._ljust, self._indent_left)
@@ -433,7 +432,7 @@ When you want not result in your prompt join option 'noprompt'
         cmd = EPP_command = session_command = command.strip()
         match = re.match('!+\s+(.+)',cmd)
         if match: cmd = '!%s'%match.group(1) # removing whitespaces after exclamation
-        # Možnost zadání pomlčky místo podtržítka:
+        # Possigility type hyphen instead of the spacing underscore:
         m = re.match('(\S+)(.*)',cmd)
         if m:
             # EPP_command = '%s%s'%(m.group(1).replace('-','_'), m.group(2)) OBSOLETE
@@ -568,7 +567,7 @@ When you want not result in your prompt join option 'noprompt'
         if self.is_connected():
             self.append_note(_T('You are connected already. Type disconnect for close connection.'))
         else:
-            self.connect() # připojení k serveru
+            self.connect() # connect to the server
         return 'connect' # Need for fred_console.py where must be displayed server answer.
 
     def __session_disconnect__(self, param):
@@ -647,7 +646,7 @@ When you want not result in your prompt join option 'noprompt'
         command_name = None
         if not param: param = '.'
         if os.path.isdir(param):
-            # zobrazit adresář
+            # display folder
             self.append_note('%s: %s'%(_T('Dir list'),param))
             try:
                 stuff = dircache.listdir(param)
@@ -752,7 +751,7 @@ When you want not result in your prompt join option 'noprompt'
     def create_login(self):
         'Create EPP document login'
         if self._session[ONLINE]:
-            # klient je už zalogován
+            # client is login already
             self.append_note(_T('You are logged already.'))
         else:
             cmd_params = self._epp_cmd.get_params()
@@ -762,7 +761,7 @@ When you want not result in your prompt join option 'noprompt'
                 # commection MUST be created BEFOR assembling login because of tags
                 # <objURI> and <extURI>
                 if not self.connect(): return # connect fails
-            # prefix 4 ASCII znaků pro clTRID (pro každé sezení nový)
+            # prefix 4 ASCII characters for clTRID (new for every session)
             self._session[CMD_ID] = 0
             self.defs[PREFIX] = ''.join([chr(random.randint(97,122)) for n in range(4)])
             self._epp_cmd.assemble_login(self.__next_clTRID__(), (self._epp_cmd.schema_version['epp'], self.defs[objURI], self.defs[extURI], self._session[LANG]))
@@ -794,9 +793,9 @@ When you want not result in your prompt join option 'noprompt'
         epp_doc = self._epp_cmd.get_xml()
         if epp_doc and self.is_connected():
             if self._session[VERBOSE] > 1: self.append_note(_T('Login command sent to the server'))
-            self.send(epp_doc)          # odeslání dokumentu na server
-            answer = self.receive()     # příjem odpovědi
-            self.process_answer(answer) # zpracování odpovědi
+            self.send(epp_doc)          # sending document to the server
+            answer = self.receive()     # receiving the answer
+            self.process_answer(answer) # process server answer
             if not no_outoupt:
                 self.display() # display errors or notes
                 self.print_answer() # 2. departure from the rule to print answers
