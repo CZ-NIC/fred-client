@@ -5,7 +5,7 @@
 
 <bookinfo>
     <title>Manuál pro FredClient konzoli a knihovnu fred</title>
-    <subtitle>Verze 1.3.x</subtitle>
+    <subtitle>FredClient</subtitle>
     <copyright>
       <year>2007</year>
       <holder>CZ.NIC</holder>
@@ -398,7 +398,7 @@ Jaké příkazy máte k dispozici zjistíte zadáním příkazu "help" (nebo h, 
 </para>
 
 <programlisting>
-    FredClient verze 1.3.x Zadejte "help", "license" nebo "credits" pro zobrazení více informací.
+    FredClient verze n.n.n Zadejte "help", "license" nebo "credits" pro zobrazení více informací.
     &gt; help
 </programlisting>
 
@@ -1131,7 +1131,7 @@ pracující s knihovnou fred, tak celý proces spuštění udělejte stejně, al
 spustíte z adresáře, kde máte tyto skripty uložené. Pak se v helpu zobrazí i ony:
 
 <programlisting>
-    $ cd FredClient-1.3.x
+    $ cd FredClient-n.n.n
     $ pydoc -p 8080
 </programlisting>
 
@@ -1192,21 +1192,6 @@ Každá funkce (EPP příkazu) vrací tuto "retval" hodnotu, která je typu dict
 <member>Klíč "data" (dict) je slovník s hodnotami individuálními pro každý jednotlivý příkaz.</member>
 </simplelist>
 
-Jaké klíče jsou v části "data" pro danou funkci (EPP příkaz) se dozvíte z dokumentace u každé funkce:
-
-<programlisting>
-    &gt;&gt;&gt; print epp.login.__doc__
-    ...
-    RETURN data: {...}
-    ...
-</programlisting>
-
-<emphasis>POZOR!</emphasis> V této verzi (1.0 beta release) má slovník tu vlastnost, že pokud
-hodnota chybí, tak se klíč ve slovníku vůbec nevyskytuje. Dále, pokud je
-v seznamu hodnot jen jedna položka, tak je typu string/unicode. Tyto
-odlišnosti byste měli testovat.Ve finální verzi bude slovník pevně daný:
-Klíč bude ve slovníku i když bude hodnota prázdná a seznam zůstane,
-i když bude mít jen jednu položku.
 </para>
 <para>
 Příklad: Když jsou vstupní data: 

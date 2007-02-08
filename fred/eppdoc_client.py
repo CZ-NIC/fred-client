@@ -78,51 +78,46 @@ Using parameter 'new_password' you can change password.
         'info_contact': (1,[
             ('name',(1,1),(),_T('Contact ID'),'CID:ID01','',()),
         ],_T("""
-The EPP "info" command is used to retrieve information associated
-with an existing object. The elements needed to identify an object
-and the type of information associated with an object are both
-object-specific, so the child elements of the <info> command are
-specified using the EPP extension framework."""),('info_contact cid:contact',)),
+The EPP 'info_contact' command is used to retrieve information associated
+with an existing contact. The value 'Password for transfer' is shown only 
+for privileged user."""),('info_contact cid:contact',)),
         'info_domain': (1,[
             ('name',(1,1),(),_T('Domain name'),'mydomain.cz','',()),
         ],_T("""
-The EPP "info" command is used to retrieve information associated
-with an existing object. The elements needed to identify an object
-and the type of information associated with an object are both
-object-specific, so the child elements of the <info> command are
-specified using the EPP extension framework."""),('info_domain my-domain.cz',)),
+The EPP 'info_domain' command is used to retrieve information associated
+with an existing domain. The value 'Password for transfer' is shown only
+for privileged user. In addition for domain ENUM type the private values 
+are also 'Registrant ID' and 'Administrative contact'."""),('info_domain my-domain.cz',)),
         'info_nsset': (1,[
             ('name',(1,1),(),_T('NSSET ID'),'NSSET_ID','',()),
         ],_T("""
-The EPP "info" command is used to retrieve information associated
-with an existing object. The elements needed to identify an object
-and the type of information associated with an object are both
-object-specific, so the child elements of the <info> command are
-specified using the EPP extension framework."""),('info_nsset nssid:nsid',)),
+The EPP 'info_nsset' command is used to retrieve information associated
+with an existing NSSET. The value 'Password for transfer' is shown only 
+for privileged user."""),('info_nsset nssid:nsid',)),
         #----------------------------------------------------
         'check_contact': (1,[
             ('name',(1,UNBOUNDED),(),_T('Contact ID'),'CID:ID01','',()),
         ],_T("""
-The EPP "check" command is used to determine if an object can be
-provisioned within a repository.  It provides a hint that allows a
-client to anticipate the success or failure of provisioning an object
-using the "create" command as object provisioning requirements are
+The EPP 'check_contact' command is used to determine if an contact can be
+provisioned within a repository. It provides a hint that allows a
+client to anticipate the success or failure of provisioning an contact
+using the 'create_contact' command as contact provisioning requirements are
 ultimately a matter of server policy."""),('check_contact cid:contact1 cid:contact2',)),
         'check_domain': (1,[
             ('name',(1,UNBOUNDED),(),_T('Domain name'),'mydomain.cz','',()),
         ],_T("""
-The EPP "check" command is used to determine if an object can be
+The EPP 'check_domain' command is used to determine if an domain can be
 provisioned within a repository.  It provides a hint that allows a
-client to anticipate the success or failure of provisioning an object
-using the "create" command as object provisioning requirements are
+client to anticipate the success or failure of provisioning an domain
+using the 'create_domain' command as domain provisioning requirements are
 ultimately a matter of server policy."""),('check_domain domain1.cz domain2.cz',)),
         'check_nsset': (1,[
             ('name',(1,UNBOUNDED),(),_T('NSSET ID'),'NSSET_ID','',()),
         ],_T("""
-The EPP "check" command is used to determine if an object can be
+The EPP 'check_nsset' command is used to determine if an NSSET can be
 provisioned within a repository.  It provides a hint that allows a
-client to anticipate the success or failure of provisioning an object
-using the "create" command as object provisioning requirements are
+client to anticipate the success or failure of provisioning an nsset
+using the 'create_nsset' command as NSSET provisioning requirements are
 ultimately a matter of server policy."""),('check_nsset nssid:id1 nssid:id2',)),
         #----------------------------------------------------
         'poll': (1,[
@@ -142,7 +137,7 @@ See help poll_autoack for client function that sends this commands together.
             ('name',(1,1),(),_T('Contact ID'),'CID:ID01','',()),
             ('auth_info',(1,1),(),_T('Password required by server to authorize the transfer'),'mypassword','',()),
         ],_T("""
-The EPP "transfer" command makes change in client sponsorship 
+The EPP 'transfer_contact' command makes change in contact sponsorship 
 of a designated registrar. New password for authorisation 
 will be generated automaticly after succefull transfer."""),('transfer_contact CID:ID01 password',)),
         #----------------------------------------------------
@@ -151,7 +146,7 @@ will be generated automaticly after succefull transfer."""),('transfer_contact C
             #('op',(1,1),transfer_op,_T('query type'),()),
             ('auth_info',(1,1),(),_T('Password required by server to authorize the transfer'),'mypassword','',()),
         ],_T("""
-The EPP "transfer" command makes change in client sponsorship 
+The EPP 'transfer_nsset' command makes change in NSSET sponsorship 
 of a designated registrar. New password for authorisation 
 will be generated automaticly after succefull transfer."""),('transfer_nsset nssid:nsset password',)),
         #----------------------------------------------------
@@ -160,7 +155,7 @@ will be generated automaticly after succefull transfer."""),('transfer_nsset nss
             #('op',(1,1),transfer_op,_T('query type'),()),
             ('auth_info',(1,1),(),_T('Password required by server to authorize the transfer'),'mypassword','',()),
         ],_T("""
-The EPP "transfer" command makes change in client sponsorship 
+The EPP 'transfer_domain' command makes change in domain sponsorship 
 of a designated registrar. New password for authorisation 
 will be generated automaticly after succefull transfer."""),('transfer_domain domain.cz password',)),
         #----------------------------------------------------
@@ -181,16 +176,15 @@ will be generated automaticly after succefull transfer."""),('transfer_domain do
                 ('flag',(1,1),(('y',),('n',)),_T('Disclose flag (default y)'),'n','',()),
                 ('data',(0,len(eppdoc_assemble.contact_disclose)),eppdoc_assemble.contact_disclose,_T('Data for with is set the flag value'),'','',()),
             )),
-            ('vat',(0,1),(),_T('VAT (Value-added tax)'),'7035555556','',()), # daˇnový identifikátor
-            ('ident',(0,1),(),_T('Identificator'),'','',( # mpsv: identifikátor Ministerstva práce a sociálních věcí
+            ('vat',(0,1),(),_T('VAT (Value-added tax)'),'7035555556','',()), # vat identificator
+            ('ident',(0,1),(),_T('Identificator'),'','',( # mpsv: identifikator Ministerstva prace a socialnich veci
                 ('type',(1,1),map(lambda n:(n,),('op','rc','passport','mpsv','ico')),_T('Identificator type'),'op','',()),
                 ('number',(1,1),(),_T('Identificator number'),'8888888856','',()),
             )),
             ('notify_email',(0,1),(),_T('Notification email'),'info@mymail.cz','',()),
             ],'%s\n\n%s\n\n%s'%(_T("""
-The EPP "create_contact" command is used to create an instance of the contact.
-The contact can be created for an indefinite period of time, or
-it can be created for a specific validity period."""),notice['disclose'],notice['ident']),(
+The EPP 'create_contact' command is used to create an instance of the contact.
+Contact can be used for values of the owner, registrant or technical contact."""),notice['disclose'],notice['ident']),(
             "create_contact CID:ID01 'Jan Novak' info@mymail.cz Praha CZ mypassword 'Firma s.r.o.' 'Narodni trida 1230/12' '' 12000 +420.222745111 +420.222745111 (y (org fax email)) 7035555556 (op 8888888856) info@mymail.cz",
             "create_contact CID:ID02 'Jan Ban' info@mail.com Brno CZ"
             )),
@@ -207,11 +201,12 @@ it can be created for a specific validity period."""),notice['disclose'],notice[
             ('admin',(0,UNBOUNDED),(),_T('Administrative contact ID'),'CID:ADMIN_ID','',()),
             ('val_ex_date',(0,1),(),_T('Validation expires at date. This value is required for ENUM domains.'),'2008-12-03','',()),
             ],_T("""
-The EPP "create_domain" command is used to create an instance of an object.
-An object can be created for an indefinite period of time, or an
-object can be created for a specific validity period.
-
-Parameter val_ex_date is required for ENUM domains."""),(
+The EPP 'create_domain' command is used to create domain.
+A domain can be created for an indefinite period of time, or 
+a domain can be created for a specific validity period. Basicly
+you can create two types of the domain: cz and ENUM.
+The difference is in parameter val_ex_date. It is required 
+for ENUM domains."""),(
                 'create_domain domain.cz cid:regid password nssid:nsid (3 y) (cid:admin1,cid:admin2)',
                 'create_domain 1.1.1.7.4.5.2.2.2.0.2.4.e164.arpa cid:regid password nssid:nsid (3 y) (cid:admin1,cid:admin2) 2006-06-08'
             )),
@@ -226,9 +221,7 @@ Parameter val_ex_date is required for ENUM domains."""),(
             ('auth_info',(0,1),(),_T('Password required by server to authorize the transfer'),'mypassword','',()),
             ('reportlevel',(0,1),(),_T('Report level. Range 0 - 10'),'1','',()),
             ],_T("""
-The EPP "create_nsset" command is used to create an instance of an object.
-An object can be created for an indefinite period of time, or an
-object can be created for a specific validity period.
+The EPP 'create_nsset' command is used to create a record of the NSSET.
 
 Report level sets depth level of the technical test. These tests are maintained 
 in regular intervals and in case of the problem the technical contact is informed.
@@ -241,15 +234,15 @@ lower level number. Valid range is from 0 to 10.
         #----------------------------------------------------
         'delete_contact': (1,[
              ('id',(1,1),(),_T('Contact ID'),'CID:ID01','',()),
-            ],_T("""The EPP "delete" command is used to remove an instance of an existing object."""),('delete_contact cid:id',)),
+            ],_T("""The EPP 'delete_contact' command is used to remove a record of the contact."""),('delete_contact cid:id',)),
         #----------------------------------------------------
         'delete_domain': (1,[
             ('name',(1,1),(),_T('Domain name'),'mydomain.cz','',()),
-            ],_T("""The EPP "delete" command is used to remove an instance of an existing object."""),('delete_domain domain.cz',)),
+            ],_T("""The EPP 'delete_domain' command is used to remove a record of the domain."""),('delete_domain domain.cz',)),
         #----------------------------------------------------
         'delete_nsset': (1,[
             ('id',(1,1),(),_T('NSSET ID'),'NSSET_ID','',()),
-            ],_T("""The EPP "delete" command is used to remove an instance of an existing object."""),('delete_nsset nssid:id',)),
+            ],_T("""The EPP 'delete_nsset' command is used to remove a record of the nsset."""),('delete_nsset nssid:id',)),
         #----------------------------------------------------
         'renew_domain': (2,[
             ('name',(1,1),(),_T('Domain name'),'mydomain.cz','',()),
@@ -260,10 +253,10 @@ lower level number. Valid range is from 0 to 10.
             )),
             ('val_ex_date',(0,1),(),_T('Validation expires at'),'2008-12-03','',()),
             ],_T("""
-A domain name object MAY have a specified validity period. If server
-policy supports domain object validity periods, the validity period
-is defined when a domain object is created, and it MAY be extended by
-the EPP 'renew' command.
+A domain names have a specified validity period. The server
+policy supports domain validity periods and the validity period
+is defined when a domain is created. This validity can be extended 
+by the EPP 'renew_domain' command.
 
 Validity periods are measured in years or months with the appropriate
 units specified using the 'unit' attribute.  Valid values for the
@@ -274,12 +267,12 @@ and maximum allowable period is defined in the Communication rules."""),('renew_
             ('contact_id',(1,1),(),_T('Contact ID'),'CID:ID01','',()),
             ('chg',(0,1),(),_T('Change values'),'','',(
                 ('postal_info',(0,1),(),_T('Postal informations'),'','',(
-                    ('name',(0,1),(),_T('Name'),u'Jan Novák','',()),
+                    ('name',(0,1),(),_T('Name'),u'Jan Nowak','',()),
                     ('org',(0,1),(),_T('Organisation'),'Firma s.r.o.','',()),
                     ('addr',(0,1),(),_T('Address'),'','',(
                         ('city',(1,1),(),_T('City'),'Praha','',()),
                         ('cc',(1,1),(),_T('Country code'),'CZ','',()),
-                        ('street',(0,3),(),_T('Street'),u'Na národní 1234/14','',()),
+                        ('street',(0,3),(),_T('Street'),u'Na narodni 1234/14','',()),
                         ('sp',(0,1),(),_T('State or province'),'','',()),
                         ('pc',(0,1),(),_T('Postal code'),'12000','',()),
                     )),
@@ -299,9 +292,8 @@ and maximum allowable period is defined in the Communication rules."""),('renew_
                 )),
                 ('notify_email',(0,1),(),_T('Notification email'),'notify@mymail.cz','',()),
             )),
-            ],_T("""The EPP "update" command is used to update an instance of an existing object."""),(
+            ],_T("""The EPP 'update_contact' command is used to update values in the contact."""),(
                     "update_contact CID:ID01 (('Jan Nowak' 'Firma s.r.o.' (Praha CZ ('Na narodni 1230/12', 'Americka 12') Vinohrady 12000)) +420.222745111 +420.222745111 info@mymail.cz mypassword (y (org, voice, email)) 7035555556 (ico 8888888856) notify@mymail.cz)",
-                    "update_contact cid:id01 (('Jan Novák' 'Firma s.r.o.' (Praha CZ ('Na národní 1230/12', 'Americká 12') Vinohrady 12000)) +420.222745111 +420.222745111 info@mymail.cz password (y (org, voice, email)) 7035555556 (ico 8888888856) notify@mymail.cz)",
                     "update_contact CID:ID01 (() NULL NULL NULL NULL () NULL () change.only@notify-mail.cz)",
             )),
         #----------------------------------------------------
@@ -315,7 +307,7 @@ and maximum allowable period is defined in the Communication rules."""),('renew_
                 ('auth_info',(0,1),(),_T('Password required by server to authorize the transfer'),'mypassword','',()),
             )),
             ('val_ex_date',(0,1),(),_T('Validation expires at'),'2008-12-03','',()),
-            ],_T("""The EPP "update" command is used to update an instance of an existing object."""),(
+            ],_T("""The EPP 'update_domain' command is used to update values in the domain."""),(
                 'update_domain mydomain.cz (CID:ID01, CID:ID02) CID:ID03 (NSSID:NSSET01 CID:ID04 mypass)',
                 'update_domain 1.1.1.7.4.5.2.2.2.0.2.4.e164.arpa (CID:ID01, CID:ID02) CID:ID03 (NSSID:NSSET01 CID:ID04 mypass) 2008-12-03',
             )),
@@ -335,13 +327,13 @@ and maximum allowable period is defined in the Communication rules."""),('renew_
             )),
             ('auth_info',(0,1),(),_T('Password required by server to authorize the transfer'),'new_password','',()),
             ('reportlevel',(0,1),(),_T('Report level. Range 0 - 10'),'1','',()),
-            ],_T("""The EPP "update" command is used to update an instance of an existing object."""),(
+            ],_T("""The EPP 'update_nsset' command is used to update values in the NSSET."""),(
                 "update_nsset nssid:ns1 (((ns1.dns.cz (217.31.207.130, 217.31.207.131, 217.31.207.132)), (ns2.dns.cz (217.31.207.130, 217.31.207.131, 217.31.207.132))) (cid:tech1, cid:tech2, cid:tech3)) (((rem1.dns.cz, rem2.dns.cz) (cid:tech_rem01, cid:tech_rem02))) password",
             )),
         #----------------------------------------------------
-        'list_contact': (0,[],_T("""The EPP "list" command is used to list all ID of an existing contact owning by registrant."""),()),
-        'list_nsset': (0,[],_T("""The EPP "list" command is used to list all ID of an existing NSSET owning by registrant."""),()),
-        'list_domain': (0,[],_T("""The EPP "list" command is used to list all domain names owning by registrant."""),()),
+        'list_contact': (0,[],_T("""The EPP 'list_contact' command is used to list all ID of an existing contact owning by registrant."""),()),
+        'list_nsset': (0,[],_T("""The EPP 'list_nsset' command is used to list all ID of an existing NSSET owning by registrant."""),()),
+        'list_domain': (0,[],_T("""The EPP 'list_doamin' command is used to list all domain names owning by registrant."""),()),
         #----------------------------------------------------
         'sendauthinfo_contact': (1,[
              ('id',(1,1),(),_T('Contact ID'),'CID:ID01','',()),
@@ -437,7 +429,7 @@ def make_sort_by_names():
          ('trDate',      1,  _T('Last transfer on')),
          ('upDate',      1,  _T('Last update on')),
          ('exDate',      1,  _T('Expiration date')),
-         ('valExDate',   1,  _T('Validation expires at')), # validace platná do
+         ('valExDate',   1,  _T('Validation expires at')), # vadit to date
          ('renew',       1,  _T('Last renew on')),
          ('nsset',       1,  _T('NSSET ID')),
          ('authInfo',    1,  _T('Password for transfer')),
@@ -487,13 +479,13 @@ def make_sort_by_names():
          ('version',     2,  _T('Server version')),
          ('objURI',      2,  _T('Objects URI')),
          ('extURI',      2,  _T('Extensions URI')),
-         ('dcp',         2,  _T('Data Collection policy')), # Soubor zásad Pravidla přístupu
+         ('dcp',         2,  _T('Data Collection policy')),
          # Turn OFF for the time being:
-         #('dcp.access',  2,  _T('DCP: Access')), # přístup
-         #('dcp.statement',  2,  _T('DCP: Statement')), # specifikace, příkaz, zpráva, prohlášení
-         #('dcp.statement.purpose',  2,  _T('DCP: Statement: Purpose')), # účel,záměr
-         #('dcp.statement.recipient',  2,  _T('DCP: Statement: Recipient')), # příjemce
-         #('dcp.statement.retention',  2,  _T('DCP: Statement: Retention')), # uchování, zapamatování
+         #('dcp.access',  2,  _T('DCP: Access')),
+         #('dcp.statement',  2,  _T('DCP: Statement')),
+         #('dcp.statement.purpose',  2,  _T('DCP: Statement: Purpose')),
+         #('dcp.statement.recipient',  2,  _T('DCP: Statement: Recipient')),
+         #('dcp.statement.retention',  2,  _T('DCP: Statement: Retention')),
          )),
 
        'domain:list': ('',(
@@ -592,5 +584,5 @@ def test_help(command_names):
         print '\n\n'
 
 if __name__ == '__main__':
-    # Test na jednotlivé příkazy
-    test(("update_contact reg-id () () (('' '' ('' Město '' '' CZ)) '' '' '' (0) '' '' notify@mail.cz)",))
+    # Test only
+    test(("update_contact reg-id () () (('' '' ('' City '' '' CZ)) '' '' '' (0) '' '' notify@mail.cz)",))

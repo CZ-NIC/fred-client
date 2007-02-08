@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Manuál pro FredClient konzoli a knihovnu fred</title><meta name="generator" content="DocBook XSL Stylesheets V1.68.1" /></head><body><div class="book" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h1 class="title"><a id="id2450696"></a>Manuál pro FredClient konzoli a knihovnu fred</h1></div><div><h2 class="subtitle">Verze 1.3.x</h2></div><div><p class="releaseinfo">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Manuál pro FredClient konzoli a knihovnu fred</title><meta name="generator" content="DocBook XSL Stylesheets V1.68.1" /></head><body><div class="book" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h1 class="title"><a id="id2450696"></a>Manuál pro FredClient konzoli a knihovnu fred</h1></div><div><h2 class="subtitle">FredClient</h2></div><div><p class="releaseinfo">
     Vzniklo: 11. 7.2006;
     Revize:  
     18. 8.2006;
@@ -230,7 +230,7 @@ Konzole se ukončuje příkazem "quit" nebo jen krátce "q".
 </p><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2453308"></a>Zobrazení helpu</h2></div></div></div><p>
 Jaké příkazy máte k dispozici zjistíte zadáním příkazu "help" (nebo h, ?).
 </p><pre class="programlisting">
-    FredClient verze 1.3.x Zadejte "help", "license" nebo "credits" pro zobrazení více informací.
+    FredClient verze n.n.n Zadejte "help", "license" nebo "credits" pro zobrazení více informací.
     &gt; help
 </pre><p>Help vypíše dvě části nápovědy:</p><table class="simplelist" border="0" summary="Simple list"><tr><td>1) Dostupné EPP příkazy</td></tr><tr><td>2) Příkazy relace (session) pro nastavení vnitřních proměnných 
        konzole</td></tr></table></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2499024"></a>EPP příkazy</h2></div></div></div><p>
@@ -709,7 +709,7 @@ pracující s knihovnou fred, tak celý proces spuštění udělejte stejně, al
 spustíte z adresáře, kde máte tyto skripty uložené. Pak se v helpu zobrazí i ony:
 
 </p><pre class="programlisting">
-    $ cd FredClient-1.3.x
+    $ cd FredClient-n.n.n
     $ pydoc -p 8080
 </pre><p>
 
@@ -758,21 +758,6 @@ Každá funkce (EPP příkazu) vrací tuto "retval" hodnotu, která je typu dict
 
 </p><table class="simplelist" border="0" summary="Simple list"><tr><td>Klíč "reason" (str) je vyrozumění serveru o stavu odpovědi.</td></tr><tr><td>Klíč "code" (int) je číslo, které definuje typ chyby. Číslo 1000 znamená OK - vše vpořádku.</td></tr><tr><td>Klíč "command" (str) je název příkazu, na který se odpověď vztahuje (který odpověď vyvolal).</td></tr><tr><td>Klíč "errors" (list) je seznam chyb, které server nalezl.</td></tr><tr><td>Klíč "data" (dict) je slovník s hodnotami individuálními pro každý jednotlivý příkaz.</td></tr></table><p>
 
-Jaké klíče jsou v části "data" pro danou funkci (EPP příkaz) se dozvíte z dokumentace u každé funkce:
-
-</p><pre class="programlisting">
-    &gt;&gt;&gt; print epp.login.__doc__
-    ...
-    RETURN data: {...}
-    ...
-</pre><p>
-
-<span class="emphasis"><em>POZOR!</em></span> V této verzi (1.0 beta release) má slovník tu vlastnost, že pokud
-hodnota chybí, tak se klíč ve slovníku vůbec nevyskytuje. Dále, pokud je
-v seznamu hodnot jen jedna položka, tak je typu string/unicode. Tyto
-odlišnosti byste měli testovat.Ve finální verzi bude slovník pevně daný:
-Klíč bude ve slovníku i když bude hodnota prázdná a seznam zůstane,
-i když bude mít jen jednu položku.
 </p><p>
 Příklad: Když jsou vstupní data: 
 </p><pre class="programlisting">

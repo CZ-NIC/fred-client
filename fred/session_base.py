@@ -36,11 +36,11 @@ Closer descendant is in session_transfer.py
 # Colored output
 colored_output = terminal_controler.TerminalController()
 
-# názvy sloupců pro data sestavené při spojení se serverem
+# The column names for data holding by manager.
 ONLINE, CMD_ID, LANG, POLL_AUTOACK, CONFIRM_SEND_COMMAND, \
    USERNAME, SESSION, HOST, COLORS, VALIDATE, VERBOSE, SORT_BY_COLUMNS, NULL_VALUE, \
    TRANSLATE_ANSWER_COLUMN_NAMES, OUTPUT_TYPE, CLTRID = range(16)
-# názvy sloupců pro defaultní hodnoty
+# The column names for default values
 DEFS_LENGTH = 4
 LANGS,objURI,extURI,PREFIX = range(DEFS_LENGTH)
 OMIT_ERROR = 1
@@ -80,7 +80,7 @@ class ManagerBase:
         self._external_validator = 'xmllint'
         # defaults
         self.defs = ['']*DEFS_LENGTH
-        self.defs[PREFIX] = '' # pro každé sezení nový prefix
+        self.defs[PREFIX] = '' # new prefix for every new session
         self._conf = None ## <ConfigParser object> from session_config.py
         self._auto_connect = 1 # auto connection during login or hello
         self._options = translate.options # parameters from command line
@@ -242,7 +242,7 @@ $fred_client_errors = array(); // errors occuring during communication
         #    sep = '<br/>\n'
 
         if self.is_note():
-            # hlášení, poznámka, hodnoty
+            # report, note, values
 ##            if self._notes[-1] != '': msg.append('') # empty line
             if is_xml:
                 msg.append('<notes>')
@@ -265,7 +265,7 @@ $fred_client_errors = array(); // errors occuring during communication
             self._notes = []
 
         if self.is_error():
-            # chybová hlášení
+            # error messages
             if is_xml:
                 msg.append('<errors>')
             elif is_html:
@@ -626,10 +626,10 @@ $fred_client_errors = array(); // errors occuring during communication
     
     def is_epp_valid(self, message, note=''):
         "Check XML EPP by xmllint. OUT: '' - correct; '...' any error occurs."
-        if not self._session[VALIDATE]: return '' # validace je vypnutá
+        if not self._session[VALIDATE]: return '' # validation is disabled
         if message=='':
             return _T('XML document is empty.')
-        # kontrola validity XML
+        # check validation of the XML
         schema_path = self.__get_actual_schema_path__()
         if not schema_path: return '' # schema path is not set
         command = '%s --noout --schema "%s" -'%(self._external_validator, schema_path)
@@ -659,14 +659,15 @@ $fred_client_errors = array(); // errors occuring during communication
         if re.search(' validates$', errors):
             errors = '' # it seems be OK...
         else:
+            # text 'nen\xa1...' is encoded in cp852 and is used for check localized message in MS Windows
             if re.search('command not found',errors) \
-                or re.search(u'není názvem vnitřního ani vnějšího příkazu'.encode('cp852'),errors) \
+                or re.search('nen\xa1 n\xa0zvem vnit\xfdn\xa1ho ani vn\xd8j\xe7\xa1ho p\xfd\xa1kazu',errors) \
                 or re.search('Schemas parser error',errors):
                 # schema missing!
                 self.append_note(_T('Warning: Client-side validation failed.'))
                 if self._session[VERBOSE] > 1: self.append_note(get_ltext(errors))
                 self._notes_afrer_errors.append(_T("Client-side validation has been disabled. Type '%s' to enable it.")%'${BOLD}validate on${NORMAL}')
-                self._session[VALIDATE] = 0 # automatické vypnutí validace
+                self._session[VALIDATE] = 0 # disable validation automaticly
                 errors=''
         return errors
 

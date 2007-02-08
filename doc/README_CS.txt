@@ -1,7 +1,7 @@
 
 Manual pro FredClient konzoli a knihovnu fred
 
-Verze 1.3.x
+FredClient
 
    Vzniklo: 11. 7.2006; Revize: 18. 8.2006; 1. 9.2006; 4. 9.2006; 14. 9.2006;
    27. 9.2006; 1.11.2006; 7.11.2006; 17.1.2007;
@@ -283,7 +283,7 @@ Kapitola 4. Program fred_client.py
 Zobrazeni helpu
 
    Jake prikazy mate k dispozici zjistite zadanim prikazu "help" (nebo h, ?).
-    FredClient verze 1.3.x Zadejte "help", "license" nebo "credits" pro zobraze
+    FredClient verze n.n.n Zadejte "help", "license" nebo "credits" pro zobraze
 
     ni vice informaci.
 
@@ -839,7 +839,7 @@ Online dokumentace:
    podivat i na skripty pracujici s knihovnou fred, tak cely proces spusteni
    udelejte stejne, ale s tim rozdilem, ze pydoc spustite z adresare, kde mate
    tyto skripty ulozene. Pak se v helpu zobrazi i ony:
-    $ cd FredClient-1.3.x
+    $ cd FredClient-n.n.n
     $ pydoc -p 8080
 
    Server ukoncite stiskem Ctrl+C.
@@ -879,20 +879,6 @@ Priklady prace s knihovnou
    Klic "errors" (list) je seznam chyb, ktere server nalezl.
    Klic "data" (dict) je slovnik s hodnotami individualnimi pro kazdy
    jednotlivy prikaz.
-
-   Jake klice jsou v casti "data" pro danou funkci (EPP prikaz) se dozvite z
-   dokumentace u kazde funkce:
-    >>> print epp.login.__doc__
-    ...
-    RETURN data: {...}
-    ...
-
-   POZOR! V teto verzi (1.0 beta release) ma slovnik tu vlastnost, ze pokud
-   hodnota chybi, tak se klic ve slovniku vubec nevyskytuje. Dale, pokud je v
-   seznamu hodnot jen jedna polozka, tak je typu string/unicode. Tyto
-   odlisnosti byste meli testovat.Ve finalni verzi bude slovnik pevne dany:
-   Klic bude ve slovniku i kdyz bude hodnota prazdna a seznam zustane, i kdyz
-   bude mit jen jednu polozku.
 
    Priklad: Kdyz jsou vstupni data:
     name = 'jmeno'

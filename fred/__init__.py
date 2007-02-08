@@ -121,104 +121,95 @@ class Client:
     #==============================================================
     
     def check_contact(self, name, cltrid=None):
-        """Usage: check_contact name [,name2]
-    
-    PARAMS:
+        """DESCRIPTION:
+  The EPP 'check_contact' command is used to determine if an contact can be
+  provisioned within a repository. It provides a hint that allows a
+  client to anticipate the success or failure of provisioning an contact
+  using the 'create_contact' command as contact provisioning requirements are
+  ultimately a matter of server policy.
 
-    name (required)     unbounded list
+SYNTAX:
+  check_contact name [other_options]
 
-    RETURN data: {
-                name: int,  # 0/1 (0-engaged name, 1-available name)
-                name:reason: str, # if name is not accessible
-    }
-
-   The EPP "check" command is used to determine if an object can be
-   provisioned within a repository.  It provides a hint that allows a
-   client to anticipate the success or failure of provisioning an object
-   using the "create" command as object provisioning requirements are
-   ultimately a matter of server policy.
-   """
+OPTIONS:
+  name (required)          Contact ID (unbounded list)
+  cltrid                   Client transaction ID"""
         return self._epp.api_command('check_contact',{'name':name, 'cltrid':cltrid})
 
     def check_domain(self, name, cltrid=None):
-        """Usage: check_domain name [,name2]
+        """DESCRIPTION:
+  The EPP 'check_domain' command is used to determine if an domain can be
+  provisioned within a repository.  It provides a hint that allows a
+  client to anticipate the success or failure of provisioning an domain
+  using the 'create_domain' command as domain provisioning requirements are
+  ultimately a matter of server policy.
 
-    PARAMS:
+SYNTAX:
+  check_domain name [other_options]
 
-    name (required)     unbounded list
-
-    RETURN data: {
-                name: int,  # 0/1 (0-engaged name, 1-available name)
-                name:reason: str, # if name is not accessible
-    }
-
-   The EPP "check" command is used to determine if an object can be
-   provisioned within a repository.  It provides a hint that allows a
-   client to anticipate the success or failure of provisioning an object
-   using the "create" command as object provisioning requirements are
-   ultimately a matter of server policy.
-   """
+OPTIONS:
+  name (required)          Domain name (unbounded list)
+  cltrid                   Client transaction ID"""
         return self._epp.api_command('check_domain',{'name':name, 'cltrid':cltrid})
 
     def check_nsset(self, name, cltrid=None):
-        """Usage: check_nsset name [,name2]
+        """DESCRIPTION:
+  The EPP 'check_nsset' command is used to determine if an NSSET can be
+  provisioned within a repository.  It provides a hint that allows a
+  client to anticipate the success or failure of provisioning an nsset
+  using the 'create_nsset' command as NSSET provisioning requirements are
+  ultimately a matter of server policy.
 
-    PARAMS:
+SYNTAX:
+  check_nsset name [other_options]
 
-    name (required)     unbounded list
-
-    RETURN data: {
-                name: int,  # 0/1 (0-engaged name, 1-available name)
-                name:reason: str, # if name is not accessible
-    }
-
-   The EPP "check" command is used to determine if an object can be
-   provisioned within a repository.  It provides a hint that allows a
-   client to anticipate the success or failure of provisioning an object
-   using the "create" command as object provisioning requirements are
-   ultimately a matter of server policy.
-   """
+OPTIONS:
+  name (required)          NSSET ID (unbounded list)
+  cltrid                   Client transaction ID"""
         return self._epp.api_command('check_nsset',{'name':name, 'cltrid':cltrid})
 
     def create_contact(self, contact_id, name, email, city, cc, auth_info=None,
             org=None, street=None, sp=None, pc=None, voice=None, fax=None, 
             disclose=None, vat=None, ident=None, notify_email=None, 
             cltrid=None):
-        """Usage: create_contact contact-id name email city cc
+        """DESCRIPTION:
+  The EPP 'create_contact' command is used to create an instance of the contact.
+  Contact can be used for values of the owner, registrant or technical contact.
 
-    PARAMS:
+  Names what are not included into disclose list are set to opposite value of the disclose flag value.
 
-    contact_id (required)
-    name (required)
-    email (required)
-    city (required)
-    cc (required)
-    auth_info (required)
-    org (optional)
-    street (optional)           list with max 3 items.
-    sp (optional)
-    pc (optional)
-    voice (optional)
-    fax (optional)
-    disclose (optional)
-        flag (required) y/n default y
-        data (required) list: (name,org,addr,voice,fax,email)
-    vat (optional)
-    ident (optional)
-        type (required)
-        number (required)
-    notify_email (optional)
+  Identificator type can be:
+        op       number identity card
+        rc       number of birth
+        passport number of passport
+        mpsv     number of Ministry of Labour and social affairs
+        ico      number of company
 
-    RETURN data: {
-        contact:id     str
-        contact:crDate str
-    }
+SYNTAX:
+  create_contact contact_id name email city cc [other_options]
 
-   The EPP "create" command is used to create an instance of an object.
-   An object can be created for an indefinite period of time, or an
-   object can be created for a specific validity period.
-
-        """
+OPTIONS:
+  contact_id (required)    Contact ID
+  name (required)          Name
+  email (required)         Email
+  city (required)          City
+  cc (required)            Country code
+  auth_info                Password required by server to authorize the transfer
+  org                      Organisation
+  street                   Street (list with max 3 items.)
+  sp                       State or province
+  pc                       Postal code
+  voice                    Phone
+  fax                      Fax
+  disclose                 Disclose
+    flag (required)        Disclose flag (default y)
+    data                   Data for with is set the flag value (list with max 6 items.)
+  vat                      VAT (Value-added tax)
+  ident                    Identificator
+    type (required)        Identificator type
+    number (required)      Identificator number
+  notify_email             Notification email
+  cltrid                   Client transaction ID"""
         return self._epp.api_command('create_contact',{
             'contact_id':contact_id, 'name':name, 'email':email, 'city':city, 'cc':cc, 'auth_info':auth_info,
             'org':org, 'street':street, 'sp':sp, 'pc':pc, 'voice':voice, 'fax':fax,
@@ -227,576 +218,522 @@ class Client:
 
     def create_domain(self, name, registrant, auth_info=None, nsset=None, period=None, admin=None, val_ex_date=None, 
         cltrid=None):
-        """Usage: create_domain name auth_info registrant
+        """DESCRIPTION:
+  The EPP 'create_domain' command is used to create domain.
+  A domain can be created for an indefinite period of time, or
+  a domain can be created for a specific validity period. Basicly
+  you can create two types of the domain: cz and ENUM.
+  The difference is in parameter val_ex_date. It is required
+  for ENUM domains.
 
-    PARAMS:
+SYNTAX:
+  create_domain name registrant [other_options]
 
-    name (required)
-    auth_info (required)
-    period (optional)
-        num (required)
-        unit (required) accept only values: (y,m)
-    nsset (optional)
-    registrant (optional)
-    admin (optional)          unbounded list
-    val_ex_date (optional)
-
-    RETURN data: {domain:name, domain:crDate, domain:exDate}
-
-   The EPP "create" command is used to create an instance of an object.
-   An object can be created for an indefinite period of time, or an
-   object can be created for a specific validity period.
-    """
+OPTIONS:
+  name (required)          Domain name
+  registrant (required)    Registrant ID
+  auth_info                Password required by server to authorize the transfer
+  nsset                    NSSET ID
+  period                   Period
+    num (required)         Number of months or years
+    unit (required)        Period unit (y year(default), m month)
+  admin                    Administrative contact ID (unbounded list)
+  val_ex_date              Validation expires at date. This value is required for ENUM domains.
+  cltrid                   Client transaction ID"""
         return self._epp.api_command('create_domain',{'name':name,'auth_info':auth_info,
             'period':period,'registrant':registrant,'nsset':nsset,'admin':admin,
             'val_ex_date':val_ex_date, 'cltrid':cltrid})
 
     def create_nsset(self, nsset_id, dns, tech, auth_info=None, cltrid=None):
-        """Usage: create_nsset id auth_info
+        """DESCRIPTION:
+  The EPP 'create_nsset' command is used to create a record of the NSSET.
 
-    PARAMS:
+  Report level sets depth level of the technical test. These tests are maintained
+  in regular intervals and in case of the problem the technical contact is informed.
+  Report level is also applied on the test executed by the request throught EPP.
+  Every test has report level (number) and run just a parts what have equal or
+  lower level number. Valid range is from 0 to 10.
 
-    id (required)
-    dns (required)               list with max 9 items.
-        name (required)
-        addr (optional)         unbounded list
-    tech (required)             unbounded list
-    auth_info (optional)
+SYNTAX:
+  create_nsset id dns tech [other_options]
 
-    RETURN data: {nsset:id, nsset:crDate}
-
-   The EPP "create" command is used to create an instance of an object.
-   An object can be created for an indefinite period of time, or an
-   object can be created for a specific validity period.
-
-    Examples:
-    create_nsset exampleNsset auth_info
-    create_nsset example1 auth_info ((ns1.domain.net (217.31.207.130 217.31.207.129)),(ns2.domain.net (217.31.206.130 217.31.206.129)),(ns3.domain.net (217.31.205.130 217.31.205.129))) reg-id
-
-        """
+OPTIONS:
+  id (required)            NSSET ID
+  dns (required)           LIST of DNS (minimum 2 items, list with max 9 items.)
+    name (required)        Name server
+    addr                   Server address (unbounded list)
+  tech (required)          Technical contact (unbounded list)
+  auth_info                Password required by server to authorize the transfer
+  reportlevel              Report level. Range 0 - 10
+  cltrid                   Client transaction ID"""
         return self._epp.api_command('create_nsset',{'id':nsset_id, 'auth_info':auth_info, 'dns':dns, 'tech':tech, 'cltrid':cltrid})
 
 
     def delete_contact(self, contact_id, cltrid=None):
-        """Usage: delete_contact id
+        """DESCRIPTION:
+  The EPP 'delete_contact' command is used to remove a record of the contact.
 
-    PARAMS:
+SYNTAX:
+  delete_contact id [other_options]
 
-    id (required)
-
-    RETURN data: {}
-
-    The EPP "delete" command is used to remove an instance of an existing object.
-
-        """
+OPTIONS:
+  id (required)            Contact ID
+  cltrid                   Client transaction ID"""
         return self._epp.api_command('delete_contact',{'id':contact_id, 'cltrid':cltrid})
 
 
     def delete_domain(self, name, cltrid=None):
-        """Usage: delete_domain name
+        """DESCRIPTION:
+  The EPP 'delete_domain' command is used to remove a record of the domain.
 
-    PARAMS:
+SYNTAX:
+  delete_domain name [other_options]
 
-    name (required)
-
-    RETURN data: {}
-
-    The EPP "delete" command is used to remove an instance of an existing object.
-        """
+OPTIONS:
+  name (required)          Domain name
+  cltrid                   Client transaction ID"""
         return self._epp.api_command('delete_domain',{'name':name, 'cltrid':cltrid})
 
 
     def delete_nsset(self, nsset_id, cltrid=None):
-        """Usage: delete_nsset id
+        """DESCRIPTION:
+  The EPP 'delete_nsset' command is used to remove a record of the nsset.
 
-    PARAMS:
+SYNTAX:
+  delete_nsset id [other_options]
 
-    id (required)
-
-    RETURN data: {}
-
-    The EPP "delete" command is used to remove an instance of an existing object.
-        """
+OPTIONS:
+  id (required)            NSSET ID
+  cltrid                   Client transaction ID"""
         return self._epp.api_command('delete_nsset',{'id':nsset_id, 'cltrid':cltrid})
 
 
     def hello(self):
-        """Usage: hello
+        """DESCRIPTION:
+  Command 'hello' is used to obtain information from the server.
+  The server answer to 'hello' command is Greeting message. This message
+  is used usualy at the begining of the session for getting some variables
+  usefull for communication. Within Server version or ID you can got
+  available languages, Data Collection policy etc.
+  Command 'hello' you can call at any time.
 
-    PARAMS:
+SYNTAX:
+  hello
 
-    RETURN data: {
-            lang:    list
-            objURI:  list
-            extURI:  list
-            version: str
-            svID:    str
-            svDate:  str
-            }
-
-    The EPP "hello" request a "greeting" response message from an EPP server at any time.
-        """
+OPTIONS:
+"""
         return self._epp.api_command('hello')
 
 
     def info_contact(self, name, cltrid=None):
-        """Usage: info_contact name
+        """DESCRIPTION:
+  The EPP 'info_contact' command is used to retrieve information associated
+  with an existing contact. The value 'Password for transfer' is shown only
+  for privileged user.
 
-    PARAMS:
+SYNTAX:
+  info_contact name [other_options]
 
-    name (required)
-
-    RETURN data: {
-            contact:org, contact:roid, contact:email, contact:city, 
-            s, contact:crDate, contact:street, contact:crID, 
-            contact:upDate, contact:cc, contact:id, contact:upID, 
-            contact:name
-        }
-
-   The EPP "info" command is used to retrieve information associated
-   with an existing object. The elements needed to identify an object
-   and the type of information associated with an object are both
-   object-specific, so the child elements of the <info> command are
-   specified using the EPP extension framework.
-        """
+OPTIONS:
+  name (required)          Contact ID
+  cltrid                   Client transaction ID"""
         return self._epp.api_command('info_contact',{'name':name, 'cltrid':cltrid})
 
 
     def info_domain(self, name, cltrid=None):
-        """Usage: info_domain name
+        """DESCRIPTION:
+  The EPP 'info_domain' command is used to retrieve information associated
+  with an existing domain. The value 'Password for transfer' is shown only
+  for privileged user. In addition for domain ENUM type the private values
+  are also 'Registrant ID' and 'Administrative contact'.
 
-    PARAMS:
+SYNTAX:
+  info_domain name [other_options]
 
-    name (required)
-
-    RETURN data: {
-        domain:contact: (list)
-        domain:crID: (unicode)
-        domain:clID: (unicode)
-        domain:upDate: (unicode)
-        domain:name: (unicode)
-        domain:status.s: (unicode)
-        domain:exDate: (unicode)
-        domain:nsset: (unicode)
-        domain:upID: (unicode)
-        domain:pw: (unicode)
-        domain:crDate: (unicode)
-        domain:roid: (unicode)
-        domain:registrant: (unicode)
-        domain:renew: (unicode)
-        domain:contact.type: (list)
-        }
-        NOTE: domain:renew (you can use for renew_domain command)
-
-   The EPP "info" command is used to retrieve information associated
-   with an existing object. The elements needed to identify an object
-   and the type of information associated with an object are both
-   object-specific, so the child elements of the <info> command are
-   specified using the EPP extension framework.
-        """
+OPTIONS:
+  name (required)          Domain name
+  cltrid                   Client transaction ID"""
         return self._epp.api_command('info_domain',{'name':name, 'cltrid':cltrid})
 
 
     def info_nsset(self, name, cltrid=None):
-        """Usage: info_nsset name
+        """DESCRIPTION:
+  The EPP 'info_nsset' command is used to retrieve information associated
+  with an existing NSSET. The value 'Password for transfer' is shown only
+  for privileged user.
 
-    PARAMS:
+SYNTAX:
+  info_nsset name [other_options]
 
-    name (required)
-
-    RETURN data: {}
-
-   The EPP "info" command is used to retrieve information associated
-   with an existing object. The elements needed to identify an object
-   and the type of information associated with an object are both
-   object-specific, so the child elements of the <info> command are
-   specified using the EPP extension framework.
-        """
+OPTIONS:
+  name (required)          NSSET ID
+  cltrid                   Client transaction ID"""
         return self._epp.api_command('info_nsset',{'name':name, 'cltrid':cltrid})
 
 
     def login(self, username, password, new_password=None, lang=None, cltrid=None):
-        """Usage: login username password
+        """DESCRIPTION:
+  The "login" command establishes an ongoing server session that preserves client identity
+  and authorization information during the duration of the session. Parametr "lang" set
+  session and client language together. Language is possible to set also by option on the
+  command line, or define it in configuration file or set by client command 'lang'.
+  Using parameter 'new_password' you can change password.
 
-    PARAMS:
+SYNTAX:
+  login username password [other_options]
 
-    username (required)
-    password (required)
-    new_password (optional)
-    lang (optional)
-
-    RETURN data: {
-        nsset:upID: (str)
-        nsset:status.s: (str)
-        nsset:id: (str)
-        nsset:crDate: (str)
-        nsset:ns: (list) ((nsset, (addr,addr,...)), (nsset, (addr,addr,...)), ...)
-        nsset:clID: (str)
-        nsset:roid: (str)
-        nsset:tech: (str)
-        }
-
-   The "login" command establishes an ongoing server session that preserves client identity
-   and authorization information during the duration of the session.
-        """
+OPTIONS:
+  username (required)      Username
+  password (required)      Password
+  new_password             New password
+  lang                     Language version
+  cltrid                   Client transaction ID"""
         return self._epp.api_command('login',{'username':username, 
             'password':password, 'new_password':new_password, 'lang':lang, 'cltrid':cltrid})
 
 
     def logout(self, cltrid=None):
-        """Usage: logout
+        """DESCRIPTION:
+  The EPP "logout" command is used to end a session with the server.
+  But client will be still running. For close client type 'quit' (see help).
+  Before quit the client send logout automaticly.
 
-    PARAMS:
+SYNTAX:
+  logout [other_options]
 
-    RETURN data: {}
-
-    The EPP "logout" command is used to end a session with an EPP server.
-        """
+OPTIONS:
+  cltrid                   Client transaction ID"""
         return self._epp.api_command('logout',{'cltrid':cltrid})
 
 
     def poll(self, op, msg_id=None, cltrid=None):
-        """Usage: poll op [msg_id]
+        """DESCRIPTION:
+  Poll command is used to discover and retrieve service messages. They are saved
+  in the message queue. When you send poll with parameter op = req,
+  you get only the last message from the queue. But this message
+  still remains on the queue. For remove message from the queue set
+  poll op = ack and ID of this message. So you needs to send two poll
+  commands for manage one message: 1. reading, 2. removing.
+  See help poll_autoack for client function that sends this commands together.
 
-    PARAMS:
+SYNTAX:
+  poll op [other_options]
 
-    op (required) accept only values: (req,ack)
-
-    RETURN data: {
-        count: int
-        id:    int
-        msg:   str
-        }
-
-    The EPP "poll" command is used to discover and retrieve service messages queued by a server for individual clients.
-
-        """
+OPTIONS:
+  op (required)            Query type
+  msg_id (required)        Index of message (required only with op = 'ack')
+  cltrid                   Client transaction ID"""
         return self._epp.api_command('poll',{'op':op,'msg_id':msg_id, 'cltrid':cltrid})
 
 
     def sendauthinfo_contact(self, contact_id, cltrid=None):
-        """Usage: sendauthinfo_contact id
+        """DESCRIPTION:
+  The EPP 'sendauthinfo_contact' command transmit request for send password
+  to contact email. This command is usefull during transfer
+  when owner and new registrar needn't require previous registrar for password.
 
-    PARAMS:
+SYNTAX:
+  sendauthinfo_contact id [other_options]
 
-    id (required)
-
-    RETURN data: {}
-
-        """
+OPTIONS:
+  id (required)            Contact ID
+  cltrid                   Client transaction ID"""
         return self._epp.api_command('sendauthinfo_contact',{'id':contact_id, 'cltrid':cltrid})
 
     def sendauthinfo_domain(self, name, cltrid=None):
-        """Usage: sendauthinfo_domain name
+        """DESCRIPTION:
+  The EPP 'sendauthinfo_domain' command transmit request for send password
+  to registrant email. This command is usefull during transfer
+  when owner and new registrar needn't require previous registrar for password.
 
-    PARAMS:
+SYNTAX:
+  sendauthinfo_domain name [other_options]
 
-    name (required)
-
-    RETURN data: {}
-
-        """
+OPTIONS:
+  name (required)          Domain name
+  cltrid                   Client transaction ID"""
         return self._epp.api_command('sendauthinfo_domain',{'name':name, 'cltrid':cltrid})
 
     def sendauthinfo_nsset(self, nsset_id, cltrid=None):
-        """Usage: sendauthinfo_nsset id
+        """DESCRIPTION:
+  The EPP 'sendauthinfo_nsset' command transmit request for send password
+  to technical contact email. This command is usefull during transfer
+  when owner and new registrar needn't require previous registrar for password.
 
-    PARAMS:
+SYNTAX:
+  sendauthinfo_nsset id [other_options]
 
-    id (required)
-
-    RETURN data: {}
-
-        """
+OPTIONS:
+  id (required)            NSSET ID
+  cltrid                   Client transaction ID"""
         return self._epp.api_command('sendauthinfo_nsset',{'id':nsset_id, 'cltrid':cltrid})
 
     def credit_info(self, cltrid=None):
-        """Usage: credit_info [cltrid]
+        """DESCRIPTION:
+  The EPP 'credit_info' command returns credit information.
 
-    PARAMS:
+SYNTAX:
+  credit_info [other_options]
 
-    RETURN data: {}
-
-        """
+OPTIONS:
+  cltrid                   Client transaction ID"""
         return self._epp.api_command('credit_info',{'cltrid':cltrid})
 
     def renew_domain(self, name, cur_exp_date, period=None, val_ex_date=None, cltrid=None):
-        """Usage: renew_domain name cur_exp_date
+        """DESCRIPTION:
+  A domain names have a specified validity period. The server
+  policy supports domain validity periods and the validity period
+  is defined when a domain is created. This validity can be extended
+  by the EPP 'renew_domain' command.
 
-    PARAMS:
+  Validity periods are measured in years or months with the appropriate
+  units specified using the 'unit' attribute.  Valid values for the
+  'unit' attribute are 'y' for years and 'm' for months.  The minimum
+  and maximum allowable period is defined in the Communication rules.
 
-    name (required)
-    cur_exp_date (required)
-    period (optional)
-        num (required)
-        unit (required) accept only values: (y,m)
-    val_ex_date (optional)
+SYNTAX:
+  renew_domain name cur_exp_date [other_options]
 
-    RETURN data: {domain:name, domain:exDate}
-
-    The EPP "renew" command is used to extend validity of an existing object.
-        """
+OPTIONS:
+  name (required)          Domain name
+  cur_exp_date (required)  Expiration date
+  period                   Period
+    num (required)         Number of months or years
+    unit (required)        Period unit (y year(default), m month)
+  val_ex_date              Validation expires at
+  cltrid                   Client transaction ID"""
         return self._epp.api_command('renew_domain',{'name':name, 'cur_exp_date':cur_exp_date, 
             'period':period, 'val_ex_date':val_ex_date, 'cltrid':cltrid})
 
 
     def transfer_contact(self, name, auth_info, cltrid=None):
-        """Usage: transfer_contact name auth_info
+        """DESCRIPTION:
+  The EPP 'transfer_contact' command makes change in contact sponsorship
+  of a designated registrar. New password for authorisation
+  will be generated automaticly after succefull transfer.
 
-    PARAMS:
+SYNTAX:
+  transfer_contact name auth_info [other_options]
 
-    name (required) CONTACT-ID
-    auth_info (required)
-
-    RETURN data: {}
-
-   The EPP "transfer" command provides a query operation that allows a
-   client to determine real-time status of pending and completed
-   transfer requests.
-   The EPP "transfer" command is used to manage changes in client
-   sponsorship of an existing object.  Clients can initiate a transfer
-   request, cancel a transfer request, approve a transfer request, and
-   reject a transfer request using the "op" command attribute.
-        """
+OPTIONS:
+  name (required)          Contact ID
+  auth_info (required)     Password required by server to authorize the transfer
+  cltrid                   Client transaction ID"""
         return self._epp.api_command('transfer_contact',{'name':name, 'auth_info':auth_info, 'cltrid':cltrid})
 
     def transfer_domain(self, name, auth_info, cltrid=None):
-        """Usage: transfer_domain name auth_info
+        """DESCRIPTION:
+  The EPP 'transfer_domain' command makes change in domain sponsorship
+  of a designated registrar. New password for authorisation
+  will be generated automaticly after succefull transfer.
 
-    PARAMS:
+SYNTAX:
+  transfer_domain name auth_info [other_options]
 
-    name (required)
-    auth_info (required)
-
-    RETURN data: {}
-
-   The EPP "transfer" command provides a query operation that allows a
-   client to determine real-time status of pending and completed
-   transfer requests.
-   The EPP "transfer" command is used to manage changes in client
-   sponsorship of an existing object.  Clients can initiate a transfer
-   request, cancel a transfer request, approve a transfer request, and
-   reject a transfer request using the "op" command attribute.
-        """
+OPTIONS:
+  name (required)          Domain name of domain to change sponsorship
+  auth_info (required)     Password required by server to authorize the transfer
+  cltrid                   Client transaction ID"""
         return self._epp.api_command('transfer_domain',{'name':name, 'auth_info':auth_info, 'cltrid':cltrid})
 
     def transfer_nsset(self, name, auth_info, cltrid=None):
-        """Usage: transfer_nsset name auth_info
+        """DESCRIPTION:
+  The EPP 'transfer_nsset' command makes change in NSSET sponsorship
+  of a designated registrar. New password for authorisation
+  will be generated automaticly after succefull transfer.
 
-    PARAMS:
+SYNTAX:
+  transfer_nsset name auth_info [other_options]
 
-    name (required) NSSET-ID
-    auth_info (required)
-
-    RETURN data: {}
-
-   The EPP "transfer" command provides a query operation that allows a
-   client to determine real-time status of pending and completed
-   transfer requests.
-   The EPP "transfer" command is used to manage changes in client
-   sponsorship of an existing object.  Clients can initiate a transfer
-   request, cancel a transfer request, approve a transfer request, and
-   reject a transfer request using the "op" command attribute.
-        """
+OPTIONS:
+  name (required)          NSSET ID
+  auth_info (required)     Password required by server to authorize the transfer
+  cltrid                   Client transaction ID"""
         return self._epp.api_command('transfer_nsset',{'name':name, 'auth_info':auth_info, 'cltrid':cltrid})
 
 
     def update_contact(self, contact_id, chg=None, cltrid=None):
-        """Usage: update_contact contact-id
+        """DESCRIPTION:
+  The EPP 'update_contact' command is used to update values in the contact.
 
-    PARAMS:
+SYNTAX:
+  update_contact contact_id [other_options]
 
-    contact_id (required)
-    chg (optional)
-        postal_info (optional)
-            name (optional)
-            org (optional)
-            addr (optional)
-                street (optional)  list with max 3 items.
-                city (required)
-                sp (optional)
-                pc (optional)
-                cc (required)
-        voice (optional)
-        fax (optional)
-        email (optional)
-        auth_info (optional)
-        disclose (optional)
-            flag (required) y/n default y
-            data (required) list: (name,org,addr,voice,fax,email)
-        vat (optional)
-        ident (optional)
-            type (required)
-            number (required)
-        notifyEmail (optional)
-
-    RETURN data: {}
-
-    The EPP "update" command is used to update an instance of an existing object.
-        """
+OPTIONS:
+  contact_id (required)    Contact ID
+  chg                      Change values
+    postal_info            Postal informations
+      name                 Name
+      org                  Organisation
+      addr                 Address
+        city (required)    City
+        cc (required)      Country code
+        street             Street (list with max 3 items.)
+        sp                 State or province
+        pc                 Postal code
+    voice                  Phone
+    fax                    Fax
+    email                  Email
+    auth_info              Password required by server to authorize the transfer
+    disclose               Disclose
+      flag (required)      Disclose flag (default y)
+      data                 data for with is set the flag value (list with max 6 items.)
+    vat                    VAT
+    ident                  Identificator
+      type (required)      Identificator type
+      number (required)    Identificator number
+    notify_email           Notification email
+  cltrid                   Client transaction ID"""
         return self._epp.api_command('update_contact',{'contact_id':contact_id,
             'chg':chg, 'cltrid':cltrid})
 
 
     def update_domain(self, name, add_admin=None, rem_admin=None, chg=None, val_ex_date=None, cltrid=None):
-        """Usage: update_domain name
+        """DESCRIPTION:
+  The EPP 'update_domain' command is used to update values in the domain.
 
-    PARAMS:
+SYNTAX:
+  update_domain name [other_options]
 
-    name (required)
-    add_admin (optional)      unbounded list
-    rem_admin (optional)      unbounded list
-    chg (optional)
-        nsset (optional)
-        registrant (optional)
-        auth_info (optional)
-    val_ex_date (optional)
-
-    RETURN data: {}
-
-    The EPP "update" command is used to update an instance of an existing object.
-        """
+OPTIONS:
+  name (required)          Domain name
+  add_admin                Administrative contact ID (unbounded list)
+  rem_admin                Administrative contact ID (unbounded list)
+  chg                      Change values
+    nsset                  NSSET ID
+    registrant             Registrant ID
+    auth_info              Password required by server to authorize the transfer
+  val_ex_date              Validation expires at
+  cltrid                   Client transaction ID"""
         return self._epp.api_command('update_domain',{'name':name, 
             'add_admin':add_admin, 'rem_admin':rem_admin, 'chg':chg, 'val_ex_date':val_ex_date, 'cltrid':cltrid})
 
 
     def update_nsset(self, nsset_id, add=None, rem=None, auth_info=None, cltrid=None):
-        """Usage: update_nsset id
+        """DESCRIPTION:
+  The EPP 'update_nsset' command is used to update values in the NSSET.
 
-    PARAMS:
+SYNTAX:
+  update_nsset id [other_options]
 
-    id (required)
-    add (optional)
-        dns (optional)           list with max 9 items.
-            name (required)
-            addr (optional)     unbounded list
-        tech (optional)         unbounded list
-    rem (optional)
-        name (optional)         list with max 9 items.
-        tech (optional)         unbounded list
-    auth_info (optional)
-
-    RETURN data: {}
-
-    The EPP "update" command is used to update an instance of an existing object.
-
-    Examples:
-    update_nsset nic.cz
-    update_nsset nsset-ID (((nsset1.name.cz 127.0.0.1),(nsset2.name.cz (127.0.2.1 127.0.2.2)),) tech-add-contact ok) ("My Name",("Tech contact 1","Tech contact 2"),(clientDeleteProhibited ok)) (auth_info extension)
-        """
+OPTIONS:
+  id (required)            NSSET ID
+  add                      Add values
+    dns                    List of DNS (list with max 9 items.)
+      name (required)      Name server
+      addr                 Server address (unbounded list)
+    tech                   Technical contact ID (unbounded list)
+  rem                      Remove values
+    name                   Name server (list with max 9 items.)
+    tech                   Technical contact ID (unbounded list)
+  auth_info                Password required by server to authorize the transfer
+  reportlevel              Report level. Range 0 - 10
+  cltrid                   Client transaction ID"""
         return self._epp.api_command('update_nsset',{'id':nsset_id, 'add':add, 'rem':rem, 'auth_info':auth_info, 'cltrid':cltrid})
 
     def list_contact(self, cltrid=None):
-        """Usage: list_contact
+        """DESCRIPTION:
+  The EPP 'list_contact' command is used to list all ID of an existing contact owning by registrant.
 
-    PARAMS:
+SYNTAX:
+  list_contact [other_options]
 
-    RETURN data: {
-            count:   int
-            list:    list
-            }
-    The EPP "list" command is used to list all ID of an existing object owning by registrant.
-        """
+OPTIONS:
+  cltrid                   Client transaction ID"""
         return self._epp.api_command('list_contact',{'cltrid':cltrid})
         
     def list_nsset(self, cltrid=None):
-        """Usage: list_nsset
+        """DESCRIPTION:
+  The EPP 'list_nsset' command is used to list all ID of an existing NSSET owning by registrant.
 
-    PARAMS:
+SYNTAX:
+  list_nsset [other_options]
 
-    RETURN data: {
-            count:   int
-            list:    list
-            }
-    The EPP "list" command is used to list all ID of an existing object owning by registrant.
-        """
+OPTIONS:
+  cltrid                   Client transaction ID"""
         return self._epp.api_command('list_nsset',{'cltrid':cltrid})
 
     def list_domain(self, cltrid=None):
-        """Usage: list_domain
+        """DESCRIPTION:
+  The EPP 'list_doamin' command is used to list all domain names owning by registrant.
 
-    PARAMS:
+SYNTAX:
+  list_domain [other_options]
 
-    RETURN data: {
-            count:   int
-            list:    list
-            }
-    The EPP "list" command is used to list all ID of an existing object owning by registrant.
-        """
+OPTIONS:
+  cltrid                   Client transaction ID"""
         return self._epp.api_command('list_domain',{'cltrid':cltrid})
 
     def sendauthinfo_contact(self, id, cltrid=None):
-        """Usage: sendauthinfo_contact id
-
-    PARAMS:
-        id      contact ID
-
-    RETURN:
-    
+        """DESCRIPTION:
   The EPP 'sendauthinfo_contact' command transmit request for send password
   to contact email. This command is usefull during transfer
   when owner and new registrar needn't require previous registrar for password.
-        """
+
+SYNTAX:
+  sendauthinfo_contact id [other_options]
+
+OPTIONS:
+  id (required)            Contact ID
+  cltrid                   Client transaction ID"""
         return self._epp.api_command('sendauthinfo_contact',{'id':id, 'cltrid':cltrid})
 
     def sendauthinfo_nsset(self, id, cltrid=None):
-        """Usage: sendauthinfo_nsset id
-
-    PARAMS:
-        id      NSSET ID
-
-    RETURN:
-    
+        """DESCRIPTION:
   The EPP 'sendauthinfo_nsset' command transmit request for send password
-  to contact email. This command is usefull during transfer
+  to technical contact email. This command is usefull during transfer
   when owner and new registrar needn't require previous registrar for password.
-        """
+
+SYNTAX:
+  sendauthinfo_nsset id [other_options]
+
+OPTIONS:
+  id (required)            NSSET ID
+  cltrid                   Client transaction ID"""
         return self._epp.api_command('sendauthinfo_nsset',{'id':id, 'cltrid':cltrid})
 
     def sendauthinfo_domain(self, name, cltrid=None):
-        """Usage: sendauthinfo_domain name
-
-    PARAMS:
-        name      domain name
-
-    RETURN:
-    
+        """DESCRIPTION:
   The EPP 'sendauthinfo_domain' command transmit request for send password
-  to contact email. This command is usefull during transfer
+  to registrant email. This command is usefull during transfer
   when owner and new registrar needn't require previous registrar for password.
-        """
+
+SYNTAX:
+  sendauthinfo_domain name [other_options]
+
+OPTIONS:
+  name (required)          Domain name
+  cltrid                   Client transaction ID"""
         return self._epp.api_command('sendauthinfo_domain',{'name':name, 'cltrid':cltrid})
 
     def credit_info(self, cltrid=None):
-        """Usage: credit_info
+        """DESCRIPTION:
+  The EPP 'credit_info' command returns credit information.
 
-    PARAMS:
+SYNTAX:
+  credit_info [other_options]
 
-    RETURN:
-        zone
-        credit
-
-    The EPP 'credit_info' command returns credit information.
-        """
+OPTIONS:
+  cltrid                   Client transaction ID"""
         return self._epp.api_command('credit_info',{'cltrid':cltrid})
 
     def technical_test(self, id, name, cltrid=None):
-        """Usage: technical_test id name
+        """DESCRIPTION:
+  The EPP 'technical_test' command transmit request for technical test
+  for particular NSSET and domain. The result of the test will be saved
+  into the message queue from where the registrant can fetch it
+  by poll command. Every test has report level (number) and run just
+  a parts what have equal or lower level number. Valid range
+  is from 0 to 10. Set report level in the command create_nsset
+  and update_nsset.
 
-    PARAMS:
-        id            NSSET ID
-        name    domain name
+SYNTAX:
+  technical_test id name [other_options]
 
-    RETURN:
-
-    The EPP 'technical_test' command transmit request for technical test
-    for particular NSSET and domain. The result of the test will be saved
-    into the message queue from where the registrant can fetch it
-    by poll command. Every test has report level (number) and run just
-    a parts what have equal or lower level number. Valid range
-    is from 0 to 10. Set report level in the command create_nsset
-    and update_nsset.
-    """
+OPTIONS:
+  id (required)            NSSET ID
+  name (required)          Domain name
+  cltrid                   Client transaction ID"""
         return self._epp.api_command('technical_test',{'id':id, 'name':name, 'cltrid':cltrid})
 
     #==============================================================
