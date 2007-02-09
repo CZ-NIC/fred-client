@@ -465,7 +465,10 @@ $fred_client_errors = array(); // errors occuring during communication
         try:
             value = self._conf.get(section,option)
         except (ConfigParser.NoSectionError, ConfigParser.NoOptionError, ConfigParser.InterpolationMissingOptionError), msg:
-            if not omit_errors: self.append_error('ConfigError: %s (%s, %s)'%(msg,section,option))
+            if not omit_errors:
+                # disabled text as error type (text ERROR not displayed)
+                #self.append_error('ConfigError: %s (%s, %s)'%(msg,section,option))
+                self.append_note('Warning: Problem in configuration file. %s (%s, %s)'%(msg,section,option), ('RED','BOLD'))
         return value
 
     def config_get_section_connect(self):

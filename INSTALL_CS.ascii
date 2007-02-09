@@ -1,14 +1,49 @@
-Instalace FredClient
+Popis instalace FredClient
 
+OBSAH
+
+    * Pozadavky
+    * Instalace
+    * Odinstalace
+
+
+POZADAVKY
+
+FredClient potrebuje ke svemu behu jazyk Python nejmene ve verzi 2.4.
+Instalacni skript install.sh kontroluje jestli je python v systemu
+nainstalovan a jestli ma pozadovanou verzi. Jakou mate verzi muzete
+take zjistit prikazem:
+
+    $ python -V
+
+FredClient pouziva pro validaci XML dokumentu externi validator xmllint.
+Tento program ale neni nutnou podminkou funkcnosti klienta. 
+Pokud se v systemu nenachazi, tak se overovani v klientovi automaticky 
+vypne.
+
+    $ xmllint --version
+
+
+
+INSTALACE
 
 Instalace FredClient programu se provede nasledovne:
 
-    $ tar -xf FredClient-X.Y.Z.tar.gz        - rozbalite archiv
-    $ cd FredClient-X.Y.Z                    - prejdete se do vznikleho adresare
-    $ sudo ./install.sh                      - spustite instalaci (musite mit prava roota)
+  1) Rozbalite archiv s instalaci:
 
-Instalacni skript si zapise cestu ke vsem souborum, ktere se instalovaly, do souboru
-install.log. Tento soubor je pouzit pri odinstalovani klienta.
+    $ tar -xf FredClient-X.Y.Z.tar.gz
+
+  2) Prejdete se do vznikleho adresare:
+
+    $ cd FredClient-X.Y.Z
+
+  3) Spustite instalaci (musite mit prava roota):
+
+    $ sudo ./install.sh
+
+Instalacni skript provede kontrolu vereze pythonu a uzivatelovych prav.
+Behem instalave skript zapise cesty ke vsem souborum, ktere nainstaloval, do reportu
+install.log. Tento report je pak pouzit pri odinstalovani klienta.
 
 Tim je instalace dokoncena. Klienta spustite prikazem:
 
@@ -22,19 +57,17 @@ do ktereho jste program rozbalili.
 Aby se program mohl spustit odkudkoliv a aby jej mohli spoustet i ostatni uzivatele, 
 je nutne jej nainstalovat.
 
-FredClient pouziva "xmllint" pro validaci XML. Tento program ale neni
-nutnou podminkou funkcnosti klienta. Pokud se v systemu nenachazi, tak 
-se overovani automaticky vypne.
 
 
+ODINSTALACE
 
+  1) Prejdete do adresare, kde se nachazi odinstalacni skript uninstall.py
+     a report install.log.
 
+    $ cd FredClient-X.Y.Z
 
-
-Odinstalovani FredClient
-
-
-Program FredClient se ze systemu odinstaluje prikazem:
+  2) Odinstalaci pustite prikazem:
 
     $ sudo ./uninstall.py
+
 

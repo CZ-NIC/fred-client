@@ -1,38 +1,72 @@
-Install FredClient
+FredClient Installation
+
+CONTENTS
+   
+    * Requirements
+    * Installation
+    * Uninstallation
+
+REQUIREMERNTS
+
+FredClient needs for running Python in version 2.4 or later.
+The script install.sh controls if python is present in system and
+if version is enought. But if you can check it yourself type:
+
+    $ python -V
+
+FredClient uses for validation of the XML documents an external validator 
+xmllint. But it is not the necessary condition for running FredClient. 
+When xmllint missing on the system the client turns validation automaticly off.
+
+    $ xmllint --version
 
 
-    $ tar -xf FredClient-X.Y.Z.tar.gz        - unpack archive
-    $ cd FredClient-X.Y.Z                    - go to folder
-    $ sudo ./install.sh                      - run installation with root privileges
+
+INSTALLATION
+
+To install FredClient proceed following steps:
+
+  1) Unpack the installation archive:
+
+    $ tar -xf FredClient-X.Y.Z.tar.gz
+
+  2) Go to the folder:
+
+    $ cd FredClient-X.Y.Z
+
+  3) Run installation with root privileges:
+
+    $ sudo ./install.sh
 
 
-Install script writes file paths for all files what has been installed into
-install.log. This log file is used by uninstall process. Don't delete it
-and save for this purpose.
+Scipt install.sh makes check of the python version and root privileges.
+During installation process script writes paths of the all files what has been installed
+into the report install.log. This report is used later for uninstallation process.
 
-That is all, installation is finised. For start client type:
+That is all, the installation is done. For start client type:
 
 
     $ ./fred_client.py
 
 
-
 It is not necessary install FredClient if you want it just try for test. It is possible
 run program directly from folder where it has been unpacked.
 
-But if you need run FredClient from any folder or need run it for others users
+But if you need run FredClient from anywhere in system or need run it for others users
 you need install.
 
-FredClient use 'xmllint' for validation of the XML documents. But this program
-is not necessary for running FredClient. Validation is set off automatically, 
-if is not present in your system.
 
 
+UNISTALLATION
 
-Uninstall FredClient
+To unistall FredClient proceed following steps:
 
-For uninstall FredClient type command:
+1) Go to install folder:
+
+    $ tar -xf FredClient-X.Y.Z.tar.gz
+
+
+2) Run uninstallation script with root privileges:
 
     $ sudo ./uninstall.py
-
 
