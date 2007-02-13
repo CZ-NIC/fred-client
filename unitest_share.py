@@ -108,7 +108,9 @@ def err_not_equal(errors, data, key, refval):
         if data[key] != refval:
             errors.append('Neplatny klic "%s" je "%s" (ma byt: "%s")'%(key,data[key],refval))
     else:
-        errors.append('Klic "%s" chybi! (mel by byt: "%s")'%(key,refval))
+        if refval != '':
+            # only in case if valuse is set:
+            errors.append('Klic "%s" chybi! (mel by byt: "%s")'%(key,refval))
 
 def check_date(date, nu, sql_date=None):
     'Check expected date.'

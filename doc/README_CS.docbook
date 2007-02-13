@@ -1042,9 +1042,9 @@ zpracovávat PHP skriptem, nastavíme typ PHP: --output=php.
 
 <simplelist>
 <member>V PHP se klient spustí jako externí program například funkcí <emphasis>passthru()</emphasis>.</member>
-<member>V parametrech se nastaví mód výpisu na PHP: --outout=php</member>
-<member>Výstup klienta se přesměruje do adresáře s právy zápisu: <emphasis>... &gt; /cache/outout.php</emphasis></member>
-<member>Výsledný kód se vloží do stránky <emphasis>required_once('/cache/outout.php')</emphasis> a tím jsou hodnoty PHP skriptu dostupné.</member>
+<member>V parametrech se nastaví mód výpisu na PHP: --output=php</member>
+<member>Výstup klienta se přesměruje do adresáře s právy zápisu: <emphasis>... &gt; /cache/output.php</emphasis></member>
+<member>Výsledný kód se vloží do stránky <emphasis>required_once('/cache/output.php')</emphasis> a tím jsou hodnoty PHP skriptu dostupné.</member>
 </simplelist>
 
 <para>Proměnné z PHP výstupu</para>
@@ -1108,7 +1108,15 @@ i ukázky kódu.
 <title>Online dokumentace:</title>
 <para>
 Pokud si chcete projít jednotlivé třídy a funkce knihovny, tak k tomu můžete využít generátor
-dokumentace, který je standardní součástí pythonu: Zadejte na příkazové řádce příkaz:
+dokumentace <emphasis>pydoc</emphasis>, který je standardní součástí pythonu. Generátor má několik
+módů činnosti. Popis naleznete v helpu pydoc.
+
+Pokud jako parametr zadáte název souboru nebo modulu, tak se dokumentace zobrazuje ve stylu manuálové stránky:
+<programlisting>
+    $ pydoc fred
+</programlisting>
+
+Chcete-li generátor spustit, jako HTML server, tak zadejte na příkazové řádce příkaz:
 
 <programlisting>
     $ pydoc -p 8080

@@ -86,7 +86,7 @@ FRED_DATA = (
     { # DOMAIN_3 - modified
        'name':FRED_DOMAIN1,
        'auth_info':FRED_DOMAIN_PASSW_NEW,
-       'nsset':FRED_NSSET2,
+       'nsset':FRED_NSSET2, # tato hodnota se pak zresetuje
        'registrant':FRED_CONTACT2,
        'period': {'num':'3','unit':'y'},
        'contact':(FRED_CONTACT1,),
@@ -268,6 +268,21 @@ class TestDomain(unittest.TestCase):
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         errors = __check_equality__(FRED_DATA[DOMAIN_3], epp_cli.is_val('data'))
         self.assert_(len(errors)==0, '\n'.join(errors))
+
+    def test_135(self):
+        '4.13.3 Resetovani nssetu'
+        FRED_DATA[DOMAIN_3]['nsset'] = '' # zresetovani nssetu
+        epp_cli.update_domain(FRED_DOMAIN1, None, None, {'nsset':''})
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
+
+    def test_137(self):
+        '4.13.2 Kontrola zmenenych udaju po resetovani nssetu'
+        epp_cli.info_domain(FRED_DOMAIN1)
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+        errors = __check_equality__(FRED_DATA[DOMAIN_3], epp_cli.is_val('data'))
+        self.assert_(len(errors)==0, '\n'.join(errors))
+
         
 ##    def test_140(self):
 ##        '4.14.1 Pokus o update stavu serverDeleteProhibited'

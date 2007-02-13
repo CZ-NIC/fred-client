@@ -761,10 +761,10 @@ Kapitola 6. Integrace klienta do PHP kodu
 
    Shrnuti metody pouziti klienta v PHP:
    V PHP se klient spusti jako externi program napriklad funkci passthru().
-   V parametrech se nastavi mod vypisu na PHP: --outout=php
+   V parametrech se nastavi mod vypisu na PHP: --output=php
    Vystup klienta se presmeruje do adresare s pravy zapisu: ... >
-   /cache/outout.php
-   Vysledny kod se vlozi do stranky required_once('/cache/outout.php') a tim
+   /cache/output.php
+   Vysledny kod se vlozi do stranky required_once('/cache/output.php') a tim
    jsou hodnoty PHP skriptu dostupne.
 
    Promenne z PHP vystupu
