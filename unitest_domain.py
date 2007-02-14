@@ -124,10 +124,17 @@ class TestDomain(unittest.TestCase):
             # This behavor is possible switch off by option -x --no_validate
             epp_cli._epp.run_as_unittest = 1
             epp_cli_TRANSF._epp.run_as_unittest = 1
+
         # login
 #        dct = epp_cli._epp.get_default_params_from_config('login')
-        epp_cli.login('REG-UNITTEST1', '123456789')
-        epp_cli_TRANSF.login('REG-UNITTEST2', '123456789')
+        dct = {'username':'REG-UNITTEST1', 'password':'123456789'}
+        epp_cli._epp.set_login_to_config(dct)
+        epp_cli.login(dct['username'], dct['password'])
+
+        dct['username'] = 'REG-UNITTEST2'
+        epp_cli_TRANSF._epp.set_login_to_config(dct)
+        epp_cli_TRANSF.login(dct['username'], dct['password'])
+
         epp_cli_log = epp_cli
         # kontrola:
         self.assert_(epp_cli.is_logon(), 'Nepodarilo se zalogovat.')
@@ -517,7 +524,7 @@ def __check_equality__(cols, data):
     ##    'domain:renew': u'2009-08-10', 
     ##    'domain:contact.type': u'admin'}
     ##____________________________________________________________
-    username = 'REG-UNITTEST1'
+    username, password = epp_cli._epp.get_actual_username_and_password()
     unitest_share.err_not_equal(errors, data, 'domain:clID', username)
     unitest_share.err_not_equal(errors, data, 'domain:name', cols['name'])
     unitest_share.err_not_equal(errors, data, 'domain:nsset', cols['nsset'])

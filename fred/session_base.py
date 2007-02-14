@@ -137,6 +137,12 @@ class ManagerBase:
             self.get_config_value(self._section_epp_login,'password',OMIT_ERROR),
         )
 
+    def set_login_to_config(self, d_data):
+        'Set values into section "epp_login".'
+        # d_data = {'username':'REG-UNITTEST2'} It is used by unittest.
+        for k,v in d_data.items():
+            self._conf.set(self._section_epp_login, k, v)
+
     def fill_missing_required(self, section_connect):
         'Fill missing required values by defaults.'
         for key in ('port','timeout'):
