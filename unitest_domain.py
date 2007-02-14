@@ -125,9 +125,9 @@ class TestDomain(unittest.TestCase):
             epp_cli._epp.run_as_unittest = 1
             epp_cli_TRANSF._epp.run_as_unittest = 1
         # login
-        dct = epp_cli._epp.get_default_params_from_config('login')
-        epp_cli.login('REG-UNITTEST1', dct['password'])
-        epp_cli_TRANSF.login('REG-UNITTEST2', dct['password'])
+#        dct = epp_cli._epp.get_default_params_from_config('login')
+        epp_cli.login('REG-UNITTEST1', '123456789')
+        epp_cli_TRANSF.login('REG-UNITTEST2', '123456789')
         epp_cli_log = epp_cli
         # kontrola:
         self.assert_(epp_cli.is_logon(), 'Nepodarilo se zalogovat.')
@@ -256,6 +256,7 @@ class TestDomain(unittest.TestCase):
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         errors = __check_equality__(FRED_DATA[DOMAIN_1], epp_cli.is_val('data'))
         self.assert_(len(errors)==0, '\n'.join(errors))
+
 
     def test_130(self):
         '4.13 Update vsech parametru domeny'
@@ -487,6 +488,7 @@ class TestDomain(unittest.TestCase):
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
 
+
 def __check_equality__(cols, data):
     'Check if values are equal'
     #print '%s\nCOLS:\n%s\n%s\nDATA:\n%s\n%s\n'%('='*60, str(cols), '-'*60, str(data), '_'*60)
@@ -515,7 +517,7 @@ def __check_equality__(cols, data):
     ##    'domain:renew': u'2009-08-10', 
     ##    'domain:contact.type': u'admin'}
     ##____________________________________________________________
-    username, password = epp_cli._epp.get_actual_username_and_password()
+    username = 'REG-UNITTEST1'
     unitest_share.err_not_equal(errors, data, 'domain:clID', username)
     unitest_share.err_not_equal(errors, data, 'domain:name', cols['name'])
     unitest_share.err_not_equal(errors, data, 'domain:nsset', cols['nsset'])
