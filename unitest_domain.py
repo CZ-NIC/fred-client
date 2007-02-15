@@ -80,7 +80,6 @@ FRED_DATA = (
     { # modify CHANGE_DOMAIN
       'nsset': FRED_NSSET2,
       'registrant': FRED_CONTACT2,
-##      'auth_info': {'auth_info': FRED_DOMAIN_PASSW_NEW,},
       'auth_info': FRED_DOMAIN_PASSW_NEW,
     },
     { # DOMAIN_3 - modified
@@ -443,7 +442,7 @@ class TestDomain(unittest.TestCase):
         
     def test_190(self):
         '4.19 Trasfer na vlastni domenu (Objekt je nezpůsobilý pro transfer)'
-        epp_cli.transfer_domain(FRED_DOMAIN1, FRED_DOMAIN_PASSW_NEW)
+        epp_cli.transfer_domain(FRED_DOMAIN1, FRED_DATA[DOMAIN_3]['auth_info'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         
     def test_200(self):
@@ -455,19 +454,19 @@ class TestDomain(unittest.TestCase):
         
     def test_210(self):
         '4.21 Druhy registrator: Trasfer domeny'
-        epp_cli_TRANSF.transfer_domain(FRED_DOMAIN1, FRED_DOMAIN_PASSW_NEW)
+        epp_cli_TRANSF.transfer_domain(FRED_DOMAIN1, FRED_DATA[DOMAIN_3]['auth_info'])
         self.assertEqual(epp_cli_TRANSF.is_val(), 1000, unitest_share.get_reason(epp_cli_TRANSF))
         
     def test_220(self):
         '4.22 Druhy registrator: Zmena hesla po prevodu domeny'
-        epp_cli_TRANSF.update_domain(FRED_DOMAIN1, None, None, {'auth_info':FRED_DOMAIN_PASSW})
+        epp_cli_TRANSF.update_domain(FRED_DOMAIN1, None, None, {'auth_info': FRED_DOMAIN_PASSW})
         self.assertEqual(epp_cli_TRANSF.is_val(), 1000, unitest_share.get_reason(epp_cli_TRANSF))
         
     def test_230(self):
         '4.23 Zmena hesla domeny, ktera registratorovi jiz nepatri'
         global epp_cli_log
         epp_cli_log = epp_cli
-        epp_cli.update_domain(FRED_DOMAIN1, None, None, {'auth_info':'moje-heslo'})
+        epp_cli.update_domain(FRED_DOMAIN1, None, None, {'auth_info': FRED_DATA[DOMAIN_3]['auth_info']})
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         
     def test_240(self):
