@@ -127,13 +127,8 @@ class TestDomain(unittest.TestCase):
 
         # login
 #        dct = epp_cli._epp.get_default_params_from_config('login')
-        dct = {'username':'REG-UNITTEST1', 'password':'123456789'}
-        epp_cli._epp.set_login_to_config(dct)
-        epp_cli.login(dct['username'], dct['password'])
-
-        dct['username'] = 'REG-UNITTEST2'
-        epp_cli_TRANSF._epp.set_login_to_config(dct)
-        epp_cli_TRANSF.login(dct['username'], dct['password'])
+        epp_cli.login('REG-UNITTEST1', '123456789')
+        epp_cli_TRANSF.login('REG-UNITTEST2', '123456789')
 
         epp_cli_log = epp_cli
         # kontrola:
@@ -212,6 +207,13 @@ class TestDomain(unittest.TestCase):
         epp_cli.check_domain(INVALID_DOMAIN_NAME)
         if epp_cli.is_val(('data',INVALID_DOMAIN_NAME)) == 0:
             epp_cli.delete_domain(INVALID_DOMAIN_NAME)
+
+    def test_072(self):
+        '4.7.2  Pokus o zalozeni domeny se dvema stejnymi admin kontakty'
+        d = FRED_DATA[DOMAIN_1]
+        epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], d['nsset'], d['period'], (FRED_CONTACT1, FRED_CONTACT1))
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
         
     def test_080(self):
         '4.8  Zalozeni nove domeny'
@@ -258,15 +260,25 @@ class TestDomain(unittest.TestCase):
         self.assertEqual(epp_cli.is_val(('data','neexist002.cz')), 1)
 
     def test_120(self):
-        '4.12 Info na existujici domenu a kontrola hodnot'
+        '4.12.1 Info na existujici domenu a kontrola hodnot'
         epp_cli.info_domain(FRED_DOMAIN1)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         errors = __check_equality__(FRED_DATA[DOMAIN_1], epp_cli.is_val('data'))
         self.assert_(len(errors)==0, '\n'.join(errors))
 
+    def test_125(self):
+        '4.12.2 Pokus o update domeny s dvema shodnymi admin kontakty'
+        epp_cli.update_domain(FRED_DOMAIN1, (FRED_CONTACT1, FRED_CONTACT1))
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
+    def test_126(self):
+        '4.12.3 Pokus o odebrani neexistujiciho admin kontaktu domeny'
+        epp_cli.update_domain(FRED_DOMAIN1, None, 'cid:tento-neexistuje') ## FRED_DATA[DOMAIN_1]['contact']
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
 
     def test_130(self):
-        '4.13 Update vsech parametru domeny'
+        '4.13.1 Update vsech parametru domeny'
         epp_cli.update_domain(FRED_DOMAIN1, None, None, FRED_DATA[CHANGE_DOMAIN])
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
@@ -285,7 +297,21 @@ class TestDomain(unittest.TestCase):
 
 
     def test_137(self):
-        '4.13.2 Kontrola zmenenych udaju po resetovani nssetu'
+        '4.13.4 Kontrola zmenenych udaju po resetovani nssetu'
+        epp_cli.info_domain(FRED_DOMAIN1)
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+        errors = __check_equality__(FRED_DATA[DOMAIN_3], epp_cli.is_val('data'))
+        self.assert_(len(errors)==0, '\n'.join(errors))
+
+
+    def test_140(self):
+        '4.14.1 Zmena jen auth_info'
+        FRED_DATA[DOMAIN_3]['auth_info'] = 'zmena-jen-hesla'
+        epp_cli.update_domain(FRED_DOMAIN1, None, None, {'auth_info':'zmena-jen-hesla'})
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
+    def test_142(self):
+        '4.14.2 Kontrola zmenenych udaju po zmene pouze auth_info'
         epp_cli.info_domain(FRED_DOMAIN1)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         errors = __check_equality__(FRED_DATA[DOMAIN_3], epp_cli.is_val('data'))

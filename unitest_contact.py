@@ -27,8 +27,6 @@ import unitest_share
 # FRED_CONTACT[1] - create
 # FRED_CONTACT[2] - modify
 # FRED_CONTACT[3] - chg (changes)
-CONTACT_PASSWORD_1 = 'mojeheslo'
-CONTACT_PASSWORD_2 = 'nove-heslo'
 #CONTACT_HANDLE = 'CID:test002'
 CONTACT_HANDLE = unitest_share.create_handle('CID:')
 NSSET_HANDLE = unitest_share.create_handle('NSSID:')
@@ -60,7 +58,7 @@ FRED_CONTACT = [
     'email': 'rehor.cizek@mail.cz', #(povinný) váš email
     'city': u'Český Krumlov', #(povinný) město
     'cc': 'CZ', #(povinný) kód země
-    'auth_info': CONTACT_PASSWORD_1, #(povinný) heslo
+    'auth_info': 'mojeheslo', #(povinný) heslo
     'org': u'Čížková a spol', #(nepovinný) název organizace
     'street': (u'U práce',u'Za monitorem',u'Nad klávesnicí',), #(nepovinný)  seznam o maximálně 3 položkách. ulice
     'sp': '123', #(nepovinný) č.p.
@@ -78,7 +76,7 @@ FRED_CONTACT = [
     'email': 'breta.zlucnik@bricho.cz', #(povinný) váš email
     'city': u'Střevníkov', #(povinný) město
     'cc': 'CZ', #(povinný) kód země
-    'auth_info': CONTACT_PASSWORD_2, #(povinný) heslo
+    'auth_info': 'nove-heslo', #(povinný) heslo
     'org': u'Bolení s.r.o.', #(nepovinný) název organizace
     'street': (u'Na toaletách',u'U mísy'), #(nepovinný)  seznam o maximálně 3 položkách. ulice
     'sp': '321', #(nepovinný) č.p.
@@ -159,6 +157,12 @@ class TestContact(unittest.TestCase):
         # logovací soubor
         if fred.translate.options['log']: # zapnuti/vypuni ukladani prikazu do logu
             log_fp = open(fred.translate.options['log'],'w')
+
+    def test_005(self):
+        '2.0 Hello - Kontrola validity greeting'
+        epp_cli.hello()
+        self.assertTrue(len(epp_cli.is_val(('data','svID'))) > 0, unitest_share.get_reason(epp_cli))
+
     
     def test_010(self):
         '2.1 Check na seznam dvou neexistujicich kontaktu'
@@ -218,6 +222,20 @@ class TestContact(unittest.TestCase):
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         errors = __info_contact__('contact', FRED_CONTACT[2], epp_cli.is_val('data'))
         self.assert_(len(errors)==0, '\n'.join(errors))
+
+    def test_080(self):
+        '2.8.1 Zmena jen auth_info'
+        FRED_CONTACT[2]['auth_info'] = 'zmena-jen-hesla'
+        epp_cli.update_contact(handle_contact, {'auth_info':'zmena-jen-hesla'})
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
+    def test_085(self):
+        '2.8.2 Kontrola zmenenych udaju po zmene pouze auth_info'
+        epp_cli.info_contact(handle_contact)
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+        errors = __info_contact__('contact', FRED_CONTACT[2], epp_cli.is_val('data'))
+        self.assert_(len(errors)==0, '\n'.join(errors))
+
         
 ##    def test_080(self):
 ##        '2.8.1 Pokus o update stavu serverDeleteProhibited'
@@ -280,7 +298,7 @@ class TestContact(unittest.TestCase):
 
     def test_140(self):
         '2.14 Trasfer na vlastni contact (Objekt je nezpůsobilý pro transfer)'
-        epp_cli.transfer_contact(handle_contact, CONTACT_PASSWORD_2)
+        epp_cli.transfer_contact(handle_contact, FRED_CONTACT[2]['auth_info'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         
     def test_150(self):
@@ -292,17 +310,17 @@ class TestContact(unittest.TestCase):
         
     def test_160(self):
         '2.16 Druhy registrator: Trasfer kontaktu'
-        epp_cli_TRANSF.transfer_contact(handle_contact, CONTACT_PASSWORD_2)
+        epp_cli_TRANSF.transfer_contact(handle_contact, FRED_CONTACT[2]['auth_info'])
         self.assertEqual(epp_cli_TRANSF.is_val(), 1000, unitest_share.get_reason(epp_cli_TRANSF))
 
     def test_161(self):
         '2.16.1 Kontrola, ze se po stransferu automaticky zmenilo heslo.'
         epp_cli_TRANSF.info_contact(handle_contact)
-        self.assertNotEqual(epp_cli_TRANSF.is_val(('data','contact:auth_info')), CONTACT_PASSWORD_2, 'Heslo po transferu zustalo puvodni.')
+        self.assertNotEqual(epp_cli_TRANSF.is_val(('data','contact:auth_info')), FRED_CONTACT[2]['auth_info'], 'Heslo po transferu zustalo puvodni.')
         
     def test_170(self):
         '2.17 Druhy registrator: Zmena hesla po prevodu domeny'
-        epp_cli_TRANSF.update_contact(handle_contact, {'auth_info':CONTACT_PASSWORD_1})
+        epp_cli_TRANSF.update_contact(handle_contact, {'auth_info':FRED_CONTACT[1]['auth_info']})
         self.assertEqual(epp_cli_TRANSF.is_val(), 1000, unitest_share.get_reason(epp_cli_TRANSF))
         
     def test_180(self):

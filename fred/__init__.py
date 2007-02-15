@@ -388,6 +388,17 @@ OPTIONS:
   new_password             New password
   lang                     Language version
   cltrid                   Client transaction ID"""
+        
+        if self._epp._conf:
+            # if parameters are set as a list, use first item only. This list haven't been never empty.
+            if type(username) in (list,tuple): username = username[0]
+            if type(password) in (list,tuple):  password = password[0]
+            # We need save username+password to config section epp_login.
+            # It is used by function get_actual_username_and_password() for obtain
+            # actual login values. This is used in unittest for check value equality.
+            self._epp._conf.set(self._epp._section_epp_login, 'username', username)
+            self._epp._conf.set(self._epp._section_epp_login, 'password', password)
+
         return self._epp.api_command('login',{'username':username, 
             'password':password, 'new_password':new_password, 'lang':lang, 'cltrid':cltrid})
 
@@ -609,7 +620,7 @@ OPTIONS:
             'add_admin':add_admin, 'rem_admin':rem_admin, 'chg':chg, 'val_ex_date':val_ex_date, 'cltrid':cltrid})
 
 
-    def update_nsset(self, nsset_id, add=None, rem=None, auth_info=None, cltrid=None):
+    def update_nsset(self, nsset_id, add=None, rem=None, auth_info=None, reportlevel=None, cltrid=None):
         """DESCRIPTION:
   The EPP 'update_nsset' command is used to update values in the NSSET.
 
@@ -629,7 +640,7 @@ OPTIONS:
   auth_info                Password required by server to authorize the transfer
   reportlevel              Report level. Range 0 - 10
   cltrid                   Client transaction ID"""
-        return self._epp.api_command('update_nsset',{'id':nsset_id, 'add':add, 'rem':rem, 'auth_info':auth_info, 'cltrid':cltrid})
+        return self._epp.api_command('update_nsset',{'id':nsset_id, 'add':add, 'rem':rem, 'auth_info':auth_info, 'reportlevel':reportlevel, 'cltrid':cltrid})
 
     def list_contact(self, cltrid=None):
         """DESCRIPTION:

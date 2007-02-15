@@ -39,6 +39,7 @@ import unitest_share
 # FRED_DATA[3] - modified
 FRED_NSSET1 = unitest_share.create_handle('NSSID:U1') ## 'NSSID:examp2134'
 FRED_HANDLE = unitest_share.create_handle('NSSID:U2') ## 'NSSID:unittest2'
+FRED_NSSET3 = unitest_share.create_handle('NSSID:U3')
 FRED_DOMAIN = '%s.cz'%unitest_share.create_handle('nssetest')
 FRED_NOTEXIST = unitest_share.create_handle('NSSID:NE')
 FRED_CONTACT1 = unitest_share.create_handle('CID:U1') ## 'CID:UNITTEST1'
@@ -56,7 +57,8 @@ FRED_DATA = (
         {'name': 'ns.name1.cz', 'addr': ('217.31.207.130','217.31.207.129','217.31.207.128') },
         {'name': 'ns.name2.cz', 'addr': ('217.31.206.130','217.31.206.129','217.31.206.128') },
         ),
-    'tech': (FRED_CONTACT1,)  # (optional)             unbounded list
+    'tech': (FRED_CONTACT1,),  # (optional)             unbounded list
+    'reportlevel':'0',
     },
     #-------------------------------------------------------
     { # 2. modify
@@ -84,7 +86,8 @@ FRED_DATA = (
             {'name':'ns.name3.cz','addr':('217.31.205.130','217.31.205.129','217.31.205.128')},
             {'name':'ns.name4.cz','addr':('217.31.204.130','217.31.204.129','217.31.204.128')},
         ),
-    'tech': (FRED_CONTACT2,)
+    'tech': (FRED_CONTACT2,),
+    'reportlevel':'0',
     },
     #-------------------------------------------------------
 )
@@ -284,7 +287,7 @@ class Test(unittest.TestCase):
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         errors = __check_equality__(FRED_DATA[3], epp_cli.is_val('data'))
         self.assert_(len(errors), '\n'.join(errors))
-        
+
     def test_082(self):
         '3.8.2 Pokus o odebrani neexistujici dns'
         d = FRED_DATA[2]
@@ -308,6 +311,19 @@ class Test(unittest.TestCase):
         d = FRED_DATA[2]
         epp_cli.update_nsset(d['id'], None, {'tech':FRED_CONTACT2})
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
+    def test_100(self):
+        '3.10.1 Zmena jen auth_info'
+        FRED_DATA[3]['auth_info'] = 'zmena-jen-hesla'
+        epp_cli.update_nsset(FRED_DATA[3]['id'], None, None, FRED_DATA[3]['auth_info'])
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
+    def test_105(self):
+        '3.10.2 Kontrola zmenenych udaju po zmene pouze auth_info'
+        epp_cli.info_nsset(FRED_DATA[3]['id'])
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+        errors = __check_equality__(FRED_DATA[3], epp_cli.is_val('data'))
+        self.assert_(len(errors), '\n'.join(errors))
         
 ##    def test_100(self):
 ##        '3.10 Update stavu clientDeleteProhibited a pokus o smazani'
@@ -426,12 +442,59 @@ class Test(unittest.TestCase):
         self.assertNotEqual(epp_cli.is_val(), 1000)
 
     def test_140(self):
-        '3.14 Pokus o trasfer na vlastni nsset (Objekt je nezpůsobilý pro transfer)'
-        epp_cli.transfer_nsset(handle_nsset, NSSET_PASSWORD)
+        '3.14.1 Pokus o trasfer na vlastni nsset (Objekt je nezpůsobilý pro transfer)'
+        epp_cli.transfer_nsset(handle_nsset, FRED_DATA[3]['auth_info'])
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
+    def test_142(self):
+        '3.14.2 Pokus o odebrani tech kontaktu'
+        epp_cli.update_nsset(handle_nsset, None, {'tech': FRED_DATA[3]['tech']})
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
+    def test_144(self):
+        '3.14.3 Pokus o update tech, ktery se jiz v nssetu nachazi'
+        epp_cli.update_nsset(handle_nsset, {'tech': FRED_DATA[3]['tech']})
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_150(self):
-        '3.15 Druhy registrator: Pokus o trasfer s neplatnym heslem (Chyba oprávnění)'
+        '3.15.1 Pokus o nastaveni neplatneho tech levelu na -1 (mensi nez je rozsah)'
+        epp_cli.update_nsset(handle_nsset, None, None, None, '-1')
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
+    def test_151(self):
+        '3.15.2 Pokus o nastaveni neplatneho tech levelu na 11 (vetsi nez je rozsah)'
+        epp_cli.update_nsset(handle_nsset, None, None, None, '11')
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
+    def test_152(self):
+        '3.15.3 Nastaveni tech levelu na 5'
+        FRED_DATA[3]['reportlevel'] = '5'
+        epp_cli.update_nsset(handle_nsset, None, None, None, FRED_DATA[3]['reportlevel'])
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
+    def test_153(self):
+        '3.15.4 Kontrola tech levelu, ze je 5'
+        epp_cli.info_nsset(handle_nsset)
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+        errors = __check_equality__(FRED_DATA[3], epp_cli.is_val('data'))
+        self.assert_(len(errors), '\n'.join(errors))
+
+    def test_154(self):
+        '3.15.5 Nastaveni tech levelu na 8'
+        FRED_DATA[3]['reportlevel'] = '8'
+        epp_cli.update_nsset(handle_nsset, None, None, None, FRED_DATA[3]['reportlevel'])
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
+    def test_155(self):
+        '3.15.6 Kontrola tech levelu, ze je 8'
+        epp_cli.info_nsset(handle_nsset)
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+        errors = __check_equality__(FRED_DATA[3], epp_cli.is_val('data'))
+        self.assert_(len(errors), '\n'.join(errors))
+
+
+    def test_160(self):
+        '3.16 Druhy registrator: Pokus o trasfer s neplatnym heslem (Chyba oprávnění)'
         global epp_to_log
         epp_to_log = epp_cli_TRANSF
         epp_cli_TRANSF.transfer_nsset(handle_nsset, 'heslo neznam')
@@ -439,7 +502,7 @@ class Test(unittest.TestCase):
 
     def test_161(self):
         '3.16.1 Druhy registrator: Trasfer nssetu'
-        epp_cli_TRANSF.transfer_nsset(handle_nsset, NSSET_PASSWORD)
+        epp_cli_TRANSF.transfer_nsset(handle_nsset, FRED_DATA[3]['auth_info'])
         self.assertEqual(epp_cli_TRANSF.is_val(), 1000, unitest_share.get_reason(epp_cli_TRANSF))
 
     def test_162(self):
@@ -472,20 +535,32 @@ class Test(unittest.TestCase):
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_210(self):
-        '3.21 Druhy registrator: Smazani nssetu'
+        '3.20.2 Druhy registrator: Smazani nssetu'
         global epp_to_log
         epp_to_log = epp_cli_TRANSF
         epp_cli_TRANSF.delete_nsset(handle_nsset)
         self.assertEqual(epp_cli_TRANSF.is_val(), 1000, unitest_share.get_reason(epp_cli_TRANSF))
 
     def test_220(self):
-        '3.22 Check na smazany nsset'
+        '3.20.3 Check na smazany nsset'
         global epp_to_log
         epp_to_log = epp_cli
         epp_cli.check_nsset(handle_nsset)
         self.assertEqual(epp_cli.is_val(('data',handle_nsset)), 0)
 
-    def test_230(self):
+    def test_300(self):
+        '3.3 Pokus o zalozeni nssetu s vice stejnymi tech hodnotami'
+        d = FRED_DATA[1]
+        epp_cli.create_nsset(FRED_NSSET3, d['dns'], (FRED_CONTACT2, FRED_CONTACT2),  d['auth_info'])
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
+    def test_310(self):
+        '3.4 Smazani nssetu, pokud se vytvoril'
+        epp_cli.delete_nsset(FRED_NSSET3)
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
+
+    def test_900(self):
         '3.23 Smazani pomocnych kontaktu'
         epp_cli.delete_contact(FRED_CONTACT1)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
