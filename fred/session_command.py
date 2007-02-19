@@ -244,9 +244,6 @@ When you want not result in your prompt join option 'noprompt'
         if example: self.append_note('${BOLD}%s:${NORMAL}\n%s'%(_T('Command to issue'),example.encode(translate.encoding)))
         return (len(errors) == 0), stop
 
-    def get_default_params_from_config(self, command_name):
-        'Returns dict with default parameters from config.'
-        return self._epp_cmd.get_default_params_from_config(self._conf, command_name)
     
     #==================================================
     #

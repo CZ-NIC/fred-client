@@ -1,12 +1,44 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
-"""OPTIONS:
-    -s --session  HOST session
-    -l --lang     language version
-    -g --log      name of log file
-    -x  --no_validate 
-                    disable validation of the XML against schemas
-    -h --help     this help
+"""Usage: 
+You MUST define TWO usernames in section connect in your my_unittest.conf:
+
+    [connect_curlew]
+    host = curlew
+    username = REG-UNITTEST1
+    password = 123456789
+    username2 = REG-UNITTEST2
+    password2 = 123456789
+
+Than you can run $ %s --config=my_unittest.conf
+
+General options:
+  -?, --help       Show this help and exit
+  -g  --log=filename      
+                       name of log file
+  -l LANGUAGE, --lang=LANGUAGE
+                   Set user interface language
+  -x, --no_validate
+                   Disable client-side XML validation
+
+Connection options:
+  -f CONFIG, --config=CONFIG
+                   Load configuration from config file
+  -s SESSION, --session=SESSION
+                   Use session from config file
+
+  -h HOSTNAME, --host=HOSTNAME
+                   Fred server host
+  -p PORT, --port=PORT
+                   Server port (default: 700)
+  -u USERNAME, --user=USERNAME
+                   Authenticate to server as user
+  -w PASSWORD, --password=PASSWORD
+                   Authenticate to server with password
+  -c CERTIFICATE --cert=CERTIFICATE
+                   Use SSL certificate to connect to server
+  -k PRIVATEKEY --privkey=PRIVATEKEY
+                   Use SSL private key to connect to server
 """
 import sys, re, time
 import random

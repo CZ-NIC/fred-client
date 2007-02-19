@@ -145,14 +145,6 @@ class Message(MessageBase):
                 cmd_parser.insert_on_key(errors, dct, columns, key, value, 1)
         return errors
 
-    def get_default_params_from_config(self, config, command_name):
-        'Returns dict with default parameters from config.'
-        dct = {}
-        columns = [(command_name,(1,1),(),'','','',())]
-        columns.extend(self._command_params[command_name][1])
-        self.__fill_empy_from_config__(config, dct, columns)
-        return dct
-
     def __check_required__(self, command_name, columns, dct_values, null_value, scopes=[]):
         'Check parsed values for required and allowed values.'
         miss_req = 0

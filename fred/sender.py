@@ -28,8 +28,9 @@ from translate import options, option_errors, option_args
 def __auto_login__(epp, verbose):
     'Do login'
     try:
-        # username a password musí být v config
-        dansw = epp.api_command('login',epp.get_default_params_from_config('login'))
+        # username a password must be in config
+        log = epp.get_logins_and_passwords()[0]
+        dansw = epp.api_command('login', {'username': log[0], 'password': log[1]})
         ok = 1
     except FredError, msg:
         ok = 0

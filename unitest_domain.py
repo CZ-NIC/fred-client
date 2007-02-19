@@ -124,10 +124,16 @@ class TestDomain(unittest.TestCase):
             epp_cli._epp.run_as_unittest = 1
             epp_cli_TRANSF._epp.run_as_unittest = 1
 
-        # login
-#        dct = epp_cli._epp.get_default_params_from_config('login')
-        epp_cli.login('REG-UNITTEST1', '123456789')
-        epp_cli_TRANSF.login('REG-UNITTEST2', '123456789')
+        # login:
+        # prihlasovaci udaje si nastavte v config v sekci [connect_...]:
+        #    [connect_curlew]
+        #    username = REG-UNITTEST1
+        #    password = 123456789
+        #    username2 = REG-UNITTEST2
+        #    password2 = 123456789
+        logins = epp_cli._epp.get_logins_and_passwords(2) # 2 - num of login tuples: [('login','password'), ...]
+        epp_cli.login(logins[0][0], logins[0][1])
+        epp_cli_TRANSF.login(logins[1][0], logins[1][1])
 
         epp_cli_log = epp_cli
         # kontrola:
@@ -571,7 +577,7 @@ if __name__ == '__main__':
     if fred.translate.option_errors:
         print fred.translate.option_errors
     elif fred.translate.options['help']:
-        print unitest_share.__doc__
+        print unitest_share.__doc__%__file__
     else:
         suite = unittest.TestSuite()
         suite.addTest(unittest.makeSuite(TestDomain))

@@ -129,14 +129,6 @@ class ManagerBase:
         if op['cltrid']:
             self._session[CLTRID] = op['cltrid']
 
-
-    def get_actual_username_and_password(self):
-        'Returns tuple (username, password) what was used to login'
-        return (
-            self.get_config_value(self._section_epp_login,'username',OMIT_ERROR),
-            self.get_config_value(self._section_epp_login,'password',OMIT_ERROR),
-        )
-
     def fill_missing_required(self, section_connect):
         'Fill missing required values by defaults.'
         for key in ('port','timeout'):
@@ -457,6 +449,30 @@ $fred_client_errors = array(); // errors occuring during communication
             else:
                 self.append_error('%s: %s'%(_T('Invalid version format'),item))
 
+    def get_actual_username_and_password(self):
+        'Returns tuple (username, password) what was used to login'
+        return (
+            self.get_config_value(self._section_epp_login,'username',OMIT_ERROR),
+            self.get_config_value(self._section_epp_login,'password',OMIT_ERROR),
+        )
+
+    def get_logins_and_passwords(self, max=1):
+        """Returns logins and password for externals (unittest):
+        [('username','password'), ...]
+        Parameter max means how many logins are returned.
+        """
+        logins = []
+        section  = self.config_get_section_connect()
+        # default names are: username, password
+        logins.append((self.get_config_value(section, 'username'), self.get_config_value(section, 'password')))
+        # next continue: username2, password2
+        for n in range(2,max+1):
+            username = self.get_config_value(section, 'username%d'%n)
+            password = self.get_config_value(section, 'password%d'%n)
+            if not (username is None or password is None):
+                logins.append((username, password))
+        return logins
+        
 
     def get_config_value(self, section, option, omit_errors=0):
         'Get value from config and catch exceptions.'
