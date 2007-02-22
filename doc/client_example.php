@@ -2,16 +2,6 @@
 $size = 60; // size of inputs
 $indent_data=50; // indent column of data
 
-$exec_path = ''; // Here you can write path to the app
-// $exec_path = 'python /home/zdenek/enum/epp_client/trunk/'; // TEST
-// $exec_path = 'python /home/zdenek/enum/epp_client/branches/1.2/'; // TEST
-
-// Here you define where exe saves PHP code with answer data:
-$php_module_name = '/tmp/fred_client.php';
-
-$command_options = ''; // here you can type some options. For more see ./fred_client.py --help
-// $command_options = '-s andromeda -f /home/zdenek/.fred_client.conf'; // TEST
-
 define('CRLF', "\r\n");
 define('BR', "<br />\r\n");
 
@@ -137,8 +127,8 @@ table#command  { border-collapse: collapse; }
 <p style="font-size:80%"><i>Note:</i> For running this example:</p>
 <ul style="font-size:80%">
 <li>Place this example to your www folder.</li>
-<li>You have to install <strong>fred_client</strong> properly or use <strong>$exec_path</strong> instead..</li>
-<li>Your configuration file must be in <strong>/etc</strong> or use <strong>$command_options</strong> instead.</li>
+<li>You have to install <strong>fred_client</strong> properly or use <strong>Eexec path</strong> entry.</li>
+<li>Your configuration file must be in <strong>/etc</strong> or use <strong>Command options</strong> entry.</li>
 </ul>
 
 
@@ -160,6 +150,12 @@ table#command  { border-collapse: collapse; }
     }
     ?>
     </select>
+
+    <?php
+    if($_REQUEST['display_command_line']) $checked=' checked="checked"'; else $checked='';
+    echo "<input type='checkbox' name='display_command_line'$checked /> Display command line (for TEST only).".CRLF;
+    ?>
+    
     </td>
 </tr>
 
@@ -226,6 +222,27 @@ Mode <strong>PHP code</strong> generates PHP code what we redicert into file and
     </td>
 </tr>
 
+<tr>
+    <th>Command options</th>
+    <td>
+    <input name="command_options" value="<?php echo htmlspecialchars(stripslashes($_POST['command_options'])); ?>" size="<?php echo $size; ?>" /> 
+    <span class="note">
+    (use if <strong>fred_client</strong> is not installed)<br/>
+    <i>Example:</i> -s curlew -f /home/zdenek/.fred_client.conf<br/>
+    <i>For mode see README or</i> $ fred_client.py --help</span>
+    </td>
+</tr>
+
+<tr>
+    <th>Exec path</th>
+    <td>
+    <input name="exec_path" value="<?php echo htmlspecialchars(stripslashes($_POST['exec_path'])); ?>" size="<?php echo $size; ?>" />
+    <span class="note">
+    (use if <strong>fred_client</strong> is not installed)<br/>
+    <i>Example:</i> /home/zdenek/enum/epp_client/trunk/
+    </span>
+    </td>
+</tr>
 
 </table>
 </form>
@@ -241,7 +258,7 @@ while(is_array($_POST['send'])) {
 
     if(!$handle and !in_array($command,$ar_no_handler)) $errors[] = 'Handle missing.';
     // check if fred_client exist
-    $cmdline = $exec_path.'fred_client.py -V';
+    $cmdline = $_POST['exec_path'].'fred_client.py -V';
     $ar_retval = array();
     exec($cmdline, $ar_retval);
     $retval = join('\n',$ar_retval);
@@ -253,6 +270,7 @@ while(is_array($_POST['send'])) {
         if(!preg_match('/invalid_?(\w*)/',$command)) break;
     }
 
+    $command_options = $_POST['command_options'];
     $TEST = 0;
     if(preg_match('/invalid_?(\w*)/',$command, $match)) {
             $TEST = 1;
@@ -268,27 +286,31 @@ while(is_array($_POST['send'])) {
     else $fred_command = "$command $handle";
     if($_POST['output']=='html') {
         //--- HTML ---------------------------------
-        $cmdline = $exec_path."fred_client.py ".$command_options." -x -v $_POST[verbose] -o html -d '$fred_command'";
+        $cmdline = $_POST['exec_path']."fred_client.py ".$command_options." -v $_POST[verbose] -o html -d '$fred_command'";
         // See, what looks command line:
-        // echo "<div class='output'><p class='command'>$cmdline</p></div>".CRLF;
+        if($TEST or $_REQUEST['display_command_line']) echo "<br/>HTML Command line:<div class='output'><p class='command'>$cmdline</p></div>".CRLF;
         echo '<div id="fred_output">'.CRLF;
         passthru($cmdline);
         echo '</div>'.CRLF;
         //-----------------------------------------
     } else {
         //--- PHP ---------------------------------
-        $cmdline = $exec_path."fred_client.py ".$command_options." -x -v $_POST[verbose] -o php -d '$fred_command' > $php_module_name";
+        $cmdline = $_POST['exec_path']."fred_client.py ".$command_options." -v $_POST[verbose] -o php -d '$fred_command'";
         // See, what looks command line:
-        if($TEST) echo "<br/>Command:<div class='output'><p class='command'>$cmdline</p></div>".CRLF;
+        if($TEST or $_REQUEST['display_command_line']) echo "<br/>PHP Command line:<div class='output'><p class='command'>$cmdline</p></div>".CRLF;
 
-        // reset output:
-        @unlink($php_module_name);
+        $output = array();
+        exec($cmdline, $output, $retval);
 
-        passthru($cmdline); // output is redirect into file
+        if($retval == 0) {
+            array_shift($output); // remove sign of the PHP beginnig: <[question mark]php
+            array_pop($output); // remove sign of the PHP end: [question mark]>
+            // We need implode by cause of the multiline variables.
+            $data = implode("\n",$output);
+            // echo '<pre>'.htmlspecialchars($data).'</pre>'.CRLF; // TEST
+            eval($data);
+        }
 
-        // If everything went ok, we have prepared PHP data in module $php_module_name:
-        include($php_module_name);
-        
         echo "<h3>PHP CODE:</h3>".CRLF;
         echo '<pre>'.CRLF;
 
@@ -326,19 +348,6 @@ while(is_array($_POST['send'])) {
         echo htmlspecialchars($fred_source_answer).BR;
         echo '</pre>'.CRLF;
 
-        //--- FOR EXAMPLE ONLY: --------------------
-        echo '<hr />'.CRLF;
-        echo "<h3>DUMP OF: $php_module_name</h3>".CRLF;
-        echo '<pre class="fred_source">'.CRLF;
-        $fp = fopen($php_module_name,'r');
-        if($fp) {
-            while(!feof($fp)) {
-                echo htmlspecialchars(fgets($fp, 4096));
-            }
-            fclose($fp);
-        }
-        echo '</pre>'.CRLF;
-        //-----------------------------------------
     }
     
     break;

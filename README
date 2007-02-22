@@ -1,0 +1,8 @@
+README files are in doc subfolder:
+
+doc/
+    README_EN.txt       english version
+    README_CS.txt       czech version in ASCII
+    README_CS.utf8      czech version in UTF-8
+    README_CS.html      czech HTML version for browser
+    README_CS.docbook   source of the czech versions

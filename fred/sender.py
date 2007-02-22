@@ -71,7 +71,9 @@ def send_docs(display_bar, docs=[]):
     # Inicializace klienta
     #-------------------------------------------------
     epp = ClientSession()
-    if not epp.load_config(): return
+    if not epp.load_config():
+        return
+    epp.join_missing_config_messages(options['verbose'])
     
     if len(options['verbose']):
         verbose = epp.set_verbose(options['verbose'])
@@ -98,6 +100,7 @@ def send_docs(display_bar, docs=[]):
         bar_step = (100.0/max)*0.01
         bar_header = '%s: %d'%(_T('Send files'),max)
     epp.print_tag(BEGIN) # enclose leak messages into tag (comment)
+    epp.display() # display errors or notes
     for code, xmldoc in docs:
         epp.reset_round()
         if code:
@@ -112,7 +115,7 @@ def send_docs(display_bar, docs=[]):
                 if command_name == 'logout':
                     verbose = epp.set_verbose(0) # silent logout
                 #-------------------------------------------------
-                # pokud je zalogováno, tak pošle soubor
+                # when it is online send document
                 #-------------------------------------------------
                 if epp.is_online(command_name) and epp.is_connected():
                     # send document if only we are online
@@ -142,7 +145,7 @@ def send_docs(display_bar, docs=[]):
     if epp.is_connected():
         epp.set_verbose(0) # Very important! If is not set, it can overwrite outputed data.
         try:
-            epp.api_command('logout') # automatický logout
+            epp.api_command('logout') # automaticly logout
         except FredError, msg:
             pass # print 'ERROR:',msg
         #epp.print_answer()
