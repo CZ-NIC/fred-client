@@ -3,6 +3,7 @@ global-include extras/*.py
 global-exclude test_*.*
 global-exclude *.*~
 
+include doc/README_EN.txt
 include doc/README_CS.docbook
 include doc/README_CS.html
 include doc/README_CS.txt
@@ -14,6 +15,7 @@ include doc/img/*.gif
 
 exclude fred/fred_debug.py
 
+include README
 include INSTALL
 include INSTALL_CS.ascii
 include INSTALL_CS.utf8
