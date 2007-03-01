@@ -171,7 +171,7 @@ class Message:
         try:
             xml_doc = open(filepath).read()
         except IOError, (no,msg):
-            # když šablona chybí
+            # when template missing
             self.errors.append((2000, filepath, 'IOError: %d, %s'%(no,msg)))
             xml_doc = None
         return xml_doc
@@ -183,10 +183,10 @@ class Message:
             self.dom = xml.dom.minidom.parseString(xml_doc)
             self.dom.normalize()
         except xml.parsers.expat.ExpatError, msg:
-            # když je zprasené XML
+            # when XML is invalid
             self.errors.append((2001, None, _T('Invalid XML document. ExpatError: %s'%msg)))
         except LookupError, msg:
-            # chybné nebo neznámé kódování
+            # invalid or unknown encoding
             self.errors.append((2001, None, _T('Document has wrong encoding. LookupError: %s'%msg)))
 
     def join_top_attribs(self):
@@ -200,7 +200,7 @@ class Message:
     def create(self, top_name='epp'):
         'Create empty EPP DOM.'
         self.__reset_dom__()
-        # Posledni parametr (0) urcuje DTD, a pokud je 0 tak dokument zadne DTD nema.
+        # Lasta parameter (0) define DTD and if it is 0 than document has not DTD.
         # ("jmeny_prostor","korenovy-element",0)
         self.dom = xml.dom.getDOMImplementation().createDocument('',top_name,0)
         self.join_top_attribs()
@@ -209,12 +209,12 @@ class Message:
         "Create new node by Tag Name and attach to the Master Node. attribs=((name,value), (name,value), ....)"
         master = self.dom.getElementsByTagName(master_name)
         if type(master) == xml.dom.minicompat.NodeList:
-            # Pokud je to pole, tak se bere vždy poslední uzel.
+            # If valus is list, than take always last node.
             if len(master): master = master[-1]
         if master:
             node=self.new_node(master, name, value, attribs)
         else:
-            # pokud nadřazený uzel neexistuje, tak by se to celé mělo zastavit?
+            # if upper node doesn't exist, sahll we stop it?
             self.errors.append((2001, None, _T("Internal error: Master node '%s' doesn't exist."%master_name)))
             raise "Internal Error: Master node '%s' doesn't exist."%master_name # TODO ????
             node=None # TODO ????
@@ -299,10 +299,10 @@ class Message:
     #====================================
     def __create_data__(self, el, current_obj, is_class):
         "Create class object represents DOM struct of EPP document."
-        # 1. sestaví jména uzlů a jejich počet
-        # 2. vytvoří uzel nebo pole podle počtu
-        # 3. prochází rekurzivně všechny uzly a přidá hodnoty
-        # 4. připojí help
+        # 1. buid node names and count them
+        # 2. create node or list along by number
+        # 3. Walk recursively all nodes and append values
+        # 4. appends help
         #....................................
         # attr
         #....................................
@@ -452,8 +452,7 @@ class Data:
     ^ - member has attributes
     """
     def __init__(self, parent):
-        # POROR! Žádný uzel se nesmí jmenovat attr a data.
-        # ALERT! Names 'attr' and 'data' are reserve for internal use.
+        # ALERT! Names 'attr' and 'data' are reserved for internal use.
         self._parent = parent
         self._attr = []
         self._data = ''
@@ -463,13 +462,12 @@ class Data:
             # class members
             ret = self.__dict__['_%s'%key]
         # ........................................
-        # Zde se může zrušit vypnutí exception AttributeError 
-        # a tím se vrátí normální chování.
+        # Here we can disable exception AttributeError and give back common behavior.
 ##        else:
 ##            ret = super.__getattr__(key)
         # ........................................
-        # Zde je možnost vypnutí exception AttributeError 
-        # (musí se zakomentovat předchozí dva řádky: else a ret = ...)
+        # Here we can disable exception AttributeError
+        # (need make comment previous two lines: else a ret = ...)
         elif key[:2]=='__':
             # internal calls
             ret = super.__getattr__(key)
@@ -494,7 +492,7 @@ class Data:
                 subdoc=[]
                 for item in member:
                     subitem = item.__make_data_help__()
-                    if subitem != key: subdoc.append(subitem) # element, který je prázdný se nemusí přidávat
+                    if subitem != key: subdoc.append(subitem) # element, what is empty doesn't need join
                 if len(subdoc):
                     doc.append('%s: (%s)'%(subname,', '.join(subdoc)))
                 else:
@@ -641,18 +639,18 @@ def prepare_for_display(dict_values,color=0,indent=0):
         for key in dict_values.keys():
             ind = ' '*indent
             if key == 'attr':
-                if not indent: continue # attributy uzlu, ale ne ty z rootu
+                if not indent: continue # node attributes, but not these from root
                 attr = []
                 for k,v in dict_values[key]:
                     v = v.strip()
                     if v: attr.append(patt[2]%(k,v))
                 body.append(patt[0]%(ind,', '.join(attr)))
             elif key == 'data':
-                # data uzlu
+                # nodes data
                 v = dict_values[key].strip()
                 if v: body.append('%s%s'%(ind,v))
             else:
-                # podřízené uzly
+                # descendants nodes
                 if type(dict_values[key]) == dict:
                     data = prepare_for_display(dict_values[key],color,indent+4)
                     if data: body.append(patt[1]%(ind,key,data))

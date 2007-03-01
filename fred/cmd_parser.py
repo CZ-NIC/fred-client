@@ -47,7 +47,7 @@ def __slash_occured__(text):
 def __next_key__(cols,current):
     'Step on the next key in column list.'
     if current[-1]+1 < len(cols):
-        # jen v případě, že to není kone pole
+        # in case only if it is not the end of the list
         current[-1] += 1 # next name
 
 def __add_token__(dct,key,token):
@@ -147,7 +147,7 @@ def insert_on_key(errors, dct_root, cols, key, value, empty_only=0):
         if type(dct) == dict:
             dct = __get_on_pos__(dct,name,pos)
         else:
-            # Chybně umístěný seznam nebo jméno parametru
+            # Invalid placed list or parameter name
             errors.append('%s: %s[%d]'%(_T('Misplaced list or key'),name.encode(encoding),pos))
     name = scopes[-1]
     name,pos,cols = __get_name_pos__(errors,key,name,cols)
@@ -198,7 +198,7 @@ def parse(dct_root, cols_root, text_line):
                 quot=[]
                 if explicit_key:
                     if keyname_token is None:
-                        # uložení na pozici klíče
+                        # save ont the key position
                         insert_on_key(errors,dct,cols_root,explicit_key,token)
                         explicit_key = ''
                         mode.pop()

@@ -40,9 +40,9 @@ class Lorry:
     def __init__(self):
         self._conn = None
         self._conn_ssl = None
-        self._notes = [] # hlášení o stavu
-        self._errors = [] # chybová hlášení
-        self._body_length = 0 # velikost EPP zprávy, která se má přijmout
+        self._notes = [] # status messages
+        self._errors = [] # error messages
+        self._body_length = 0 # size of the EPP document what will be received
         self._timeout = 10.0 # Windows bug! In MS-Win MUST be zero.
 
     def is_error(self):
@@ -174,7 +174,7 @@ class Lorry:
         except (KeyboardInterrupt,EOFError):
             self._errors.append(_T('Interrupted by user'))
         else:
-            # hlavička zprávy
+            # message header
             try:
                 self._body_length = struct.unpack('!i',header)[0] - 4
             except struct.error, msg:
@@ -224,13 +224,12 @@ class Lorry:
 
     def handler_message(self, msg):
         'Handler of incomming message'
-        # funkce pro zpracování zprávy
+        # function for precess message
         print 'SERVER ANSWER:\n',msg
         
     def send(self,msg):
         "Send message to server."
-        # tady nemůže být automatické navázání konexe, protože to se musí
-        # navázat ze session Managera
+        # Here can be automatic connection, be casue we need use session Manager
         ok=0
         try:
             self._conn_ssl.write('%s%s'%(struct.pack('!i',len(msg)+4),msg))
