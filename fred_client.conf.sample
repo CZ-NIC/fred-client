@@ -13,12 +13,12 @@ username = MYUSERNAME
 password = MYPASSWORD
 
 ;; Every XML namespace can have the version independent to others:
-schema_version_contact = 1.1
-schema_version_nsset   = 1.1
-schema_version_domain  = 1.1
-schema_version_enum    = 1.0
-schema_version_fred    = 1.0
-schema_version_epp     = 1.0
+;schema_version_contact = 1.1
+;schema_version_nsset   = 1.1
+;schema_version_domain  = 1.1
+;schema_version_enum    = 1.0
+;schema_version_fred    = 1.0
+;schema_version_epp     = 1.0
 
 ;; socket timeout in sec. In MS Windows MUST be set to 0.0 (timeout bug)
 timeout = 10.0
@@ -31,7 +31,7 @@ timeout = 10.0
 ;nologin = y
 
 [session]
-schema = %(python-site-packages)s/fred/schemas/all-1.0.xsd
+schema = %(python-site-packages)s/fred/schemas/all-1.1.xsd
 
 ;; send "poll ack" right after to "poll req"
 poll_autoack = off

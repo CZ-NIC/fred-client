@@ -32,10 +32,11 @@ Xlib.h, Xutil.h Xos.h Xatom.h a další. Pokud ne, tak je nainstalujte:
 
     $ sudo apt-get install libx11-dev
     $ sudo apt-get install libxext-dev
+    $ sudo apt-get install g++
 
 pak systém zkompilujete standardním postupem:
 
-    $ taf -xf qt-x11-opensource-src-4.2.x.tar.gz
+    $ tar -xf qt-x11-opensource-src-4.2.x.tar.gz
     $ cd qt-x11-opensource-src-4.2.x
     $ ./configure (potvrdíte, že jste četli licenci: yes)
     $ make (proces trvá asi 20-30 minut)
@@ -63,11 +64,12 @@ Než začnete kompilovat, přesvědčte se, že máte nainstalovány zdrojové s
 (/usr/include/python2.4/Python.h a další)
 Pokud ne, tak si je nainstalujte:
 
-    $ sudo atp-get install python2.4-dev  (asi 1.5 MB)
+    $ sudo apt-get install python2.4-dev  (asi 1.5 MB)
 
 SIP nainstalujete následujícím způsobem (Popis instalace je v doc/sipref.html):
 
-    $ cd sip-4.5
+    $ tar -xf sip-4.5.2.tar.gz
+    $ cd sip-4.5.2
     $ python configure.py
     $ make
     $ sudo make install
