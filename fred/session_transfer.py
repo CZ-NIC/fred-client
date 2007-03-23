@@ -619,6 +619,7 @@ $fred_source_answer = '';      // source code (XML) of the answer prepared to di
         #... data .............................
         report('$fred_labels = array(); // descriptions of the data columns')
         report('$fred_data = array(); // data returned by server')
+        report('$fred_data_attrib = array(); // data attributes returned by server')
         dct_data = dct['data']
         is_check = re.match('\w+:check',dct['command']) and 1 or 0 # object:check
         for key,verbose,explain in self.__get_column_items__(dct['command'], dct_data):
@@ -632,6 +633,9 @@ $fred_source_answer = '';      // source code (XML) of the answer prepared to di
                     # join is done in function __answer_response_check__() in module session_receiver.py
                     # pref:key 0
                     # pref:key:reason 'message'
+                    value = dct_data.get(key)
+                    if value is not None:
+                        report("$fred_data_attrib[%s]['avail'] = %s;"%(php_string(key),php_string(value)))
                     value = dct_data.get(key+':reason',u'')
                 if type(value) in (list,tuple):
                     report('$fred_labels[%s] = %s;'%(php_string(key),php_string(explain)))
