@@ -175,7 +175,7 @@ class FredMainWindow(QtGui.QDialog):
         self._btn_send = [obj for name, obj in self.ui.__dict__.items() if re.match('send_',name)]
         # Redirect output and errors:
         sys.stdout = RedirectOutput(self.ui.system_messages)
-        sys.stderr  = RedirectOutput(None, self._thread_errors)
+        sys.stderr = RedirectOutput(None, self._thread_errors)
         # INIT
         self.load_config_and_autologin()
 
@@ -664,7 +664,7 @@ class FredMainWindow(QtGui.QDialog):
         if period.has_key('num'): d['period'] = period
         #...............................
         if p.val_ex_date.isEnabled():
-            append_key(d,'val_ex_date', self.renew_domain_val_ex_date)
+            append_key(d,'val_ex_date', p.val_ex_date)
         if self.__check_required__(d, (('name',_TU('name')), ('registrant',_TU('registrant')))):
             self.disable_send_buttons()
             self.thread_epp.set_command('create_domain', d)

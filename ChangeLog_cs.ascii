@@ -10,6 +10,7 @@ Nove funkce:
 
 Opravy:
     * Zobrazeni atributu avail u check prikazu v modu php
+    * Oprava chyby v create_domain v GUI
 
 
 
