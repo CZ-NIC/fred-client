@@ -1,5 +1,5 @@
-# -*- coding: utf8 -*-
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 """TEST the server answers.
 """
 data = ( # 0

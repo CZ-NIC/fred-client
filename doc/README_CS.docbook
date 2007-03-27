@@ -88,6 +88,7 @@ Hlavní parametry:
                    Nastavení jazykové verze
   -v LEVEL, --verbose=LEVEL
                    Nastavení módu výpisu
+                   0 - zobrazit jen XML odpověď od EPP serveru
                    1 - normální výstup
                    2 - zobrazit více detailů
                    3 - zobrazit více detailů a XML zdroje

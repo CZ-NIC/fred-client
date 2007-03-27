@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: utf8 -*-
+# -*- coding: UTF-8 -*-
 """Usage: 
 You MUST define TWO usernames in section connect in your my_unittest.conf:
 

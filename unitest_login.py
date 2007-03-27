@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: utf8 -*-
+# -*- coding: UTF-8 -*-
 """
 1.1 Zalogovani s neexistujicim username
 1.2 Zalogovani se spravnym heslem

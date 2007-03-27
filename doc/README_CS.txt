@@ -84,6 +84,7 @@ Hlavni parametry:
                    Nastaveni jazykove verze
   -v LEVEL, --verbose=LEVEL
                    Nastaveni modu vypisu
+                   0 - zobrazit jen XML odpoved od EPP serveru
                    1 - normalni vystup
                    2 - zobrazit vice detailu
                    3 - zobrazit vice detailu a XML zdroje
@@ -115,9 +116,7 @@ Parametry pro spojeni:
                    Odeslat prikaz na server a skoncit
   -o OUTPUT_TYPE, --output=OUTPUT_TYPE
                    Zobrazit vystup jako text (default), html, xml, php (Pozor!
-
-                   Jen pro testovani!)
-
+Jen pro testovani!)
   -q,  --qt
                    Spustit klienta v Qt4 GUI (Pozor! Jen pro testovani!)
 
@@ -284,9 +283,7 @@ Zobrazeni helpu
 
    Jake prikazy mate k dispozici zjistite zadanim prikazu "help" (nebo h, ?).
     FredClient verze n.n.n Zadejte "help", "license" nebo "credits" pro zobraze
-
-    ni vice informaci.
-
+ni vice informaci.
     > help
 
    Help vypise dve casti napovedy:
@@ -302,14 +299,12 @@ EPP prikazy
    "help login".
 
    Priklad:
-
-   > help login
-   > ?login
+> help login
+> ?login
 
    Vypisou se podrobnosti o jednotlivych parametrech daneho prikazu. Samotny
    prikaz zadate tak, ze napisete nazev prikazu a za nim jeho parametry:
-
-   > login username password
+> login username password
 
 Syntaxe zadavani parameru prikazu
 
@@ -317,8 +312,7 @@ Syntaxe zadavani parameru prikazu
    kterym byla zavedena specialni syntaxe. Parametry, na ktere neni nutne
    pouzit tuto syntaxi nazyvame jednoduche hodnoty. To jsou hodnoty, ve kterych
    se nevyskytuje mezera a ani to nejsou seznamy. Napriklad:
-
-   username password
+username password
 
    Parametry jsou oddeleny mezerou nebo mohou byt oddeleny i vice mezerami.
 
@@ -336,40 +330,26 @@ Syntaxe zadavani parameru prikazu
        zavorek, spojovniku a dalsich uvozovek. Pokud to jsou ale uvozovky
        shodne s temi, ktere jsou pouzity na uzavreni textu, tak se pred ne
        musi dat zpetne lomitko \ (backslash):
-
-       "text \"uvozovky\" text"
-
+"text \"uvozovky\" text"
        Jinak mohou byt bez nej:
-
-       "text s 'jednoduchymi' uvozovkami"
-
+"text s 'jednoduchymi' uvozovkami"
        nebo
-
-       'text s "dvojtymi" uvozovkami'
-
+'text s "dvojtymi" uvozovkami'
      * ( ) zavorky se pouzivaji pro parametr, ktery muze obsahovat seznam
        hodnot. Napriklad parametr street v prikazu create_contact muze byt
        seznam az o trech polozkach. Kdyz chcete zadat jen jednu ulici, staci
        zadat pouze:
-
-       ulice1
-
+ulice1
        Program vi, ze parametr ma byt seznam a tak tuto hodnotu vyhodnoti jako
        seznam s jednou polozkou. Nemusite tedy zadavat: (ulice1).
        Kdyz chcete zadat vice ulic, tak napisete:
-
-       (ulice1 ulice2 ulice3)
-
+(ulice1 ulice2 ulice3)
        Lze samozrejme kombinovat se syntaxi s uvozovkami:
-
-       ("ulice 1" "ulice 2" "ulice 3")
-
+("ulice 1" "ulice 2" "ulice 3")
        Polozky seznamu je mozne krome mezer oddelit i carkou:
-
-       (ulice1,ulice2,ulice3)
-       (ulice1, ulice2, ulice3)
-       ("ulice 1", "ulice 2", "ulice 3")
-
+(ulice1,ulice2,ulice3)
+(ulice1, ulice2, ulice3)
+("ulice 1", "ulice 2", "ulice 3")
        Nektere prikazy maji parametr typu seznam, ktery dale obsahuje dalsi
        seznamy. Takovy seznam take nazyvame jmenny prostor, protoze obsahuje
        dalsi polozky, ktere lze definovat jmenem. Ty mohou byt jednoduche nebo
@@ -380,9 +360,7 @@ Syntaxe zadavani parameru prikazu
        senzam postal_info, ktery obsahuje hodnoty name, org a jeste dalsi
        seznam addr. Seznam addr obsahuje polozky city, cc, street, atd. Takovy
        seznam se zapise asi takto:
-
-       ((name, org, (city, cc, street, sp, pc)) voice, fax, ...)
-
+((name, org, (city, cc, street, sp, pc)) voice, fax, ...)
        Porovnejte s priklady, ktere jsou uvedeny v helpu u kazdeho prikazu.
      * - spojovnik (divis). Parametry se musi zadavat ve stanovenem poradi.
        Nejdrive se vzdy zadavaji povinne polozky a pak nepovinne. Zadavani
@@ -396,16 +374,12 @@ Syntaxe zadavani parameru prikazu
        poradi. Princip je ten, ze se uvede jmeno parametru, kteremu hodnota
        patri. Toto jmeno zjistite z helpu prikazu. Pak jmeno a hodnotu zadate
        ve tvaru
-
-       -jmeno hodnota
-
+-jmeno hodnota
        Podle spojovniku na zacatku slova parser pozna, ze se jedna o jmeno
        parametru. Za nim pak nasleduje hodnota. Tato syntaxe je volna v tom
        smeru, ze je mozne zadat spojovniku vice a mezi jmenem a hodnotou muze
        byt rovnitko. Pak takovy zapis vypada takto:
-
-       --jmeno = hodnota
-
+--jmeno = hodnota
        Hodnoty, ktere jsou definovany pomoci pojmenovaneho parametru, stoji
        MIMO poradi ostatnich parametru. To znamena, ze mohou byt uvedeny na
        kterekoliv pozici mezi parametry a hodnoty za nimi maji stale stejnou
@@ -414,25 +388,18 @@ Syntaxe zadavani parameru prikazu
        predposledni parametr se jmenuje notify_email. Krome povinnych chcete
        zadat jiz pouze tuto hodnotu (povinnych je prvnich pet parametru: ID,
        jmeno, email, mesto a kod zeme). Pak zadate:
-
-       create_contact CID:ID jmeno email@email mesto CZ --notify_email = muj@email.net
-
+create_contact CID:ID jmeno email@email mesto CZ --notify_email = muj@email.net
        Na pozici pojmenovaneho parametru nezalezi:
-
-       create_contact --notify_email = muj@email.net CID:ID jmeno email@email mesto CZ
-
+create_contact --notify_email = muj@email.net CID:ID jmeno email@email mesto CZ
      * Tecka. Slozitejsi pripad nastane, kdyz chcete definovat hodnotu, ktera
        se nachazi v nejakem """zanorenem seznamu""", tj. seznamu v jinem seznamu.
        Pak se jednotliva jmena seznamu spojuji pomoci tecky. Napriklad:
-
-       create_contact CID:ID jmeno email@email mesto CZ --disclose.flag = y
-
+create_contact CID:ID jmeno email@email mesto CZ --disclose.flag = y
      * [] hranate zavorky. V pripade, ze hodnota je polozkou v seznamu, je
        mozne zadat i index seznamu. Ten se zadava pomoci cisla v hranatych
        zavorkach:
-
-       create_nsset nssid:nsset1 ((ns1.domain.cz (217.31.207.130 217.31.207.129))) --d
-       ns.addr[1] = tato_hodnota_prepise_druhou_adresu_217.31.207.129 cid:regid
+create_nsset nssid:nsset1 ((ns1.domain.cz (217.31.207.130 217.31.207.129))) --d
+ns.addr[1] = tato_hodnota_prepise_druhou_adresu_217.31.207.129 cid:regid
 
    Shrnuti:
    Parametry zadavejte v poradi, v jakem jsou vypsane v helpu.
@@ -458,13 +425,11 @@ Spolecny parametr cltrid (Client transaction ID)
 
    Jednotlive prikazy jsou v ramci relace cislovany. Pokud se v hodnote cltrid
    vyskytne zastupce %d, je tento symbol nahrazen poradovym cislem prikazu:
-
-   myCtrlID%d  - je zkonvertovan na myCtrlID1, myCtrlID2, myCtrlID3, ...
+myCtrlID%d  - je zkonvertovan na myCtrlID1, myCtrlID2, myCtrlID3, ...
 
    Chcete-li aby poradove cislo melo vzdy stejny pocet cislic, je mozne zadat:
-
-   myCtrlID%04d  - je zkonvertovan na myCtrlID0001, myCtrlID0002, myCtrlID0003, ..
-   .
+myCtrlID%04d  - je zkonvertovan na myCtrlID0001, myCtrlID0002, myCtrlID0003, ..
+.
 
 Zadna hodnota / Prazdna hodnota
 
@@ -482,14 +447,11 @@ Zadna hodnota: NULL
    jinak, tak NULL. Tim jste telefonni cislo umistili na spravnou pozici v
    parametrech prikazu:
    create_contact CID:ID01 'Jan Novak' info@mymail.cz Praha CZ mypassword NULL
-
-   NULL NULL NULL +420.222745111
+NULL NULL NULL +420.222745111
 
    Uvedeny prikaz nebude v XML strukture vytvaret tagy pro hodnoty org, street,
    sp, cp:
-
-   <contact:id>CID:ID01</contact:id>
-
+<contact:id>CID:ID01</contact:id>
         <contact:postalInfo>
           <contact:name>Jan Novak</contact:name>
           <contact:addr>
@@ -516,9 +478,7 @@ Prazdna hodnota: '', ""
  '' '' +420.222745111
 
    Prikaz vygeneruje XML, ve kterem budou u prazdnych hodnot prazdne tagy:
-
-   <contact:id>CID:ID01</contact:id>
-
+<contact:id>CID:ID01</contact:id>
         <contact:postalInfo>
           <contact:name>Jan Novak</contact:name>
           <contact:org/>
@@ -541,8 +501,7 @@ Interaktivni mod vkladani parametru
    prompt aktualne pozaduje. Tento zpusob je vhodny zejmena pokud nevite
    presne jak mate parametry zadat. Interaktivni mod se spousti pomoci
    vykricniku, ktery se napise pred prikaz:
-
-   > !update_nsset
+> !update_nsset
 
    Konzole vzdy vypise jmeno parametru a ceka na zadani hodnoty. Pokud hodnotu
    nechcete zadat, tak proste stisknete enter a hodnota se preskoci.
@@ -557,29 +516,28 @@ Interaktivni mod vkladani parametru
    prikaz odesle na server. V pripade, ze se jedna o """editacni""" prikaz a je
    zapnuta funkce potvrzovani (confirm), tak se prikaz musi pred odeslanim na
    server jeste potvrdit:
-
-   REG-LRR@epp-test.ccreg.nic.cz> !update_nsset
-   Start interaktivniho modu. Mod zrusite stisknutim Ctrl+C. Prikaz dokoncite komb
-   inaci Ctrl+D.
-   NSSET ID [povinny]: nssid:id01
-   Pridat hodnoty / Seznam DNS[1/9] / Jmenny server [povinny jen je-li tato cast z
-   adana]: ns1.dns.cz
-   Pridat hodnoty / Seznam DNS[1/9] / Adresa serveru[1/oo] [nepovinny]: 217.31.207
-   .130
-   Pridat hodnoty / Seznam DNS[1/9] / Adresa serveru[2/oo] [nepovinny]: 217.31.207
-   .131
-   Pridat hodnoty / Seznam DNS[1/9] / Adresa serveru[3/oo] [nepovinny]:
-   Pridat hodnoty / Seznam DNS[2/9] / Jmenny server [nepovinny]:
-   Pridat hodnoty / Technicky kontakt ID[1/oo] [nepovinny]: cid:myid01
-   Pridat hodnoty / Technicky kontakt ID[2/oo] [nepovinny]:
-   Pridat hodnoty / Stav[1/6] [nepovinny]:
-   Interaktivni mod ukoncen. [stisknete Enter]
-   Prikaz k odeslani:
-   update_nsset nssid:id01 (((ns1.dns.cz (217.31.207.130, 217.31.207.131))) cid:my
-   id01)
-   Opravdu chcete odeslat tento porikaz na server? (y/N): y
-   nssid:id01 aktualizovano.
-   REG-LRR@epp-test.ccreg.nic.cz>
+REG-LRR@epp-test.ccreg.nic.cz> !update_nsset
+Start interaktivniho modu. Mod zrusite stisknutim Ctrl+C. Prikaz dokoncite komb
+inaci Ctrl+D.
+NSSET ID [povinny]: nssid:id01
+Pridat hodnoty / Seznam DNS[1/9] / Jmenny server [povinny jen je-li tato cast z
+adana]: ns1.dns.cz
+Pridat hodnoty / Seznam DNS[1/9] / Adresa serveru[1/oo] [nepovinny]: 217.31.207
+.130
+Pridat hodnoty / Seznam DNS[1/9] / Adresa serveru[2/oo] [nepovinny]: 217.31.207
+.131
+Pridat hodnoty / Seznam DNS[1/9] / Adresa serveru[3/oo] [nepovinny]:
+Pridat hodnoty / Seznam DNS[2/9] / Jmenny server [nepovinny]:
+Pridat hodnoty / Technicky kontakt ID[1/oo] [nepovinny]: cid:myid01
+Pridat hodnoty / Technicky kontakt ID[2/oo] [nepovinny]:
+Pridat hodnoty / Stav[1/6] [nepovinny]:
+Interaktivni mod ukoncen. [stisknete Enter]
+Prikaz k odeslani:
+update_nsset nssid:id01 (((ns1.dns.cz (217.31.207.130, 217.31.207.131))) cid:my
+id01)
+Opravdu chcete odeslat tento porikaz na server? (y/N): y
+nssid:id01 aktualizovano.
+REG-LRR@epp-test.ccreg.nic.cz>
 
 
 Prikazy relace (session)
@@ -594,14 +552,12 @@ Prikazy relace (session)
 
    Hodnoty se nastavuji tak, ze se zada prikaz relace a za nim hodnota, ktera
    se ma priradit:
-
-   > poll_autoack on
+> poll_autoack on
 
    Pokud prikaz zadate bez parametru, tak se pouze vypise aktualni stav
    nastaveni.
-
-   > poll_autoack
-   poll_autoack je ON
+> poll_autoack
+poll_autoack je ON
 
    Seznam prikazu relace:
 
@@ -613,24 +569,20 @@ Prikazy relace (session)
    zobrazi, ale pak se zprava musi ze serveru odstranint prikazem "poll ack
    ID-zpravy". Pri automatickem poll-ack se bude odstranovani provadet
    automaticky po zobrazeni zpravy.
-
-   > confirm [on/off]
+> confirm [on/off]
 
    U EPP editacnich prikazu, ktere nejak meni hodnoty na serveru (create,
    upadte, delete, transfer, renew), se pred odeslanim pozaduje potvrzeni k
    odeslani. Prepinacem "confirm OFF" lze toto potvrzovani vypnout.
-
-   > credits
+> credits
 
    Prikaz credits zobrazi text s informacemi o klientovi.
-
-   > help [prikaz]
+> help [prikaz]
 
    Prikaz help zadany bez parametru zobrazi seznam dostupnych prikazu. Pokud se
    zada i parametr prikaz, tak se zobrazi detaily zadaneho prikazu. Stejny
    vyznam jako "help" maji i prikazy "h" a "?".
-
-   > lang [kod]
+> lang [kod]
 
    Prikazem lang se prepina jazykova verze klienta a serveru. Pokud jste ale
    jiz zalogovani, tak je nutne se odlogovat a znovu zalogovat. Duvod je ten,
@@ -638,17 +590,14 @@ Prikazy relace (session)
    take druha moznost, jak prepnout na jinou jazykovou verzi: """login usename
    password cs""" V teto verzi klienta i serveru jsou dostupne jen dva jazyky: en
    - anglictina; cs - cestina.
-
-   > license
+> license
 
    Prikaz license zobrazi text licence klienta.
-
-   > quit
+> quit
 
    Prikaz quit odpoji klienta od serveru a ukonci aplikaci. Synonyma 'q' a
    'exit' maji stejnou funkci.
-
-   > validate [on/off]
+> validate [on/off]
 
    Timto prepinacem zapnete nebo vypnete proces validace XML dokumentu.
    Validace je v teto verzi realizovana pres externi program xmllint. Pokud
@@ -659,8 +608,7 @@ Prikazy relace (session)
    ktera neodpovida konkretnimu schematu. Napriklad prilis kratke heslo.
    Konzole v teto verzi obsah hodnot nijak neoveruje, pouze zjistuje jestli
    byly zadany nebo ne.
-
-   > verbose [uroven]
+> verbose [uroven]
 
    Klient zobrazuje ruzne informace. Ty jsou rozdeleny do urovni detailu.
    Prvni uroven zobrazovani (zakladni) je urcena pro bezneho uzivatele a
@@ -675,8 +623,7 @@ Prikazy relace (session)
 
    Uroven vypisu lze nastavit i pri spusteni prikazoveho radku. Viz
    konfiguracni soubor.
-
-   > fetch_from_info typ_prikazu [ne-do-prikazove-radky]
+> fetch_from_info typ_prikazu [ne-do-prikazove-radky]
 
    Funkce fetch_from_info umoznuje vytvorit prikaz z hodnot, ktere byly nacteny
    z jednoho z prikazu typu info v predchozim kroku. To je napriklad uzitecne,
@@ -728,8 +675,7 @@ Kapitola 5. Skripty fred_create.py a fred_sender.py
    2. PIPE - Zretezenim prikazu create a sender. Napriklad:
     $ ./fred_create.py check_domain cosi.cz nic.cz | ./fred_sender.py
     $ echo -en "check_domain nic.cz\ninfo_domain nic.cz" | ./fred_create.py | .
-
-    /fred_sender.py
+/fred_sender.py
 
 Kapitola 6. Integrace klienta do PHP kodu
 
@@ -788,20 +734,19 @@ Kapitola 6. Integrace klienta do PHP kodu
    generuje se jen ve verbose 3).
 
    Priklad dat:
-
-   $fred_labels['domain:name'] = 'Domain name';
-   $fred_data['domain:name'] = 'domena.cz';
-   $fred_labels['domain:roid'] = 'Repository object ID';
-   $fred_data['domain:roid'] = 'D0000000174-CZ';
-   $fred_labels['domain:crID'] = 'Created by';
-   $fred_data['domain:crID'] = 'REG-LRR';
-   $fred_labels['domain:clID'] = 'Designated registrar';
-   $fred_data['domain:clID'] = 'REG-LRR';
-   $fred_labels['domain:crDate'] = 'Created on';
-   $fred_data['domain:crDate'] = '2006-10-31T16:51:56+01:00';
-   $fred_labels['domain:exDate'] = 'Expiration date';
-   $fred_data['domain:exDate'] = '2009-10-31T01:00:00+01:00';
-   $fred_labels['domain:renew'] = 'Last renew on';
+$fred_labels['domain:name'] = 'Domain name';
+$fred_data['domain:name'] = 'domena.cz';
+$fred_labels['domain:roid'] = 'Repository object ID';
+$fred_data['domain:roid'] = 'D0000000174-CZ';
+$fred_labels['domain:crID'] = 'Created by';
+$fred_data['domain:crID'] = 'REG-LRR';
+$fred_labels['domain:clID'] = 'Designated registrar';
+$fred_data['domain:clID'] = 'REG-LRR';
+$fred_labels['domain:crDate'] = 'Created on';
+$fred_data['domain:crDate'] = '2006-10-31T16:51:56+01:00';
+$fred_labels['domain:exDate'] = 'Expiration date';
+$fred_data['domain:exDate'] = '2009-10-31T01:00:00+01:00';
+$fred_labels['domain:renew'] = 'Last renew on';
 
 Kapitola 7. Graficka nadstavba v Qt4.
 
@@ -822,8 +767,14 @@ Kapitola 8. Knihovna fred a popis API
 Online dokumentace:
 
    Pokud si chcete projit jednotlive tridy a funkce knihovny, tak k tomu muzete
-   vyuzit generator dokumentace, ktery je standardni soucasti pythonu: Zadejte
-   na prikazove radce prikaz:
+   vyuzit generator dokumentace pydoc, ktery je standardni soucasti pythonu.
+   Generator ma nekolik modu cinnosti. Popis naleznete v helpu pydoc. Pokud
+   jako parametr zadate nazev souboru nebo modulu, tak se dokumentace zobrazuje
+   ve stylu manualove stranky:
+    $ pydoc fred
+
+   Chcete-li generator spustit, jako HTML server, tak zadejte na prikazove
+   radce prikaz:
     $ pydoc -p 8080
 
    Pokud se server nespusti, tak zkuste:
@@ -930,5 +881,4 @@ Priklady prace s knihovnou
 
    Pokud se vyskytne nejaka chyba pri prenosu nebo jina, ktera zablokuje
    funkcnost, tak se generuje vyjimka FredError.
-
 

@@ -63,7 +63,9 @@ if __name__ == '__main__':
                 import fred.sender
                 epp_doc, xml_error = fred.creator.run_creation(options)
                 if xml_error:
-                    print xml_error
+                    from fred.session_base import VERBOSE
+                    if fred.creator.epp.get_session(VERBOSE) > 0:
+                        print xml_error # print error only in verbose mode higher than 0
                 else:
                     if len(epp_doc):
                         fred.sender.send_docs(options['bar'], ((1,epp_doc),))

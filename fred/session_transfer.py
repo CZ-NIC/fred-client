@@ -325,14 +325,22 @@ class ManagerTransfer(ManagerBase):
     def print_answer(self, dct=None):
         "Returns str of dict object."
         if not dct: dct = self._dct_answer
-        if self._session[VERBOSE] and dct.get('command'):
+##        if self._session[VERBOSE] and dct.get('command'):
+##            # Print in only any command was sent.
+##            fnc = getattr(self,'get_answer_%s'%self._session[OUTPUT_TYPE], self.get_answer)
+##            print fnc(dct)
+##            #try:
+##            #    print fnc(dct) #+++
+##            #except Exception, msg:
+##            #    print 'Exception ERROR:',msg
+##        print "print_answer dct:",dct #!!!
+        if dct.get('command'):
+            # Here is exception from the verbose rule:
+            # In verbose 0: Displays only raw XML server answer.
             # Print in only any command was sent.
             fnc = getattr(self,'get_answer_%s'%self._session[OUTPUT_TYPE], self.get_answer)
             print fnc(dct)
-            #try:
-            #    print fnc(dct) #+++
-            #except Exception, msg:
-            #    print 'Exception ERROR:',msg
+        
         
     def get_keys_sort_by_columns(self):
         'Returns list of keys what will be used to sorting output values.'
@@ -436,52 +444,56 @@ class ManagerTransfer(ManagerBase):
 ##        body=[''] # indent from command line
         report = body.append
         if not dct: dct = self._dct_answer
-        #... code and reason .............................
-        code = dct['code']
-        match = re.match('\w+:(\w+)',dct['command'])
-        if match:
-            key = match.group(1)
-        else:
-            key = dct['command']
-        self.__modify__reason_message__(code, key, dct)
-        if self._session[VERBOSE] < 2:
-            # brief output mode
-            # exception on the command login and hello:
-            if dct['command'] in ('login','hello'):
-                pass # omit reason block body.pop() # remove previous empty line
+        if self._session[VERBOSE] > 0:
+            #... code and reason .............................
+            code = dct['code']
+            match = re.match('\w+:(\w+)',dct['command'])
+            if match:
+                key = match.group(1)
             else:
-                if code >= 2000:
-                    dct['errors'].insert(0,dct['reason'])
-                elif code not in (1000,1500) or key in ('update','delete','transfer','sendauthinfo','technical_test'):
-                    # 1000 - success,  1500 - success logout
-                    report(get_ltext(colored_output.render('${%s}%s${NORMAL}'%(code==1000 and 'GREEN' or 'NORMAL', dct['reason']))))
+                key = dct['command']
+            self.__modify__reason_message__(code, key, dct)
+            if self._session[VERBOSE] < 2:
+                # brief output mode
+                # exception on the command login and hello:
+                if dct['command'] in ('login','hello'):
+                    pass # omit reason block body.pop() # remove previous empty line
+                else:
+                    if code >= 2000:
+                        dct['errors'].insert(0,dct['reason'])
+                    elif code not in (1000,1500) or key in ('update','delete','transfer','sendauthinfo','technical_test'):
+                        # 1000 - success,  1500 - success logout
+                        report(get_ltext(colored_output.render('${%s}%s${NORMAL}'%(code==1000 and 'GREEN' or 'NORMAL', dct['reason']))))
+            else:
+                # full
+                if code:
+                    label_code = (u'%s:'%get_unicode(_T('Return code'))).ljust(self._ljust+1) # +1 space between key and value
+                    report(colored_output.render('${BOLD}%s${NORMAL}%d'%(get_ltext(label_code),code)))
+                if dct.get('reason'):
+                    label_reason = (u'%s:'%get_unicode(_T('Reason'))).ljust(self._ljust+1)
+                    report(colored_output.render('${BOLD}%s${%s}%s${NORMAL}'%(get_ltext(label_reason), code==1000 and 'GREEN' or 'NORMAL', get_ltext(dct['reason']))))
+            #... errors .............................
+            if len(dct['errors']):
+                if len(body) and body[-1] != '': report('') # empty line
+                dct['errors'][-1] += colored_output.render('${NORMAL}')
+                report(get_ltext('%s%s: %s'%(colored_output.render('${BOLD}${RED}'),_T('ERROR'),dct['errors'][0])))
+                for error in dct['errors'][1:]:
+                    report(get_ltext(error))
+            #... data .............................
+            if re.match('\w+:list',dct['command']):
+                # list output execption
+                if len(body) and body[-1] != '': report('') # empty line
+                cnt=0
+                for item in dct['data'].get('list',[]):
+                    body.append(get_ltext(item))
+                    cnt+=1
+                body.append('') # empty line to separate list from Sum message
+                body.append(_TP('(%d item)','(%d items)',cnt)%cnt)
+            else:
+                self.__append_to_body__(body, dct)
         else:
-            # full
-            if code:
-                label_code = (u'%s:'%get_unicode(_T('Return code'))).ljust(self._ljust+1) # +1 space between key and value
-                report(colored_output.render('${BOLD}%s${NORMAL}%d'%(get_ltext(label_code),code)))
-            if dct.get('reason'):
-                label_reason = (u'%s:'%get_unicode(_T('Reason'))).ljust(self._ljust+1)
-                report(colored_output.render('${BOLD}%s${%s}%s${NORMAL}'%(get_ltext(label_reason), code==1000 and 'GREEN' or 'NORMAL', get_ltext(dct['reason']))))
-        #... errors .............................
-        if len(dct['errors']):
-            if len(body) and body[-1] != '': report('') # empty line
-            dct['errors'][-1] += colored_output.render('${NORMAL}')
-            report(get_ltext('%s%s: %s'%(colored_output.render('${BOLD}${RED}'),_T('ERROR'),dct['errors'][0])))
-            for error in dct['errors'][1:]:
-                report(get_ltext(error))
-        #... data .............................
-        if re.match('\w+:list',dct['command']):
-            # list output execption
-            if len(body) and body[-1] != '': report('') # empty line
-            cnt=0
-            for item in dct['data'].get('list',[]):
-                body.append(get_ltext(item))
-                cnt+=1
-            body.append('') # empty line to separate list from Sum message
-            body.append(_TP('(%d item)','(%d items)',cnt)%cnt)
-        else:
-            self.__append_to_body__(body, dct)
+            # Zero verbose level
+            report(human_readable(self._raw_answer))
         #... third verbose level .............................
         for n in range(len(body)):
             if type(body[n]) == unicode: body[n] = body[n].encode(encoding)
@@ -512,42 +524,46 @@ class ManagerTransfer(ManagerBase):
         #... code and reason .............................
         code = dct['code']
         reason_css_class = code==1000 and 'command_success' or 'command_done'
-        if self._session[VERBOSE] > 1 or code != 1000:
-            # full
-            tbl_reason=['<table class="fred_data">']
-            tbl_reason.append('<tr>\n\t<th>%s</th>\n\t<td>%d</td>\n</tr>'%(_T('Return code'),code))
-            #tbl_reason.append('<tr>\n\t<th>command</th>\n\t<td>%s</td>\n</tr>'%get_ltext(dct['command']))
-            tbl_reason.append('<tr>\n\t<th>%s</th>\n\t<td><span class="%s">%s</span></td>\n</tr>'%(_T('Reason'), reason_css_class,get_ltext(dct['reason'])))
-            tbl_reason.append('</table>')
-            report('\n'.join(tbl_reason))
-        #... errors .............................
-        if len(dct['errors']):
-            report('<div class="fred_errors">\n<strong>errors:</strong><ul>')
-            for error in dct['errors']:
-                report('<li>%s</li>'%get_ltext(error))
-            report('</ul></div>')
-        #... data .............................
-        is_check = re.match('\w+:check',dct['command']) and 1 or 0 # object:check
-        data_indent = ''
-        data = []
-        dct_data = dct['data']
-        self.reduce_info_status(dct['command'], dct_data) # join status key and description together
-        for key,verbose,explain in self.__get_column_items__(dct['command'], dct_data):
-            if verbose > self._session[VERBOSE]: continue
-            key = key.strip() # client normaly trim whitespaces, but if you use sender, you can send everything...
-            value = dct_data.get(key,u'')
-            if value not in ('',[]):
-                if is_check:
-                    # Tighten check response by code.
-                    value = dct_data.get(key+':reason',u'')
-                __append_into_report__(data,key,value,explain,self._ljust,'',2) # 2 - use HTML pattern;
-        if len(data):
-            report('<table class="fred_data">')
-            body.extend(data)
-            report('</table>')
-        # encode to 8bit local
-        for n in range(len(body)):
-            if type(body[n]) == unicode: body[n] = body[n].encode(encoding)
+        if self._session[VERBOSE] > 0:
+            if code != 1000:
+                # full
+                tbl_reason=['<table class="fred_data">']
+                tbl_reason.append('<tr>\n\t<th>%s</th>\n\t<td>%d</td>\n</tr>'%(_T('Return code'),code))
+                #tbl_reason.append('<tr>\n\t<th>command</th>\n\t<td>%s</td>\n</tr>'%get_ltext(dct['command']))
+                tbl_reason.append('<tr>\n\t<th>%s</th>\n\t<td><span class="%s">%s</span></td>\n</tr>'%(_T('Reason'), reason_css_class,get_ltext(dct['reason'])))
+                tbl_reason.append('</table>')
+                report('\n'.join(tbl_reason))
+            #... errors .............................
+            if len(dct['errors']):
+                report('<div class="fred_errors">\n<strong>errors:</strong><ul>')
+                for error in dct['errors']:
+                    report('<li>%s</li>'%get_ltext(error))
+                report('</ul></div>')
+            #... data .............................
+            is_check = re.match('\w+:check',dct['command']) and 1 or 0 # object:check
+            data_indent = ''
+            data = []
+            dct_data = dct['data']
+            self.reduce_info_status(dct['command'], dct_data) # join status key and description together
+            for key,verbose,explain in self.__get_column_items__(dct['command'], dct_data):
+                if verbose > self._session[VERBOSE]: continue
+                key = key.strip() # client normaly trim whitespaces, but if you use sender, you can send everything...
+                value = dct_data.get(key,u'')
+                if value not in ('',[]):
+                    if is_check:
+                        # Tighten check response by code.
+                        value = dct_data.get(key+':reason',u'')
+                    __append_into_report__(data,key,value,explain,self._ljust,'',2) # 2 - use HTML pattern;
+            if len(data):
+                report('<table class="fred_data">')
+                body.extend(data)
+                report('</table>')
+            # encode to 8bit local
+            for n in range(len(body)):
+                if type(body[n]) == unicode: body[n] = body[n].encode(encoding)
+        else:
+            # Zero verbose level
+            report(escape_html(human_readable(self._raw_answer)))
         #... third verbose level .............................
         if self._session[VERBOSE] == 3:
             report('<pre class="fred_source">')
@@ -605,47 +621,51 @@ $fred_source_answer = '';      // source code (XML) of the answer prepared to di
         if not dct: dct = self._dct_answer
         body=[]
         report = body.append
-        report("$fred_encoding = %s; // used encoding"%php_string(encoding))
-        #... code and reason .............................
-        code = dct['code']
-        report("$fred_command = %s; // command sent to the server"%php_string(dct['command']))
-        report('$fred_code = %d; // code returned from server'%code)
-        report("$fred_reason = %s; // reason returned from server (description of the code)"%php_string(dct['reason']))
-        #... errors .............................
-        errors = []
-        for error in dct['errors']:
-            errors.append(php_string(error))
-        report('$fred_reason_errors = array(%s); // errors described details that caused invalid code'%', '.join(errors))
-        #... data .............................
-        report('$fred_labels = array(); // descriptions of the data columns')
-        report('$fred_data = array(); // data returned by server')
-        report('$fred_data_attrib = array(); // data attributes returned by server')
-        dct_data = dct['data']
-        is_check = re.match('\w+:check',dct['command']) and 1 or 0 # object:check
-        for key,verbose,explain in self.__get_column_items__(dct['command'], dct_data):
-            if verbose > self._session[VERBOSE]: continue
-            key = key.strip() # client normaly trim whitespaces, but if you use sender, you can send everything...
-            if not explain: explain = key
-            value = dct_data.get(key,u'')
-            if value not in ('',[]):
-                if is_check:
-                    # Check response returns code and reason. Code is used to insert status into message.
-                    # join is done in function __answer_response_check__() in module session_receiver.py
-                    # pref:key 0
-                    # pref:key:reason 'message'
-                    value = dct_data.get(key)
-                    if value is not None:
-                        report("$fred_data_attrib[%s]['avail'] = %s;"%(php_string(key),php_string(value)))
-                    value = dct_data.get(key+':reason',u'')
-                if type(value) in (list,tuple):
-                    report('$fred_labels[%s] = %s;'%(php_string(key),php_string(explain)))
-                    report('$fred_data[%s] = array();'%php_string(key))
-                    php_key = php_string(key)
-                    for v in value:
-                        report('$fred_data[%s][] = %s;'%(php_key,php_string(v)))
-                else:
-                    report('$fred_labels[%s] = %s;'%(php_string(key),php_string(explain)))
-                    report('$fred_data[%s] = %s;'%(php_string(key),php_string(value)))
+        if self._session[VERBOSE] > 0:
+            report("$fred_encoding = %s; // used encoding"%php_string(encoding))
+            #... code and reason .............................
+            code = dct['code']
+            report("$fred_command = %s; // command sent to the server"%php_string(dct['command']))
+            report('$fred_code = %d; // code returned from server'%code)
+            report("$fred_reason = %s; // reason returned from server (description of the code)"%php_string(dct['reason']))
+            #... errors .............................
+            errors = []
+            for error in dct['errors']:
+                errors.append(php_string(error))
+            report('$fred_reason_errors = array(%s); // errors described details that caused invalid code'%', '.join(errors))
+            #... data .............................
+            report('$fred_labels = array(); // descriptions of the data columns')
+            report('$fred_data = array(); // data returned by server')
+            report('$fred_data_attrib = array(); // data attributes returned by server')
+            dct_data = dct['data']
+            is_check = re.match('\w+:check',dct['command']) and 1 or 0 # object:check
+            for key,verbose,explain in self.__get_column_items__(dct['command'], dct_data):
+                if verbose > self._session[VERBOSE]: continue
+                key = key.strip() # client normaly trim whitespaces, but if you use sender, you can send everything...
+                if not explain: explain = key
+                value = dct_data.get(key,u'')
+                if value not in ('',[]):
+                    if is_check:
+                        # Check response returns code and reason. Code is used to insert status into message.
+                        # join is done in function __answer_response_check__() in module session_receiver.py
+                        # pref:key 0
+                        # pref:key:reason 'message'
+                        value = dct_data.get(key)
+                        if value is not None:
+                            report("$fred_data_attrib[%s]['avail'] = %s;"%(php_string(key),php_string(value)))
+                        value = dct_data.get(key+':reason',u'')
+                    if type(value) in (list,tuple):
+                        report('$fred_labels[%s] = %s;'%(php_string(key),php_string(explain)))
+                        report('$fred_data[%s] = array();'%php_string(key))
+                        php_key = php_string(key)
+                        for v in value:
+                            report('$fred_data[%s][] = %s;'%(php_key,php_string(v)))
+                    else:
+                        report('$fred_labels[%s] = %s;'%(php_string(key),php_string(explain)))
+                        report('$fred_data[%s] = %s;'%(php_string(key),php_string(value)))
+        else:
+            # Zero verbose level:
+            report('$fred_source_answer = %s;'%php_string(human_readable(self._raw_answer)))
         #... third verbose level .............................
         if self._session[VERBOSE] == 3:
             report('$fred_source_command = %s;'%php_string(human_readable(self._raw_cmd)))

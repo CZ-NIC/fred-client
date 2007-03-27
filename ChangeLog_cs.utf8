@@ -1,11 +1,12 @@
 FredClient 1.3.3
 
 Změny:
-    * příkazy create_domain a update_domain rozpoznají povinnou/nepovinnou hodnotu
+    * Příkazy create_domain a update_domain rozpoznají povinnou/nepovinnou hodnotu
       Expiration Date posdle typu domény cz/ENUM.
 
 Nové funkce:
     * README v angličtině
+    * Verbose level 0 - zobrazuje se jen XML odpověď od EPP serveru
 
 Opravy:
     * Zobrazení atributu avail u check příkazů v módu php

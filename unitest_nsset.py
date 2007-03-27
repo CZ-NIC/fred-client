@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: utf8 -*-
+# -*- coding: UTF-8 -*-
 """
 3.1 Check na seznam dvou neexistujicich nssetu
 3.2 Pokus o Info na neexistujici nsset

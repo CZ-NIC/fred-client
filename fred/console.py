@@ -53,6 +53,7 @@ General options:
                    Set user interface language
   -v LEVEL, --verbose=LEVEL
                    Set verbose level
+                   0 - print only XML answer from EPP server
                    1 - normal operation
                    2 - print more details
                    3 - print more details and display XML sources

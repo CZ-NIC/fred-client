@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: utf8 -*-
+# -*- coding: UTF-8 -*-
 """
 4.1  Check na seznam dvou neexistujicich domen
 4.2  Pokus o Info na neexistujici domenu

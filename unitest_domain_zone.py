@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: utf8 -*-
+# -*- coding: UTF-8 -*-
 """
 #263    unittesty na pravo na pristup do dane zony
 Ticket #253 (defect)

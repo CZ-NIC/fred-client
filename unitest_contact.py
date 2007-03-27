@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: utf8 -*-
+# -*- coding: UTF-8 -*-
 """
 2.1 Check na seznam dvou neexistujicich kontaktu
 2.2 Pokus o Info na neexistujici kontakt
