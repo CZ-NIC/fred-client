@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE book PUBLIC '-//OASIS//DTD DocBook XML V4.2//EN' 
+          'http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd'>
+<book lang="cs">
+
+<bookinfo>
+    <title>Nastavení konfigurace po instalaci FredClient v MS Windows</title>
+    <subtitle>FredClient</subtitle>
+    <copyright>
+      <year>2007</year>
+      <holder>CZ.NIC</holder>
+    </copyright>
+    <releaseinfo>
+    Vzniklo: 28. 3.2007;
+    </releaseinfo>
+  </bookinfo>
+
+
+<chapter>
+    <title>Nastavení konfigurace po instalaci FredClient v MS Windows</title>
+<para>
+Po instalaci se na ploše vytvoří tři ikonky:
+</para>
+
+<simplelist>
+    <member><emphasis role='bold'>fred_client.py</emphasis> - odkaz na aplikaci</member>
+    <member><emphasis role='bold'>fred_howto_cs.html</emphasis> - odkaz na tento dokument</member>
+    <member><emphasis role='bold'>fred_console.conf.sample</emphasis> - odkaz na příklad s konfigurací</member>
+</simplelist>
+
+<para>
+Aby se klient mohl připojit k serveru, je nutné vytvořit konfigurační soubor.
+Kliknutím na odkaz <emphasis role='bold'>fred_console.conf.sample</emphasis> si jej otevřete,
+upravíte v něm potřebné hodnoty a uložíte jej pod názvem, který klient používá.
+Soubor neotevírejte v Notepadu (Zápisník), ale ve WordPadu nebo Wordu. 
+Notepad neumí správně zobrazit konce řádků uložené v UNIX verzi.
+</para>
+
+<para>V konfiguračním souboru nastavte cestu a názvy k vašim certifikátům.
+Dále zadejte své přihlašovací údaje - login a heslo.
+</para>
+
+<para>Soubor uložte do vaší složky Dokumenty (klikněte na ikonu <emphasis>Moje Dokumenty</emphasis> / <emphasis>My Dokuments</emphasis>) pod názvem <emphasis role='bold'>.fred_client.conf</emphasis>.
+</para>
+
+<para>Klikněte na ikonu aplikace <emphasis role='bold'>fred_client.py</emphasis>. 
+Je-li vše v pořádku, aplikace se automaticky připojí k serveru a je připravena k zadávání příkazů.
+</para>
+
+</chapter>
+
+<!--
+<simplelist>
+    <member>...</member>
+</simplelist>
+
+<itemizedlist>
+    <listitem> ... </listitem>
+</itemizedlist>
+
+<chapter>
+    <section id="options">
+        <title>...</title>
+        ...
+    </section>
+</chapter>
+
+<programlisting/>
+<emphasis role='bold'/>
+
+<figure float="0">
+    <title>Ikona aplikace.</title>
+    <mediaobject><imageobject><imagedata fileref="img/app_icon.gif" scale="100" width="3cm" /></imageobject></mediaobject>
+</figure>
+
+-->
+
+
+
+</book>

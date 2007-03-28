@@ -33,10 +33,19 @@ setup(name = 'FredClient',
             'lang/cs/LC_MESSAGES/fred_client.mo'],
         'guiqt4': ['*.py','*.png','*.qm'],
     },
-    scripts = ['fred_client.py','fred_client_qt4.pyw'],
-    windows=[
-        {'script': 'fred_client_qt4.pyw'},
-        {'icon_resources': [(1, 'guiqt4/niccz.ico')]},
-    ],
-)
+    scripts = ['fred_client.py','fred_client_qt4.pyw','setup_postinstall.py'],
+    data_files=[
+        ('cznic_fred_docs',[
+            'fred_client.conf.sample',
+            'doc/fred_howto_cs.html',
+        
+            'doc/niccz_console.ico', 
+            'doc/configure.ico',
+            'doc/help.ico',
+            
+            'doc/README_CS.html',
+            'doc/README_QT4_CS.pdf'])
+        ]
+    
+    )
 
