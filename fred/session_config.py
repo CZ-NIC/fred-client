@@ -19,7 +19,7 @@
 This module collect funcktion for access object to the configuration file.
 It is used by session manager in session_base.py.
 """
-import os
+import os, sys, re
 import ConfigParser
 from translate import get_valid_lang
 
@@ -61,6 +61,11 @@ def load_default_config(config_name, verbose):
         missing.extend(not_found)
         # than try etc
         error, names, not_found = load_config(config, get_etc_config_name(config_name[1:]), verbose)
+        if not_found and sys.platform[:3] == 'win':
+            # In Windows try also open filename.ini
+            match = re.match(r'\.?([^\.]+)',config_name)
+            if match:
+                error, names, not_found = load_config(config, get_etc_config_name('%s.ini'%match.group(1)), verbose)
         if not_found: missing.extend(not_found)
     return config, error, missing, names
 

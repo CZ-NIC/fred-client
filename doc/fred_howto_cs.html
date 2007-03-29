@@ -4,15 +4,22 @@
     Vzniklo: 28. 3.2007;
     </p></div><div><p class="copyright">Copyright © 2007 CZ.NIC</p></div></div><hr /></div><div class="toc"><p><b>Obsah</b></p><dl><dt><span class="chapter"><a href="#id2457586">1. Nastavení konfigurace po instalaci FredClient v MS Windows</a></span></dt></dl></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2457586"></a>Kapitola 1. Nastavení konfigurace po instalaci FredClient v MS Windows</h2></div></div></div><p>
 Po instalaci se na ploše vytvoří tři ikonky:
-</p><table class="simplelist" border="0" summary="Simple list"><tr><td><span class="bold"><strong>fred_client.py</strong></span> - odkaz na aplikaci</td></tr><tr><td><span class="bold"><strong>fred_howto_cs.html</strong></span> - odkaz na tento dokument</td></tr><tr><td><span class="bold"><strong>fred_console.conf.sample</strong></span> - odkaz na příklad s konfigurací</td></tr></table><p>
+</p><table class="simplelist" border="0" summary="Simple list"><tr><td><span class="bold"><strong>fred_client.py</strong></span> - odkaz na aplikaci</td></tr><tr><td><span class="bold"><strong>fred_howto_cs.html</strong></span> - odkaz na tento dokument</td></tr><tr><td><span class="bold"><strong>fred_console.conf.sample</strong></span> - odkaz na příklad s konfigurací</td></tr><tr><td><span class="bold"><strong>README_CS.html</strong></span> - odkaz help</td></tr></table><p>
 Aby se klient mohl připojit k serveru, je nutné vytvořit konfigurační soubor.
 Kliknutím na odkaz <span class="bold"><strong>fred_console.conf.sample</strong></span> si jej otevřete,
 upravíte v něm potřebné hodnoty a uložíte jej pod názvem, který klient používá.
-Soubor neotevírejte v Notepadu (Zápisník), ale ve WordPadu nebo Wordu. 
+</p><p>Soubor neotevírejte v Notepadu (Zápisník), ale ve WordPadu nebo Wordu. 
 Notepad neumí správně zobrazit konce řádků uložené v UNIX verzi.
 </p><p>V konfiguračním souboru nastavte cestu a názvy k vašim certifikátům.
 Dále zadejte své přihlašovací údaje - login a heslo.
-</p><p>Soubor uložte do vaší složky Dokumenty (klikněte na ikonu <span class="emphasis"><em>Moje Dokumenty</em></span> / <span class="emphasis"><em>My Dokuments</em></span>) pod názvem <span class="bold"><strong>.fred_client.conf</strong></span>.
+</p><p>Soubor musíte uložit do složky, ve které je klient hledá. Jméno této složky je uloženo
+v systémové proměnné ALLUSERSPROFILE, která má obvykle hodnotu
+<span class="emphasis"><em>"C:\Documents and Settings\All Users\"</em></span>. 
+Soubor musí mít název <span class="bold"><strong>.fred_client.conf</strong></span> nebo ve Windows také
+<span class="bold"><strong>fred_client.ini</strong></span>. (Pozor na skryté extenze! Editační program
+může při ukládání přidat ke jménu ještě nějakou koncovku, kterou nemusí systém zobrazovat. Zobrazování/skrývání koncovek lze nastavit).
+</p><p>Po editaci tedy uložte konfiguraci do souboru <span class="emphasis"><em>"C:\Documents and Settings\All Users\fred_client.ini"</em></span>. 
 </p><p>Klikněte na ikonu aplikace <span class="bold"><strong>fred_client.py</strong></span>. 
 Je-li vše v pořádku, aplikace se automaticky připojí k serveru a je připravena k zadávání příkazů.
+</p><p>Další informace naleznete v README.
 </p></div></div></body></html>

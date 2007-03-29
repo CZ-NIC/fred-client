@@ -358,7 +358,7 @@ class TestContact(unittest.TestCase):
         self.assertEqual(epp_cli.is_val(('data',handle_contact)), 0, '%s nelze smazat'%handle_contact)
 
     def test_220(self):
-        '2.22 Poll require'
+        '2.22 Poll request'
         # 1000 OK (ack)
         # 1300 No messages
         # 1301 Any message

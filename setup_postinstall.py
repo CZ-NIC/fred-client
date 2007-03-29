@@ -21,7 +21,7 @@ help_name = 'fred_howto_cs.html'
 
 # BAT file is created to prevent closing the console after the script has been finished.
 bat_file  = 'fred_client.bat'
-bat_label = 'Fred Client Console'
+readme_name = 'README_CS.html'
 
 # Folder with icon
 path_fred_doc = 'cznic_fred_docs'
@@ -49,7 +49,7 @@ create_shortcut(
     os.path.join(distutils.sysconfig.PREFIX, 'Scripts'),
     os.path.join(distutils.sysconfig.PREFIX, path_fred_doc, 'niccz_console.ico'))
 
-# Shortcut to the README on the desktop
+# Shortcut to the HOWTO on the desktop
 create_shortcut(
     os.path.join(distutils.sysconfig.PREFIX, path_fred_doc, help_name), 
     'How to configure',
@@ -65,3 +65,11 @@ create_shortcut(
     os.path.join(desktopDir, '%s.lnk'%path_conf_sample),
     '', '', 
     os.path.join(distutils.sysconfig.PREFIX, path_fred_doc, 'configure.ico'))
+
+# Shortcut to the README on the desktop
+create_shortcut(
+    os.path.join(distutils.sysconfig.PREFIX, path_fred_doc, readme_name), 
+    'Fred README',
+    os.path.join(desktopDir, '%s.lnk'%readme_name), 
+    '', '', 
+    os.path.join(distutils.sysconfig.PREFIX, path_fred_doc, 'help.ico'))
