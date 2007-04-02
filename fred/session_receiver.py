@@ -194,6 +194,9 @@ class ManagerReceiver(ManagerCommand):
         self.defs[LANGS] = dct['lang'] = dct['lang'].split('\n')
         if type(self.defs[LANGS]) in (str,unicode):
             self.defs[LANGS] = (self.defs[LANGS],)
+        # list of protocol versions:
+        if dct.has_key('version') and type(dct['version']) in (unicode, str):
+            dct['version'] = dct['version'].split('\n')
         # check objURI and extURI
         msg_invalid_schema_version = []
         dct['objURI'] = dct.get('objURI','').split('\n')

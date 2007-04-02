@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-27 12:49+0200\n"
+"POT-Creation-Date: 2007-04-02 10:40+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Zdeněk Böhm <zdenek.bohm@nic.cz>\n"
 "Language-Team: CS <ccreg-devel@lists.nic.cz>\n"
@@ -209,7 +209,7 @@ msgstr ""
 msgid "More details in verbose 2 or higher."
 msgstr "Více detailů je ve verbose 2 nebo vyšším."
 
-#: fred/console.py:166 fred/session_receiver.py:506
+#: fred/console.py:166 fred/session_receiver.py:509
 msgid "Command data XML document failed to validate."
 msgstr "XML dokument příkazu se nepodařilo zvalidovat."
 
@@ -222,12 +222,12 @@ msgstr "Nejste připojeni."
 msgid "Do you really want to send this command to the server?"
 msgstr "Opravdu chcete odeslat tento poříkaz na server?"
 
-#: fred/console.py:182 fred/session_receiver.py:512
-#: fred/session_receiver.py:516
+#: fred/console.py:183 fred/session_receiver.py:515
+#: fred/session_receiver.py:519
 msgid "Server answer XML document failed to validate."
 msgstr "Odpověď serveru v XML dokumentu se nepodařilo zvalidovat."
 
-#: fred/console.py:212
+#: fred/console.py:213
 #, python-format
 msgid ""
 "Usage: %s [OPTIONS...]\n"
@@ -236,12 +236,12 @@ msgstr ""
 "Použití: %s [parametry...]\n"
 "Více informací získáze zadáním '%s --help'."
 
-#: fred/console.py:222 fred/creator.py:104 fred/sender.py:165
+#: fred/console.py:223 fred/creator.py:104 fred/sender.py:165
 #: fred_client.py:46
 msgid "Usage"
 msgstr "Použití"
 
-#: fred/console.py:224 fred/creator.py:113 fred/sender.py:178
+#: fred/console.py:225 fred/creator.py:113 fred/sender.py:178
 #: fred_client.py:54
 msgid "See README for more information."
 msgstr "Více informací najdete v README."
@@ -1189,8 +1189,8 @@ msgid "Server date"
 msgstr "Datum serveru"
 
 #: fred/eppdoc_client.py:479
-msgid "Server version"
-msgstr "Verze serveru"
+msgid "Available protocols"
+msgstr "Podporované protokoly"
 
 #: fred/eppdoc_client.py:480
 msgid "Objects URI"
@@ -1972,11 +1972,11 @@ msgstr "Jste již zalogován"
 msgid "Login command sent to the server"
 msgstr "Příkaz login byl odeslán na server"
 
-#: fred/session_config.py:37 fred/session_config.py:79
+#: fred/session_config.py:37 fred/session_config.py:84
 msgid "File contains parsing errors."
 msgstr "Při parsování souboru se vyskytly chyby."
 
-#: fred/session_config.py:38 fred/session_config.py:80
+#: fred/session_config.py:38 fred/session_config.py:85
 msgid "See details in verbose 2 or higher."
 msgstr "Detaily jsou zobrazeny ve verbose 2 nebo vyšším."
 
@@ -2005,39 +2005,39 @@ msgstr "Odpověď serveru nebyla rozpoznána"
 msgid "Unknown response type"
 msgstr "Neznámý typ části response"
 
-#: fred/session_receiver.py:212
+#: fred/session_receiver.py:215
 msgid "All data are disclosed."
 msgstr "Všechna data jsou veřejná."
 
-#: fred/session_receiver.py:215
+#: fred/session_receiver.py:218
 msgid "All data are hidden."
 msgstr "Všechna data jsou skrytá."
 
-#: fred/session_receiver.py:234
+#: fred/session_receiver.py:237
 msgid "Connected!"
 msgstr "Spojení navázáno!"
 
-#: fred/session_receiver.py:236
+#: fred/session_receiver.py:239
 msgid "Login failed."
 msgstr "Login se nezdařil."
 
-#: fred/session_receiver.py:343
+#: fred/session_receiver.py:346
 msgid "Not in registry: Object is available."
 msgstr "Není v registru: Objekt je dostupný."
 
-#: fred/session_receiver.py:367
+#: fred/session_receiver.py:370
 msgid "Not available"
 msgstr "Nedostupný"
 
-#: fred/session_receiver.py:367
+#: fred/session_receiver.py:370
 msgid "Available"
 msgstr "Dostupný"
 
-#: fred/session_receiver.py:524
+#: fred/session_receiver.py:527
 msgid "You are not logged. First type login."
 msgstr "Nejste zalogováni. Nejdříve zadejte login."
 
-#: fred/session_receiver.py:527
+#: fred/session_receiver.py:530
 msgid "You are not logged. You must call login() before working on the server."
 msgstr "Nejste zalogováni. Nejdříve musíte zadat login()."
 

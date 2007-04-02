@@ -476,7 +476,7 @@ def make_sort_by_names():
          ('lang',        2,  _T('Available languages')),
          ('svID',        1,  _T('Server ID')),
          ('svDate',      2,  _T('Server date')),
-         ('version',     2,  _T('Server version')),
+         ('version',     2,  _T('Available protocols')),
          ('objURI',      2,  _T('Objects URI')),
          ('extURI',      2,  _T('Extensions URI')),
          ('dcp',         2,  _T('Data Collection policy')),
