@@ -29,6 +29,7 @@
 4.26 Check na smazanou domenu
 4.27 Smazani pomocnych kontaktu a nssetu
 """
+import re
 import time
 import unittest
 import fred
@@ -96,6 +97,7 @@ NSSET_DNS = (
             {'name': u'ns.pokus1.cz', 'addr': ('217.31.204.130','217.31.204.129')},
             {'name': u'ns.pokus2.cz', 'addr': ('217.31.204.131','217.31.204.127')},
         )
+
 
 class TestDomain(unittest.TestCase):
 
@@ -413,20 +415,33 @@ class TestDomain(unittest.TestCase):
         epp_cli.update_domain(FRED_DOMAIN2, None, None, None, val_ex_date)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
-    def test_178(self):        
-        '4.17.8 Pokus o nastaveni valExDate o jeden den vice, nez je pripustne (6 mes + 14 dni)'
+    def test_180(self):
+        '4.18.0 Nastaveni valExDate na dnes+15dni'
+        val_ex_date = unitest_share.datedelta_from_now(0, 0, 15)
+        epp_cli.update_domain(FRED_DOMAIN2, None, None, None, val_ex_date)
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
+    def test_181(self):
+        '4.18.1 Pokus o prodlouzeni validace o 6 mesicu ode dne valExDate s prekrocenim 14 denni lhuty'
         val_ex_date = unitest_share.datedelta_from_now(0, 6, 14)
         epp_cli.update_domain(FRED_DOMAIN2, None, None, None, val_ex_date)
         self.assertNotEqual(epp_cli.is_val(), 1000, 'update_domain proslo s val_ex_date o jeden den vetsim nez je povoleno.')
-        
-    def test_179(self):
-        '4.17.9 Nastaveni valExDate presne na posledni povoleny den (6 mes + 13 dni)'
-        val_ex_date = unitest_share.datedelta_from_now(0, 6, 13)
+
+    def test_182(self):
+        '4.18.2 Nastaveni valExDate na dnes+14dni'
+        val_ex_date = unitest_share.datedelta_from_now(0, 0, 14)
         epp_cli.update_domain(FRED_DOMAIN2, None, None, None, val_ex_date)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
-        
-    def test_180(self):
-        '4.18 Renew domain o tri roky'
+
+    def test_183(self):
+        '4.18.31 Prodlouzeni validace o 6 mesicu ode dne valExDate ve 14 denni lhute'
+        val_ex_date = unitest_share.datedelta_from_now(0, 6, 14)
+        epp_cli.update_domain(FRED_DOMAIN2, None, None, None, val_ex_date)
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
+
+    def test_190(self):
+        '4.19 Renew domain o tri roky'
         # ziskani hodnoty cur_exp_date
         epp_cli.info_domain(FRED_DOMAIN1)
         unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(1,3))
@@ -446,8 +461,8 @@ class TestDomain(unittest.TestCase):
         exDate = epp_cli.is_val(('data','domain:exDate'))[:10]
         self.assert_(expiration == exDate, 'Expirace neprosla. Data domain:exDate nesouhlasi: je: %s ma byt: %s'%(exDate, expiration))
         
-    def test_190(self):
-        '4.19 Trasfer na vlastni domenu (Objekt je nezpůsobilý pro transfer)'
+    def test_195(self):
+        '4.19.5 Trasfer na vlastni domenu (Objekt je nezpůsobilý pro transfer)'
         epp_cli.transfer_domain(FRED_DOMAIN1, FRED_DATA[DOMAIN_3]['auth_info'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         
