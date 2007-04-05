@@ -231,7 +231,20 @@ class ManagerTransfer(ManagerBase):
         self._lorry.handler_message = self.process_answer
         data = self.get_connect_defaults()
         if not self.check_connect_data(data, 1): return 0 # 1 - omit username + password
-        if self._lorry.connect(data, self._session[VERBOSE]):
+
+        success = self._lorry.connect(data, self._session[VERBOSE])
+        if not success and self._lorry.try_again_with_timeout_zero:
+            # Try again with timeout zero. Possible python2.4 + Windows SSL timeout bug
+            self.display()
+            data[4] = '0.0'
+            success = self._lorry.connect(data, self._session[VERBOSE])
+            if success:
+                self._notes.append(_T('Attempt at connection with zero timeout has been successful.'))
+                self._notes.append(_T('Change timeout value to the zero in your configuration file.'))
+            else:
+                self._errors.append(_T('Attempt at connection again with zero timeout, but this process failed.'))
+        
+        if success:
             epp_greeting = self._lorry.receive() # receive greeting
             self.__check_is_connected__()
             if epp_greeting:

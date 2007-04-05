@@ -53,6 +53,7 @@ class Lorry:
 
     def connect(self, DATA, verbose=1):
         "DATA = ('host', PORT, 'file.key', 'file.crt', timeout, 'socket_family')"
+        self.try_again_with_timeout_zero = False # false - no, true - yes
         # this values has been checked before already...
         if len(DATA) < 4:
             self._errors.append(_T('Certificate names not set.'))
@@ -68,7 +69,8 @@ class Lorry:
             self._errors.append('%s: %s'%(_T('Invalid port value'),str(DATA[1])))
         else:
             DATA[1] = port
-        if len(self._errors): return 0 # if any errors occured there's no point in
+        if len(self._errors):
+            return 0 # if any errors occured there's no point in
         
         family = {}
         family[socket.AF_INET] = 'IPv4'
@@ -103,7 +105,9 @@ class Lorry:
             # WinXP IPv6: [10047] Address family not supported
         except TypeError, msg:
             self._errors.append('Create socket.error (socket.getaddrinfo): %s'%msg)
-        if self._conn is None: return 0
+        if self._conn is None:
+            return 0
+            
         if self._timeout:
             if verbose > 1: self._notes.append('Socket timeout: ${BOLD}%.1f${NORMAL} sec.'%self._timeout)
             self._conn.settimeout(self._timeout)
@@ -115,11 +119,15 @@ class Lorry:
             self._errors.append('Connection socket.error: %s (%s:%s)'%(str(tmsg),DATA[0],DATA[1]))
         except (KeyboardInterrupt,EOFError):
             self._errors.append(_T('Interrupted by user'))
-        if not ok: return ok
+        if not ok:
+            return ok
+            
         if verbose > 1:
             self._notes.append(_T('Connection established.'))
             self._notes.append(_T('Try to open SSL layer...'))
-        if len(self._errors): return 0 # if any errors occured there's no point in
+        if len(self._errors): 
+            return 0 # if any errors occured there's no point in
+            
         ssl_ok = 0
         try:
             if len(DATA) > 3 and DATA[2] and DATA[3]:
@@ -141,6 +149,7 @@ class Lorry:
                     if text: self._errors.append(text)
                 except (TypeError, IndexError):
                     pass
+                self.try_again_with_timeout_zero = msg[0] == 2 # false - no, true - yes
         except (KeyboardInterrupt,EOFError):
             self._errors.append(_T('Interrupted by user'))
         if ssl_ok:
