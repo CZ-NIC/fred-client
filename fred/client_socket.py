@@ -27,7 +27,6 @@ connection. Collect the errors and notes for displaying. Method of communication
 is described in RFC3734.txt - Transport Over TCP (4.  Data Unit Format) and
 RFC3730.txt  (2. Protocol Description).
 Class Lorry is managed by ManagerTransfer in session_transfer.py.
-Internal lists self._notes and self._errors are redirected into this class.
 """
 
 if not getattr(socket, 'ssl', None):
@@ -37,17 +36,24 @@ if not getattr(socket, 'ssl', None):
 
 class Lorry:
     "Socket transfer."
-    def __init__(self):
+    def __init__(self, parent):
         self._conn = None
         self._conn_ssl = None
-        self._notes = [] # status messages
-        self._errors = [] # error messages
+        self._parent = parent # keep parent object for notes and error messages
         self._body_length = 0 # size of the EPP document what will be received
         self._timeout = 10.0 # Windows bug! In MS-Win MUST be zero.
 
     def is_error(self):
-        return len(self._errors)
+        return self._parent.is_error()
+    
+    def append_error(self, msg):
+        'Join error message to the message list.'
+        self._parent.append_error(msg)
 
+    def append_note(self, msg):
+        'Join note to the message list.'
+        self._parent.append_note(msg)
+        
     def is_connected(self):
         return self._conn and self._conn_ssl
 
@@ -56,20 +62,20 @@ class Lorry:
         self.try_again_with_timeout_zero = False # false - no, true - yes
         # this values has been checked before already...
         if len(DATA) < 4:
-            self._errors.append(_T('Certificate names not set.'))
+            self.append_error(_T('Certificate names not set.'))
         if len(DATA) > 2 and not os.path.isfile(DATA[2]):
-            self._errors.append('%s %s'%(DATA[2],_T('Private key file not found.')))
+            self.append_error('%s %s'%(DATA[2],_T('Private key file not found.')))
             DATA[2] = None
         if len(DATA) > 3 and not os.path.isfile(DATA[3]):
-            self._errors.append('%s %s'%(DATA[3],_T('Certificate key file not found.')))
+            self.append_error('%s %s'%(DATA[3],_T('Certificate key file not found.')))
             DATA[3] = None
         try:
             port = int(DATA[1]) # port has been checked in previous code, but for safety...
         except ValueError, msg:
-            self._errors.append('%s: %s'%(_T('Invalid port value'),str(DATA[1])))
+            self.append_error('%s: %s'%(_T('Invalid port value'),str(DATA[1])))
         else:
             DATA[1] = port
-        if len(self._errors):
+        if self._parent.is_error():
             return 0 # if any errors occured there's no point in
         
         family = {}
@@ -77,7 +83,7 @@ class Lorry:
         if getattr(socket,'AF_INET6',None):
             family[socket.AF_INET6] = 'IPv6'
         elif verbose > 1:
-            self._notes.append(_T('Socket type IPv6 (AF_INET6) is not present in socket module.'))
+            self.append_note(_T('Socket type IPv6 (AF_INET6) is not present in socket module.'))
         family_rev = {}
         for k,v in family.items():
             family_rev[v.lower()] = k
@@ -94,38 +100,38 @@ class Lorry:
                 tc = socket.getaddrinfo(DATA[0], DATA[1])
                 socket_family = tc[0][0]
             except socket.error, (no,msg):
-                self._errors.append('getaddrinfo() socket.error [%d] %s'%(no,msg))
+                self.append_error('getaddrinfo() socket.error [%d] %s'%(no,msg))
                 socket_family = socket.AF_INET
-        if verbose > 1: self._notes.append('%s: ${BOLD}%s${NORMAL}.'%(_T('Used socket type'),family[socket_family]))
+        if verbose > 1: self.append_note('%s: ${BOLD}%s${NORMAL}.'%(_T('Used socket type'),family[socket_family]))
         try:
             self._conn = socket.socket(socket_family, socket.SOCK_STREAM)
             ok = 1
         except socket.error, (no,msg):
-            self._errors.append('Create socket.error [%d] %s'%(no,msg))
+            self.append_error('Create socket.error [%d] %s'%(no,msg))
             # WinXP IPv6: [10047] Address family not supported
         except TypeError, msg:
-            self._errors.append('Create socket.error (socket.getaddrinfo): %s'%msg)
+            self.append_error('Create socket.error (socket.getaddrinfo): %s'%msg)
         if self._conn is None:
             return 0
             
         if self._timeout:
-            if verbose > 1: self._notes.append('Socket timeout: ${BOLD}%.1f${NORMAL} sec.'%self._timeout)
+            if verbose > 1: self.append_note('Socket timeout: ${BOLD}%.1f${NORMAL} sec.'%self._timeout)
             self._conn.settimeout(self._timeout)
-        self._notes.append('%s ${BOLD}%s${NORMAL}, port %d ...'%(_T('Connecting to'), DATA[0], DATA[1]))
+        self.append_note('%s ${BOLD}%s${NORMAL}, port %d ...'%(_T('Connecting to'), DATA[0], DATA[1]))
         try:
             self._conn.connect((DATA[0], DATA[1]))
         except socket.error, tmsg:
-            self._errors.append('%s %s.\n'%(_T('I cannot connect to the server'),DATA[0]))
-            self._errors.append('Connection socket.error: %s (%s:%s)'%(str(tmsg),DATA[0],DATA[1]))
+            self.append_error('%s %s.\n'%(_T('I cannot connect to the server'),DATA[0]))
+            self.append_error('Connection socket.error: %s (%s:%s)'%(str(tmsg),DATA[0],DATA[1]))
         except (KeyboardInterrupt,EOFError):
-            self._errors.append(_T('Interrupted by user'))
+            self.append_error(_T('Interrupted by user'))
         if not ok:
             return ok
             
         if verbose > 1:
-            self._notes.append(_T('Connection established.'))
-            self._notes.append(_T('Try to open SSL layer...'))
-        if len(self._errors): 
+            self.append_note(_T('Connection established.'))
+            self.append_note(_T('Try to open SSL layer...'))
+        if self._parent.is_error():
             return 0 # if any errors occured there's no point in
             
         ssl_ok = 0
@@ -133,11 +139,11 @@ class Lorry:
             if len(DATA) > 3 and DATA[2] and DATA[3]:
                 self._conn_ssl = socket.ssl(self._conn, DATA[2], DATA[3])
             else:
-                self._notes.append(_T('Certificates missing. Trying to connect without SSL!'))
+                self.append_note(_T('Certificates missing. Trying to connect without SSL!'))
                 self._conn_ssl = socket.ssl(self._conn)
             ssl_ok = 1
         except socket.sslerror, msg:
-            self._errors.append('socket.sslerror: %s (%s:%s)'%(str(msg),DATA[0],DATA[1]))
+            self.append_error('socket.sslerror: %s (%s:%s)'%(str(msg),DATA[0],DATA[1]))
             if type(msg) not in (str,unicode):
                 err_note = {
                     1:_T('Certificate not signed by verified certificate authority.'),
@@ -146,14 +152,14 @@ class Lorry:
                 }
                 try:
                     text = err_note.get(msg[0],None)
-                    if text: self._errors.append(text)
+                    if text: self.append_error(text)
                 except (TypeError, IndexError):
                     pass
                 self.try_again_with_timeout_zero = msg[0] == 2 # false - no, true - yes
         except (KeyboardInterrupt,EOFError):
-            self._errors.append(_T('Interrupted by user'))
+            self.append_error(_T('Interrupted by user'))
         if ssl_ok:
-            if verbose > 1: self._notes.append(_T('SSL layer opened.'))
+            if verbose > 1: self.append_note(_T('SSL layer opened.'))
         else:
             self._conn.close()
             self._conn = None
@@ -175,19 +181,19 @@ class Lorry:
             header = self._conn_ssl.read(4)
             ok = 1
         except socket.timeout, msg:
-            self._errors.append('READ HEADER socket.timeout: %s'%msg)
+            self.append_error('READ HEADER socket.timeout: %s'%msg)
         except socket.sslerror, msg:
-            self._errors.append('READ HEADER socket.sslerror: %s'%str(msg))
+            self.append_error('READ HEADER socket.sslerror: %s'%str(msg))
         except socket.error, tmsg:
-            self._errors.append('READ HEADER socket.error: %s'%str(tmsg))
+            self.append_error('READ HEADER socket.error: %s'%str(tmsg))
         except (KeyboardInterrupt,EOFError):
-            self._errors.append(_T('Interrupted by user'))
+            self.append_error(_T('Interrupted by user'))
         else:
             # message header
             try:
                 self._body_length = struct.unpack('!i',header)[0] - 4
             except struct.error, msg:
-                self._errors.append('ERROR HEADER: %s'%msg)
+                self.append_error('ERROR HEADER: %s'%msg)
                 ok = 0
         if not ok: self.close()
         return ok
@@ -201,35 +207,31 @@ class Lorry:
                 while(len(data) < self._body_length):
                     part = self._conn_ssl.read(self._body_length)
                     if not len(part):
-                        self._errors.append('READ empty part')
+                        self.append_error('READ empty part')
                         break
                     data += part
                 ok = len(data) == self._body_length
             except socket.timeout, msg:
-                self._errors.append('READ socket.timeout: %s'%msg)
+                self.append_error('READ socket.timeout: %s'%msg)
             except socket.sslerror, msg:
-                self._errors.append('READ socket.sslerror: %s'%str(msg))
+                self.append_error('READ socket.sslerror: %s'%str(msg))
             except socket.error, tmsg:
-                self._errors.append('READ socket.error: %s'%str(tmsg))
+                self.append_error('READ socket.error: %s'%str(tmsg))
             except MemoryError, msg:
-                self._errors.append('READ socket.receive MemoryError: %s'%msg)
+                self.append_error('READ socket.receive MemoryError: %s'%msg)
             except (KeyboardInterrupt,EOFError):
-                self._errors.append(_T('Interrupted by user'))
+                self.append_error(_T('Interrupted by user'))
         else:
             # the answer cannot be zero length
-            self._errors.append(_T("Server returned an empty message."))
+            self.append_error(_T("Server returned an empty message."))
         if not ok: self.close()
         return data.strip()
 
     def fetch_errors(self, sep='\n'):
-        msg = sep.join(self._errors)
-        self._errors = []
-        return msg
+        return self._parent.fetch_errors(sep)
 
     def fetch_notes(self, sep='\n'):
-        msg = sep.join(self._notes)
-        self._notes = []
-        return msg
+        return self._parent.fetch_notes(sep)
 
     def handler_message(self, msg):
         'Handler of incomming message'
@@ -244,13 +246,13 @@ class Lorry:
             self._conn_ssl.write('%s%s'%(struct.pack('!i',len(msg)+4),msg))
             ok=1
         except socket.timeout, msg:
-            self._errors.append('SEND socket.timeout: %s'%msg)
+            self.append_error('SEND socket.timeout: %s'%msg)
         except socket.sslerror, msg:
-            self._errors.append('SEND socket.sslerror: %s'%str(msg))
+            self.append_error('SEND socket.sslerror: %s'%str(msg))
         except socket.error, tmsg:
-            self._errors.append('SEND socket.error: %s'%str(tmsg))
+            self.append_error('SEND socket.error: %s'%str(tmsg))
         except (KeyboardInterrupt,EOFError):
-            self._errors.append(_T('Interrupted by user'))
+            self.append_error(_T('Interrupted by user'))
         if not ok: self.close()
         return ok
 
@@ -262,13 +264,38 @@ class Lorry:
                 self._conn = None
                 self._conn_ssl = None
             except (KeyboardInterrupt,EOFError):
-                self._errors.append(_T('Interrupted by user'))
+                self.append_error(_T('Interrupted by user'))
 
 if __name__ == '__main__':
     import sys
     if len(sys.argv) > 3:
-        DATA = [sys.argv[1],700,sys.argv[2],sys.argv[3]]
-        client = Lorry()
+        DATA = [sys.argv[1],700,sys.argv[2],sys.argv[3],'10.0','']
+        class TestParent:
+            def __init__(self):
+                self.reset()
+            def reset(self):
+                self._errors = []
+                self._notes = []
+            def append_error(self, msg):
+                self._errors.append(msg)
+            def append_note(self, msg):
+                self._notes.append(msg)
+            def fetch_notes(self, sep='\n'):
+                report = sep.join(self._errors)
+                self._notes = []
+                return report
+            def fetch_errors(self, sep='\n'):
+                report = sep.join(self._notes)
+                self._errors = []
+                return report
+            def is_error(self):
+                return len(self._errors)
+            def display(self, sep='\n'):
+                sys.stderr.write('%s\n'%sep.join(self._errors))
+                sys.stderr.write('%s\n'%sep.join(self._notes))
+                self.reset()
+        manager = TestParent()
+        client = Lorry(manager)
         if client.connect(DATA):
             print client.fetch_notes()
             print "[START LOOP prompt]"
@@ -279,6 +306,8 @@ if __name__ == '__main__':
                 if not client.send(q): break
                 print client.receive()
                 if client.is_error(): break
+                manager.display()
+            manager.display()
             print "[STOP LOOP prompt]"
         print client.fetch_errors()
         print client.fetch_notes()

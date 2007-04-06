@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-03 15:24+0200\n"
+"POT-Creation-Date: 2007-04-06 11:07+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Zdeněk Böhm <zdenek.bohm@nic.cz>\n"
 "Language-Team: CS <ccreg-devel@lists.nic.cz>\n"
@@ -16,70 +16,70 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3;  plural=n==1 ? 0 : n>=2 && n<=4 ? 1 : 2;\n"
 
-#: fred/client_socket.py:35
+#: fred/client_socket.py:34
 msgid ""
 "This version of Python doesn't support SSL. Reinstall it with SLL support."
 msgstr "Tato verze Pythonu nepodporuje SSL. Reinstalujte jej se SSL podporou."
 
-#: fred/client_socket.py:61
+#: fred/client_socket.py:65
 msgid "Certificate names not set."
 msgstr "Jména certifikátů nejsou zadána."
 
-#: fred/client_socket.py:63
+#: fred/client_socket.py:67
 msgid "Private key file not found."
 msgstr "Privátní klíč nebyl nalezen"
 
-#: fred/client_socket.py:66
+#: fred/client_socket.py:70
 msgid "Certificate key file not found."
 msgstr "Soubor s certifikátem nebyl nalezen"
 
-#: fred/client_socket.py:71
+#: fred/client_socket.py:75
 msgid "Invalid port value"
 msgstr "Neplatné číslo portu"
 
-#: fred/client_socket.py:81
+#: fred/client_socket.py:86
 msgid "Socket type IPv6 (AF_INET6) is not present in socket module."
 msgstr "Soket typu IPv6 (AF_INET6) není v modulu socket dostupný."
 
-#: fred/client_socket.py:100
+#: fred/client_socket.py:105
 msgid "Used socket type"
 msgstr "Použitý typ soketu"
 
-#: fred/client_socket.py:113
+#: fred/client_socket.py:120
 msgid "Connecting to"
 msgstr "Připojuji se k"
 
-#: fred/client_socket.py:117
+#: fred/client_socket.py:124
 msgid "I cannot connect to the server"
 msgstr "Nemohu se připojit k serveru."
 
-#: fred/client_socket.py:120 fred/client_socket.py:150
-#: fred/client_socket.py:198 fred/client_socket.py:231
-#: fred/client_socket.py:267 fred/client_socket.py:279
+#: fred/client_socket.py:127 fred/client_socket.py:160
+#: fred/client_socket.py:190 fred/client_socket.py:223
+#: fred/client_socket.py:255 fred/client_socket.py:267
 msgid "Interrupted by user"
 msgstr "Přerušeno uživatelem"
 
-#: fred/client_socket.py:123
+#: fred/client_socket.py:132
 msgid "Connection established."
 msgstr "Spojení bylo navázáno."
 
-#: fred/client_socket.py:124
+#: fred/client_socket.py:133
 msgid "Try to open SSL layer..."
 msgstr "Otevírám SSL vrstvu..."
 
-#: fred/client_socket.py:132
+#: fred/client_socket.py:142
 msgid "Certificates missing. Trying to connect without SSL!"
 msgstr "Certifikát chybí. Zkouším spojení bez SSL!"
 
-#: fred/client_socket.py:139
+#: fred/client_socket.py:149
 msgid "Certificate not signed by verified certificate authority."
 msgstr "Použitý certifikát není podepsán uznávanou certifikační autoritou."
 
-#: fred/client_socket.py:140
+#: fred/client_socket.py:150
 msgid "Server configuration is not valid. Contact administrator."
 msgstr "Server není správně nakonfigurován. Obraťte se na správce serveru."
 
-#: fred/client_socket.py:141
+#: fred/client_socket.py:151
 msgid ""
 "If this client runs under MS Windows and timeout is not zero, it is probably "
 "SLL bug! Set timeout back to zero."
@@ -88,22 +88,10 @@ msgstr ""
 "pravděpodobně jedná o SSL bug! Nastavte timeout zpět na nulu."
 
 #: fred/client_socket.py:162
-msgid "Attempt at connection again with zero timeout, but this process failed."
-msgstr "Pokus o znovupřipojení s nulovým timeoutem, ale proces selhal."
-
-#: fred/client_socket.py:165
-msgid "Attempt at connection with zero timeout has been successful."
-msgstr "Pokus o připojení s nulovým timeoutem byl úspěšný."
-
-#: fred/client_socket.py:166
-msgid "Change timeout value to the zero in your configuration file."
-msgstr "Nastavte si v konfiguračním souboru hodnotu timeoutu na nulu."
-
-#: fred/client_socket.py:170
 msgid "SSL layer opened."
 msgstr "SLL vrstva byla aktivována."
 
-#: fred/client_socket.py:234
+#: fred/client_socket.py:226
 msgid "Server returned an empty message."
 msgstr "Server nevrátil žádnou odpověď."
 
@@ -226,7 +214,7 @@ msgid "Command data XML document failed to validate."
 msgstr "XML dokument příkazu se nepodařilo zvalidovat."
 
 #: fred/console.py:169 fred/session_command.py:579
-#: fred/session_transfer.py:284 fred/session_transfer.py:311
+#: fred/session_transfer.py:293 fred/session_transfer.py:320
 msgid "You are not connected."
 msgstr "Nejste připojeni."
 
@@ -265,7 +253,7 @@ msgstr "Neznámý příkaz"
 
 #: fred/creator.py:59 fred/session_base.py:276 fred/session_command.py:393
 #: fred/session_command.py:396 fred/session_command.py:398
-#: fred/session_command.py:400 fred/session_transfer.py:479
+#: fred/session_command.py:400 fred/session_transfer.py:488
 msgid "ERROR"
 msgstr "CHYBA"
 
@@ -1996,8 +1984,8 @@ msgstr "Detaily jsou zobrazeny ve verbose 2 nebo vyšším."
 msgid "Element that caused a server error condition"
 msgstr "Element který způsobil chybu"
 
-#: fred/session_receiver.py:99 fred/session_transfer.py:473
-#: fred/session_transfer.py:533
+#: fred/session_receiver.py:99 fred/session_transfer.py:482
+#: fred/session_transfer.py:542
 msgid "Reason"
 msgstr "Důvod"
 
@@ -2053,98 +2041,115 @@ msgstr "Nejste zalogováni. Nejdříve zadejte login."
 msgid "You are not logged. You must call login() before working on the server."
 msgstr "Nejste zalogováni. Nejdříve musíte zadat login()."
 
-#: fred/session_transfer.py:114
+#: fred/session_transfer.py:111
 #, python-format
 msgid "Connection to %s interrupted."
 msgstr "Spojení s %s bylo přerušeno."
 
-#: fred/session_transfer.py:192
+#: fred/session_transfer.py:189
 #, python-format
 msgid "Invalid port value: '%s'."
 msgstr "Neplatné číslo portu: '%s'."
 
-#: fred/session_transfer.py:195
+#: fred/session_transfer.py:192
 #, python-format
 msgid "Port is out of range: %d."
 msgstr "Port je mimo rozsah: %d."
 
-#: fred/session_transfer.py:202
+#: fred/session_transfer.py:199
 msgid "Hostname missing"
 msgstr "Chybí hostname"
 
-#: fred/session_transfer.py:204
+#: fred/session_transfer.py:201
 msgid "Server port number missing"
 msgstr "Chybí číslo portu serveru"
 
-#: fred/session_transfer.py:209
+#: fred/session_transfer.py:206
 msgid "Username missing"
 msgstr "Chybí username"
 
-#: fred/session_transfer.py:210
+#: fred/session_transfer.py:207
 msgid "Password missing"
 msgstr "Chybí heslo"
 
-#: fred/session_transfer.py:212
+#: fred/session_transfer.py:209
 msgid "SSL certificate name missing"
 msgstr "Název SSL certifikátu chybí"
 
-#: fred/session_transfer.py:214
+#: fred/session_transfer.py:211
 msgid "SSL certificate file not found"
 msgstr "Soubor se SSL certifikátem nebyl nalezen"
 
-#: fred/session_transfer.py:216
+#: fred/session_transfer.py:213
 msgid "SSL private key name missing"
 msgstr "Název SSL privátního klíče chybí."
 
-#: fred/session_transfer.py:218
+#: fred/session_transfer.py:215
 msgid "SSL private key file not found"
 msgstr "SSL privátní klíč nebyl nalezen"
 
-#: fred/session_transfer.py:220
+#: fred/session_transfer.py:217
 msgid "Can't connect to server"
 msgstr "Nemohu se připojit k serveru"
 
-#: fred/session_transfer.py:249
+#: fred/session_transfer.py:235
+msgid "Now I try again to connect with the zero timeout..."
+msgstr ""
+
+#: fred/session_transfer.py:238
+msgid "Attempt at connection with the zero timeout has been successful."
+msgstr "Pokus o připojení s nulovým timeoutem byl úspěšný."
+
+#: fred/session_transfer.py:239
+msgid "Change timeout value to the zero in your configuration file."
+msgstr "Nastavte si v konfiguračním souboru hodnotu timeoutu na nulu."
+
+#: fred/session_transfer.py:241
+msgid ""
+"Attempt at connection again with the zero timeout, but this process failed."
+msgstr "Pokus o znovupřipojení s nulovým timeoutem, ale proces selhal."
+
+#: fred/session_transfer.py:258
 msgid "Server didn't return Greeting message. Contact server administrator."
 msgstr "Server nevrátil Greeting odpověď. Kontaktujte správce serveru."
 
-#: fred/session_transfer.py:259
+#: fred/session_transfer.py:268
 msgid "Ending session at"
 msgstr "Ukončení sezení na"
 
-#: fred/session_transfer.py:260
+#: fred/session_transfer.py:269
 msgid "Disconnected."
 msgstr "Odpojeno."
 
-#: fred/session_transfer.py:294
+#: fred/session_transfer.py:303
 msgid "Logout command sent to server"
 msgstr "Odeslán logout"
 
-#: fred/session_transfer.py:431
+#: fred/session_transfer.py:440
 msgid "updated"
 msgstr "aktualizováno"
 
-#: fred/session_transfer.py:433
+#: fred/session_transfer.py:442
 msgid "deleted"
 msgstr "smazáno"
 
-#: fred/session_transfer.py:435
+#: fred/session_transfer.py:444
 msgid "transfer"
 msgstr ""
 
-#: fred/session_transfer.py:437
+#: fred/session_transfer.py:446
 msgid "request for send authorisation info transmited"
 msgstr "pořadavek na odeslání autorizačního hesla byl odeslán"
 
-#: fred/session_transfer.py:439
+#: fred/session_transfer.py:448
 msgid "The Request for technical test was successfully submitted."
 msgstr "Požadavek na technický test byl úspěšně odeslán."
 
-#: fred/session_transfer.py:470 fred/session_transfer.py:531
+#: fred/session_transfer.py:479 fred/session_transfer.py:540
 msgid "Return code"
 msgstr "Návratový kód"
 
-#: fred/session_transfer.py:491
+#: fred/session_transfer.py:500
 #, python-format
 msgid "(%d item)"
 msgid_plural "(%d items)"

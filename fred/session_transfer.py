@@ -89,9 +89,6 @@ class ManagerTransfer(ManagerBase):
         'Prepare for next round. Reset internal dict with communication values.'
         self._errors = []
         self._notes = []
-        if self._lorry:
-            self._lorry._notes = self._notes
-            self._lorry._errors = self._errors
         self._notes_afrer_errors = []
         self._epp_cmd.reset()
         self._epp_response.reset()
@@ -225,9 +222,7 @@ class ManagerTransfer(ManagerBase):
     def connect(self):
         "Connect transfer socket. data=(host,port,ssl_key,ssl_cert,timeout,socket,username,password)"
         if self.is_connected(): return 1 # connection is established already
-        self._lorry = client_socket.Lorry()
-        self._lorry._notes = self._notes
-        self._lorry._errors = self._errors
+        self._lorry = client_socket.Lorry(self)
         self._lorry.handler_message = self.process_answer
         data = self.get_connect_defaults()
         if not self.check_connect_data(data, 1): return 0 # 1 - omit username + password
@@ -237,12 +232,13 @@ class ManagerTransfer(ManagerBase):
             # Try again with timeout zero. Possible python2.4 + Windows SSL timeout bug
             self.display()
             data[4] = '0.0'
+            self._notes.append(_T('Now I try again to connect with the zero timeout...'))
             success = self._lorry.connect(data, self._session[VERBOSE])
             if success:
-                self._notes.append(_T('Attempt at connection with zero timeout has been successful.'))
+                self._notes.append(_T('Attempt at connection with the zero timeout has been successful.'))
                 self._notes.append(_T('Change timeout value to the zero in your configuration file.'))
             else:
-                self._errors.append(_T('Attempt at connection again with zero timeout, but this process failed.'))
+                self._errors.append(_T('Attempt at connection again with the zero timeout, but this process failed.'))
         
         if success:
             epp_greeting = self._lorry.receive() # receive greeting
