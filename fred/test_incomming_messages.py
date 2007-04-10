@@ -484,4 +484,28 @@ data = ( # 0
   </response>
 </epp>
 """),
+    ('transfer', """<?xml version='1.0' encoding='utf-8' standalone="no"?>
+<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
+  <response>
+    <result code='2201'>
+      <msg lang='cs'>Chyba opr\u00e1vn\u011bn\u00ed</msg>
+    </result>
+    <trID>
+      <clTRID>jaxt002#07-04-10at14:25:11</clTRID>
+      <svTRID>ccReg-0000301928</svTRID>
+    </trID>
+  </response>
+</epp>"""),
+    ('transfer', """<?xml version='1.0' encoding='utf-8' standalone="no"?>
+<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
+  <response>
+    <result code='1000'>
+      <msg lang='cs'>P\u0159\u00edkaz \u00fasp\u011b\u0161n\u011b proveden</msg>
+    </result>
+    <trID>
+      <clTRID>jaxt003#07-04-10at14:25:12</clTRID>
+      <svTRID>ccReg-0000301929</svTRID>
+    </trID>
+  </response>
+</epp>"""),
     )

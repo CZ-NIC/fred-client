@@ -588,6 +588,7 @@ def adjust_dct_keys(dct, names):
 
 def test(name_amd_xml):
     m = ManagerReceiver()
+    #m._session[VERBOSE] = 2
     m._command_sent = name_amd_xml[0]
     m.process_answer(name_amd_xml[1])
     m.display()

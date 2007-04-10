@@ -712,7 +712,10 @@ class Message(MessageBase):
         op = self._dct.get('op',['req'])[0]
         msg_id = self._dct.get('msg_id',[None])[0]
         attr = [('op',op)]
-        if msg_id: attr.append(('msgID',msg_id))
+        if msg_id:
+            if type(msg_id) not in (unicode, str):
+                msg_id = str(msg_id) # translate type int
+            attr.append(('msgID',msg_id))
         self.__assemble_cmd__((
             ('epp', 'command'),
             ('command', 'poll', '', attr),

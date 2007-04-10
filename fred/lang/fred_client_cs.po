@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-06 11:07+0200\n"
+"POT-Creation-Date: 2007-04-10 14:42+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Zdeněk Böhm <zdenek.bohm@nic.cz>\n"
 "Language-Team: CS <ccreg-devel@lists.nic.cz>\n"
@@ -420,7 +420,7 @@ msgstr[0] "Chybí povinná hodnota"
 msgstr[1] "Chybí povinné hodnoty"
 msgstr[2] "Chybí povinné hodnoty"
 
-#: fred/eppdoc_assemble.py:1172
+#: fred/eppdoc_assemble.py:1175
 #, python-format
 msgid "Value can be a list of max %d value."
 msgid_plural "Value can be a list of max %d values."
@@ -428,11 +428,11 @@ msgstr[0] "Hodnota může být seznam o max. velikosti %d položky."
 msgstr[1] "Hodnota může být seznam o max. velikosti %d položek."
 msgstr[2] "Hodnota může být seznam o max. velikosti %d položek."
 
-#: fred/eppdoc_assemble.py:1174
+#: fred/eppdoc_assemble.py:1177
 msgid "Value can be an unbouded list of values."
 msgstr "Hodnota může být libovolně velký seznam."
 
-#: fred/eppdoc_assemble.py:1176
+#: fred/eppdoc_assemble.py:1179
 msgid "Minimum is"
 msgstr "Minimum je"
 
@@ -1247,7 +1247,7 @@ msgstr "Interní chyba: Nadřazený uzel '%s' neexistuje."
 msgid "Internal error: Value is not dict type:"
 msgstr "Interní chyba: Hodnota není typu dict:"
 
-#: fred/__init__.py:803
+#: fred/__init__.py:805
 msgid "This program requires Python 2.4 or higher. Your version is"
 msgstr "Tento program vyžaduje Python 2.4 nebo vyšší. Vaše verze je"
 
@@ -2134,8 +2134,8 @@ msgid "deleted"
 msgstr "smazáno"
 
 #: fred/session_transfer.py:444
-msgid "transfer"
-msgstr ""
+msgid "successfully transfered"
+msgstr "byla úspěšně transferována"
 
 #: fred/session_transfer.py:446
 msgid "request for send authorisation info transmited"

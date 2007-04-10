@@ -434,7 +434,9 @@ OPTIONS:
   op (required)            Query type
   msg_id (required)        Index of message (required only with op = 'ack')
   cltrid                   Client transaction ID"""
-        return self._epp.api_command('poll',{'op':op,'msg_id':str(msg_id), 'cltrid':cltrid})
+        if type(msg_id) is int:
+            msg_id = str(msg_id) # allowed strings only
+        return self._epp.api_command('poll',{'op':op,'msg_id':msg_id, 'cltrid':cltrid})
 
 
     def sendauthinfo_contact(self, contact_id, cltrid=None):

@@ -466,13 +466,32 @@ class TestDomain(unittest.TestCase):
         epp_cli.transfer_domain(FRED_DOMAIN1, FRED_DATA[DOMAIN_3]['auth_info'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         
+    def test_196(self):
+        '4.19.6 Vymazani vsech poll zprav z fronty kvuli generovani poll zpravy z transferu'
+        epp_cli.poll('req')
+        self.failIf(epp_cli.is_val() not in (1000, 1300, 1301), unitest_share.get_reason(epp_cli))
+        poll_msg_count = epp_cli.is_val(('data','msgQ.count'))
+        unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(0, poll_msg_count))
+        if type(poll_msg_count) is int:
+            errors = []
+            for n in range(poll_msg_count):
+                epp_cli.poll('ack', epp_cli.is_val(('data','msgQ.id')))
+                if epp_cli.is_val() != 1000:
+                    errors.extend(epp_cli.is_val('errors'))
+                unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(n+1, poll_msg_count))
+                epp_cli.poll('req')
+                if epp_cli.is_val() not in (1000, 1301):
+                    errors.extend(epp_cli.is_val('errors'))
+                unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(n+1, poll_msg_count))
+            self.failIf(len(errors) > 0, '\n'.join(errors))
+
     def test_200(self):
         '4.20 Druhy registrator: Trasfer s neplatnym heslem (Chyba oprávnění)'
         global epp_cli_log
         epp_cli_log = epp_cli_TRANSF
         epp_cli_TRANSF.transfer_domain(FRED_DOMAIN1, 'heslo neznam')
         self.assertNotEqual(epp_cli_TRANSF.is_val(), 1000, unitest_share.get_reason(epp_cli_TRANSF))
-        
+
     def test_210(self):
         '4.21 Druhy registrator: Trasfer domeny'
         epp_cli_TRANSF.transfer_domain(FRED_DOMAIN1, FRED_DATA[DOMAIN_3]['auth_info'])
@@ -494,7 +513,26 @@ class TestDomain(unittest.TestCase):
         '4.24 Pokus o smazani domeny, ktera registratorovi jiz nepatri'
         epp_cli.delete_domain(FRED_DOMAIN1)
         self.assertNotEqual(epp_cli.is_val(), 1000, 'Domena se smazala prestoze nemela')
-        
+
+    def test_242(self):
+        '4.24.2 Poll req - Kontrola, ze byla vygenerovana zprava o transferu.'
+        global poll_msg_id
+        epp_cli.poll('req')
+        self.assertEqual(epp_cli.is_val(), 1301, 'Poll zprava chybi, prestoze mela existovat.')
+        msg = epp_cli.is_val(('data','msg'))
+        self.failIf(type(msg) not in (unicode, str), 'Poll zprava chybi')
+        self.failIf(re.search('<domain:id>\s*%s\s*</domain:id>'%re.escape(FRED_DOMAIN1), msg, re.I) is None, 'Zprava se nevztahuje k transferovane domene.')
+        poll_msg_id = epp_cli.is_val(('data','msgQ.id'))
+        self.failIf(type(poll_msg_id) is not int, 'Chybi ID poll zpravy')
+
+
+    def test_243(self):
+        '4.24.3 Poll ack - Vyrazeni zpravy o transferu z fronty.'
+        self.failIf(type(poll_msg_id) is not int, 'Chybi ID poll zpravy')
+        epp_cli.poll('ack', poll_msg_id)
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
+
     def test_250(self):
         '4.25.1 Druhy registrator: Smazani domeny'
         global epp_cli_log
@@ -585,7 +623,7 @@ def __check_equality__(cols, data):
         errors.append('Data domain:crDate nesouhlasi: jsou: %s a mely by byt: %s'%(data['domain:crDate'],actual_time))
     return errors
 
-epp_cli, epp_cli_TRANSF, epp_cli_log, log_fp, log_step = (None,)*5
+epp_cli, epp_cli_TRANSF, epp_cli_log, log_fp, log_step, poll_msg_id = (None,)*6
 domain_renew = ''
 
 if __name__ == '__main__':

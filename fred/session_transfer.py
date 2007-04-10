@@ -441,7 +441,7 @@ class ManagerTransfer(ManagerBase):
             elif key == 'delete':
                 dct['reason'] = u'%s %s.'%(self._epp_cmd.get_object_handle(), _T('deleted').decode(encoding))
             elif key == 'transfer':
-                dct['reason'] = u'%s %s.'%(self._epp_cmd.get_object_handle(), _T('transfer').decode(encoding))
+                dct['reason'] = u'%s %s.'%(self._epp_cmd.get_object_handle(), _T('successfully transfered').decode(encoding))
             elif key == 'sendauthinfo':
                 dct['reason'] = u'%s %s.'%(self._epp_cmd.get_object_handle(), _T('request for send authorisation info transmited').decode(encoding))
             elif key == 'technical_test':
