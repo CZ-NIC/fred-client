@@ -1,0 +1,508 @@
+<ui version="4.0" >
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Fred client</string>
+  </property>
+  <property name="windowIcon" >
+   <iconset>icon.png</iconset>
+  </property>
+  <widget class="QWidget" name="centralwidget" />
+  <widget class="QMenuBar" name="menubar" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu_Edit" >
+    <property name="title" >
+     <string>&amp;Edit</string>
+    </property>
+    <addaction name="actionCut" />
+    <addaction name="action_Copy" />
+    <addaction name="action_Paste" />
+    <addaction name="separator" />
+    <addaction name="action_Preferences" />
+   </widget>
+   <widget class="QMenu" name="menu_Help" >
+    <property name="title" >
+     <string>&amp;Help</string>
+    </property>
+    <addaction name="action_About" />
+    <addaction name="action_Change_log" />
+    <addaction name="separator" />
+    <addaction name="action_About_client" />
+    <addaction name="actionAbout_Qt" />
+   </widget>
+   <widget class="QMenu" name="menu_Windows" >
+    <property name="title" >
+     <string>&amp;Windows</string>
+    </property>
+    <widget class="QMenu" name="menu_Dock_Widgets" >
+     <property name="title" >
+      <string>&amp;Dock Widgets</string>
+     </property>
+    </widget>
+    <addaction name="menu_Dock_Widgets" />
+   </widget>
+   <widget class="QMenu" name="menu_File" >
+    <property name="title" >
+     <string>&amp;File</string>
+    </property>
+    <addaction name="action_Connect" />
+    <addaction name="action_Disconnect" />
+    <addaction name="separator" />
+    <addaction name="action_Load_configuration" />
+    <addaction name="action_Save_configuration" />
+    <addaction name="separator" />
+    <addaction name="action_Quit" />
+   </widget>
+   <widget class="QMenu" name="menu_Tools" >
+    <property name="title" >
+     <string>&amp;Tools</string>
+    </property>
+    <widget class="QMenu" name="menu_Run_command" >
+     <property name="title" >
+      <string>&amp;Choose command</string>
+     </property>
+     <widget class="QMenu" name="menu_Info" >
+      <property name="title" >
+       <string>&amp;Info</string>
+      </property>
+      <addaction name="action_info_contact" />
+      <addaction name="action_info_nsset" />
+      <addaction name="action_info_domain" />
+     </widget>
+     <widget class="QMenu" name="menu_Registrant" >
+      <property name="title" >
+       <string>&amp;Registrant</string>
+      </property>
+      <addaction name="action_hello" />
+      <addaction name="action_login" />
+      <addaction name="action_logout" />
+      <addaction name="action_poll" />
+      <addaction name="action_technical_test" />
+     </widget>
+     <widget class="QMenu" name="menu_Create" >
+      <property name="title" >
+       <string>&amp;Create</string>
+      </property>
+      <addaction name="action_create_contact" />
+      <addaction name="action_create_nsset" />
+      <addaction name="action_create_domain" />
+     </widget>
+     <widget class="QMenu" name="menu_Update" >
+      <property name="title" >
+       <string>&amp;Update</string>
+      </property>
+      <addaction name="action_update_contact" />
+      <addaction name="action_update_nsset" />
+      <addaction name="action_update_domain" />
+     </widget>
+     <widget class="QMenu" name="menu_Delete" >
+      <property name="title" >
+       <string>&amp;Delete</string>
+      </property>
+      <addaction name="action_delete_contact" />
+      <addaction name="action_delete_nsset" />
+      <addaction name="action_delete_domain" />
+     </widget>
+     <widget class="QMenu" name="menu_Transfer" >
+      <property name="title" >
+       <string>&amp;Transfer</string>
+      </property>
+      <addaction name="action_transfer_contact" />
+      <addaction name="action_transfer_nsset" />
+      <addaction name="action_transfer_domain" />
+     </widget>
+     <widget class="QMenu" name="menuSend_Auth_Info" >
+      <property name="title" >
+       <string>Send &amp;Auth. Info</string>
+      </property>
+      <addaction name="action_sendauthinfo_contact" />
+      <addaction name="action_sendauthinfo_nsset" />
+      <addaction name="action_sendauthinfo_domain" />
+     </widget>
+     <widget class="QMenu" name="menu_List" >
+      <property name="title" >
+       <string>&amp;List</string>
+      </property>
+      <addaction name="action_list_contact" />
+      <addaction name="action_list_nsset" />
+      <addaction name="action_list_domain" />
+     </widget>
+     <widget class="QMenu" name="menu_Check" >
+      <property name="title" >
+       <string>&amp;Check</string>
+      </property>
+      <addaction name="action_check_contact" />
+      <addaction name="action_check_nsset" />
+      <addaction name="action_check_domain" />
+     </widget>
+     <addaction name="menu_Registrant" />
+     <addaction name="menu_Check" />
+     <addaction name="menu_Info" />
+     <addaction name="menu_Create" />
+     <addaction name="menu_Update" />
+     <addaction name="menu_Delete" />
+     <addaction name="menu_Transfer" />
+     <addaction name="menuSend_Auth_Info" />
+     <addaction name="action_renew_domain" />
+     <addaction name="menu_List" />
+    </widget>
+    <addaction name="menu_Run_command" />
+   </widget>
+   <addaction name="menu_File" />
+   <addaction name="menu_Edit" />
+   <addaction name="menu_Tools" />
+   <addaction name="menu_Windows" />
+   <addaction name="menu_Help" />
+  </widget>
+  <widget class="QStatusBar" name="statusbar" />
+  <action name="action_Connect" >
+   <property name="checkable" >
+    <bool>false</bool>
+   </property>
+   <property name="icon" >
+    <iconset resource="main_frame.qrc" >:/main_frame/images/linguist-next.png</iconset>
+   </property>
+   <property name="text" >
+    <string>&amp;Connect</string>
+   </property>
+   <property name="shortcut" >
+    <string>F2</string>
+   </property>
+  </action>
+  <action name="action_Load_configuration" >
+   <property name="icon" >
+    <iconset resource="main_frame.qrc" >:/main_frame/images/open.png</iconset>
+   </property>
+   <property name="text" >
+    <string>&amp;Load configuration</string>
+   </property>
+  </action>
+  <action name="action_Save_configuration" >
+   <property name="icon" >
+    <iconset resource="main_frame.qrc" >:/main_frame/images/save.png</iconset>
+   </property>
+   <property name="text" >
+    <string>&amp;Save configuration</string>
+   </property>
+   <property name="shortcut" >
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="action_Quit" >
+   <property name="icon" >
+    <iconset resource="main_frame.qrc" >:/main_frame/images/exit.png</iconset>
+   </property>
+   <property name="text" >
+    <string>&amp;Quit</string>
+   </property>
+   <property name="shortcut" >
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actionCut" >
+   <property name="icon" >
+    <iconset resource="main_frame.qrc" >:/main_frame/images/cut.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Cu&amp;t</string>
+   </property>
+   <property name="shortcut" >
+    <string>Ctrl+X</string>
+   </property>
+  </action>
+  <action name="action_Copy" >
+   <property name="icon" >
+    <iconset resource="main_frame.qrc" >:/main_frame/images/copy.png</iconset>
+   </property>
+   <property name="text" >
+    <string>&amp;Copy</string>
+   </property>
+   <property name="shortcut" >
+    <string>Ctrl+C</string>
+   </property>
+  </action>
+  <action name="action_Paste" >
+   <property name="icon" >
+    <iconset resource="main_frame.qrc" >:/main_frame/images/paste.png</iconset>
+   </property>
+   <property name="text" >
+    <string>&amp;Paste</string>
+   </property>
+   <property name="shortcut" >
+    <string>Ctrl+V</string>
+   </property>
+  </action>
+  <action name="action_Preferences" >
+   <property name="icon" >
+    <iconset resource="main_frame.qrc" >:/main_frame/images/textjustify.png</iconset>
+   </property>
+   <property name="text" >
+    <string>&amp;Preferences</string>
+   </property>
+  </action>
+  <action name="actionShow_history" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="icon" >
+    <iconset resource="main_frame.qrc" >:/main_frame/images/linguist-phrasebookopen.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Show &amp;history</string>
+   </property>
+  </action>
+  <action name="action_About" >
+   <property name="icon" >
+    <iconset resource="main_frame.qrc" >:/main_frame/images/linguist-phrasebookopen.png</iconset>
+   </property>
+   <property name="text" >
+    <string>&amp;Fred client help</string>
+   </property>
+  </action>
+  <action name="action_Change_log" >
+   <property name="icon" >
+    <iconset resource="main_frame.qrc" >:/main_frame/images/linguist-editfind.png</iconset>
+   </property>
+   <property name="text" >
+    <string>&amp;Change log</string>
+   </property>
+  </action>
+  <action name="action_About_client" >
+   <property name="icon" >
+    <iconset/>
+   </property>
+   <property name="text" >
+    <string>&amp;About client</string>
+   </property>
+  </action>
+  <action name="action_Disconnect" >
+   <property name="checkable" >
+    <bool>false</bool>
+   </property>
+   <property name="checked" >
+    <bool>false</bool>
+   </property>
+   <property name="enabled" >
+    <bool>false</bool>
+   </property>
+   <property name="icon" >
+    <iconset resource="main_frame.qrc" >:/main_frame/images/linguist-prev.png</iconset>
+   </property>
+   <property name="text" >
+    <string>&amp;Disconnect</string>
+   </property>
+   <property name="shortcut" >
+    <string>F3</string>
+   </property>
+  </action>
+  <action name="action_Toolbars" >
+   <property name="text" >
+    <string>&amp;Toolbars</string>
+   </property>
+  </action>
+  <action name="actionAbout_Qt" >
+   <property name="icon" >
+    <iconset resource="main_frame.qrc" >:/main_frame/images/qt.png</iconset>
+   </property>
+   <property name="text" >
+    <string>About &amp;Qt</string>
+   </property>
+  </action>
+  <action name="action_hello" >
+   <property name="text" >
+    <string>&amp;Hello</string>
+   </property>
+  </action>
+  <action name="action_login" >
+   <property name="text" >
+    <string>&amp;Login</string>
+   </property>
+  </action>
+  <action name="action_logout" >
+   <property name="text" >
+    <string>L&amp;ogout</string>
+   </property>
+  </action>
+  <action name="action_poll" >
+   <property name="text" >
+    <string>&amp;Poll</string>
+   </property>
+  </action>
+  <action name="action_technical_test" >
+   <property name="text" >
+    <string>&amp;Technical test</string>
+   </property>
+  </action>
+  <action name="action_check_contact" >
+   <property name="text" >
+    <string>&amp;Contact</string>
+   </property>
+  </action>
+  <action name="action_check_nsset" >
+   <property name="text" >
+    <string>&amp;NSSET</string>
+   </property>
+  </action>
+  <action name="action_check_domain" >
+   <property name="text" >
+    <string>&amp;Domain</string>
+   </property>
+  </action>
+  <action name="action_renew_domain" >
+   <property name="text" >
+    <string>&amp;Renew domain</string>
+   </property>
+  </action>
+  <action name="action_info_contact" >
+   <property name="text" >
+    <string>&amp;Contact</string>
+   </property>
+  </action>
+  <action name="action_info_nsset" >
+   <property name="text" >
+    <string>&amp;NSSET</string>
+   </property>
+  </action>
+  <action name="action_info_domain" >
+   <property name="text" >
+    <string>&amp;Domain</string>
+   </property>
+  </action>
+  <action name="action_create_contact" >
+   <property name="text" >
+    <string>&amp;Contact</string>
+   </property>
+  </action>
+  <action name="action_create_nsset" >
+   <property name="text" >
+    <string>&amp;NSSET</string>
+   </property>
+  </action>
+  <action name="action_create_domain" >
+   <property name="text" >
+    <string>&amp;Domain</string>
+   </property>
+  </action>
+  <action name="action_update_contact" >
+   <property name="text" >
+    <string>&amp;Contact</string>
+   </property>
+  </action>
+  <action name="action_update_nsset" >
+   <property name="text" >
+    <string>&amp;NSSET</string>
+   </property>
+  </action>
+  <action name="action_update_domain" >
+   <property name="text" >
+    <string>&amp;Domain</string>
+   </property>
+  </action>
+  <action name="action_delete_contact" >
+   <property name="text" >
+    <string>&amp;Contact</string>
+   </property>
+  </action>
+  <action name="action_delete_nsset" >
+   <property name="text" >
+    <string>&amp;NSSET</string>
+   </property>
+  </action>
+  <action name="action_delete_domain" >
+   <property name="text" >
+    <string>&amp;Domain</string>
+   </property>
+  </action>
+  <action name="action_transfer_contact" >
+   <property name="text" >
+    <string>&amp;Contact</string>
+   </property>
+  </action>
+  <action name="action_transfer_nsset" >
+   <property name="text" >
+    <string>&amp;NSSET</string>
+   </property>
+  </action>
+  <action name="action_transfer_domain" >
+   <property name="text" >
+    <string>&amp;Domain</string>
+   </property>
+  </action>
+  <action name="action_sendauthinfo_contact" >
+   <property name="text" >
+    <string>&amp;Contact</string>
+   </property>
+  </action>
+  <action name="action_sendauthinfo_nsset" >
+   <property name="text" >
+    <string>&amp;NSSET</string>
+   </property>
+  </action>
+  <action name="action_sendauthinfo_domain" >
+   <property name="text" >
+    <string>&amp;Domain</string>
+   </property>
+  </action>
+  <action name="action_list_contact" >
+   <property name="text" >
+    <string>&amp;Contact</string>
+   </property>
+  </action>
+  <action name="action_list_nsset" >
+   <property name="text" >
+    <string>&amp;NSSET</string>
+   </property>
+  </action>
+  <action name="action_list_domain" >
+   <property name="text" >
+    <string>&amp;Domain</string>
+   </property>
+  </action>
+  <action name="actionCommand_history" >
+   <property name="text" >
+    <string>Command &amp;history</string>
+   </property>
+  </action>
+  <action name="actionCommand_toolbar" >
+   <property name="text" >
+    <string>Command &amp;toolbar</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="main_frame.qrc" />
+ </resources>
+ <connections>
+  <connection>
+   <sender>action_Quit</sender>
+   <signal>activated()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

@@ -1,0 +1,29 @@
+<RCC>
+    <qresource prefix="/main_frame" >
+        <file>images/icon.png</file>
+        <file>images/icon_source.png</file>
+        <file>images/copy.png</file>
+        <file>images/cut.png</file>
+        <file>images/exit.png</file>
+        <file>images/linguist-editfind.png</file>
+        <file>images/linguist-next.png</file>
+        <file>images/linguist-phrasebookopen.png</file>
+        <file>images/linguist-prev.png</file>
+        <file>images/new.png</file>
+        <file>images/open.png</file>
+        <file>images/paste.png</file>
+        <file>images/print.png</file>
+        <file>images/qt.png</file>
+        <file>images/save.png</file>
+        <file>images/textjustify.png</file>
+    </qresource>
+    <qresource prefix="/top_toolbar" >
+        <file>images/applications-internet.svg</file>
+        <file>images/go-home.svg</file>
+        <file>images/help-browser.svg</file>
+        <file>images/linguist-phrasebookopen.png</file>
+        <file>images/network-idle.svg</file>
+        <file>images/system-run.png</file>
+        <file>images/user-trash.svg</file>
+    </qresource>
+</RCC>
