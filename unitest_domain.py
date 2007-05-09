@@ -1,33 +1,66 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 """
+4.0 Inicializace spojeni a definovani testovacich handlu
 4.1  Check na seznam dvou neexistujicich domen
 4.2  Pokus o Info na neexistujici domenu
-4.3  Zalozeni pomocneho kontaktu
-4.4  Zalozeni pomocneho nssetu
+4.3.1 Zalozeni 1. pomocneho kontaktu
+4.3.2 Zalozeni 2. pomocneho kontaktu
+4.4.1 Zalozeni 1. pomocneho nssetu
+4.4.2 Zalozeni 2. pomocneho nssetu
 4.5  Pokus o zalozeni domeny s neexistujicim nssetem
-4.6  Pokus o zalozeni domeny s neexistujicim kontaktem
+4.6.1  Pokus o zalozeni domeny s neexistujicim registratorem
+4.6.2  Pokus o zalozeni domeny s neexistujicim kontaktem
 4.7  Pokusy o zalozeni domeny s neplatnym nazvem
+4.7.1  Smazani domeny s neplatnym jmenem (pokud byla vytvorena)
+4.7.2  Pokus o zalozeni domeny se dvema stejnymi admin kontakty
 4.8  Zalozeni nove domeny
-4.9  Zalozeni nove domeny enum
+4.8.1  Zalozeni nove domeny s povinnymi parametry - jen s registrantem
+4.9.1 Pokus o zalozeni domeny enum bez valExpDate
+4.9.2 Pokus o zalozeni domeny enum s valExDate = 6 mes + 1 den
+4.9.3 Pokus o zalozeni domeny enum s valExDate = aktualni datum
+4.9.3  Zalozeni nove domeny enum valExDate = dnes + 6 mes
 4.10  Pokus o zalozeni jiz existujici domeny
 4.11 Check na seznam existujici a neexistujici domeny
-4.12 Info na existujici domenu a kontrola hodnot
-4.13 Update vsech parametru domeny
-4.14 Pokus o update stavu Server*
-4.15 Update stavu clientDeleteProhibited a pokus o smazani
-4.16 Update stavu clientUpdateProhibited a pokus o zmenu objektu, smazani stavu
+4.12.1 Info na existujici domenu a kontrola hodnot
+4.12.2 Pokus o update domeny s dvema shodnymi admin kontakty
+4.12.3 Pokus o odebrani neexistujiciho admin kontaktu domeny
+4.13.1 Update vsech parametru domeny
+4.13.2 Kontrola zmenenych udaju
+4.13.3 Resetovani nssetu
+4.13.4 Kontrola zmenenych udaju po resetovani nssetu
+4.14.1 Zmena jen auth_info
+4.14.2 Kontrola zmenenych udaju po zmene pouze auth_info
 4.17 Pokus o Renew domain s nespravnym datumem
-4.18 Renew domain
-4.19 Trasfer na vlastni domenu (Objekt je nezpůsobilý pro transfer)
-4.20 Druhy registrator: Trasfer s neplatnym heslem (Chyba oprávnění)
+4.17.1 Ziskani hodnoty domain_renew pro prikazy renew
+4.17.2 Pokus o nastaveni valExDate na 7 mesicu v Renew enum domain
+4.17.3 Nastaveni valExDate na dva mesice v Renew enum domain
+4.17.4 Pokus o update enum domeny na neplatny valExDate
+4.17.5 Pokus update domeny, ktera neni ENUM, s valExDate.
+4.17.6 Update enum domeny s valExDate na 5 mesicu.
+4.18.0 Nastaveni valExDate na dnes+15dni (neni v ochranne lhute)
+4.18.1 Pokus o prodlouzeni validace o 6 mesicu ode dne valExDate s prekrocenim 14 denni lhuty
+4.18.2 Nastaveni valExDate na dnes+14dni (je v ochranne lhute)
+4.18.3 Pokus o prodlouzeni validace o 6 mesicu + 15 dni v ochranne lhute
+4.18.4 Prodlouzeni validace o 6 mesicu + 14 dni v ochranne lhute
+4.19 Renew domain o tri roky
+4.19.5 Trasfer na vlastni domenu (Objekt je nezp\u016fsobil\u00fd pro transfer)
+4.19.6 Vymazani vsech poll zprav z fronty kvuli generovani poll zpravy z transferu
+4.20 Druhy registrator: Trasfer s neplatnym heslem (Chyba opr\u00e1vn\u011bn\u00ed)
 4.21 Druhy registrator: Trasfer domeny
 4.22 Druhy registrator: Zmena hesla po prevodu domeny
 4.23 Zmena hesla domeny, ktera registratorovi jiz nepatri
 4.24 Pokus o smazani domeny, ktera registratorovi jiz nepatri
-4.25 Druhy registrator: Smazani obou domen
+4.24.2 Poll req - Kontrola, ze byla vygenerovana zprava o transferu.
+4.24.3 Poll ack - Vyrazeni zpravy o transferu z fronty.
+4.25.1 Druhy registrator: Smazani domeny
+4.25.2 Druhy registrator: Smazani domeny enum
+4.25.3 Druhy registrator: Smazani domeny
 4.26 Check na smazanou domenu
-4.27 Smazani pomocnych kontaktu a nssetu
+4.27.0 Smazani 2. pomocneho nssetu
+4.27.1 Smazani 1. pomocneho nssetu
+4.27.2 Smazani 2. pomocneho kontaktu
+4.27.3 Smazani 1. pomocneho kontaktu
 """
 import re
 import time
@@ -240,16 +273,24 @@ class TestDomain(unittest.TestCase):
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_092(self):
-        '4.9.2 Pokus o zalozeni domeny enum s nespravnym valExDate'
+        '4.9.2 Pokus o zalozeni domeny enum s valExDate = 6 mes + 1 den'
         d = FRED_DATA[DOMAIN_2]
-        val_ex_date = unitest_share.datedelta_from_now(0, 7) # sedm měsíců
+        val_ex_date = unitest_share.datedelta_from_now(0, 6, 1) # sest mesicu a jeden den
         epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], d['nsset'], d['period'], d['contact'], val_ex_date)
         self.assertNotEqual(epp_cli.is_val(), 1000, 'Domena enum se vytvorila i kdyz valExDate byl neplatny')
+
+    def test_093(self):
+        '4.9.3 Pokus o zalozeni domeny enum s valExDate = aktualni datum'
+        d = FRED_DATA[DOMAIN_2]
+        val_ex_date = unitest_share.datedelta_from_now(0, 0, 0)
+        epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], d['nsset'], d['period'], d['contact'], val_ex_date)
+        self.assertNotEqual(epp_cli.is_val(), 1000, 'Domena enum se vytvorila i kdyz valExDate byl neplatny')
+
         
     def test_096(self):
-        '4.9.3  Zalozeni nove domeny enum'
+        '4.9.3  Zalozeni nove domeny enum valExDate = dnes + 6 mes'
         d = FRED_DATA[DOMAIN_2]
-        val_ex_date = unitest_share.datedelta_from_now(0, 2) # dva měsíce
+        val_ex_date = unitest_share.datedelta_from_now(0, 6) # sest mesicu
         epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], d['nsset'], d['period'], d['contact'], val_ex_date)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         
@@ -416,7 +457,7 @@ class TestDomain(unittest.TestCase):
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_180(self):
-        '4.18.0 Nastaveni valExDate na dnes+15dni'
+        '4.18.0 Nastaveni valExDate na dnes+15dni (neni v ochranne lhute)'
         val_ex_date = unitest_share.datedelta_from_now(0, 0, 15)
         epp_cli.update_domain(FRED_DOMAIN2, None, None, None, val_ex_date)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
@@ -428,13 +469,19 @@ class TestDomain(unittest.TestCase):
         self.assertNotEqual(epp_cli.is_val(), 1000, 'update_domain proslo s val_ex_date o jeden den vetsim nez je povoleno.')
 
     def test_182(self):
-        '4.18.2 Nastaveni valExDate na dnes+14dni'
+        '4.18.2 Nastaveni valExDate na dnes+14dni (je v ochranne lhute)'
         val_ex_date = unitest_share.datedelta_from_now(0, 0, 14)
         epp_cli.update_domain(FRED_DOMAIN2, None, None, None, val_ex_date)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_183(self):
-        '4.18.31 Prodlouzeni validace o 6 mesicu ode dne valExDate ve 14 denni lhute'
+        '4.18.3 Pokus o prodlouzeni validace o 6 mesicu + 15 dni v ochranne lhute'
+        val_ex_date = unitest_share.datedelta_from_now(0, 6, 15)
+        epp_cli.update_domain(FRED_DOMAIN2, None, None, None, val_ex_date)
+        self.assertNotEqual(epp_cli.is_val(), 1000, 'Pokus o prodlouzeni validace o 6 mesicu + 15 dni v ochranne lhute prosel.')
+
+    def test_184(self):
+        '4.18.4 Prodlouzeni validace o 6 mesicu + 14 dni v ochranne lhute'
         val_ex_date = unitest_share.datedelta_from_now(0, 6, 14)
         epp_cli.update_domain(FRED_DOMAIN2, None, None, None, val_ex_date)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
@@ -471,8 +518,8 @@ class TestDomain(unittest.TestCase):
         epp_cli.poll('req')
         self.failIf(epp_cli.is_val() not in (1000, 1300, 1301), unitest_share.get_reason(epp_cli))
         poll_msg_count = epp_cli.is_val(('data','msgQ.count'))
-        unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(0, poll_msg_count))
         if type(poll_msg_count) is int:
+            unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(0, poll_msg_count))
             errors = []
             for n in range(poll_msg_count):
                 epp_cli.poll('ack', epp_cli.is_val(('data','msgQ.id')))
