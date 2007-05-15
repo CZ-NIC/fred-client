@@ -301,6 +301,7 @@ and maximum allowable period is defined in the Communication rules."""),('renew_
             ('name',(1,1),(),_T('Domain name'),'mydomain.cz','',()),
             ('add_admin',(0,UNBOUNDED),(),_T('Administrative contact ID'),'CID:ID01','',()),
             ('rem_admin',(0,UNBOUNDED),(),_T('Administrative contact ID'),'CID:ID01','',()),
+            ('rem_tempc',(0,UNBOUNDED),(),_T('Temporary contact ID'),'CID:ID01','',()),
             ('chg',(0,1),(),_T('Change values'),'','',(
                 ('nsset',(0,1),(),_T('NSSET ID'),'NSSET_ID','',()),
                 ('registrant',(0,1),(),_T('Registrant ID'),'CID:ID01','',()),
@@ -308,8 +309,8 @@ and maximum allowable period is defined in the Communication rules."""),('renew_
             )),
             ('val_ex_date',(0,1),(),_T('Validation expires at'),'2008-12-03','',()),
             ],_T("""The EPP 'update_domain' command is used to update values in the domain."""),(
-                'update_domain mydomain.cz (CID:ID01, CID:ID02) CID:ID03 (NSSID:NSSET01 CID:ID04 mypass)',
-                'update_domain 1.1.1.7.4.5.2.2.2.0.2.4.e164.arpa (CID:ID01, CID:ID02) CID:ID03 (NSSID:NSSET01 CID:ID04 mypass) 2008-12-03',
+                'update_domain mydomain.cz (CID:ID01, CID:ID02) CID:ID03 CID:TMP01 (NSSID:NSSET01 CID:ID04 mypass)',
+                'update_domain 1.1.1.7.4.5.2.2.2.0.2.4.e164.arpa (CID:ID01, CID:ID02) CID:ID03 CID:TMP01 (NSSID:NSSET01 CID:ID04 mypass) 2008-12-03',
             )),
         #----------------------------------------------------
         'update_nsset': (1,[
@@ -437,6 +438,7 @@ def make_sort_by_names():
          ('status',      1,  _T('Status message')),
          ('registrant',  1,  _T('Registrant ID')),
          ('admin',       1,  _T('Administrative contact')),
+         ('tempcontact', 1,  _T('Temporary contact')),
          )),
 
        'nsset:info': ('nsset',(

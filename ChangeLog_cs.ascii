@@ -1,6 +1,8 @@
 FredClient 1.3.3
 
 Zmeny:
+    * Verze schemat nastaveny na 1.2
+    * Do info_domain a update_domain pridana polozka Docasny kontakt
     * Prikazy create_domain a update_domain rozpoznaji povinnou/nepovinnou hodnotu
       Expiration Date posdle typu domeny cz/ENUM.
 

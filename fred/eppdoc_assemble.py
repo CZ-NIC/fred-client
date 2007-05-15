@@ -992,11 +992,19 @@ class Message(MessageBase):
             ('update', 'domain:update', '', attr),
             ('domain:update','domain:name', dct['name'][0]),
             ]
+        tag_rem_is_set = 0 # put tag rem only one
         for key in ('add','rem'):
             element_name = '%s_admin'%key
             if __has_key_dict__(dct, element_name):
                 data.append(('domain:update', 'domain:%s'%key))
+                tag_rem_is_set = 1
                 self.__append_values__(data, dct, element_name, 'domain:%s'%key, 'domain:admin')
+        for key in ('rem', ):
+            element_name = '%s_tempc'%key
+            if __has_key_dict__(dct, element_name):
+                if not tag_rem_is_set:
+                    data.append(('domain:update', 'domain:%s'%key))
+                self.__append_values__(data, dct, element_name, 'domain:%s'%key, 'domain:tempcontact')
         if __has_key_dict__(dct,'chg'):
             chg = dct['chg'][0]
             data.append(('domain:update', 'domain:chg'))
@@ -1107,6 +1115,7 @@ class Message(MessageBase):
             if dct.has_key(key): chg[key] = dct[key]
         if len(chg): dct['chg'] = [chg]
         if dct.has_key('admin'): dct['rem_admin'] = dct['admin']
+        if dct.has_key('tempcontact'): dct['rem_tempc'] = dct['tempcontact']
         return dct
 
     def __ffi_create_nsset__(self, dct):

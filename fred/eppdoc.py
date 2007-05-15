@@ -42,12 +42,12 @@ import StringIO
 # Defaults - can overwrite by values from config or command line option
 #========================================================
 SCHEMA_PREFIX = 'http://www.nic.cz/xml/epp/'
-VERSION_CONTACT  = '1.1'
-VERSION_DOMAIN    = '1.1'
-VERSION_NSSET      = '1.1'
-VERSION_ENUMVAL = '1.0'
-VERSION_FRED         = '1.0'
-VERSION_VERSION   = '1.0'
+VERSION_CONTACT  = '1.2'
+VERSION_DOMAIN   = '1.2'
+VERSION_NSSET    = '1.2'
+VERSION_ENUMVAL  = '1.1'
+VERSION_FRED     = '1.0'
+VERSION_VERSION  = '1.0'
 
 obj_uri = "urn:ietf:params:xml:ns:"
 xmlns_xsi="http://www.w3.org/2001/XMLSchema-instance"

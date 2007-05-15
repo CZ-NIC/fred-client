@@ -508,4 +508,29 @@ data = ( # 0
     </trID>
   </response>
 </epp>"""),
+    ('domain:info', """<?xml version="1.0" encoding="UTF-8"?>
+<epp xmlns="urn:ietf:params:xml:ns:epp-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd"><response><result code="1000"><msg lang="cs">P\u0159\u00edkaz \u00fasp\u011b\u0161n\u011b proveden</msg>
+</result>
+<resData><domain:infData xmlns:domain="http://www.nic.cz/xml/epp/domain-1.2" xsi:schemaLocation="http://www.nic.cz/xml/epp/domain-1.2 domain-1.1.xsd"><domain:name>test262403.cz</domain:name>
+<domain:roid>D0000009499-CZ</domain:roid>
+<domain:status s="ok">Domain is OK</domain:status>
+<domain:registrant>CID:D184452</domain:registrant>
+<domain:admin>CID:D184452</domain:admin>
+<domain:nsset>NSSID:D1917228</domain:nsset>
+<domain:clID>REG-UNITTEST1</domain:clID>
+<domain:crID>REG-UNITTEST1</domain:crID>
+<domain:crDate>2007-03-30T10:16:26+02:00</domain:crDate>
+<domain:upID>REG-UNITTEST1</domain:upID>
+<domain:upDate>2007-05-14T14:24:54+02:00</domain:upDate>
+<domain:exDate>2010-03-30</domain:exDate>
+<domain:authInfo>heslicko</domain:authInfo>
+<domain:tempcontact>CID:D184452</domain:tempcontact>
+<domain:tempcontact>CID:D184000</domain:tempcontact>
+</domain:infData>
+</resData>
+<trID><clTRID>nfxl003#07-05-15at11:02:33</clTRID>
+<svTRID>ccReg-0000314250</svTRID>
+</trID>
+</response>
+</epp>"""), 
     )

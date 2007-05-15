@@ -293,7 +293,7 @@ class ManagerReceiver(ManagerCommand):
         else:
             self.__append_note_from_dct__(domain_infData,
                 ('domain:name','domain:roid','domain:status s','domain:status',
-                 'domain:registrant','domain:admin',
+                 'domain:registrant','domain:admin','domain:tempcontact',
                  'domain:contact','domain:contact type','domain:nsset',
                  'domain:crID','domain:clID','domain:upID',
                  'domain:crDate','domain:trDate','domain:upDate','domain:exDate','domain:authInfo'))
