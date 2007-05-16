@@ -601,7 +601,7 @@ OPTIONS:
             'chg':chg, 'cltrid':cltrid})
 
 
-    def update_domain(self, name, add_admin=None, rem_admin=None, chg=None, val_ex_date=None, cltrid=None):
+    def update_domain(self, name, add_admin=None, rem_admin=None, rem_tempc=None, chg=None, val_ex_date=None, cltrid=None):
         """DESCRIPTION:
   The EPP 'update_domain' command is used to update values in the domain.
 
@@ -612,6 +612,7 @@ OPTIONS:
   name (required)          Domain name
   add_admin                Administrative contact ID (unbounded list)
   rem_admin                Administrative contact ID (unbounded list)
+  rem_tempc                Temporary contact ID (unbounded list)
   chg                      Change values
     nsset                  NSSET ID
     registrant             Registrant ID
@@ -619,7 +620,7 @@ OPTIONS:
   val_ex_date              Validation expires at
   cltrid                   Client transaction ID"""
         return self._epp.api_command('update_domain',{'name':name, 
-            'add_admin':add_admin, 'rem_admin':rem_admin, 'chg':chg, 'val_ex_date':val_ex_date, 'cltrid':cltrid})
+            'add_admin':add_admin, 'rem_admin':rem_admin, 'rem_tempc':rem_tempc, 'chg':chg, 'val_ex_date':val_ex_date, 'cltrid':cltrid})
 
 
     def update_nsset(self, nsset_id, add=None, rem=None, auth_info=None, reportlevel=None, cltrid=None):

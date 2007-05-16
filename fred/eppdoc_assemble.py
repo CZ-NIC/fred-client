@@ -992,19 +992,22 @@ class Message(MessageBase):
             ('update', 'domain:update', '', attr),
             ('domain:update','domain:name', dct['name'][0]),
             ]
-        tag_rem_is_set = 0 # put tag rem only one
+        tag_rem_is_set = 0 # put REM(OVE) tag only one time
         for key in ('add','rem'):
             element_name = '%s_admin'%key
             if __has_key_dict__(dct, element_name):
                 data.append(('domain:update', 'domain:%s'%key))
-                tag_rem_is_set = 1
                 self.__append_values__(data, dct, element_name, 'domain:%s'%key, 'domain:admin')
+                if key == 'rem':
+                    tag_rem_is_set = 1 # tag REM has been set
+        # append temporary contacts
         for key in ('rem', ):
             element_name = '%s_tempc'%key
             if __has_key_dict__(dct, element_name):
                 if not tag_rem_is_set:
                     data.append(('domain:update', 'domain:%s'%key))
                 self.__append_values__(data, dct, element_name, 'domain:%s'%key, 'domain:tempcontact')
+                
         if __has_key_dict__(dct,'chg'):
             chg = dct['chg'][0]
             data.append(('domain:update', 'domain:chg'))
