@@ -219,7 +219,7 @@ for ENUM domains."""),(
             )),
             ('tech',(1,UNBOUNDED),(),_T('Technical contact'),'CID:ID01','',()),
             ('auth_info',(0,1),(),_T('Password required by server to authorize the transfer'),'mypassword','',()),
-            ('reportlevel',(0,1),(),_T('Report level. Range 0 - 10'),'1','',()),
+            ('reportlevel',(0,1),(),_T('Report range level (0 - 10; higher = more detailed)'),'1','',()),
             ],_T("""
 The EPP 'create_nsset' command is used to create a record of the NSSET.
 
@@ -327,7 +327,7 @@ and maximum allowable period is defined in the Communication rules."""),('renew_
                 ('tech',(0,UNBOUNDED),(),_T('Technical contact ID'),'CID:ID01','',()),
             )),
             ('auth_info',(0,1),(),_T('Password required by server to authorize the transfer'),'new_password','',()),
-            ('reportlevel',(0,1),(),_T('Report level. Range 0 - 10'),'1','',()),
+            ('reportlevel',(0,1),(),_T('Report range level (0 - 10; higher = more detailed)'),'1','',()),
             ],_T("""The EPP 'update_nsset' command is used to update values in the NSSET."""),(
                 "update_nsset nssid:ns1 (((ns1.dns.cz (217.31.207.130, 217.31.207.131, 217.31.207.132)), (ns2.dns.cz (217.31.207.130, 217.31.207.131, 217.31.207.132))) (cid:tech1, cid:tech2, cid:tech3)) (((rem1.dns.cz, rem2.dns.cz) (cid:tech_rem01, cid:tech_rem02))) password",
             )),
@@ -361,7 +361,8 @@ when owner and new registrar needn't require previous registrar for password."""
         #----------------------------------------------------
         'technical_test': (2,[
             ('id',(1,1),(),_T('NSSET ID'),'NSSID:MYID','',()),
-            ('name',(1,1),(),_T('Domain name'),'mydomain.cz','',()),
+            ('reportlevel',(0,1),(),_T('Report range level (0 - 10; higher = more detailed)'),'1','',()),
+            ('name',(0,1),(),_T('Domain name'),'mydomain.cz','',()),
             ],_T("""
 The EPP 'technical_test' command transmit request for technical test 
 for particular NSSET and domain. The result of the test will be saved 
@@ -370,7 +371,7 @@ by poll command. Every test has report level (number) and run just
 a parts what have equal or lower level number. Valid range 
 is from 0 to 10. Set report level in the command create_nsset 
 and update_nsset.
-"""),('technical_test nssid:id mydomain.cz',)),
+"""),('technical_test nssid:id 4 mydomain.cz',)),
         #----------------------------------------------------
     }
     for k,v in command_params.items():

@@ -617,7 +617,9 @@ class Message(MessageBase):
             if key:
                 if type(key) not in (list,tuple): key = (key,)
                 for key_name in key:
-                    names = self._dct[key_name]
+                    names = self._dct.get(key_name)
+                    if names is None:
+                        continue # jump over optional keys
                     nscol = '%s:%s'%(cols[1],key_name)
                     if type(names) not in (list,tuple): names = (names,)
                     for value in names:
@@ -1076,7 +1078,7 @@ class Message(MessageBase):
 
     def assemble_technical_test(self, *params):
         'Create technical_test document'
-        self.__asseble_extcommand__(('test','nsset','id'), params, ('id','name'))
+        self.__asseble_extcommand__(('test','nsset','id'), params, ('id', 'level', 'name'))
 
     #===========================================
 

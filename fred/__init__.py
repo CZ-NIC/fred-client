@@ -731,7 +731,7 @@ OPTIONS:
   cltrid                   Client transaction ID"""
         return self._epp.api_command('credit_info',{'cltrid':cltrid})
 
-    def technical_test(self, id, name, cltrid=None):
+    def technical_test(self, id, level=None, name=None, cltrid=None):
         """DESCRIPTION:
   The EPP 'technical_test' command transmit request for technical test
   for particular NSSET and domain. The result of the test will be saved
@@ -746,9 +746,10 @@ SYNTAX:
 
 OPTIONS:
   id (required)            NSSET ID
-  name (required)          Domain name
+  reportlevel              Report range level (0 - 10; higher = more detailed)
+  name                     Domain name
   cltrid                   Client transaction ID"""
-        return self._epp.api_command('technical_test',{'id':id, 'name':name, 'cltrid':cltrid})
+        return self._epp.api_command('technical_test',{'id':id, 'level':level, 'name':name, 'cltrid':cltrid})
 
     #==============================================================
         

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-05-15 11:25+0200\n"
+"POT-Creation-Date: 2007-05-16 11:28+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Zdeněk Böhm <zdenek.bohm@nic.cz>\n"
 "Language-Team: CS <ccreg-devel@lists.nic.cz>\n"
@@ -420,7 +420,7 @@ msgstr[0] "Chybí povinná hodnota"
 msgstr[1] "Chybí povinné hodnoty"
 msgstr[2] "Chybí povinné hodnoty"
 
-#: fred/eppdoc_assemble.py:1181
+#: fred/eppdoc_assemble.py:1189
 #, python-format
 msgid "Value can be a list of max %d value."
 msgid_plural "Value can be a list of max %d values."
@@ -428,11 +428,11 @@ msgstr[0] "Hodnota může být seznam o max. velikosti %d položky."
 msgstr[1] "Hodnota může být seznam o max. velikosti %d položek."
 msgstr[2] "Hodnota může být seznam o max. velikosti %d položek."
 
-#: fred/eppdoc_assemble.py:1183
+#: fred/eppdoc_assemble.py:1191
 msgid "Value can be an unbouded list of values."
 msgstr "Hodnota může být libovolně velký seznam."
 
-#: fred/eppdoc_assemble.py:1185
+#: fred/eppdoc_assemble.py:1193
 msgid "Minimum is"
 msgstr "Minimum je"
 
@@ -529,7 +529,7 @@ msgstr ""
 #: fred/eppdoc_client.py:79 fred/eppdoc_client.py:99 fred/eppdoc_client.py:137
 #: fred/eppdoc_client.py:163 fred/eppdoc_client.py:236
 #: fred/eppdoc_client.py:267 fred/eppdoc_client.py:340
-#: fred/eppdoc_client.py:394 fred/eppdoc_client.py:462 guiqt4/main.py:705
+#: fred/eppdoc_client.py:395 fred/eppdoc_client.py:463 guiqt4/main.py:705
 msgid "Contact ID"
 msgstr "Kontakt ID"
 
@@ -548,9 +548,9 @@ msgstr ""
 #: fred/eppdoc_client.py:85 fred/eppdoc_client.py:107
 #: fred/eppdoc_client.py:193 fred/eppdoc_client.py:240
 #: fred/eppdoc_client.py:248 fred/eppdoc_client.py:301
-#: fred/eppdoc_client.py:347 fred/eppdoc_client.py:364
-#: fred/eppdoc_client.py:424 fred/eppdoc_client.py:472
-#: fred/eppdoc_client.py:506
+#: fred/eppdoc_client.py:347 fred/eppdoc_client.py:365
+#: fred/eppdoc_client.py:425 fred/eppdoc_client.py:473
+#: fred/eppdoc_client.py:507
 msgid "Domain name"
 msgstr "Název domény"
 
@@ -573,8 +573,8 @@ msgstr ""
 #: fred/eppdoc_client.py:215 fred/eppdoc_client.py:244
 #: fred/eppdoc_client.py:306 fred/eppdoc_client.py:317
 #: fred/eppdoc_client.py:354 fred/eppdoc_client.py:363
-#: fred/eppdoc_client.py:435 fred/eppdoc_client.py:445
-#: fred/eppdoc_client.py:467 guiqt4/main.py:645 guiqt4/main.py:742
+#: fred/eppdoc_client.py:436 fred/eppdoc_client.py:446
+#: fred/eppdoc_client.py:468 guiqt4/main.py:645 guiqt4/main.py:742
 #: guiqt4/main.py:853
 msgid "NSSET ID"
 msgstr "NSSET ID"
@@ -712,7 +712,7 @@ msgstr ""
 "autorizační heslo pro transfer."
 
 #: fred/eppdoc_client.py:164 fred/eppdoc_client.py:270
-#: fred/eppdoc_client.py:402
+#: fred/eppdoc_client.py:403
 msgid "Name"
 msgstr "Jméno"
 
@@ -721,12 +721,12 @@ msgid "Email"
 msgstr ""
 
 #: fred/eppdoc_client.py:166 fred/eppdoc_client.py:273
-#: fred/eppdoc_client.py:405
+#: fred/eppdoc_client.py:406
 msgid "City"
 msgstr "Město"
 
 #: fred/eppdoc_client.py:167 fred/eppdoc_client.py:274
-#: fred/eppdoc_client.py:408
+#: fred/eppdoc_client.py:409
 msgid "Country code"
 msgstr "Kód země"
 
@@ -739,22 +739,22 @@ msgid "password"
 msgstr "heslo"
 
 #: fred/eppdoc_client.py:169 fred/eppdoc_client.py:271
-#: fred/eppdoc_client.py:403
+#: fred/eppdoc_client.py:404
 msgid "Organisation"
 msgstr "Název organizace"
 
 #: fred/eppdoc_client.py:170 fred/eppdoc_client.py:275
-#: fred/eppdoc_client.py:404
+#: fred/eppdoc_client.py:405
 msgid "Street"
 msgstr "Ulice"
 
 #: fred/eppdoc_client.py:171 fred/eppdoc_client.py:276
-#: fred/eppdoc_client.py:406
+#: fred/eppdoc_client.py:407
 msgid "State or province"
 msgstr "Stát nebo kraj"
 
 #: fred/eppdoc_client.py:172 fred/eppdoc_client.py:277
-#: fred/eppdoc_client.py:407
+#: fred/eppdoc_client.py:408
 msgid "Postal code"
 msgstr "PSČ"
 
@@ -763,7 +763,7 @@ msgid "postal code"
 msgstr "PSČ"
 
 #: fred/eppdoc_client.py:173 fred/eppdoc_client.py:280
-#: fred/eppdoc_client.py:410
+#: fred/eppdoc_client.py:411
 msgid "Phone"
 msgstr "Telefon"
 
@@ -772,7 +772,7 @@ msgid "Fax"
 msgstr ""
 
 #: fred/eppdoc_client.py:175 fred/eppdoc_client.py:284
-#: fred/eppdoc_client.py:416
+#: fred/eppdoc_client.py:417
 msgid "Disclose"
 msgstr "Zveřejnit"
 
@@ -789,12 +789,12 @@ msgid "VAT (Value-added tax)"
 msgstr "VAT (daňový identifikátor)"
 
 #: fred/eppdoc_client.py:180 fred/eppdoc_client.py:289
-#: fred/eppdoc_client.py:420
+#: fred/eppdoc_client.py:421
 msgid "Identificator"
 msgstr "Identifikátor"
 
 #: fred/eppdoc_client.py:181 fred/eppdoc_client.py:290
-#: fred/eppdoc_client.py:419
+#: fred/eppdoc_client.py:420
 msgid "Identificator type"
 msgstr "Typ identifikátoru"
 
@@ -803,7 +803,7 @@ msgid "Identificator number"
 msgstr "Čislo identifikátoru"
 
 #: fred/eppdoc_client.py:184 fred/eppdoc_client.py:293
-#: fred/eppdoc_client.py:413
+#: fred/eppdoc_client.py:414
 msgid "Notification email"
 msgstr "Oznámení na email"
 
@@ -820,7 +820,7 @@ msgstr ""
 "kontaktu."
 
 #: fred/eppdoc_client.py:194 fred/eppdoc_client.py:307
-#: fred/eppdoc_client.py:439
+#: fred/eppdoc_client.py:440
 msgid "Registrant ID"
 msgstr "ID držitele"
 
@@ -874,13 +874,14 @@ msgstr "Jmenný server"
 msgid "Server address"
 msgstr "Adresa serveru"
 
-#: fred/eppdoc_client.py:220 fred/eppdoc_client.py:456
+#: fred/eppdoc_client.py:220 fred/eppdoc_client.py:457
 msgid "Technical contact"
 msgstr "Technický kontakt"
 
 #: fred/eppdoc_client.py:222 fred/eppdoc_client.py:330
-msgid "Report level. Range 0 - 10"
-msgstr "Report level. Rozmezí 0 - 10"
+#: fred/eppdoc_client.py:364
+msgid "Report range level (0 - 10; higher = more detailed)"
+msgstr "Rozsah testů (0 - 10; vyšší = detailnější)"
 
 #: fred/eppdoc_client.py:223
 msgid ""
@@ -922,13 +923,13 @@ msgstr "EPP příkaz 'delete_domain' se používá pro smazání záznamu o dom�
 msgid "The EPP 'delete_nsset' command is used to remove a record of the nsset."
 msgstr "EPP příkaz 'delete_nsset' se používá pro smazázní záznamu o NSSETu."
 
-#: fred/eppdoc_client.py:249 fred/eppdoc_client.py:432
-#: fred/eppdoc_client.py:474 fred/eppdoc_client.py:507 guiqt4/main.py:819
+#: fred/eppdoc_client.py:249 fred/eppdoc_client.py:433
+#: fred/eppdoc_client.py:475 fred/eppdoc_client.py:508 guiqt4/main.py:819
 msgid "Expiration date"
 msgstr "Datum expirace"
 
 #: fred/eppdoc_client.py:254 fred/eppdoc_client.py:310
-#: fred/eppdoc_client.py:433
+#: fred/eppdoc_client.py:434
 msgid "Validation expires at"
 msgstr "Validace platná do"
 
@@ -972,7 +973,7 @@ msgstr "Adresa"
 msgid "data for with is set the flag value"
 msgstr "data, pro které se nastaví příznak"
 
-#: fred/eppdoc_client.py:288 fred/eppdoc_client.py:418
+#: fred/eppdoc_client.py:288 fred/eppdoc_client.py:419
 msgid "VAT"
 msgstr "DPH"
 
@@ -1083,7 +1084,7 @@ msgstr ""
 msgid "The EPP 'credit_info' command returns credit information."
 msgstr "Příkaz 'credit_info' zobrazí informace o kreditu."
 
-#: fred/eppdoc_client.py:365
+#: fred/eppdoc_client.py:366
 msgid ""
 "\n"
 "The EPP 'technical_test' command transmit request for technical test \n"
@@ -1102,137 +1103,137 @@ msgstr ""
 "které mají toto číslo shodé nebo nižší. Platný rozsah je 0 až 10.\n"
 "Nastavit report level je možné v příkazech create_nsset a update_nsset.\n"
 
-#: fred/eppdoc_client.py:378
+#: fred/eppdoc_client.py:379
 msgid "Client transaction ID"
 msgstr ""
 
-#: fred/eppdoc_client.py:395 fred/eppdoc_client.py:425
-#: fred/eppdoc_client.py:446
+#: fred/eppdoc_client.py:396 fred/eppdoc_client.py:426
+#: fred/eppdoc_client.py:447
 msgid "Repository object ID"
 msgstr "ID objektu v rep."
 
-#: fred/eppdoc_client.py:396 fred/eppdoc_client.py:426
-#: fred/eppdoc_client.py:447
+#: fred/eppdoc_client.py:397 fred/eppdoc_client.py:427
+#: fred/eppdoc_client.py:448
 msgid "Created by"
 msgstr "Vytvořil"
 
-#: fred/eppdoc_client.py:397 fred/eppdoc_client.py:427
-#: fred/eppdoc_client.py:448
+#: fred/eppdoc_client.py:398 fred/eppdoc_client.py:428
+#: fred/eppdoc_client.py:449
 msgid "Designated registrar"
 msgstr "Určený registrátor"
 
-#: fred/eppdoc_client.py:398 fred/eppdoc_client.py:428
-#: fred/eppdoc_client.py:449
+#: fred/eppdoc_client.py:399 fred/eppdoc_client.py:429
+#: fred/eppdoc_client.py:450
 msgid "Updated by"
 msgstr "Změnil"
 
-#: fred/eppdoc_client.py:399 fred/eppdoc_client.py:429
-#: fred/eppdoc_client.py:450 fred/eppdoc_client.py:463
-#: fred/eppdoc_client.py:468 fred/eppdoc_client.py:473
+#: fred/eppdoc_client.py:400 fred/eppdoc_client.py:430
+#: fred/eppdoc_client.py:451 fred/eppdoc_client.py:464
+#: fred/eppdoc_client.py:469 fred/eppdoc_client.py:474
 msgid "Created on"
 msgstr "Vytvořeno dne"
 
-#: fred/eppdoc_client.py:400 fred/eppdoc_client.py:430
-#: fred/eppdoc_client.py:451
+#: fred/eppdoc_client.py:401 fred/eppdoc_client.py:431
+#: fred/eppdoc_client.py:452
 msgid "Last transfer on"
 msgstr "Poslední transfer dne"
 
-#: fred/eppdoc_client.py:401 fred/eppdoc_client.py:431
+#: fred/eppdoc_client.py:402 fred/eppdoc_client.py:432
 msgid "Last update on"
 msgstr "Poslední změna dne"
 
-#: fred/eppdoc_client.py:409 fred/eppdoc_client.py:436
-#: fred/eppdoc_client.py:453
+#: fred/eppdoc_client.py:410 fred/eppdoc_client.py:437
+#: fred/eppdoc_client.py:454
 msgid "Password for transfer"
 msgstr "Heslo pro transfer"
 
-#: fred/eppdoc_client.py:414 fred/eppdoc_client.py:437
-#: fred/eppdoc_client.py:454
+#: fred/eppdoc_client.py:415 fred/eppdoc_client.py:438
+#: fred/eppdoc_client.py:455
 msgid "Status"
 msgstr "Stav"
 
-#: fred/eppdoc_client.py:415 fred/eppdoc_client.py:438
-#: fred/eppdoc_client.py:455
+#: fred/eppdoc_client.py:416 fred/eppdoc_client.py:439
+#: fred/eppdoc_client.py:456
 msgid "Status message"
 msgstr "Popis stavu"
 
-#: fred/eppdoc_client.py:417
+#: fred/eppdoc_client.py:418
 msgid "Hide"
 msgstr "Skrýt"
 
-#: fred/eppdoc_client.py:434
+#: fred/eppdoc_client.py:435
 msgid "Last renew on"
 msgstr "Poslední prodloužení dne"
 
-#: fred/eppdoc_client.py:440
+#: fred/eppdoc_client.py:441
 msgid "Administrative contact"
 msgstr "Administrativní kontakt"
 
-#: fred/eppdoc_client.py:441
+#: fred/eppdoc_client.py:442
 msgid "Temporary contact"
 msgstr "Dočasný kontakt"
 
-#: fred/eppdoc_client.py:452
+#: fred/eppdoc_client.py:453
 msgid "Last updated on"
 msgstr "Poslední změna dne"
 
-#: fred/eppdoc_client.py:457
+#: fred/eppdoc_client.py:458
 msgid "Name servers"
 msgstr "Jmenné servery"
 
-#: fred/eppdoc_client.py:458
+#: fred/eppdoc_client.py:459
 msgid "Report level"
 msgstr ""
 
-#: fred/eppdoc_client.py:478
+#: fred/eppdoc_client.py:479
 msgid "Available languages"
 msgstr "Podporované jazyky"
 
-#: fred/eppdoc_client.py:479
+#: fred/eppdoc_client.py:480
 msgid "Server ID"
 msgstr "ID serveru"
 
-#: fred/eppdoc_client.py:480
+#: fred/eppdoc_client.py:481
 msgid "Server date"
 msgstr "Datum serveru"
 
-#: fred/eppdoc_client.py:481
+#: fred/eppdoc_client.py:482
 msgid "Available protocols"
 msgstr "Podporované protokoly"
 
-#: fred/eppdoc_client.py:482
+#: fred/eppdoc_client.py:483
 msgid "Objects URI"
 msgstr "URI objekt"
 
-#: fred/eppdoc_client.py:483
+#: fred/eppdoc_client.py:484
 msgid "Extensions URI"
 msgstr "URI rozšíření"
 
-#: fred/eppdoc_client.py:484
+#: fred/eppdoc_client.py:485
 msgid "Data Collection policy"
 msgstr ""
 
-#: fred/eppdoc_client.py:494
+#: fred/eppdoc_client.py:495
 msgid "List"
 msgstr "Seznam"
 
-#: fred/eppdoc_client.py:495
+#: fred/eppdoc_client.py:496
 msgid "Count"
 msgstr "Počet"
 
-#: fred/eppdoc_client.py:499
+#: fred/eppdoc_client.py:500
 msgid "Queue size"
 msgstr "Počet zpráv"
 
-#: fred/eppdoc_client.py:500
+#: fred/eppdoc_client.py:501
 msgid "Message ID"
 msgstr "ID zprávy"
 
-#: fred/eppdoc_client.py:501
+#: fred/eppdoc_client.py:502
 msgid "Message date"
 msgstr "Zpráva vložena"
 
-#: fred/eppdoc_client.py:502
+#: fred/eppdoc_client.py:503
 msgid "Message content"
 msgstr "Text zprávy"
 
@@ -1255,7 +1256,7 @@ msgstr "Interní chyba: Nadřazený uzel '%s' neexistuje."
 msgid "Internal error: Value is not dict type:"
 msgstr "Interní chyba: Hodnota není typu dict:"
 
-#: fred/__init__.py:805
+#: fred/__init__.py:807
 msgid "This program requires Python 2.4 or higher. Your version is"
 msgstr "Tento program vyžaduje Python 2.4 nebo vyšší. Vaše verze je"
 
@@ -2337,3 +2338,6 @@ msgstr "(Žádný záznam.)"
 #: guiqt4/main.py:965
 msgid "Internal errors"
 msgstr "Interní chyby"
+
+#~ msgid "Report level. Range 0 - 10"
+#~ msgstr "Report level. Rozmezí 0 - 10"
