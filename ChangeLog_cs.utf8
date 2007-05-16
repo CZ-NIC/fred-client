@@ -1,6 +1,7 @@
 FredClient 1.3.3
 
 Změny:
+    * Příkaz technical_test přepracován. Přidán reportlevel, doména nebo seznam domén je nepovinný.
     * Verze schemat nastaveny na 1.2
     * Do info_domain a update_domain přidána položka Dočasný kontakt
     * Příkazy create_domain a update_domain rozpoznají povinnou/nepovinnou hodnotu

@@ -362,7 +362,7 @@ when owner and new registrar needn't require previous registrar for password."""
         'technical_test': (2,[
             ('id',(1,1),(),_T('NSSET ID'),'NSSID:MYID','',()),
             ('reportlevel',(0,1),(),_T('Report range level (0 - 10; higher = more detailed)'),'1','',()),
-            ('name',(0,1),(),_T('Domain name'),'mydomain.cz','',()),
+            ('name',(0,UNBOUNDED),(),_T('Domain name'),'mydomain.cz','',()),
             ],_T("""
 The EPP 'technical_test' command transmit request for technical test 
 for particular NSSET and domain. The result of the test will be saved 
