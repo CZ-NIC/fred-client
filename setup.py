@@ -16,8 +16,14 @@
 #    along with FredClient; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+import sys
 from distutils.core import setup
 from fred.internal_variables import fred_version
+
+APP_SCRIPTS = ['fred_client.py','fred_client_qt4.pyw']
+if len(sys.argv) > 2 and sys.argv[1] == 'bdist_wininst' and sys.argv[2] == '--install-script=setup_postinstall.py':
+    # join postinstall only for WIN distribution
+    APP_SCRIPTS.append('setup_postinstall.py')
 
 setup(name = 'FredClient',
     description = 'Client FRED (Free Registry for enum and domain)',
@@ -33,7 +39,7 @@ setup(name = 'FredClient',
             'lang/cs/LC_MESSAGES/fred_client.mo'],
         'guiqt4': ['*.py','*.png','*.qm'],
     },
-    scripts = ['fred_client.py','fred_client_qt4.pyw','setup_postinstall.py'],
+    scripts = APP_SCRIPTS, 
     data_files=[
         ('cznic_fred_docs',[
             'fred_client.conf.sample',

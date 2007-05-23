@@ -217,13 +217,7 @@ class TestDomain(unittest.TestCase):
         epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], 'nsset-not-exists', d['period'], d['contact'])
         self.assertNotEqual(epp_cli.is_val(), 1000)
 
-## DEPRECATED: nsset is not required
-##    def test_051(self):
-##        '4.5.2  Pokus o zalozeni domeny bez nssetu'
-##        d = FRED_DATA[DOMAIN_1]
-##        epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], None, d['period'], d['contact'])
-##        self.assertNotEqual(epp_cli.is_val(), 1000)
-        
+
     def test_060(self):
         '4.6.1  Pokus o zalozeni domeny s neexistujicim registratorem'
         d = FRED_DATA[DOMAIN_1]
@@ -321,13 +315,14 @@ class TestDomain(unittest.TestCase):
 
     def test_126(self):
         '4.12.3 Pokus o odebrani neexistujiciho admin kontaktu domeny'
-        epp_cli.update_domain(FRED_DOMAIN1, None, 'cid:tento-neexistuje') ## FRED_DATA[DOMAIN_1]['contact']
+        epp_cli.update_domain(FRED_DOMAIN1, None, 'cid:tento-neexistuje')
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
 
     def test_130(self):
         '4.13.1 Update vsech parametru domeny'
-        epp_cli.update_domain(FRED_DOMAIN1, None, None, FRED_DATA[CHANGE_DOMAIN])
+        # update_domain(name, add_admin, rem_admin, rem_tempc, chg, val_ex_date, cltrid)
+        epp_cli.update_domain(FRED_DOMAIN1, chg = FRED_DATA[CHANGE_DOMAIN])
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_131(self):
@@ -340,7 +335,7 @@ class TestDomain(unittest.TestCase):
     def test_135(self):
         '4.13.3 Resetovani nssetu'
         FRED_DATA[DOMAIN_3]['nsset'] = '' # zresetovani nssetu
-        epp_cli.update_domain(FRED_DOMAIN1, None, None, {'nsset':''})
+        epp_cli.update_domain(FRED_DOMAIN1, chg = {'nsset':''})
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
 
@@ -355,7 +350,7 @@ class TestDomain(unittest.TestCase):
     def test_140(self):
         '4.14.1 Zmena jen auth_info'
         FRED_DATA[DOMAIN_3]['auth_info'] = 'zmena-jen-hesla'
-        epp_cli.update_domain(FRED_DOMAIN1, None, None, {'auth_info':'zmena-jen-hesla'})
+        epp_cli.update_domain(FRED_DOMAIN1, chg = {'auth_info':'zmena-jen-hesla'})
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_142(self):
@@ -365,51 +360,7 @@ class TestDomain(unittest.TestCase):
         errors = __check_equality__(FRED_DATA[DOMAIN_3], epp_cli.is_val('data'))
         self.assert_(len(errors)==0, '\n'.join(errors))
 
-        
-##    def test_140(self):
-##        '4.14.1 Pokus o update stavu serverDeleteProhibited'
-##        status = 'serverDeleteProhibited'
-##        epp_cli.update_domain(FRED_DOMAIN1, {'status':status})
-##        self.assertNotEqual(epp_cli.is_val(), 1000, 'Status "%s" prosel prestoze nemel.'%status)
-##
-##    def test_141(self):
-##        '4.14.2 Pokus o update stavu serverUpdateProhibited'
-##        status = 'serverUpdateProhibited'
-##        epp_cli.update_domain(FRED_DOMAIN1, {'status':status})
-##        self.assertNotEqual(epp_cli.is_val(), 1000, 'Status "%s" prosel prestoze nemel.'%status)
-##        
-##    def test_150(self):
-##        '4.15 Update stavu clientDeleteProhibited a pokus o smazani'
-##        status = 'clientDeleteProhibited'
-##        epp_cli.update_domain(FRED_DOMAIN1, {'status':status})
-##        unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(1,3))
-##        self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se nastavit status: %s'%status)
-##        unitest_share.reset_client(epp_cli)
-##        # pokus o smazání
-##        epp_cli.delete_domain(FRED_DOMAIN1)
-##        unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(2,3))
-##        self.assertNotEqual(epp_cli.is_val(), 1000, 'Kontakt se smazal, prestoze mel nastaven %s'%status)
-##        unitest_share.reset_client(epp_cli)
-##        # zrušení stavu
-##        epp_cli.update_domain(FRED_DOMAIN1, None, {'status':status})
-##        self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se odstranit status: %s'%status)
-        
-##    def test_160(self):
-##        '4.16 Update stavu clientUpdateProhibited a pokus o zmenu objektu, smazani stavu'
-##        status = 'clientUpdateProhibited'
-##        epp_cli.update_domain(FRED_DOMAIN1, {'status':status})
-##        unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(1,3))
-##        self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se nastavit status: %s'%status)
-##        unitest_share.reset_client(epp_cli)
-##        # pokus o změnu
-##        epp_cli.update_domain(FRED_DOMAIN1, None, None, {'auth_info':'zmena hesla'})
-##        unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(2,3))
-##        self.assertNotEqual(epp_cli.is_val(), 1000, 'Domena se aktualizovala, prestoze mela nastaven status %s'%status)
-##        unitest_share.reset_client(epp_cli)
-##        # zrušení stavu
-##        epp_cli.update_domain(FRED_DOMAIN1, None, {'status':status})
-##        self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se odstranit status: %s'%status)
-        
+
     def test_170(self):
         '4.17 Pokus o Renew domain s nespravnym datumem'
         epp_cli.renew_domain(FRED_DOMAIN1, '2000-01-01') # cur_exp_date
@@ -439,51 +390,47 @@ class TestDomain(unittest.TestCase):
 
     def test_174(self):
         '4.17.4 Pokus o update enum domeny na neplatny valExDate'
-        val_ex_date = unitest_share.datedelta_from_now(0, 7) # sedm měsíců
-        epp_cli.update_domain(FRED_DOMAIN2, None, None, None, val_ex_date)
+        # update_domain(name, add_admin, rem_admin, rem_tempc, chg, val_ex_date, cltrid)
+        epp_cli.update_domain(FRED_DOMAIN2, val_ex_date = unitest_share.datedelta_from_now(0, 7))
         self.assertNotEqual(epp_cli.is_val(), 1000, 'Proslo renew-domain prestoze bylo valExDate zadano na 7 mesicu.')
 
     def test_175(self):
         '4.17.5 Pokus update domeny, ktera neni ENUM, s valExDate.'
         # unitest_share.datedelta_from_now(0,6,13) # maximální povolené datum
-        val_ex_date = unitest_share.datedelta_from_now(0, 5) # pět měsíců
-        epp_cli.update_domain(FRED_DOMAIN1, None, None, None, val_ex_date)
+        epp_cli.update_domain(FRED_DOMAIN1, val_ex_date = unitest_share.datedelta_from_now(0, 5))
         self.assertNotEqual(epp_cli.is_val(), 1000, 'Probehlo update_domain s valExDate prestoze domena neni ENUM.')
 
     def test_176(self):
         '4.17.6 Update enum domeny s valExDate na 5 mesicu.'
-        val_ex_date = unitest_share.datedelta_from_now(0, 5) # pět měsíců
-        epp_cli.update_domain(FRED_DOMAIN2, None, None, None, val_ex_date)
+        epp_cli.update_domain(FRED_DOMAIN2, val_ex_date = unitest_share.datedelta_from_now(0, 5))
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_180(self):
         '4.18.0 Nastaveni valExDate na dnes+15dni (neni v ochranne lhute)'
-        val_ex_date = unitest_share.datedelta_from_now(0, 0, 15)
-        epp_cli.update_domain(FRED_DOMAIN2, None, None, None, val_ex_date)
+        epp_cli.update_domain(FRED_DOMAIN2, val_ex_date = unitest_share.datedelta_from_now(0, 0, 15))
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_181(self):
-        '4.18.1 Pokus o prodlouzeni validace o 6 mesicu ode dne valExDate s prekrocenim 14 denni lhuty'
-        val_ex_date = unitest_share.datedelta_from_now(0, 6, 14)
-        epp_cli.update_domain(FRED_DOMAIN2, None, None, None, val_ex_date)
+        '4.18.1 Pokus o prodlouzeni validace o 6 mesicu + 1 den (mimo ochrannou lhutu)'
+        # val_ex_date je now + 15
+        epp_cli.update_domain(FRED_DOMAIN2, val_ex_date = unitest_share.datedelta_from_now(0, 6, 1))
         self.assertNotEqual(epp_cli.is_val(), 1000, 'update_domain proslo s val_ex_date o jeden den vetsim nez je povoleno.')
 
     def test_182(self):
         '4.18.2 Nastaveni valExDate na dnes+14dni (je v ochranne lhute)'
-        val_ex_date = unitest_share.datedelta_from_now(0, 0, 14)
-        epp_cli.update_domain(FRED_DOMAIN2, None, None, None, val_ex_date)
+        epp_cli.update_domain(FRED_DOMAIN2, val_ex_date = unitest_share.datedelta_from_now(0, 0, 14))
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_183(self):
-        '4.18.3 Pokus o prodlouzeni validace o 6 mesicu + 15 dni v ochranne lhute'
-        val_ex_date = unitest_share.datedelta_from_now(0, 6, 15)
-        epp_cli.update_domain(FRED_DOMAIN2, None, None, None, val_ex_date)
+        '4.18.3 Pokus o prodlouzeni validace o 6 mesicu + 14 dni v ochranne lhute'
+        # val_ex_date je now + 14
+        epp_cli.update_domain(FRED_DOMAIN2, val_ex_date = unitest_share.datedelta_from_now(0, 6, 14))
         self.assertNotEqual(epp_cli.is_val(), 1000, 'Pokus o prodlouzeni validace o 6 mesicu + 15 dni v ochranne lhute prosel.')
 
     def test_184(self):
-        '4.18.4 Prodlouzeni validace o 6 mesicu + 14 dni v ochranne lhute'
-        val_ex_date = unitest_share.datedelta_from_now(0, 6, 14)
-        epp_cli.update_domain(FRED_DOMAIN2, None, None, None, val_ex_date)
+        '4.18.4 Prodlouzeni validace o 6 mesicu + 13 dni v ochranne lhute'
+        # val_ex_date je now + 14
+        epp_cli.update_domain(FRED_DOMAIN2, val_ex_date = unitest_share.datedelta_from_now(0, 6, 13))
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
 
@@ -546,14 +493,14 @@ class TestDomain(unittest.TestCase):
         
     def test_220(self):
         '4.22 Druhy registrator: Zmena hesla po prevodu domeny'
-        epp_cli_TRANSF.update_domain(FRED_DOMAIN1, None, None, {'auth_info': FRED_DOMAIN_PASSW})
+        epp_cli_TRANSF.update_domain(FRED_DOMAIN1, chg = {'auth_info': FRED_DOMAIN_PASSW})
         self.assertEqual(epp_cli_TRANSF.is_val(), 1000, unitest_share.get_reason(epp_cli_TRANSF))
         
     def test_230(self):
         '4.23 Zmena hesla domeny, ktera registratorovi jiz nepatri'
         global epp_cli_log
         epp_cli_log = epp_cli
-        epp_cli.update_domain(FRED_DOMAIN1, None, None, {'auth_info': FRED_DATA[DOMAIN_3]['auth_info']})
+        epp_cli.update_domain(FRED_DOMAIN1, chg = {'auth_info': FRED_DATA[DOMAIN_3]['auth_info']})
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         
     def test_240(self):
