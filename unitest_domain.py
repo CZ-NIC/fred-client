@@ -422,15 +422,15 @@ class TestDomain(unittest.TestCase):
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_183(self):
-        '4.18.3 Pokus o prodlouzeni validace o 6 mesicu + 14 dni v ochranne lhute'
+        '4.18.3 Pokus o prodlouzeni validace o 6 mesicu + 15 dni v ochranne lhute'
         # val_ex_date je now + 14
-        epp_cli.update_domain(FRED_DOMAIN2, val_ex_date = unitest_share.datedelta_from_now(0, 6, 14))
+        epp_cli.update_domain(FRED_DOMAIN2, val_ex_date = unitest_share.datedelta_from_now(0, 6, 15))
         self.assertNotEqual(epp_cli.is_val(), 1000, 'Pokus o prodlouzeni validace o 6 mesicu + 15 dni v ochranne lhute prosel.')
 
     def test_184(self):
-        '4.18.4 Prodlouzeni validace o 6 mesicu + 13 dni v ochranne lhute'
+        '4.18.4 Prodlouzeni validace o 6 mesicu + 14 dni v ochranne lhute'
         # val_ex_date je now + 14
-        epp_cli.update_domain(FRED_DOMAIN2, val_ex_date = unitest_share.datedelta_from_now(0, 6, 13))
+        epp_cli.update_domain(FRED_DOMAIN2, val_ex_date = unitest_share.datedelta_from_now(0, 6, 14))
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
 

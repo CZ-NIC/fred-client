@@ -533,4 +533,22 @@ data = ( # 0
 </trID>
 </response>
 </epp>"""), 
+    ('list_domains', """<?xml version='1.0' encoding='utf-8' standalone="no"?>
+<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:fred='http://www.nic.cz/xml/epp/fred-1.1' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
+  <response>
+    <result code='1000'>
+      <msg lang='cs'>P\u0159\u00edkaz \u00fasp\u011b\u0161n\u011b proveden</msg>
+    </result>
+    <resData>
+      <fred:infoResponse xsi:schemaLocation='http://www.nic.cz/xml/epp/fred-1.1 fred-1.1.xsd'>
+        <fred:count>2</fred:count>
+      </fred:infoResponse>
+    </resData>
+    <trID>
+      <clTRID>ABC-12346</clTRID>
+      <svTRID>ccReg-0000315538</svTRID>
+    </trID>
+  </response>
+</epp>
+"""), 
     )

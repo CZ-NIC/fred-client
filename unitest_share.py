@@ -180,18 +180,24 @@ def add_period(struct_time, year=0, month=0, day=0):
         day         int
     OUT: t_time     float
     """
+    # append days
     tt = list(struct_time)
+    tt[2]+= day
+    
+    struct_time = time.localtime(time.mktime(tt))
+    tt = list(struct_time)
+    
+    # append months and years
     tt[0]+=year
     tt[1]+= month
     tt[0]+= tt[1]/12
     tt[1] = tt[1]%12
-    t_time = time.mktime(tt)
-    if day: t_time += 60*60*24*day
-    return t_time
-
+    
+    return time.mktime(tt)
+    
 def datedelta_from_now(year=0, month=0, day=0):
     'Returs date from now to defined date period. OUT: "2006-11-22"'
-    return time.strftime("%Y-%m-%d",time.localtime(add_period(time.localtime(time.time()),year, month, day)))
+    return time.strftime("%Y-%m-%d",time.localtime(add_period(time.localtime(time.time()), year, month, day)))
     
 get_local_text = fred.session_base.get_ltext
 

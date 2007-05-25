@@ -373,6 +373,26 @@ is from 0 to 10. Set report level in the command create_nsset
 and update_nsset.
 """),('technical_test nssid:id 4 mydomain.cz',)),
         #----------------------------------------------------
+        'count_list_contacts': (0,[],_T("""
+This command fills server buffer by contact names and set pointer at the beginning of the list.
+Than you can call 'get_results' command for fetch data.
+"""),('count_list_contacts',)),
+        #----------------------------------------------------
+        'count_list_domains': (0,[],_T("""
+Fills server buffer by domain names and set pointer at the beginning of the list.
+Than you can call 'get_results' command for fetch data.
+"""),('count_list_domains',)),
+        #----------------------------------------------------
+        'count_list_nssets': (0,[],_T("""
+Fills server buffer by nsset names and set pointer at the beginning of the list.
+Than you can call 'get_results' command for fetch data.
+"""),('count_list_nssets',)),
+        #----------------------------------------------------
+        'get_results': (0,[],_T("""
+Get results from server buffer. Server returns chunk of the list.
+Call 'get_results' again until you got all data.
+"""),('get_results',)),
+        #----------------------------------------------------
     }
     for k,v in command_params.items():
         if k == 'hello': continue

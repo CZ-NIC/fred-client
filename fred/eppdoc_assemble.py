@@ -1080,6 +1080,19 @@ class Message(MessageBase):
         'Create technical_test document'
         self.__asseble_extcommand__(('test','nsset','id'), params, ('id', 'level', 'name'))
 
+    def assemble_count_list_contacts(self, *params):
+        'Create count_list_contact document'
+        self.__asseble_extcommand__(('listContacts', ), params)
+    def assemble_count_list_domains(self, *params):
+        'Create count_list_domains document'
+        self.__asseble_extcommand__(('listDomains', ), params)
+    def assemble_count_list_nssets(self, *params):
+        'Create count_list_nssets document'
+        self.__asseble_extcommand__(('listNssets', ), params)
+    def assemble_get_results(self, *params):
+        'Create count_list_nssets document'
+        self.__asseble_extcommand__(('getResults', ), params)
+        
     #===========================================
 
     def fetch_from_info(self, command_type, info_type, answer, null_value):

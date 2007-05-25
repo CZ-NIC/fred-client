@@ -21,10 +21,10 @@ from distutils.core import setup
 from fred.internal_variables import fred_version
 
 APP_SCRIPTS = ['fred_client.py','fred_client_qt4.pyw']
-if len(sys.argv) > 2 and sys.argv[1] == 'bdist_wininst' and sys.argv[2] == '--install-script=setup_postinstall.py':
+if 'bdist_wininst' in sys.argv and '--install-script=setup_postinstall.py' in sys.argv:
     # join postinstall only for WIN distribution
     APP_SCRIPTS.append('setup_postinstall.py')
-
+    
 setup(name = 'FredClient',
     description = 'Client FRED (Free Registry for enum and domain)',
     author = 'Zdenek Bohm, CZ.NIC',
