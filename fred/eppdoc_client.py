@@ -372,6 +372,7 @@ a parts what have equal or lower level number. Valid range
 is from 0 to 10. Set report level in the command create_nsset 
 and update_nsset.
 """),('technical_test nssid:id 4 mydomain.cz',)),
+
         #----------------------------------------------------
         'count_list_contacts': (0,[],_T("""
 This command fills server buffer by contact names and set pointer at the beginning of the list.
@@ -393,6 +394,23 @@ Get results from server buffer. Server returns chunk of the list.
 Call 'get_results' again until you got all data.
 """),('get_results',)),
         #----------------------------------------------------
+
+        'loop_list_contacts': (0,[],_T("""
+Returns list of contacts using command count_list_contacts and runs loop of get_results
+until all data not received.
+"""),('count_list_contacts',)),
+        #----------------------------------------------------
+        'loop_list_domains': (0,[],_T("""
+Returns list of domains using command count_list_domains and runs loop of get_results
+until all data not received.
+"""),('count_list_domains',)),
+        #----------------------------------------------------
+        'loop_list_nssets': (0,[],_T("""
+Returns list of nssets using command count_list_nssets and runs loop of get_results
+until all data not received.
+"""),('count_list_nssets',)),
+        #----------------------------------------------------
+        
     }
     for k,v in command_params.items():
         if k == 'hello': continue
@@ -526,7 +544,25 @@ def make_sort_by_names():
        'domain:renew': ('domain',(
          ('name',        1,  _T('Domain name')),
          ('exDate',      1,  _T('Expiration date')),
-         )),        
+         )),
+         
+       'fred:listcontacts': ('',(
+         ('count',       1,  _T('Number of records')),
+         ('notify',      2,  _T('Notify')),
+         )),
+       'fred:listnssets': ('',(
+         ('count',       1,  _T('Number of records')),
+         ('notify',      2,  _T('Notify')),
+         )),
+       'fred:listdomains': ('',(
+         ('count',       1,  _T('Number of records')),
+         ('notify',      2,  _T('Notify')),
+         )),
+         
+       'fred:getresults': ('',(
+         ('list',        1,  _T('List')),
+         )),
+
     }
     # append similar objects
     sort_by_names['contact:list']   = sort_by_names['domain:list']

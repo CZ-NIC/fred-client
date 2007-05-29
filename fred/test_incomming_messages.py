@@ -1,5 +1,19 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
+
+#Test on session_transfer.py
+
+#Command name from:
+#session_transfer.ManagerTransfer().grab_command_name_from_xml()
+#eppdoc.Message().get_epp_command_name()
+#Returns top EPP command name. 
+#        Level 1: epp.greeting
+#        Level 1: epp.command 
+#        Level 2:     info, check, create, ....
+#        Level 3:        contact:create
+#        Level 4:        fred:sendauthinfo, fred:creditinfo, fred:test
+
+
 """TEST the server answers.
 """
 data = ( # 0
@@ -533,7 +547,8 @@ data = ( # 0
 </trID>
 </response>
 </epp>"""), 
-    ('list_domains', """<?xml version='1.0' encoding='utf-8' standalone="no"?>
+
+    ('fred:listdomains', """<?xml version='1.0' encoding='utf-8' standalone="no"?>
 <epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:fred='http://www.nic.cz/xml/epp/fred-1.1' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
   <response>
     <result code='1000'>
@@ -547,6 +562,24 @@ data = ( # 0
     <trID>
       <clTRID>ABC-12346</clTRID>
       <svTRID>ccReg-0000315538</svTRID>
+    </trID>
+  </response>
+</epp>"""), 
+    ('fred:getresults', """<?xml version='1.0' encoding='utf-8' standalone="no"?>
+<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:fred='http://www.nic.cz/xml/epp/fred-1.1' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
+  <response>
+    <result code='1000'>
+      <msg lang='cs'>P\u0159\u00edkaz \u00fasp\u011b\u0161n\u011b proveden</msg>
+    </result>
+    <resData>
+      <fred:resultsList xsi:schemaLocation='http://www.nic.cz/xml/epp/fred-1.1 fred-1.1.xsd'>
+        <fred:item>CID:JEDNA</fred:item>
+        <fred:item>CID:DVA</fred:item>
+      </fred:resultsList>
+    </resData>
+    <trID>
+      <clTRID>anam003#07-05-28at10:47:03</clTRID>
+      <svTRID>ccReg-0000315570</svTRID>
     </trID>
   </response>
 </epp>

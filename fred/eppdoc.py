@@ -76,6 +76,7 @@ class Message:
             'epp':         VERSION_VERSION,
         }
         self.set_schema_version('epp', VERSION_VERSION)
+        self.getresults_loop = 0 # indicate if client starts messages loop
 
     def get_schema_names(self):
         return self.schema_version.keys()
@@ -106,6 +107,7 @@ class Message:
         self.errors = []
         self._handle_ID = ''
         self._dct = {}  # parsed parameters from command line
+        self.getresults_loop = 0
 
     def get_params(self):
         'Returns dict of the command params.'
@@ -596,6 +598,8 @@ def __pfd__(dict_data,color=0,indent=0):
                 attr.append(patt[0]%(k,v))
             body.append(patt[1]%'; '.join(attr))
         # data
+        if dict_data is None:
+            return body
         if dict_data.has_key('data'): body.append(dict_data['data'])
         # other children nodes    
         ind = ' '*indent
@@ -658,20 +662,6 @@ def prepare_for_display(dict_values,color=0,indent=0):
                     body.append(patt[1]%(ind,key,dict_values[key]))
     return '\n'.join(body)
 
-def correct_unbound_prefix(xml, epp_schema_version):
-    'Input missing prefix definitions.'
-    names = []
-    for token in re.findall('<([\w-]+):',xml):
-        if token not in names:
-            if not re.search('%s-%s.xsd'%(token, epp_schema_version), xml):
-                # if namespace is not defined...
-                names.append(token)
-    patt = re.compile(r'<([^\?][^>]+)>',re.DOTALL)
-    if len(names):
-        return re.sub(r'<([^\?][^>]+)>', '<\\1 %s>'%' '.join(['xmlns:%s="%sepp-%s"'%(n, obj_uri, epp_schema_version) for n in names]), xml, 1)
-    else:
-        return xml
-
 
 def test_display():
     exampe1 = {'attr': [(u'xmlns:xsi', u'http://www.w3.org/2001/XMLSchema-instance'),
@@ -726,9 +716,14 @@ def test_parse(filename):
     print prepare_display(epp_dict)
 
     
+
 if __name__ == '__main__':
     "Test of parsing XML document and mapping XML.DOM into python dict/class."
-##    test_display()
-    test_parse('test-disclose.xml')
+    import sys
+    _T = lambda s: s
+    if len(sys.argv)>1:
+        test_parse(sys.argv[1])
+    else:
+        print 'Usage: eppdoc.py eppfile.xml'
 ##    ret = {'reason': u'Authentication error; server closing connection', 'code': 2501, 'data': {"h1":"ano"}, 'errors': []}
 ##    print get_value_from_dict(ret, ('data','h1'))

@@ -751,6 +751,67 @@ OPTIONS:
   cltrid                   Client transaction ID"""
         return self._epp.api_command('technical_test',{'id':id, 'level':level, 'name':name, 'cltrid':cltrid})
 
+    def count_list_contacts(self, cltrid=None):
+        """DESCRIPTION:
+  This command fills server buffer by contact names and set pointer at the beginning of the list.
+  Than you can call 'get_results' command for fetch data.
+
+SYNTAX:
+  count_list_contacts [other_options]
+
+OPTIONS:
+  cltrid                   Client transaction ID
+
+EXAMPLES:
+  count_list_contacts"""
+        return self._epp.api_command('count_list_contacts',{'cltrid':cltrid})
+        
+    def count_list_nssets(self, cltrid=None):
+        """DESCRIPTION:
+  This command fills server buffer by nsset names and set pointer at the beginning of the list.
+  Than you can call 'get_results' command for fetch data.
+
+SYNTAX:
+  count_list_nssets [other_options]
+
+OPTIONS:
+  cltrid                   Client transaction ID
+
+EXAMPLES:
+  count_list_nssets"""
+        return self._epp.api_command('count_list_nssets',{'cltrid':cltrid})
+
+    def count_list_domains(self, cltrid=None):
+        """DESCRIPTION:
+  This command fills server buffer by domain names and set pointer at the beginning of the list.
+  Than you can call 'get_results' command for fetch data.
+
+SYNTAX:
+  count_list_domains [other_options]
+
+OPTIONS:
+  cltrid                   Client transaction ID
+
+EXAMPLES:
+  count_list_domains"""
+        return self._epp.api_command('count_list_domains',{'cltrid':cltrid})
+
+    def get_results(self, cltrid=None):
+        """DESCRIPTION:
+  Get results from server buffer. Server returns chunk of the list.
+  Call 'get_results' again until you got all data.
+
+SYNTAX:
+  get_results [other_options]
+
+OPTIONS:
+  cltrid                   Client transaction ID
+
+EXAMPLES:
+  get_results"""
+        return self._epp.api_command('get_results',{'cltrid':cltrid})
+
+        
     #==============================================================
         
     def get_answer_dct(self):

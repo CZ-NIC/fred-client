@@ -489,17 +489,20 @@ class ManagerTransfer(ManagerBase):
                 for error in dct['errors'][1:]:
                     report(get_ltext(error))
             #... data .............................
-            if re.match('\w+:list',dct['command']):
-                # list output execption
-                if len(body) and body[-1] != '': report('') # empty line
-                cnt=0
-                for item in dct['data'].get('list',[]):
-                    body.append(get_ltext(item))
-                    cnt+=1
-                body.append('') # empty line to separate list from Sum message
-                body.append(_TP('(%d item)','(%d items)',cnt)%cnt)
-            else:
-                self.__append_to_body__(body, dct)
+#            if re.match('\w+:list',dct['command']):
+#                # list output execption
+#                if len(body) and body[-1] != '': report('') # empty line
+#                cnt=0
+#                for item in dct['data'].get('list',[]):
+#                    body.append(get_ltext(item))
+#                    cnt+=1
+#                body.append('') # empty line to separate list from Sum message
+#                body.append(_TP('(%d item)','(%d items)',cnt)%cnt)
+#            else:
+#                self.__append_to_body__(body, dct)
+            
+            self.__append_to_body__(body, dct)
+            
         else:
             # Zero verbose level
             report(human_readable(self._raw_answer))

@@ -124,6 +124,7 @@ class ManagerReceiver(ManagerCommand):
                 # Name of command is very important. It is key for choose function dispatching answer:
                 # delete_(contact|nsset|domain) fnc_name: answer_response_contact_delete
                 # sendauthinfo_(contact|nsset|domain) fnc_name: answer_response_fred_sendauthinfo
+                #print 'HANDLE:', fnc_name # TEST display HANDLE +++
                 if hasattr(self,fnc_name):
                     getattr(self,fnc_name)((result, code, reason))
                     display_src = 0 # Answer has been catch, we haven't display it again.
@@ -144,24 +145,34 @@ class ManagerReceiver(ManagerCommand):
             self._raw_answer = epp_server_answer
             # create XML DOM tree:
             self._epp_response.reset()
-            self._epp_response.parse_xml(eppdoc.correct_unbound_prefix(epp_server_answer, self._epp_response.schema_version['epp']))
+            self._epp_response.parse_xml(epp_server_answer)
+            
             debug_time.append(('Parse XML',time.time())) # PROFILER
-            # Exception for LIST commands.
-            try:
-                list_type = re.match('(\w+):list',self._command_sent).group(1)
-            except AttributeError:
-                list_type = ''
+
+#            # Exception for LIST commands.
+#            try:
+#                list_type = re.match('(\w+):list',self._command_sent).group(1)
+#            except AttributeError:
+#                list_type = ''
+                
             if self._epp_response.is_error():
                 # Errors occurs during parsing
                 self.append_error(self._epp_response.get_errors())
+                
             if not self._epp_response.is_error():
                 # When is comming some answer and it is valid and parsed succefully:
-                # HOOK for contact:list, nsset:list, domain:list
-                if list_type:
-                    # TODO: Hook. Must be done over.
-                    self._dict_answer = self._epp_response.create_list_data(list_type)
-                else:
-                    self._dict_answer = self._epp_response.create_data()
+                
+#                # HOOK for contact:list, nsset:list, domain:list
+#                if list_type:
+#                    # TODO: Hook. Must be done over.
+#                    self._dict_answer = self._epp_response.create_list_data(list_type)
+#                    print '!!!!HOOK: self._dict_answer:', self._dict_answer
+#                else:
+#                    self._dict_answer = self._epp_response.create_data()
+#                    print '!!!! self._dict_answer:', self._dict_answer
+                    
+                self._dict_answer = self._epp_response.create_data()
+                
                 debug_time.append(('Create data',time.time())) # PROFILER
                 if self._dict_answer.get('greeting',None):
                     self._dct_answer['command'] = self._command_sent
@@ -488,7 +499,107 @@ class ManagerReceiver(ManagerCommand):
                 value = eppdoc.get_dct_value(zone, 'fred:credit')
                 self._dct_answer['data'][key] = value
 
+    def __hide_labels_in_verbose1__(self):
+        # self._session[SORT_BY_COLUMNS] = (('count', 1, 'Number of records'), 
+        #                                   ('notify', 2, 'Notify'))
+        if self._session[VERBOSE] == 1:
+            # hide all levels 1 in verbose 1
+            modified_labels = []
+            for key, verbose, label in self._session[SORT_BY_COLUMNS]:
+                if verbose == 1:
+                    verbose = 1000 
+                modified_labels.append((key, verbose, label))
+            self._session[SORT_BY_COLUMNS] = modified_labels
 
+
+    def __loop_getresults__(self, command_type):
+        'Make getresults loop until any data comming'
+        # send get_result command
+        # parse and print answer
+        # stop if no data
+
+        self.TEST = 0 #!!!
+        
+        # Keep number of the list
+        keep_labels = self._session[SORT_BY_COLUMNS]
+        keep_count = self._dct_answer.get('data', {'count':0}).get('count', 0)
+        
+        self.__hide_labels_in_verbose1__()
+        
+        self.print_answer()
+        self.display() # display errors or notes
+        self.loop_position = 0
+        while 1:
+            self.api_command('get_results')
+            run_loop = self._dct_answer.get('data', {'count':0}).get('count', 0)
+            if run_loop < 1:
+                break
+            self.print_answer()
+            self.display() # display errors or notes
+            self.loop_position += 1
+
+        self.loop_position = 0 # reset pointer for next command
+        self.reset_round()
+        # restore original values
+        self._session[SORT_BY_COLUMNS] = keep_labels
+        self._dct_answer['data'] = {}
+        self._dct_answer['data']['count'] = keep_count
+
+    def __fred_listobjects__(self, data, command_type):
+        'Shared for all responses of the listObject'
+        # command_type = fred:listdomains
+        if self.__code_isnot_1000__(data, command_type): return
+        
+        try:
+            resData = self._dict_answer['response'].get('resData',{})
+        except KeyError, msg:
+            self.append_error('__fred_listdomains__ KeyError: %s'%msg)
+        else:
+            fred_info_response = resData.get('fred:infoResponse',{})
+            fred_count = fred_info_response.get('fred:count',None)
+            if type(fred_count) is dict and fred_count.has_key('data'):
+                self._dct_answer['data']['count'] = fred_count['data']
+                self._dct_answer['data']['notify'] = _T('The server buffer and pointer has been reseted.')
+
+        if self._epp_cmd.getresults_loop:
+            # special mode for list_(contact|nsset|domain)s commands
+            self.__loop_getresults__(command_type)
+
+    def answer_response_fred_listcontacts(self, data):
+        'Handler for fred:listcontacts command'
+        self.__fred_listobjects__(data, 'fred:listcontacts')
+
+    def answer_response_fred_listnssets(self, data):
+        'Handler for fred:listnssets command'
+        self.__fred_listobjects__(data, 'fred:listnssets')
+    
+    def answer_response_fred_listdomains(self, data):
+        'Handler for fred:listdomains command'
+        self.__fred_listobjects__(data, 'fred:listdomains')
+
+    def answer_response_fred_getresults(self, data):
+        'Shared for all responses of the listObject'
+        if self.__code_isnot_1000__(data, 'fred:getresults'): return
+        try:
+            resData = self._dict_answer['response'].get('resData',{})
+        except KeyError, msg:
+            self.append_error('__fred_getresults__ KeyError: %s'%msg)
+        else:
+            fred_results_list = resData.get('fred:resultsList',{})
+            fred_item = fred_results_list.get('fred:item',None)
+            report = []
+            if fred_item:
+                report = [fred_item[n]['data'] for n in range(len(fred_item))]
+            self._dct_answer['data']['list'] = report
+            if not self._epp_cmd.getresults_loop:
+                self._dct_answer['data']['count'] = len(report)
+#        if self.loop_position:
+#            # hide label
+##            self.__hide_labels_in_verbose1__()
+##            print '!!!self._session[SORT_BY_COLUMNS]:', self._session[SORT_BY_COLUMNS]
+##            self._session[SORT_BY_COLUMNS] = (('list', 1, ''),)
+
+        
     #-------------------------------------------------
     #
     # Main API function
@@ -512,6 +623,14 @@ class ManagerReceiver(ManagerCommand):
                 self.send(self._raw_cmd)                                      # send to server
                 if len(self._errors): raise FredError(self.fetch_errors())
                 xml_answer = self.receive()                                   # receive answer
+                
+#                # HOOK,  TEST !!!!
+#                if re.search('fred:resultsList', xml_answer) and self.TEST < 4:
+#                    xml_answer = open('/tmp/epp-test.xml').read()
+#                    patt = '<fred:item>CID:\\1_%02d</fred:item>'%self.TEST
+#                    xml_answer = re.sub('<fred:item>CID:(\w+)</fred:item>', patt, xml_answer)
+#                    self.TEST += 1
+                
                 error_validate_answer = self.is_epp_valid(xml_answer, _T('Server answer XML document failed to validate.')) # validate answer
                 if self.run_as_unittest and not self._session[VALIDATE]:
                     # TEST: validate the server's answer in unittest:
@@ -605,7 +724,6 @@ if __name__ == '__main__':
         # TEST selected document:
         # Data item has format: ('command:name',"""<?xml ...XML document... >""")
         # For example: ('nsset:info',"""<?xml ...<epp ...><response> ... </epp>""")
-        #test(test_incomming_messages.data[0])
         test(test_incomming_messages.data[-1])
         #map(test, test_incomming_messages.data)
         #test(test_incomming_messages.data[9]) # test na contact:info status

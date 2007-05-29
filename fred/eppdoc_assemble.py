@@ -701,6 +701,7 @@ class Message(MessageBase):
     def assemble_info_nsset(self, *params):
         self.__asseble_command__(('info','nsset','id'), 'name', params)
 
+    # OBSOLETE:
     def assemble_list_contact(self, *params):
         self.__asseble_command__(('info','contact','id','list'), '', params)
         
@@ -709,6 +710,18 @@ class Message(MessageBase):
         
     def assemble_list_nsset(self, *params):
         self.__asseble_command__(('info','nsset','id','list'), '', params)
+
+    # NEW VERSION:
+    def assemble_loop_list_contacts(self, *params):
+        self.getresults_loop = 1 # run messages loop
+        self.__asseble_extcommand__(('listContacts', ), params)
+    def assemble_loop_list_domains(self, *params):
+        self.getresults_loop = 1 # run messages loop
+        self.__asseble_extcommand__(('listDomains', ), params)
+    def assemble_loop_list_nssets(self, *params):
+        self.getresults_loop = 1 # run messages loop
+        self.__asseble_extcommand__(('listNssets', ), params)
+
 
     def assemble_poll(self, *params):
         op = self._dct.get('op',['req'])[0]
