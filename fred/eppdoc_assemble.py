@@ -595,6 +595,16 @@ class Message(MessageBase):
             )),
             ('%s:extcommand'%namespace, '%s:%s'%(namespace,cols[0]))
             ]
+            if key:
+                if type(key) not in (list,tuple): key = (key,)
+                for key_name in key:
+                    names = self._dct.get(key_name)
+                    if names is None:
+                        continue # jump over optional keys
+                    nscol = '%s:%s'%(namespace, key_name)
+                    if type(names) not in (list,tuple): names = (names,)
+                    for value in names:
+                        data.append(('%s:%s'%(namespace, cols[0]), nscol, value))
         else:
             # for auth_info ------------------------------------------------
             if len(cols) > 3:
@@ -1105,6 +1115,20 @@ class Message(MessageBase):
     def assemble_get_results(self, *params):
         'Create count_list_nssets document'
         self.__asseble_extcommand__(('getResults', ), params)
+
+    def assemble_domains_by_nsset(self, *params):
+        'Create domains_by_nsset document'
+        self.__asseble_extcommand__(('domainsByNsset', ), params, 'id')
+    def assemble_domains_by_contact(self, *params):
+        'Create domains_by_contact document'
+        self.__asseble_extcommand__(('domainsByContact', ), params, 'id')
+    def assemble_nsset_by_contact(self, *params):
+        'Create nsset_by_contact document'
+        self.__asseble_extcommand__(('nssetsByContact', ), params, 'id')
+    def assemble_nsset_by_ns(self, *params):
+        'Create nsset_by_ns document'
+        self.__asseble_extcommand__(('nssetsByNs', ), params, 'name')
+
         
     #===========================================
 

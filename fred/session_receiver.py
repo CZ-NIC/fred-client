@@ -124,7 +124,8 @@ class ManagerReceiver(ManagerCommand):
                 # Name of command is very important. It is key for choose function dispatching answer:
                 # delete_(contact|nsset|domain) fnc_name: answer_response_contact_delete
                 # sendauthinfo_(contact|nsset|domain) fnc_name: answer_response_fred_sendauthinfo
-                #print 'HANDLE:', fnc_name # TEST display HANDLE +++
+                # print 'HANDLE:', fnc_name # TEST display HANDLE +++
+                # print 'COMMAND:', self._command_sent +++
                 if hasattr(self,fnc_name):
                     getattr(self,fnc_name)((result, code, reason))
                     display_src = 0 # Answer has been catch, we haven't display it again.
@@ -545,7 +546,7 @@ class ManagerReceiver(ManagerCommand):
         self._dct_answer['data'] = {}
         self._dct_answer['data']['count'] = keep_count
 
-    def __fred_listobjects__(self, data, command_type):
+    def __fred_listobjects__(self, data, command_type, notify):
         'Shared for all responses of the listObject'
         # command_type = fred:listdomains
         if self.__code_isnot_1000__(data, command_type): return
@@ -559,7 +560,15 @@ class ManagerReceiver(ManagerCommand):
             fred_count = fred_info_response.get('fred:count',None)
             if type(fred_count) is dict and fred_count.has_key('data'):
                 self._dct_answer['data']['count'] = fred_count['data']
-                self._dct_answer['data']['notify'] = _T('The server buffer and pointer has been reseted.')
+                try:
+                    count = int(fred_count['data'])
+                except ValueError, msg:
+                    self.append_error('__fred_listobjects__ ValueError: %s'%msg)
+                    count = 0
+                if count == 0:
+                    notify = _T('The list is empty.')
+                self._dct_answer['data']['notify'] = notify
+                
 
         if self._epp_cmd.getresults_loop:
             # special mode for list_(contact|nsset|domain)s commands
@@ -567,15 +576,24 @@ class ManagerReceiver(ManagerCommand):
 
     def answer_response_fred_listcontacts(self, data):
         'Handler for fred:listcontacts command'
-        self.__fred_listobjects__(data, 'fred:listcontacts')
+        self.__fred_listobjects__(data, 'fred:listcontacts', _T("""
+The list of the contacts is ready on the server buffer 
+and pointer is set at the beginning of the list.
+Call get_results command for gain data."""))
 
     def answer_response_fred_listnssets(self, data):
         'Handler for fred:listnssets command'
-        self.__fred_listobjects__(data, 'fred:listnssets')
+        self.__fred_listobjects__(data, 'fred:listnssets', _T("""
+The list of the nssets is ready on the server buffer 
+and pointer is set at the beginning of the list.
+Call get_results command for gain data."""))
     
     def answer_response_fred_listdomains(self, data):
         'Handler for fred:listdomains command'
-        self.__fred_listobjects__(data, 'fred:listdomains')
+        self.__fred_listobjects__(data, 'fred:listdomains', _T("""
+The list of the domains is ready on the server buffer 
+and pointer is set at the beginning of the list.
+Call get_results command for gain data."""))
 
     def answer_response_fred_getresults(self, data):
         'Shared for all responses of the listObject'
@@ -587,18 +605,47 @@ class ManagerReceiver(ManagerCommand):
         else:
             fred_results_list = resData.get('fred:resultsList',{})
             fred_item = fred_results_list.get('fred:item',None)
-            report = []
-            if fred_item:
-                report = [fred_item[n]['data'] for n in range(len(fred_item))]
-            self._dct_answer['data']['list'] = report
-            if not self._epp_cmd.getresults_loop:
-                self._dct_answer['data']['count'] = len(report)
+            if fred_item is None:
+                pass
+            else:
+                if type(fred_item) not in (list, tuple):
+                    fred_item = (fred_item, )
+                report = []
+                if fred_item:
+                    report = [fred_item[n]['data'] for n in range(len(fred_item))]
+                self._dct_answer['data']['list'] = report
+                if not self._epp_cmd.getresults_loop:
+                    self._dct_answer['data']['count'] = len(report)
+                
 #        if self.loop_position:
 #            # hide label
 ##            self.__hide_labels_in_verbose1__()
 ##            print '!!!self._session[SORT_BY_COLUMNS]:', self._session[SORT_BY_COLUMNS]
 ##            self._session[SORT_BY_COLUMNS] = (('list', 1, ''),)
 
+    def answer_response_fred_domainsbycontact(self, data):
+        'Handler for fred:domainsbycontact command'
+        self.__fred_listobjects__(data, 'fred:domainsbycontact', _T("""The list of the domains is ready on the server buffer 
+and pointer is set at the beginning of the list.
+Call get_results command for gain data."""))
+
+    def answer_response_fred_domainsbynsset(self, data):
+        'Handler for fred:domainsbynsset command'
+        self.__fred_listobjects__(data, 'fred:domainsbynsset', _T("""The list of the nssets is ready on the server buffer 
+and pointer is set at the beginning of the list.
+Call get_results command for gain data."""))
+    
+    def answer_response_fred_nssetsbycontact(self, data):
+        'Handler for fred:nssetsbycontact command'
+        self.__fred_listobjects__(data, 'fred:nssetsbycontact', _T("""The list of the nssets is ready on the server buffer 
+and pointer is set at the beginning of the list.
+Call get_results command for gain data."""))
+
+    def answer_response_fred_nssetsbyns(self, data):
+        'Handler for fred:nssetsbyns command'
+        self.__fred_listobjects__(data, 'fred:nssetsbyns', _T("""The list of the nssets is ready on the server buffer 
+and pointer is set at the beginning of the list.
+Call get_results command for gain data."""))
         
     #-------------------------------------------------
     #

@@ -375,40 +375,87 @@ and update_nsset.
 
         #----------------------------------------------------
         'count_list_contacts': (0,[],_T("""
-This command fills server buffer by contact names and set pointer at the beginning of the list.
-Than you can call 'get_results' command for fetch data.
+This command fills server buffer by list of contacts and set pointer 
+at the beginning of the list. The list is taken in sequence by calling 
+command 'get_results' repeatedly until any data comming.
 """),('count_list_contacts',)),
         #----------------------------------------------------
         'count_list_domains': (0,[],_T("""
-Fills server buffer by domain names and set pointer at the beginning of the list.
-Than you can call 'get_results' command for fetch data.
+This command fills server buffer by list of domains and set pointer 
+at the beginning of the list. The list is taken in sequence by calling 
+command 'get_results' repeatedly until any data comming.
 """),('count_list_domains',)),
         #----------------------------------------------------
         'count_list_nssets': (0,[],_T("""
-Fills server buffer by nsset names and set pointer at the beginning of the list.
-Than you can call 'get_results' command for fetch data.
+This command fills server buffer by list of nssets and set pointer 
+at the beginning of the list. The list is taken in sequence by calling 
+command 'get_results' repeatedly until any data comming.
 """),('count_list_nssets',)),
         #----------------------------------------------------
         'get_results': (0,[],_T("""
-Get results from server buffer. Server returns chunk of the list.
-Call 'get_results' again until you got all data.
+Returns a data chunk from the list of the records in the server buffer.
+Pointer is moved to next part after every transmition. If no data received
+the end of list has been reached.
+New list is created by function count_list_(contact, nsset, domain, ...)
+or domains_by_contact, domains_by_nsset etc.
 """),('get_results',)),
         #----------------------------------------------------
 
         'loop_list_contacts': (0,[],_T("""
-Returns list of contacts using command count_list_contacts and runs loop of get_results
-until all data not received.
+Returns list of contacts using command count_list_contacts and runs a loop 
+of get_results commands until whole list of contacts not received.
 """),('count_list_contacts',)),
         #----------------------------------------------------
         'loop_list_domains': (0,[],_T("""
-Returns list of domains using command count_list_domains and runs loop of get_results
-until all data not received.
+Returns list of domains using command count_list_domains and runs a loop 
+of get_results commands until whole list of domain names not received.
 """),('count_list_domains',)),
         #----------------------------------------------------
         'loop_list_nssets': (0,[],_T("""
-Returns list of nssets using command count_list_nssets and runs loop of get_results
-until all data not received.
+Returns list of nssets using command count_list_nssets and runs a loop 
+of get_results commands until whole list of nssets not received.
 """),('count_list_nssets',)),
+        #----------------------------------------------------
+
+        'domains_by_nsset': (1,[
+            ('id',(1,1),(),_T('NSSET ID'),'NSSID:VALID','',()),
+        ],_T("""
+This command fills server buffer by list of domains connected with defined
+nsset ID. The pointer is set at the beginning of the list. 
+The list is taken in sequence by calling command 'get_results' 
+repeatedly until any data comming.
+"""),('domains_by_nsset NSSID:VALID',)),
+        #----------------------------------------------------
+
+        'domains_by_contact': (1,[
+            ('id',(1,1),(),_T('Contact ID'),'CID:TECH','',()),
+        ],_T("""
+This command fills server buffer by list of domains where occurs
+defined contact ID. It can be Registrant ID or Admin ID or Temporary ID. 
+The pointer is set at the beginning of the list. 
+The list is taken in sequence by calling command 'get_results' 
+repeatedly until any data comming.
+"""),('domains_by_contact CID:TECH',)),
+        #----------------------------------------------------
+
+        'nsset_by_contact': (1,[
+            ('id',(1,1),(),_T('Technical contact'),'CID:ADMIN','',()),
+        ],_T("""
+This command fills server buffer by list of nssets connected with defined
+technical contact ID. The pointer is set at the beginning of the list. 
+The list is taken in sequence by calling command 'get_results' 
+repeatedly until any data comming.
+"""),('nsset_by_contact CID:ADMIN',)),
+        #----------------------------------------------------
+
+        'nsset_by_ns': (1,[
+            ('name',(1,1),(),_T('Name server'),'ns.mydns.cz','',()),
+        ],_T("""
+This command fills server buffer by list of nssets connected with defined
+name server. The pointer is set at the beginning of the list. 
+The list is taken in sequence by calling command 'get_results' 
+repeatedly until any data comming.
+"""),('nsset_by_ns mydomain.cz',)),
         #----------------------------------------------------
         
     }
@@ -563,6 +610,26 @@ def make_sort_by_names():
          ('list',        1,  _T('List')),
          )),
 
+       'fred:domainsbycontact': ('',(
+         ('count',       1,  _T('Count')),
+         ('notify',      2,  _T('Notify')),
+         )),
+
+       'fred:domainsbynsset': ('',(
+         ('count',       1,  _T('Count')),
+         ('notify',      2,  _T('Notify')),
+         )),
+
+       'fred:nssetsbycontact': ('',(
+         ('count',       1,  _T('Count')),
+         ('notify',      2,  _T('Notify')),
+         )),
+
+       'fred:nssetsbyns': ('',(
+         ('count',       1,  _T('Count')),
+         ('notify',      2,  _T('Notify')),
+         )),
+         
     }
     # append similar objects
     sort_by_names['contact:list']   = sort_by_names['domain:list']
