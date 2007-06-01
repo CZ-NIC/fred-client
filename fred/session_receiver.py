@@ -150,30 +150,13 @@ class ManagerReceiver(ManagerCommand):
             
             debug_time.append(('Parse XML',time.time())) # PROFILER
 
-#            # Exception for LIST commands.
-#            try:
-#                list_type = re.match('(\w+):list',self._command_sent).group(1)
-#            except AttributeError:
-#                list_type = ''
-                
             if self._epp_response.is_error():
                 # Errors occurs during parsing
                 self.append_error(self._epp_response.get_errors())
                 
             if not self._epp_response.is_error():
                 # When is comming some answer and it is valid and parsed succefully:
-                
-#                # HOOK for contact:list, nsset:list, domain:list
-#                if list_type:
-#                    # TODO: Hook. Must be done over.
-#                    self._dict_answer = self._epp_response.create_list_data(list_type)
-#                    print '!!!!HOOK: self._dict_answer:', self._dict_answer
-#                else:
-#                    self._dict_answer = self._epp_response.create_data()
-#                    print '!!!! self._dict_answer:', self._dict_answer
-                    
                 self._dict_answer = self._epp_response.create_data()
-                
                 debug_time.append(('Create data',time.time())) # PROFILER
                 if self._dict_answer.get('greeting',None):
                     self._dct_answer['command'] = self._command_sent
@@ -184,8 +167,6 @@ class ManagerReceiver(ManagerCommand):
                 else:
                     self.append_note(_T('Unknown response type'),('RED','BOLD'))
                     self.__put_raw_into_note__(self._dict_answer)
-        #else:
-        #    self.append_note(_T("No response from EPP server."))
         return debug_time
 
     #==================================================
@@ -231,14 +212,6 @@ class ManagerReceiver(ManagerCommand):
         # Server Disclose Policy
         self._epp_cmd.server_disclose_policy = access
         dct['dcp'] = msg
-        # Turn OFF for the time being:
-        #dct['dcp'] = dcp.keys()
-        #dct['dcp.access'] = dcp_access
-        #statement = dcp.get('statement',{})
-        #dct['dcp.statement'] = statement.keys()
-        #dct['dcp.statement.purpose'] = statement.get('purpose',{}).keys() # admin, contact, prov, other
-        #dct['dcp.statement.recipient'] = statement.get('recipient',{}).keys() # public, other, ours, some, unrelated
-        #dct['dcp.statement.retention'] = statement.get('retention',{}).keys() # stated, business, indefinite, legal, none
 
     def answer_response_login(self, data):
         "data=(response,result,code,msg)"
@@ -500,18 +473,6 @@ class ManagerReceiver(ManagerCommand):
                 value = eppdoc.get_dct_value(zone, 'fred:credit')
                 self._dct_answer['data'][key] = value
 
-    def __hide_labels_in_verbose1__(self):
-        # self._session[SORT_BY_COLUMNS] = (('count', 1, 'Number of records'), 
-        #                                   ('notify', 2, 'Notify'))
-        if self._session[VERBOSE] == 1:
-            # hide all levels 1 in verbose 1
-            modified_labels = []
-            for key, verbose, label in self._session[SORT_BY_COLUMNS]:
-                if verbose == 1:
-                    verbose = 1000 
-                modified_labels.append((key, verbose, label))
-            self._session[SORT_BY_COLUMNS] = modified_labels
-
 
     def __loop_getresults__(self, command_type):
         'Make getresults loop until any data comming'
@@ -519,32 +480,27 @@ class ManagerReceiver(ManagerCommand):
         # parse and print answer
         # stop if no data
 
-        self.TEST = 0 #!!!
-        
-        # Keep number of the list
-        keep_labels = self._session[SORT_BY_COLUMNS]
-        keep_count = self._dct_answer.get('data', {'count':0}).get('count', 0)
-        
-        self.__hide_labels_in_verbose1__()
+        self._loop_status = LOOP_FIRST_STEP
         
         self.print_answer()
         self.display() # display errors or notes
-        self.loop_position = 0
+        
         while 1:
+            self._loop_status = LOOP_INSIDE # inside loop
             self.api_command('get_results')
             run_loop = self._dct_answer.get('data', {'count':0}).get('count', 0)
             if run_loop < 1:
-                break
+                self._loop_status = LOOP_LAST_STEP
             self.print_answer()
+            
             self.display() # display errors or notes
-            self.loop_position += 1
-
-        self.loop_position = 0 # reset pointer for next command
+            if run_loop < 1:
+                break
+            
+        self._loop_status = LOOP_NONE
         self.reset_round()
-        # restore original values
-        self._session[SORT_BY_COLUMNS] = keep_labels
-        self._dct_answer['data'] = {}
-        self._dct_answer['data']['count'] = keep_count
+        self.reset_src() # this is in process_answer() but it must be here for case NOT is_online()
+        
 
     def __fred_listobjects__(self, data, command_type, notify):
         'Shared for all responses of the listObject'
@@ -569,10 +525,10 @@ class ManagerReceiver(ManagerCommand):
                     notify = _T('The list is empty.')
                 self._dct_answer['data']['notify'] = notify
                 
-
         if self._epp_cmd.getresults_loop:
             # special mode for list_(contact|nsset|domain)s commands
             self.__loop_getresults__(command_type)
+
 
     def answer_response_fred_listcontacts(self, data):
         'Handler for fred:listcontacts command'
@@ -616,12 +572,7 @@ Call get_results command for gain data."""))
                 self._dct_answer['data']['list'] = report
                 if not self._epp_cmd.getresults_loop:
                     self._dct_answer['data']['count'] = len(report)
-                
-#        if self.loop_position:
-#            # hide label
-##            self.__hide_labels_in_verbose1__()
-##            print '!!!self._session[SORT_BY_COLUMNS]:', self._session[SORT_BY_COLUMNS]
-##            self._session[SORT_BY_COLUMNS] = (('list', 1, ''),)
+
 
     def answer_response_fred_domainsbycontact(self, data):
         'Handler for fred:domainsbycontact command'
@@ -670,14 +621,6 @@ Call get_results command for gain data."""))
                 self.send(self._raw_cmd)                                      # send to server
                 if len(self._errors): raise FredError(self.fetch_errors())
                 xml_answer = self.receive()                                   # receive answer
-                
-#                # HOOK,  TEST !!!!
-#                if re.search('fred:resultsList', xml_answer) and self.TEST < 4:
-#                    xml_answer = open('/tmp/epp-test.xml').read()
-#                    patt = '<fred:item>CID:\\1_%02d</fred:item>'%self.TEST
-#                    xml_answer = re.sub('<fred:item>CID:(\w+)</fred:item>', patt, xml_answer)
-#                    self.TEST += 1
-                
                 error_validate_answer = self.is_epp_valid(xml_answer, _T('Server answer XML document failed to validate.')) # validate answer
                 if self.run_as_unittest and not self._session[VALIDATE]:
                     # TEST: validate the server's answer in unittest:

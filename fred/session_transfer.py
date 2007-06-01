@@ -49,6 +49,7 @@ class ManagerTransfer(ManagerBase):
     This class take care about sending and receiving messages from/to server.
     Function process_answer() must be implemented by derived class.
     """
+
     def __init__(self):
         ManagerBase.__init__(self)
         self._epp_cmd = eppdoc_client.Message()
@@ -334,15 +335,6 @@ class ManagerTransfer(ManagerBase):
     def print_answer(self, dct=None):
         "Returns str of dict object."
         if not dct: dct = self._dct_answer
-##        if self._session[VERBOSE] and dct.get('command'):
-##            # Print in only any command was sent.
-##            fnc = getattr(self,'get_answer_%s'%self._session[OUTPUT_TYPE], self.get_answer)
-##            print fnc(dct)
-##            #try:
-##            #    print fnc(dct) #+++
-##            #except Exception, msg:
-##            #    print 'Exception ERROR:',msg
-##        print "print_answer dct:",dct #!!!
         if dct.get('command'):
             # Here is exception from the verbose rule:
             # In verbose 0: Displays only raw XML server answer.
@@ -402,11 +394,11 @@ class ManagerTransfer(ManagerBase):
         used = []
         dct_data = dct['data']
         is_check = re.match('\w+:check',dct['command']) and 1 or 0 # object:check
+        is_list = dct['command'] == 'fred:getresults' or self._loop_status == LOOP_INSIDE
         column_verbose = {} # dict of keys and their verbose level
         self.reduce_info_status(dct['command'], dct_data)
 
         for key,verbose,explain in self.__get_column_items__(dct['command'], dct_data):
-            ## column_verbose[key] = verbose # keep verbose mode for check used item (debug only)
             key = key.strip() # client normaly trim whitespaces, but if you use sender, you can send everything...
             if verbose > self._session[VERBOSE]:
                 in_higher_verbose += 1
@@ -420,7 +412,10 @@ class ManagerTransfer(ManagerBase):
                     # pref:key 0
                     # pref:key:reason 'message'
                     value = dct_data.get(key+':reason',u'')
-                __append_into_report__(data,key,value,explain,self._ljust,data_indent)
+                __append_into_report__(data, key, value, explain, 
+                        self._ljust, data_indent, 0,  # 2 - use HTML pattern;
+                        is_list)
+                
             used.append(key)
         if len(data):
             if len(body) and body[-1] != '': body.append('') # empty line
@@ -450,7 +445,6 @@ class ManagerTransfer(ManagerBase):
     def get_answer(self, dct=None, sep='\n'):
         'Show values parsed from the server answer.'
         body=[]
-##        body=[''] # indent from command line
         report = body.append
         if not dct: dct = self._dct_answer
         if self._session[VERBOSE] > 0:
@@ -489,18 +483,6 @@ class ManagerTransfer(ManagerBase):
                 for error in dct['errors'][1:]:
                     report(get_ltext(error))
             #... data .............................
-#            if re.match('\w+:list',dct['command']):
-#                # list output execption
-#                if len(body) and body[-1] != '': report('') # empty line
-#                cnt=0
-#                for item in dct['data'].get('list',[]):
-#                    body.append(get_ltext(item))
-#                    cnt+=1
-#                body.append('') # empty line to separate list from Sum message
-#                body.append(_TP('(%d item)','(%d items)',cnt)%cnt)
-#            else:
-#                self.__append_to_body__(body, dct)
-            
             self.__append_to_body__(body, dct)
             
         else:
@@ -509,7 +491,7 @@ class ManagerTransfer(ManagerBase):
         #... third verbose level .............................
         for n in range(len(body)):
             if type(body[n]) == unicode: body[n] = body[n].encode(encoding)
-        if self._session[VERBOSE] == 3:
+        if self._session[VERBOSE] == 3 and self._loop_status == LOOP_NONE:
             if len(body) and body[-1] != '': report('') # empty line
             report(colored_output.render('${BOLD}COMMAND:${NORMAL}${GREEN}'))
             report(human_readable(self._raw_cmd))
@@ -557,6 +539,7 @@ class ManagerTransfer(ManagerBase):
             data = []
             dct_data = dct['data']
             self.reduce_info_status(dct['command'], dct_data) # join status key and description together
+            is_list = dct['command'] == 'fred:getresults' or self._loop_status == LOOP_INSIDE
             for key,verbose,explain in self.__get_column_items__(dct['command'], dct_data):
                 if verbose > self._session[VERBOSE]: continue
                 key = key.strip() # client normaly trim whitespaces, but if you use sender, you can send everything...
@@ -565,11 +548,19 @@ class ManagerTransfer(ManagerBase):
                     if is_check:
                         # Tighten check response by code.
                         value = dct_data.get(key+':reason',u'')
-                    __append_into_report__(data,key,value,explain,self._ljust,'',2) # 2 - use HTML pattern;
+                    __append_into_report__(data, key, value, explain, 
+                            self._ljust, '', 2,  # 2 - use HTML pattern;
+                            is_list)
+            
             if len(data):
-                report('<table class="fred_data">')
+                if self._loop_status == LOOP_NONE or self._loop_status == LOOP_FIRST_STEP:
+                    report('<table class="fred_data">')
                 body.extend(data)
+                if self._loop_status == LOOP_NONE or self._loop_status == LOOP_LAST_STEP:
+                    report('</table>')
+            elif self._loop_status == LOOP_LAST_STEP:
                 report('</table>')
+                    
             # encode to 8bit local
             for n in range(len(body)):
                 if type(body[n]) == unicode: body[n] = body[n].encode(encoding)
@@ -577,7 +568,7 @@ class ManagerTransfer(ManagerBase):
             # Zero verbose level
             report(escape_html(human_readable(self._raw_answer)))
         #... third verbose level .............................
-        if self._session[VERBOSE] == 3:
+        if self._session[VERBOSE] == 3 and self._loop_status == LOOP_NONE:
             report('<pre class="fred_source">')
             report('<strong>COMMAND:</strong>')
             report(escape_html(human_readable(self._raw_cmd)))
@@ -616,7 +607,24 @@ $fred_source_answer = '';      // source code (XML) of the answer prepared to di
 
     def get_answer_xml(self, dct=None):
         'Returns raw XML'
-        return self._raw_answer
+        if self._loop_status == LOOP_NONE:
+            return self._raw_answer
+        else:
+            # exception for loop list functions
+            tag_name = 'fred:resultsList'
+            
+            if self._loop_status == LOOP_FIRST_STEP:
+                info_response = 'fred:infoResponse'
+                patt = '</%s>'%info_response
+                begin, self._xml_loop_end = self._raw_answer.split(patt)
+                result_list = '\n<%s%s>'%(tag_name, re.search('<%s([^>]*)>'%info_response, begin).group(1))
+                body = '%s%s%s'%(begin, patt, result_list)
+            elif self._loop_status == LOOP_LAST_STEP:
+                body = '%s\n%s'%('</%s>'%tag_name, self._xml_loop_end)
+            else:
+                body = '\n'.join(re.findall('<fred:item>.+</fred:item>',self._raw_answer))
+        return body
+        
         
     def get_answer_php(self, dct=None):
         """Returns data as a PHP code:
@@ -634,21 +642,22 @@ $fred_source_answer = '';      // source code (XML) of the answer prepared to di
         body=[]
         report = body.append
         if self._session[VERBOSE] > 0:
-            report("$fred_encoding = %s; // used encoding"%php_string(encoding))
-            #... code and reason .............................
-            code = dct['code']
-            report("$fred_command = %s; // command sent to the server"%php_string(dct['command']))
-            report('$fred_code = %d; // code returned from server'%code)
-            report("$fred_reason = %s; // reason returned from server (description of the code)"%php_string(dct['reason']))
-            #... errors .............................
-            errors = []
-            for error in dct['errors']:
-                errors.append(php_string(error))
-            report('$fred_reason_errors = array(%s); // errors described details that caused invalid code'%', '.join(errors))
-            #... data .............................
-            report('$fred_labels = array(); // descriptions of the data columns')
-            report('$fred_data = array(); // data returned by server')
-            report('$fred_data_attrib = array(); // data attributes returned by server')
+            if self._loop_status == LOOP_NONE or self._loop_status == LOOP_FIRST_STEP:
+                report("$fred_encoding = %s; // used encoding"%php_string(encoding))
+                #... code and reason .............................
+                code = dct['code']
+                report("$fred_command = %s; // command sent to the server"%php_string(dct['command']))
+                report('$fred_code = %d; // code returned from server'%code)
+                report("$fred_reason = %s; // reason returned from server (description of the code)"%php_string(dct['reason']))
+                #... errors .............................
+                errors = []
+                for error in dct['errors']:
+                    errors.append(php_string(error))
+                report('$fred_reason_errors = array(%s); // errors described details that caused invalid code'%', '.join(errors))
+                #... data .............................
+                report('$fred_labels = array(); // descriptions of the data columns')
+                report('$fred_data = array(); // data returned by server')
+                report('$fred_data_attrib = array(); // data attributes returned by server')
             dct_data = dct['data']
             is_check = re.match('\w+:check',dct['command']) and 1 or 0 # object:check
             for key,verbose,explain in self.__get_column_items__(dct['command'], dct_data):
@@ -667,8 +676,9 @@ $fred_source_answer = '';      // source code (XML) of the answer prepared to di
                             report("$fred_data_attrib[%s]['avail'] = %s;"%(php_string(key),php_string(value)))
                         value = dct_data.get(key+':reason',u'')
                     if type(value) in (list,tuple):
-                        report('$fred_labels[%s] = %s;'%(php_string(key),php_string(explain)))
-                        report('$fred_data[%s] = array();'%php_string(key))
+                        if self._loop_status == LOOP_NONE or self._loop_status == LOOP_FIRST_STEP:
+                            report('$fred_labels[%s] = %s;'%(php_string(key),php_string(explain)))
+                            report('$fred_data[%s] = array();'%php_string(key))
                         php_key = php_string(key)
                         for v in value:
                             report('$fred_data[%s][] = %s;'%(php_key,php_string(v)))
@@ -679,12 +689,13 @@ $fred_source_answer = '';      // source code (XML) of the answer prepared to di
             # Zero verbose level:
             report('$fred_source_answer = %s;'%php_string(human_readable(self._raw_answer)))
         #... third verbose level .............................
-        if self._session[VERBOSE] == 3:
-            report('$fred_source_command = %s;'%php_string(human_readable(self._raw_cmd)))
-            report('$fred_source_answer = %s;'%php_string(human_readable(self._raw_answer)))
-        else:
-            report("$fred_source_command = '';")
-            report("$fred_source_answer = '';")
+        if self._loop_status == LOOP_NONE:
+            if self._session[VERBOSE] == 3:
+                report('$fred_source_command = %s;'%php_string(human_readable(self._raw_cmd)))
+                report('$fred_source_answer = %s;'%php_string(human_readable(self._raw_answer)))
+            else:
+                report("$fred_source_command = '';")
+                report("$fred_source_answer = '';")
         # ..............
         return  '\n'.join(body)
 
@@ -791,12 +802,16 @@ $fred_source_answer = '';      // source code (XML) of the answer prepared to di
     #-------------------------------------
 
         
-def __append_into_report__(body,k,v,explain,ljust, indent = '', no_terminal_tags=0):
+def __append_into_report__(body, k, v, explain, ljust, indent = '', no_terminal_tags=0, is_list_type=0):
     'Append value type(unicode|list|tuple) into report body.'
+    if is_list_type:
+        indent = k = explain = ''
     patt = (
-        ('%s${BOLD}%s${NORMAL} %s','%s${BOLD}%s${NORMAL}','%s%s'),
-        ('%s%s %s','%s%s','%s%s'),
-        ('%s<tr>\n\t<th>%s</th>\n\t<td>%s</td>\n</tr>','%s<tr>\n\t<th>%s</th>\n\t<td>&nbsp;</td>\n</tr>','%s<tr>\n\t<th>&nbsp;</th>\n\t<td>%s</td>\n</tr>'),
+        ['%s${BOLD}%s${NORMAL} %s','%s${BOLD}%s${NORMAL}','%s%s'],
+        ['%s%s %s','%s%s','%s%s'],
+        ['%s<tr>\n\t<th>%s</th>\n\t<td>%s</td>\n</tr>',
+         '%s<tr>\n\t<th>%s</th>\n\t<td>&nbsp;</td>\n</tr>',
+         '%s<tr>\n\t<th>&nbsp;</th>\n\t<td>%s</td>\n</tr>'],
     )[no_terminal_tags]
     escape = no_terminal_tags == 2 and escape_html or (lambda s: s)
     if explain: k = explain # overwrite key by explain message
@@ -810,14 +825,22 @@ def __append_into_report__(body,k,v,explain,ljust, indent = '', no_terminal_tags
         # text
         key = (k+':').ljust(ljust)
         ljustify = ''.ljust(ljust+len(indent)+1)
+    if is_list_type:
+        key = ljustify = ''
+        patt[0] = patt[0].replace(' ', '')
+    
     if type(v) in (list,tuple):
         if len(v):
+            # more lines: first is prefixed by column name
             body.append(get_ltext(colored_output.render(patt[0]%(indent,key,escape(str_lists(v[0]))))))
+            # others are indented only
             for text in v[1:]:
                 body.append(get_ltext(patt[2]%(ljustify,escape(str_lists(text)))))
         else:
+            # one line only
             body.append(get_ltext(colored_output.render(patt[1]%(indent,key))))
     else:
+        # value is not array
         body.append(get_ltext(colored_output.render(patt[0]%(indent,key, v))))
 
 def str_lists(text):

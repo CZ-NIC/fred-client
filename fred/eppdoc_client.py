@@ -332,10 +332,6 @@ and maximum allowable period is defined in the Communication rules."""),('renew_
                 "update_nsset nssid:ns1 (((ns1.dns.cz (217.31.207.130, 217.31.207.131, 217.31.207.132)), (ns2.dns.cz (217.31.207.130, 217.31.207.131, 217.31.207.132))) (cid:tech1, cid:tech2, cid:tech3)) (((rem1.dns.cz, rem2.dns.cz) (cid:tech_rem01, cid:tech_rem02))) password",
             )),
         #----------------------------------------------------
-        'list_contact': (0,[],_T("""The EPP 'list_contact' command is used to list all ID of an existing contact owning by registrant."""),()),
-        'list_nsset': (0,[],_T("""The EPP 'list_nsset' command is used to list all ID of an existing NSSET owning by registrant."""),()),
-        'list_domain': (0,[],_T("""The EPP 'list_doamin' command is used to list all domain names owning by registrant."""),()),
-        #----------------------------------------------------
         'sendauthinfo_contact': (1,[
              ('id',(1,1),(),_T('Contact ID'),'CID:ID01','',()),
             ],_T("""
@@ -401,20 +397,20 @@ or domains_by_contact, domains_by_nsset etc.
 """),('get_results',)),
         #----------------------------------------------------
 
-        'loop_list_contacts': (0,[],_T("""
+        'list_contact': (0,[],_T("""
 Returns list of contacts using command count_list_contacts and runs a loop 
 of get_results commands until whole list of contacts not received.
-"""),('count_list_contacts',)),
+"""),('list_contact',)),
         #----------------------------------------------------
-        'loop_list_domains': (0,[],_T("""
+        'list_domain': (0,[],_T("""
 Returns list of domains using command count_list_domains and runs a loop 
 of get_results commands until whole list of domain names not received.
-"""),('count_list_domains',)),
+"""),('list_domain',)),
         #----------------------------------------------------
-        'loop_list_nssets': (0,[],_T("""
+        'list_nsset': (0,[],_T("""
 Returns list of nssets using command count_list_nssets and runs a loop 
 of get_results commands until whole list of nssets not received.
-"""),('count_list_nssets',)),
+"""),('list_nsset',)),
         #----------------------------------------------------
 
         'domains_by_nsset': (1,[
@@ -568,12 +564,6 @@ def make_sort_by_names():
          ('objURI',      2,  _T('Objects URI')),
          ('extURI',      2,  _T('Extensions URI')),
          ('dcp',         2,  _T('Data Collection policy')),
-         # Turn OFF for the time being:
-         #('dcp.access',  2,  _T('DCP: Access')),
-         #('dcp.statement',  2,  _T('DCP: Statement')),
-         #('dcp.statement.purpose',  2,  _T('DCP: Statement: Purpose')),
-         #('dcp.statement.recipient',  2,  _T('DCP: Statement: Recipient')),
-         #('dcp.statement.retention',  2,  _T('DCP: Statement: Retention')),
          )),
 
        'domain:list': ('',(

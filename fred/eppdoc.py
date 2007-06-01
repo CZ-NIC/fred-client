@@ -376,41 +376,6 @@ class Message:
         if is_class: root.__make_data_help__()
         return root
 
-    def create_list_data(self, prefix):
-        'Hook for list commands.'
-        anchor = '%s:%s'%(prefix,{'domain':'name'}.get(prefix,'id'))
-        root = {'response': {
-            'trID':{
-                'clTRID': {'data': ''},
-                'svTRID': {'data': ''}
-                },
-            'result': {
-                'attr': [],
-                'msg': {'data':''},
-                },
-            'resData': {
-                '%s:listData'%prefix: {
-                    anchor: {},
-                    },
-                }
-            },
-        }
-        if not self.dom: return root
-        response = self.dom.documentElement.getElementsByTagName('response')
-        if not len(response): return root
-        node = response[0].getElementsByTagName('trID')
-        trID = root['response']['trID']
-        trID['clTRID'] = get_node_values(node, 'clTRID')
-        trID['svTRID'] = get_node_values(node, 'svTRID')
-        resData = response[0].getElementsByTagName('resData')
-        if len(resData):
-            key = '%s:listData'%prefix
-            listData = resData[0].getElementsByTagName(key)
-            root['response']['resData'][key][anchor] = get_node_values(listData, anchor)
-        node = response[0].getElementsByTagName('result')
-        root['response']['result'] = get_node_attributes(node, 'result')
-        root['response']['result']['msg'] = get_node_values(node, 'msg')
-        return root
 
 #-------------------------------------------------
 # Support for read XML.DOM nodes

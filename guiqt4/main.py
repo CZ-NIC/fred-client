@@ -460,12 +460,13 @@ class FredMainWindow(QtGui.QDialog):
     #-----------------------------------------------
     def __share_list__(self, key, label):
         'Shared for all check commands.'
-        if not self.check_is_online(): return
-        d = {}
-        append_key(d,'cltrid', getattr(self.ui,'%s_cltrid'%key))
-        self.disable_send_buttons()
-        self.thread_epp.set_command(key, d)
-        self.thread_epp.start()
+        self.display_error(_TU('We are sorry,  but all List functions are disabled in this version.'), _TU('Disabled function'))
+#        if not self.check_is_online(): return
+#        d = {}
+#        append_key(d,'cltrid', getattr(self.ui,'%s_cltrid'%key))
+#        self.disable_send_buttons()
+#        self.thread_epp.set_command(key, d)
+#        self.thread_epp.start()
 
     def __share_transfer__(self, key):
         'Shared for transfer commands.'

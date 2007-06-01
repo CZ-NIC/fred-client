@@ -47,6 +47,8 @@ OMIT_ERROR = 1
 
 OUTPUT_TYPES = ('text','html','php','xml')
 
+LOOP_NONE, LOOP_FIRST_STEP, LOOP_INSIDE, LOOP_LAST_STEP = range(4)
+
 class ManagerBase:
     """This class holds buffers with error and note messages.
     Class collects messages and prepares them for output.
@@ -95,6 +97,7 @@ class ManagerBase:
         self._config_used_files = []
         self._message_missing_config = [] # messages with missing config filenames
         self.run_as_unittest = 0 # it can set variables for unittest: validate server answer
+        self._loop_status = LOOP_NONE # indicator of the loop list commands
 
     def get_session(self, offset):
         return self._session[offset]
@@ -230,12 +233,9 @@ $fred_client_errors = array(); // errors occuring during communication
                 msg.append('<?xml version="1.0" encoding="%s"?>'%translate.encoding)
                 msg.append('<FredClient>')
                 xml_close_tag = 1
-        #elif is_html:
-        #    sep = '<br/>\n'
 
         if self.is_note():
             # report, note, values
-##            if self._notes[-1] != '': msg.append('') # empty line
             if is_xml:
                 msg.append('<notes>')
             elif is_html:
@@ -262,7 +262,6 @@ $fred_client_errors = array(); // errors occuring during communication
                 msg.append('<errors>')
             elif is_html:
                 msg.append('<div class="errors">')
-##            if len(msg): msg.append('') # empty line - indent errors
 
             if is_php:
                 msg.append('$fred_client_errors[] = %s;'%php_string(self._errors[0]))
@@ -307,7 +306,6 @@ $fred_client_errors = array(); // errors occuring during communication
             else:
                 msg.extend(map(get_ltext, self._notes_afrer_errors))
             self._notes_afrer_errors = []
-##        if len(msg) and msg[-1] != '': msg.append('') # empty line at the end of all output
 
             if is_xml:
                 msg.append('</remarks>')
@@ -652,7 +650,9 @@ $fred_client_errors = array(); // errors occuring during communication
         schema_path = self.__get_actual_schema_path__()
         if not schema_path: return '' # schema path is not set
         command = '%s --noout --schema "%s" -'%(self._external_validator, schema_path)
-        if self._session[VERBOSE] > 2:
+        if self._session[VERBOSE] > 2 \
+            and self._loop_status == LOOP_NONE \
+            and self._session[OUTPUT_TYPE] != 'xml':
             self.append_note(_T('Client-side validation command:'), 'BOLD')
             self.append_note(get_ltext(command))
         try:

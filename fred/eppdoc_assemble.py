@@ -711,24 +711,15 @@ class Message(MessageBase):
     def assemble_info_nsset(self, *params):
         self.__asseble_command__(('info','nsset','id'), 'name', params)
 
-    # OBSOLETE:
     def assemble_list_contact(self, *params):
-        self.__asseble_command__(('info','contact','id','list'), '', params)
-        
-    def assemble_list_domain(self, *params):
-        self.__asseble_command__(('info','domain','id','list'), '', params)
-        
-    def assemble_list_nsset(self, *params):
-        self.__asseble_command__(('info','nsset','id','list'), '', params)
-
-    # NEW VERSION:
-    def assemble_loop_list_contacts(self, *params):
         self.getresults_loop = 1 # run messages loop
         self.__asseble_extcommand__(('listContacts', ), params)
-    def assemble_loop_list_domains(self, *params):
+        
+    def assemble_list_domain(self, *params):
         self.getresults_loop = 1 # run messages loop
         self.__asseble_extcommand__(('listDomains', ), params)
-    def assemble_loop_list_nssets(self, *params):
+        
+    def assemble_list_nsset(self, *params):
         self.getresults_loop = 1 # run messages loop
         self.__asseble_extcommand__(('listNssets', ), params)
 
@@ -1137,7 +1128,7 @@ class Message(MessageBase):
         epp_command = '%s_%s'%(command_type, info_type)
         self._dct = {'command': [epp_command], epp_command: [epp_command] }
         dct = answer['data']
-        for name, verbose, note in self.sort_by_names[answer['command']][1]: ## columns[info_type]:
+        for name, verbose, note in self.sort_by_names[answer['command']][1]:
             key =  '%s:%s'%(info_type, name)
             value = dct.get(key,None)
             if value is not None:
