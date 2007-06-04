@@ -711,15 +711,15 @@ class Message(MessageBase):
     def assemble_info_nsset(self, *params):
         self.__asseble_command__(('info','nsset','id'), 'name', params)
 
-    def assemble_list_contact(self, *params):
+    def assemble_list_contacts(self, *params):
         self.getresults_loop = 1 # run messages loop
         self.__asseble_extcommand__(('listContacts', ), params)
         
-    def assemble_list_domain(self, *params):
+    def assemble_list_domains(self, *params):
         self.getresults_loop = 1 # run messages loop
         self.__asseble_extcommand__(('listDomains', ), params)
         
-    def assemble_list_nsset(self, *params):
+    def assemble_list_nssets(self, *params):
         self.getresults_loop = 1 # run messages loop
         self.__asseble_extcommand__(('listNssets', ), params)
 
@@ -1094,15 +1094,16 @@ class Message(MessageBase):
         'Create technical_test document'
         self.__asseble_extcommand__(('test','nsset','id'), params, ('id', 'level', 'name'))
 
-    def assemble_count_list_contacts(self, *params):
-        'Create count_list_contact document'
+    def assemble_contacts_by_all(self, *params):
+        'Create contacts_by_all document'
         self.__asseble_extcommand__(('listContacts', ), params)
-    def assemble_count_list_domains(self, *params):
-        'Create count_list_domains document'
+    def assemble_domains_by_all(self, *params):
+        'Create domains_by_all document'
         self.__asseble_extcommand__(('listDomains', ), params)
-    def assemble_count_list_nssets(self, *params):
-        'Create count_list_nssets document'
+    def assemble_nssets_by_all(self, *params):
+        'Create nssets_by_all document'
         self.__asseble_extcommand__(('listNssets', ), params)
+        
     def assemble_get_results(self, *params):
         'Create count_list_nssets document'
         self.__asseble_extcommand__(('getResults', ), params)
@@ -1113,11 +1114,11 @@ class Message(MessageBase):
     def assemble_domains_by_contact(self, *params):
         'Create domains_by_contact document'
         self.__asseble_extcommand__(('domainsByContact', ), params, 'id')
-    def assemble_nsset_by_contact(self, *params):
-        'Create nsset_by_contact document'
+    def assemble_nssets_by_contact(self, *params):
+        'Create nssets_by_contact document'
         self.__asseble_extcommand__(('nssetsByContact', ), params, 'id')
-    def assemble_nsset_by_ns(self, *params):
-        'Create nsset_by_ns document'
+    def assemble_nssets_by_ns(self, *params):
+        'Create nssets_by_ns document'
         self.__asseble_extcommand__(('nssetsByNs', ), params, 'name')
 
         

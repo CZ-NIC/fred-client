@@ -1,3 +1,22 @@
+FredClient 1.5
+
+Změny:
+    * Nové verze schemat: enum 1.1
+    * Přepracovány funkce list_(contact,nsset,domain). Nyní se data načítají sekvenčně
+      přes funkce (contact,nsset,domain)_by_all a get_results. Funkce list_... mají 
+      na konci písmeno 's'.
+
+
+Nové funkce:
+    * Přidány funkce contacts_by_all, nssets_by_all, domains_by_all,
+      get_results, domains_by_contact, domains_by_nsset, nsset_by_contact, nsset_by_ns
+
+
+FredClient 1.4
+
+Nové funkce:
+    * Přidány dočasné kontakty
+
 FredClient 1.3.3
 
 Změny:

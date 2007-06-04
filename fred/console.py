@@ -116,20 +116,30 @@ def main(options):
         print colored_output.render("${BOLD}${RED}%s${NORMAL}"%__init__.translate.warning)
     epp = __init__.ClientSession()
     if not check_options(epp): return # any option error occurs
-    epp.append_note(epp.welcome())
+    
+    if not options['command']:
+        # join welcome message only in console mode
+        epp.append_note(epp.welcome())
+        
     if not epp.load_config():
         epp.display() # display errors or notes
         return
+
     epp.init_radline(readline) # readline behavior for Unix line OS
     is_online = 0
     prompt = '> '
     online = prompt
-    if not epp.automatic_login():
+    
+    # options['command']
+    # choke down the login message output in non-interactive (command) mode
+    if not epp.automatic_login(options['command']):
         epp.join_missing_config_messages()
         epp.display() # display errors or notes
         return
+
     epp.restore_history()
     epp.display() # display errors or notes
+    
     while 1:
         # change prompt status:
         if is_online:
@@ -141,18 +151,25 @@ def main(options):
             if epp.is_logon():
                 is_online = 1
                 online = '%s@%s> '%epp.get_username_and_host()
-        try:
-            command = raw_input(online).strip()
-        except KeyboardInterrupt: # Ctrl+C
-            break
-        except EOFError: # Ctrl+D
-            epp.send_logout()
-            break
-        if command == '': continue
-        if command in ('q','quit','exit'):
-            epp.remove_from_history()
-            epp.send_logout()
-            break
+        
+        if options['command']:
+            # non-interactive mode (command from command line options)
+            command = options['command']
+        else:
+            # interactive mode
+            try:
+                command = raw_input(online).strip()
+            except KeyboardInterrupt: # Ctrl+C
+                break
+            except EOFError: # Ctrl+D
+                epp.send_logout()
+                break
+            if command == '': continue
+            if command in ('q','quit','exit'):
+                epp.remove_from_history()
+                epp.send_logout()
+                break
+            
         #debug_time = [('START',time.time())] # PROFILER
         command_name, epp_doc, stop_interactive_mode = epp.create_eppdoc(command)
         #debug_time.append(('Command created',time.time())) # PROFILER
@@ -198,6 +215,12 @@ def main(options):
                 # only if we are online and command XML document is valid
                 epp.close() # close connection but not client
         epp.display() # display errors or notes
+        
+        if options['command']:
+            # non-interactive mode (command from command line options)
+            # It does only one EPP command and stops.
+            break
+        
     epp.close()
     epp.save_history()
     epp.display() # display logout messages

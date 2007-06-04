@@ -627,6 +627,22 @@ def prepare_for_display(dict_values,color=0,indent=0):
                     body.append(patt[1]%(ind,key,dict_values[key]))
     return '\n'.join(body)
 
+#TODO: tohle by melo zaniknout
+def correct_unbound_prefix(xml, epp_schema_version):
+    """Input missing prefix definitions. This problem occurs in error messages
+    when is returnes also tag names (with namespaces).
+    """
+    names = []
+    for token in re.findall('<([\w-]+):',xml):
+        if token not in names:
+            if not re.search('%s-%s.xsd'%(token, epp_schema_version), xml):
+                # if namespace is not defined...
+                names.append(token)
+    patt = re.compile(r'<([^\?][^>]+)>',re.DOTALL)
+    if len(names):
+        return re.sub(r'<([^\?][^>]+)>', '<\\1 %s>'%' '.join(['xmlns:%s="%sepp-%s"'%(n, obj_uri, epp_schema_version) for n in names]), xml, 1)
+    else:
+        return xml
 
 def test_display():
     exampe1 = {'attr': [(u'xmlns:xsi', u'http://www.w3.org/2001/XMLSchema-instance'),

@@ -645,39 +645,6 @@ OPTIONS:
   cltrid                   Client transaction ID"""
         return self._epp.api_command('update_nsset',{'id':nsset_id, 'add':add, 'rem':rem, 'auth_info':auth_info, 'reportlevel':reportlevel, 'cltrid':cltrid})
 
-    def list_contact(self, cltrid=None):
-        """DESCRIPTION:
-  The EPP 'list_contact' command is used to list all ID of an existing contact owning by registrant.
-
-SYNTAX:
-  list_contact [other_options]
-
-OPTIONS:
-  cltrid                   Client transaction ID"""
-        return self._epp.api_command('list_contact',{'cltrid':cltrid})
-        
-    def list_nsset(self, cltrid=None):
-        """DESCRIPTION:
-  The EPP 'list_nsset' command is used to list all ID of an existing NSSET owning by registrant.
-
-SYNTAX:
-  list_nsset [other_options]
-
-OPTIONS:
-  cltrid                   Client transaction ID"""
-        return self._epp.api_command('list_nsset',{'cltrid':cltrid})
-
-    def list_domain(self, cltrid=None):
-        """DESCRIPTION:
-  The EPP 'list_doamin' command is used to list all domain names owning by registrant.
-
-SYNTAX:
-  list_domain [other_options]
-
-OPTIONS:
-  cltrid                   Client transaction ID"""
-        return self._epp.api_command('list_domain',{'cltrid':cltrid})
-
     def sendauthinfo_contact(self, id, cltrid=None):
         """DESCRIPTION:
   The EPP 'sendauthinfo_contact' command transmit request for send password
@@ -751,51 +718,6 @@ OPTIONS:
   cltrid                   Client transaction ID"""
         return self._epp.api_command('technical_test',{'id':id, 'level':level, 'name':name, 'cltrid':cltrid})
 
-    def list_contact(self, cltrid=None):
-        """DESCRIPTION:
-  This command fills server buffer by contact names and set pointer at the beginning of the list.
-  Than you can call 'get_results' command for fetch data.
-
-SYNTAX:
-  count_list_contacts [other_options]
-
-OPTIONS:
-  cltrid                   Client transaction ID
-
-EXAMPLES:
-  list_contact"""
-        return self._epp.api_command('list_contact',{'cltrid':cltrid})
-        
-    def list_nsset(self, cltrid=None):
-        """DESCRIPTION:
-  This command fills server buffer by nsset names and set pointer at the beginning of the list.
-  Than you can call 'get_results' command for fetch data.
-
-SYNTAX:
-  count_list_nssets [other_options]
-
-OPTIONS:
-  cltrid                   Client transaction ID
-
-EXAMPLES:
-  list_nsset"""
-        return self._epp.api_command('list_nsset',{'cltrid':cltrid})
-
-    def list_domain(self, cltrid=None):
-        """DESCRIPTION:
-  This command fills server buffer by domain names and set pointer at the beginning of the list.
-  Than you can call 'get_results' command for fetch data.
-
-SYNTAX:
-  count_list_domains [other_options]
-
-OPTIONS:
-  cltrid                   Client transaction ID
-
-EXAMPLES:
-  list_domain"""
-        return self._epp.api_command('list_domain',{'cltrid':cltrid})
-
     def get_results(self, cltrid=None):
         """DESCRIPTION:
   Get results from server buffer. Server returns chunk of the list.
@@ -811,7 +733,54 @@ EXAMPLES:
   get_results"""
         return self._epp.api_command('get_results',{'cltrid':cltrid})
 
+    def contacts_by_all(self, cltrid=None):
+        """DESCRIPTION:
+  This command fills server buffer by list of contacts and set pointer 
+  at the beginning of the list. The list is taken in sequence by calling 
+  command 'get_results' repeatedly until any data comming.
 
+SYNTAX:
+  contacts_by_all [other_options]
+
+OPTIONS:
+  cltrid                   Client transaction ID
+
+EXAMPLES:
+  contacts_by_all"""
+        return self._epp.api_command('contacts_by_all',{'cltrid':cltrid})
+        
+    def nssets_by_all(self, cltrid=None):
+        """DESCRIPTION:
+  This command fills server buffer by list of nssets and set pointer 
+  at the beginning of the list. The list is taken in sequence by calling 
+  command 'get_results' repeatedly until any data comming.
+
+SYNTAX:
+  nssets_by_all [other_options]
+
+OPTIONS:
+  cltrid                   Client transaction ID
+
+EXAMPLES:
+  nssets_by_all"""
+        return self._epp.api_command('nssets_by_all',{'cltrid':cltrid})
+
+    def domains_by_all(self, cltrid=None):
+        """DESCRIPTION:
+  This command fills server buffer by list of domains and set pointer 
+  at the beginning of the list. The list is taken in sequence by calling 
+  command 'get_results' repeatedly until any data comming.
+
+SYNTAX:
+  domains_by_all [other_options]
+
+OPTIONS:
+  cltrid                   Client transaction ID
+
+EXAMPLES:
+  domains_by_all"""
+        return self._epp.api_command('domains_by_all',{'cltrid':cltrid})
+        
     def domains_by_nsset(self, id, cltrid=None):
         """DESCRIPTION:
   This command fills server buffer by list of domains connected with defined

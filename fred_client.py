@@ -35,6 +35,7 @@ For GUI moduel is used module guiqt.
 import sys
 import fred
 from fred.translate import options, option_errors
+import fred.console
 
 if __name__ == '__main__':
     msg_invalid = fred.check_python_version()
@@ -58,22 +59,9 @@ if __name__ == '__main__':
         elif option_errors:
             print option_errors
         else:
-            if options['command']:
-                import fred.creator
-                import fred.sender
-                epp_doc, xml_error = fred.creator.run_creation(options)
-                if xml_error:
-                    from fred.session_base import VERBOSE
-                    if fred.creator.epp.get_session(VERBOSE) > 0:
-                        print xml_error # print error only in verbose mode higher than 0
-                else:
-                    if len(epp_doc):
-                        fred.sender.send_docs(options['bar'], ((1,epp_doc),))
-                    else:
-                        print 'Internal error: epp_doc, xml_error = fred_create.main(options[command])'
-            elif options['qt']:
+            if options['qt']:
                 from guiqt4.main import main
                 main([],options['lang'])
             else:
-                import fred.console
                 fred.console.main(options)
+
