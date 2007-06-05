@@ -20,38 +20,40 @@ import sys
 from distutils.core import setup
 from fred.internal_variables import fred_version
 
-APP_SCRIPTS = ['fred_client.py','fred_client_qt4.pyw']
+APP_SCRIPTS = ['fred_client','fred_client_qt4.pyw']
 if 'bdist_wininst' in sys.argv and '--install-script=setup_postinstall.py' in sys.argv:
     # join postinstall only for WIN distribution
     APP_SCRIPTS.append('setup_postinstall.py')
-    
-setup(name = 'FredClient',
-    description = 'Client FRED (Free Registry for enum and domain)',
-    author = 'Zdenek Bohm, CZ.NIC',
-    author_email = 'zdenek.bohm@nic.cz',
-    url = 'http://www.nic.cz',
-    version = fred_version,
-    license = 'GNU GPL',
-    packages = ['fred','guiqt4'],
-    package_data={
-        'fred': ['INSTALL','LICENSE','CREDITS','*.txt','schemas/*.xsd',
-            'lang/fred_client_cs.po',
-            'lang/cs/LC_MESSAGES/fred_client.mo'],
-        'guiqt4': ['*.py','*.png','*.qm'],
-    },
-    scripts = APP_SCRIPTS, 
-    data_files=[
-        ('cznic_fred_docs',[
-            'fred_client.conf.sample',
-            'doc/fred_howto_cs.html',
-        
-            'doc/niccz_console.ico', 
-            'doc/configure.ico',
-            'doc/help.ico',
+
+if __name__ == '__main__':
+
+    setup(name = 'FredClient',
+        description = 'Client FRED (Free Registry for enum and domain)',
+        author = 'Zdenek Bohm, CZ.NIC',
+        author_email = 'zdenek.bohm@nic.cz',
+        url = 'http://www.nic.cz',
+        version = fred_version,
+        license = 'GNU GPL',
+        packages = ['fred','guiqt4'],
+        package_data={
+            'fred': ['INSTALL','LICENSE','CREDITS','*.txt','schemas/*.xsd',
+                'lang/fred_client_cs.po',
+                'lang/cs/LC_MESSAGES/fred_client.mo'],
+            'guiqt4': ['*.py','*.png','*.qm'],
+        },
+        scripts = APP_SCRIPTS, 
+        data_files=[
+            ('cznic_fred_docs',[
+                'fred_client.conf.sample',
+                'doc/fred_howto_cs.html',
             
-            'doc/README_CS.html',
-            'doc/README_QT4_CS.pdf'])
-        ]
-    
-    )
+                'doc/niccz_console.ico', 
+                'doc/configure.ico',
+                'doc/help.ico',
+                
+                'doc/README_CS.html',
+                'doc/README_QT4_CS.pdf'])
+            ]
+        
+        )
 

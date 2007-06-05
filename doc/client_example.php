@@ -229,7 +229,7 @@ Mode <strong>PHP code</strong> generates PHP code what we redicert into file and
     <span class="note">
     (use if <strong>fred_client</strong> is not installed)<br/>
     <i>Example:</i> -s curlew -f /home/zdenek/.fred_client.conf<br/>
-    <i>For mode see README or</i> $ fred_client.py --help</span>
+    <i>For mode see README or</i> $ fred_client --help</span>
     </td>
 </tr>
 
@@ -258,13 +258,13 @@ while(is_array($_POST['send'])) {
 
     if(!$handle and !in_array($command,$ar_no_handler)) $errors[] = 'Handle missing.';
     // check if fred_client exist
-    $cmdline = $_POST['exec_path'].'fred_client.py -V';
+    $cmdline = $_POST['exec_path'].'fred_client -V';
     $ar_retval = array();
     exec($cmdline, $ar_retval);
     $retval = join('\n',$ar_retval);
     // See, what looks command line:
     // echo "<div class='output'><p class='command'>$cmdline</p> <p class='retval'>$retval</p></div>".CRLF;
-    if(!preg_match('/FredClient \d+/',$retval)) $errors[] = 'fred_client.py not instaled properly. See help or set prefix of path.';
+    if(!preg_match('/FredClient \d+/',$retval)) $errors[] = 'fred_client not instaled properly. See help or set prefix of path.';
     if($errors) {
         echo '<h2 class="msg-error">Error:<br />'.join('<br />',$errors).'</h2>';
         if(!preg_match('/invalid_?(\w*)/',$command)) break;
@@ -284,9 +284,10 @@ while(is_array($_POST['send'])) {
     if(in_array($command,$ar_no_handler))
          $fred_command = $command;
     else $fred_command = "$command $handle";
+    $command_python = 'python ';
     if($_POST['output']=='html') {
         //--- HTML ---------------------------------
-        $cmdline = $_POST['exec_path']."fred_client.py ".$command_options." -v $_POST[verbose] -o html -d '$fred_command'";
+        $cmdline = $command_python.$_POST['exec_path']."fred_client ".$command_options." -v $_POST[verbose] -o html -d '$fred_command'";
         // See, what looks command line:
         if($TEST or $_REQUEST['display_command_line']) echo "<br/>HTML Command line:<div class='output'><p class='command'>$cmdline</p></div>".CRLF;
         echo '<div id="fred_output">'.CRLF;
@@ -295,7 +296,7 @@ while(is_array($_POST['send'])) {
         //-----------------------------------------
     } else {
         //--- PHP ---------------------------------
-        $cmdline = $_POST['exec_path']."fred_client.py ".$command_options." -v $_POST[verbose] -o php -d '$fred_command'";
+        $cmdline = $command_python.$_POST['exec_path']."fred_client ".$command_options." -v $_POST[verbose] -o php -d '$fred_command'";
         // See, what looks command line:
         if($TEST or $_REQUEST['display_command_line']) echo "<br/>PHP Command line:<div class='output'><p class='command'>$cmdline</p></div>".CRLF;
 

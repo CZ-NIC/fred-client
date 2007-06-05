@@ -61,7 +61,7 @@ Dostupné skripty jsou následující:
 </para>
 
 <simplelist>
-    <member>fred_client.py   - EPP konzole, komunikuje s EPP serverem</member>
+    <member>fred_client      - EPP konzole, komunikuje s EPP serverem</member>
     <member>fred_create.py   - Vytboří zdrojový EPP XML příkaz</member>
     <member>fred_sender.py   - Odešle soubor na EPP server</member>
 </simplelist>
@@ -76,8 +76,8 @@ Skripty se dají spouštět s parametry. Jaké parametry lze použít zjistíte
 zadáním parametru --help nebo -?:
 
 <programlisting>
-    $ fred_client.py --help
-    $ fred_client.py -?
+    $ fred_client --help
+    $ fred_client -?
 
 Použití: fred_client [parametry...]
 
@@ -194,7 +194,7 @@ pomocí parametru <emphasis>-s --session</emphasis>. Například si vytvoříte 
 tu pak aktivujete: 
 
 <programlisting>
-    $ fred_client.py --session=myeppserver     (nebo -s myeppserver)
+    $ fred_client --session=myeppserver     (nebo -s myeppserver)
 
     [connect_myeppserver]
     dir=/test/certificates
@@ -373,16 +373,16 @@ V sekci <emphasis>session</emphasis> jsou tato nastavení:</para>
 
 <chapter>
     <title>
-    Program fred_client.py
+    Program fred_client
     </title>
 
 <para>
-fred_client.py je konzole, která komunikuje s EPP serverem. Konzoli spustíte
+fred_client je konzole, která komunikuje s EPP serverem. Konzoli spustíte
 příkazem:
 </para>
 
 <programlisting>
-    $ fred_client.py
+    $ fred_client
 </programlisting>
 
 <para>
@@ -1025,7 +1025,7 @@ přidat další parametry, jsou-li třeba.
 <para>Popis začlenění klienta:</para>
 
 <para>
-Klient <emphasis>fred_client.py</emphasis> lze spustit i tak, že se mu v parametrech na příkazové řádce zadá příkaz,
+Klient <emphasis>fred_client</emphasis> lze spustit i tak, že se mu v parametrech na příkazové řádce zadá příkaz,
 který má vykonat <emphasis>-d --command</emphasis>. V takovém případě se nespouští konzole, ale klient funguje jako batch.
 Stejně jako kombinace skriptů fred_create.py a fred_sender.py. 
 Klient pouze zadaný příkaz provede, zobrazí výstup a ukončí se. Přihlášení a odhlášení

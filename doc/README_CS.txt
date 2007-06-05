@@ -19,7 +19,7 @@ FredClient
         Parametry pri spusteni (OPTIONS) 
         Konfiguracni soubor 
 
-   4. Program fred_client.py 
+   4. Program fred_client 
 
         Zobrazeni helpu
         EPP prikazy
@@ -64,7 +64,7 @@ Kapitola 3. Popis jednotlivych programu, parametry a konfiguracni soubor
    Konfiguracni soubor 
 
    Dostupne skripty jsou nasledujici:
-   fred_client.py - EPP konzole, komunikuje s EPP serverem
+   fred_client - EPP konzole, komunikuje s EPP serverem
    fred_create.py - Vytbori zdrojovy EPP XML prikaz
    fred_sender.py - Odesle soubor na EPP server
 
@@ -72,8 +72,8 @@ Parametry pri spusteni (OPTIONS)
 
    Skripty se daji spoustet s parametry. Jake parametry lze pouzit zjistite
    zadanim parametru --help nebo -?:
-    $ fred_client.py --help
-    $ fred_client.py -?
+    $ fred_client --help
+    $ fred_client -?
 
 Pouziti: fred_client [parametry...]
 
@@ -174,7 +174,7 @@ Konfiguracni soubor
    Sekci connect muze byt v konfiguracnim souboru vice. Ktera z nich se pri
    startu pouzije se nastavi pomoci parametru -s --session. Napriklad si
    vytvorite sekci [connect_myeppserver] tu pak aktivujete:
-    $ fred_client.py --session=myeppserver     (nebo -s myeppserver)
+    $ fred_client --session=myeppserver     (nebo -s myeppserver)
 
     [connect_myeppserver]
     dir=/test/certificates
@@ -255,7 +255,7 @@ Konfiguracni soubor
        Klient se ihned po spusteni pokusi spojit se serverem a zalogovat se.
        Tuto funkci je mozne vypnout nastavenim nologin = off.
 
-Kapitola 4. Program fred_client.py
+Kapitola 4. Program fred_client
 
    Obsah
 
@@ -271,9 +271,9 @@ Kapitola 4. Program fred_client.py
    Interaktivni mod vkladani parametru
    Prikazy relace (session)
 
-   fred_client.py je konzole, ktera komunikuje s EPP serverem. Konzoli spustite
+   fred_client je konzole, ktera komunikuje s EPP serverem. Konzoli spustite
    prikazem:
-    $ fred_client.py
+    $ fred_client
 
    Pokud mate v konfiguracnim souboru spravne nadefinovanu cestu k certifikatum
    a ulozene login a heslo, tak muzete jednoduse zadat login a tim se spojite s
@@ -691,14 +691,14 @@ Kapitola 6. Integrace klienta do PHP kodu
 
    Popis zacleneni klienta:
 
-   Klient fred_client.py lze spustit i tak, ze se mu v parametrech na
-   prikazove radce zada prikaz, ktery ma vykonat -d --command. V takovem
-   pripade se nespousti konzole, ale klient funguje jako batch. Stejne jako
-   kombinace skriptu fred_create.py a fred_sender.py. Klient pouze zadany
-   prikaz provede, zobrazi vystup a ukonci se. Prihlaseni a odhlaseni (login,
-   logout) probehnou automaticky a na vystup se nevypisuji. Pro spravne
-   prihlaseni je proto potrebne mit nastaveny konfiguracni soubor nebo vse
-   definovat na prikazove radce.
+   Klient fred_client lze spustit i tak, ze se mu v parametrech na prikazove
+   radce zada prikaz, ktery ma vykonat -d --command. V takovem pripade se
+   nespousti konzole, ale klient funguje jako batch. Stejne jako kombinace
+   skriptu fred_create.py a fred_sender.py. Klient pouze zadany prikaz provede,
+   zobrazi vystup a ukonci se. Prihlaseni a odhlaseni (login, logout) probehnou
+   automaticky a na vystup se nevypisuji. Pro spravne prihlaseni je proto
+   potrebne mit nastaveny konfiguracni soubor nebo vse definovat na prikazove
+   radce.
 
    Prepinacem --output -o upravime vystup do pozadovaneho formatu. Pokud chceme
    v prohlizeci hodnoty pouze zobrazit, muzeme zadat typ HTML: --output=html.

@@ -19,7 +19,7 @@ FredClient
         Options 
         Configuration file 
 
-   4. The fred_client.py program 
+   4. The fred_client program 
 
         Display help
         EPP commands
@@ -64,7 +64,7 @@ Chapter 3. Description of individual programs, parameters and the configuration 
    Configuration file 
 
    The following scripts are provided:
-   fred_client.py - EPP console, communicates with the EPP server
+   fred_client    - EPP console, communicates with the EPP server
    fred_create.py - Creates a source EPP XML command
    fred_sender.py - Sends the file to the EPP server
 
@@ -72,8 +72,8 @@ Options
 
    Scripts may be run with parameters. Enter
     --help or -? to find out which parameter to use:
-    $ fred_client.py --help
-    $ fred_client.py -?
+    $ fred_client --help
+    $ fred_client -?
 
 Use: fred_client [parameters...]
 
@@ -174,7 +174,7 @@ Configuration file
    A config file may contain several connect sections. The one to be used
    at start-up is set by the -s --session parameter. You can for example create a
    [connect_myeppserver] section and activate it by:
-    $ fred_client.py --session=myeppserver     (or -s myeppserver)
+    $ fred_client --session=myeppserver     (or -s myeppserver)
 
     [connect_myeppserver]
     dir=/test/certificates
@@ -255,7 +255,7 @@ Configuration file
        The client will attempt to connect to the server and log in immediately after start-up.
        This function may be switched off by selecting nologin = off.
 
-Chapter 4. The fred_client.py program
+Chapter 4. The fred_client program
 
    CONTENTS
 
@@ -271,9 +271,10 @@ Chapter 4. The fred_client.py program
    Interactive parameter input mode
    Session commands
 
-  The  fred_client.py is a console, which communicates with the EPP server. 
+  The  fred_client is a console, which communicates with the EPP server. 
   Launch the console by the
-    $ fred_client.py command
+
+    $ fred_client [options]
 
    When your configuration file contains a correct path to certificates and 
    login and password, you can connect to the 
@@ -726,9 +727,10 @@ Chapter 6. Integration of client into the PHP code
    using the standard procedure). The $php_module_name variable
    sets redirection to file and $command_options enable addition of other parameters
    when necessary.
+
 PHP Integration:
 
-   The fred_client.py client may also be run by
+   The fred_client client may also be run by
    entering a command to be executed by the -d --command at the command line. In such a
    case, the console does not run and the client functions as a batch. 
    This is the same as the combination of fred_create.py and fred_sender.py. The client only

@@ -25,7 +25,7 @@ It is used by client session Manager in session_base.py module.
 #---------------------------------------------------
 # Here is defined FRED VERSION:
 #---------------------------------------------------
-fred_version = '1.4'
+fred_version = '1.5'
 
 required_defaults = {'port':700, 'timeout':10.0}
 config = """

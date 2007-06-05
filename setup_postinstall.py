@@ -16,7 +16,7 @@ if sys.platform[:3] != 'win':
     sys.exit()
 
 # Name of the main console script
-script_name = 'fred_client.py'
+script_name = 'fred_client'
 help_name = 'fred_howto_cs.html'
 
 # BAT file is created to prevent closing the console after the script has been finished.

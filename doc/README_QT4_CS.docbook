@@ -37,7 +37,7 @@
     <title>Spuštění aplikace</title>
     <para>Spustit grafickou nadstavbu lze z příkazového řádku pomocí přepínače <quote>q</quote>:
     <programlisting>
-    $ fred_client.py -q
+    $ fred_client -q
     </programlisting>
     Nebo klikněte na soubor fred_client_qt4.pyw
     </para>

@@ -23,7 +23,7 @@ Po instalaci se na ploše vytvoří tři ikonky:
 </para>
 
 <simplelist>
-    <member><emphasis role='bold'>fred_client.py</emphasis> - odkaz na aplikaci</member>
+    <member><emphasis role='bold'>fred_client</emphasis> - odkaz na aplikaci</member>
     <member><emphasis role='bold'>fred_howto_cs.html</emphasis> - odkaz na tento dokument</member>
     <member><emphasis role='bold'>fred_console.conf.sample</emphasis> - odkaz na příklad s konfigurací</member>
     <member><emphasis role='bold'>README_CS.html</emphasis> - odkaz help</member>
@@ -52,7 +52,7 @@ může při ukládání přidat ke jménu ještě nějakou koncovku, kterou nemu
 <para>Po editaci tedy uložte konfiguraci do souboru <emphasis>"C:\Documents and Settings\All Users\fred_client.ini"</emphasis>. 
 </para>
 
-<para>Klikněte na ikonu aplikace <emphasis role='bold'>fred_client.py</emphasis>. 
+<para>Klikněte na ikonu aplikace <emphasis role='bold'>fred_client</emphasis>. 
 Je-li vše v pořádku, aplikace se automaticky připojí k serveru a je připravena k zadávání příkazů.
 </para>
 

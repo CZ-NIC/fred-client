@@ -16,6 +16,8 @@
 #    along with FredClient; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 import re, os
+from distutils.sysconfig import get_config_var, get_python_lib
+from setup import APP_SCRIPTS
 
 def remove_all(top):
     for root, dirs, files in os.walk(top, topdown=False):
@@ -48,43 +50,30 @@ def check_root_privileges():
     return 1
 
 def main():
-    if not check_root_privileges(): return 0
-    filelog = 'install.log'
-    try:
-        body = open(filelog).read()
-    except IOError, msg:
-        print 'IOError',msg
-        print 'For uninstallation process you need %s file.'%filelog
-        print 'This file is created during installation. For more see INSTALL.'
+    if not check_root_privileges():
         return 0
-    # copying build/lib/fred/session_config.py -> /usr/lib/python2.4/site-packages/fred
-    match = re.search('\S+site-packages\S+',body)
-    if not match:
-        print 'ERROR. Anchor "site-packages" was not found.'
-        return 0
-    path = match.group()
+
+    status = 1
+    
     print "REMOVE LIBRARY"
-    print path
-    if not remove_all(path): return
-    # changing mode of /usr/bin/fred_client.py to 755
-    scripts = re.findall('\S+fred_client.py',body)
-    if not len(scripts):
-        print 'ERROR. Anchor "fred_client.py" was not found.'
-        return 0
-    # 'build/scripts-2.4/fred_client.py'
-    patt_build = re.compile('build')
+    for name in ('fred', 'guiqt4'):
+        pathname = os.path.join(get_python_lib(), name)
+        print pathname
+        if not remove_all(pathname):
+            status = 0
+
     print "REMOVE SCRIPTS"
-    for name in scripts:
-        if patt_build.match(name): continue # not files in temporary folder
-        print 'Remove script:',name
+    for name in APP_SCRIPTS:
+        pathname = os.path.join(get_config_var('BINDIR'), name)
+        print 'Remove script:',pathname
         try:
-            os.remove(name)
+            os.remove(pathname)
         except OSError, msg:
             print 'OSError:',msg
-            return 0
-    #print 'REMOVE THIS FOLDER'
-    #if not remove_all('.'): return
-    return 1
+            status = 0
+    
+    return status
+
 
 if __name__ == '__main__':
     if main():
