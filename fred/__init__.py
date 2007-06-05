@@ -818,7 +818,7 @@ EXAMPLES:
   domains_by_contact CID:TECH"""
         return self._epp.api_command('domains_by_contact',{'id':id, 'cltrid':cltrid})
 
-    def nsset_by_contact(self, id, cltrid=None):
+    def nssets_by_contact(self, id, cltrid=None):
         """DESCRIPTION:
   This command fills server buffer by list of nssets connected with defined
   technical contact ID. The pointer is set at the beginning of the list. 
@@ -826,17 +826,17 @@ EXAMPLES:
   repeatedly until any data comming.
 
 SYNTAX:
-  nsset_by_contact id [other_options]
+  nssets_by_contact id [other_options]
 
 OPTIONS:
   id (required)            Technical contact
   cltrid                   Client transaction ID
 
 EXAMPLES:
-  nsset_by_contact CID:ADMIN"""
-        return self._epp.api_command('nsset_by_contact',{'id':id, 'cltrid':cltrid})
+  nssets_by_contact CID:ADMIN"""
+        return self._epp.api_command('nssets_by_contact',{'id':id, 'cltrid':cltrid})
 
-    def nsset_by_ns(self, name, cltrid=None):
+    def nssets_by_ns(self, name, cltrid=None):
         """DESCRIPTION:
   This command fills server buffer by list of nssets connected with defined
   name server. The pointer is set at the beginning of the list. 
@@ -844,15 +844,15 @@ EXAMPLES:
   repeatedly until any data comming.
 
 SYNTAX:
-  nsset_by_ns name [other_options]
+  nssets_by_ns name [other_options]
 
 OPTIONS:
   name (required)          Name server
   cltrid                   Client transaction ID
 
 EXAMPLES:
-  nsset_by_ns mydomain.cz"""
-        return self._epp.api_command('nsset_by_ns',{'name':name, 'cltrid':cltrid})
+  nssets_by_ns mydomain.cz"""
+        return self._epp.api_command('nssets_by_ns',{'name':name, 'cltrid':cltrid})
         
     #==============================================================
         

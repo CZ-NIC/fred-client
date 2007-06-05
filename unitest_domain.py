@@ -1,83 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
-"""
-4.0 Inicializace spojeni a definovani testovacich handlu
-4.1  Check na seznam dvou neexistujicich domen
-4.2  Pokus o Info na neexistujici domenu
-4.3.1 Zalozeni 1. pomocneho kontaktu
-4.3.2 Zalozeni 2. pomocneho kontaktu
-4.4.1 Zalozeni 1. pomocneho nssetu
-4.4.2 Zalozeni 2. pomocneho nssetu
-4.5  Pokus o zalozeni domeny s neexistujicim nssetem
-4.6.1  Pokus o zalozeni domeny s neexistujicim registratorem
-4.6.2  Pokus o zalozeni domeny s neexistujicim kontaktem
-4.7  Pokusy o zalozeni domeny s neplatnym nazvem
-4.7.1  Smazani domeny s neplatnym jmenem (pokud byla vytvorena)
-4.7.2  Pokus o zalozeni domeny se dvema stejnymi admin kontakty
-4.8  Zalozeni nove domeny
-4.8.1  Zalozeni nove domeny s povinnymi parametry - jen s registrantem
-4.9.1 Pokus o zalozeni domeny enum bez valExpDate
-4.9.2 Pokus o zalozeni domeny enum s valExDate = 6 mes + 1 den
-4.9.3 Pokus o zalozeni domeny enum s valExDate = aktualni datum
-4.9.3  Zalozeni nove domeny enum valExDate = dnes + 6 mes
-4.10  Pokus o zalozeni jiz existujici domeny
-4.11 Check na seznam existujici a neexistujici domeny
-4.12.1 Info na existujici domenu a kontrola hodnot
-4.12.2 Pokus o update domeny s dvema shodnymi admin kontakty
-4.12.3 Pokus o odebrani neexistujiciho admin kontaktu domeny
-4.13.1 Update vsech parametru domeny
-4.13.2 Kontrola zmenenych udaju
-4.13.3 Resetovani nssetu
-4.13.4 Kontrola zmenenych udaju po resetovani nssetu
-4.14.1 Zmena jen auth_info
-4.14.2 Kontrola zmenenych udaju po zmene pouze auth_info
-4.17 Pokus o Renew domain s nespravnym datumem
-4.17.1 Ziskani hodnoty domain_renew pro prikazy renew
-4.17.2 Pokus o nastaveni valExDate na 7 mesicu v Renew enum domain
-4.17.3 Nastaveni valExDate na dva mesice v Renew enum domain
-4.17.4 Pokus o update enum domeny na neplatny valExDate
-4.17.5 Pokus update domeny, ktera neni ENUM, s valExDate.
-4.17.6 Update enum domeny s valExDate na 5 mesicu.
-4.18.0 Nastaveni valExDate na dnes+15dni (neni v ochranne lhute)
-4.18.1 Pokus o prodlouzeni validace o 6 mesicu ode dne valExDate s prekrocenim 14 denni lhuty
-4.18.2 Nastaveni valExDate na dnes+14dni (je v ochranne lhute)
-4.18.3 Pokus o prodlouzeni validace o 6 mesicu + 15 dni v ochranne lhute
-4.18.4 Prodlouzeni validace o 6 mesicu + 14 dni v ochranne lhute
-4.19 Renew domain o tri roky
-4.19.5 Trasfer na vlastni domenu (Objekt je nezp\u016fsobil\u00fd pro transfer)
-4.19.6 Vymazani vsech poll zprav z fronty kvuli generovani poll zpravy z transferu
-4.20 Druhy registrator: Trasfer s neplatnym heslem (Chyba opr\u00e1vn\u011bn\u00ed)
-4.21 Druhy registrator: Trasfer domeny
-4.22 Druhy registrator: Zmena hesla po prevodu domeny
-4.23 Zmena hesla domeny, ktera registratorovi jiz nepatri
-4.24 Pokus o smazani domeny, ktera registratorovi jiz nepatri
-4.24.2 Poll req - Kontrola, ze byla vygenerovana zprava o transferu.
-4.24.3 Poll ack - Vyrazeni zpravy o transferu z fronty.
-4.25.1 Druhy registrator: Smazani domeny
-4.25.2 Druhy registrator: Smazani domeny enum
-4.25.3 Druhy registrator: Smazani domeny
-4.26 Check na smazanou domenu
-4.27.0 Smazani 2. pomocneho nssetu
-4.27.1 Smazani 1. pomocneho nssetu
-4.27.2 Smazani 2. pomocneho kontaktu
-4.27.3 Smazani 1. pomocneho kontaktu
+"""Unitests on domains and connected contacts and nssets.
 """
 import re
 import time
 import unittest
 import fred
 import unitest_share
-
-##    1 |   222 | D0000000222-CZ | 1.1.1.7.7.7.0.2.4.e164.arpa
-##    1 |   340 | D0000000340-CZ | 9.1.7.4.5.2.2.2.0.2.4.e164.arpa
-##    1 |   223 | D0000000223-CZ | 1.2.2.7.7.7.0.2.4.e164.arpa
-##    1 |   341 | D0000000341-CZ | 1.8.1.7.4.5.2.2.2.0.2.4.e164.arpa
-##    1 |   184 | D0000000184-CZ | 1.1.1.1.1.1.1.1.1.0.2.4.e164.arpa
-##    1 |   194 | D0000000194-CZ | 1.2.1.1.1.1.1.1.1.0.2.4.e164.arpa
-##    1 |   195 | D0000000195-CZ | 1.3.1.1.1.1.1.1.1.0.2.4.e164.arpa
-##    1 |   196 | D0000000196-CZ | 1.4.1.1.1.1.1.1.1.0.2.4.e164.arpa
-##    1 | 12637 | D0000012637-CZ | 2.2.2.0.2.4.e164.arpa
-##    1 | 12642 | D0000012642-CZ | 4.4.4.0.2.4.e164.arpa
 
 #-----------------------
 FRED_CONTACT1 = unitest_share.create_handle('CID:D1')
@@ -86,7 +15,6 @@ FRED_NSSET1 = unitest_share.create_handle('NSSID:D1')
 FRED_NSSET2 = unitest_share.create_handle('NSSID:D2')
 FRED_DOMAIN1 = '%s.cz'%unitest_share.create_handle('test')
 FRED_DOMAIN2 = unitest_share.create_enumdomain(); 
-# old  '0.1.1.7.4.5.1.2.2.0.2.4.e164.arpa'
 FRED_DOMAIN3 = '%s.cz'%unitest_share.create_handle('tmp')
 FRED_DOMAIN_PASSW = 'heslicko'
 FRED_DOMAIN_PASSW_NEW = 'noveheslo'
@@ -133,6 +61,19 @@ NSSET_DNS = (
 
 
 class TestDomain(unittest.TestCase):
+
+    def __get_results__(self, needle, label):
+        'Pomocna funkce'
+        haystack = ['']
+        not_found = 1
+        while haystack:
+            if needle in haystack:
+                not_found = 0
+                break
+            epp_cli.get_results()
+            self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+            haystack = epp_cli.is_val(('data','list'))
+        self.failIf(not_found, '%s %s se v seznamu nenachazi.'%(label, needle))
 
     def setUp(self):
         'Check if cilent is online.'
@@ -455,25 +396,58 @@ class TestDomain(unittest.TestCase):
         exDate = epp_cli.is_val(('data','domain:exDate'))[:10]
         self.assert_(expiration == exDate, 'Expirace neprosla. Data domain:exDate nesouhlasi: je: %s ma byt: %s'%(exDate, expiration))
 
+    # ##############################################
+    #
+    # Test List functions
 
-#TODO: domains_by_contact, domains_by_nsset, nsset_by_contact, nsset_by_ns        
     def test_200(self):
         '4.20.1 domains_by_contact: Overeni, ze domena je v seznamu'
-        epp_cli.domains_by_contact(FRED_CONTACT1)
+        #TODO: Zatim se testuje jen ID drzitele
+        epp_cli.domains_by_contact(FRED_CONTACT2)
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+        self.failIf(int(epp_cli.is_val(('data','count'))) == 0, 'Seznam je prazdny prestoze by tam mela byt alespon jedna polozka.')
+        
+    def test_210(self):
+        '4.20.2 get_results: (domains_by_contact) Overeni, ze domena je v seznamu'
+        self.__get_results__(FRED_DOMAIN1, 'Domena')
+
+    def test_211(self):
+        '4.20.3 Navraceni nssetu'
+        FRED_DATA[DOMAIN_3]['nsset'] = FRED_NSSET2
+        epp_cli.update_domain(FRED_DOMAIN1, chg = {'nsset': FRED_NSSET2})
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
+    def test_212(self):
+        '4.20.4 domains_by_nsset: Overeni, ze domena je v seznamu'
+        #TODO: Zatim se testuje jen ID drzitele
+        epp_cli.domains_by_nsset(FRED_NSSET2)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         self.failIf(int(epp_cli.is_val(('data','count'))) == 0, 'Seznam je prazdny prestoze by tam mela byt alespon jedna polozka.')
 
-    def test_210(self):
-        '4.20.2 get_results: Overeni, ze domena je v seznamu'
-        domains = ['']
-        while len(domains):
-            epp_cli.get_results()
-            self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
-            domains = epp_cli.is_val(('data','list'))
-##            print '\n\t!!! FRED_DOMAIN1=',FRED_DOMAIN1,'domains=', domains
-            self.failIf(domains is None or len(domains) == 0, 'Domena %s se v seznamu nenachazi presto ze by mela.'%FRED_DOMAIN1)
-            if FRED_DOMAIN1 in domains:
-                break
+    def test_213(self):
+        '4.20.5 get_results: (domains_by_nsset) Overeni, ze domena je v seznamu'
+        self.__get_results__(FRED_DOMAIN1, 'Domena')
+
+    def test_214(self):
+        '4.20.6 nssets_by_contact: Overeni, ze nsset je v seznamu'
+        epp_cli.nssets_by_contact(FRED_CONTACT1)
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+        self.failIf(int(epp_cli.is_val(('data','count'))) == 0, 'Seznam je prazdny prestoze by tam mela byt alespon jedna polozka.')
+        
+    def test_215(self):
+        '4.20.7 get_results: (nssets_by_contact) Overeni, ze nsset je v seznamu'
+        self.__get_results__(FRED_NSSET1, 'Nsset')
+
+    def test_216(self):
+        '4.20.8 nssets_by_ns: Overeni, ze nsset je v seznamu'
+        epp_cli.nssets_by_ns(NSSET_DNS[0]['name'])
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+        self.failIf(int(epp_cli.is_val(('data','count'))) == 0, 'Seznam je prazdny prestoze by tam mela byt alespon jedna polozka.')
+        
+    def test_217(self):
+        '4.20.9 get_results: (nssets_by_ns) Overeni, ze nsset je v seznamu'
+        self.__get_results__(FRED_NSSET1, 'Nsset')
+
 
 
     # ##############################################
