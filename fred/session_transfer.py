@@ -709,15 +709,18 @@ $fred_source_answer = '';      // source code (XML) of the answer prepared to di
         
     def save_history(self):
         'Save history of command line.'
-        eppdoc_client.eppdoc_assemble.save_history()
+        if self._is_history:
+            eppdoc_client.eppdoc_assemble.save_history()
 
     def restore_history(self):
         'Restore history of command line.'
-        eppdoc_client.eppdoc_assemble.restore_history()
+        if self._is_history:
+            eppdoc_client.eppdoc_assemble.restore_history()
 
     def remove_from_history(self, count=1):
         'Remove count last commands from history.'
-        eppdoc_client.eppdoc_assemble.remove_from_history(count)
+        if self._is_history:
+            eppdoc_client.eppdoc_assemble.remove_from_history(count)
 
     #-------------------------------------
     # readline part

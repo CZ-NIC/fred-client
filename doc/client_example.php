@@ -184,9 +184,9 @@ table#command  { border-collapse: collapse; }
     </td>
 
     <td class="tb-top">
-    <input class="btn" type="submit" name="send[list_contact]" value="List contact" /><br />
-    <input class="btn" type="submit" name="send[list_nsset]" value="List NSSET" /><br />
-    <input class="btn" type="submit" name="send[list_domain]" value="List domain" /><br />
+    <input class="btn" type="submit" name="send[list_contacts]" value="List contacts" /><br />
+    <input class="btn" type="submit" name="send[list_nssets]" value="List NSSETs" /><br />
+    <input class="btn" type="submit" name="send[list_domains]" value="List domains" /><br />
     </td>
 
     <td class="tb-top">

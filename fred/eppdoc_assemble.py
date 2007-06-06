@@ -1251,7 +1251,7 @@ def save_history():
         try:
             readline.write_history_file(history_filename) # save history
         except IOError, msg:
-            print 'IOError:',msg # some problem with history
+            print 'History IOError:',msg # some problem with history
 
 def restore_history():
     'Restore history of command line.'

@@ -98,6 +98,7 @@ class ManagerBase:
         self._message_missing_config = [] # messages with missing config filenames
         self.run_as_unittest = 0 # it can set variables for unittest: validate server answer
         self._loop_status = LOOP_NONE # indicator of the loop list commands
+        self._is_history = 1 # switch for activate/deactivate message history
 
     def get_session(self, offset):
         return self._session[offset]
@@ -506,6 +507,13 @@ $fred_client_errors = array(); // errors occuring during communication
         #
         # keep options in Manager instance
         if type(options) is dict: self._options = options
+        
+        if self._options.has_key('command') and len(self._options['command']):
+            # Disable writting history in one-command-line mode.
+            # It is usefull in cases fred_client is called by php page and
+            # it is not privileges for write history.
+            self._is_history = 0
+            
         # Load configuration file:
         self._conf, self._config_used_files, config_errors, self._message_missing_config = session_config.main(self._config_name, self._options, self._session[VERBOSE], OMIT_ERROR)
         # language from environment and configuration file:
@@ -615,7 +623,7 @@ $fred_client_errors = array(); // errors occuring during communication
         try:
             pipes = os.popen3(self._external_validator)
         except IOError, msg:
-            self.append_note(str(msg),('RED','BOLD'))
+            self.append_note('check_validator: %s'%str(msg),('RED','BOLD'))
         standr = pipes[1].read()
         errors = pipes[2].read()
         map(lambda f: f.close(), pipes)
