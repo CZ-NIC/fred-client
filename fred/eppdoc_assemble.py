@@ -39,7 +39,7 @@ except ImportError:
 
 UNBOUNDED = None
 # ''contact_disclose'' must be same format as eppdoc_client.update_status.
-contact_disclose = map(lambda n: (n,), ('name','org','addr','voice','fax','email'))
+contact_disclose = map(lambda n: (n,), ('name','org','addr','voice','fax','email', 'vat', 'ident', 'notify_email'))
 history_filename = os.path.join(os.path.expanduser('~'),'.fred_history') # compatibility s MS Win
 
 TAG_clTRID = 'cltrid' # Definition for --key-name = clTRID value.
@@ -804,9 +804,9 @@ class Message(MessageBase):
         if len(disit):
             for key in [n[0] for n in contact_disclose]:
                 if key in disit:
-                    explicit.append(key)
+                    explicit.append(make_camell(key))
                 else:
-                    implicit.append(key)
+                    implicit.append(make_camell(key))
             if self.server_disclose_policy: # 0/1 (disclose/hidden)
                 disit = (explicit,implicit)[flag]
                 flag = 0 # server default is disclose - send always list of hidden
@@ -1445,3 +1445,10 @@ def join_arrays2unicode(data, scope=[]):
     else:
         out = data
     return out
+
+def make_camell(text):
+    'Make camell name: any_name -> anyName'
+    for s in re.findall('_.', text):
+        text = re.sub(s, s[1].upper(), text)
+    return text
+

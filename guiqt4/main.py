@@ -88,6 +88,28 @@ from sources import FredWindow as wndSources
 translation_prefix = 'clientqt_'
 NO_SPLIT_NAME, SPLIT_NAME = (0,1)
 
+# (label, command_key)
+LIST_BY = {
+    'contacts': (('all', _TU('All')), ), 
+    'nssets':   (('all', _TU('All')), ('contact', _TU('Contact')), ('ns', 'NS')), 
+    'domains':  (('all', _TU('All')), ('contact', _TU('Contact')), ('nsset', 'NSSET'))
+    }
+
+# Translation from command name to the panel name:
+#   listcontacts_fred -> contacts_by
+#   listdomains_fred -> domains_by
+#   listdomains_fred -> domains_by
+#   listnssets_fred -> nssets_by
+#   domainsbycontact_fred -> domains_by
+#   domainsbynsset_fred -> domains_by
+#   nssetsbycontact_fred -> nssets_by
+#   nssetsbyns_fred -> nssets_by
+LIST_BY_COMMANDS = (
+    re.compile('list(contacts|domains|nssets)_fred'),
+    re.compile('(domains|nssets)by(contact|ns(?:set)?)_fred'),
+    )
+
+
 class RunEPPCommunication(QtCore.QThread):
     'Run Epp communication in separate thread'
 
@@ -168,6 +190,13 @@ class FredMainWindow(QtGui.QDialog):
         self.ui.renew_domain_val_ex_date.setDate(curd)
         self.panel_create_domain.ui.val_ex_date.setDate(curd)
         self.panel_update_domain.ui.val_ex_date.setDate(curd)
+        
+        # Init combo boxes:
+        for wnd_type, items in LIST_BY.items():
+            hwnd = getattr(self.ui, '%s_by_type'%wnd_type)
+            for key, label in items:
+                hwnd.addItem(label)
+        
         # Class for running EPP communication in separate thread
         self.thread_epp = RunEPPCommunication(self.epp)
         self.connect(self.thread_epp, QtCore.SIGNAL("epp_command_finished()"), self.process_answer)
@@ -315,6 +344,14 @@ class FredMainWindow(QtGui.QDialog):
         matches = re.match('(\w+):(.+)', command_name)
         # convert value: contact:list -> list_contact
         if matches: command_name = '%s_%s'%(matches.group(2),matches.group(1))
+        
+        # resolve name from list commands
+        for patt in LIST_BY_COMMANDS:
+            match = patt.match(command_name)
+            if match:
+                command_name = '%s_by'%match.group(1)
+                break
+        
         errors = []
         notes = self.epp._epp.fetch_notes()
         error = self.epp._epp.fetch_errors()
@@ -341,9 +378,8 @@ class FredMainWindow(QtGui.QDialog):
         getattr(self.ui,'%s_code'%command_name).setText(QtCore.QString(code))
         getattr(self.ui,'%s_msg'%command_name).setHtml(u'<br>\n'.join(map(get_unicode,msg)))
         # Prepare data headers and resolve widget type:
-        if re.match('list_', command_name):
-            matches = re.match('\w+_(.+)',command_name)
-            label  = matches and matches.group(1) or ''
+        if command_name == 'getresults_fred':
+            label = _TU('Results')
             table = (1,(label,),(380,),'list','count')
         elif command_name == 'credit_info':
             table = (2,(_TU('zone'),_TU('credit')),(140,260),None,None)
@@ -458,15 +494,33 @@ class FredMainWindow(QtGui.QDialog):
     # Shared functions for handlers
     #
     #-----------------------------------------------
-    def __share_list__(self, key, label):
-        'Shared for all check commands.'
-        self.display_error(_TU('We are sorry, but in this version are all list functions disabled.'), _TU('Disabled function'))
-#        if not self.check_is_online(): return
-#        d = {}
-#        append_key(d,'cltrid', getattr(self.ui,'%s_cltrid'%key))
-#        self.disable_send_buttons()
-#        self.thread_epp.set_command(key, d)
-#        self.thread_epp.start()
+    def __share_by__(self, key):
+        'Shared for by commands'
+        if not self.check_is_online(): return
+        d = {}
+        append_key(d,'cltrid', getattr(self.ui,'%s_by_cltrid'%key))
+        append_key(d,'type', getattr(self.ui,'%s_by_type'%key))
+        append_key(d,'handle', getattr(self.ui,'%s_by_handle'%key))
+        if d['type'] != 0 and not d.has_key('handle'):
+            self.display_error(_TU('Missing handle.'))
+        else:
+            params = {}
+            params['cltrid'] = d.get('cltrid')
+            # convert handle to name/id
+            type = LIST_BY[key][d['type']][0]
+            if d['type'] != 0:
+                # only in case of handle needed:
+                if key == 'nssets' and type == 'ns':
+                    params['name'] = d['handle']
+                else:
+                    params['id'] = d['handle']
+            
+            # build command name
+            command = '%s_by_%s'%(key, type)
+            self.disable_send_buttons()
+            self.thread_epp.set_command(command, params)
+            self.thread_epp.start()
+
 
     def __share_transfer__(self, key):
         'Shared for transfer commands.'
@@ -520,7 +574,7 @@ class FredMainWindow(QtGui.QDialog):
         'Save checked checkboxes into dct.'
         if flag.isEnabled():
             disclose = {}
-            for key in ('flag','name','org','addr','voice','fax','email'):
+            for key in ('flag','name','org','addr','voice','fax','email', 'vat', 'ident', 'notify_email'):
                 append_key(disclose, key, getattr(wnd, prefix%key))
             dct['disclose'] = {
                 'flag': disclose['flag'] == 0 and 'y' or 'n',
@@ -836,15 +890,28 @@ class FredMainWindow(QtGui.QDialog):
         self.thread_epp.set_command('credit_info', d)
         self.thread_epp.start()
 
-    def list_contact(self):
-        self.__share_list__('list_contact', _TU('contact'))
+    def contacts_by(self):
+        'Command contact_by_all'
+        self.__share_by__('contacts')
 
-    def list_nsset(self):
-        self.__share_list__('list_nsset', _TU('nsset'))
+    def nssets_by(self):
+        'Command nsset_by_(all, contact, ns)'
+        self.__share_by__('nssets')
 
-    def list_domain(self):
-        self.__share_list__('list_domain', _TU('domain'))
-
+    def domains_by(self):
+        'Command domain_by_(all, contact, nsset)'
+        self.__share_by__('domains')
+        
+    def get_results(self):
+        'Command get_results'
+        if not self.check_is_online(): return
+        d = {}
+        append_key(d,'cltrid', self.ui.get_results_cltrid)
+        self.disable_send_buttons()
+        self.thread_epp.set_command('get_results', d)
+        self.thread_epp.start()
+        
+        
     def technical_test(self):
         if not self.check_is_online(): return
         d = {}
@@ -897,8 +964,8 @@ class FredMainWindow(QtGui.QDialog):
         self.__display_sources__('delete_contact')
     def source_transfer_contact(self):
         self.__display_sources__('transfer_contact')
-    def source_list_contact(self):
-        self.__display_sources__('list_contact')
+    def source_contacts_by(self):
+        self.__display_sources__('contacts_by')
     def source_check_nsset(self):
         self.__display_sources__('check_nsset')
     def source_info_nsset(self):
@@ -909,8 +976,8 @@ class FredMainWindow(QtGui.QDialog):
         self.__display_sources__('update_nsset')
     def source_delete_nsset(self):
         self.__display_sources__('delete_nsset')
-    def source_list_nsset(self):
-        self.__display_sources__('list_nsset')
+    def source_nssets_by(self):
+        self.__display_sources__('nssets_by')
     def source_check_domain(self):
         self.__display_sources__('check_domain')
     def source_info_domain(self):
@@ -925,8 +992,8 @@ class FredMainWindow(QtGui.QDialog):
         self.__display_sources__('transfer_domain')
     def source_renew_domain(self):
         self.__display_sources__('renew_domain')
-    def source_list_domain(self):
-        self.__display_sources__('list_domain')
+    def source_domains_by(self):
+        self.__display_sources__('domains_by')
     def source_sendauthinfo_contact(self):
         self.__display_sources__('sendauthinfo_contact')
     def source_sendauthinfo_nsset(self):
@@ -937,7 +1004,18 @@ class FredMainWindow(QtGui.QDialog):
         self.__display_sources__('credit_info')
     def source_technical_test(self):
         self.__display_sources__('technical_test')
+    def source_get_results(self):
+        self.__display_sources__('getresults_fred')
 
+    def goto_result(self):
+        'Display panel get_results'
+        # Set to connect page on the main panel.
+        self.ui.tabWidget.setCurrentWidget(self.ui.tabWidget.widget(1))
+        # TODO: dodelat!
+#        tab_connect = self.ui.tabWidget.findChild(QtCore.QString('tab_connect'))
+#        print 'tab_connect:', type(tab_connect)
+#        tab_connect 5
+        
     def __display_text_wnd__(self, text, label=''):
         'Display window with any text'
         wnd = QtGui.QDialog(self)
@@ -1086,6 +1164,7 @@ def get_exception():
     msg.append('%s: %s'%(ex[0], ex[1]))
     return '\n'.join(msg)
 
+    
 def main(argv, lang):
     path = os.path.dirname(__file__)
     if path: os.chdir(path) # needs for correct load resources - images and translation

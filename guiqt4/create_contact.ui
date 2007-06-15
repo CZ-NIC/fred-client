@@ -6,7 +6,7 @@
     <x>0</x>
     <y>0</y>
     <width>574</width>
-    <height>892</height>
+    <height>945</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -80,22 +80,6 @@
     <bool>false</bool>
    </property>
   </widget>
-  <widget class="QLabel" name="textLabel6" >
-   <property name="geometry" >
-    <rect>
-     <x>10</x>
-     <y>690</y>
-     <width>160</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text" >
-    <string>value-added tax</string>
-   </property>
-   <property name="wordWrap" >
-    <bool>false</bool>
-   </property>
-  </widget>
   <widget class="QLineEdit" name="create_contact_sp" >
    <property name="geometry" >
     <rect>
@@ -122,48 +106,6 @@
     <bool>false</bool>
    </property>
   </widget>
-  <widget class="QLineEdit" name="create_contact_cltrid" >
-   <property name="geometry" >
-    <rect>
-     <x>180</x>
-     <y>850</y>
-     <width>360</width>
-     <height>22</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="textLabel8" >
-   <property name="geometry" >
-    <rect>
-     <x>10</x>
-     <y>820</y>
-     <width>160</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text" >
-    <string>notify email</string>
-   </property>
-   <property name="wordWrap" >
-    <bool>false</bool>
-   </property>
-  </widget>
-  <widget class="QLabel" name="textLabel9" >
-   <property name="geometry" >
-    <rect>
-     <x>10</x>
-     <y>720</y>
-     <width>160</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text" >
-    <string>social security number</string>
-   </property>
-   <property name="wordWrap" >
-    <bool>false</bool>
-   </property>
-  </widget>
   <widget class="QLabel" name="textLabel10" >
    <property name="geometry" >
     <rect>
@@ -178,122 +120,6 @@
    </property>
    <property name="wordWrap" >
     <bool>false</bool>
-   </property>
-  </widget>
-  <widget class="QLabel" name="textLabel11" >
-   <property name="geometry" >
-    <rect>
-     <x>10</x>
-     <y>850</y>
-     <width>160</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text" >
-    <string>clTRID</string>
-   </property>
-   <property name="wordWrap" >
-    <bool>false</bool>
-   </property>
-  </widget>
-  <widget class="QGroupBox" name="groupBox2_2" >
-   <property name="geometry" >
-    <rect>
-     <x>180</x>
-     <y>720</y>
-     <width>360</width>
-     <height>90</height>
-    </rect>
-   </property>
-   <property name="title" >
-    <string>social security number</string>
-   </property>
-   <widget class="QLabel" name="textLabel12" >
-    <property name="geometry" >
-     <rect>
-      <x>10</x>
-      <y>50</y>
-      <width>130</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text" >
-     <string>number</string>
-    </property>
-    <property name="wordWrap" >
-     <bool>false</bool>
-    </property>
-   </widget>
-   <widget class="QLabel" name="textLabel13" >
-    <property name="geometry" >
-     <rect>
-      <x>10</x>
-      <y>20</y>
-      <width>130</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text" >
-     <string>type</string>
-    </property>
-    <property name="wordWrap" >
-     <bool>false</bool>
-    </property>
-   </widget>
-   <widget class="QComboBox" name="create_contact_ssn_type" >
-    <property name="geometry" >
-     <rect>
-      <x>150</x>
-      <y>20</y>
-      <width>85</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <item>
-     <property name="text" >
-      <string>op</string>
-     </property>
-    </item>
-    <item>
-     <property name="text" >
-      <string>rc</string>
-     </property>
-    </item>
-    <item>
-     <property name="text" >
-      <string>passport</string>
-     </property>
-    </item>
-    <item>
-     <property name="text" >
-      <string>mpsv</string>
-     </property>
-    </item>
-    <item>
-     <property name="text" >
-      <string>ico</string>
-     </property>
-    </item>
-   </widget>
-   <widget class="QLineEdit" name="create_contact_ssn_number" >
-    <property name="geometry" >
-     <rect>
-      <x>150</x>
-      <y>50</y>
-      <width>200</width>
-      <height>22</height>
-     </rect>
-    </property>
-   </widget>
-  </widget>
-  <widget class="QLineEdit" name="create_contact_notify_email" >
-   <property name="geometry" >
-    <rect>
-     <x>180</x>
-     <y>820</y>
-     <width>360</width>
-     <height>22</height>
-    </rect>
    </property>
   </widget>
   <widget class="QLabel" name="textLabel14" >
@@ -352,16 +178,6 @@
    </property>
    <property name="wordWrap" >
     <bool>false</bool>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="create_contact_vat" >
-   <property name="geometry" >
-    <rect>
-     <x>180</x>
-     <y>690</y>
-     <width>360</width>
-     <height>22</height>
-    </rect>
    </property>
   </widget>
   <widget class="QLineEdit" name="create_contact_id" >
@@ -522,136 +338,6 @@
     <string/>
    </property>
   </widget>
-  <widget class="QGroupBox" name="groupBox2" >
-   <property name="enabled" >
-    <bool>false</bool>
-   </property>
-   <property name="geometry" >
-    <rect>
-     <x>180</x>
-     <y>540</y>
-     <width>360</width>
-     <height>140</height>
-    </rect>
-   </property>
-   <property name="title" >
-    <string/>
-   </property>
-   <widget class="QCheckBox" name="create_contact_disclose_voice" >
-    <property name="geometry" >
-     <rect>
-      <x>190</x>
-      <y>80</y>
-      <width>160</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text" >
-     <string>voice</string>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="create_contact_disclose_fax" >
-    <property name="geometry" >
-     <rect>
-      <x>10</x>
-      <y>110</y>
-      <width>160</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text" >
-     <string>fax</string>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="create_contact_disclose_email" >
-    <property name="geometry" >
-     <rect>
-      <x>190</x>
-      <y>110</y>
-      <width>160</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text" >
-     <string>email</string>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="create_contact_disclose_name" >
-    <property name="geometry" >
-     <rect>
-      <x>10</x>
-      <y>50</y>
-      <width>160</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text" >
-     <string>name</string>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="create_contact_disclose_addr" >
-    <property name="geometry" >
-     <rect>
-      <x>10</x>
-      <y>80</y>
-      <width>160</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text" >
-     <string>address</string>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="create_contact_disclose_org" >
-    <property name="geometry" >
-     <rect>
-      <x>190</x>
-      <y>50</y>
-      <width>160</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text" >
-     <string>organisation</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="textLabel22" >
-    <property name="geometry" >
-     <rect>
-      <x>10</x>
-      <y>20</y>
-      <width>160</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text" >
-     <string>disclose</string>
-    </property>
-    <property name="wordWrap" >
-     <bool>false</bool>
-    </property>
-   </widget>
-   <widget class="QComboBox" name="create_contact_disclose_flag" >
-    <property name="geometry" >
-     <rect>
-      <x>190</x>
-      <y>20</y>
-      <width>85</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <item>
-     <property name="text" >
-      <string>yes</string>
-     </property>
-    </item>
-    <item>
-     <property name="text" >
-      <string>no</string>
-     </property>
-    </item>
-   </widget>
-  </widget>
   <widget class="QCheckBox" name="checkBox8" >
    <property name="geometry" >
     <rect>
@@ -740,6 +426,359 @@ object can be created for a specific validity period.</string>
      <string>street</string>
     </property>
    </column>
+  </widget>
+  <widget class="QLabel" name="textLabel6" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>750</y>
+     <width>160</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>value-added tax</string>
+   </property>
+   <property name="wordWrap" >
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="textLabel9" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>780</y>
+     <width>160</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>social security number</string>
+   </property>
+   <property name="wordWrap" >
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QGroupBox" name="groupBox2_2" >
+   <property name="geometry" >
+    <rect>
+     <x>180</x>
+     <y>780</y>
+     <width>360</width>
+     <height>90</height>
+    </rect>
+   </property>
+   <property name="title" >
+    <string>social security number</string>
+   </property>
+   <widget class="QLabel" name="textLabel12" >
+    <property name="geometry" >
+     <rect>
+      <x>10</x>
+      <y>50</y>
+      <width>130</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text" >
+     <string>number</string>
+    </property>
+    <property name="wordWrap" >
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="textLabel13" >
+    <property name="geometry" >
+     <rect>
+      <x>10</x>
+      <y>20</y>
+      <width>130</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text" >
+     <string>type</string>
+    </property>
+    <property name="wordWrap" >
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="create_contact_ssn_type" >
+    <property name="geometry" >
+     <rect>
+      <x>150</x>
+      <y>20</y>
+      <width>85</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text" >
+      <string>op</string>
+     </property>
+    </item>
+    <item>
+     <property name="text" >
+      <string>rc</string>
+     </property>
+    </item>
+    <item>
+     <property name="text" >
+      <string>passport</string>
+     </property>
+    </item>
+    <item>
+     <property name="text" >
+      <string>mpsv</string>
+     </property>
+    </item>
+    <item>
+     <property name="text" >
+      <string>ico</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QLineEdit" name="create_contact_ssn_number" >
+    <property name="geometry" >
+     <rect>
+      <x>150</x>
+      <y>50</y>
+      <width>200</width>
+      <height>22</height>
+     </rect>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QLineEdit" name="create_contact_notify_email" >
+   <property name="geometry" >
+    <rect>
+     <x>180</x>
+     <y>880</y>
+     <width>360</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="create_contact_cltrid" >
+   <property name="geometry" >
+    <rect>
+     <x>180</x>
+     <y>910</y>
+     <width>360</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="textLabel8" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>880</y>
+     <width>160</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>notify email</string>
+   </property>
+   <property name="wordWrap" >
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="textLabel11" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>910</y>
+     <width>160</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>clTRID</string>
+   </property>
+   <property name="wordWrap" >
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="create_contact_vat" >
+   <property name="geometry" >
+    <rect>
+     <x>180</x>
+     <y>750</y>
+     <width>360</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QGroupBox" name="groupBox2" >
+   <property name="enabled" >
+    <bool>false</bool>
+   </property>
+   <property name="geometry" >
+    <rect>
+     <x>180</x>
+     <y>540</y>
+     <width>360</width>
+     <height>200</height>
+    </rect>
+   </property>
+   <property name="title" >
+    <string/>
+   </property>
+   <widget class="QCheckBox" name="create_contact_disclose_org" >
+    <property name="geometry" >
+     <rect>
+      <x>190</x>
+      <y>50</y>
+      <width>160</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text" >
+     <string>organisation</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="create_contact_disclose_flag" >
+    <property name="geometry" >
+     <rect>
+      <x>190</x>
+      <y>20</y>
+      <width>85</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text" >
+      <string>yes</string>
+     </property>
+    </item>
+    <item>
+     <property name="text" >
+      <string>no</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QCheckBox" name="create_contact_disclose_name" >
+    <property name="geometry" >
+     <rect>
+      <x>10</x>
+      <y>50</y>
+      <width>160</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text" >
+     <string>name</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="create_contact_disclose_addr" >
+    <property name="geometry" >
+     <rect>
+      <x>10</x>
+      <y>80</y>
+      <width>160</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text" >
+     <string>address</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="textLabel22" >
+    <property name="geometry" >
+     <rect>
+      <x>10</x>
+      <y>20</y>
+      <width>160</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text" >
+     <string>disclose</string>
+    </property>
+    <property name="wordWrap" >
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="create_contact_disclose_fax" >
+    <property name="geometry" >
+     <rect>
+      <x>10</x>
+      <y>110</y>
+      <width>160</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text" >
+     <string>fax</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="create_contact_disclose_vat" >
+    <property name="geometry" >
+     <rect>
+      <x>10</x>
+      <y>140</y>
+      <width>160</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text" >
+     <string>VAT</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="create_contact_disclose_ident" >
+    <property name="geometry" >
+     <rect>
+      <x>10</x>
+      <y>170</y>
+      <width>160</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text" >
+     <string>ident</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="create_contact_disclose_voice" >
+    <property name="geometry" >
+     <rect>
+      <x>190</x>
+      <y>80</y>
+      <width>160</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text" >
+     <string>voice</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="create_contact_disclose_email" >
+    <property name="geometry" >
+     <rect>
+      <x>190</x>
+      <y>110</y>
+      <width>160</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text" >
+     <string>email</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="create_contact_disclose_notify_email" >
+    <property name="geometry" >
+     <rect>
+      <x>190</x>
+      <y>140</y>
+      <width>160</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text" >
+     <string>notify email</string>
+    </property>
+   </widget>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11" />

@@ -46,7 +46,7 @@ FRED_CONTACT = [
     'pc': '', #(nepovinný) PSČ
     'voice': '', #(nepovinný) telefon
     'fax': '', #(nepovinný) fax
-    'disclose': {'flag':'n', 'data':('name','org','addr','voice','fax','email')},
+    'disclose': {'flag':'n', 'data':('name','org','addr','voice','fax','email', 'vat', 'ident', 'notify_email')},
     'vat': '', #(nepovinný) DPH
     'ident': '', #(nepovinný) Ident
     'ident': {'type':'','number':''}, #(nepovinný) Ident

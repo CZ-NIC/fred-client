@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'update_contact.ui'
 #
-# Created: Wed Dec  6 15:46:20 2006
-#      by: PyQt4 UI code generator 4.1
+# Created: Fri Jun 15 11:16:46 2007
+#      by: PyQt4 UI code generator 4.1.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -13,7 +13,7 @@ from PyQt4 import QtCore, QtGui
 class Ui_FredWindow(object):
     def setupUi(self, FredWindow):
         FredWindow.setObjectName("FredWindow")
-        FredWindow.resize(QtCore.QSize(QtCore.QRect(0,0,574,943).size()).expandedTo(FredWindow.minimumSizeHint()))
+        FredWindow.resize(QtCore.QSize(QtCore.QRect(0,0,559,989).size()).expandedTo(FredWindow.minimumSizeHint()))
 
         self.textLabel1 = QtGui.QLabel(FredWindow)
         self.textLabel1.setGeometry(QtCore.QRect(10,110,160,20))
@@ -37,53 +37,6 @@ class Ui_FredWindow(object):
         self.update_contact_name.setGeometry(QtCore.QRect(180,140,360,22))
         self.update_contact_name.setObjectName("update_contact_name")
 
-        self.textLabel21 = QtGui.QLabel(FredWindow)
-        self.textLabel21.setGeometry(QtCore.QRect(10,760,160,20))
-        self.textLabel21.setWordWrap(False)
-        self.textLabel21.setObjectName("textLabel21")
-
-        self.grp_disclose = QtGui.QGroupBox(FredWindow)
-        self.grp_disclose.setEnabled(False)
-        self.grp_disclose.setGeometry(QtCore.QRect(180,580,360,140))
-        self.grp_disclose.setObjectName("grp_disclose")
-
-        self.update_contact_disclose_flag = QtGui.QComboBox(self.grp_disclose)
-        self.update_contact_disclose_flag.setGeometry(QtCore.QRect(190,20,85,22))
-        self.update_contact_disclose_flag.setObjectName("update_contact_disclose_flag")
-
-        self.update_contact_disclose_name = QtGui.QCheckBox(self.grp_disclose)
-        self.update_contact_disclose_name.setGeometry(QtCore.QRect(10,50,160,20))
-        self.update_contact_disclose_name.setObjectName("update_contact_disclose_name")
-
-        self.update_contact_disclose_addr = QtGui.QCheckBox(self.grp_disclose)
-        self.update_contact_disclose_addr.setGeometry(QtCore.QRect(10,80,160,20))
-        self.update_contact_disclose_addr.setObjectName("update_contact_disclose_addr")
-
-        self.update_contact_disclose_fax = QtGui.QCheckBox(self.grp_disclose)
-        self.update_contact_disclose_fax.setGeometry(QtCore.QRect(10,110,160,20))
-        self.update_contact_disclose_fax.setObjectName("update_contact_disclose_fax")
-
-        self.update_contact_disclose_org = QtGui.QCheckBox(self.grp_disclose)
-        self.update_contact_disclose_org.setGeometry(QtCore.QRect(190,50,160,20))
-        self.update_contact_disclose_org.setObjectName("update_contact_disclose_org")
-
-        self.update_contact_disclose_voice = QtGui.QCheckBox(self.grp_disclose)
-        self.update_contact_disclose_voice.setGeometry(QtCore.QRect(190,80,160,20))
-        self.update_contact_disclose_voice.setObjectName("update_contact_disclose_voice")
-
-        self.update_contact_disclose_email = QtGui.QCheckBox(self.grp_disclose)
-        self.update_contact_disclose_email.setGeometry(QtCore.QRect(190,110,160,20))
-        self.update_contact_disclose_email.setObjectName("update_contact_disclose_email")
-
-        self.update_contact_notify_email = QtGui.QLineEdit(FredWindow)
-        self.update_contact_notify_email.setGeometry(QtCore.QRect(180,860,360,22))
-        self.update_contact_notify_email.setObjectName("update_contact_notify_email")
-
-        self.textLabel12 = QtGui.QLabel(FredWindow)
-        self.textLabel12.setGeometry(QtCore.QRect(10,860,160,20))
-        self.textLabel12.setWordWrap(False)
-        self.textLabel12.setObjectName("textLabel12")
-
         self.update_contact_voice = QtGui.QLineEdit(FredWindow)
         self.update_contact_voice.setGeometry(QtCore.QRect(180,460,180,22))
         self.update_contact_voice.setObjectName("update_contact_voice")
@@ -102,49 +55,14 @@ class Ui_FredWindow(object):
         self.update_contact_email.setGeometry(QtCore.QRect(180,520,360,22))
         self.update_contact_email.setObjectName("update_contact_email")
 
-        self.groupBox2_2 = QtGui.QGroupBox(FredWindow)
-        self.groupBox2_2.setGeometry(QtCore.QRect(180,760,360,90))
-        self.groupBox2_2.setObjectName("groupBox2_2")
-
-        self.textLabel19 = QtGui.QLabel(self.groupBox2_2)
-        self.textLabel19.setGeometry(QtCore.QRect(10,50,130,20))
-        self.textLabel19.setWordWrap(False)
-        self.textLabel19.setObjectName("textLabel19")
-
-        self.textLabel20 = QtGui.QLabel(self.groupBox2_2)
-        self.textLabel20.setGeometry(QtCore.QRect(10,20,130,20))
-        self.textLabel20.setWordWrap(False)
-        self.textLabel20.setObjectName("textLabel20")
-
-        self.update_contact_ssn_type = QtGui.QComboBox(self.groupBox2_2)
-        self.update_contact_ssn_type.setGeometry(QtCore.QRect(150,20,85,22))
-        self.update_contact_ssn_type.setObjectName("update_contact_ssn_type")
-
-        self.update_contact_ssn_number = QtGui.QLineEdit(self.groupBox2_2)
-        self.update_contact_ssn_number.setGeometry(QtCore.QRect(150,50,200,22))
-        self.update_contact_ssn_number.setObjectName("update_contact_ssn_number")
-
         self.update_contact_fax = QtGui.QLineEdit(FredWindow)
         self.update_contact_fax.setGeometry(QtCore.QRect(180,490,180,22))
         self.update_contact_fax.setObjectName("update_contact_fax")
-
-        self.textLabel11 = QtGui.QLabel(FredWindow)
-        self.textLabel11.setGeometry(QtCore.QRect(10,890,160,20))
-        self.textLabel11.setWordWrap(False)
-        self.textLabel11.setObjectName("textLabel11")
 
         self.textLabel2 = QtGui.QLabel(FredWindow)
         self.textLabel2.setGeometry(QtCore.QRect(10,140,160,20))
         self.textLabel2.setWordWrap(False)
         self.textLabel2.setObjectName("textLabel2")
-
-        self.update_contact_vat = QtGui.QLineEdit(FredWindow)
-        self.update_contact_vat.setGeometry(QtCore.QRect(180,730,360,22))
-        self.update_contact_vat.setObjectName("update_contact_vat")
-
-        self.update_contact_cltrid = QtGui.QLineEdit(FredWindow)
-        self.update_contact_cltrid.setGeometry(QtCore.QRect(180,890,360,22))
-        self.update_contact_cltrid.setObjectName("update_contact_cltrid")
 
         self.disclose = QtGui.QCheckBox(FredWindow)
         self.disclose.setGeometry(QtCore.QRect(10,580,160,20))
@@ -169,11 +87,6 @@ class Ui_FredWindow(object):
         self.textLabel4.setGeometry(QtCore.QRect(10,490,160,20))
         self.textLabel4.setWordWrap(False)
         self.textLabel4.setObjectName("textLabel4")
-
-        self.textLabel10 = QtGui.QLabel(FredWindow)
-        self.textLabel10.setGeometry(QtCore.QRect(10,730,160,20))
-        self.textLabel10.setWordWrap(False)
-        self.textLabel10.setObjectName("textLabel10")
 
         self.textLabel18 = QtGui.QLabel(FredWindow)
         self.textLabel18.setGeometry(QtCore.QRect(10,10,530,90))
@@ -236,6 +149,105 @@ class Ui_FredWindow(object):
         self.update_contact_street.setShowGrid(True)
         self.update_contact_street.setObjectName("update_contact_street")
 
+        self.grp_disclose = QtGui.QGroupBox(FredWindow)
+        self.grp_disclose.setEnabled(False)
+        self.grp_disclose.setGeometry(QtCore.QRect(180,580,360,200))
+        self.grp_disclose.setObjectName("grp_disclose")
+
+        self.update_contact_disclose_flag = QtGui.QComboBox(self.grp_disclose)
+        self.update_contact_disclose_flag.setGeometry(QtCore.QRect(190,20,85,22))
+        self.update_contact_disclose_flag.setObjectName("update_contact_disclose_flag")
+
+        self.update_contact_disclose_name = QtGui.QCheckBox(self.grp_disclose)
+        self.update_contact_disclose_name.setGeometry(QtCore.QRect(10,50,160,20))
+        self.update_contact_disclose_name.setObjectName("update_contact_disclose_name")
+
+        self.update_contact_disclose_addr = QtGui.QCheckBox(self.grp_disclose)
+        self.update_contact_disclose_addr.setGeometry(QtCore.QRect(10,80,160,20))
+        self.update_contact_disclose_addr.setObjectName("update_contact_disclose_addr")
+
+        self.update_contact_disclose_org = QtGui.QCheckBox(self.grp_disclose)
+        self.update_contact_disclose_org.setGeometry(QtCore.QRect(190,50,160,20))
+        self.update_contact_disclose_org.setObjectName("update_contact_disclose_org")
+
+        self.update_contact_disclose_voice = QtGui.QCheckBox(self.grp_disclose)
+        self.update_contact_disclose_voice.setGeometry(QtCore.QRect(190,80,160,20))
+        self.update_contact_disclose_voice.setObjectName("update_contact_disclose_voice")
+
+        self.update_contact_disclose_email = QtGui.QCheckBox(self.grp_disclose)
+        self.update_contact_disclose_email.setGeometry(QtCore.QRect(190,110,160,20))
+        self.update_contact_disclose_email.setObjectName("update_contact_disclose_email")
+
+        self.update_contact_disclose_fax = QtGui.QCheckBox(self.grp_disclose)
+        self.update_contact_disclose_fax.setGeometry(QtCore.QRect(10,110,160,20))
+        self.update_contact_disclose_fax.setObjectName("update_contact_disclose_fax")
+
+        self.update_contact_disclose_notify_email = QtGui.QCheckBox(self.grp_disclose)
+        self.update_contact_disclose_notify_email.setGeometry(QtCore.QRect(190,140,160,20))
+        self.update_contact_disclose_notify_email.setObjectName("update_contact_disclose_notify_email")
+
+        self.update_contact_disclose_vat = QtGui.QCheckBox(self.grp_disclose)
+        self.update_contact_disclose_vat.setGeometry(QtCore.QRect(10,140,160,20))
+        self.update_contact_disclose_vat.setObjectName("update_contact_disclose_vat")
+
+        self.update_contact_disclose_ident = QtGui.QCheckBox(self.grp_disclose)
+        self.update_contact_disclose_ident.setGeometry(QtCore.QRect(10,170,160,20))
+        self.update_contact_disclose_ident.setObjectName("update_contact_disclose_ident")
+
+        self.update_contact_vat = QtGui.QLineEdit(FredWindow)
+        self.update_contact_vat.setGeometry(QtCore.QRect(180,790,360,22))
+        self.update_contact_vat.setObjectName("update_contact_vat")
+
+        self.textLabel10 = QtGui.QLabel(FredWindow)
+        self.textLabel10.setGeometry(QtCore.QRect(10,790,160,20))
+        self.textLabel10.setWordWrap(False)
+        self.textLabel10.setObjectName("textLabel10")
+
+        self.textLabel21 = QtGui.QLabel(FredWindow)
+        self.textLabel21.setGeometry(QtCore.QRect(10,820,160,20))
+        self.textLabel21.setWordWrap(False)
+        self.textLabel21.setObjectName("textLabel21")
+
+        self.update_contact_notify_email = QtGui.QLineEdit(FredWindow)
+        self.update_contact_notify_email.setGeometry(QtCore.QRect(180,920,360,22))
+        self.update_contact_notify_email.setObjectName("update_contact_notify_email")
+
+        self.update_contact_cltrid = QtGui.QLineEdit(FredWindow)
+        self.update_contact_cltrid.setGeometry(QtCore.QRect(180,950,360,22))
+        self.update_contact_cltrid.setObjectName("update_contact_cltrid")
+
+        self.textLabel12 = QtGui.QLabel(FredWindow)
+        self.textLabel12.setGeometry(QtCore.QRect(10,920,160,20))
+        self.textLabel12.setWordWrap(False)
+        self.textLabel12.setObjectName("textLabel12")
+
+        self.textLabel11 = QtGui.QLabel(FredWindow)
+        self.textLabel11.setGeometry(QtCore.QRect(10,950,160,20))
+        self.textLabel11.setWordWrap(False)
+        self.textLabel11.setObjectName("textLabel11")
+
+        self.groupBox2_2 = QtGui.QGroupBox(FredWindow)
+        self.groupBox2_2.setGeometry(QtCore.QRect(180,820,360,90))
+        self.groupBox2_2.setObjectName("groupBox2_2")
+
+        self.textLabel19 = QtGui.QLabel(self.groupBox2_2)
+        self.textLabel19.setGeometry(QtCore.QRect(10,50,130,20))
+        self.textLabel19.setWordWrap(False)
+        self.textLabel19.setObjectName("textLabel19")
+
+        self.textLabel20 = QtGui.QLabel(self.groupBox2_2)
+        self.textLabel20.setGeometry(QtCore.QRect(10,20,130,20))
+        self.textLabel20.setWordWrap(False)
+        self.textLabel20.setObjectName("textLabel20")
+
+        self.update_contact_ssn_type = QtGui.QComboBox(self.groupBox2_2)
+        self.update_contact_ssn_type.setGeometry(QtCore.QRect(150,20,85,22))
+        self.update_contact_ssn_type.setObjectName("update_contact_ssn_type")
+
+        self.update_contact_ssn_number = QtGui.QLineEdit(self.groupBox2_2)
+        self.update_contact_ssn_number.setGeometry(QtCore.QRect(150,50,200,22))
+        self.update_contact_ssn_number.setObjectName("update_contact_ssn_number")
+
         self.retranslateUi(FredWindow)
         QtCore.QObject.connect(self.disclose,QtCore.SIGNAL("toggled(bool)"),self.grp_disclose.setEnabled)
         QtCore.QObject.connect(self.disclose,QtCore.SIGNAL("toggled(bool)"),self.grp_disclose.setEnabled)
@@ -275,33 +287,13 @@ class Ui_FredWindow(object):
         self.update_contact_org.setWhatsThis(QtGui.QApplication.translate("FredWindow", "pokus", None, QtGui.QApplication.UnicodeUTF8))
         self.update_contact_name.setToolTip(QtGui.QApplication.translate("FredWindow", "CZ", None, QtGui.QApplication.UnicodeUTF8))
         self.update_contact_name.setWhatsThis(QtGui.QApplication.translate("FredWindow", "pokus", None, QtGui.QApplication.UnicodeUTF8))
-        self.textLabel21.setText(QtGui.QApplication.translate("FredWindow", "social security number", None, QtGui.QApplication.UnicodeUTF8))
-        self.grp_disclose.setTitle(QtGui.QApplication.translate("FredWindow", "disclose", None, QtGui.QApplication.UnicodeUTF8))
-        self.update_contact_disclose_flag.addItem(QtGui.QApplication.translate("FredWindow", "yes", None, QtGui.QApplication.UnicodeUTF8))
-        self.update_contact_disclose_flag.addItem(QtGui.QApplication.translate("FredWindow", "no", None, QtGui.QApplication.UnicodeUTF8))
-        self.update_contact_disclose_name.setText(QtGui.QApplication.translate("FredWindow", "name", None, QtGui.QApplication.UnicodeUTF8))
-        self.update_contact_disclose_addr.setText(QtGui.QApplication.translate("FredWindow", "address", None, QtGui.QApplication.UnicodeUTF8))
-        self.update_contact_disclose_fax.setText(QtGui.QApplication.translate("FredWindow", "fax", None, QtGui.QApplication.UnicodeUTF8))
-        self.update_contact_disclose_org.setText(QtGui.QApplication.translate("FredWindow", "organisation", None, QtGui.QApplication.UnicodeUTF8))
-        self.update_contact_disclose_voice.setText(QtGui.QApplication.translate("FredWindow", "voice", None, QtGui.QApplication.UnicodeUTF8))
-        self.update_contact_disclose_email.setText(QtGui.QApplication.translate("FredWindow", "email", None, QtGui.QApplication.UnicodeUTF8))
-        self.textLabel12.setText(QtGui.QApplication.translate("FredWindow", "notify email", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel9.setText(QtGui.QApplication.translate("FredWindow", "auth. for transfer", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel7.setText(QtGui.QApplication.translate("FredWindow", "+420.123456789", None, QtGui.QApplication.UnicodeUTF8))
-        self.textLabel19.setText(QtGui.QApplication.translate("FredWindow", "number", None, QtGui.QApplication.UnicodeUTF8))
-        self.textLabel20.setText(QtGui.QApplication.translate("FredWindow", "type", None, QtGui.QApplication.UnicodeUTF8))
-        self.update_contact_ssn_type.addItem(QtGui.QApplication.translate("FredWindow", "op", None, QtGui.QApplication.UnicodeUTF8))
-        self.update_contact_ssn_type.addItem(QtGui.QApplication.translate("FredWindow", "rc", None, QtGui.QApplication.UnicodeUTF8))
-        self.update_contact_ssn_type.addItem(QtGui.QApplication.translate("FredWindow", "passport", None, QtGui.QApplication.UnicodeUTF8))
-        self.update_contact_ssn_type.addItem(QtGui.QApplication.translate("FredWindow", "mpsv", None, QtGui.QApplication.UnicodeUTF8))
-        self.update_contact_ssn_type.addItem(QtGui.QApplication.translate("FredWindow", "ico", None, QtGui.QApplication.UnicodeUTF8))
-        self.textLabel11.setText(QtGui.QApplication.translate("FredWindow", "clTRID", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel2.setText(QtGui.QApplication.translate("FredWindow", "name", None, QtGui.QApplication.UnicodeUTF8))
         self.disclose.setText(QtGui.QApplication.translate("FredWindow", "disclose", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel6.setText(QtGui.QApplication.translate("FredWindow", "+420.123456789", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel5.setText(QtGui.QApplication.translate("FredWindow", "voice (phone number)", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel4.setText(QtGui.QApplication.translate("FredWindow", "fax", None, QtGui.QApplication.UnicodeUTF8))
-        self.textLabel10.setText(QtGui.QApplication.translate("FredWindow", "value-added tax", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel18.setText(QtGui.QApplication.translate("FredWindow", "<h2>update_contact</h2>\n"
         "The EPP \"update\" command is used to update an instance of an existing object.\n"
         "   Names what are not included into disclose list are set to opposite value of the disclose flag value.", None, QtGui.QApplication.UnicodeUTF8))
@@ -320,4 +312,27 @@ class Ui_FredWindow(object):
         headerItem = QtGui.QTableWidgetItem()
         headerItem.setText(QtGui.QApplication.translate("FredWindow", "street", None, QtGui.QApplication.UnicodeUTF8))
         self.update_contact_street.setHorizontalHeaderItem(0,headerItem)
+        self.grp_disclose.setTitle(QtGui.QApplication.translate("FredWindow", "disclose", None, QtGui.QApplication.UnicodeUTF8))
+        self.update_contact_disclose_flag.addItem(QtGui.QApplication.translate("FredWindow", "yes", None, QtGui.QApplication.UnicodeUTF8))
+        self.update_contact_disclose_flag.addItem(QtGui.QApplication.translate("FredWindow", "no", None, QtGui.QApplication.UnicodeUTF8))
+        self.update_contact_disclose_name.setText(QtGui.QApplication.translate("FredWindow", "name", None, QtGui.QApplication.UnicodeUTF8))
+        self.update_contact_disclose_addr.setText(QtGui.QApplication.translate("FredWindow", "address", None, QtGui.QApplication.UnicodeUTF8))
+        self.update_contact_disclose_org.setText(QtGui.QApplication.translate("FredWindow", "organisation", None, QtGui.QApplication.UnicodeUTF8))
+        self.update_contact_disclose_voice.setText(QtGui.QApplication.translate("FredWindow", "voice", None, QtGui.QApplication.UnicodeUTF8))
+        self.update_contact_disclose_email.setText(QtGui.QApplication.translate("FredWindow", "email", None, QtGui.QApplication.UnicodeUTF8))
+        self.update_contact_disclose_fax.setText(QtGui.QApplication.translate("FredWindow", "fax", None, QtGui.QApplication.UnicodeUTF8))
+        self.update_contact_disclose_notify_email.setText(QtGui.QApplication.translate("FredWindow", "notify email", None, QtGui.QApplication.UnicodeUTF8))
+        self.update_contact_disclose_vat.setText(QtGui.QApplication.translate("FredWindow", "VAT", None, QtGui.QApplication.UnicodeUTF8))
+        self.update_contact_disclose_ident.setText(QtGui.QApplication.translate("FredWindow", "ident", None, QtGui.QApplication.UnicodeUTF8))
+        self.textLabel10.setText(QtGui.QApplication.translate("FredWindow", "value-added tax", None, QtGui.QApplication.UnicodeUTF8))
+        self.textLabel21.setText(QtGui.QApplication.translate("FredWindow", "social security number", None, QtGui.QApplication.UnicodeUTF8))
+        self.textLabel12.setText(QtGui.QApplication.translate("FredWindow", "notify email", None, QtGui.QApplication.UnicodeUTF8))
+        self.textLabel11.setText(QtGui.QApplication.translate("FredWindow", "clTRID", None, QtGui.QApplication.UnicodeUTF8))
+        self.textLabel19.setText(QtGui.QApplication.translate("FredWindow", "number", None, QtGui.QApplication.UnicodeUTF8))
+        self.textLabel20.setText(QtGui.QApplication.translate("FredWindow", "type", None, QtGui.QApplication.UnicodeUTF8))
+        self.update_contact_ssn_type.addItem(QtGui.QApplication.translate("FredWindow", "op", None, QtGui.QApplication.UnicodeUTF8))
+        self.update_contact_ssn_type.addItem(QtGui.QApplication.translate("FredWindow", "rc", None, QtGui.QApplication.UnicodeUTF8))
+        self.update_contact_ssn_type.addItem(QtGui.QApplication.translate("FredWindow", "passport", None, QtGui.QApplication.UnicodeUTF8))
+        self.update_contact_ssn_type.addItem(QtGui.QApplication.translate("FredWindow", "mpsv", None, QtGui.QApplication.UnicodeUTF8))
+        self.update_contact_ssn_type.addItem(QtGui.QApplication.translate("FredWindow", "ico", None, QtGui.QApplication.UnicodeUTF8))
 
