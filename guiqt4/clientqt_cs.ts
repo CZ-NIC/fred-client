@@ -1,149 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="1.1" language="cs_CZ">
+<!DOCTYPE TS><TS>
 <context>
     <name>FredMainWindow</name>
     <message>
-        <location filename="" line="0"/>
-        <source>Missing required</source>
-        <translation type="obsolete">Chybí povinné údaje</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
-        <source>Close client</source>
-        <translation type="obsolete">Zavřít klienta</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
-        <source>Do you wand realy close client?</source>
-        <translation type="obsolete">Opravdu chcete ukončit program?</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
-        <source>name</source>
-        <translation type="obsolete">jméno</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
-        <source>value</source>
-        <translation type="obsolete">hodnota</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
-        <source>status</source>
-        <translation type="obsolete">status</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
-        <source>disconnect</source>
-        <translation type="obsolete">odpojen</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
-        <source>You are not logged. First do login.</source>
-        <translation type="obsolete">Nejste zalogováni. Nejdříve se zalogujte.</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
-        <source>You are logged already.</source>
-        <translation type="obsolete">Již jste zalogováni.</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
-        <source>Invalid connection input</source>
-        <translation type="obsolete">Neplatné zadání pro spojení</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
-        <source>Process login failed.</source>
-        <translation type="obsolete">Login se nezdařil.</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
-        <source>In a part of address must be set both city and country code. For disabled this part leave both empty.</source>
-        <translation type="obsolete">V části adresa musí být zadáno město a kód země. Nechte obě hodnoty prázdné, chcete-li tuto část vynechat.</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
-        <source>No values to update.</source>
-        <translation type="obsolete">Žádné hodnoty k aktualizaci.</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
-        <source>contact</source>
-        <translation type="obsolete">kontakt</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
-        <source>nsset</source>
-        <translation type="obsolete">nsset</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
-        <source>domain</source>
-        <translation type="obsolete">doména</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
-        <source>sources</source>
-        <translation type="obsolete">zdroje</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
-        <source>Sources are not available now. Run command at first.</source>
-        <translation type="obsolete">Zdrojové dokumenty nejsou nyní dostupné. Nejdříve spusťte příkaz.</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
-        <source>Authorization info</source>
-        <translation type="obsolete">Autorizace</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
-        <source>username</source>
-        <translation type="obsolete">uživatelské jméno</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
-        <source>password</source>
-        <translation type="obsolete">heslo</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
-        <source>contact ID</source>
-        <translation type="obsolete">kontakt ID</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
-        <source>city</source>
-        <translation type="obsolete">město</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
-        <source>country code</source>
-        <translation type="obsolete">kód země</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
-        <source>tech. contact</source>
-        <translation type="obsolete">tech. kontakt</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
-        <source>registrant</source>
-        <translation type="obsolete">registrátor</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
-        <source>Contact ID</source>
-        <translation type="obsolete">Kontakt ID</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
-        <source>domain name</source>
-        <translation type="obsolete">doménové jméno</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
         <source></source>
         <translation type="unfinished"></translation>
     </message>
@@ -151,117 +9,90 @@
 <context>
     <name>FredWindow</name>
     <message>
-        <location filename="" line="0"/>
         <source>street</source>
         <translation>ulice</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>Create Contact panel</source>
         <translation>Panel Vytvořit kontakt</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;country code&lt;/b&gt;</source>
         <translation>&lt;b&gt;kód země&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;contact ID&lt;/b&gt;</source>
         <translation>&lt;b&gt;kontakt ID&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;email&lt;/b&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>postal code</source>
         <translation>psč</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>value-added tax</source>
         <translation>daňový identifikátor</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>fax</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>notify email</source>
         <translation>oznámení na email</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>social security number</source>
         <translation>číslo sociálního pojištění</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>state or province</source>
         <translation>Stát nebo kraj</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>clTRID</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>number</source>
         <translation>čislo</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>type</source>
         <translation>typ</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>op</source>
         <translation>OP</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>rc</source>
         <translation>rč</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>passport</source>
         <translation>pass</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>mpsv</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>ico</source>
         <translation>IČ</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;city&lt;/b&gt;</source>
         <translation>&lt;b&gt;město&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
-        <source>password</source>
-        <translation type="obsolete">heslo</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;name&lt;/b&gt;</source>
         <translation>&lt;b&gt;jméno&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;h2&gt;create_contact&lt;/h2&gt;
 The EPP &quot;create&quot; command is used to create an instance of an object.
 An object can be created for an indefinite period of time, or an
@@ -271,87 +102,70 @@ EPP příkaz &quot;create&quot; se používá pro vytvoření instance objektu.
 Objekt může být vytvořen na neučitý časový úsek nebo na přesně definované období.</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>organisation name</source>
         <translation>jméno organizace</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>CZ</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>pokus</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>voice (phone number)</source>
         <translation>telefon</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>+420.123456789</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>voice</source>
         <translation>telefon</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>email</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>name</source>
         <translation>jméno</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>address</source>
         <translation>adresa</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>organisation</source>
         <translation>organizace</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>disclose</source>
         <translation>zveřejnit</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>yes</source>
         <translation>ano</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>no</source>
         <translation>ne</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>contact</source>
         <translation>kontakt</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>Create NSSET panel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;h2&gt;create_nsset&lt;/h2&gt;
 The EPP &quot;create&quot; command is used to create an instance of an object.
 An object can be created for an indefinite period of time, or an
@@ -361,72 +175,58 @@ EPP příkaz &quot;create&quot; se používá pro vytvoření instance objektu.
 Objekt může být vytvořen na neučitý časový úsek nebo na přesně definované období.</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;tech. contact&lt;/b&gt;</source>
         <translation>&lt;b&gt;tech. kontakt&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;dns&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>admin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>Create Domain panel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;domain name&lt;/b&gt;</source>
         <translation>&lt;b&gt;doménové jméno&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;registrant&lt;/b&gt;</source>
         <translation>&lt;b&gt;registrátor&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>nsset</source>
         <translation type="unfinished">nsset</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>period</source>
         <translation>perioda</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;unit&lt;/b&gt;</source>
         <translation>&lt;b&gt;jednotka&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;number&lt;/b&gt;</source>
         <translation>&lt;b&gt;číslo&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>year</source>
         <translation>rok</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>month</source>
         <translation>měsíc</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>valExDate</source>
         <translation>datum expirace</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;h2&gt;create_domain&lt;/h2&gt;
 The EPP &quot;create&quot; command is used to create an instance of an object.
 An object can be created for an indefinite period of time, or an
@@ -436,27 +236,14 @@ EPP příkaz &quot;create&quot; se používá pro vytvoření instance objektu.
 Objekt může být vytvořen na neučitý časový úsek nebo na přesně definované období.</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>(required for &lt;b&gt;enum&lt;/b&gt; domains)</source>
         <translation>(povinné pro &lt;b&gt;enum&lt;/b&gt; domény)</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>Update Contact panel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
-        <source>remove</source>
-        <translation type="obsolete">odebrat</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
-        <source>add</source>
-        <translation type="obsolete">přidat</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
         <source>&lt;h2&gt;update_contact&lt;/h2&gt;
 The EPP &quot;update&quot; command is used to update an instance of an existing object.
    Names what are not included into disclose list are set to opposite value of the disclose flag value.</source>
@@ -465,42 +252,30 @@ EPP příkaz &quot;update&quot; se používá pro aktualizaci hodnot instance vy
  Jména která nejsou uvedena v seznamu disclose, jsou nastavena na opačnou hodnotu než má disclose flag.</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>technical contact</source>
         <translation>technický kontakt</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>dns name</source>
         <translation>název dns</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>Update NSSET panel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
-        <source>status</source>
-        <translation type="obsolete">status</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
         <source>&lt;h3&gt;Remove&lt;/h3&gt;</source>
         <translation>&lt;h3&gt;Odebrat&lt;/h3&gt;</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;h3&gt;Change&lt;/h3&gt;</source>
         <translation>&lt;h3&gt;Změnit&lt;/h3&gt;</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>pasword</source>
         <translation>heslo</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;h2&gt;update_nsset&lt;/h2&gt;
 The EPP &quot;update&quot; command is used to update an instance of an existing object.
    Names what are not included into disclose list are set to opposite value of the disclose flag value.</source>
@@ -509,294 +284,212 @@ EPP příkaz &quot;update&quot; se používá pro aktualizaci hodnot instance vy
  Jména která nejsou uvedena v seznamu disclose, jsou nastavena na opačnou hodnotu než má disclose flag.</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;h3&gt;Add&lt;/h3&gt;</source>
         <translation>&lt;h3&gt;Přidat&lt;/h3&gt;</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>dns name&lt;br&gt;(max 9 names)</source>
         <translation>dns názvy&lt;br&gt;(maximálně 9 názvů)</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>dns</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>value</source>
         <translation>hodnota</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>FredClient</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;Status:&lt;/b&gt; &lt;span style=&quot;color:red&quot;&gt;disconnect&lt;/span&gt;</source>
         <translation>&lt;b&gt;Stav:&lt;/b&gt; &lt;span style=&quot;color:red&quot;&gt;odpojen&lt;/span&gt;</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>E&amp;xit client</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>Alt+X</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
-        <source>Welcome on the &lt;b&gt;FredClient&lt;/b&gt; GUI interface.&lt;br&gt;
-Version 1.0.0; (Needs &lt;b&gt;Fred module&lt;/b&gt; version 1.0.0)&lt;br&gt;
-&lt;br&gt;
-Parameters in &lt;b&gt;bold&lt;/b&gt; style are &lt;b&gt;required&lt;/b&gt;. Others are optionals.</source>
-        <translation type="obsolete">Vítejte v &lt;b&gt;FredClient&lt;/b&gt; grafické nadstavbě.&lt;br&gt;
-Verze 1.0.0 (Požaduje &lt;b&gt;Fred modul&lt;/b&gt; verzi 1.0.0)&lt;br&gt;
-&lt;br&gt;
-Parametry, které jsou &lt;b&gt;tučně&lt;/b&gt;, jsou &lt;b&gt;povinné&lt;/b&gt;. Ostatní jsou nepovinné.</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
-        <source>About Client</source>
-        <translation type="obsolete">O klientovi</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
-        <source>About Qt</source>
-        <translation type="obsolete">O Qt</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
         <source>Client to EPP server</source>
         <translation>Připojení na server</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;port&lt;/b&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>timeout</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;certificate&lt;/b&gt;</source>
         <translation>&lt;b&gt;certifikát&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;host&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;private key&lt;/b&gt;</source>
         <translation>&lt;b&gt;privátní klíč&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&amp;Welcome</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;h2&gt;Connect&lt;/h2&gt;
 This part use to connect and disconnect to the EPP server. You need defined path to the certificates in your configuration file.</source>
         <translation>&lt;h2&gt;Připojit&lt;/h2&gt;
 Tato část slouží k připojení nebo odpojení od EPP serveru.</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>new password</source>
         <translation>nové heslo</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;username&lt;/b&gt;</source>
         <translation>&lt;b&gt;uživatel&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;password&lt;/b&gt;</source>
         <translation>&lt;b&gt;heslo&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>Send command</source>
         <translation>Odeslat příkaz</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;h2&gt;login&lt;/h2&gt;
 The &quot;login&quot; command establishes an ongoing server session that preserves client identity and authorization information during the duration of the session.</source>
         <translation>&lt;h2&gt;login&lt;/h2&gt;
 EPP příkaz &quot;login&quot; identifikuje uživatele a zahájí spojení s EPP serverem.</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>command</source>
         <translation>příkaz</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;login&lt;/b&gt;</source>
         <translation>&lt;b&gt;login&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>code</source>
         <translation>kód</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>message</source>
         <translation>hlášení</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>response</source>
         <translation>odpověď</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>login</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;h2&gt;logout&lt;/h2&gt;
 The EPP &quot;logout&quot; command is used to end a session with an EPP server.</source>
         <translation>&lt;h2&gt;logout&lt;/h2&gt;
 EPP příkaz &quot;logout&quot; se používá pro ukončení spojení s EPP serverem.</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;logout&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>logout</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>message ID</source>
         <translation>ID zprávy</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>option</source>
         <translation>parametr</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
-        <source>options</source>
-        <translation type="obsolete">parametry</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
         <source>acknowledge</source>
         <translation>potvrzení</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>request</source>
         <translation>pořadavek</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>Request for message</source>
         <comment>This option request check if is any message on the server.</comment>
         <translation>Požadavek na dodání zprávy</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>This options &lt;b&gt;requests&lt;/b&gt; server for message.</source>
         <translation>Tento parametr server &lt;b&gt;požaduje&lt;/b&gt; pro odebrání zprávy.</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;h2&gt;poll&lt;/h2&gt; The EPP &quot;poll&quot; command is used to discover and retrieve service messages queued by a server for individual clients.</source>
         <translation>&lt;h2&gt;poll&lt;/h2&gt;
 EPP příkaz &quot;poll&quot; se používá k odběru servisních zpráv pro přihlášeného uživatele a ke zjištění počtu těchto zpráv uložených ve frontě.</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;poll&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>poll</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;h2&gt;hello&lt;/h2&gt;
 The EPP &quot;hello&quot; request a &quot;greeting&quot; response message from an EPP server at any time.</source>
         <translation>&lt;h2&gt;hello&lt;/h2&gt;
 EPP příkazem &quot;hello&quot; si lze kdykoliv vyžádat od serveru odpověď &quot;greeting&quot;.</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;hello&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>hello</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&amp;connect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;h2&gt;Contact&lt;/h2&gt;
 Contact represents person. This preson can be domain owner or administrator or registrant.</source>
         <translation>&lt;h2&gt;Kontakt&lt;/h2&gt;
 Kontakt představuje osobu. Ta  může být vlastník domény, administrátor nebo registrátor.</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;h2&gt;check_contact&lt;/h2&gt;
 The EPP &quot;check&quot; command is used to determine if an object can be provisioned within a repository.  It provides a hint that allows a client to anticipate the success or failure of provisioning an object using the &quot;create&quot; command as object provisioning requirements are ultimately a matter of server policy.</source>
         <translation>&lt;h2&gt;check_contact&lt;/h2&gt;
 EPP Příkaz &quot;check&quot; se používá ke zjištění jestli se daný objekt v repozitáři nachází. To umožňuje řídit spouštění příkazu &quot;create&quot; a poté vyhodnotit jestli příkaz uspěl nebo ne.</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
-        <source>&lt;b&gt;names&lt;/b&gt;&lt;br&gt;
-Type one or more names (handles) what you want to check. Separate names by spaces or new lines.</source>
-        <translation type="obsolete">&lt;b&gt;jména&lt;/b&gt;&lt;br&gt;
-Zadejte jedno nebo více jmen, které chcete ověřit. Jména oddělujte mezerou nebo novým řádkem.</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;check_contact&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>check</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;h2&gt;info_contact&lt;/h2&gt;
 The EPP &quot;info&quot; command is used to retrieve information associated
 with an existing object. The elements needed to identify an object
@@ -807,120 +500,72 @@ specified using the EPP extension framework.</source>
 EPP příkaz &quot;info&quot; se používá ke zjištění informací spojených s vybraným objektem. Způsob identifikace objektu a typu navrácených informací spojených s objektem závisí na konkrétním typu info příkazu a případném použití EPP extension rozšíření.</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;info_contact&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;create_contact&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>create</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;update_contact&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>update</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;h2&gt;delete_contact&lt;/h2&gt;
 The EPP &quot;delete&quot; command is used to remove an instance of an existing object.</source>
         <translation>&lt;h2&gt;delete_contact&lt;/h2&gt;
 EPP příkaz &quot;delete&quot; se používá pro odebrání instance vybraného objektu.</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;delete_contact&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>delete</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
-        <source>&lt;h2&gt;transfer_contact&lt;/h2&gt;
-The EPP &quot;transfer&quot; command provides a query operation that allows a
-client to determine real-time status of pending and completed
-transfer requests.&lt;br&gt;
-The EPP &quot;transfer&quot; command is used to manage changes in client
-sponsorship of an existing object.  Clients can initiate a transfer
-request, cancel a transfer request, approve a transfer request, and
-reject a transfer request using the &quot;op&quot; command attribute.</source>
-        <translation type="obsolete">&lt;h2&gt;transfer_contact&lt;/h2&gt;
-EPP příkaz &quot;transfer&quot; umožňuje zjišťovat aktuální stav nevyřízených anebo dokončených požadavků na transfer.
-Příkaz &quot;transfer&quot; se používá k ovládání změn na vybraném objektu. Klient může vyvolat požadavek na transfer. Nebo může požadovat zrušení požadavku, potvrzení požadavku a nebo odebrání požadavku. To vše pomocí atributu &quot;op&quot;.
-</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;transfer_contact&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>transfer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
-        <source>&lt;h2&gt;list_contact&lt;/h2&gt;
-The EPP &quot;list&quot; command is used to list all ID of an existing object owning by registrant.</source>
-        <translation>&lt;h2&gt;list_contact&lt;/h2&gt;
-EPP příkaz &quot;list&quot; se používá pro zobrazení seznamu všech ID objektů, které ragistrátor vlastní.</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
-        <source>&lt;b&gt;list_contact&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
-        <source>list</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
         <source>c&amp;ontact</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;h2&gt;Nsset&lt;/h2&gt;
 Nsset is set of informations about domain name servers and their address and administrators.</source>
         <translation>&lt;h2&gt;Nsset&lt;/h2&gt;
 Nsset je záznam, který obsahuje odkazy na doménové servery a jejich adresy. Dále obsahuje seznam registrátorů.</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;h2&gt;check_nsset&lt;/h2&gt;
 The EPP &quot;check&quot; command is used to determine if an object can be provisioned within a repository.  It provides a hint that allows a client to anticipate the success or failure of provisioning an object using the &quot;create&quot; command as object provisioning requirements are ultimately a matter of server policy.</source>
         <translation>&lt;h2&gt;check_nsset&lt;/h2&gt;
 EPP Příkaz &quot;check&quot; se používá ke zjištění jestli se daný objekt v repozitáři nachází. To umožňuje řídit spouštění příkazu &quot;create&quot; a poté vyhodnotit jestli příkaz uspěl nebo ne.</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;check_nsset&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;h2&gt;info_nsset&lt;/h2&gt;
 The EPP &quot;info&quot; command is used to retrieve information associated
 with an existing object. The elements needed to identify an object
@@ -931,77 +576,48 @@ specified using the EPP extension framework.</source>
 EPP příkaz &quot;info&quot; se používá ke zjištění informací spojených s vybraným objektem. Způsob identifikace objektu a typu navrácených informací spojených s objektem závisí na konkrétním typu info příkazu a případném použití EPP extension rozšíření.</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;info_nsset&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;create_nsset&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;update_nsset&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;h2&gt;delete_nsset&lt;/h2&gt;
 The EPP &quot;delete&quot; command is used to remove an instance of an existing object.</source>
         <translation>&lt;h2&gt;delete_nsset&lt;/h2&gt;
 EPP příkaz &quot;delete&quot; se používá pro odebrání instance vybraného objektu.</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;delete_nsset&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
-        <source>&lt;h2&gt;list_nsset&lt;/h2&gt;
-The EPP &quot;list&quot; command is used to list all ID of an existing object owning by registrant.</source>
-        <translation>&lt;h2&gt;list_nsset&lt;/h2&gt;
-EPP příkaz &quot;list&quot; se používá pro zobrazení seznamu všech ID objektů, které ragistrátor vlastní.</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
-        <source>&lt;b&gt;list_nsset&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
         <source>&amp;nsset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;h2&gt;Domain&lt;/h2&gt;
 Domain is name whitch is associates nsset and contacts.</source>
         <translation>&lt;h2&gt;Doména&lt;/h2&gt;
 Doména je jméno, ke kterému se vážou kontakty a nssety.</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;h2&gt;check_domain&lt;/h2&gt;
 The EPP &quot;check&quot; command is used to determine if an object can be provisioned within a repository.  It provides a hint that allows a client to anticipate the success or failure of provisioning an object using the &quot;create&quot; command as object provisioning requirements are ultimately a matter of server policy.</source>
         <translation>&lt;h2&gt;check_domain&lt;/h2&gt;
 EPP Příkaz &quot;check&quot; se používá ke zjištění jestli se daný objekt v repozitáři nachází. To umožňuje řídit spouštění příkazu &quot;create&quot; a poté vyhodnotit jestli příkaz uspěl nebo ne.</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
-        <source>&lt;b&gt;names&lt;/b&gt;&lt;br&gt;
-Type one or more names what you want to check. Separate names by spaces or new lines.</source>
-        <translation type="obsolete">&lt;b&gt;jména&lt;/b&gt;&lt;br&gt;
-Zadejte jedno nebo více jmen, které chcete ověřit. Jména oddělujte mezerou nebo novým řádkem.</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;check_domain&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;h2&gt;info_domain&lt;/h2&gt;
 The EPP &quot;info&quot; command is used to retrieve information associated
 with an existing object. The elements needed to identify an object
@@ -1012,152 +628,98 @@ specified using the EPP extension framework.</source>
 EPP příkaz &quot;info&quot; se používá ke zjištění informací spojených s vybraným objektem. Způsob identifikace objektu a typu navrácených informací spojených s objektem závisí na konkrétním typu info příkazu a případném použití EPP extension rozšíření.</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;info_domain&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;create_domain&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;update_domain&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;h2&gt;delete_domain&lt;/h2&gt;
 The EPP &quot;delete&quot; command is used to remove an instance of an existing object.</source>
         <translation>&lt;h2&gt;delete_domain&lt;/h2&gt;
 EPP příkaz &quot;delete&quot; se používá pro odebrání instance vybraného objektu.</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;delete_domain&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
-        <source>&lt;h2&gt;transfer_domain&lt;/h2&gt;
-The EPP &quot;transfer&quot; command provides a query operation that allows a
-client to determine real-time status of pending and completed
-transfer requests.&lt;br&gt;
-The EPP &quot;transfer&quot; command is used to manage changes in client
-sponsorship of an existing object.  Clients can initiate a transfer
-request, cancel a transfer request, approve a transfer request, and
-reject a transfer request using the &quot;op&quot; command attribute.</source>
-        <translation type="obsolete">&lt;h2&gt;transfer_domain&lt;/h2&gt;
-EPP příkaz &quot;transfer&quot; umožňuje zjišťovat aktuální stav nevyřízených anebo dokončených požadavků na transfer.
-Příkaz &quot;transfer&quot; se používá k ovládání změn na vybraném objektu. Klient může vyvolat požadavek na transfer. Nebo může požadovat zrušení požadavku, potvrzení požadavku a nebo odebrání požadavku. To vše pomocí atributu &quot;op&quot;.</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;transfer_domain&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>value expiration date</source>
         <translation>datum expirace</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;current expiration date&lt;/b&gt;</source>
         <translation>aktální datum expirace</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;h2&gt;renew_domain&lt;/h2&gt;
 The EPP &quot;renew&quot; command is used to extend validity of an existing object.</source>
         <translation>&lt;h2&gt;renew_domain&lt;/h2&gt;
 EPP příkaz &quot;renew&quot; se používá pro prodloužení platnosti vybraného objektu.</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;renew_domain&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>renew</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
-        <source>&lt;h2&gt;list_domain&lt;/h2&gt;
-The EPP &quot;list&quot; command is used to list all ID of an existing object owning by registrant.</source>
-        <translation>&lt;h2&gt;list_domain&lt;/h2&gt;
-EPP příkaz &quot;list&quot; se používá pro zobrazení seznamu všech ID objektů, které ragistrátor vlastní.</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
-        <source>&lt;b&gt;list_domain&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
         <source>&amp;domain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>Sources</source>
         <translation>Zdroje</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&amp;Close</source>
         <translation type="unfinished">Zavřít</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>Alt+C</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
-        <source>command name</source>
-        <translation type="obsolete">název příkazu</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
         <source>This document was sent to the EPP server. If is empty, it has not been sent already.</source>
         <translation>Tento dokument byl odeslán na EPP server. Pokud je okno prázdné, tak k odeslání ještě nedošlo.</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>Command XML</source>
         <translation>Příkaz v XML</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>This document was received from EPP server. If is empty, it has not been received already.</source>
         <translation>Dokument, který klient obdržel od EPP serveru. Pokud je okno prázné, tak nebyl ještě doručen.</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>Response XML</source>
         <translation>Odpověď v XML</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>This example was build from input. It can be used in fred_client console.</source>
         <translation>Tento příklad byl sestaven ze vstupních dat. Může být použit v řádkové konzoli.</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>Command line</source>
         <translation>Příkazová řádka</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>Update domain panel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;h2&gt;update_domain&lt;/h2&gt;
 The EPP &quot;update&quot; command is used to update an instance of an existing object.
    Names what are not included into disclose list are set to opposite value of the disclose flag value.</source>
@@ -1165,169 +727,196 @@ The EPP &quot;update&quot; command is used to update an instance of an existing 
 EPP příkaz &quot;update&quot; se používá pro aktualizaci hodnot instance vybraného objektu.</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>admin handle</source>
         <translation>admin identifikátor</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>registrant</source>
         <translation>registrátor</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>auth. for transfer</source>
         <translation>autorizace pro transfer</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
-        <source>authorization info</source>
-        <translation type="obsolete">autorizace</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
         <source>&lt;h2&gt;transfer_domain&lt;/h2&gt;
 The EPP &quot;transfer&quot; command makes change in client sponsorship of an existing object. The new owner becomes registrant what called transfer command. New auhtorization info is generated automaticly after successfully transfer.</source>
         <translation>&lt;h2&gt;transfer_domain&lt;/h2&gt;
 Příkaz EPP &quot;transfer&quot; provádí změnu vlastníka na existujícím objektu. Novým vlastníkem se stává registrátor, který příkaz transfer použil. Pokud byl transfer úspěšný, tak se automaticky vygeneruje nové autorizační heslo.</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;h2&gt;transfer_contact&lt;/h2&gt;
 The EPP &quot;transfer&quot; command makes change in client sponsorship of an existing object. The new owner becomes registrant what called transfer command. New auhtorization info is generated automaticly after successfully transfer.</source>
         <translation>Příkaz EPP &quot;transfer&quot; provádí změnu vlastníka na existujícím objektu. Novým vlastníkem se stává registrátor, který příkaz transfer použil. Pokud byl transfer úspěšný, tak se automaticky vygeneruje nové autorizační heslo.</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>Credits</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
-        <source>Welcome on the &lt;b&gt;FredClient&lt;/b&gt; GUI interface.&lt;br&gt;
-Beta release 0.1.0; (Needs &lt;b&gt;Fred module&lt;/b&gt; version 1.0.0)&lt;br&gt;
-&lt;br&gt;
-Parameters in &lt;b&gt;bold&lt;/b&gt; style are &lt;b&gt;required&lt;/b&gt;. Others are optionals.</source>
-        <translation type="obsolete">Vítejte v &lt;b&gt;FredClient&lt;/b&gt; grafické nadstavbě.&lt;br&gt;
-Beta vydání 0.1.0 (Požaduje &lt;b&gt;Fred modul&lt;/b&gt; verzi 1.0.0)&lt;br&gt;
-&lt;br&gt;
-Parametry, které jsou &lt;b&gt;tučně&lt;/b&gt;, jsou &lt;b&gt;povinné&lt;/b&gt;. Ostatní jsou nepovinné.</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
         <source>System messages:</source>
         <translation type="unfinished">Systémová hlášení:</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>Parameters in &lt;b&gt;bold&lt;/b&gt; style are &lt;b&gt;required&lt;/b&gt;. Others are optionals.</source>
         <translation type="unfinished">Parametry, které jsou &lt;b&gt;tučně&lt;/b&gt; jsou &lt;b&gt;povinné&lt;/b&gt;. Ostatní parametry jsou nepovinné.</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
-        <source>Welcome on the &lt;b&gt;FredClient&lt;/b&gt; GUI interface.&lt;br&gt;
-Beta release 0.1.0; (Needs &lt;b&gt;Fred module&lt;/b&gt; version 1.3.0)</source>
-        <translation type="obsolete">Vítejte v grafické nadstavbě programu &lt;b&gt;FredClient&lt;/b&gt;&lt;br&gt;
-Beta release 0.1.0; (Vyžaduje &lt;b&gt;Fred module&lt;/b&gt; verzi 1.3.0)</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
         <source>credit info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;h2&gt;credit info&lt;/h2&gt;
 The EPP &quot;credit info&quot; command returns credit information.</source>
         <translation type="unfinished">&lt;h2&gt;credit info&lt;/h2&gt;EPP příkaz &quot;credit info&quot; zobrazí informace o kreditu.</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>sendAuthInfo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;h2&gt;sendauthinfo_contact&lt;/h2&gt;
 The EPP &apos;sendauthinfo_contact&apos; command transmit request for send authorisation info to contact email.</source>
         <translation type="unfinished">&lt;h2&gt;sendauthinfo_contact&lt;/h2&gt;EPP příkaz &apos;sendauthinfo_contact&apos; předá požadavek na zaslání autorizačního hesla na email kontaktu.</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;sendauthinfo_contact&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;h2&gt;sendauthinfo_nsset&lt;/h2&gt;
 The EPP &apos;sendauthinfo_nsset&apos; command transmit request for send authorisation info to technical contact email.</source>
         <translation type="unfinished">&lt;h2&gt;sendauthinfo_nsset&lt;/h2&gt;EPP příkaz &apos;sendauthinfo_nsset&apos; předá požadavek na zaslání autorizačního hesla na email technického kontaktu.</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;sendauthinfo_nsset&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;h2&gt;sendauthinfo_domain&lt;/h2&gt;
 The EPP &apos;sendauthinfo_domain&apos; command transmit request for send authorisation info to registrant email.</source>
         <translation type="unfinished">&lt;h2&gt;sendauthinfo_domain&lt;/h2&gt;EPP příkaz &apos;sendauthinfo_domain&apos; předá požadavek na zaslání autorizačního hesla na email vlastníka domény.</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;sendauthinfo_domain&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
-        <source>Request for message</source>
-        <translation type="unfinished">Požadavek na dodání zprávy</translation>
-    </message>
-    <message>
-        <location filename="" line="0"/>
         <source>technical test</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;h2&gt;technical test&lt;/h2&gt;The EPP &apos;technical_test&apos; command transmit request for technical test for particular NSSET and domain. The result of the test will be saved into the message queue from where the registrant can fetch it by poll command.</source>
         <translation type="unfinished">&lt;h2&gt;technical test&lt;/h2&gt;Příkaz &apos;technical_test&apos; předá požadavek na provedení technického testu pro příslušný NSSET a doménu. Po skončení testu bude výsledek uložen do zpráv, které si registrátor vybírá příkazem poll.</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;NSSET ID&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>Errors log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;contact ID&lt;/b&gt;&lt;br&gt;
 Type one or more contact handles what you want to check. Separate names by spaces or new lines.</source>
         <translation type="unfinished">&lt;b&gt;kontakt ID&lt;/b&gt;&lt;br&gt;Zadejte jedno nebo více ID kontaktů (identifikátor), které chcete ověřit. Identifikátory oddělujte mezerou nebo novým řádkem.</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;NSSET ID&lt;/b&gt;&lt;br&gt;
 Type one or more handles what you want to check. Separate names by spaces or new lines.</source>
         <translation type="unfinished">&lt;b&gt;NSSET ID&lt;/b&gt;&lt;br&gt;Zadejte jedno nebo více ID NSSET (identifikátor), které chcete ověřit. Identifikátory oddělujte mezerou nebo novým řádkem.</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>&lt;b&gt;domain names&lt;/b&gt;&lt;br&gt;
 Type one or more domain names what you want to check. Separate names by spaces or new lines.</source>
         <translation type="unfinished">&lt;b&gt;doménová jména&lt;/b&gt;&lt;br&gt;Zadejte jedno nebo více doménových jmen, které chcete ověřit. Jména oddělujte mezerou nebo novým řádkem.</translation>
     </message>
     <message>
-        <location filename="" line="0"/>
         <source>Welcome on the &lt;b&gt;FredClient&lt;/b&gt; GUI interface.&lt;br&gt;
 Beta release 0.1.1; (Needs &lt;b&gt;Fred module&lt;/b&gt; version at least 1.3.0)</source>
         <translation>Vítejte v grafické nadstavbě programu &lt;b&gt;FredClient&lt;/b&gt;&lt;br&gt;
 Beta release 0.1.1; (Vyžaduje &lt;b&gt;Fred module&lt;/b&gt; verzi minimálně 1.3.0)</translation>
+    </message>
+    <message>
+        <source>get results</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;h2&gt;get results&lt;/h2&gt;&lt;p&gt;Returns a data chunk from the list of the records in the server buffer. Pointer is moved to next part after every transmition. If no data received the end of list has been reached.&lt;/p&gt;&lt;p&gt;New list is generated by commands &lt;strong&gt;by&lt;/strong&gt; in &lt;i&gt;contact&lt;/i&gt;, &lt;i&gt;nsset&lt;/i&gt; and &lt;i&gt;domain&lt;/i&gt; windows.&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;get results&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Go to NSSET-by command.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>NSSETs by</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Go to domains-by command.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>domains by</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Go to contacts-by command.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>contacts by</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>by</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;h2&gt;contacts by&lt;/h2&gt;This command fills server buffer by list of contacts and set pointer at the beginning of the list. The list is taken in sequence by calling command &lt;strong&gt;get results&lt;/strong&gt; in &lt;i&gt;connect&lt;/i&gt; window repeatedly until any data comming.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;contacts by&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Go to get_result command.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;h2&gt;nssets by&lt;/h2&gt;This command fills server buffer by list of nssets and set pointer at the beginning of the list. The list is taken in sequence by calling command &lt;strong&gt;get results&lt;/strong&gt; in &lt;i&gt;connect&lt;/i&gt; window repeatedly until any data comming.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;nssets by&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;h2&gt;domains by&lt;/h2&gt;This command fills server buffer by list of domains and set pointer at the beginning of the list. The list is taken in sequence by calling command &lt;strong&gt;get results&lt;/strong&gt; in &lt;i&gt;connect&lt;/i&gt; window repeatedly until any data comming.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;domains by&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>VAT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ident</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

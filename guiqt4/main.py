@@ -1007,14 +1007,38 @@ class FredMainWindow(QtGui.QDialog):
     def source_get_results(self):
         self.__display_sources__('getresults_fred')
 
+    def goto_tab_page(self, main_tab_id, widget_name, child_tab_id, cmd_widget_name):
+        'Go to QTabWidget page.'
+        # Go to main (connect,contact,nsset,domain) QTabWidget
+        self.ui.tabWidget.setCurrentWidget(self.ui.tabWidget.widget(main_tab_id))
+        qwidget = self.ui.tabWidget.currentWidget()
+        
+        # Go to child (check,info,create,update, ...) QTabWidget
+        tab_connect = self.ui.tabWidget.findChild(QtGui.QTabWidget, widget_name)
+        tab_connect.setCurrentWidget(tab_connect.widget(child_tab_id))
+
+        # Go to command (command/response) QTabWidget
+        qwcmd = tab_connect.findChild(QtGui.QTabWidget, cmd_widget_name)
+        qwcmd.setCurrentWidget(qwcmd.widget(0))
+
+
     def goto_result(self):
         'Display panel get_results'
-        # Set to connect page on the main panel.
-        self.ui.tabWidget.setCurrentWidget(self.ui.tabWidget.widget(1))
-        # TODO: dodelat!
-#        tab_connect = self.ui.tabWidget.findChild(QtCore.QString('tab_connect'))
-#        print 'tab_connect:', type(tab_connect)
-#        tab_connect 5
+        self.goto_tab_page(1, 'tab_connect', 5, 'getresults_fred_response')
+
+    def goto_contactsby(self):
+        'Go to selected (widget) tab page'
+        # 2 - position contact
+        # 7 - position of the "by" tab widget
+        self.goto_tab_page(2, 'tab_contact', 7, 'contacts_by_response')
+
+    def goto_nssetsby(self):
+        'Go to selected (widget) tab page'
+        self.goto_tab_page(3, 'tab_nsset', 7, 'nssets_by_response')
+
+    def goto_domainsby(self):
+        'Go to selected (widget) tab page'
+        self.goto_tab_page(4, 'tab_domain', 8, 'domains_by_response')
         
     def __display_text_wnd__(self, text, label=''):
         'Display window with any text'

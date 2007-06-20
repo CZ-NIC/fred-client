@@ -1736,6 +1736,54 @@ The EPP "credit info" command returns credit information.</string>
           <iconset>icon_source.png</iconset>
          </property>
         </widget>
+        <widget class="QPushButton" name="btn_goto_nssetsby" >
+         <property name="geometry" >
+          <rect>
+           <x>10</x>
+           <y>200</y>
+           <width>80</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="toolTip" >
+          <string>Go to NSSET-by command.</string>
+         </property>
+         <property name="text" >
+          <string>NSSETs by</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btn_goto_domainsby" >
+         <property name="geometry" >
+          <rect>
+           <x>10</x>
+           <y>230</y>
+           <width>80</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="toolTip" >
+          <string>Go to domains-by command.</string>
+         </property>
+         <property name="text" >
+          <string>domains by</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btn_goto_contactsby" >
+         <property name="geometry" >
+          <rect>
+           <x>10</x>
+           <y>170</y>
+           <width>80</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="toolTip" >
+          <string>Go to contacts-by command.</string>
+         </property>
+         <property name="text" >
+          <string>contacts by</string>
+         </property>
+        </widget>
        </widget>
       </widget>
      </widget>
@@ -1787,7 +1835,7 @@ Contact represents person. This preson can be domain owner or administrator or r
       <bool>false</bool>
      </property>
     </widget>
-    <widget class="QTabWidget" name="tabWidget6_2" >
+    <widget class="QTabWidget" name="tab_contact" >
      <property name="geometry" >
       <rect>
        <x>20</x>
@@ -3613,7 +3661,7 @@ Nsset is set of informations about domain name servers and their address and adm
       <bool>false</bool>
      </property>
     </widget>
-    <widget class="QTabWidget" name="tabWidget6_2_2" >
+    <widget class="QTabWidget" name="tab_nsset" >
      <property name="geometry" >
       <rect>
        <x>20</x>
@@ -5438,7 +5486,7 @@ Domain is name whitch is associates nsset and contacts.</string>
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QTabWidget" name="tabWidget6_2_2_2" >
+    <widget class="QTabWidget" name="tab_domain" >
      <property name="geometry" >
       <rect>
        <x>20</x>
@@ -7633,7 +7681,7 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
   <tabstop>credit_info_msg</tabstop>
   <tabstop>credit_info_table</tabstop>
   <tabstop>btn_source_credit_info</tabstop>
-  <tabstop>tabWidget6_2</tabstop>
+  <tabstop>tab_contact</tabstop>
   <tabstop>check_contact_response</tabstop>
   <tabstop>check_contact_name</tabstop>
   <tabstop>check_contact_cltrid</tabstop>
@@ -7686,7 +7734,7 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
   <tabstop>sendauthinfo_contact_msg</tabstop>
   <tabstop>sendauthinfo_contact_table</tabstop>
   <tabstop>btn_source_sendauthinfo_contact</tabstop>
-  <tabstop>tabWidget6_2_2</tabstop>
+  <tabstop>tab_nsset</tabstop>
   <tabstop>check_nsset_response</tabstop>
   <tabstop>check_nsset_name</tabstop>
   <tabstop>check_nsset_cltrid</tabstop>
@@ -7739,7 +7787,7 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
   <tabstop>technical_test_msg</tabstop>
   <tabstop>technical_test_table</tabstop>
   <tabstop>btn_source_technical_test</tabstop>
-  <tabstop>tabWidget6_2_2_2</tabstop>
+  <tabstop>tab_domain</tabstop>
   <tabstop>check_domain_response</tabstop>
   <tabstop>check_domain_name</tabstop>
   <tabstop>check_domain_cltrid</tabstop>
@@ -7961,8 +8009,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>login()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>259</x>
-     <y>492</y>
+     <x>265</x>
+     <y>536</y>
     </hint>
     <hint type="destinationlabel" >
      <x>20</x>
@@ -8873,8 +8921,8 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
    <slot>get_results()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>318</x>
-     <y>502</y>
+     <x>324</x>
+     <y>546</y>
     </hint>
     <hint type="destinationlabel" >
      <x>296</x>
@@ -8927,6 +8975,54 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
     <hint type="destinationlabel" >
      <x>3</x>
      <y>461</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_goto_contactsby</sender>
+   <signal>clicked()</signal>
+   <receiver>FredWindow</receiver>
+   <slot>goto_contactsby()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>66</x>
+     <y>403</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>7</x>
+     <y>583</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_goto_nssetsby</sender>
+   <signal>clicked()</signal>
+   <receiver>FredWindow</receiver>
+   <slot>goto_nssetsby()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>117</x>
+     <y>435</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>4</x>
+     <y>527</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_goto_domainsby</sender>
+   <signal>clicked()</signal>
+   <receiver>FredWindow</receiver>
+   <slot>goto_domainsby()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>104</x>
+     <y>470</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>4</x>
+     <y>493</y>
     </hint>
    </hints>
   </connection>
