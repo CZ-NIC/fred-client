@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'main.ui'
 #
-# Created: Wed Jun 20 10:52:39 2007
+# Created: Fri Jun 22 10:07:50 2007
 #      by: PyQt4 UI code generator 4.1.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -761,11 +761,6 @@ class Ui_FredWindow(object):
         self.TabPage11 = QtGui.QWidget()
         self.TabPage11.setObjectName("TabPage11")
 
-        self.textLabel42 = QtGui.QLabel(self.TabPage11)
-        self.textLabel42.setGeometry(QtCore.QRect(7,132,110,20))
-        self.textLabel42.setWordWrap(False)
-        self.textLabel42.setObjectName("textLabel42")
-
         self.textLabel43 = QtGui.QLabel(self.TabPage11)
         self.textLabel43.setGeometry(QtCore.QRect(7,42,110,20))
         self.textLabel43.setWordWrap(False)
@@ -794,6 +789,19 @@ class Ui_FredWindow(object):
         self.btn_source_info_contact.setGeometry(QtCore.QRect(10,270,50,50))
         self.btn_source_info_contact.setIcon(QtGui.QIcon("icon_source.png"))
         self.btn_source_info_contact.setObjectName("btn_source_info_contact")
+
+        self.textLabel42 = QtGui.QLabel(self.TabPage11)
+        self.textLabel42.setGeometry(QtCore.QRect(7,132,110,20))
+        self.textLabel42.setWordWrap(False)
+        self.textLabel42.setObjectName("textLabel42")
+
+        self.fill_create_contact = QtGui.QPushButton(self.TabPage11)
+        self.fill_create_contact.setGeometry(QtCore.QRect(10,210,80,31))
+        self.fill_create_contact.setObjectName("fill_create_contact")
+
+        self.fill_update_contact = QtGui.QPushButton(self.TabPage11)
+        self.fill_update_contact.setGeometry(QtCore.QRect(10,170,80,31))
+        self.fill_update_contact.setObjectName("fill_update_contact")
         self.info_contact_response.addTab(self.TabPage11,"")
         self.tab_contact.addTab(self.TabPage10,"")
 
@@ -1390,11 +1398,6 @@ class Ui_FredWindow(object):
         self.textLabel79.setWordWrap(False)
         self.textLabel79.setObjectName("textLabel79")
 
-        self.textLabel80 = QtGui.QLabel(self.TabPage26)
-        self.textLabel80.setGeometry(QtCore.QRect(7,132,110,20))
-        self.textLabel80.setWordWrap(False)
-        self.textLabel80.setObjectName("textLabel80")
-
         self.textLabel81 = QtGui.QLabel(self.TabPage26)
         self.textLabel81.setGeometry(QtCore.QRect(10,10,110,20))
         self.textLabel81.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
@@ -1418,6 +1421,19 @@ class Ui_FredWindow(object):
         self.btn_source_info_nsset.setGeometry(QtCore.QRect(10,270,50,50))
         self.btn_source_info_nsset.setIcon(QtGui.QIcon("icon_source.png"))
         self.btn_source_info_nsset.setObjectName("btn_source_info_nsset")
+
+        self.textLabel80 = QtGui.QLabel(self.TabPage26)
+        self.textLabel80.setGeometry(QtCore.QRect(7,132,110,20))
+        self.textLabel80.setWordWrap(False)
+        self.textLabel80.setObjectName("textLabel80")
+
+        self.fill_update_nsset = QtGui.QPushButton(self.TabPage26)
+        self.fill_update_nsset.setGeometry(QtCore.QRect(10,170,80,31))
+        self.fill_update_nsset.setObjectName("fill_update_nsset")
+
+        self.fill_create_nsset = QtGui.QPushButton(self.TabPage26)
+        self.fill_create_nsset.setGeometry(QtCore.QRect(10,210,80,31))
+        self.fill_create_nsset.setObjectName("fill_create_nsset")
         self.info_nsset_response.addTab(self.TabPage26,"")
         self.tab_nsset.addTab(self.TabPage25,"")
 
@@ -2014,11 +2030,6 @@ class Ui_FredWindow(object):
         self.textLabel109.setWordWrap(False)
         self.textLabel109.setObjectName("textLabel109")
 
-        self.textLabel110 = QtGui.QLabel(self.TabPage40)
-        self.textLabel110.setGeometry(QtCore.QRect(7,132,110,20))
-        self.textLabel110.setWordWrap(False)
-        self.textLabel110.setObjectName("textLabel110")
-
         self.textLabel111 = QtGui.QLabel(self.TabPage40)
         self.textLabel111.setGeometry(QtCore.QRect(10,10,110,20))
         self.textLabel111.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
@@ -2042,6 +2053,19 @@ class Ui_FredWindow(object):
         self.btn_source_info_domain.setGeometry(QtCore.QRect(10,270,50,50))
         self.btn_source_info_domain.setIcon(QtGui.QIcon("icon_source.png"))
         self.btn_source_info_domain.setObjectName("btn_source_info_domain")
+
+        self.textLabel110 = QtGui.QLabel(self.TabPage40)
+        self.textLabel110.setGeometry(QtCore.QRect(7,132,110,20))
+        self.textLabel110.setWordWrap(False)
+        self.textLabel110.setObjectName("textLabel110")
+
+        self.fill_update_domain = QtGui.QPushButton(self.TabPage40)
+        self.fill_update_domain.setGeometry(QtCore.QRect(10,170,80,31))
+        self.fill_update_domain.setObjectName("fill_update_domain")
+
+        self.fill_create_domain = QtGui.QPushButton(self.TabPage40)
+        self.fill_create_domain.setGeometry(QtCore.QRect(10,210,80,31))
+        self.fill_create_domain.setObjectName("fill_create_domain")
         self.info_domain_response.addTab(self.TabPage40,"")
         self.tab_domain.addTab(self.TabPage39,"")
 
@@ -2724,6 +2748,12 @@ class Ui_FredWindow(object):
         QtCore.QObject.connect(self.btn_goto_contactsby,QtCore.SIGNAL("clicked()"),FredWindow.goto_contactsby)
         QtCore.QObject.connect(self.btn_goto_nssetsby,QtCore.SIGNAL("clicked()"),FredWindow.goto_nssetsby)
         QtCore.QObject.connect(self.btn_goto_domainsby,QtCore.SIGNAL("clicked()"),FredWindow.goto_domainsby)
+        QtCore.QObject.connect(self.fill_update_contact,QtCore.SIGNAL("clicked()"),FredWindow.fill_update_contact)
+        QtCore.QObject.connect(self.fill_create_contact,QtCore.SIGNAL("clicked()"),FredWindow.fill_create_contact)
+        QtCore.QObject.connect(self.fill_update_nsset,QtCore.SIGNAL("clicked()"),FredWindow.fill_update_nsset)
+        QtCore.QObject.connect(self.fill_create_nsset,QtCore.SIGNAL("clicked()"),FredWindow.fill_create_nsset)
+        QtCore.QObject.connect(self.fill_update_domain,QtCore.SIGNAL("clicked()"),FredWindow.fill_update_domain)
+        QtCore.QObject.connect(self.fill_create_domain,QtCore.SIGNAL("clicked()"),FredWindow.fill_create_domain)
         QtCore.QMetaObject.connectSlotsByName(FredWindow)
         FredWindow.setTabOrder(self.buttonOk,self.tabWidget)
         FredWindow.setTabOrder(self.tabWidget,self.connect_host)
@@ -3127,7 +3157,6 @@ class Ui_FredWindow(object):
         self.send_info_contact.setText(QtGui.QApplication.translate("FredWindow", "Send command", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel40.setText(QtGui.QApplication.translate("FredWindow", "<b>contact ID</b>", None, QtGui.QApplication.UnicodeUTF8))
         self.info_contact_response.setTabText(self.info_contact_response.indexOf(self.tab6), QtGui.QApplication.translate("FredWindow", "command", None, QtGui.QApplication.UnicodeUTF8))
-        self.textLabel42.setText(QtGui.QApplication.translate("FredWindow", "data", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel43.setText(QtGui.QApplication.translate("FredWindow", "message", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel44.setText(QtGui.QApplication.translate("FredWindow", "<b>info_contact</b>", None, QtGui.QApplication.UnicodeUTF8))
         self.info_contact_code.setText(QtGui.QApplication.translate("FredWindow", "code", None, QtGui.QApplication.UnicodeUTF8))
@@ -3142,6 +3171,11 @@ class Ui_FredWindow(object):
         headerItem12 = QtGui.QTableWidgetItem()
         headerItem12.setText(QtGui.QApplication.translate("FredWindow", "value", None, QtGui.QApplication.UnicodeUTF8))
         self.info_contact_table.setHorizontalHeaderItem(1,headerItem12)
+        self.textLabel42.setText(QtGui.QApplication.translate("FredWindow", "data", None, QtGui.QApplication.UnicodeUTF8))
+        self.fill_create_contact.setToolTip(QtGui.QApplication.translate("FredWindow", "Go to create form and fill inputs.", None, QtGui.QApplication.UnicodeUTF8))
+        self.fill_create_contact.setText(QtGui.QApplication.translate("FredWindow", "create", None, QtGui.QApplication.UnicodeUTF8))
+        self.fill_update_contact.setToolTip(QtGui.QApplication.translate("FredWindow", "Go to update form and fill inputs.", None, QtGui.QApplication.UnicodeUTF8))
+        self.fill_update_contact.setText(QtGui.QApplication.translate("FredWindow", "update", None, QtGui.QApplication.UnicodeUTF8))
         self.info_contact_response.setTabText(self.info_contact_response.indexOf(self.TabPage11), QtGui.QApplication.translate("FredWindow", "response", None, QtGui.QApplication.UnicodeUTF8))
         self.tab_contact.setTabText(self.tab_contact.indexOf(self.TabPage10), QtGui.QApplication.translate("FredWindow", "info", None, QtGui.QApplication.UnicodeUTF8))
         self.send_create_contact.setText(QtGui.QApplication.translate("FredWindow", "Send command", None, QtGui.QApplication.UnicodeUTF8))
@@ -3313,7 +3347,6 @@ class Ui_FredWindow(object):
         self.textLabel77.setText(QtGui.QApplication.translate("FredWindow", "<b>NSSET ID</b>", None, QtGui.QApplication.UnicodeUTF8))
         self.info_nsset_response.setTabText(self.info_nsset_response.indexOf(self.tab16), QtGui.QApplication.translate("FredWindow", "command", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel79.setText(QtGui.QApplication.translate("FredWindow", "message", None, QtGui.QApplication.UnicodeUTF8))
-        self.textLabel80.setText(QtGui.QApplication.translate("FredWindow", "data", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel81.setText(QtGui.QApplication.translate("FredWindow", "<b>info_nsset</b>", None, QtGui.QApplication.UnicodeUTF8))
         self.info_nsset_code.setText(QtGui.QApplication.translate("FredWindow", "code", None, QtGui.QApplication.UnicodeUTF8))
         self.info_nsset_table.clear()
@@ -3327,6 +3360,11 @@ class Ui_FredWindow(object):
         headerItem28 = QtGui.QTableWidgetItem()
         headerItem28.setText(QtGui.QApplication.translate("FredWindow", "value", None, QtGui.QApplication.UnicodeUTF8))
         self.info_nsset_table.setHorizontalHeaderItem(1,headerItem28)
+        self.textLabel80.setText(QtGui.QApplication.translate("FredWindow", "data", None, QtGui.QApplication.UnicodeUTF8))
+        self.fill_update_nsset.setToolTip(QtGui.QApplication.translate("FredWindow", "Go to update form and fill inputs.", None, QtGui.QApplication.UnicodeUTF8))
+        self.fill_update_nsset.setText(QtGui.QApplication.translate("FredWindow", "update", None, QtGui.QApplication.UnicodeUTF8))
+        self.fill_create_nsset.setToolTip(QtGui.QApplication.translate("FredWindow", "Go to create form and fill inputs.", None, QtGui.QApplication.UnicodeUTF8))
+        self.fill_create_nsset.setText(QtGui.QApplication.translate("FredWindow", "create", None, QtGui.QApplication.UnicodeUTF8))
         self.info_nsset_response.setTabText(self.info_nsset_response.indexOf(self.TabPage26), QtGui.QApplication.translate("FredWindow", "response", None, QtGui.QApplication.UnicodeUTF8))
         self.tab_nsset.setTabText(self.tab_nsset.indexOf(self.TabPage25), QtGui.QApplication.translate("FredWindow", "info", None, QtGui.QApplication.UnicodeUTF8))
         self.send_create_nsset.setText(QtGui.QApplication.translate("FredWindow", "Send command", None, QtGui.QApplication.UnicodeUTF8))
@@ -3497,7 +3535,6 @@ class Ui_FredWindow(object):
         self.textLabel107.setText(QtGui.QApplication.translate("FredWindow", "<b>domain name</b>", None, QtGui.QApplication.UnicodeUTF8))
         self.info_domain_response.setTabText(self.info_domain_response.indexOf(self.tab24), QtGui.QApplication.translate("FredWindow", "command", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel109.setText(QtGui.QApplication.translate("FredWindow", "message", None, QtGui.QApplication.UnicodeUTF8))
-        self.textLabel110.setText(QtGui.QApplication.translate("FredWindow", "data", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel111.setText(QtGui.QApplication.translate("FredWindow", "<b>info_domain</b>", None, QtGui.QApplication.UnicodeUTF8))
         self.info_domain_code.setText(QtGui.QApplication.translate("FredWindow", "code", None, QtGui.QApplication.UnicodeUTF8))
         self.info_domain_table.clear()
@@ -3511,6 +3548,11 @@ class Ui_FredWindow(object):
         headerItem44 = QtGui.QTableWidgetItem()
         headerItem44.setText(QtGui.QApplication.translate("FredWindow", "value", None, QtGui.QApplication.UnicodeUTF8))
         self.info_domain_table.setHorizontalHeaderItem(1,headerItem44)
+        self.textLabel110.setText(QtGui.QApplication.translate("FredWindow", "data", None, QtGui.QApplication.UnicodeUTF8))
+        self.fill_update_domain.setToolTip(QtGui.QApplication.translate("FredWindow", "Go to update form and fill inputs.", None, QtGui.QApplication.UnicodeUTF8))
+        self.fill_update_domain.setText(QtGui.QApplication.translate("FredWindow", "update", None, QtGui.QApplication.UnicodeUTF8))
+        self.fill_create_domain.setToolTip(QtGui.QApplication.translate("FredWindow", "Go to create form and fill inputs.", None, QtGui.QApplication.UnicodeUTF8))
+        self.fill_create_domain.setText(QtGui.QApplication.translate("FredWindow", "create", None, QtGui.QApplication.UnicodeUTF8))
         self.info_domain_response.setTabText(self.info_domain_response.indexOf(self.TabPage40), QtGui.QApplication.translate("FredWindow", "response", None, QtGui.QApplication.UnicodeUTF8))
         self.tab_domain.setTabText(self.tab_domain.indexOf(self.TabPage39), QtGui.QApplication.translate("FredWindow", "info", None, QtGui.QApplication.UnicodeUTF8))
         self.send_create_domain.setText(QtGui.QApplication.translate("FredWindow", "Send command", None, QtGui.QApplication.UnicodeUTF8))

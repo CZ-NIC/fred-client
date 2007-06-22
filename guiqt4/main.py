@@ -88,13 +88,16 @@ from sources import FredWindow as wndSources
 translation_prefix = 'clientqt_'
 NO_SPLIT_NAME, SPLIT_NAME = (0,1)
 
+from shared_fnc import transl
+
 # (label, command_key)
 LIST_BY = {
-    'contacts': (('all', _TU('All')), ), 
-    'nssets':   (('all', _TU('All')), ('contact', _TU('Contact')), ('ns', 'NS')), 
-    'domains':  (('all', _TU('All')), ('contact', _TU('Contact')), ('nsset', 'NSSET'))
+    'contacts': ('all', ), 
+    'nssets':   ('all', 'contact', 'ns'), 
+    'domains':  ('all', 'contact', 'nsset')
     }
 
+    
 # Translation from command name to the panel name:
 #   listcontacts_fred -> contacts_by
 #   listdomains_fred -> domains_by
@@ -191,12 +194,82 @@ class FredMainWindow(QtGui.QDialog):
         self.panel_create_domain.ui.val_ex_date.setDate(curd)
         self.panel_update_domain.ui.val_ex_date.setDate(curd)
         
-        # Init combo boxes:
-        for wnd_type, items in LIST_BY.items():
-            hwnd = getattr(self.ui, '%s_by_type'%wnd_type)
-            for key, label in items:
-                hwnd.addItem(label)
+        # keep info answers for create/update commands
+        self._info_contact = {}
+        self._info_nsset   = {}
+        self._info_domain  = {}
+
+        # list of names for matching data values with input widgets
+        self._input_contact = (
+            'id', 'name', 'org', 'city', 'cc', 'sp', 'pc', 'voice',
+            'fax', 'email', 'authInfo', 'vat', 'notifyEmail', 
+            'street', 'disclose', 'ident.type', 'ident'
+            )
+            
+        self._input_nsset = (
+            # create_nsset
+            'id', 
+#            tech # table
+#            frame_dns. # (frame)
+#            auth_info
+#            # update_nsset
+#            id
+#            frame_add_dns. (frame)
+#            add_tech    # table
+#            rem_name    # table
+#            rem_tech    # table
+#            auth_info   
+            )
+
+#       'domain:info': ('domain',(
+#         ('name',        1,  _T('Domain name')),
+#         ('roid',        1,  _T('Repository object ID')),
+#         ('crID',        1,  _T("Created by")),
+#         ('clID',        1,  _T("Designated registrar")),
+#         ('upID',        1,  _T("Updated by")),
+#         ('crDate',      1,  _T('Created on')),
+#         ('trDate',      1,  _T('Last transfer on')),
+#         ('upDate',      1,  _T('Last update on')),
+#         ('exDate',      1,  _T('Expiration date')),
+#         ('valExDate',   1,  _T('Validation expires at')), # vadit to date
+#         ('renew',       1,  _T('Last renew on')),
+#         ('nsset',       1,  _T('NSSET ID')),
+#         ('authInfo',    1,  _T('Password for transfer')),
+#         ('status.s',    1,  _T('Status')),
+#         ('status',      1,  _T('Status message')),
+#         ('registrant',  1,  _T('Registrant ID')),
+#         ('admin',       1,  _T('Administrative contact')),
+#         ('tempcontact', 1,  _T('Temporary contact')),
+        self._input_domain = (
+            'name', 'registrant', 'authInfo', 'nsset', 'admin', 
+            'valExDate',
+## update_domain
+#            add_admin # table
+#            rem_admin # table
+#            chg_nsset
+#            chg_registrant
+#            chg_auth_info
+#            check_val_ex_date # checkbox
+#            val_ex_date # datum
+##create_domain
+# OK           name
+# OK           registrant
+# OK           auth_info
+# OK           nsset
+#            period_unit
+#            period_num
+# OK           admin      # table
+#            check_val_ex_date # checkbox
+# OK           val_ex_date # datum
+            )
         
+        # match differences between data and input names
+        self._input_translations = {
+            'ident.type': 'ssn_type', 
+            'ident':    'ssn_number', 
+        }
+
+
         # Class for running EPP communication in separate thread
         self.thread_epp = RunEPPCommunication(self.epp)
         self.connect(self.thread_epp, QtCore.SIGNAL("epp_command_finished()"), self.process_answer)
@@ -208,6 +281,15 @@ class FredMainWindow(QtGui.QDialog):
         # INIT
         self.load_config_and_autologin()
 
+        
+    def __init_combo__(self, hwnd_combo_box, keys):
+        'Init names into combo box'
+        # reset combo
+        for index in range(hwnd_combo_box.count()-1,-1,-1):
+            hwnd_combo_box.removeItem(index)
+        for key in keys:
+            hwnd_combo_box.addItem(transl(key), QtCore.QVariant(key))
+        
     def write(self, message):
         'Catch error messages from stderr.'
         self._stderr_errors.append(message)
@@ -265,7 +347,18 @@ class FredMainWindow(QtGui.QDialog):
             self.panel_create_nsset.ui.retranslateUi(self)
             self.panel_update_nsset.ui.retranslateUi(self)
             self.ui.retranslateUi(self)
+            
+        # Init combo boxes create/update contact
+        self.__init_combo__(self.panel_create_contact.ui.create_contact_ssn_type, FredMainWindow.ident_types)
+        self.__init_combo__(self.panel_update_contact.ui.update_contact_ssn_type, FredMainWindow.ident_types)
+        data = ('yes', 'no')
+        self.__init_combo__(self.panel_create_contact.ui.create_contact_disclose_flag, data)
+        self.__init_combo__(self.panel_update_contact.ui.update_contact_disclose_flag, data)
 
+        for wnd_type, items in LIST_BY.items():
+            hwnd = getattr(self.ui, '%s_by_type'%wnd_type)
+            self.__init_combo__(hwnd, items)
+        
     def __add_scroll__(self, parent_frame, classWindow):
         'Add scrolled view window. Module must have class FredWindow.'
         scroll = QtGui.QScrollArea(parent_frame)
@@ -351,6 +444,14 @@ class FredMainWindow(QtGui.QDialog):
             if match:
                 command_name = '%s_by'%match.group(1)
                 break
+        
+        # keep data for fill forms create/update
+        if command_name == 'info_contact':
+            self._info_contact = dct_answer
+        elif command_name == 'info_nsset':
+            self._info_nsset = dct_answer
+        elif command_name == 'info_domain':
+            self._info_domain = dct_answer
         
         errors = []
         notes = self.epp._epp.fetch_notes()
@@ -507,7 +608,7 @@ class FredMainWindow(QtGui.QDialog):
             params = {}
             params['cltrid'] = d.get('cltrid')
             # convert handle to name/id
-            type = LIST_BY[key][d['type']][0]
+            type = LIST_BY[key][d['type']]
             if d['type'] != 0:
                 # only in case of handle needed:
                 if key == 'nssets' and type == 'ns':
@@ -1067,6 +1168,108 @@ class FredMainWindow(QtGui.QDialog):
             text = _TU('(No record.)')
         self.__display_text_wnd__(text, _TU('Internal errors'))
 
+    def __fill_inputs__(self, d_info, qt4ui, inputs, prefix_data, prefix_input):
+        'Fill values into inputs.'
+        # d_info - dictionnary with data values:
+        #    { 'data': {'contact:roid': u'C0000009467-CZ', 'contact:authInfo': u'2uAK6vq9', ...
+        # ui - Qt4 widget object
+        # inputs - struct of the data names, input names, ID of used function to input
+        # (('data-key','input-key'), ...)
+        data = d_info.get('data')
+##        print 'data=', data #!!!
+        if data is None:
+            return
+        for key in inputs:
+            input_name = '%s_%s'%(prefix_input, decamell(self._input_translations.get(key, key)))
+            value = data.get('%s:%s'%(prefix_data, key))
+##            print '(%s) input_name:'%key, input_name, '; value:', value #!!!
+            if value is None:
+                continue
+            if key == 'disclose':
+                # exception for disclose types
+                self.__fill_inputs_disclose__(qt4ui, value, prefix_input)
+            else:
+                self.insert_to_input(input_name, getattr(qt4ui, input_name, None), value)
+
+    def __fill_inputs_disclose__(self, qt4ui, values, prefix_input):
+        'Fill disclose check boxes'
+        
+        # set checkbox to activate disclose checkbox:
+        getattr(qt4ui, 'disclose').setCheckState(QtCore.Qt.Checked)
+        
+        # set disclose flag to YES (QtGui.QComboBox)
+        # index 0 must be YES!
+        getattr(qt4ui, '%s_disclose_flag'%prefix_input).setCurrentIndex(0)
+        
+        # check selected items (QtGui.QCheckBox)
+        for name in values:
+            getattr(qt4ui, '%s_disclose_%s'%(prefix_input, name)).setCheckState(QtCore.Qt.Checked)
+
+
+    def fill_update_contact(self):
+        """Handle of the button on the info response page.
+        It is used for filling input form by data returned from info answer.
+        """
+        self.__fill_inputs__(self._info_contact, self.panel_update_contact.ui, 
+                             self._input_contact, 'contact', 'update_contact')
+        self.goto_tab_page(2, 'tab_contact', 3, 'update_contact_response')
+
+    def fill_create_contact(self):
+        'Handle of the button on the info response page'
+        self.__fill_inputs__(self._info_contact, self.panel_create_contact.ui, 
+                             self._input_contact, 'contact', 'create_contact')
+        self.goto_tab_page(2, 'tab_contact', 2, 'create_contact_response')
+
+    def fill_update_nsset(self):
+        'Handle of the button on the info response page'
+        self.__fill_inputs__(self._info_nsset, self.panel_update_nsset.ui, 
+                             self._input_nsset, 'nsset', 'update_nsset')
+        self.goto_tab_page(3, 'tab_nsset', 3, 'update_nsset_response')
+
+    def fill_create_nsset(self):
+        'Handle of the button on the info response page'
+        self.__fill_inputs__(self._info_nsset, self.panel_create_nsset.ui, 
+                             self._input_nsset, 'nsset', 'create_nsset')
+        self.goto_tab_page(3, 'tab_nsset', 2, 'create_nsset_response')
+
+    def fill_update_domain(self):
+        'Handle of the button on the info response page'
+        self.__fill_inputs__(self._info_domain, self.panel_update_domain.ui, 
+                             self._input_domain, 'domain', 'update_domain')
+        self.goto_tab_page(4, 'tab_domain', 3, 'update_domain_response')
+
+    def fill_create_domain(self):
+        'Handle of the button on the info response page'
+        self.__fill_inputs__(self._info_domain, self.panel_create_domain.ui, 
+                             self._input_domain, 'domain', 'create_domain')
+        self.goto_tab_page(4, 'tab_domain', 2, 'create_domain_response')
+
+
+    def insert_to_input(self, input_name, widget, data):
+        'Insert data into input widget'
+        wt = type(widget)
+        if wt == QtGui.QLineEdit:
+            widget.setText(data)
+            
+        # f.ex. used for street
+        elif wt == QtGui.QTableWidget:
+            if type(data) not in (tuple, list):
+                data = (data, )
+            widget.setRowCount(len(data))
+            r = self.__inset_into_table__(widget, data, 0, 0)
+        
+        # f.ex. used for ssn (ident.type)
+        elif wt == QtGui.QComboBox:
+            pos = widget.findData(QtCore.QVariant(data))
+            if pos == -1:
+                sys.stderr.write('Internal error: ComboBox has not data %s.\n'%data)
+            else:
+                widget.setCurrentIndex(pos)
+                
+        else:
+            sys.stderr.write("INTERNAL ERROR: Unknown type widget %s: %s\n"%(input_name, type(widget)))
+        
+
 def trim_suffix_reasion_and_pop_others(data):
     """Remove suffix :reason from key names and pop others.
     IN:
@@ -1105,6 +1308,7 @@ def get_unicode(text):
             text = repr(text)
     return text
 
+    
 def append_key(dct, key, widget):
     'Append value if has been typed.'
     wt = type(widget)
@@ -1188,6 +1392,9 @@ def get_exception():
     msg.append('%s: %s'%(ex[0], ex[1]))
     return '\n'.join(msg)
 
+def decamell(text):
+    'Make camell type text to text with unit separator: nameType -> name_type'
+    return re.sub('([A-Z])', '_\\1', text).lower()
     
 def main(argv, lang):
     path = os.path.dirname(__file__)

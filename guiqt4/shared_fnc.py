@@ -56,3 +56,7 @@ def add_dns_sets(parent_frame, FredWindowDNS, num_required=0):
     panel.setLayout(layout)
     scroll.setWidget(panel)
     return dns_sets
+
+def transl(text):
+    return QtGui.QApplication.translate("FredWindow", text, None, QtGui.QApplication.UnicodeUTF8)
+
