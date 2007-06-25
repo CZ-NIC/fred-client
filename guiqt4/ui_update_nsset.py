@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'update_nsset.ui'
 #
-# Created: Fri Jan 12 16:42:21 2007
-#      by: PyQt4 UI code generator 4.1
+# Created: Mon Jun 25 12:50:17 2007
+#      by: PyQt4 UI code generator 4.1.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -13,7 +13,7 @@ from PyQt4 import QtCore, QtGui
 class Ui_FredWindow(object):
     def setupUi(self, FredWindow):
         FredWindow.setObjectName("FredWindow")
-        FredWindow.resize(QtCore.QSize(QtCore.QRect(0,0,574,945).size()).expandedTo(FredWindow.minimumSizeHint()))
+        FredWindow.resize(QtCore.QSize(QtCore.QRect(0,0,574,1068).size()).expandedTo(FredWindow.minimumSizeHint()))
 
         self.textLabel2 = QtGui.QLabel(FredWindow)
         self.textLabel2.setGeometry(QtCore.QRect(10,470,160,20))
@@ -49,14 +49,6 @@ class Ui_FredWindow(object):
         self.id.setGeometry(QtCore.QRect(180,110,360,22))
         self.id.setObjectName("id")
 
-        self.line1_2_2_2 = QtGui.QFrame(FredWindow)
-        self.line1_2_2_2.setGeometry(QtCore.QRect(10,970,530,20))
-        self.line1_2_2_2.setFrameShape(QtGui.QFrame.HLine)
-        self.line1_2_2_2.setFrameShadow(QtGui.QFrame.Sunken)
-        self.line1_2_2_2.setFrameShape(QtGui.QFrame.HLine)
-        self.line1_2_2_2.setFrameShadow(QtGui.QFrame.Sunken)
-        self.line1_2_2_2.setObjectName("line1_2_2_2")
-
         self.textLabel3 = QtGui.QLabel(FredWindow)
         self.textLabel3.setGeometry(QtCore.QRect(10,610,530,30))
         self.textLabel3.setWordWrap(False)
@@ -75,29 +67,11 @@ class Ui_FredWindow(object):
         self.line1_2_2.setFrameShadow(QtGui.QFrame.Sunken)
         self.line1_2_2.setObjectName("line1_2_2")
 
-        self.textLabel6 = QtGui.QLabel(FredWindow)
-        self.textLabel6.setGeometry(QtCore.QRect(10,990,160,20))
-        self.textLabel6.setWordWrap(False)
-        self.textLabel6.setObjectName("textLabel6")
-
-        self.auth_info = QtGui.QLineEdit(FredWindow)
-        self.auth_info.setGeometry(QtCore.QRect(180,940,360,22))
-        self.auth_info.setObjectName("auth_info")
-
         self.textLabel4 = QtGui.QLabel(FredWindow)
         self.textLabel4.setGeometry(QtCore.QRect(10,770,160,100))
         self.textLabel4.setAlignment(QtCore.Qt.AlignTop)
         self.textLabel4.setWordWrap(True)
         self.textLabel4.setObjectName("textLabel4")
-
-        self.textLabel8 = QtGui.QLabel(FredWindow)
-        self.textLabel8.setGeometry(QtCore.QRect(10,940,160,20))
-        self.textLabel8.setWordWrap(False)
-        self.textLabel8.setObjectName("textLabel8")
-
-        self.cltrid = QtGui.QLineEdit(FredWindow)
-        self.cltrid.setGeometry(QtCore.QRect(180,990,360,22))
-        self.cltrid.setObjectName("cltrid")
 
         self.line1 = QtGui.QFrame(FredWindow)
         self.line1.setGeometry(QtCore.QRect(10,590,530,20))
@@ -139,6 +113,41 @@ class Ui_FredWindow(object):
         self.textLabel1.setWordWrap(False)
         self.textLabel1.setObjectName("textLabel1")
 
+        self.line1_2_2_2 = QtGui.QFrame(FredWindow)
+        self.line1_2_2_2.setGeometry(QtCore.QRect(10,1000,530,20))
+        self.line1_2_2_2.setFrameShape(QtGui.QFrame.HLine)
+        self.line1_2_2_2.setFrameShadow(QtGui.QFrame.Sunken)
+        self.line1_2_2_2.setFrameShape(QtGui.QFrame.HLine)
+        self.line1_2_2_2.setFrameShadow(QtGui.QFrame.Sunken)
+        self.line1_2_2_2.setObjectName("line1_2_2_2")
+
+        self.textLabel6 = QtGui.QLabel(FredWindow)
+        self.textLabel6.setGeometry(QtCore.QRect(10,1020,160,20))
+        self.textLabel6.setWordWrap(False)
+        self.textLabel6.setObjectName("textLabel6")
+
+        self.cltrid = QtGui.QLineEdit(FredWindow)
+        self.cltrid.setGeometry(QtCore.QRect(180,1020,360,22))
+        self.cltrid.setObjectName("cltrid")
+
+        self.textLabel8 = QtGui.QLabel(FredWindow)
+        self.textLabel8.setGeometry(QtCore.QRect(10,940,160,20))
+        self.textLabel8.setWordWrap(False)
+        self.textLabel8.setObjectName("textLabel8")
+
+        self.textLabel8_2 = QtGui.QLabel(FredWindow)
+        self.textLabel8_2.setGeometry(QtCore.QRect(10,970,160,20))
+        self.textLabel8_2.setWordWrap(False)
+        self.textLabel8_2.setObjectName("textLabel8_2")
+
+        self.reportlevel = QtGui.QLineEdit(FredWindow)
+        self.reportlevel.setGeometry(QtCore.QRect(180,970,360,22))
+        self.reportlevel.setObjectName("reportlevel")
+
+        self.auth_info = QtGui.QLineEdit(FredWindow)
+        self.auth_info.setGeometry(QtCore.QRect(180,940,360,22))
+        self.auth_info.setObjectName("auth_info")
+
         self.retranslateUi(FredWindow)
         QtCore.QObject.connect(self.add_tech,QtCore.SIGNAL("currentCellChanged(int,int,int,int)"),FredWindow.add_tech_current_changed)
         QtCore.QObject.connect(self.add_tech,QtCore.SIGNAL("cellChanged(int,int)"),FredWindow.add_tech_value_changed)
@@ -151,7 +160,8 @@ class Ui_FredWindow(object):
         FredWindow.setTabOrder(self.add_tech,self.rem_name)
         FredWindow.setTabOrder(self.rem_name,self.rem_tech)
         FredWindow.setTabOrder(self.rem_tech,self.auth_info)
-        FredWindow.setTabOrder(self.auth_info,self.cltrid)
+        FredWindow.setTabOrder(self.auth_info,self.reportlevel)
+        FredWindow.setTabOrder(self.reportlevel,self.cltrid)
 
     def retranslateUi(self, FredWindow):
         FredWindow.setWindowTitle(QtGui.QApplication.translate("FredWindow", "Update NSSET panel", None, QtGui.QApplication.UnicodeUTF8))
@@ -162,9 +172,7 @@ class Ui_FredWindow(object):
         self.textLabel10.setText(QtGui.QApplication.translate("FredWindow", "<h3>Add</h3>", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel3.setText(QtGui.QApplication.translate("FredWindow", "<h3>Remove</h3>", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel7.setText(QtGui.QApplication.translate("FredWindow", "<h3>Change</h3>", None, QtGui.QApplication.UnicodeUTF8))
-        self.textLabel6.setText(QtGui.QApplication.translate("FredWindow", "clTRID", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel4.setText(QtGui.QApplication.translate("FredWindow", "technical contact", None, QtGui.QApplication.UnicodeUTF8))
-        self.textLabel8.setText(QtGui.QApplication.translate("FredWindow", "auth. for transfer", None, QtGui.QApplication.UnicodeUTF8))
         self.add_tech.setRowCount(1)
         self.add_tech.clear()
         self.add_tech.setColumnCount(1)
@@ -191,4 +199,7 @@ class Ui_FredWindow(object):
         headerItem2.setText(QtGui.QApplication.translate("FredWindow", "dns name", None, QtGui.QApplication.UnicodeUTF8))
         self.rem_name.setHorizontalHeaderItem(0,headerItem2)
         self.textLabel1.setText(QtGui.QApplication.translate("FredWindow", "<b>NSSET ID</b>", None, QtGui.QApplication.UnicodeUTF8))
+        self.textLabel6.setText(QtGui.QApplication.translate("FredWindow", "clTRID", None, QtGui.QApplication.UnicodeUTF8))
+        self.textLabel8.setText(QtGui.QApplication.translate("FredWindow", "auth. for transfer", None, QtGui.QApplication.UnicodeUTF8))
+        self.textLabel8_2.setText(QtGui.QApplication.translate("FredWindow", "reportlevel", None, QtGui.QApplication.UnicodeUTF8))
 

@@ -152,32 +152,22 @@
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QComboBox" name="period_unit" >
-    <property name="geometry" >
-     <rect>
-      <x>150</x>
-      <y>20</y>
-      <width>85</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <item>
-     <property name="text" >
-      <string>year</string>
-     </property>
-    </item>
-    <item>
-     <property name="text" >
-      <string>month</string>
-     </property>
-    </item>
-   </widget>
    <widget class="QLineEdit" name="period_num" >
     <property name="geometry" >
      <rect>
       <x>150</x>
       <y>50</y>
       <width>200</width>
+      <height>22</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="period_unit" >
+    <property name="geometry" >
+     <rect>
+      <x>150</x>
+      <y>20</y>
+      <width>85</width>
       <height>22</height>
      </rect>
     </property>
@@ -293,19 +283,6 @@ object can be created for a specific validity period.</string>
     </property>
    </column>
   </widget>
-  <widget class="QCheckBox" name="check_val_ex_date" >
-   <property name="geometry" >
-    <rect>
-     <x>180</x>
-     <y>450</y>
-     <width>30</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text" >
-    <string/>
-   </property>
-  </widget>
   <widget class="QLineEdit" name="cltrid" >
    <property name="geometry" >
     <rect>
@@ -359,6 +336,19 @@ object can be created for a specific validity period.</string>
      <width>97</width>
      <height>22</height>
     </rect>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="check_val_ex_date" >
+   <property name="geometry" >
+    <rect>
+     <x>180</x>
+     <y>450</y>
+     <width>30</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string/>
    </property>
   </widget>
  </widget>

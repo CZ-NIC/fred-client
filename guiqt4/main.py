@@ -19,6 +19,7 @@
 import sys, traceback
 import os
 import re
+import time
 
 #====================================
 #
@@ -111,6 +112,11 @@ LIST_BY_COMMANDS = (
     re.compile('list(contacts|domains|nssets)_fred'),
     re.compile('(domains|nssets)by(contact|ns(?:set)?)_fred'),
     )
+
+
+# ['name', 'org', 'addr', 'voice', 'fax', 'email', 'vat', 'ident', 'notify_email']
+contact_disclose = [n[0] for n in fred.eppdoc_assemble.contact_disclose]
+make_camell = fred.eppdoc_assemble.make_camell
 
 
 class RunEPPCommunication(QtCore.QThread):
@@ -207,60 +213,12 @@ class FredMainWindow(QtGui.QDialog):
             )
             
         self._input_nsset = (
-            # create_nsset
-            'id', 
-#            tech # table
-#            frame_dns. # (frame)
-#            auth_info
-#            # update_nsset
-#            id
-#            frame_add_dns. (frame)
-#            add_tech    # table
-#            rem_name    # table
-#            rem_tech    # table
-#            auth_info   
+            'id', 'tech', 'auth_info', 'reportlevel', 'dns'
             )
 
-#       'domain:info': ('domain',(
-#         ('name',        1,  _T('Domain name')),
-#         ('roid',        1,  _T('Repository object ID')),
-#         ('crID',        1,  _T("Created by")),
-#         ('clID',        1,  _T("Designated registrar")),
-#         ('upID',        1,  _T("Updated by")),
-#         ('crDate',      1,  _T('Created on')),
-#         ('trDate',      1,  _T('Last transfer on')),
-#         ('upDate',      1,  _T('Last update on')),
-#         ('exDate',      1,  _T('Expiration date')),
-#         ('valExDate',   1,  _T('Validation expires at')), # vadit to date
-#         ('renew',       1,  _T('Last renew on')),
-#         ('nsset',       1,  _T('NSSET ID')),
-#         ('authInfo',    1,  _T('Password for transfer')),
-#         ('status.s',    1,  _T('Status')),
-#         ('status',      1,  _T('Status message')),
-#         ('registrant',  1,  _T('Registrant ID')),
-#         ('admin',       1,  _T('Administrative contact')),
-#         ('tempcontact', 1,  _T('Temporary contact')),
         self._input_domain = (
             'name', 'registrant', 'authInfo', 'nsset', 'admin', 
-            'valExDate',
-## update_domain
-#            add_admin # table
-#            rem_admin # table
-#            chg_nsset
-#            chg_registrant
-#            chg_auth_info
-#            check_val_ex_date # checkbox
-#            val_ex_date # datum
-##create_domain
-# OK           name
-# OK           registrant
-# OK           auth_info
-# OK           nsset
-#            period_unit
-#            period_num
-# OK           admin      # table
-#            check_val_ex_date # checkbox
-# OK           val_ex_date # datum
+            'exDate', 'valExDate',
             )
         
         # match differences between data and input names
@@ -268,7 +226,13 @@ class FredMainWindow(QtGui.QDialog):
             'ident.type': 'ssn_type', 
             'ident':    'ssn_number', 
         }
-
+        self._input_update_translations = {
+            'registrant':'chg_registrant', 
+            'admin':     'rem_admin', 
+            'authInfo':  'chg_auth_info', 
+            'nsset':     'chg_nsset', 
+            'tech':      'rem_tech', 
+            }
 
         # Class for running EPP communication in separate thread
         self.thread_epp = RunEPPCommunication(self.epp)
@@ -351,9 +315,14 @@ class FredMainWindow(QtGui.QDialog):
         # Init combo boxes create/update contact
         self.__init_combo__(self.panel_create_contact.ui.create_contact_ssn_type, FredMainWindow.ident_types)
         self.__init_combo__(self.panel_update_contact.ui.update_contact_ssn_type, FredMainWindow.ident_types)
+
         data = ('yes', 'no')
         self.__init_combo__(self.panel_create_contact.ui.create_contact_disclose_flag, data)
         self.__init_combo__(self.panel_update_contact.ui.update_contact_disclose_flag, data)
+        
+        data = ('year', 'month')
+        self.__init_combo__(self.panel_create_domain.ui.period_unit, data)
+        
 
         for wnd_type, items in LIST_BY.items():
             hwnd = getattr(self.ui, '%s_by_type'%wnd_type)
@@ -509,6 +478,10 @@ class FredMainWindow(QtGui.QDialog):
                 header = wtab.horizontalHeaderItem(pos)
                 header.setText(labels[pos])
                 wtab.horizontalHeader().resizeSection(pos,col_sizes[pos])
+                
+            # reset table - remove previous lines
+            wtab.clearContents()
+            
             if count_rows:
                 wtab.setRowCount(int(data.get(count_rows,'0')))
             else:
@@ -675,7 +648,8 @@ class FredMainWindow(QtGui.QDialog):
         'Save checked checkboxes into dct.'
         if flag.isEnabled():
             disclose = {}
-            for key in ('flag','name','org','addr','voice','fax','email', 'vat', 'ident', 'notify_email'):
+            d = ['flag'] + contact_disclose
+            for key in d: ## ('flag','name','org','addr','voice','fax','email', 'vat', 'ident', 'notify_email'):
                 append_key(disclose, key, getattr(wnd, prefix%key))
             dct['disclose'] = {
                 'flag': disclose['flag'] == 0 and 'y' or 'n',
@@ -1177,29 +1151,128 @@ class FredMainWindow(QtGui.QDialog):
         # (('data-key','input-key'), ...)
         data = d_info.get('data')
 ##        print 'data=', data #!!!
+        
+        is_create_domain = prefix_input == 'create_domain'
+        is_update = re.match('update_(nsset|domain)', prefix_input)
+        if re.match('(create|update)_(nsset|domain)', prefix_input):
+            prefix_input = '' # remove prefix for some namespaces; there are defined with simple names
+        
         if data is None:
             return
         for key in inputs:
-            input_name = '%s_%s'%(prefix_input, decamell(self._input_translations.get(key, key)))
-            value = data.get('%s:%s'%(prefix_data, key))
-##            print '(%s) input_name:'%key, input_name, '; value:', value #!!!
+
+            if key == 'exDate' and is_update:
+                continue # update panel has not value exDate
+                
+            # get data from server answer
+            value = data.get('%s:%s'%(prefix_data, make_camell(key)))
+
+            # match widget name for data
+            input_key = self._input_translations.get(key, key)
+            if is_update:
+                # match differences between data names and input names
+                input_key = self._input_update_translations.get(input_key, input_key)
+            if prefix_input:
+                input_name = '%s_%s'%(prefix_input, decamell(input_key))
+            else:
+                input_name = decamell(input_key)
+                
+##            print '(%s) input_name:'%key, input_name, '%s:%s='%(prefix_data, make_camell(key)), value #!!!
+
             if value is None:
-                continue
+                qt_check_state = QtCore.Qt.Unchecked
+            else:
+                qt_check_state = QtCore.Qt.Checked
+
+            if key == 'valExDate':
+                # activate date input
+                getattr(qt4ui, 'check_val_ex_date', None).setCheckState(qt_check_state)
+                
             if key == 'disclose':
                 # exception for disclose types
                 self.__fill_inputs_disclose__(qt4ui, value, prefix_input)
+                
+            elif key == 'exDate' and is_create_domain:
+                self.__fill_ex_date__(qt4ui, value, prefix_input)
+            
+            elif key == 'dns':
+                value = data.get('%s:ns'%prefix_data)
+                if is_update:
+                    # update nsset
+                    ns = []
+                    if value is not None and len(value):
+                        # only NS names
+                        ns = [ns.split()[0] for ns in value]
+                    self.insert_to_input('remove_dns', self.panel_update_nsset.ui.rem_name, ns)
+                else:
+                    # create nsset
+                    self.__fill_dns__(qt4ui, value, prefix_input)
+                
             else:
                 self.insert_to_input(input_name, getattr(qt4ui, input_name, None), value)
 
+
+    def __fill_dns__(self, qt4ui, dns_values, prefix_input):
+        'Fill NS panel in create_nsset'
+        # value: [u'ns.000000110.cz 217.31.207.130', u'b.b.cz ', u'a.b.cz ', 
+        #         u'ns3.domain.cz (217.31.205.130, 217.31.205.129)', ...]
+        
+        # self.panel_create_nsset.dns_sets = [<guiqt4.dns.FredWindowDNS object>, ... ]
+        max = len(self.panel_create_nsset.dns_sets)
+        maxdns = len(dns_values)
+        for pos in range(max):
+            if pos < maxdns:
+                ns_addr = [n for n in re.split('[ ,\(\)]+', dns_values[pos]) if len(n)]
+            else:
+                ns_addr = ['']
+            hwnd = self.panel_create_nsset.dns_sets[pos]
+            # set ns name
+            hwnd.ui.name.setText(ns_addr[0])
+            # set addres
+            self.insert_to_input('ns.addr', hwnd.ui.addr, ns_addr[1:])
+
+
+    def __fill_ex_date__(self, qt4ui, value, prefix_input):
+        'Fill date into period and numer unit'
+        # period_unit, period_num
+        #'domain:exDate': u'2010-04-03'
+        if value is None:
+            type, value = 'year', ''
+        else:
+            actual_time = time.mktime(time.localtime())
+            y, m, d = map(int, value.split('-'))
+            expired_time = time.mktime((y,m,d,0,0,0,0,0,0))
+            days = round((expired_time - actual_time) / (60*60*24))
+            months = round(days/30)
+            years = round(months / 12)
+            if years < 1:
+                type, value = 'month', str(int(months))
+            else:
+                type, value = 'year', str(int(years))
+        self.insert_to_input('period_unit', getattr(qt4ui, 'period_unit', None), type)
+        self.insert_to_input('period_num', getattr(qt4ui, 'period_num', None), value)
+
+
     def __fill_inputs_disclose__(self, qt4ui, values, prefix_input):
         'Fill disclose check boxes'
+
+        # reset
+        getattr(qt4ui, 'disclose').setCheckState(QtCore.Qt.Unchecked)
+        # set disclose flag to YES (QtGui.QComboBox)
+        # index 0 must be YES!
+        getattr(qt4ui, '%s_disclose_flag'%prefix_input).setCurrentIndex(0)
+        for name in contact_disclose:
+            getattr(qt4ui, '%s_disclose_%s'%(prefix_input, name)).setCheckState(QtCore.Qt.Unchecked)
+            
+        if values is None:
+            return
         
         # set checkbox to activate disclose checkbox:
         getattr(qt4ui, 'disclose').setCheckState(QtCore.Qt.Checked)
         
-        # set disclose flag to YES (QtGui.QComboBox)
-        # index 0 must be YES!
-        getattr(qt4ui, '%s_disclose_flag'%prefix_input).setCurrentIndex(0)
+##        # set disclose flag to YES (QtGui.QComboBox)
+##        # index 0 must be YES!
+##        getattr(qt4ui, '%s_disclose_flag'%prefix_input).setCurrentIndex(0)
         
         # check selected items (QtGui.QCheckBox)
         for name in values:
@@ -1248,26 +1321,44 @@ class FredMainWindow(QtGui.QDialog):
     def insert_to_input(self, input_name, widget, data):
         'Insert data into input widget'
         wt = type(widget)
+        
         if wt == QtGui.QLineEdit:
+            if data is None: data = '' # reset
             widget.setText(data)
             
         # f.ex. used for street
         elif wt == QtGui.QTableWidget:
-            if type(data) not in (tuple, list):
-                data = (data, )
-            widget.setRowCount(len(data))
-            r = self.__inset_into_table__(widget, data, 0, 0)
+            # rempome all previous lines
+            widget.clearContents()
+            widget.setRowCount(1)
+            # if any values, put them into table
+            if not (data is None or len(data)==0):
+                if type(data) not in (tuple, list):
+                    data = (data, )
+                widget.setRowCount(len(data))
+                r = self.__inset_into_table__(widget, data, 0, 0)
         
         # f.ex. used for ssn (ident.type)
         elif wt == QtGui.QComboBox:
-            pos = widget.findData(QtCore.QVariant(data))
+            if data is None or data == '':
+                pos = 0 # reset default (first item)
+            else:
+                pos = widget.findData(QtCore.QVariant(data))
             if pos == -1:
-                sys.stderr.write('Internal error: ComboBox has not data %s.\n'%data)
+                sys.stderr.write("Internal error: ComboBox %s has not data '%s'.\n"%(input_name, data))
             else:
                 widget.setCurrentIndex(pos)
                 
+        elif wt == QtGui.QDateEdit:
+            # 'domain:valExDate': u'2007-06-03'
+            if data is None:
+                # default actual date
+                data = time.strftime('%Y-%m-%d',time.localtime())
+            y, m, d = map(int, data.split('-'))
+            widget.setDate(QtCore.QDate(y, m, d))
+                
         else:
-            sys.stderr.write("INTERNAL ERROR: Unknown type widget %s: %s\n"%(input_name, type(widget)))
+            sys.stderr.write("Internal error: Unknown type widget %s: %s\n"%(input_name, type(widget)))
         
 
 def trim_suffix_reasion_and_pop_others(data):

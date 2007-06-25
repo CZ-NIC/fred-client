@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'create_domain.ui'
 #
-# Created: Tue Dec  5 10:45:12 2006
-#      by: PyQt4 UI code generator 4.1
+# Created: Mon Jun 25 10:48:40 2007
+#      by: PyQt4 UI code generator 4.1.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -59,13 +59,13 @@ class Ui_FredWindow(object):
         self.textLabel9.setWordWrap(False)
         self.textLabel9.setObjectName("textLabel9")
 
-        self.period_unit = QtGui.QComboBox(self.groupBox2_2)
-        self.period_unit.setGeometry(QtCore.QRect(150,20,85,22))
-        self.period_unit.setObjectName("period_unit")
-
         self.period_num = QtGui.QLineEdit(self.groupBox2_2)
         self.period_num.setGeometry(QtCore.QRect(150,50,200,22))
         self.period_num.setObjectName("period_num")
+
+        self.period_unit = QtGui.QComboBox(self.groupBox2_2)
+        self.period_unit.setGeometry(QtCore.QRect(150,20,85,22))
+        self.period_unit.setObjectName("period_unit")
 
         self.textLabel10 = QtGui.QLabel(FredWindow)
         self.textLabel10.setGeometry(QtCore.QRect(10,450,160,20))
@@ -99,10 +99,6 @@ class Ui_FredWindow(object):
         self.admin.setGeometry(QtCore.QRect(180,330,360,110))
         self.admin.setObjectName("admin")
 
-        self.check_val_ex_date = QtGui.QCheckBox(FredWindow)
-        self.check_val_ex_date.setGeometry(QtCore.QRect(180,450,30,20))
-        self.check_val_ex_date.setObjectName("check_val_ex_date")
-
         self.cltrid = QtGui.QLineEdit(FredWindow)
         self.cltrid.setGeometry(QtCore.QRect(180,480,360,22))
         self.cltrid.setObjectName("cltrid")
@@ -121,6 +117,10 @@ class Ui_FredWindow(object):
         self.val_ex_date.setEnabled(False)
         self.val_ex_date.setGeometry(QtCore.QRect(220,450,97,22))
         self.val_ex_date.setObjectName("val_ex_date")
+
+        self.check_val_ex_date = QtGui.QCheckBox(FredWindow)
+        self.check_val_ex_date.setGeometry(QtCore.QRect(180,450,30,20))
+        self.check_val_ex_date.setObjectName("check_val_ex_date")
 
         self.retranslateUi(FredWindow)
         QtCore.QObject.connect(self.check_val_ex_date,QtCore.SIGNAL("toggled(bool)"),self.val_ex_date.setEnabled)
@@ -148,8 +148,6 @@ class Ui_FredWindow(object):
         self.groupBox2_2.setTitle(QtGui.QApplication.translate("FredWindow", "period", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel8.setText(QtGui.QApplication.translate("FredWindow", "<b>unit</b>", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel9.setText(QtGui.QApplication.translate("FredWindow", "<b>number</b>", None, QtGui.QApplication.UnicodeUTF8))
-        self.period_unit.addItem(QtGui.QApplication.translate("FredWindow", "year", None, QtGui.QApplication.UnicodeUTF8))
-        self.period_unit.addItem(QtGui.QApplication.translate("FredWindow", "month", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel10.setText(QtGui.QApplication.translate("FredWindow", "valExDate", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel11.setText(QtGui.QApplication.translate("FredWindow", "<h2>create_domain</h2>\n"
         "The EPP \"create\" command is used to create an instance of an object.\n"
