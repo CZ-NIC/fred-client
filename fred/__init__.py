@@ -179,11 +179,11 @@ OPTIONS:
   Names what are not included into disclose list are set to opposite value of the disclose flag value.
 
   Identificator type can be:
-        op       number identity card
-        rc       number of birth
-        passport number of passport
-        mpsv     number of Ministry of Labour and social affairs
-        ico      number of company
+     op        Number identity card
+     passport  Number of passport
+     mpsv      Number of Ministry of Labour and social affairs
+     ico       Number of company
+     birthday  Birthday date
 
 SYNTAX:
   create_contact contact_id name email city cc [other_options]
@@ -568,6 +568,15 @@ OPTIONS:
     def update_contact(self, contact_id, chg=None, cltrid=None):
         """DESCRIPTION:
   The EPP 'update_contact' command is used to update values in the contact.
+  
+  Names what are not included into disclose list are set to opposite value of the disclose flag value.
+  
+  Identificator type can be:
+     op        Number identity card
+     passport  Number of passport
+     mpsv      Number of Ministry of Labour and social affairs
+     ico       Number of company
+     birthday  Birthday date
 
 SYNTAX:
   update_contact contact_id [other_options]

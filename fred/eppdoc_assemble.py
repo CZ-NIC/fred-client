@@ -39,7 +39,8 @@ except ImportError:
 
 UNBOUNDED = None
 # ''contact_disclose'' must be same format as eppdoc_client.update_status.
-contact_disclose = map(lambda n: (n,), ('name','org','addr','voice','fax','email', 'vat', 'ident', 'notify_email'))
+DISCLOSES = ('name','org','addr','voice','fax','email', 'vat', 'ident', 'notify_email')
+contact_disclose = map(lambda n: (n,), DISCLOSES)
 history_filename = os.path.join(os.path.expanduser('~'),'.fred_history') # compatibility s MS Win
 
 TAG_clTRID = 'cltrid' # Definition for --key-name = clTRID value.
@@ -81,13 +82,17 @@ class Message(MessageBase):
                 attrib.append(_T('unbounded list'))
             elif max > 1:
                 attrib.append(_TP('list with max %d item.','list with max %d items.',max)%max)
-            #if len(allowed):
-            #    txt = ','.join(self.__make_abrev_help__(allowed))
-            #    if len(txt)>37: txt = txt[:37]+'...' # shorter too long text
-            #    text = '%s ${WHITE}%s: ${CYAN}(%s)${NORMAL}'%(text,_T('accepts only values'),txt)
+
             if description:
                 if len(attrib): sattrib = ' (%s)'%', '.join(attrib)
                 msg.append('%s %s%s'%(param_line,description,sattrib))
+
+            # display allowed values
+            if len(allowed):
+                msg.append('%s  ${CYAN}(%s)${NORMAL}'%(' '*self._indent_notes, 
+                    ','.join(self.__make_abrev_help__(allowed)))
+                )
+                
             if len(children):
                 msg.extend(self.__get_help_scope__(children, deep+1))
         return msg
@@ -217,7 +222,7 @@ class Message(MessageBase):
             scopes.pop()
         return errors, miss_req
 
-    def __ineractive_input_one_param__(self, name,min_max,allowed,example, null_value, prompt):
+    def __ineractive_input_one_param__(self, name, min_max, allowed, example, null_value, prompt):
         'Loop raw_input while any value is set.'
         ret_value = null_value
         stop = 0
@@ -303,10 +308,16 @@ class Message(MessageBase):
                 message.append('${WHITE}%s:${NORMAL} %s'%(_T('Example'), local8bit(example)))
             if len(message): session_base.print_unicode(' '.join(message))
         current_pos = stop = 0
+
+        # append allowed values (name, org, addr, voice, ...)
+        prompt_allowed = '' # default empty
+        if len(allowed):
+            prompt_allowed = ' (%s)'%','.join([n[0] for n in allowed])
+        
         while max is UNBOUNDED or current_pos < max:
             parents[-1][3] = current_pos # name, min, max, counter = current_pos
             if dct.has_key(name) and len(dct[name]) >= min: min = required_pos = 0 # all needed values has been set
-            prompt = u'%s [%s]: '%(__scope_to_string__(parents), unicode(self.param_reqired_type[required_pos],encoding))
+            prompt = u'%s%s [%s]: '%(__scope_to_string__(parents), prompt_allowed, unicode(self.param_reqired_type[required_pos],encoding))
             param, stop = self.__ineractive_input_one_param__(name,(min,max),allowed,example, null_value, prompt)
             if stop: break
             current_pos += 1
@@ -802,7 +813,7 @@ class Message(MessageBase):
         flag = {'n':0,'y':1}.get(ds.get('flag',['n'])[0], 'n')
         disit = ds.get('data',[])
         if len(disit):
-            for key in [n[0] for n in contact_disclose]:
+            for key in DISCLOSES: ## [n[0] for n in contact_disclose]:
                 if key in disit:
                     explicit.append(make_camell(key))
                 else:

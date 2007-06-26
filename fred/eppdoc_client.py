@@ -27,17 +27,22 @@ object for manage with EPP commands and answers.
 
 UNBOUNDED = eppdoc_assemble.UNBOUNDED
 
+IDENT_NAMES = (
+    ('op',       _T('Number identity card')),
+    ('passport', _T('Number of passport')),
+    ('mpsv',     _T('Number of Ministry of Labour and social affairs')),
+    ('ico',      _T('Number of company')), 
+    ('birthday', _T('Birthday date')), 
+    )
+IDENT_TYPES = map(lambda n: n[0], IDENT_NAMES) # ('op','passport','mpsv','ico', 'birthday')
+
+
 # Help
 def get_shared_notice():
     'Returns notice for EPP commands'
     return {   
    'disclose':_T('Names what are not included into disclose list are set to opposite value of the disclose flag value.'),
-   'ident':_T("""Identificator type can be: 
-      op       number identity card
-      rc       number of birth
-      passport number of passport
-      mpsv     number of Ministry of Labour and social affairs
-      ico      number of company"""),
+    'ident': '%s\n%s'%(_T('Identificator type can be:'), '\n'.join(map(lambda n: '   %s%s'%(n[0].ljust(10), n[1]), IDENT_NAMES))), 
 }
 
 def make_command_parameters():
@@ -178,7 +183,7 @@ will be generated automaticly after succefull transfer."""),('transfer_domain do
             )),
             ('vat',(0,1),(),_T('VAT (Value-added tax)'),'7035555556','',()), # vat identificator
             ('ident',(0,1),(),_T('Identificator'),'','',( # mpsv: identifikator Ministerstva prace a socialnich veci
-                ('type',(1,1),map(lambda n:(n,),('op','rc','passport','mpsv','ico')),_T('Identificator type'),'op','',()),
+                ('type',(1,1),map(lambda n:(n,), IDENT_TYPES),_T('Identificator type'),'op','',()),
                 ('number',(1,1),(),_T('Identificator number'),'8888888856','',()),
             )),
             ('notify_email',(0,1),(),_T('Notification email'),'info@mymail.cz','',()),
@@ -287,12 +292,13 @@ and maximum allowable period is defined in the Communication rules."""),('renew_
                 )),
                 ('vat',(0,1),(),_T('VAT'),'7035555556','',()),
                 ('ident',(0,1),(),_T('Identificator'),'','',(
-                    ('type',(1,1),map(lambda n:(n,),('op','rc','passport','mpsv','ico')),_T('Identificator type'),'op','',()),
+                    ('type',(1,1),map(lambda n:(n,), IDENT_TYPES),_T('Identificator type'),'op','',()),
                     ('number',(1,1),(),_T('Identificator number'),'8888888856','',()),
                 )),
                 ('notify_email',(0,1),(),_T('Notification email'),'notify@mymail.cz','',()),
             )),
-            ],_T("""The EPP 'update_contact' command is used to update values in the contact."""),(
+            ],'%s\n\n%s\n\n%s'%(_T("""The EPP 'update_contact' command is used to update values in the contact."""),notice['disclose'],notice['ident']),
+                (
                     "update_contact CID:ID01 (('Jan Nowak' 'Firma s.r.o.' (Praha CZ ('Na narodni 1230/12', 'Americka 12') Vinohrady 12000)) +420.222745111 +420.222745111 info@mymail.cz mypassword (y (org, voice, email)) 7035555556 (ico 8888888856) notify@mymail.cz)",
                     "update_contact CID:ID01 (() NULL NULL NULL NULL () NULL () change.only@notify-mail.cz)",
             )),

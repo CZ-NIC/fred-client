@@ -349,8 +349,8 @@ object can be created for a specific validity period.</string>
      <rect>
       <x>150</x>
       <y>20</y>
-      <width>85</width>
-      <height>22</height>
+      <width>201</width>
+      <height>26</height>
      </rect>
     </property>
    </widget>

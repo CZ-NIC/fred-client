@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'create_contact.ui'
 #
-# Created: Fri Jun 22 15:31:54 2007
+# Created: Tue Jun 26 14:35:19 2007
 #      by: PyQt4 UI code generator 4.1.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -120,7 +120,7 @@ class Ui_FredWindow(object):
         self.create_contact_ssn_number.setObjectName("create_contact_ssn_number")
 
         self.create_contact_ssn_type = QtGui.QComboBox(self.groupBox2_2)
-        self.create_contact_ssn_type.setGeometry(QtCore.QRect(150,20,85,22))
+        self.create_contact_ssn_type.setGeometry(QtCore.QRect(150,20,201,26))
         self.create_contact_ssn_type.setObjectName("create_contact_ssn_type")
 
         self.create_contact_notify_email = QtGui.QLineEdit(FredWindow)

@@ -117,7 +117,7 @@ LIST_BY_COMMANDS = (
 # ['name', 'org', 'addr', 'voice', 'fax', 'email', 'vat', 'ident', 'notify_email']
 contact_disclose = [n[0] for n in fred.eppdoc_assemble.contact_disclose]
 make_camell = fred.eppdoc_assemble.make_camell
-
+IDENT_TYPES = [n[0] for n in fred.eppdoc_client.IDENT_NAMES]
 
 class RunEPPCommunication(QtCore.QThread):
     'Run Epp communication in separate thread'
@@ -158,7 +158,6 @@ class RedirectOutput:
 
 class FredMainWindow(QtGui.QDialog):
     'Main frame dialog.'
-    ident_types = ('op','rc','passport','mpsv','ico')
 
     def __init__(self, app, epp_client, parent=None):
         QtGui.QWidget.__init__(self, parent)
@@ -245,7 +244,6 @@ class FredMainWindow(QtGui.QDialog):
         # INIT
         self.load_config_and_autologin()
 
-        
     def __init_combo__(self, hwnd_combo_box, keys):
         'Init names into combo box'
         # reset combo
@@ -253,6 +251,14 @@ class FredMainWindow(QtGui.QDialog):
             hwnd_combo_box.removeItem(index)
         for key in keys:
             hwnd_combo_box.addItem(transl(key), QtCore.QVariant(key))
+        
+    def __init_combo2__(self, hwnd_combo_box, keys_labels):
+        'Init names into combo box'
+        # reset combo
+        for index in range(hwnd_combo_box.count()-1,-1,-1):
+            hwnd_combo_box.removeItem(index)
+        for key, label8bit in keys_labels:
+            hwnd_combo_box.addItem(get_unicode(label8bit), QtCore.QVariant(key))
         
     def write(self, message):
         'Catch error messages from stderr.'
@@ -313,8 +319,10 @@ class FredMainWindow(QtGui.QDialog):
             self.ui.retranslateUi(self)
             
         # Init combo boxes create/update contact
-        self.__init_combo__(self.panel_create_contact.ui.create_contact_ssn_type, FredMainWindow.ident_types)
-        self.__init_combo__(self.panel_update_contact.ui.update_contact_ssn_type, FredMainWindow.ident_types)
+        self.__init_combo2__(self.panel_create_contact.ui.create_contact_ssn_type, fred.eppdoc_client.IDENT_NAMES)
+        self.__init_combo2__(self.panel_update_contact.ui.update_contact_ssn_type, fred.eppdoc_client.IDENT_NAMES)
+
+
 
         data = ('yes', 'no')
         self.__init_combo__(self.panel_create_contact.ui.create_contact_disclose_flag, data)
@@ -749,7 +757,8 @@ class FredMainWindow(QtGui.QDialog):
         ident={}
         for key in ('type','number'):
             append_key(ident, key, getattr(p,'create_contact_ssn_%s'%key))
-        ident['type'] = FredMainWindow.ident_types[ident['type']]
+        # set selected type over default:
+        ident['type'] = IDENT_TYPES[ident['type']]
         if ident.has_key('number'): d['ident'] = ident
         if self.__check_required__(d, (
                     ('id',_TU('contact ID')), 
@@ -836,7 +845,8 @@ class FredMainWindow(QtGui.QDialog):
         ident={}
         for key in ('type','number'):
             append_key(ident, key, getattr(p,'update_contact_ssn_%s'%key))
-        ident['type'] = FredMainWindow.ident_types[ident['type']]
+        # set selected type over default:
+        ident['type'] = IDENT_TYPES[ident['type']]
         if ident.has_key('number'): chg['ident'] = ident
         if len(chg): d['chg'] = chg
         if self.__check_required__(d, (('id',_TU('Contact ID')),)) and len(d) > 1:

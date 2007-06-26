@@ -738,8 +738,8 @@ The EPP "update" command is used to update an instance of an existing object.
      <rect>
       <x>150</x>
       <y>20</y>
-      <width>85</width>
-      <height>22</height>
+      <width>201</width>
+      <height>26</height>
      </rect>
     </property>
    </widget>

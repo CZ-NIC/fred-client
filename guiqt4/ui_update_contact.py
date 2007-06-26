@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'update_contact.ui'
 #
-# Created: Fri Jun 22 15:32:03 2007
+# Created: Tue Jun 26 14:35:28 2007
 #      by: PyQt4 UI code generator 4.1.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -245,7 +245,7 @@ class Ui_FredWindow(object):
         self.update_contact_ssn_number.setObjectName("update_contact_ssn_number")
 
         self.update_contact_ssn_type = QtGui.QComboBox(self.groupBox2_2)
-        self.update_contact_ssn_type.setGeometry(QtCore.QRect(150,20,85,22))
+        self.update_contact_ssn_type.setGeometry(QtCore.QRect(150,20,201,26))
         self.update_contact_ssn_type.setObjectName("update_contact_ssn_type")
 
         self.retranslateUi(FredWindow)
