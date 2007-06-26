@@ -733,126 +733,129 @@ EXAMPLES:
   get_results"""
         return self._epp.api_command('get_results',{'cltrid':cltrid})
 
-    def contacts_by_all(self, cltrid=None):
+    def prep_contacts(self, cltrid=None):
         """DESCRIPTION:
-  This command fills server buffer by list of contacts and set pointer 
-  at the beginning of the list. The list is taken in sequence by calling 
-  command 'get_results' repeatedly until any data comming.
+  Prepare list of the contacts. This command fills server buffer by list 
+  of contacts and set pointer at the beginning of the list. The list 
+  is taken in sequence by calling command 'get_results' repeatedly 
+  until any data comming.
 
 SYNTAX:
-  contacts_by_all [other_options]
+  prep_contacts [other_options]
 
 OPTIONS:
   cltrid                   Client transaction ID
 
 EXAMPLES:
-  contacts_by_all"""
-        return self._epp.api_command('contacts_by_all',{'cltrid':cltrid})
+  prep_contacts"""
+        return self._epp.api_command('prep_contacts',{'cltrid':cltrid})
         
-    def nssets_by_all(self, cltrid=None):
+    def prep_nssets(self, cltrid=None):
         """DESCRIPTION:
-  This command fills server buffer by list of nssets and set pointer 
-  at the beginning of the list. The list is taken in sequence by calling 
-  command 'get_results' repeatedly until any data comming.
+  Prepare list of the NSSETs. This command fills server buffer by list 
+  of nssets and set pointer at the beginning of the list. The list 
+  is taken in sequence by calling command 'get_results' repeatedly 
+  until any data comming.
 
 SYNTAX:
-  nssets_by_all [other_options]
+  prep_nssets [other_options]
 
 OPTIONS:
   cltrid                   Client transaction ID
 
 EXAMPLES:
-  nssets_by_all"""
-        return self._epp.api_command('nssets_by_all',{'cltrid':cltrid})
+  prep_nssets"""
+        return self._epp.api_command('prep_nssets',{'cltrid':cltrid})
 
-    def domains_by_all(self, cltrid=None):
+    def prep_domains(self, cltrid=None):
         """DESCRIPTION:
-  This command fills server buffer by list of domains and set pointer 
-  at the beginning of the list. The list is taken in sequence by calling 
-  command 'get_results' repeatedly until any data comming.
+  Prepare list of the domains. This command fills server buffer by list 
+  of domains and set pointer at the beginning of the list. The list is 
+  taken in sequence by calling command 'get_results' repeatedly until 
+  any data comming.
 
 SYNTAX:
-  domains_by_all [other_options]
+  prep_domains [other_options]
 
 OPTIONS:
   cltrid                   Client transaction ID
 
 EXAMPLES:
-  domains_by_all"""
-        return self._epp.api_command('domains_by_all',{'cltrid':cltrid})
+  prep_domains"""
+        return self._epp.api_command('prep_domains',{'cltrid':cltrid})
         
-    def domains_by_nsset(self, id, cltrid=None):
+    def prep_domains_by_nsset(self, id, cltrid=None):
         """DESCRIPTION:
-  This command fills server buffer by list of domains connected with defined
-  nsset ID. The pointer is set at the beginning of the list. 
-  The list is taken in sequence by calling command 'get_results' 
-  repeatedly until any data comming.
+  Prepare domains by NSSET. This command fills server buffer by list 
+  of domains connected with defined nsset ID. The pointer is set 
+  at the beginning of the list. The list is taken in sequence 
+  by calling command 'get_results' repeatedly until any data comming.
 
 SYNTAX:
-  domains_by_nsset id [other_options]
+  prep_domains_by_nsset id [other_options]
 
 OPTIONS:
   id (required)            NSSET ID
   cltrid                   Client transaction ID
 
 EXAMPLES:
-  domains_by_nsset NSSID:VALID"""
-        return self._epp.api_command('domains_by_nsset',{'id':id, 'cltrid':cltrid})
+  prep_domains_by_nsset NSSID:VALID"""
+        return self._epp.api_command('prep_domains_by_nsset',{'id':id, 'cltrid':cltrid})
 
-    def domains_by_contact(self, id, cltrid=None):
+    def prep_domains_by_contact(self, id, cltrid=None):
         """DESCRIPTION:
-  This command fills server buffer by list of domains where occurs
-  defined contact ID. It can be Registrant ID or Admin ID or Temporary ID. 
-  The pointer is set at the beginning of the list. 
-  The list is taken in sequence by calling command 'get_results' 
-  repeatedly until any data comming.
+  Prepare domains by contact. This command fills server buffer by list 
+  of domains where occurs defined contact ID. It can be Registrant 
+  ID or Admin ID or Temporary ID. The pointer is set at the beginning 
+  of the list. The list is taken in sequence by calling command 
+  'get_results' repeatedly until any data comming.
 
 SYNTAX:
-  domains_by_contact id [other_options]
+  prep_domains_by_contact id [other_options]
 
 OPTIONS:
   id (required)            Contact ID
   cltrid                   Client transaction ID
 
 EXAMPLES:
-  domains_by_contact CID:TECH"""
-        return self._epp.api_command('domains_by_contact',{'id':id, 'cltrid':cltrid})
+  prep_domains_by_contact CID:TECH"""
+        return self._epp.api_command('prep_domains_by_contact',{'id':id, 'cltrid':cltrid})
 
-    def nssets_by_contact(self, id, cltrid=None):
+    def prep_nssets_by_contact(self, id, cltrid=None):
         """DESCRIPTION:
-  This command fills server buffer by list of nssets connected with defined
-  technical contact ID. The pointer is set at the beginning of the list. 
-  The list is taken in sequence by calling command 'get_results' 
-  repeatedly until any data comming.
+  Prepare NSSETs by contact. This command fills server buffer by list 
+  of nssets connected with defined technical contact ID. The pointer 
+  is set at the beginning of the list. The list is taken in sequence 
+  by calling command 'get_results' repeatedly until any data comming.
 
 SYNTAX:
-  nssets_by_contact id [other_options]
+  prep_nssets_by_contact id [other_options]
 
 OPTIONS:
   id (required)            Technical contact
   cltrid                   Client transaction ID
 
 EXAMPLES:
-  nssets_by_contact CID:ADMIN"""
-        return self._epp.api_command('nssets_by_contact',{'id':id, 'cltrid':cltrid})
+  prep_nssets_by_contact CID:ADMIN"""
+        return self._epp.api_command('prep_nssets_by_contact',{'id':id, 'cltrid':cltrid})
 
-    def nssets_by_ns(self, name, cltrid=None):
+    def prep_nssets_by_ns(self, name, cltrid=None):
         """DESCRIPTION:
-  This command fills server buffer by list of nssets connected with defined
-  name server. The pointer is set at the beginning of the list. 
-  The list is taken in sequence by calling command 'get_results' 
+  Prepare NSSETs by NS. This command fills server buffer by list of nssets 
+  connected with defined name server. The pointer is set at the beginning 
+  of the list. The list is taken in sequence by calling command 'get_results'
   repeatedly until any data comming.
 
 SYNTAX:
-  nssets_by_ns name [other_options]
+  prep_nssets_by_ns name [other_options]
 
 OPTIONS:
   name (required)          Name server
   cltrid                   Client transaction ID
 
 EXAMPLES:
-  nssets_by_ns mydomain.cz"""
-        return self._epp.api_command('nssets_by_ns',{'name':name, 'cltrid':cltrid})
+  prep_nssets_by_ns mydomain.cz"""
+        return self._epp.api_command('prep_nssets_by_ns',{'name':name, 'cltrid':cltrid})
         
     #==============================================================
         

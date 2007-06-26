@@ -370,23 +370,26 @@ and update_nsset.
 """),('technical_test nssid:id 4 mydomain.cz',)),
 
         #----------------------------------------------------
-        'contacts_by_all': (0,[],_T("""
-This command fills server buffer by list of contacts and set pointer 
-at the beginning of the list. The list is taken in sequence by calling 
-command 'get_results' repeatedly until any data comming.
-"""),('contacts_by_all',)),
+        'prep_contacts': (0,[],_T("""
+Prepare list of the contacts. This command fills server buffer by list 
+of contacts and set pointer at the beginning of the list. The list 
+is taken in sequence by calling command 'get_results' repeatedly 
+until any data comming.
+"""),('prep_contacts',)),
         #----------------------------------------------------
-        'domains_by_all': (0,[],_T("""
-This command fills server buffer by list of domains and set pointer 
-at the beginning of the list. The list is taken in sequence by calling 
-command 'get_results' repeatedly until any data comming.
-"""),('domains_by_all',)),
+        'prep_domains': (0,[],_T("""
+Prepare list of the domains. This command fills server buffer by list 
+of domains and set pointer at the beginning of the list. The list is 
+taken in sequence by calling command 'get_results' repeatedly until 
+any data comming.
+"""),('prep_domains',)),
         #----------------------------------------------------
-        'nssets_by_all': (0,[],_T("""
-This command fills server buffer by list of nssets and set pointer 
-at the beginning of the list. The list is taken in sequence by calling 
-command 'get_results' repeatedly until any data comming.
-"""),('nssets_by_all',)),
+        'prep_nssets': (0,[],_T("""
+Prepare list of the NSSETs. This command fills server buffer by list 
+of nssets and set pointer at the beginning of the list. The list 
+is taken in sequence by calling command 'get_results' repeatedly 
+until any data comming.
+"""),('prep_nssets',)),
 
         #----------------------------------------------------
         'get_results': (0,[],_T("""
@@ -414,45 +417,45 @@ of get_results commands until whole list of nssets not received.
 """),('list_nssets',)),
         #----------------------------------------------------
 
-        'domains_by_nsset': (1,[
+        'prep_domains_by_nsset': (1,[
             ('id',(1,1),(),_T('NSSET ID'),'NSSID:VALID','',()),
         ],_T("""
-This command fills server buffer by list of domains connected with defined
-nsset ID. The pointer is set at the beginning of the list. 
-The list is taken in sequence by calling command 'get_results' 
-repeatedly until any data comming.
-"""),('domains_by_nsset NSSID:VALID',)),
+Prepare domains by NSSET. This command fills server buffer by list 
+of domains connected with defined nsset ID. The pointer is set 
+at the beginning of the list. The list is taken in sequence 
+by calling command 'get_results' repeatedly until any data comming.
+"""),('prep_domains_by_nsset NSSID:VALID',)),
         #----------------------------------------------------
 
-        'domains_by_contact': (1,[
+        'prep_domains_by_contact': (1,[
             ('id',(1,1),(),_T('Contact ID'),'CID:TECH','',()),
         ],_T("""
-This command fills server buffer by list of domains where occurs
-defined contact ID. It can be Registrant ID or Admin ID or Temporary ID. 
-The pointer is set at the beginning of the list. 
-The list is taken in sequence by calling command 'get_results' 
-repeatedly until any data comming.
-"""),('domains_by_contact CID:TECH',)),
+Prepare domains by contact. This command fills server buffer by list 
+of domains where occurs defined contact ID. It can be Registrant 
+ID or Admin ID or Temporary ID. The pointer is set at the beginning 
+of the list. The list is taken in sequence by calling command 
+'get_results' repeatedly until any data comming.
+"""),('prep_domains_by_contact CID:TECH',)),
         #----------------------------------------------------
 
-        'nssets_by_contact': (1,[
+        'prep_nssets_by_contact': (1,[
             ('id',(1,1),(),_T('Technical contact'),'CID:ADMIN','',()),
         ],_T("""
-This command fills server buffer by list of nssets connected with defined
-technical contact ID. The pointer is set at the beginning of the list. 
-The list is taken in sequence by calling command 'get_results' 
-repeatedly until any data comming.
-"""),('nssets_by_contact CID:ADMIN',)),
+Prepare NSSETs by contact. This command fills server buffer by list 
+of nssets connected with defined technical contact ID. The pointer 
+is set at the beginning of the list. The list is taken in sequence 
+by calling command 'get_results' repeatedly until any data comming.
+"""),('prep_nssets_by_contact CID:ADMIN',)),
         #----------------------------------------------------
 
-        'nssets_by_ns': (1,[
+        'prep_nssets_by_ns': (1,[
             ('name',(1,1),(),_T('Name server'),'ns.mydns.cz','',()),
         ],_T("""
-This command fills server buffer by list of nssets connected with defined
-name server. The pointer is set at the beginning of the list. 
-The list is taken in sequence by calling command 'get_results' 
+Prepare NSSETs by NS. This command fills server buffer by list of nssets 
+connected with defined name server. The pointer is set at the beginning 
+of the list. The list is taken in sequence by calling command 'get_results'
 repeatedly until any data comming.
-"""),('nssets_by_ns mydomain.cz',)),
+"""),('prep_nssets_by_ns mydomain.cz',)),
         #----------------------------------------------------
         
     }

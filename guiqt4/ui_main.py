@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'main.ui'
 #
-# Created: Fri Jun 22 10:07:50 2007
+# Created: Tue Jun 26 10:00:39 2007
 #      by: PyQt4 UI code generator 4.1.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -1183,12 +1183,6 @@ class Ui_FredWindow(object):
         self.textLabel631.setWordWrap(False)
         self.textLabel631.setObjectName("textLabel631")
 
-        self.textLabel142_3 = QtGui.QLabel(self.tab13)
-        self.textLabel142_3.setGeometry(QtCore.QRect(10,20,570,171))
-        self.textLabel142_3.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
-        self.textLabel142_3.setWordWrap(True)
-        self.textLabel142_3.setObjectName("textLabel142_3")
-
         self.send_contacts_by = QtGui.QPushButton(self.tab13)
         self.send_contacts_by.setGeometry(QtCore.QRect(220,290,170,40))
         self.send_contacts_by.setObjectName("send_contacts_by")
@@ -1204,6 +1198,12 @@ class Ui_FredWindow(object):
         self.contacts_by_type = QtGui.QComboBox(self.tab13)
         self.contacts_by_type.setGeometry(QtCore.QRect(20,220,181,26))
         self.contacts_by_type.setObjectName("contacts_by_type")
+
+        self.textLabel142_3 = QtGui.QLabel(self.tab13)
+        self.textLabel142_3.setGeometry(QtCore.QRect(10,20,570,171))
+        self.textLabel142_3.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.textLabel142_3.setWordWrap(True)
+        self.textLabel142_3.setObjectName("textLabel142_3")
         self.contacts_by_response.addTab(self.tab13,"")
 
         self.TabPage22 = QtGui.QWidget()
@@ -1815,12 +1815,6 @@ class Ui_FredWindow(object):
         self.textLabel94.setWordWrap(False)
         self.textLabel94.setObjectName("textLabel94")
 
-        self.textLabel142_2 = QtGui.QLabel(self.tab21)
-        self.textLabel142_2.setGeometry(QtCore.QRect(10,20,570,171))
-        self.textLabel142_2.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
-        self.textLabel142_2.setWordWrap(True)
-        self.textLabel142_2.setObjectName("textLabel142_2")
-
         self.nssets_by_type = QtGui.QComboBox(self.tab21)
         self.nssets_by_type.setGeometry(QtCore.QRect(20,220,181,26))
         self.nssets_by_type.setObjectName("nssets_by_type")
@@ -1836,6 +1830,12 @@ class Ui_FredWindow(object):
         self.send_nssets_by = QtGui.QPushButton(self.tab21)
         self.send_nssets_by.setGeometry(QtCore.QRect(220,290,170,40))
         self.send_nssets_by.setObjectName("send_nssets_by")
+
+        self.textLabel142_2 = QtGui.QLabel(self.tab21)
+        self.textLabel142_2.setGeometry(QtCore.QRect(10,20,570,171))
+        self.textLabel142_2.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.textLabel142_2.setWordWrap(True)
+        self.textLabel142_2.setObjectName("textLabel142_2")
         self.nssets_by_response.addTab(self.tab21,"")
 
         self.TabPage36 = QtGui.QWidget()
@@ -2570,12 +2570,6 @@ class Ui_FredWindow(object):
         self.textLabel141.setWordWrap(False)
         self.textLabel141.setObjectName("textLabel141")
 
-        self.textLabel142 = QtGui.QLabel(self.tab31)
-        self.textLabel142.setGeometry(QtCore.QRect(10,10,570,171))
-        self.textLabel142.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
-        self.textLabel142.setWordWrap(True)
-        self.textLabel142.setObjectName("textLabel142")
-
         self.domains_by_type = QtGui.QComboBox(self.tab31)
         self.domains_by_type.setGeometry(QtCore.QRect(20,210,181,26))
         self.domains_by_type.setObjectName("domains_by_type")
@@ -2591,6 +2585,12 @@ class Ui_FredWindow(object):
         self.send_domains_by = QtGui.QPushButton(self.tab31)
         self.send_domains_by.setGeometry(QtCore.QRect(220,290,170,40))
         self.send_domains_by.setObjectName("send_domains_by")
+
+        self.textLabel142 = QtGui.QLabel(self.tab31)
+        self.textLabel142.setGeometry(QtCore.QRect(10,10,570,171))
+        self.textLabel142.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.textLabel142.setWordWrap(True)
+        self.textLabel142.setObjectName("textLabel142")
         self.domains_by_response.addTab(self.tab31,"")
 
         self.TabPage54 = QtGui.QWidget()
@@ -2987,7 +2987,7 @@ class Ui_FredWindow(object):
         self.btn_credits.setText(QtGui.QApplication.translate("FredWindow", "Credits", None, QtGui.QApplication.UnicodeUTF8))
         self.btn_errorlog.setText(QtGui.QApplication.translate("FredWindow", "Errors log", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel1.setText(QtGui.QApplication.translate("FredWindow", "Welcome on the <b>FredClient</b> GUI interface.<br>\n"
-        "Beta release 0.1.1; (Needs <b>Fred module</b> version at least 1.3.0)", None, QtGui.QApplication.UnicodeUTF8))
+        "Beta release 0.2.0; (Needs <b>Fred module</b> version at least 1.5.0)", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.TabPage), QtGui.QApplication.translate("FredWindow", "&Welcome", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel7.setText(QtGui.QApplication.translate("FredWindow", "<h2>Connect</h2>\n"
         "This part use to connect and disconnect to the EPP server. You need defined path to the certificates in your configuration file.", None, QtGui.QApplication.UnicodeUTF8))
@@ -3287,8 +3287,8 @@ class Ui_FredWindow(object):
         self.sendauthinfo_contact_response.setTabText(self.sendauthinfo_contact_response.indexOf(self.TabPage20), QtGui.QApplication.translate("FredWindow", "response", None, QtGui.QApplication.UnicodeUTF8))
         self.tab_contact.setTabText(self.tab_contact.indexOf(self.TabPage19), QtGui.QApplication.translate("FredWindow", "sendAuthInfo", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel631.setText(QtGui.QApplication.translate("FredWindow", "clTRID", None, QtGui.QApplication.UnicodeUTF8))
-        self.textLabel142_3.setText(QtGui.QApplication.translate("FredWindow", "<h2>contacts by</h2>This command fills server buffer by list of contacts and set pointer at the beginning of the list. The list is taken in sequence by calling command <strong>get results</strong> in <i>connect</i> window repeatedly until any data comming.", None, QtGui.QApplication.UnicodeUTF8))
         self.send_contacts_by.setText(QtGui.QApplication.translate("FredWindow", "Send command", None, QtGui.QApplication.UnicodeUTF8))
+        self.textLabel142_3.setText(QtGui.QApplication.translate("FredWindow", "<h2>prepare list of contacts by</h2>This command fills server buffer by list of contacts and set pointer at the beginning of the list. The list is taken in sequence by calling command <strong>get results</strong> in <i>connect</i> window repeatedly until any data comming.", None, QtGui.QApplication.UnicodeUTF8))
         self.contacts_by_response.setTabText(self.contacts_by_response.indexOf(self.tab13), QtGui.QApplication.translate("FredWindow", "command", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel66.setText(QtGui.QApplication.translate("FredWindow", "message", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel68.setText(QtGui.QApplication.translate("FredWindow", "data", None, QtGui.QApplication.UnicodeUTF8))
@@ -3308,7 +3308,7 @@ class Ui_FredWindow(object):
         self.contact_goto_result.setToolTip(QtGui.QApplication.translate("FredWindow", "Go to get_result command.", None, QtGui.QApplication.UnicodeUTF8))
         self.contact_goto_result.setText(QtGui.QApplication.translate("FredWindow", "...", None, QtGui.QApplication.UnicodeUTF8))
         self.contacts_by_response.setTabText(self.contacts_by_response.indexOf(self.TabPage22), QtGui.QApplication.translate("FredWindow", "response", None, QtGui.QApplication.UnicodeUTF8))
-        self.tab_contact.setTabText(self.tab_contact.indexOf(self.TabPage21), QtGui.QApplication.translate("FredWindow", "by", None, QtGui.QApplication.UnicodeUTF8))
+        self.tab_contact.setTabText(self.tab_contact.indexOf(self.TabPage21), QtGui.QApplication.translate("FredWindow", "prepare list", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.Widget9), QtGui.QApplication.translate("FredWindow", "c&ontact", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel69.setText(QtGui.QApplication.translate("FredWindow", "<h2>Nsset</h2>\n"
         "Nsset is set of informations about domain name servers and their address and administrators.", None, QtGui.QApplication.UnicodeUTF8))
@@ -3475,8 +3475,8 @@ class Ui_FredWindow(object):
         self.technical_test_response.setTabText(self.technical_test_response.indexOf(self.TabPage_3), QtGui.QApplication.translate("FredWindow", "response", None, QtGui.QApplication.UnicodeUTF8))
         self.tab_nsset.setTabText(self.tab_nsset.indexOf(self.tab_4), QtGui.QApplication.translate("FredWindow", "technical test", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel94.setText(QtGui.QApplication.translate("FredWindow", "clTRID", None, QtGui.QApplication.UnicodeUTF8))
-        self.textLabel142_2.setText(QtGui.QApplication.translate("FredWindow", "<h2>nssets by</h2>This command fills server buffer by list of nssets and set pointer at the beginning of the list. The list is taken in sequence by calling command <strong>get results</strong> in <i>connect</i> window repeatedly until any data comming.", None, QtGui.QApplication.UnicodeUTF8))
         self.send_nssets_by.setText(QtGui.QApplication.translate("FredWindow", "Send command", None, QtGui.QApplication.UnicodeUTF8))
+        self.textLabel142_2.setText(QtGui.QApplication.translate("FredWindow", "<h2>prepare list of nssets by</h2>This command fills server buffer by list of nssets and set pointer at the beginning of the list. The list is taken in sequence by calling command <strong>get results</strong> in <i>connect</i> window repeatedly until any data comming.", None, QtGui.QApplication.UnicodeUTF8))
         self.nssets_by_response.setTabText(self.nssets_by_response.indexOf(self.tab21), QtGui.QApplication.translate("FredWindow", "command", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel96.setText(QtGui.QApplication.translate("FredWindow", "message", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel98.setText(QtGui.QApplication.translate("FredWindow", "data", None, QtGui.QApplication.UnicodeUTF8))
@@ -3496,7 +3496,7 @@ class Ui_FredWindow(object):
         self.nsset_goto_result.setToolTip(QtGui.QApplication.translate("FredWindow", "Go to get_result command.", None, QtGui.QApplication.UnicodeUTF8))
         self.nsset_goto_result.setText(QtGui.QApplication.translate("FredWindow", "...", None, QtGui.QApplication.UnicodeUTF8))
         self.nssets_by_response.setTabText(self.nssets_by_response.indexOf(self.TabPage36), QtGui.QApplication.translate("FredWindow", "response", None, QtGui.QApplication.UnicodeUTF8))
-        self.tab_nsset.setTabText(self.tab_nsset.indexOf(self.TabPage35), QtGui.QApplication.translate("FredWindow", "by", None, QtGui.QApplication.UnicodeUTF8))
+        self.tab_nsset.setTabText(self.tab_nsset.indexOf(self.TabPage35), QtGui.QApplication.translate("FredWindow", "prepare list", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.TabPage23), QtGui.QApplication.translate("FredWindow", "&nsset", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel99.setText(QtGui.QApplication.translate("FredWindow", "<h2>Domain</h2>\n"
         "Domain is name whitch is associates nsset and contacts.", None, QtGui.QApplication.UnicodeUTF8))
@@ -3693,8 +3693,8 @@ class Ui_FredWindow(object):
         self.sendauthinfo_domain_response.setTabText(self.sendauthinfo_domain_response.indexOf(self.TabPage52), QtGui.QApplication.translate("FredWindow", "response", None, QtGui.QApplication.UnicodeUTF8))
         self.tab_domain.setTabText(self.tab_domain.indexOf(self.TabPage51), QtGui.QApplication.translate("FredWindow", "sendAuthInfo", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel141.setText(QtGui.QApplication.translate("FredWindow", "clTRID", None, QtGui.QApplication.UnicodeUTF8))
-        self.textLabel142.setText(QtGui.QApplication.translate("FredWindow", "<h2>domains by</h2>This command fills server buffer by list of domains and set pointer at the beginning of the list. The list is taken in sequence by calling command <strong>get results</strong> in <i>connect</i> window repeatedly until any data comming.", None, QtGui.QApplication.UnicodeUTF8))
         self.send_domains_by.setText(QtGui.QApplication.translate("FredWindow", "Send command", None, QtGui.QApplication.UnicodeUTF8))
+        self.textLabel142.setText(QtGui.QApplication.translate("FredWindow", "<h2>prepare list of domains by</h2>This command fills server buffer by list of domains and set pointer at the beginning of the list. The list is taken in sequence by calling command <strong>get results</strong> in <i>connect</i> window repeatedly until any data comming.", None, QtGui.QApplication.UnicodeUTF8))
         self.domains_by_response.setTabText(self.domains_by_response.indexOf(self.tab31), QtGui.QApplication.translate("FredWindow", "command", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel143.setText(QtGui.QApplication.translate("FredWindow", "message", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel145.setText(QtGui.QApplication.translate("FredWindow", "data", None, QtGui.QApplication.UnicodeUTF8))
@@ -3714,6 +3714,6 @@ class Ui_FredWindow(object):
         self.domain_goto_result.setToolTip(QtGui.QApplication.translate("FredWindow", "Go to get_result command.", None, QtGui.QApplication.UnicodeUTF8))
         self.domain_goto_result.setText(QtGui.QApplication.translate("FredWindow", "...", None, QtGui.QApplication.UnicodeUTF8))
         self.domains_by_response.setTabText(self.domains_by_response.indexOf(self.TabPage54), QtGui.QApplication.translate("FredWindow", "response", None, QtGui.QApplication.UnicodeUTF8))
-        self.tab_domain.setTabText(self.tab_domain.indexOf(self.TabPage53), QtGui.QApplication.translate("FredWindow", "by", None, QtGui.QApplication.UnicodeUTF8))
+        self.tab_domain.setTabText(self.tab_domain.indexOf(self.TabPage53), QtGui.QApplication.translate("FredWindow", "prepare list", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.TabPage37), QtGui.QApplication.translate("FredWindow", "&domain", None, QtGui.QApplication.UnicodeUTF8))
 

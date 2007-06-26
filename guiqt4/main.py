@@ -323,6 +323,9 @@ class FredMainWindow(QtGui.QDialog):
         data = ('year', 'month')
         self.__init_combo__(self.panel_create_domain.ui.period_unit, data)
         
+        # just only for catching of the pylupdate4
+        QtGui.QApplication.translate("FredWindow", "all", None, QtGui.QApplication.UnicodeUTF8)
+        
 
         for wnd_type, items in LIST_BY.items():
             hwnd = getattr(self.ui, '%s_by_type'%wnd_type)
@@ -590,7 +593,11 @@ class FredMainWindow(QtGui.QDialog):
                     params['id'] = d['handle']
             
             # build command name
-            command = '%s_by_%s'%(key, type)
+            if type == 'all':
+                command = 'prep_%s'%key
+            else:
+                command = 'prep_%s_by_%s'%(key, type)
+                
             self.disable_send_buttons()
             self.thread_epp.set_command(command, params)
             self.thread_epp.start()
@@ -763,7 +770,7 @@ class FredMainWindow(QtGui.QDialog):
         if not self.check_is_online(): return
         d = {}
         panel = self.panel_create_nsset
-        for key in ('id', 'tech', 'auth_info', 'cltrid'):
+        for key in ('id', 'tech', 'auth_info', 'reportlevel', 'cltrid'):
             append_key(d, key, getattr(panel.ui, key))
         dns = []
         for wnd in panel.dns_sets:
@@ -866,9 +873,9 @@ class FredMainWindow(QtGui.QDialog):
             append_key(rem, key, getattr(panel.ui, 'rem_%s'%key))
         if len(rem): d['rem'] = rem
         #................................
-        chg = {}
-        append_key(chg, 'auth_info', getattr(panel.ui, 'auth_info'))
-        if len(chg): d['chg'] = chg
+        for name in ('auth_info', 'reportlevel'):
+            append_key(d, name, getattr(panel.ui, name))
+        
         if self.__check_required__(d, (('id',_TU('NSSET ID')),)) and len(d) > 1:
             self.disable_send_buttons()
             self.thread_epp.set_command('update_nsset', d)
@@ -1150,7 +1157,6 @@ class FredMainWindow(QtGui.QDialog):
         # inputs - struct of the data names, input names, ID of used function to input
         # (('data-key','input-key'), ...)
         data = d_info.get('data')
-##        print 'data=', data #!!!
         
         is_create_domain = prefix_input == 'create_domain'
         is_update = re.match('update_(nsset|domain)', prefix_input)
@@ -1177,7 +1183,7 @@ class FredMainWindow(QtGui.QDialog):
             else:
                 input_name = decamell(input_key)
                 
-##            print '(%s) input_name:'%key, input_name, '%s:%s='%(prefix_data, make_camell(key)), value #!!!
+            # print '(%s) input_name:'%key, input_name, '%s:%s='%(prefix_data, make_camell(key)), value
 
             if value is None:
                 qt_check_state = QtCore.Qt.Unchecked
@@ -1269,10 +1275,6 @@ class FredMainWindow(QtGui.QDialog):
         
         # set checkbox to activate disclose checkbox:
         getattr(qt4ui, 'disclose').setCheckState(QtCore.Qt.Checked)
-        
-##        # set disclose flag to YES (QtGui.QComboBox)
-##        # index 0 must be YES!
-##        getattr(qt4ui, '%s_disclose_flag'%prefix_input).setCurrentIndex(0)
         
         # check selected items (QtGui.QCheckBox)
         for name in values:

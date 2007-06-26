@@ -325,7 +325,7 @@
      </property>
      <property name="text" >
       <string>Welcome on the &lt;b>FredClient&lt;/b> GUI interface.&lt;br>
-Beta release 0.1.1; (Needs &lt;b>Fred module&lt;/b> version at least 1.3.0)</string>
+Beta release 0.2.0; (Needs &lt;b>Fred module&lt;/b> version at least 1.5.0)</string>
      </property>
      <property name="alignment" >
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -3406,7 +3406,7 @@ The EPP 'sendauthinfo_contact' command transmit request for send authorisation i
      </widget>
      <widget class="QWidget" name="TabPage" >
       <attribute name="title" >
-       <string>by</string>
+       <string>prepare list</string>
       </attribute>
       <widget class="QTabWidget" name="contacts_by_response" >
        <property name="geometry" >
@@ -3438,25 +3438,6 @@ The EPP 'sendauthinfo_contact' command transmit request for send authorisation i
          </property>
          <property name="wordWrap" >
           <bool>false</bool>
-         </property>
-        </widget>
-        <widget class="QLabel" name="textLabel142_3" >
-         <property name="geometry" >
-          <rect>
-           <x>10</x>
-           <y>20</y>
-           <width>570</width>
-           <height>171</height>
-          </rect>
-         </property>
-         <property name="text" >
-          <string>&lt;h2>contacts by&lt;/h2>This command fills server buffer by list of contacts and set pointer at the beginning of the list. The list is taken in sequence by calling command &lt;strong>get results&lt;/strong> in &lt;i>connect&lt;/i> window repeatedly until any data comming.</string>
-         </property>
-         <property name="alignment" >
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-         </property>
-         <property name="wordWrap" >
-          <bool>true</bool>
          </property>
         </widget>
         <widget class="QPushButton" name="send_contacts_by" >
@@ -3500,6 +3481,25 @@ The EPP 'sendauthinfo_contact' command transmit request for send authorisation i
            <width>181</width>
            <height>26</height>
           </rect>
+         </property>
+        </widget>
+        <widget class="QLabel" name="textLabel142_3" >
+         <property name="geometry" >
+          <rect>
+           <x>10</x>
+           <y>20</y>
+           <width>570</width>
+           <height>171</height>
+          </rect>
+         </property>
+         <property name="text" >
+          <string>&lt;h2>prepare list of contacts by&lt;/h2>This command fills server buffer by list of contacts and set pointer at the beginning of the list. The list is taken in sequence by calling command &lt;strong>get results&lt;/strong> in &lt;i>connect&lt;/i> window repeatedly until any data comming.</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>true</bool>
          </property>
         </widget>
        </widget>
@@ -5263,7 +5263,7 @@ The EPP 'sendauthinfo_nsset' command transmit request for send authorisation inf
      </widget>
      <widget class="QWidget" name="TabPage" >
       <attribute name="title" >
-       <string>by</string>
+       <string>prepare list</string>
       </attribute>
       <widget class="QTabWidget" name="nssets_by_response" >
        <property name="geometry" >
@@ -5295,25 +5295,6 @@ The EPP 'sendauthinfo_nsset' command transmit request for send authorisation inf
          </property>
          <property name="wordWrap" >
           <bool>false</bool>
-         </property>
-        </widget>
-        <widget class="QLabel" name="textLabel142_2" >
-         <property name="geometry" >
-          <rect>
-           <x>10</x>
-           <y>20</y>
-           <width>570</width>
-           <height>171</height>
-          </rect>
-         </property>
-         <property name="text" >
-          <string>&lt;h2>nssets by&lt;/h2>This command fills server buffer by list of nssets and set pointer at the beginning of the list. The list is taken in sequence by calling command &lt;strong>get results&lt;/strong> in &lt;i>connect&lt;/i> window repeatedly until any data comming.</string>
-         </property>
-         <property name="alignment" >
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-         </property>
-         <property name="wordWrap" >
-          <bool>true</bool>
          </property>
         </widget>
         <widget class="QComboBox" name="nssets_by_type" >
@@ -5357,6 +5338,25 @@ The EPP 'sendauthinfo_nsset' command transmit request for send authorisation inf
          </property>
          <property name="text" >
           <string>Send command</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="textLabel142_2" >
+         <property name="geometry" >
+          <rect>
+           <x>10</x>
+           <y>20</y>
+           <width>570</width>
+           <height>171</height>
+          </rect>
+         </property>
+         <property name="text" >
+          <string>&lt;h2>prepare list of nssets by&lt;/h2>This command fills server buffer by list of nssets and set pointer at the beginning of the list. The list is taken in sequence by calling command &lt;strong>get results&lt;/strong> in &lt;i>connect&lt;/i> window repeatedly until any data comming.</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>true</bool>
          </property>
         </widget>
        </widget>
@@ -7490,7 +7490,7 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
      </widget>
      <widget class="QWidget" name="TabPage" >
       <attribute name="title" >
-       <string>by</string>
+       <string>prepare list</string>
       </attribute>
       <widget class="QTabWidget" name="domains_by_response" >
        <property name="geometry" >
@@ -7522,25 +7522,6 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
          </property>
          <property name="wordWrap" >
           <bool>false</bool>
-         </property>
-        </widget>
-        <widget class="QLabel" name="textLabel142" >
-         <property name="geometry" >
-          <rect>
-           <x>10</x>
-           <y>10</y>
-           <width>570</width>
-           <height>171</height>
-          </rect>
-         </property>
-         <property name="text" >
-          <string>&lt;h2>domains by&lt;/h2>This command fills server buffer by list of domains and set pointer at the beginning of the list. The list is taken in sequence by calling command &lt;strong>get results&lt;/strong> in &lt;i>connect&lt;/i> window repeatedly until any data comming.</string>
-         </property>
-         <property name="alignment" >
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-         </property>
-         <property name="wordWrap" >
-          <bool>true</bool>
          </property>
         </widget>
         <widget class="QComboBox" name="domains_by_type" >
@@ -7584,6 +7565,25 @@ The EPP 'sendauthinfo_domain' command transmit request for send authorisation in
          </property>
          <property name="text" >
           <string>Send command</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="textLabel142" >
+         <property name="geometry" >
+          <rect>
+           <x>10</x>
+           <y>10</y>
+           <width>570</width>
+           <height>171</height>
+          </rect>
+         </property>
+         <property name="text" >
+          <string>&lt;h2>prepare list of domains by&lt;/h2>This command fills server buffer by list of domains and set pointer at the beginning of the list. The list is taken in sequence by calling command &lt;strong>get results&lt;/strong> in &lt;i>connect&lt;/i> window repeatedly until any data comming.</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+         </property>
+         <property name="wordWrap" >
+          <bool>true</bool>
          </property>
         </widget>
        </widget>

@@ -1094,31 +1094,31 @@ class Message(MessageBase):
         'Create technical_test document'
         self.__asseble_extcommand__(('test','nsset','id'), params, ('id', 'level', 'name'))
 
-    def assemble_contacts_by_all(self, *params):
-        'Create contacts_by_all document'
+    def assemble_prep_contacts(self, *params):
+        'Create prepare_contacts document'
         self.__asseble_extcommand__(('listContacts', ), params)
-    def assemble_domains_by_all(self, *params):
-        'Create domains_by_all document'
+    def assemble_prep_domains(self, *params):
+        'Create prepare_domains document'
         self.__asseble_extcommand__(('listDomains', ), params)
-    def assemble_nssets_by_all(self, *params):
-        'Create nssets_by_all document'
+    def assemble_prep_nssets(self, *params):
+        'Create prepare_nssets document'
         self.__asseble_extcommand__(('listNssets', ), params)
         
     def assemble_get_results(self, *params):
         'Create count_list_nssets document'
         self.__asseble_extcommand__(('getResults', ), params)
 
-    def assemble_domains_by_nsset(self, *params):
-        'Create domains_by_nsset document'
+    def assemble_prep_domains_by_nsset(self, *params):
+        'Create prep_domains_by_nsset document'
         self.__asseble_extcommand__(('domainsByNsset', ), params, 'id')
-    def assemble_domains_by_contact(self, *params):
-        'Create domains_by_contact document'
+    def assemble_prep_domains_by_contact(self, *params):
+        'Create prep_domains_by_contact document'
         self.__asseble_extcommand__(('domainsByContact', ), params, 'id')
-    def assemble_nssets_by_contact(self, *params):
-        'Create nssets_by_contact document'
+    def assemble_prep_nssets_by_contact(self, *params):
+        'Create prep_nssets_by_contact document'
         self.__asseble_extcommand__(('nssetsByContact', ), params, 'id')
-    def assemble_nssets_by_ns(self, *params):
-        'Create nssets_by_ns document'
+    def assemble_prep_nssets_by_ns(self, *params):
+        'Create prep_nssets_by_ns document'
         self.__asseble_extcommand__(('nssetsByNs', ), params, 'name')
 
         

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-06-04 17:13+0200\n"
+"POT-Creation-Date: 2007-06-26 11:05+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Zdeněk Böhm <zdenek.bohm@nic.cz>\n"
 "Language-Team: CS <ccreg-devel@lists.nic.cz>\n"
@@ -209,7 +209,7 @@ msgstr ""
 msgid "More details in verbose 2 or higher."
 msgstr "Více detailů je ve verbose 2 nebo vyšším."
 
-#: fred/console.py:183 fred/session_receiver.py:618
+#: fred/console.py:183 fred/session_receiver.py:619
 msgid "Command data XML document failed to validate."
 msgstr "XML dokument příkazu se nepodařilo zvalidovat."
 
@@ -222,8 +222,8 @@ msgstr "Nejste připojeni."
 msgid "Do you really want to send this command to the server?"
 msgstr "Opravdu chcete odeslat tento poříkaz na server?"
 
-#: fred/console.py:199 fred/session_receiver.py:624
-#: fred/session_receiver.py:628
+#: fred/console.py:199 fred/session_receiver.py:625
+#: fred/session_receiver.py:629
 msgid "Server answer XML document failed to validate."
 msgstr "Odpověď serveru v XML dokumentu se nepodařilo zvalidovat."
 
@@ -237,12 +237,10 @@ msgstr ""
 "Více informací získáze zadáním '%s --help'."
 
 #: fred/console.py:245 fred/creator.py:104 fred/sender.py:165
-#: fred_client.py:47
 msgid "Usage"
 msgstr "Použití"
 
 #: fred/console.py:247 fred/creator.py:113 fred/sender.py:178
-#: fred_client.py:55
 msgid "See README for more information."
 msgstr "Více informací najdete v README."
 
@@ -251,7 +249,7 @@ msgstr "Více informací najdete v README."
 msgid "Unknown command"
 msgstr "Neznámý příkaz"
 
-#: fred/creator.py:59 fred/session_base.py:275 fred/session_command.py:393
+#: fred/creator.py:59 fred/session_base.py:276 fred/session_command.py:393
 #: fred/session_command.py:396 fred/session_command.py:398
 #: fred/session_command.py:400 fred/session_transfer.py:482
 msgid "ERROR"
@@ -529,8 +527,8 @@ msgstr ""
 #: fred/eppdoc_client.py:79 fred/eppdoc_client.py:99 fred/eppdoc_client.py:137
 #: fred/eppdoc_client.py:163 fred/eppdoc_client.py:236
 #: fred/eppdoc_client.py:267 fred/eppdoc_client.py:336
-#: fred/eppdoc_client.py:428 fred/eppdoc_client.py:477
-#: fred/eppdoc_client.py:545 guiqt4/main.py:706
+#: fred/eppdoc_client.py:431 fred/eppdoc_client.py:480
+#: fred/eppdoc_client.py:548 guiqt4/main.py:842
 msgid "Contact ID"
 msgstr "Kontakt ID"
 
@@ -550,8 +548,8 @@ msgstr ""
 #: fred/eppdoc_client.py:193 fred/eppdoc_client.py:240
 #: fred/eppdoc_client.py:248 fred/eppdoc_client.py:301
 #: fred/eppdoc_client.py:343 fred/eppdoc_client.py:361
-#: fred/eppdoc_client.py:507 fred/eppdoc_client.py:555
-#: fred/eppdoc_client.py:583
+#: fred/eppdoc_client.py:510 fred/eppdoc_client.py:558
+#: fred/eppdoc_client.py:586
 msgid "Domain name"
 msgstr "Název domény"
 
@@ -574,9 +572,9 @@ msgstr ""
 #: fred/eppdoc_client.py:215 fred/eppdoc_client.py:244
 #: fred/eppdoc_client.py:306 fred/eppdoc_client.py:317
 #: fred/eppdoc_client.py:350 fred/eppdoc_client.py:359
-#: fred/eppdoc_client.py:418 fred/eppdoc_client.py:518
-#: fred/eppdoc_client.py:528 fred/eppdoc_client.py:550 guiqt4/main.py:646
-#: guiqt4/main.py:743 guiqt4/main.py:854
+#: fred/eppdoc_client.py:421 fred/eppdoc_client.py:521
+#: fred/eppdoc_client.py:531 fred/eppdoc_client.py:553 guiqt4/main.py:782
+#: guiqt4/main.py:879 guiqt4/main.py:1003
 msgid "NSSET ID"
 msgstr "NSSET ID"
 
@@ -713,7 +711,7 @@ msgstr ""
 "autorizační heslo pro transfer."
 
 #: fred/eppdoc_client.py:164 fred/eppdoc_client.py:270
-#: fred/eppdoc_client.py:485
+#: fred/eppdoc_client.py:488
 msgid "Name"
 msgstr "Jméno"
 
@@ -722,40 +720,40 @@ msgid "Email"
 msgstr ""
 
 #: fred/eppdoc_client.py:166 fred/eppdoc_client.py:273
-#: fred/eppdoc_client.py:488
+#: fred/eppdoc_client.py:491
 msgid "City"
 msgstr "Město"
 
 #: fred/eppdoc_client.py:167 fred/eppdoc_client.py:274
-#: fred/eppdoc_client.py:491
+#: fred/eppdoc_client.py:494
 msgid "Country code"
 msgstr "Kód země"
 
-#: fred/eppdoc_client.py:167 guiqt4/main.py:623
+#: fred/eppdoc_client.py:167 guiqt4/main.py:759
 msgid "country code"
 msgstr "kód země"
 
-#: fred/eppdoc_client.py:168 guiqt4/main.py:543
+#: fred/eppdoc_client.py:168 guiqt4/main.py:679
 msgid "password"
 msgstr "heslo"
 
 #: fred/eppdoc_client.py:169 fred/eppdoc_client.py:271
-#: fred/eppdoc_client.py:486
+#: fred/eppdoc_client.py:489
 msgid "Organisation"
 msgstr "Název organizace"
 
 #: fred/eppdoc_client.py:170 fred/eppdoc_client.py:275
-#: fred/eppdoc_client.py:487
+#: fred/eppdoc_client.py:490
 msgid "Street"
 msgstr "Ulice"
 
 #: fred/eppdoc_client.py:171 fred/eppdoc_client.py:276
-#: fred/eppdoc_client.py:489
+#: fred/eppdoc_client.py:492
 msgid "State or province"
 msgstr "Stát nebo kraj"
 
 #: fred/eppdoc_client.py:172 fred/eppdoc_client.py:277
-#: fred/eppdoc_client.py:490
+#: fred/eppdoc_client.py:493
 msgid "Postal code"
 msgstr "PSČ"
 
@@ -764,7 +762,7 @@ msgid "postal code"
 msgstr "PSČ"
 
 #: fred/eppdoc_client.py:173 fred/eppdoc_client.py:280
-#: fred/eppdoc_client.py:493
+#: fred/eppdoc_client.py:496
 msgid "Phone"
 msgstr "Telefon"
 
@@ -773,7 +771,7 @@ msgid "Fax"
 msgstr ""
 
 #: fred/eppdoc_client.py:175 fred/eppdoc_client.py:284
-#: fred/eppdoc_client.py:499
+#: fred/eppdoc_client.py:502
 msgid "Disclose"
 msgstr "Zveřejnit"
 
@@ -790,12 +788,12 @@ msgid "VAT (Value-added tax)"
 msgstr "VAT (daňový identifikátor)"
 
 #: fred/eppdoc_client.py:180 fred/eppdoc_client.py:289
-#: fred/eppdoc_client.py:503
+#: fred/eppdoc_client.py:506
 msgid "Identificator"
 msgstr "Identifikátor"
 
 #: fred/eppdoc_client.py:181 fred/eppdoc_client.py:290
-#: fred/eppdoc_client.py:502
+#: fred/eppdoc_client.py:505
 msgid "Identificator type"
 msgstr "Typ identifikátoru"
 
@@ -804,7 +802,7 @@ msgid "Identificator number"
 msgstr "Čislo identifikátoru"
 
 #: fred/eppdoc_client.py:184 fred/eppdoc_client.py:293
-#: fred/eppdoc_client.py:496
+#: fred/eppdoc_client.py:499
 msgid "Notification email"
 msgstr "Oznámení na email"
 
@@ -821,7 +819,7 @@ msgstr ""
 "kontaktu."
 
 #: fred/eppdoc_client.py:194 fred/eppdoc_client.py:307
-#: fred/eppdoc_client.py:522
+#: fred/eppdoc_client.py:525
 msgid "Registrant ID"
 msgstr "ID držitele"
 
@@ -867,7 +865,7 @@ msgid "LIST of DNS"
 msgstr "Seznam DNS"
 
 #: fred/eppdoc_client.py:217 fred/eppdoc_client.py:320
-#: fred/eppdoc_client.py:326 fred/eppdoc_client.py:449
+#: fred/eppdoc_client.py:326 fred/eppdoc_client.py:452
 msgid "Name server"
 msgstr "Jmenný server"
 
@@ -875,8 +873,8 @@ msgstr "Jmenný server"
 msgid "Server address"
 msgstr "Adresa serveru"
 
-#: fred/eppdoc_client.py:220 fred/eppdoc_client.py:439
-#: fred/eppdoc_client.py:539
+#: fred/eppdoc_client.py:220 fred/eppdoc_client.py:442
+#: fred/eppdoc_client.py:542
 msgid "Technical contact"
 msgstr "Technický kontakt"
 
@@ -925,13 +923,13 @@ msgstr "EPP příkaz 'delete_domain' se používá pro smazání záznamu o dom�
 msgid "The EPP 'delete_nsset' command is used to remove a record of the nsset."
 msgstr "EPP příkaz 'delete_nsset' se používá pro smazázní záznamu o NSSETu."
 
-#: fred/eppdoc_client.py:249 fred/eppdoc_client.py:515
-#: fred/eppdoc_client.py:557 fred/eppdoc_client.py:584 guiqt4/main.py:820
+#: fred/eppdoc_client.py:249 fred/eppdoc_client.py:518
+#: fred/eppdoc_client.py:560 fred/eppdoc_client.py:587 guiqt4/main.py:956
 msgid "Expiration date"
 msgstr "Datum expirace"
 
 #: fred/eppdoc_client.py:254 fred/eppdoc_client.py:310
-#: fred/eppdoc_client.py:516
+#: fred/eppdoc_client.py:519
 msgid "Validation expires at"
 msgstr "Validace platná do"
 
@@ -975,7 +973,7 @@ msgstr "Adresa"
 msgid "data for with is set the flag value"
 msgstr "data, pro které se nastaví příznak"
 
-#: fred/eppdoc_client.py:288 fred/eppdoc_client.py:501
+#: fred/eppdoc_client.py:288 fred/eppdoc_client.py:504
 msgid "VAT"
 msgstr "DPH"
 
@@ -1084,40 +1082,43 @@ msgstr ""
 #: fred/eppdoc_client.py:373
 msgid ""
 "\n"
-"This command fills server buffer by list of contacts and set pointer \n"
-"at the beginning of the list. The list is taken in sequence by calling \n"
-"command 'get_results' repeatedly until any data comming.\n"
+"Prepare list of the contacts. This command fills server buffer by list \n"
+"of contacts and set pointer at the beginning of the list. The list \n"
+"is taken in sequence by calling command 'get_results' repeatedly \n"
+"until any data comming.\n"
 msgstr ""
 "\n"
-"Tento příkaz zaplní buffer na serveru seznamem kontaktů a nastaví ukazatel\n"
-"na začátek seznamu. Data se načítají postupně opakovaným voláním příkazu\n"
-"'get_results' dokud se vracejí nějaká data.\n"
+"Připravit seznam kontaktů. Tento příkaz zaplní buffer na serveru seznamem \n"
+"kontaktů a nastaví ukazatel na začátek seznamu. Data se načítají postupně \n"
+"opakovaným voláním příkazu 'get_results' dokud se vracejí nějaká data.\n"
 
-#: fred/eppdoc_client.py:379
+#: fred/eppdoc_client.py:380
 msgid ""
 "\n"
-"This command fills server buffer by list of domains and set pointer \n"
-"at the beginning of the list. The list is taken in sequence by calling \n"
-"command 'get_results' repeatedly until any data comming.\n"
+"Prepare list of the domains. This command fills server buffer by list \n"
+"of domains and set pointer at the beginning of the list. The list is \n"
+"taken in sequence by calling command 'get_results' repeatedly until \n"
+"any data comming.\n"
 msgstr ""
 "\n"
-"Tento příkaz zaplní buffer na serveru seznamem domén a nastaví ukazatel\n"
-"na začátek seznamu. Data se načítají postupně opakovaným voláním příkazu\n"
-"'get_results' dokud se vracejí nějaká data.\n"
+"Připravit seznam domén. Tento příkaz zaplní buffer na serveru seznamem \n"
+"domén a nastaví ukazatel na začátek seznamu. Data se načítají postupně \n"
+"opakovaným voláním příkazu 'get_results' dokud se vracejí nějaká data.\n"
 
-#: fred/eppdoc_client.py:385
+#: fred/eppdoc_client.py:387
 msgid ""
 "\n"
-"This command fills server buffer by list of nssets and set pointer \n"
-"at the beginning of the list. The list is taken in sequence by calling \n"
-"command 'get_results' repeatedly until any data comming.\n"
+"Prepare list of the NSSETs. This command fills server buffer by list \n"
+"of nssets and set pointer at the beginning of the list. The list \n"
+"is taken in sequence by calling command 'get_results' repeatedly \n"
+"until any data comming.\n"
 msgstr ""
 "\n"
-"Tento příkaz zaplní buffer na serveru seznamem nssetů a nastaví ukazatel\n"
-"na začátek seznamu. Data se načítají postupně opakovaným voláním příkazu\n"
-"'get_results' dokud se vracejí nějaká data.\n"
+"Připravit seznam NSSETů. Tento příkaz zaplní buffer na serveru seznamem \n"
+"nssetů a nastaví ukazatel na začátek seznamu. Data se načítají postupně \n"
+"opakovaným voláním příkazu 'get_results' dokud se vracejí nějaká data.\n"
 
-#: fred/eppdoc_client.py:392
+#: fred/eppdoc_client.py:395
 msgid ""
 "\n"
 "Returns a data chunk from the list of the records in the server buffer.\n"
@@ -1135,7 +1136,7 @@ msgstr ""
 "nsset_by_all, domain_by_all, ...)\n"
 "nebo domains_by_contact, domains_by_nsset atd.\n"
 
-#: fred/eppdoc_client.py:401
+#: fred/eppdoc_client.py:404
 msgid ""
 "\n"
 "Returns list of contacts using command contacts_by_all and runs a loop \n"
@@ -1145,7 +1146,7 @@ msgstr ""
 "Vrátí seznam kontaktů za použití příkazu contacts_by_all a opakovaného\n"
 "spouštění příkazu get_results, dokud se nenačte celý seznam.\n"
 
-#: fred/eppdoc_client.py:406
+#: fred/eppdoc_client.py:409
 msgid ""
 "\n"
 "Returns list of domains using command domains_by_all and runs a loop \n"
@@ -1155,7 +1156,7 @@ msgstr ""
 "Vrátí seznam domén za použití příkazu domains_by_all a opakovaného\n"
 "spouštění příkazu get_results, dokud se nenačte celý seznam.\n"
 
-#: fred/eppdoc_client.py:411
+#: fred/eppdoc_client.py:414
 msgid ""
 "\n"
 "Returns list of nssets using command nssets_by_all and runs a loop \n"
@@ -1165,34 +1166,33 @@ msgstr ""
 "Vrátí seznam nssetů za použití příkazu nssets_by_all a opakovaného\n"
 "spouštění příkazu get_results, dokud se nenačte celý seznam.\n"
 
-#: fred/eppdoc_client.py:419
+#: fred/eppdoc_client.py:422
 msgid ""
 "\n"
-"This command fills server buffer by list of domains connected with defined\n"
-"nsset ID. The pointer is set at the beginning of the list. \n"
-"The list is taken in sequence by calling command 'get_results' \n"
-"repeatedly until any data comming.\n"
+"Prepare domains by NSSET. This command fills server buffer by list \n"
+"of domains connected with defined nsset ID. The pointer is set \n"
+"at the beginning of the list. The list is taken in sequence \n"
+"by calling command 'get_results' repeatedly until any data comming.\n"
 msgstr ""
 "\n"
-"Tento příkaz zaplní buffer na serveru seznamem domén, které mají přiřazen "
-"zadaný\n"
-"nsset ID. Ukazatel pro čtení je nastaven na začátek seznamu. Části seznamu\n"
-"se načítají opakovaným voláním příkazu 'get_results'. Pokud již get_results "
-"žádné\n"
-"údaje nevrací, tak bylo dosaženo konce seznamu.\n"
+"Připravit seznam NSSETů. Tento příkaz zaplní buffer na serveru seznamem domén, \n"
+"které mají přiřazen zadaný nsset ID. Ukazatel pro čtení je nastaven \n"
+"na začátek seznamu. Části seznamu se načítají opakovaným voláním příkazu \n"
+"'get_results'. Pokud již get_results žádné údaje nevrací, tak bylo \n"
+"dosaženo konce seznamu.\n"
 
-#: fred/eppdoc_client.py:429
+#: fred/eppdoc_client.py:432
 msgid ""
 "\n"
-"This command fills server buffer by list of domains where occurs\n"
-"defined contact ID. It can be Registrant ID or Admin ID or Temporary ID. \n"
-"The pointer is set at the beginning of the list. \n"
-"The list is taken in sequence by calling command 'get_results' \n"
-"repeatedly until any data comming.\n"
+"Prepare domains by contact. This command fills server buffer by list \n"
+"of domains where occurs defined contact ID. It can be Registrant \n"
+"ID or Admin ID or Temporary ID. The pointer is set at the beginning \n"
+"of the list. The list is taken in sequence by calling command \n"
+"'get_results' repeatedly until any data comming.\n"
 msgstr ""
 "\n"
-"Tento příkaz zaplní buffer na serveru seznamem domén, ve kterých se "
-"vyskytuje zadané\n"
+"Připravit seznam domén podle kontaktu. Tento příkaz zaplní buffer \n"
+"na serveru seznamem domén, ve kterých se  vyskytuje zadané\n"
 "ID kontaktu. Může to být ID držitele nebo administrativní a dočasný "
 "kontakt.\n"
 "Ukazatel pro čtení je nastaven na začátek seznamu. Části seznamu\n"
@@ -1200,212 +1200,210 @@ msgstr ""
 "žádné\n"
 "údaje nevrací, tak bylo dosaženo konce seznamu.\n"
 
-#: fred/eppdoc_client.py:440
+#: fred/eppdoc_client.py:443
 msgid ""
 "\n"
-"This command fills server buffer by list of nssets connected with defined\n"
-"technical contact ID. The pointer is set at the beginning of the list. \n"
-"The list is taken in sequence by calling command 'get_results' \n"
-"repeatedly until any data comming.\n"
+"Prepare NSSETs by contact. This command fills server buffer by list \n"
+"of nssets connected with defined technical contact ID. The pointer \n"
+"is set at the beginning of the list. The list is taken in sequence \n"
+"by calling command 'get_results' repeatedly until any data comming.\n"
 msgstr ""
 "\n"
-"Tento příkaz zaplní buffer na serveru seznamem nssetů, které mají přiřazen "
-"zadané ID\n"
+"Připravit seznam NSSETů podle kontaktu. Tento příkaz zaplní buffer \n"
+"na serveru seznamem nssetů, které mají přiřazen zadané ID\n"
 "technického kontaktu. Ukazatel pro čtení je nastaven na začátek seznamu. "
 "Části seznamu\n"
 "se načítají opakovaným voláním příkazu 'get_results'. Pokud již get_results "
 "žádné\n"
 "údaje nevrací, tak bylo dosaženo konce seznamu.\n"
 
-#: fred/eppdoc_client.py:450
+#: fred/eppdoc_client.py:453
 msgid ""
 "\n"
-"This command fills server buffer by list of nssets connected with defined\n"
-"name server. The pointer is set at the beginning of the list. \n"
-"The list is taken in sequence by calling command 'get_results' \n"
+"Prepare NSSETs by NS. This command fills server buffer by list of nssets \n"
+"connected with defined name server. The pointer is set at the beginning \n"
+"of the list. The list is taken in sequence by calling command 'get_results'\n"
 "repeatedly until any data comming.\n"
 msgstr ""
 "\n"
-"Tento příkaz zaplní buffer na serveru seznamem nssetů, které mají přiřazen "
-"zadaný\n"
-"jmenný server. Ukazatel pro čtení je nastaven na začátek seznamu. Části "
-"seznamu\n"
-"se načítají opakovaným voláním příkazu 'get_results'. Pokud již get_results "
-"žádné\n"
-"údaje nevrací, tak bylo dosaženo konce seznamu.\n"
+"Připravit seznam NSSETů podle NS. Tento příkaz zaplní buffer na serveru \n"
+"seznamem nssetů, které mají přiřazen zadaný jmenný server. Ukazatel pro \n"
+"čtení je nastaven na začátek seznamu. Části  seznamu se načítají opakovaným\n"
+"voláním příkazu 'get_results'. Pokud již get_results žádné údaje nevrací, \n"
+"tak bylo dosaženo konce seznamu.\n"
 
-#: fred/eppdoc_client.py:461
+#: fred/eppdoc_client.py:464
 msgid "Client transaction ID"
 msgstr ""
 
-#: fred/eppdoc_client.py:478 fred/eppdoc_client.py:508
-#: fred/eppdoc_client.py:529
+#: fred/eppdoc_client.py:481 fred/eppdoc_client.py:511
+#: fred/eppdoc_client.py:532
 msgid "Repository object ID"
 msgstr "ID objektu v rep."
 
-#: fred/eppdoc_client.py:479 fred/eppdoc_client.py:509
-#: fred/eppdoc_client.py:530
+#: fred/eppdoc_client.py:482 fred/eppdoc_client.py:512
+#: fred/eppdoc_client.py:533
 msgid "Created by"
 msgstr "Vytvořil"
 
-#: fred/eppdoc_client.py:480 fred/eppdoc_client.py:510
-#: fred/eppdoc_client.py:531
+#: fred/eppdoc_client.py:483 fred/eppdoc_client.py:513
+#: fred/eppdoc_client.py:534
 msgid "Designated registrar"
 msgstr "Určený registrátor"
 
-#: fred/eppdoc_client.py:481 fred/eppdoc_client.py:511
-#: fred/eppdoc_client.py:532
+#: fred/eppdoc_client.py:484 fred/eppdoc_client.py:514
+#: fred/eppdoc_client.py:535
 msgid "Updated by"
 msgstr "Změnil"
 
-#: fred/eppdoc_client.py:482 fred/eppdoc_client.py:512
-#: fred/eppdoc_client.py:533 fred/eppdoc_client.py:546
-#: fred/eppdoc_client.py:551 fred/eppdoc_client.py:556
+#: fred/eppdoc_client.py:485 fred/eppdoc_client.py:515
+#: fred/eppdoc_client.py:536 fred/eppdoc_client.py:549
+#: fred/eppdoc_client.py:554 fred/eppdoc_client.py:559
 msgid "Created on"
 msgstr "Vytvořeno dne"
 
-#: fred/eppdoc_client.py:483 fred/eppdoc_client.py:513
-#: fred/eppdoc_client.py:534
+#: fred/eppdoc_client.py:486 fred/eppdoc_client.py:516
+#: fred/eppdoc_client.py:537
 msgid "Last transfer on"
 msgstr "Poslední transfer dne"
 
-#: fred/eppdoc_client.py:484 fred/eppdoc_client.py:514
+#: fred/eppdoc_client.py:487 fred/eppdoc_client.py:517
 msgid "Last update on"
 msgstr "Poslední změna dne"
 
-#: fred/eppdoc_client.py:492 fred/eppdoc_client.py:519
-#: fred/eppdoc_client.py:536
+#: fred/eppdoc_client.py:495 fred/eppdoc_client.py:522
+#: fred/eppdoc_client.py:539
 msgid "Password for transfer"
 msgstr "Heslo pro transfer"
 
-#: fred/eppdoc_client.py:497 fred/eppdoc_client.py:520
-#: fred/eppdoc_client.py:537
+#: fred/eppdoc_client.py:500 fred/eppdoc_client.py:523
+#: fred/eppdoc_client.py:540
 msgid "Status"
 msgstr "Stav"
 
-#: fred/eppdoc_client.py:498 fred/eppdoc_client.py:521
-#: fred/eppdoc_client.py:538
+#: fred/eppdoc_client.py:501 fred/eppdoc_client.py:524
+#: fred/eppdoc_client.py:541
 msgid "Status message"
 msgstr "Popis stavu"
 
-#: fred/eppdoc_client.py:500
+#: fred/eppdoc_client.py:503
 msgid "Hide"
 msgstr "Skrýt"
 
-#: fred/eppdoc_client.py:517
+#: fred/eppdoc_client.py:520
 msgid "Last renew on"
 msgstr "Poslední prodloužení dne"
 
-#: fred/eppdoc_client.py:523
+#: fred/eppdoc_client.py:526
 msgid "Administrative contact"
 msgstr "Administrativní kontakt"
 
-#: fred/eppdoc_client.py:524
+#: fred/eppdoc_client.py:527
 msgid "Temporary contact"
 msgstr "Dočasný kontakt"
 
-#: fred/eppdoc_client.py:535
+#: fred/eppdoc_client.py:538
 msgid "Last updated on"
 msgstr "Poslední změna dne"
 
-#: fred/eppdoc_client.py:540
+#: fred/eppdoc_client.py:543
 msgid "Name servers"
 msgstr "Jmenné servery"
 
-#: fred/eppdoc_client.py:541
+#: fred/eppdoc_client.py:544
 msgid "Report level"
 msgstr "Stupeň detailů"
 
-#: fred/eppdoc_client.py:561
+#: fred/eppdoc_client.py:564
 msgid "Available languages"
 msgstr "Podporované jazyky"
 
-#: fred/eppdoc_client.py:562
+#: fred/eppdoc_client.py:565
 msgid "Server ID"
 msgstr "ID serveru"
 
-#: fred/eppdoc_client.py:563
+#: fred/eppdoc_client.py:566
 msgid "Server date"
 msgstr "Datum serveru"
 
-#: fred/eppdoc_client.py:564
+#: fred/eppdoc_client.py:567
 msgid "Available protocols"
 msgstr "Podporované protokoly"
 
-#: fred/eppdoc_client.py:565
+#: fred/eppdoc_client.py:568
 msgid "Objects URI"
 msgstr "URI objekt"
 
-#: fred/eppdoc_client.py:566
+#: fred/eppdoc_client.py:569
 msgid "Extensions URI"
 msgstr "URI rozšíření"
 
-#: fred/eppdoc_client.py:567
+#: fred/eppdoc_client.py:570
 msgid "Data Collection policy"
 msgstr ""
 
-#: fred/eppdoc_client.py:571 fred/eppdoc_client.py:601
+#: fred/eppdoc_client.py:574 fred/eppdoc_client.py:604
 msgid "List"
 msgstr "Seznam"
 
-#: fred/eppdoc_client.py:572 fred/eppdoc_client.py:605
-#: fred/eppdoc_client.py:610 fred/eppdoc_client.py:615
-#: fred/eppdoc_client.py:620
+#: fred/eppdoc_client.py:575 fred/eppdoc_client.py:608
+#: fred/eppdoc_client.py:613 fred/eppdoc_client.py:618
+#: fred/eppdoc_client.py:623
 msgid "Count"
 msgstr "Počet"
 
-#: fred/eppdoc_client.py:576
+#: fred/eppdoc_client.py:579
 msgid "Queue size"
 msgstr "Počet zpráv"
 
-#: fred/eppdoc_client.py:577
+#: fred/eppdoc_client.py:580
 msgid "Message ID"
 msgstr "ID zprávy"
 
-#: fred/eppdoc_client.py:578
+#: fred/eppdoc_client.py:581
 msgid "Message date"
 msgstr "Zpráva vložena"
 
-#: fred/eppdoc_client.py:579
+#: fred/eppdoc_client.py:582
 msgid "Message content"
 msgstr "Text zprávy"
 
-#: fred/eppdoc_client.py:588 fred/eppdoc_client.py:592
-#: fred/eppdoc_client.py:596
+#: fred/eppdoc_client.py:591 fred/eppdoc_client.py:595
+#: fred/eppdoc_client.py:599
 msgid "Number of records"
 msgstr "Počet záznamů"
 
-#: fred/eppdoc_client.py:589 fred/eppdoc_client.py:593
-#: fred/eppdoc_client.py:597 fred/eppdoc_client.py:606
-#: fred/eppdoc_client.py:611 fred/eppdoc_client.py:616
-#: fred/eppdoc_client.py:621
+#: fred/eppdoc_client.py:592 fred/eppdoc_client.py:596
+#: fred/eppdoc_client.py:600 fred/eppdoc_client.py:609
+#: fred/eppdoc_client.py:614 fred/eppdoc_client.py:619
+#: fred/eppdoc_client.py:624
 msgid "Notify"
 msgstr ""
 
-#: fred/eppdoc.py:189
+#: fred/eppdoc.py:188
 #, python-format
 msgid "Invalid XML document. ExpatError: %s"
 msgstr "Neplatný XML dokument. ExpatError: %s"
 
-#: fred/eppdoc.py:192
+#: fred/eppdoc.py:191
 #, python-format
 msgid "Document has wrong encoding. LookupError: %s"
 msgstr "Dokument má chybné kódování. LookupError: %s"
 
-#: fred/eppdoc.py:220
+#: fred/eppdoc.py:219
 #, python-format
 msgid "Internal error: Master node '%s' doesn't exist."
 msgstr "Interní chyba: Nadřazený uzel '%s' neexistuje."
 
-#: fred/eppdoc.py:513
+#: fred/eppdoc.py:512
 msgid "Internal error: Value is not dict type:"
 msgstr "Interní chyba: Hodnota není typu dict:"
 
-#: fred/__init__.py:910
+#: fred/__init__.py:913
 msgid "This program requires Python 2.4 or higher. Your version is"
 msgstr "Tento program vyžaduje Python 2.4 nebo vyšší. Vaše verze je"
 
-#: fred/sender.py:39 guiqt4/main.py:218
+#: fred/sender.py:39 guiqt4/main.py:293
 msgid "Login failed"
 msgstr "Login se nezdařil"
 
@@ -1435,131 +1433,131 @@ msgstr ""
 "                   Zobrazit výstup jako text (default), html, xml, php "
 "(Pozor! Jen pro testování!)"
 
-#: fred/session_base.py:144
+#: fred/session_base.py:145
 msgid "Unknown output type. Valid types are"
 msgstr "Neznámý typ výstupu. Platné typy jsou"
 
-#: fred/session_base.py:169
+#: fred/session_base.py:170
 msgid "Command confirmation has been set to"
 msgstr "Potvrzení přikazu bylo nastaveno na"
 
-#: fred/session_base.py:171
+#: fred/session_base.py:172
 msgid "Invalid Command confirmation parametr"
 msgstr "Neplatný parametr příkazu Confirmation"
 
-#: fred/session_base.py:172
+#: fred/session_base.py:173
 msgid "Type 'help confirm' to get more information about confirm commands."
 msgstr "Zadejte 'help confirm' pro zobrazení detailů příkazu."
 
-#: fred/session_base.py:322
+#: fred/session_base.py:323
 msgid "Type \"help\", \"license\" or \"credits\" for more information."
 msgstr ""
 "Zadejte \"help\", \"license\" or \"credits\" pro zobrazení více informací."
 
-#: fred/session_base.py:347
+#: fred/session_base.py:348
 msgid "Invalid format of"
 msgstr "Neplatný formát"
 
-#: fred/session_base.py:347 fred/session_base.py:351
+#: fred/session_base.py:348 fred/session_base.py:352
 msgid "See help for more."
 msgstr "Více informací najdete v helpu."
 
-#: fred/session_base.py:351
+#: fred/session_base.py:352
 msgid "cannot be empty"
 msgstr "nemůže být prázdné"
 
-#: fred/session_base.py:359
+#: fred/session_base.py:360
 msgid "Actual config builded from files"
 msgstr "Aktuální config sestavený ze souborů"
 
-#: fred/session_base.py:361
+#: fred/session_base.py:362
 msgid "No configuration file. Defaults used instead it."
 msgstr "Konfigurační soubor nebyl zadán. Byly použity defaultní hodnoty."
 
-#: fred/session_base.py:363
+#: fred/session_base.py:364
 msgid "No config"
 msgstr "Žádný config"
 
-#: fred/session_base.py:369
+#: fred/session_base.py:370
 msgid "Actual connection HERE"
 msgstr "Aktuální spojení ZDE"
 
-#: fred/session_base.py:398
+#: fred/session_base.py:399
 msgid "Schema in session missing. This is invalid instalation."
 msgstr "Chybí schema v session. Tato instalace je neplatná."
 
-#: fred/session_base.py:446
+#: fred/session_base.py:447
 #, python-format
 msgid "Invalid version name %s. It must be one from (%s)."
 msgstr "Neplatné jméno verze %s. Musí být ze seznamu (%s)."
 
-#: fred/session_base.py:448
+#: fred/session_base.py:449
 msgid "Invalid version format"
 msgstr "Neplatný formát verze"
 
-#: fred/session_base.py:519
+#: fred/session_base.py:527
 msgid "Using configuration from"
 msgstr "Použit konfigurační soubor"
 
-#: fred/session_base.py:528
+#: fred/session_base.py:536
 msgid "Fatal error: Default config create failed."
 msgstr "Fatální chyba: Vytvoření defaultního konfiguračního souboru selhalo."
 
-#: fred/session_base.py:532
+#: fred/session_base.py:540
 #, python-format
 msgid "Session \"%s\" without effect. No configuration file."
 msgstr "Session \"%s\" nemá význam. Není načten žádný konfigurační soubor."
 
-#: fred/session_base.py:540
+#: fred/session_base.py:548
 #, python-format
 msgid "Configuration file has no section \"%s\"."
 msgstr "Konfigurační soubor nemá sekci \"%s\"."
 
-#: fred/session_base.py:579
+#: fred/session_base.py:587
 msgid "Invalid verbose parametr"
 msgstr "Neplatný parametr verbose"
 
-#: fred/session_base.py:581 fred/session_base.py:588
+#: fred/session_base.py:589 fred/session_base.py:596
 msgid "Type 'help verbose' to get more information about verbose levels."
 msgstr "Zadejte 'help verbose' pro zobrazení detailů příkazu."
 
-#: fred/session_base.py:587
+#: fred/session_base.py:595
 msgid "Verbose level is out of range. Available values are 1, 2, 3."
 msgstr ""
 "Hodnota módu výstupu je mimo stanovený rozsah. Dostupné hodnoty jsou 1, 2, 3."
 
-#: fred/session_base.py:633
+#: fred/session_base.py:641
 #, python-format
 msgid "External validator \"%s\" not found. XML validation has been disabled."
 msgstr "Externí validátor \"%s\" nebyl nalezen. XML validace byla vypnuta."
 
-#: fred/session_base.py:648
+#: fred/session_base.py:656
 msgid "XML document is empty."
 msgstr "XML dokument je prázdný"
 
-#: fred/session_base.py:656
+#: fred/session_base.py:664
 msgid "Client-side validation command:"
 msgstr "Příkaz pro validátor:"
 
-#: fred/session_base.py:675
+#: fred/session_base.py:683
 msgid "Reading xmllint errors result failed."
 msgstr "Čtení zprávy o chybách z xmllintu selhalo."
 
-#: fred/session_base.py:686
+#: fred/session_base.py:694
 msgid "Warning: Client-side validation failed."
 msgstr "Pozor: Validace na straně klienta selhala."
 
-#: fred/session_base.py:688
+#: fred/session_base.py:696
 #, python-format
 msgid "Client-side validation has been disabled. Type '%s' to enable it."
 msgstr "Validátor byl deaktivován. Opětná aktivace se provede zadáním %s."
 
-#: fred/session_base.py:728
+#: fred/session_base.py:736
 #, python-format
 msgid "Different %s schema version."
 msgstr "Odlišná verze %s schemat."
 
-#: fred/session_base.py:729
+#: fred/session_base.py:737
 #, python-format
 msgid "Client schema version is%s\t%s%sand on the server is%s\t%s"
 msgid_plural "Client schema versions are%s\t%s%sand on the server are%s\t%s"
@@ -2118,7 +2116,7 @@ msgstr "Nejdříve musíte získat hodnoty z info_[contact|nsset|domain]."
 msgid "Previous info_%s didn't return data."
 msgstr "Předchozí info_%s nevrátilo žádné hodnoty."
 
-#: fred/session_command.py:752 guiqt4/main.py:536
+#: fred/session_command.py:752 guiqt4/main.py:672
 msgid "You are logged already."
 msgstr "Jste již zalogován"
 
@@ -2155,43 +2153,43 @@ msgstr "V odpovědi chybí část result"
 msgid "Unknown server response"
 msgstr "Odpověď serveru nebyla rozpoznána"
 
-#: fred/session_receiver.py:168
+#: fred/session_receiver.py:169
 msgid "Unknown response type"
 msgstr "Neznámý typ části response"
 
-#: fred/session_receiver.py:208
+#: fred/session_receiver.py:209
 msgid "All data are disclosed."
 msgstr "Všechna data jsou veřejná."
 
-#: fred/session_receiver.py:211
+#: fred/session_receiver.py:212
 msgid "All data are hidden."
 msgstr "Všechna data jsou skrytá."
 
-#: fred/session_receiver.py:222
+#: fred/session_receiver.py:223
 msgid "Connected!"
 msgstr "Spojení navázáno!"
 
-#: fred/session_receiver.py:224
+#: fred/session_receiver.py:225
 msgid "Login failed."
 msgstr "Login se nezdařil."
 
-#: fred/session_receiver.py:331
+#: fred/session_receiver.py:332
 msgid "Not in registry: Object is available."
 msgstr "Není v registru: Objekt je dostupný."
 
-#: fred/session_receiver.py:355
+#: fred/session_receiver.py:356
 msgid "Not available"
 msgstr "Nedostupný"
 
-#: fred/session_receiver.py:355
+#: fred/session_receiver.py:356
 msgid "Available"
 msgstr "Dostupný"
 
-#: fred/session_receiver.py:525
+#: fred/session_receiver.py:526
 msgid "The list is empty."
 msgstr "Seznam je prázdný."
 
-#: fred/session_receiver.py:535
+#: fred/session_receiver.py:536
 msgid ""
 "\n"
 "The list of the contacts is ready on the server buffer \n"
@@ -2202,7 +2200,7 @@ msgstr ""
 "Seznam kontaktů je připraven v bufferu na serveru a ukazatel je nastaven\n"
 "na začátek seznamu. Pro získání dat zadejte příkaz get_results."
 
-#: fred/session_receiver.py:542
+#: fred/session_receiver.py:543
 msgid ""
 "\n"
 "The list of the nssets is ready on the server buffer \n"
@@ -2213,7 +2211,7 @@ msgstr ""
 "Seznam nssetů je připraven v bufferu na serveru a ukazatel je nastaven\n"
 "na začátek seznamu. Pro získání dat zadejte příkaz get_results."
 
-#: fred/session_receiver.py:549
+#: fred/session_receiver.py:550
 msgid ""
 "\n"
 "The list of the domains is ready on the server buffer \n"
@@ -2224,7 +2222,7 @@ msgstr ""
 "Seznam domén je připraven v bufferu na serveru a ukazatel je nastaven\n"
 "na začátek seznamu. Pro získání dat zadejte příkaz get_results."
 
-#: fred/session_receiver.py:579
+#: fred/session_receiver.py:580
 msgid ""
 "The list of the domains is ready on the server buffer \n"
 "and pointer is set at the beginning of the list.\n"
@@ -2233,8 +2231,8 @@ msgstr ""
 "Seznam domén je připraven v bufferu na serveru a ukazatel je nastaven\n"
 "na začátek seznamu. Pro získání dat zadejte příkaz get_results."
 
-#: fred/session_receiver.py:585 fred/session_receiver.py:591
-#: fred/session_receiver.py:597
+#: fred/session_receiver.py:586 fred/session_receiver.py:592
+#: fred/session_receiver.py:598
 msgid ""
 "The list of the nssets is ready on the server buffer \n"
 "and pointer is set at the beginning of the list.\n"
@@ -2243,11 +2241,11 @@ msgstr ""
 "Seznam nssetů je připraven v bufferu na serveru a ukazatel je nastaven\n"
 "na začátek seznamu. Pro získání dat zadejte příkaz get_results."
 
-#: fred/session_receiver.py:636
+#: fred/session_receiver.py:637
 msgid "You are not logged. First type login."
 msgstr "Nejste zalogováni. Nejdříve zadejte login."
 
-#: fred/session_receiver.py:639
+#: fred/session_receiver.py:640
 msgid "You are not logged. You must call login() before working on the server."
 msgstr "Nejste zalogováni. Nejdříve musíte zadat login()."
 
@@ -2370,29 +2368,7 @@ msgstr ""
 "Použití: %s [parametry...]\n"
 "Více informací získáze zadáním '%s --help'."
 
-#: fred_client.py:49
-msgid ""
-"  -d COMMAND, --command=COMMAND\n"
-"                   Send command to server and exit\n"
-"  -o OUTPUT_TYPE, --output=OUTPUT_TYPE\n"
-"                   Display output as text (default), html, xml, php (Beware! "
-"For experimental only!)"
-msgstr ""
-"  -d COMMAND, --command=COMMAND\n"
-"                   Odeslat příkaz na server a skončit\n"
-"  -o OUTPUT_TYPE, --output=OUTPUT_TYPE\n"
-"                   Zobrazit výstup jako text (default), html, xml, php "
-"(Pozor! Jen pro testování!)"
-
-#: fred_client.py:53
-msgid ""
-"  -q,  --qt\n"
-"                   Run client in Qt4 GUI  (Beware! For experimental only!)"
-msgstr ""
-"  -q,  --qt\n"
-"                   Spustit klienta v Qt4 GUI (Pozor! Jen pro testování!)"
-
-#: guiqt4/main.py:185
+#: guiqt4/main.py:260
 msgid ""
 "Some internal error occured. See <b>Error log</b> on the first panel. Reset "
 "application else some unexpected behavior can occurs."
@@ -2400,103 +2376,103 @@ msgstr ""
 "Vyskytla se interní chyba. Podívejte se do <b>Error log</b> na prvním "
 "panelu. Zresetujte program jinak může dojít k nesprávnému fungování aplikace."
 
-#: guiqt4/main.py:185
+#: guiqt4/main.py:260
 msgid "Internal error"
 msgstr "Interní chyba"
 
-#: guiqt4/main.py:197
+#: guiqt4/main.py:272
 msgid "Load configuration file failed."
 msgstr "Nepodařilo se načíst konfigurační soubor."
 
-#: guiqt4/main.py:261
+#: guiqt4/main.py:355
 msgid "Missing required"
 msgstr "Chybí povinná hodnota"
 
-#: guiqt4/main.py:278
+#: guiqt4/main.py:372
 msgid "Close client"
 msgstr "Zavřít klienta"
 
-#: guiqt4/main.py:279
+#: guiqt4/main.py:373
 msgid "Do you wand realy close client?"
 msgstr "Opravdu chcete zavřít klienta?"
 
-#: guiqt4/main.py:349
+#: guiqt4/main.py:455
+msgid "Results"
+msgstr "Výsledky"
+
+#: guiqt4/main.py:458
 msgid "zone"
 msgstr "Zóna"
 
-#: guiqt4/main.py:349
+#: guiqt4/main.py:458
 msgid "credit"
 msgstr "Kredit"
 
-#: guiqt4/main.py:351 guiqt4/main.py:478 guiqt4/main.py:620 guiqt4/main.py:669
+#: guiqt4/main.py:460 guiqt4/main.py:613 guiqt4/main.py:756 guiqt4/main.py:805
 msgid "name"
 msgstr "Jméno"
 
-#: guiqt4/main.py:351
+#: guiqt4/main.py:460
 msgid "value"
 msgstr "Hodnota"
 
-#: guiqt4/main.py:445 guiqt4/main.py:447
+#: guiqt4/main.py:558 guiqt4/main.py:560
 msgid "status"
 msgstr "Stav"
 
-#: guiqt4/main.py:447
+#: guiqt4/main.py:560
 msgid "disconnect"
 msgstr "Odpojeno"
 
-#: guiqt4/main.py:453
+#: guiqt4/main.py:566
 msgid "You are not logged. First do login."
 msgstr "Nejste zalogováni. Nejdříve zadejte login."
 
-#: guiqt4/main.py:453
+#: guiqt4/main.py:566
 msgid "Offline"
-msgstr ""
+msgstr "Odpojen"
 
-#: guiqt4/main.py:463
-msgid "We are sorry, but in this version are all list functions disabled."
-msgstr "Bohužel, v této verzi jsou všechny list funkce vypnuty."
+#: guiqt4/main.py:582
+msgid "Missing handle."
+msgstr "Chybí identifikátor."
 
-#: guiqt4/main.py:463
-msgid "Disabled function"
-msgstr "Vypnuté funkce"
-
-#: guiqt4/main.py:478
+#: guiqt4/main.py:613
 msgid "Authorization info"
 msgstr "Autorizační heslo"
 
-#: guiqt4/main.py:536
+#: guiqt4/main.py:672
 msgid "Invalid command usage"
 msgstr "Neplatné použití příkazu"
 
-#: guiqt4/main.py:543
+#: guiqt4/main.py:679
 msgid "username"
 msgstr "Uživatelské jméno"
 
-#: guiqt4/main.py:619
+#: guiqt4/main.py:755
 msgid "contact ID"
 msgstr "Kontakt ID"
 
-#: guiqt4/main.py:621
+#: guiqt4/main.py:757
 msgid "email"
 msgstr ""
 
-#: guiqt4/main.py:622
+#: guiqt4/main.py:758
 msgid "city"
 msgstr "Město"
 
-#: guiqt4/main.py:646
+#: guiqt4/main.py:782
 msgid "dns"
 msgstr ""
 
-#: guiqt4/main.py:646
+#: guiqt4/main.py:782
 msgid "tech. contact"
 msgstr "Technický kontakt"
 
-#: guiqt4/main.py:669
+#: guiqt4/main.py:805
 msgid "registrant"
 msgstr "držitel"
 
-#: guiqt4/main.py:695
+#: guiqt4/main.py:831
 msgid ""
 "In a part of address must be set both city and country code. For disabled "
 "this part leave both empty."
@@ -2504,59 +2480,26 @@ msgstr ""
 " V části adresa musí být zadáno jméno města a kód země. Chcete-li tuto část "
 "vynechat, nechte obě hodnoty prázdné."
 
-#: guiqt4/main.py:713 guiqt4/main.py:749 guiqt4/main.py:782
+#: guiqt4/main.py:849 guiqt4/main.py:885 guiqt4/main.py:918
 msgid "No values to update."
 msgstr "Žádné hodnoty pro aktualizaci."
 
-#: guiqt4/main.py:776 guiqt4/main.py:820 guiqt4/main.py:854
+#: guiqt4/main.py:912 guiqt4/main.py:956 guiqt4/main.py:1003
 msgid "domain name"
 msgstr "Název domény"
 
-#: guiqt4/main.py:840
-msgid "contact"
-msgstr "Kontakt"
-
-#: guiqt4/main.py:843
-msgid "nsset"
-msgstr ""
-
-#: guiqt4/main.py:846
-msgid "domain"
-msgstr "doména"
-
-#: guiqt4/main.py:950
+#: guiqt4/main.py:1134
 msgid "Close"
 msgstr "Zavřít"
 
-#: guiqt4/main.py:958
+#: guiqt4/main.py:1142
 msgid "Credits"
 msgstr "Kredity"
 
-#: guiqt4/main.py:965
+#: guiqt4/main.py:1149
 msgid "(No record.)"
 msgstr "(Žádný záznam.)"
 
-#: guiqt4/main.py:966
+#: guiqt4/main.py:1150
 msgid "Internal errors"
 msgstr "Interní chyby"
-
-#~ msgid ""
-#~ "The EPP 'list_contact' command is used to list all ID of an existing "
-#~ "contact owning by registrant."
-#~ msgstr ""
-#~ "EPP příkaz 'list_contact' se používá pro zobrazení seznamu všech ID "
-#~ "kontaktů, které ragistrátor vlastní."
-
-#~ msgid ""
-#~ "The EPP 'list_nsset' command is used to list all ID of an existing NSSET "
-#~ "owning by registrant."
-#~ msgstr ""
-#~ "EPP příkaz 'list_nsset' se používá pro zobrazení seznamu všech ID NSSETů, "
-#~ "které ragistrátor vlastní."
-
-#~ msgid ""
-#~ "The EPP 'list_doamin' command is used to list all domain names owning by "
-#~ "registrant."
-#~ msgstr ""
-#~ "EPP příkaz 'list_domain' se používá pro zobrazení seznamu všech domén, "
-#~ "které ragistrátor vlastní."
