@@ -16,6 +16,8 @@ include doc/niccz_console.ico
 include doc/configure.ico
 include doc/help.ico
 include doc/img/*.gif
+include doc/fred_howto_cs.*
+include doc/*.ico
 
 exclude fred/fred_debug.py
 
@@ -41,6 +43,7 @@ include guiqt4/*.ui
 include guiqt4/qt_client.project
 include guiqt4/INSTALL_CS.ascii
 include guiqt4/INSTALL_CS.utf8
+include setup.cfg
 
 prune guiqt4/.svn
 

@@ -27,7 +27,7 @@ if 'bdist_wininst' in sys.argv and '--install-script=setup_postinstall.py' in sy
 
 if __name__ == '__main__':
 
-    setup(name = 'FredClient',
+    setup(name = 'fred-client',
         description = 'Client FRED (Free Registry for enum and domain)',
         author = 'Zdenek Bohm, CZ.NIC',
         author_email = 'zdenek.bohm@nic.cz',
