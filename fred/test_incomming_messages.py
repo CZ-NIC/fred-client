@@ -602,4 +602,44 @@ data = ( # 0
   </response>
 </epp>
 """), 
+    ('poll', """<?xml version="1.0" encoding="UTF-8"?>
+<epp xmlns="urn:ietf:params:xml:ns:epp-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd"><response><result code="1301"><msg lang="cs">Prikaz uspasne proveden; potvrd za ucelem vyrazeni z fronty</msg>
+</result>
+<msgQ count="1" id="1025"><qDate>2007-06-26T15:45:34+02:00</qDate>
+<msg><nsset:trnData  xmlns:nsset="http://www.nic.cz/xml/epp/nsset-1.3" xsi:schemaLocation="http://www.nic.cz/xml/epp/nsset-1.3 nsset-1.3.xsd"  > <nsset:id>NSSID:A</nsset:id><nsset:trDate>2007-06-26T15:39:09+02:00</nsset:trDate><nsset:clID>REG-UNITTEST2</nsset:clID></nsset:trnData>
+</msg>
+</msgQ>
+<trID><clTRID>zpkl003#07-06-27at09:27:04</clTRID>
+<svTRID>ccReg-0000319649</svTRID>
+</trID>
+</response>
+</epp>"""), 
+    ('poll', """<?xml version="1.0" encoding="UTF-8"?>
+<epp xmlns="urn:ietf:params:xml:ns:epp-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd"><response><result code="1301"><msg lang="cs">Prikaz uspasne proveden; potvrd za ucelem vyrazeni z fronty</msg>
+</result>
+<msgQ count="1" id="1025"><qDate>2007-06-26T15:45:34+02:00</qDate>
+<msg><contact:trnData  xmlns:contact="http://www.nic.cz/xml/epp/contact-1.3" xsi:schemaLocation="http://www.nic.cz/xml/epp/contact-1.3 contact-1.3.xsd"  ><contact:id>CID:JARA</contact:id>
+<contact:trDate>2007-06-26T15:45:34+02:00</contact:trDate>
+<contact:clID>REG-UNITTEST2</contact:clID>
+</contact:trnData>
+</msg>
+</msgQ>
+<trID><clTRID>zpkl003#07-06-27at09:27:04</clTRID>
+<svTRID>ccReg-0000319649</svTRID>
+</trID>
+</response>
+</epp>
+"""), 
+    ('poll', """<?xml version='1.0' encoding='utf-8' standalone="no"?>
+<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
+  <response>
+    <result code='1000'>
+      <msg lang='cs'>P\u0159\u00edkaz \u00fasp\u011b\u0161n\u011b proveden</msg>
+    </result>
+    <trID>
+      <clTRID>uflc007#07-06-27at10:02:35</clTRID>
+      <svTRID>ccReg-0000319681</svTRID>
+    </trID>
+  </response>
+</epp>"""), 
     )

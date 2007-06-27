@@ -19,7 +19,7 @@ import operator
 import eppdoc
 from eppdoc_assemble import contact_disclose
 from session_base import *
-from session_command import ManagerCommand
+from session_command import ManagerCommand, COLOR
 from translate import encoding
 """
 This class ManagerReceiver cover all previous ancestors
@@ -124,8 +124,8 @@ class ManagerReceiver(ManagerCommand):
                 # Name of command is very important. It is key for choose function dispatching answer:
                 # delete_(contact|nsset|domain) fnc_name: answer_response_contact_delete
                 # sendauthinfo_(contact|nsset|domain) fnc_name: answer_response_fred_sendauthinfo
-                # print 'HANDLE:', fnc_name # TEST display HANDLE +++
-                # print 'COMMAND:', self._command_sent +++
+                #print 'HANDLE:', fnc_name # TEST display HANDLE +++
+                #print 'COMMAND:', self._command_sent # +++
                 if hasattr(self,fnc_name):
                     getattr(self,fnc_name)((result, code, reason))
                     display_src = 0 # Answer has been catch, we haven't display it again.
@@ -383,6 +383,10 @@ class ManagerReceiver(ManagerCommand):
         if msgQ:
             self.__append_note_from_dct__(response,('msgQ count id',))
             self.__append_note_from_dct__(msgQ,('qDate','msg'))
+            if not self._dct_answer['data'].has_key('msg'):
+                # if message is not simple text but XML document:
+                self._dct_answer['data']['msg'] = '\n'+eppdoc.prepare_display(msgQ.get('msg'), COLOR)
+            
         # convert str to int:
         for key in ('id','count'):
             sval = self.get_value_from_dict(('data','msgQ.%s'%key))
@@ -391,6 +395,7 @@ class ManagerReceiver(ManagerCommand):
                     self._dct_answer['data']['msgQ.%s'%key] = int(sval)
                 except ValueError, msg:
                     self._dct_answer.append(msg)
+                    
         if data[ANSW_CODE] == 1301 and self._session[POLL_AUTOACK]:
             # automaticly answer 'poll ack' and remove message from server
             msg_id = self.get_value_from_dict(('data','msgQ.id'))
@@ -703,8 +708,8 @@ def test(name_amd_xml):
     m.process_answer(name_amd_xml[1])
     m.display()
     m.print_answer()
-    m.__put_raw_into_note__(m._dict_answer)
-    m.display()
+#    m.__put_raw_into_note__(m._dict_answer)
+#    m.display()
 
 if __name__ == '__main__':
     try:

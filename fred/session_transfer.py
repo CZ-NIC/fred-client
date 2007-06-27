@@ -441,6 +441,8 @@ class ManagerTransfer(ManagerBase):
                 dct['reason'] = u'%s %s.'%(self._epp_cmd.get_object_handle(), _T('request for send authorisation info transmited').decode(encoding))
             elif key == 'technical_test':
                 dct['reason'] = _T('The Request for technical test was successfully submitted.').decode(encoding)
+            elif key == 'poll':
+                dct['reason'] = _T('The message has been removed from the queue.').decode(encoding)
         
     def get_answer(self, dct=None, sep='\n'):
         'Show values parsed from the server answer.'
@@ -464,7 +466,7 @@ class ManagerTransfer(ManagerBase):
                 else:
                     if code >= 2000:
                         dct['errors'].insert(0,dct['reason'])
-                    elif code not in (1000,1500) or key in ('update','delete','transfer','sendauthinfo','technical_test'):
+                    elif code not in (1000,1500) or key in ('update','delete','transfer','sendauthinfo','technical_test', 'poll'):
                         # 1000 - success,  1500 - success logout
                         report(get_ltext(colored_output.render('${%s}%s${NORMAL}'%(code==1000 and 'GREEN' or 'NORMAL', dct['reason']))))
             else:
@@ -493,7 +495,7 @@ class ManagerTransfer(ManagerBase):
             if type(body[n]) == unicode: body[n] = body[n].encode(encoding)
         if self._session[VERBOSE] == 3 and self._loop_status == LOOP_NONE:
             if len(body) and body[-1] != '': report('') # empty line
-            report(colored_output.render('${BOLD}COMMAND:${NORMAL}${GREEN}'))
+            report(colored_output.render('${BOLD}COMMAND:${NORMAL}${GREEN} %s'%get_ltext(self._command_sent)))
             report(human_readable(self._raw_cmd))
             report(colored_output.render('${NORMAL}${BOLD}ANSWER:${NORMAL}${GREEN}'))
             report(human_readable(self._raw_answer))

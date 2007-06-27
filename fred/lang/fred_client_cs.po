@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-06-26 14:18+0200\n"
+"POT-Creation-Date: 2007-06-27 10:22+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Zdeněk Böhm <zdenek.bohm@nic.cz>\n"
 "Language-Team: CS <ccreg-devel@lists.nic.cz>\n"
@@ -209,7 +209,7 @@ msgstr ""
 msgid "More details in verbose 2 or higher."
 msgstr "Více detailů je ve verbose 2 nebo vyšším."
 
-#: fred/console.py:183 fred/session_receiver.py:619
+#: fred/console.py:183 fred/session_receiver.py:624
 msgid "Command data XML document failed to validate."
 msgstr "XML dokument příkazu se nepodařilo zvalidovat."
 
@@ -222,8 +222,8 @@ msgstr "Nejste připojeni."
 msgid "Do you really want to send this command to the server?"
 msgstr "Opravdu chcete odeslat tento poříkaz na server?"
 
-#: fred/console.py:199 fred/session_receiver.py:625
-#: fred/session_receiver.py:629
+#: fred/console.py:199 fred/session_receiver.py:630
+#: fred/session_receiver.py:634
 msgid "Server answer XML document failed to validate."
 msgstr "Odpověď serveru v XML dokumentu se nepodařilo zvalidovat."
 
@@ -251,7 +251,7 @@ msgstr "Neznámý příkaz"
 
 #: fred/creator.py:59 fred/session_base.py:276 fred/session_command.py:393
 #: fred/session_command.py:396 fred/session_command.py:398
-#: fred/session_command.py:400 fred/session_transfer.py:482
+#: fred/session_command.py:400 fred/session_transfer.py:484
 msgid "ERROR"
 msgstr "CHYBA"
 
@@ -536,7 +536,7 @@ msgstr ""
 #: fred/eppdoc_client.py:142 fred/eppdoc_client.py:168
 #: fred/eppdoc_client.py:241 fred/eppdoc_client.py:272
 #: fred/eppdoc_client.py:342 fred/eppdoc_client.py:437
-#: fred/eppdoc_client.py:486 fred/eppdoc_client.py:554 guiqt4/main.py:842
+#: fred/eppdoc_client.py:486 fred/eppdoc_client.py:554 guiqt4/main.py:852
 msgid "Contact ID"
 msgstr "Kontakt ID"
 
@@ -581,8 +581,8 @@ msgstr ""
 #: fred/eppdoc_client.py:312 fred/eppdoc_client.py:323
 #: fred/eppdoc_client.py:356 fred/eppdoc_client.py:365
 #: fred/eppdoc_client.py:427 fred/eppdoc_client.py:527
-#: fred/eppdoc_client.py:537 fred/eppdoc_client.py:559 guiqt4/main.py:782
-#: guiqt4/main.py:879 guiqt4/main.py:1003
+#: fred/eppdoc_client.py:537 fred/eppdoc_client.py:559 guiqt4/main.py:791
+#: guiqt4/main.py:889 guiqt4/main.py:1013
 msgid "NSSET ID"
 msgstr "NSSET ID"
 
@@ -737,11 +737,11 @@ msgstr "Město"
 msgid "Country code"
 msgstr "Kód země"
 
-#: fred/eppdoc_client.py:172 guiqt4/main.py:759
+#: fred/eppdoc_client.py:172 guiqt4/main.py:768
 msgid "country code"
 msgstr "kód země"
 
-#: fred/eppdoc_client.py:173 guiqt4/main.py:679
+#: fred/eppdoc_client.py:173 guiqt4/main.py:687
 msgid "password"
 msgstr "heslo"
 
@@ -932,7 +932,7 @@ msgid "The EPP 'delete_nsset' command is used to remove a record of the nsset."
 msgstr "EPP příkaz 'delete_nsset' se používá pro smazázní záznamu o NSSETu."
 
 #: fred/eppdoc_client.py:254 fred/eppdoc_client.py:524
-#: fred/eppdoc_client.py:566 fred/eppdoc_client.py:593 guiqt4/main.py:956
+#: fred/eppdoc_client.py:566 fred/eppdoc_client.py:593 guiqt4/main.py:966
 msgid "Expiration date"
 msgstr "Datum expirace"
 
@@ -1412,7 +1412,7 @@ msgstr "Interní chyba: Hodnota není typu dict:"
 msgid "This program requires Python 2.4 or higher. Your version is"
 msgstr "Tento program vyžaduje Python 2.4 nebo vyšší. Vaše verze je"
 
-#: fred/sender.py:39 guiqt4/main.py:293
+#: fred/sender.py:39 guiqt4/main.py:299
 msgid "Login failed"
 msgstr "Login se nezdařil"
 
@@ -2125,7 +2125,7 @@ msgstr "Nejdříve musíte získat hodnoty z info_[contact|nsset|domain]."
 msgid "Previous info_%s didn't return data."
 msgstr "Předchozí info_%s nevrátilo žádné hodnoty."
 
-#: fred/session_command.py:752 guiqt4/main.py:672
+#: fred/session_command.py:752 guiqt4/main.py:680
 msgid "You are logged already."
 msgstr "Jste již zalogován"
 
@@ -2145,8 +2145,8 @@ msgstr "Detaily jsou zobrazeny ve verbose 2 nebo vyšším."
 msgid "Element that caused a server error condition"
 msgstr "Element který způsobil chybu"
 
-#: fred/session_receiver.py:99 fred/session_transfer.py:476
-#: fred/session_transfer.py:527
+#: fred/session_receiver.py:99 fred/session_transfer.py:478
+#: fred/session_transfer.py:529
 msgid "Reason"
 msgstr "Důvod"
 
@@ -2194,11 +2194,11 @@ msgstr "Nedostupný"
 msgid "Available"
 msgstr "Dostupný"
 
-#: fred/session_receiver.py:526
+#: fred/session_receiver.py:531
 msgid "The list is empty."
 msgstr "Seznam je prázdný."
 
-#: fred/session_receiver.py:536
+#: fred/session_receiver.py:541
 msgid ""
 "\n"
 "The list of the contacts is ready on the server buffer \n"
@@ -2209,7 +2209,7 @@ msgstr ""
 "Seznam kontaktů je připraven v bufferu na serveru a ukazatel je nastaven\n"
 "na začátek seznamu. Pro získání dat zadejte příkaz get_results."
 
-#: fred/session_receiver.py:543
+#: fred/session_receiver.py:548
 msgid ""
 "\n"
 "The list of the nssets is ready on the server buffer \n"
@@ -2220,7 +2220,7 @@ msgstr ""
 "Seznam nssetů je připraven v bufferu na serveru a ukazatel je nastaven\n"
 "na začátek seznamu. Pro získání dat zadejte příkaz get_results."
 
-#: fred/session_receiver.py:550
+#: fred/session_receiver.py:555
 msgid ""
 "\n"
 "The list of the domains is ready on the server buffer \n"
@@ -2231,7 +2231,7 @@ msgstr ""
 "Seznam domén je připraven v bufferu na serveru a ukazatel je nastaven\n"
 "na začátek seznamu. Pro získání dat zadejte příkaz get_results."
 
-#: fred/session_receiver.py:580
+#: fred/session_receiver.py:585
 msgid ""
 "The list of the domains is ready on the server buffer \n"
 "and pointer is set at the beginning of the list.\n"
@@ -2240,8 +2240,8 @@ msgstr ""
 "Seznam domén je připraven v bufferu na serveru a ukazatel je nastaven\n"
 "na začátek seznamu. Pro získání dat zadejte příkaz get_results."
 
-#: fred/session_receiver.py:586 fred/session_receiver.py:592
-#: fred/session_receiver.py:598
+#: fred/session_receiver.py:591 fred/session_receiver.py:597
+#: fred/session_receiver.py:603
 msgid ""
 "The list of the nssets is ready on the server buffer \n"
 "and pointer is set at the beginning of the list.\n"
@@ -2250,11 +2250,11 @@ msgstr ""
 "Seznam nssetů je připraven v bufferu na serveru a ukazatel je nastaven\n"
 "na začátek seznamu. Pro získání dat zadejte příkaz get_results."
 
-#: fred/session_receiver.py:637
+#: fred/session_receiver.py:642
 msgid "You are not logged. First type login."
 msgstr "Nejste zalogováni. Nejdříve zadejte login."
 
-#: fred/session_receiver.py:640
+#: fred/session_receiver.py:645
 msgid "You are not logged. You must call login() before working on the server."
 msgstr "Nejste zalogováni. Nejdříve musíte zadat login()."
 
@@ -2362,7 +2362,11 @@ msgstr "pořadavek na odeslání autorizačního hesla byl odeslán"
 msgid "The Request for technical test was successfully submitted."
 msgstr "Požadavek na technický test byl úspěšně odeslán."
 
-#: fred/session_transfer.py:473 fred/session_transfer.py:525
+#: fred/session_transfer.py:445
+msgid "The message has been removed from the queue."
+msgstr "Zpráva byla odebrána z fronty zpráv."
+
+#: fred/session_transfer.py:475 fred/session_transfer.py:527
 msgid "Return code"
 msgstr "Návratový kód"
 
@@ -2377,7 +2381,7 @@ msgstr ""
 "Použití: %s [parametry...]\n"
 "Více informací získáze zadáním '%s --help'."
 
-#: guiqt4/main.py:260
+#: guiqt4/main.py:266
 msgid ""
 "Some internal error occured. See <b>Error log</b> on the first panel. Reset "
 "application else some unexpected behavior can occurs."
@@ -2385,103 +2389,103 @@ msgstr ""
 "Vyskytla se interní chyba. Podívejte se do <b>Error log</b> na prvním "
 "panelu. Zresetujte program jinak může dojít k nesprávnému fungování aplikace."
 
-#: guiqt4/main.py:260
+#: guiqt4/main.py:266
 msgid "Internal error"
 msgstr "Interní chyba"
 
-#: guiqt4/main.py:272
+#: guiqt4/main.py:278
 msgid "Load configuration file failed."
 msgstr "Nepodařilo se načíst konfigurační soubor."
 
-#: guiqt4/main.py:355
+#: guiqt4/main.py:363
 msgid "Missing required"
 msgstr "Chybí povinná hodnota"
 
-#: guiqt4/main.py:372
+#: guiqt4/main.py:380
 msgid "Close client"
 msgstr "Zavřít klienta"
 
-#: guiqt4/main.py:373
+#: guiqt4/main.py:381
 msgid "Do you wand realy close client?"
 msgstr "Opravdu chcete zavřít klienta?"
 
-#: guiqt4/main.py:455
+#: guiqt4/main.py:463
 msgid "Results"
 msgstr "Výsledky"
 
-#: guiqt4/main.py:458
+#: guiqt4/main.py:466
 msgid "zone"
 msgstr "Zóna"
 
-#: guiqt4/main.py:458
+#: guiqt4/main.py:466
 msgid "credit"
 msgstr "Kredit"
 
-#: guiqt4/main.py:460 guiqt4/main.py:613 guiqt4/main.py:756 guiqt4/main.py:805
+#: guiqt4/main.py:468 guiqt4/main.py:621 guiqt4/main.py:765 guiqt4/main.py:814
 msgid "name"
 msgstr "Jméno"
 
-#: guiqt4/main.py:460
+#: guiqt4/main.py:468
 msgid "value"
 msgstr "Hodnota"
 
-#: guiqt4/main.py:558 guiqt4/main.py:560
+#: guiqt4/main.py:566 guiqt4/main.py:568
 msgid "status"
 msgstr "Stav"
 
-#: guiqt4/main.py:560
+#: guiqt4/main.py:568
 msgid "disconnect"
 msgstr "Odpojeno"
 
-#: guiqt4/main.py:566
+#: guiqt4/main.py:574
 msgid "You are not logged. First do login."
 msgstr "Nejste zalogováni. Nejdříve zadejte login."
 
-#: guiqt4/main.py:566
+#: guiqt4/main.py:574
 msgid "Offline"
 msgstr "Odpojen"
 
-#: guiqt4/main.py:582
+#: guiqt4/main.py:590
 msgid "Missing handle."
 msgstr "Chybí identifikátor."
 
-#: guiqt4/main.py:613
+#: guiqt4/main.py:621
 msgid "Authorization info"
 msgstr "Autorizační heslo"
 
-#: guiqt4/main.py:672
+#: guiqt4/main.py:680
 msgid "Invalid command usage"
 msgstr "Neplatné použití příkazu"
 
-#: guiqt4/main.py:679
+#: guiqt4/main.py:687
 msgid "username"
 msgstr "Uživatelské jméno"
 
-#: guiqt4/main.py:755
+#: guiqt4/main.py:764
 msgid "contact ID"
 msgstr "Kontakt ID"
 
-#: guiqt4/main.py:757
+#: guiqt4/main.py:766
 msgid "email"
 msgstr ""
 
-#: guiqt4/main.py:758
+#: guiqt4/main.py:767
 msgid "city"
 msgstr "Město"
 
-#: guiqt4/main.py:782
+#: guiqt4/main.py:791
 msgid "dns"
 msgstr ""
 
-#: guiqt4/main.py:782
+#: guiqt4/main.py:791
 msgid "tech. contact"
 msgstr "Technický kontakt"
 
-#: guiqt4/main.py:805
+#: guiqt4/main.py:814
 msgid "registrant"
 msgstr "držitel"
 
-#: guiqt4/main.py:831
+#: guiqt4/main.py:840
 msgid ""
 "In a part of address must be set both city and country code. For disabled "
 "this part leave both empty."
@@ -2489,27 +2493,26 @@ msgstr ""
 " V části adresa musí být zadáno jméno města a kód země. Chcete-li tuto část "
 "vynechat, nechte obě hodnoty prázdné."
 
-#: guiqt4/main.py:849 guiqt4/main.py:885 guiqt4/main.py:918
+#: guiqt4/main.py:859 guiqt4/main.py:895 guiqt4/main.py:928
 msgid "No values to update."
 msgstr "Žádné hodnoty pro aktualizaci."
 
-#: guiqt4/main.py:912 guiqt4/main.py:956 guiqt4/main.py:1003
+#: guiqt4/main.py:922 guiqt4/main.py:966 guiqt4/main.py:1013
 msgid "domain name"
 msgstr "Název domény"
 
-#: guiqt4/main.py:1134
+#: guiqt4/main.py:1144
 msgid "Close"
 msgstr "Zavřít"
 
-#: guiqt4/main.py:1142
+#: guiqt4/main.py:1152
 msgid "Credits"
 msgstr "Kredity"
 
-#: guiqt4/main.py:1149
+#: guiqt4/main.py:1159
 msgid "(No record.)"
 msgstr "(Žádný záznam.)"
 
-#: guiqt4/main.py:1150
+#: guiqt4/main.py:1160
 msgid "Internal errors"
 msgstr "Interní chyby"
-
