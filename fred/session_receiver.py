@@ -17,7 +17,7 @@
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 import operator
 import eppdoc
-from eppdoc_assemble import contact_disclose
+from eppdoc_assemble import DISCLOSES
 from session_base import *
 from session_command import ManagerCommand, COLOR
 from translate import encoding
@@ -251,12 +251,13 @@ class ManagerReceiver(ManagerCommand):
             if contact_addr:
                 self.__append_note_from_dct__(contact_addr,('contact:sp','contact:cc',
                     'contact:city','contact:street','contact:pc',))
-            disclosed = [n[0]for n in contact_disclose] # eppdoc_assemble.contact_disclose
+            disclosed = list(DISCLOSES)
             not_disclosed = []
             condis = contact_infData.get('contact:disclose',None)
             if condis:
                 for k,v in condis.items():
-                    if v == {}: not_disclosed.append(k[8:])
+                    # decamell: replace notifyEmail -> notify_email
+                    if v == {}: not_disclosed.append(decamell(k[8:]))
             for name in not_disclosed:
                 if name in disclosed:
                     disclosed.pop(disclosed.index(name))

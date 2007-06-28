@@ -44,6 +44,8 @@ import sys, re, time
 import random
 import fred
 from fred.translate import encoding
+from fred.eppdoc_assemble import DISCLOSES
+from fred.session_base import decamell
 
 
 def find_available_handle(epp_cli, type_object, prefix):
@@ -198,6 +200,77 @@ def add_period(struct_time, year=0, month=0, day=0):
 def datedelta_from_now(year=0, month=0, day=0):
     'Returs date from now to defined date period. OUT: "2006-11-22"'
     return time.strftime("%Y-%m-%d",time.localtime(add_period(time.localtime(time.time()), year, month, day)))
+
+def compare_disclose(cols, camell_disclose, camell_hide):
+    'Compare disclose list.'
+    c = {}
+    disclose = map(decamell, camell_disclose)
+    hide = map(decamell, camell_hide)
+    disclose_or_hide = [n for n in DISCLOSES if n not in cols['data']]
+    if cols['flag'] == 'n':
+        c['disclose'] = disclose_or_hide
+        c['hide'] = [n for n in DISCLOSES if n not in disclose_or_hide]
+    else:
+        c['hide'] = disclose_or_hide
+        c['disclose'] = [n for n in DISCLOSES if n not in disclose_or_hide]
+    is_error = not (are_equal(c['disclose'], disclose) and
+                are_equal(c['hide'],hide))
+    return (is_error, 
+        'disclose(%s) hide(%s)'%(','.join(disclose),','.join(hide)), 
+        'disclose(%s) hide(%s)'%(','.join(c['disclose']),','.join(c['hide']))
+        )
+
+def compare_ident(cols_ident, data):
+    ident_type = data.get('contact:ident.type','')
+    ident_number = data.get('contact:ident','')
+    is_error = not(cols_ident['type'] == ident_type and cols_ident['number'] == ident_number)
+    return is_error, '(%s)%s'%(ident_type,ident_number), '(%s)%s'%(cols_ident['type'],cols_ident['number'])
+            
+def compare_contact_info(prefix, cols, scope, key=None, pkeys=[]):
+    'Check info-[object] against selected set.'
+    prevkeys = ':'.join(pkeys)
+    if key:
+        data = scope[key]
+    else:
+        data = scope
+    #print '%s\nCOLS:\n%s\n%s\nDATA:\n%s\n%s\n'%('='*60, str(cols), '-'*60, str(data), '_'*60)
+    errors = []
+    #--------------------------------
+    for k,v in cols.items():
+        if k == 'notify_email': k = 'notifyEmail'
+        if k == 'auth_info': k = 'authInfo'
+        key = '%s:%s'%(prefix,k)
+        if k == 'disclose':
+            err, vals, v = compare_disclose(cols['disclose'], data.get('contact:disclose',[]), data.get('contact:hide',[]))
+            if err:
+                errors.append('Data nesouhlasi:\n%s.%s JSOU:%s MELY BYT:%s'%(prevkeys, key, make_str(vals), make_str(v)))
+            continue
+        if k == 'ident':
+            err, vals, v = compare_ident(cols['ident'], data)
+            if err:
+                errors.append('Data nesouhlasi:\n%s.%s JSOU:%s MELY BYT:%s'%(prevkeys, key, make_str(vals), make_str(v)))
+            continue
+        if type(data) != dict: data = {key:data}
+        if data.has_key(key):
+            if type(v) is dict:
+                pkeys.append(key)
+                err = compare_contact_info(prefix, v, data, key, pkeys)
+                pkeys.pop()
+                if len(err): errors.extend(err)
+            else:
+                if type(data[key]) is list:
+                    vals = tuple(data[key])
+                else:
+                    vals = data[key]
+                if not are_equal(vals,v):
+                    errors.append('Data nesouhlasi:\n%s.%s JSOU:%s MELY BYT:%s'%(prevkeys, key, make_str(vals), make_str(v)))
+        else:
+            if key != '%s:disclose_flag'%prefix: # except disclose_flag - it not shown
+                errors.append('Chybi klic %s'%key)
+    return errors
+    
+    
+    
     
 get_local_text = fred.session_base.get_ltext
 

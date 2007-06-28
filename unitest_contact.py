@@ -20,7 +20,6 @@
 import time
 import unittest
 import fred
-from fred.eppdoc_assemble import contact_disclose
 import unitest_share
 
 
@@ -85,8 +84,8 @@ FRED_CONTACT = [
     'fax': '+321.987564', #(nepovinný) fax
     'disclose': {'flag':'y', 'data':('voice','fax','email')},
     'vat': '753', #(nepovinný) DPH
-    'ident': {'type':'rc','number':'831101934'}, #(nepovinný) ident
-    'notify_email': 'info@zlucnikovi.cz', #(nepovinný) oznámení na email
+    'ident': {'type':'birthday','number':'28.6.2007'}, #(nepovinný) ident
+    'notify_email': 'info@zlucnikovi.cz', #(nepovin.ý. oznámení na email
     },
 ]
 
@@ -196,7 +195,7 @@ class TestContact(unittest.TestCase):
     def test_031(self):
         '2.3.1 Overevni vsech hodnot vznikleho kontaktu'
         epp_cli.info_contact(handle_contact)
-        errors = __info_contact__('contact', FRED_CONTACT[1], epp_cli.is_val('data'))
+        errors = unitest_share.compare_contact_info('contact', FRED_CONTACT[1], epp_cli.is_val('data'))
         self.assert_(len(errors)==0, '\n'.join(errors))
 
     def test_040(self):
@@ -216,7 +215,7 @@ class TestContact(unittest.TestCase):
         '2.6 Info na existujici kontakt a overeni vsech hodnot'
         epp_cli.info_contact(handle_contact)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
-        errors = __info_contact__('contact', FRED_CONTACT[1], epp_cli.is_val('data'))
+        errors = unitest_share.compare_contact_info('contact', FRED_CONTACT[1], epp_cli.is_val('data'))
         self.assert_(len(errors)==0, '\n'.join(errors))
 
     def test_070(self):
@@ -228,7 +227,7 @@ class TestContact(unittest.TestCase):
         '2.7.1 Overevni vsech hodnot zmeneneho kontaktu'
         epp_cli.info_contact(handle_contact)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
-        errors = __info_contact__('contact', FRED_CONTACT[2], epp_cli.is_val('data'))
+        errors = unitest_share.compare_contact_info('contact', FRED_CONTACT[2], epp_cli.is_val('data'))
         self.assert_(len(errors)==0, '\n'.join(errors))
 
     def test_080(self):
@@ -241,7 +240,7 @@ class TestContact(unittest.TestCase):
         '2.8.2 Kontrola zmenenych udaju po zmene pouze auth_info'
         epp_cli.info_contact(handle_contact)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
-        errors = __info_contact__('contact', FRED_CONTACT[2], epp_cli.is_val('data'))
+        errors = unitest_share.compare_contact_info('contact', FRED_CONTACT[2], epp_cli.is_val('data'))
         self.assert_(len(errors)==0, '\n'.join(errors))
 
         
@@ -371,71 +370,6 @@ class TestContact(unittest.TestCase):
             self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
 
-def __compare_disclose__(cols, disclose, hide):
-    'Compare disclose list.'
-    c = {}
-    disclose_or_hide = [n[0] for n in contact_disclose if n[0] not in cols['data']]
-    if cols['flag'] == 'n':
-        c['disclose'] = disclose_or_hide
-        c['hide'] = [n[0] for n in contact_disclose if n[0] not in disclose_or_hide]
-    else:
-        c['hide'] = disclose_or_hide
-        c['disclose'] = [n[0] for n in contact_disclose if n[0] not in disclose_or_hide]
-    is_error = not (unitest_share.are_equal(c['disclose'],disclose) and
-                unitest_share.are_equal(c['hide'],hide))
-    return (is_error, 
-        'disclose(%s) hide(%s)'%(','.join(disclose),','.join(hide)), 
-        'disclose(%s) hide(%s)'%(','.join(c['disclose']),','.join(c['hide']))
-        )
-
-def __compare_ident__(cols_ident, data):
-    ident_type = data.get('contact:ident.type','')
-    ident_number = data.get('contact:ident','')
-    is_error = not(cols_ident['type'] == ident_type and cols_ident['number'] == ident_number)
-    return is_error, '(%s)%s'%(ident_type,ident_number), '(%s)%s'%(cols_ident['type'],cols_ident['number'])
-            
-def __info_contact__(prefix, cols, scope, key=None, pkeys=[]):
-    'Check info-[object] against selected set.'
-    prevkeys = ':'.join(pkeys)
-    if key:
-        data = scope[key]
-    else:
-        data = scope
-    # print '%s\nCOLS:\n%s\n%s\nDATA:\n%s\n%s\n'%('='*60, str(cols), '-'*60, str(data), '_'*60)
-    errors = []
-    #--------------------------------
-    for k,v in cols.items():
-        if k == 'notify_email': k = 'notifyEmail'
-        if k == 'auth_info': k = 'authInfo'
-        key = '%s:%s'%(prefix,k)
-        if k == 'disclose':
-            err, vals, v = __compare_disclose__(cols['disclose'], data.get('contact:disclose',[]), data.get('contact:hide',[]))
-            if err:
-                errors.append('Data nesouhlasi:\n%s.%s JSOU:%s MELY BYT:%s'%(prevkeys, key, unitest_share.make_str(vals), unitest_share.make_str(v)))
-            continue
-        if k == 'ident':
-            err, vals, v = __compare_ident__(cols['ident'], data)
-            if err:
-                errors.append('Data nesouhlasi:\n%s.%s JSOU:%s MELY BYT:%s'%(prevkeys, key, unitest_share.make_str(vals), unitest_share.make_str(v)))
-            continue
-        if type(data) != dict: data = {key:data}
-        if data.has_key(key):
-            if type(v) is dict:
-                pkeys.append(key)
-                err = __info_contact__(prefix, v, data, key, pkeys)
-                pkeys.pop()
-                if len(err): errors.extend(err)
-            else:
-                if type(data[key]) is list:
-                    vals = tuple(data[key])
-                else:
-                    vals = data[key]
-                if not unitest_share.are_equal(vals,v):
-                    errors.append('Data nesouhlasi:\n%s.%s JSOU:%s MELY BYT:%s'%(prevkeys, key, unitest_share.make_str(vals), unitest_share.make_str(v)))
-        else:
-            if key != '%s:disclose_flag'%prefix: # except disclose_flag - it not shown
-                errors.append('Chybi klic %s'%key)
-    return errors
 
 epp_cli, epp_cli_TRANSF, epp_cli_log, log_fp, log_step, handle_contact = (None,)*6
 

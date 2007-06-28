@@ -30,6 +30,7 @@ Ticket #113 Update adresy 2001:200::fea5:3015
 3.22 Check na smazany nsset
 3.23 Smazani pomocnych kontaktu
 """
+import re
 import unittest
 import fred
 import unitest_share
@@ -112,9 +113,11 @@ class Test(unittest.TestCase):
         epp_cli = fred.Client()
         epp_cli._epp.load_config()
         # validation is possible to switch off throught option -x --no_validate
-        # epp_cli._epp.set_validate(0)
+        # tech level in schema - value of og range makes corruption
+        epp_cli._epp.set_validate(0)
         epp_cli_TRANSF = fred.Client()
         epp_cli_TRANSF._epp.load_config()
+        epp_cli_TRANSF._epp.set_validate(0)
         # Validation MUST be disabled bycause we test commands with misssing required parameters
         epp_cli.set_validate(0)
         epp_cli_TRANSF.set_validate(0)
@@ -466,7 +469,7 @@ class Test(unittest.TestCase):
 
     def test_150(self):
         '3.15.1 Pokus o nastaveni neplatneho tech levelu na -1 (mensi nez je rozsah)'
-        epp_cli.update_nsset(handle_nsset, None, None, None, '-1')
+        epp_cli.update_nsset(handle_nsset, None, None, None, "'-1'")
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_151(self):
@@ -501,20 +504,56 @@ class Test(unittest.TestCase):
         self.assert_(len(errors), '\n'.join(errors))
 
 
+    def test_156(self):
+        '3.16.1 Vymazani vsech poll zprav z fronty kvuli generovani poll zpravy z transferu'
+        epp_cli.poll('req')
+        self.failIf(epp_cli.is_val() not in (1000, 1300, 1301), unitest_share.get_reason(epp_cli))
+        poll_msg_count = epp_cli.is_val(('data','msgQ.count'))
+        if type(poll_msg_count) is int:
+            unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(0, poll_msg_count))
+            errors = []
+            for n in range(poll_msg_count):
+                epp_cli.poll('ack', epp_cli.is_val(('data','msgQ.id')))
+                if epp_cli.is_val() != 1000:
+                    errors.extend(epp_cli.is_val('errors'))
+                unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(n+1, poll_msg_count))
+                epp_cli.poll('req')
+                if epp_cli.is_val() not in (1000, 1301):
+                    errors.extend(epp_cli.is_val('errors'))
+                unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(n+1, poll_msg_count))
+            self.failIf(len(errors) > 0, '\n'.join(errors))
+        
     def test_160(self):
-        '3.16 Druhy registrator: Pokus o trasfer s neplatnym heslem (Chyba oprávnění)'
+        '3.16.2 Druhy registrator: Pokus o trasfer s neplatnym heslem (Chyba oprávnění)'
         global epp_to_log
         epp_to_log = epp_cli_TRANSF
         epp_cli_TRANSF.transfer_nsset(handle_nsset, 'heslo neznam')
         self.assertNotEqual(epp_cli_TRANSF.is_val(), 1000, unitest_share.get_reason(epp_cli_TRANSF))
 
     def test_161(self):
-        '3.16.1 Druhy registrator: Trasfer nssetu'
+        '3.16.3 Druhy registrator: Trasfer nssetu'
         epp_cli_TRANSF.transfer_nsset(handle_nsset, FRED_DATA[3]['auth_info'])
         self.assertEqual(epp_cli_TRANSF.is_val(), 1000, unitest_share.get_reason(epp_cli_TRANSF))
 
     def test_162(self):
-        '3.16.2 Druhy registrator: Zjisteni noveho hesla'
+        '3.16.4 Poll req - Kontrola, ze byla vygenerovana zprava o transferu.'
+        global poll_msg_id
+        epp_cli.poll('req')
+        self.assertEqual(epp_cli.is_val(), 1301, 'Poll zprava chybi, prestoze mela existovat.')
+        msg = epp_cli.is_val(('data','msg'))
+        self.failIf(type(msg) not in (unicode, str), 'Poll zprava chybi')
+        self.failIf(re.search(re.escape(handle_nsset), msg, re.I) is None, 'Zprava se nevztahuje k transferovane domene.')
+        poll_msg_id = epp_cli.is_val(('data','msgQ.id'))
+        self.failIf(type(poll_msg_id) is not int, 'Chybi ID poll zpravy')
+
+    def test_163(self):
+        '3.16.5 Poll ack - Vyrazeni zpravy o transferu z fronty.'
+        self.failIf(type(poll_msg_id) is not int, 'Chybi ID poll zpravy')
+        epp_cli.poll('ack', poll_msg_id)
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+        
+    def test_164(self):
+        '3.16.6 Druhy registrator: Zjisteni noveho hesla'
         global NSSET_GENPSW
         epp_cli_TRANSF.info_nsset(handle_nsset)
         self.assertEqual(epp_cli_TRANSF.is_val(), 1000, unitest_share.get_reason(epp_cli_TRANSF))
@@ -630,7 +669,7 @@ def __check_equality__(cols, data):
         errors.append('Seznam DNS nema pozadovany pocet. Ma %d a mel by mit %d.'%(len(ns),len(dns)))
     return errors
 
-epp_cli, epp_cli_TRANSF, epp_to_log, log_fp, log_step, handle_contact, handle_nsset = (None,)*7
+epp_cli, epp_cli_TRANSF, epp_to_log, log_fp, log_step, handle_contact, handle_nsset, poll_msg_id = (None,)*8
 
 if __name__ == '__main__':
 ##if 0:

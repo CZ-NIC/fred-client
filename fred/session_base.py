@@ -818,6 +818,11 @@ def php_string(value):
 def strip_colors(text):
     'Remove ${COLOR} from text'
     return re.sub(r'\$\{[A-Z]+\}', '', text)
+
+def decamell(text):
+    'Make camell type text to text with unit separator: nameType -> name_type'
+    return re.sub('([A-Z])', '_\\1', text).lower()
+
     
 if __name__ == '__main__':
     mb = ManagerBase()
