@@ -403,12 +403,12 @@ class TestDomain(unittest.TestCase):
     def test_200(self):
         '4.20.1 domains_by_contact: Overeni, ze domena je v seznamu'
         #TODO: Zatim se testuje jen ID drzitele
-        epp_cli.domains_by_contact(FRED_CONTACT2)
+        epp_cli.prep_domains_by_contact(FRED_CONTACT2)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         self.failIf(int(epp_cli.is_val(('data','count'))) == 0, 'Seznam je prazdny prestoze by tam mela byt alespon jedna polozka.')
         
     def test_210(self):
-        '4.20.2 get_results: (domains_by_contact) Overeni, ze domena je v seznamu'
+        '4.20.2 get_results: (prep_domains_by_contact) Overeni, ze domena je v seznamu'
         self.__get_results__(FRED_DOMAIN1, 'Domena')
 
     def test_211(self):
@@ -418,34 +418,34 @@ class TestDomain(unittest.TestCase):
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_212(self):
-        '4.20.4 domains_by_nsset: Overeni, ze domena je v seznamu'
+        '4.20.4 prep_domains_by_nsset: Overeni, ze domena je v seznamu'
         #TODO: Zatim se testuje jen ID drzitele
-        epp_cli.domains_by_nsset(FRED_NSSET2)
+        epp_cli.prep_domains_by_nsset(FRED_NSSET2)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         self.failIf(int(epp_cli.is_val(('data','count'))) == 0, 'Seznam je prazdny prestoze by tam mela byt alespon jedna polozka.')
 
     def test_213(self):
-        '4.20.5 get_results: (domains_by_nsset) Overeni, ze domena je v seznamu'
+        '4.20.5 get_results: (prep_domains_by_nsset) Overeni, ze domena je v seznamu'
         self.__get_results__(FRED_DOMAIN1, 'Domena')
 
     def test_214(self):
-        '4.20.6 nssets_by_contact: Overeni, ze nsset je v seznamu'
-        epp_cli.nssets_by_contact(FRED_CONTACT1)
+        '4.20.6 prep_nssets_by_contact: Overeni, ze nsset je v seznamu'
+        epp_cli.prep_nssets_by_contact(FRED_CONTACT1)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         self.failIf(int(epp_cli.is_val(('data','count'))) == 0, 'Seznam je prazdny prestoze by tam mela byt alespon jedna polozka.')
         
     def test_215(self):
-        '4.20.7 get_results: (nssets_by_contact) Overeni, ze nsset je v seznamu'
+        '4.20.7 get_results: (prep_nssets_by_contact) Overeni, ze nsset je v seznamu'
         self.__get_results__(FRED_NSSET1, 'Nsset')
 
     def test_216(self):
-        '4.20.8 nssets_by_ns: Overeni, ze nsset je v seznamu'
-        epp_cli.nssets_by_ns(NSSET_DNS[0]['name'])
+        '4.20.8 prep_nssets_by_ns: Overeni, ze nsset je v seznamu'
+        epp_cli.prep_nssets_by_ns(NSSET_DNS[0]['name'])
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         self.failIf(int(epp_cli.is_val(('data','count'))) == 0, 'Seznam je prazdny prestoze by tam mela byt alespon jedna polozka.')
         
     def test_217(self):
-        '4.20.9 get_results: (nssets_by_ns) Overeni, ze nsset je v seznamu'
+        '4.20.9 get_results: (prep_nssets_by_ns) Overeni, ze nsset je v seznamu'
         self.__get_results__(FRED_NSSET1, 'Nsset')
 
 
@@ -514,7 +514,7 @@ class TestDomain(unittest.TestCase):
         self.assertEqual(epp_cli.is_val(), 1301, 'Poll zprava chybi, prestoze mela existovat.')
         msg = epp_cli.is_val(('data','msg'))
         self.failIf(type(msg) not in (unicode, str), 'Poll zprava chybi')
-        self.failIf(re.search('<domain:id>\s*%s\s*</domain:id>'%re.escape(FRED_DOMAIN1), msg, re.I) is None, 'Zprava se nevztahuje k transferovane domene.')
+        self.failIf(re.search(re.escape(FRED_DOMAIN1), msg, re.I) is None, 'Zprava se nevztahuje k transferovane domene.')
         poll_msg_id = epp_cli.is_val(('data','msgQ.id'))
         self.failIf(type(poll_msg_id) is not int, 'Chybi ID poll zpravy')
 
