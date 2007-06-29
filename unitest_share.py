@@ -269,6 +269,48 @@ def compare_contact_info(prefix, cols, scope, key=None, pkeys=[]):
                 errors.append('Chybi klic %s'%key)
     return errors
     
+def compare_domain_info(epp_cli, cols, data):
+    'Check if values are equal'
+    #print '%s\nCOLS:\n%s\n%s\nDATA:\n%s\n%s\n'%('='*60, str(cols), '-'*60, str(data), '_'*60)
+    errors = []
+    ##============================================================
+    ##COLS:
+    ##{   'name': 'hokus-pokus.cz', 
+    ##    'period': {'num': u'3', 'unit': u'y'}, 
+    ##    'contact': ('TDOMCONT01',), 
+    ##    'nsset': 'TDOMNSSET01', 
+    ##    'registrant': 'TDOMCONT01', 
+    ##    'auth_info': 'heslicko'}
+    ##------------------------------------------------------------
+    ##DATA:
+    ##{   'domain:contact': u'TDOMCONT01', 
+    ##    'domain:crID': u'REG-UNITTEST1', 
+    ##    'domain:clID': u'REG-UNITTEST1', 
+    ##    'domain:name': u'hokus-pokus.cz', 
+    ##    'domain:status.s': u'ok', 
+    ##    'domain:exDate': u'2009-08-10T00:00:00.0Z', 
+    ##    'domain:nsset': u'TDOMNSSET01', 
+    ##    'domain:pw': u'heslicko', 
+    ##    'domain:crDate': u'2006-08-10T09:58:16.0Z', 
+    ##    'domain:roid': u'D0000000219-CZ', 
+    ##    'domain:registrant': u'TDOMCONT01', 
+    ##    'domain:renew': u'2009-08-10', 
+    ##    'domain:contact.type': u'admin'}
+    ##____________________________________________________________
+    username, password = epp_cli._epp.get_actual_username_and_password()
+    err_not_equal(errors, data, 'domain:clID', username)
+    err_not_equal(errors, data, 'domain:name', cols['name'])
+    err_not_equal(errors, data, 'domain:nsset', cols['nsset'])
+    err_not_equal(errors, data, 'domain:authInfo', cols['auth_info'])
+    if not are_equal(data['domain:registrant'], cols['registrant']):
+        errors.append('Data domain:registrant nesouhlasi. JSOU:%s MELY BYT:%s'%(make_str(data['domain:registrant']), make_str(cols['registrant'])))
+    is_equal, exdate = check_date(data['domain:exDate'], cols['period'])
+    if not is_equal:
+        errors.append('Data domain:exDate nesouhlasi: jsou: %s a mely byt: %s'%(data['domain:exDate'], exdate))
+    actual_time = time.strftime('%Y-%m-%d',time.gmtime())
+    if data['domain:crDate'][:10] != actual_time:
+        errors.append('Data domain:crDate nesouhlasi: jsou: %s a mely by byt: %s'%(data['domain:crDate'],actual_time))
+    return errors
     
     
     

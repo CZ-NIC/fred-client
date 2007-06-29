@@ -246,7 +246,7 @@ class TestDomain(unittest.TestCase):
         '4.12.1 Info na existujici domenu a kontrola hodnot'
         epp_cli.info_domain(FRED_DOMAIN1)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
-        errors = __check_equality__(FRED_DATA[DOMAIN_1], epp_cli.is_val('data'))
+        errors = unitest_share.compare_domain_info(epp_cli, FRED_DATA[DOMAIN_1], epp_cli.is_val('data'))
         self.assert_(len(errors)==0, '\n'.join(errors))
 
     def test_125(self):
@@ -270,7 +270,7 @@ class TestDomain(unittest.TestCase):
         '4.13.2 Kontrola zmenenych udaju'
         epp_cli.info_domain(FRED_DOMAIN1)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
-        errors = __check_equality__(FRED_DATA[DOMAIN_3], epp_cli.is_val('data'))
+        errors = unitest_share.compare_domain_info(epp_cli, FRED_DATA[DOMAIN_3], epp_cli.is_val('data'))
         self.assert_(len(errors)==0, '\n'.join(errors))
 
     def test_135(self):
@@ -284,7 +284,7 @@ class TestDomain(unittest.TestCase):
         '4.13.4 Kontrola zmenenych udaju po resetovani nssetu'
         epp_cli.info_domain(FRED_DOMAIN1)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
-        errors = __check_equality__(FRED_DATA[DOMAIN_3], epp_cli.is_val('data'))
+        errors = unitest_share.compare_domain_info(epp_cli, FRED_DATA[DOMAIN_3], epp_cli.is_val('data'))
         self.assert_(len(errors)==0, '\n'.join(errors))
 
 
@@ -298,7 +298,7 @@ class TestDomain(unittest.TestCase):
         '4.14.2 Kontrola zmenenych udaju po zmene pouze auth_info'
         epp_cli.info_domain(FRED_DOMAIN1)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
-        errors = __check_equality__(FRED_DATA[DOMAIN_3], epp_cli.is_val('data'))
+        errors = unitest_share.compare_domain_info(epp_cli, FRED_DATA[DOMAIN_3], epp_cli.is_val('data'))
         self.assert_(len(errors)==0, '\n'.join(errors))
 
 
@@ -578,49 +578,6 @@ class TestDomain(unittest.TestCase):
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
 
-
-def __check_equality__(cols, data):
-    'Check if values are equal'
-    #print '%s\nCOLS:\n%s\n%s\nDATA:\n%s\n%s\n'%('='*60, str(cols), '-'*60, str(data), '_'*60)
-    errors = []
-    ##============================================================
-    ##COLS:
-    ##{   'name': 'hokus-pokus.cz', 
-    ##    'period': {'num': u'3', 'unit': u'y'}, 
-    ##    'contact': ('TDOMCONT01',), 
-    ##    'nsset': 'TDOMNSSET01', 
-    ##    'registrant': 'TDOMCONT01', 
-    ##    'auth_info': 'heslicko'}
-    ##------------------------------------------------------------
-    ##DATA:
-    ##{   'domain:contact': u'TDOMCONT01', 
-    ##    'domain:crID': u'REG-UNITTEST1', 
-    ##    'domain:clID': u'REG-UNITTEST1', 
-    ##    'domain:name': u'hokus-pokus.cz', 
-    ##    'domain:status.s': u'ok', 
-    ##    'domain:exDate': u'2009-08-10T00:00:00.0Z', 
-    ##    'domain:nsset': u'TDOMNSSET01', 
-    ##    'domain:pw': u'heslicko', 
-    ##    'domain:crDate': u'2006-08-10T09:58:16.0Z', 
-    ##    'domain:roid': u'D0000000219-CZ', 
-    ##    'domain:registrant': u'TDOMCONT01', 
-    ##    'domain:renew': u'2009-08-10', 
-    ##    'domain:contact.type': u'admin'}
-    ##____________________________________________________________
-    username, password = epp_cli._epp.get_actual_username_and_password()
-    unitest_share.err_not_equal(errors, data, 'domain:clID', username)
-    unitest_share.err_not_equal(errors, data, 'domain:name', cols['name'])
-    unitest_share.err_not_equal(errors, data, 'domain:nsset', cols['nsset'])
-    unitest_share.err_not_equal(errors, data, 'domain:authInfo', cols['auth_info'])
-    if not unitest_share.are_equal(data['domain:registrant'], cols['registrant']):
-        errors.append('Data domain:registrant nesouhlasi. JSOU:%s MELY BYT:%s'%(unitest_share.make_str(data['domain:registrant']), unitest_share.make_str(cols['registrant'])))
-    is_equal, exdate = unitest_share.check_date(data['domain:exDate'], cols['period'])
-    if not is_equal:
-        errors.append('Data domain:exDate nesouhlasi: jsou: %s a mely byt: %s'%(data['domain:exDate'], exdate))
-    actual_time = time.strftime('%Y-%m-%d',time.gmtime())
-    if data['domain:crDate'][:10] != actual_time:
-        errors.append('Data domain:crDate nesouhlasi: jsou: %s a mely by byt: %s'%(data['domain:crDate'],actual_time))
-    return errors
 
 epp_cli, epp_cli_TRANSF, epp_cli_log, log_fp, log_step, poll_msg_id = (None,)*6
 domain_renew = ''
