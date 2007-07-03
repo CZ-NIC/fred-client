@@ -23,13 +23,14 @@ NSSET_DNS = (
             {'name': u'ns.pokus2.cz', 'addr': ('217.31.204.131','217.31.204.127')},
         )
 
+DOMAIN_NAME = FRED_DOMAIN1
 DOMAIN = {
        'name':FRED_DOMAIN1,
        'auth_info':FRED_DOMAIN_PASSW,
        'nsset':FRED_NSSET1,
        'registrant':FRED_CONTACT1,
        'period': {'num':'3','unit':'y'},
-       'contact':(FRED_CONTACT1,),
+       'contact':[FRED_CONTACT1],
           }        
 
 
@@ -57,7 +58,7 @@ class TestDomain(unittest.TestCase):
         unitest_share.reset_client(epp_cli_log)
 
     def test_000(self):
-        '1.0 Inicializace spojeni a definovani testovacich handlu'
+        '1. Inicializace spojeni a definovani testovacich handlu'
         global epp_cli, epp_cli_log, handle_contact, handle_nsset, log_fp
         # create client object
         epp_cli = fred.Client()
@@ -83,59 +84,113 @@ class TestDomain(unittest.TestCase):
 
             
     def test_030(self):
-        '4.3.1 Zalozeni 1. pomocneho kontaktu'
+        '2. Zalozeni 1. pomocneho kontaktu'
         epp_cli.create_contact(FRED_CONTACT1,'Pepa Zdepa','pepa@zdepa.cz','Praha','CZ','heslo')
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
             
     def test_031(self):
-        '4.3.2 Zalozeni 2. pomocneho kontaktu'
+        '3. Zalozeni 2. pomocneho kontaktu'
         epp_cli.create_contact(FRED_CONTACT2, u'řehoř čuřil','rehor@curil.cz','Praha','CZ','heslo')
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_040(self):
-        '4.4.1 Zalozeni 1. pomocneho nssetu'
+        '4. Zalozeni 1. pomocneho nssetu'
         epp_cli.create_nsset(FRED_NSSET1, NSSET_DNS, FRED_CONTACT1, 'heslo')
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_041(self):
-        '4.4.2 Zalozeni 2. pomocneho nssetu'
+        '5. Zalozeni 2. pomocneho nssetu'
         epp_cli.create_nsset(FRED_NSSET2, NSSET_DNS, FRED_CONTACT1, 'heslo')
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
 
 
     def test_080(self):
-        '4.8  Zalozeni nove domeny'
+        '6. Zalozeni nove domeny'
         d = DOMAIN
         epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], d['nsset'], d['period'], d['contact'])
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
-        
-        
 
         
+    def test_090(self):
+        '7. Pridani admina'
+        DOMAIN['contact'].append(FRED_CONTACT2)
+        epp_cli.update_domain(DOMAIN_NAME, FRED_CONTACT2)
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+    def test_095(self):
+        '.. Kontrola vsech hodnot domeny po pridani kontaktu'
+        epp_cli.info_domain(DOMAIN_NAME)
+        errors = unitest_share.compare_domain_info(epp_cli, DOMAIN, epp_cli.is_val('data'))
+        self.assert_(len(errors)==0, '\n'.join(errors))
+        
+    def test_100(self):
+        '8. Odebrani admina'
+        DOMAIN['contact'].remove(FRED_CONTACT1)
+        epp_cli.update_domain(DOMAIN_NAME, None, FRED_CONTACT1)
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+    def test_105(self):
+        '.. Kontrola vsech hodnot domeny po odebrani kontaktu'
+        epp_cli.info_domain(DOMAIN_NAME)
+        errors = unitest_share.compare_domain_info(epp_cli, DOMAIN, epp_cli.is_val('data'))
+        self.assert_(len(errors)==0, '\n'.join(errors))
+
+    def test_110(self):
+        '9. Zmena nssetu'
+        DOMAIN['nsset'] = FRED_NSSET2
+        epp_cli.update_domain(DOMAIN_NAME, None, None, None, {'nsset':FRED_NSSET2})
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+    def test_115(self):
+        '.. Kontrola vsech hodnot domeny po zmene nssetu'
+        epp_cli.info_domain(DOMAIN_NAME)
+        errors = unitest_share.compare_domain_info(epp_cli, DOMAIN, epp_cli.is_val('data'))
+        self.assert_(len(errors)==0, '\n'.join(errors))
+
+    def test_110(self):
+        '9. Zmena auth infa'
+        DOMAIN['auth_info'] = FRED_DOMAIN_PASSW_NEW
+        epp_cli.update_domain(DOMAIN_NAME, None, None, None, {'auth_info':FRED_DOMAIN_PASSW_NEW})
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+    def test_115(self):
+        '.. Kontrola vsech hodnot domeny po zmene auth infa'
+        epp_cli.info_domain(DOMAIN_NAME)
+        errors = unitest_share.compare_domain_info(epp_cli, DOMAIN, epp_cli.is_val('data'))
+        self.assert_(len(errors)==0, '\n'.join(errors))
+
+    def test_120(self):
+        '10. Zmena registratora'
+        DOMAIN['registrant'] = FRED_CONTACT2
+        epp_cli.update_domain(DOMAIN_NAME, None, None, None, {'registrant':FRED_CONTACT2})
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+    def test_125(self):
+        '... Kontrola vsech hodnot domeny po zmene registratora'
+        epp_cli.info_domain(DOMAIN_NAME)
+        errors = unitest_share.compare_domain_info(epp_cli, DOMAIN, epp_cli.is_val('data'))
+        self.assert_(len(errors)==0, '\n'.join(errors))
+
+
     def test_310(self):
-        '4.25.1 Smazani domeny'
+        '11. Smazani domeny'
         d = DOMAIN
         epp_cli.delete_domain(d['name'])
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         
     def test_350(self):
-        '4.27.0 Smazani 2. pomocneho nssetu'
+        '12. Smazani 2. pomocneho nssetu'
         epp_cli.delete_nsset(FRED_NSSET2)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_360(self):
-        '4.27.1 Smazani 1. pomocneho nssetu'
+        '13. Smazani 1. pomocneho nssetu'
         epp_cli.delete_nsset(FRED_NSSET1)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_370(self):
-        '4.27.2 Smazani 2. pomocneho kontaktu'
+        '14. Smazani 2. pomocneho kontaktu'
         epp_cli.delete_contact(FRED_CONTACT2)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_380(self):
-        '4.27.3 Smazani 1. pomocneho kontaktu'
+        '15. Smazani 1. pomocneho kontaktu'
         epp_cli.delete_contact(FRED_CONTACT1)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
