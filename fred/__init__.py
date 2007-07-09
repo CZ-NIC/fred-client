@@ -244,7 +244,7 @@ OPTIONS:
             'period':period,'registrant':registrant,'nsset':nsset,'admin':admin,
             'val_ex_date':val_ex_date, 'cltrid':cltrid})
 
-    def create_nsset(self, nsset_id, dns, tech, auth_info=None, cltrid=None):
+    def create_nsset(self, nsset_id, dns, tech, auth_info=None, reportlevel=None, cltrid=None):
         """DESCRIPTION:
   The EPP 'create_nsset' command is used to create a record of the NSSET.
 
@@ -266,7 +266,8 @@ OPTIONS:
   auth_info                Password required by server to authorize the transfer
   reportlevel              Report level. Range 0 - 10
   cltrid                   Client transaction ID"""
-        return self._epp.api_command('create_nsset',{'id':nsset_id, 'auth_info':auth_info, 'dns':dns, 'tech':tech, 'cltrid':cltrid})
+        return self._epp.api_command('create_nsset',{'id':nsset_id, 'auth_info':auth_info,
+            'dns':dns, 'tech':tech, 'reportlevel':reportlevel, 'cltrid':cltrid})
 
 
     def delete_contact(self, contact_id, cltrid=None):
@@ -722,7 +723,7 @@ SYNTAX:
 
 OPTIONS:
   id (required)            NSSET ID
-  reportlevel              Report range level (0 - 10; higher = more detailed)
+  level                    Report range level (0 - 10; higher = more detailed)
   name                     Domain name
   cltrid                   Client transaction ID"""
         return self._epp.api_command('technical_test',{'id':id, 'level':level, 'name':name, 'cltrid':cltrid})

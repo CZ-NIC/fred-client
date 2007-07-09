@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
+"""Check domain for changes after updating.
+"""
 import unittest
 import fred
 import unitest_share

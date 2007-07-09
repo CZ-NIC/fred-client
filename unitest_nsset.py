@@ -83,10 +83,10 @@ FRED_DATA = (
     { # 3. modified
     'id': FRED_HANDLE,
     'auth_info': NSSET_PASSWORD,
-    'dns': (
+    'dns': [
             {'name':'ns.name3.cz','addr':('217.31.205.130','217.31.205.129','217.31.205.128')},
             {'name':'ns.name4.cz','addr':('217.31.204.130','217.31.204.129','217.31.204.128')},
-        ),
+        ],
     'tech': (FRED_CONTACT2,),
     'reportlevel':'0',
     },
@@ -283,8 +283,8 @@ class Test(unittest.TestCase):
         '3.7.9 Info na existujici nsset a kontrola hodnot'
         epp_cli.info_nsset(handle_nsset)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
-        errors = __check_equality__(FRED_DATA[1], epp_cli.is_val('data'))
-        self.assert_(len(errors), '\n'.join(errors))
+        errors = unitest_share.compare_nsset_info(epp_cli, FRED_DATA[1], epp_cli.is_val('data'))
+        self.assert_(len(errors)==0, '\n'.join(errors))
 
     def test_080(self):
         '3.8 Update vsech parametru krome stavu'
@@ -296,8 +296,8 @@ class Test(unittest.TestCase):
         '3.8.1 Overevni vsech hodnot zmeneneho nssetu'
         epp_cli.info_nsset(handle_nsset)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
-        errors = __check_equality__(FRED_DATA[3], epp_cli.is_val('data'))
-        self.assert_(len(errors), '\n'.join(errors))
+        errors = unitest_share.compare_nsset_info(epp_cli, FRED_DATA[3], epp_cli.is_val('data'))
+        self.assert_(len(errors)==0, '\n'.join(errors))
 
     def test_082(self):
         '3.8.2 Pokus o odebrani neexistujici dns'
@@ -333,8 +333,8 @@ class Test(unittest.TestCase):
         '3.10.2 Kontrola zmenenych udaju po zmene pouze auth_info'
         epp_cli.info_nsset(FRED_DATA[3]['id'])
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
-        errors = __check_equality__(FRED_DATA[3], epp_cli.is_val('data'))
-        self.assert_(len(errors), '\n'.join(errors))
+        errors = unitest_share.compare_nsset_info(epp_cli, FRED_DATA[3], epp_cli.is_val('data'))
+        self.assert_(len(errors)==0, '\n'.join(errors))
         
 ##    def test_100(self):
 ##        '3.10 Update stavu clientDeleteProhibited a pokus o smazani'
@@ -363,7 +363,9 @@ class Test(unittest.TestCase):
     def test_112(self):
         '3.11.2 Pridani IPv6 2001:200::fea5:3015'
         d = FRED_DATA[2]
-        epp_cli.update_nsset(d['id'], {'dns':{'name':'ns.valid01.cz','addr':('2001:200::fea5:3015',)}})
+        newdns = {'name':'ns.valid01.cz','addr':('2001:200::fea5:3015',)}
+        FRED_DATA[3]['dns'].append(newdns)
+        epp_cli.update_nsset(d['id'], {'dns':newdns})
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_113(self):
@@ -469,13 +471,23 @@ class Test(unittest.TestCase):
 
     def test_150(self):
         '3.15.1 Pokus o nastaveni neplatneho tech levelu na -1 (mensi nez je rozsah)'
-        epp_cli.update_nsset(handle_nsset, None, None, None, "'-1'")
+        invalid_answer = ''
+        try:
+            epp_cli.update_nsset(handle_nsset, None, None, None, "'-1'")
+        except fred.FredError, e:
+            invalid_answer = 'Server vratil neplatnou odpoved. Uz je opraven nsset:reportlevel?\n%s'%e
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+        self.assert_(invalid_answer == '', invalid_answer)
 
     def test_151(self):
         '3.15.2 Pokus o nastaveni neplatneho tech levelu na 11 (vetsi nez je rozsah)'
-        epp_cli.update_nsset(handle_nsset, None, None, None, '11')
+        invalid_answer = ''
+        try:
+            epp_cli.update_nsset(handle_nsset, None, None, None, '11')
+        except fred.FredError, e:
+            invalid_answer = 'Server vratil neplatnou odpoved. Uz je opraven nsset:reportlevel?\n%s'%e
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+        self.assert_(invalid_answer == '', invalid_answer)
 
     def test_152(self):
         '3.15.3 Nastaveni tech levelu na 5'
@@ -487,8 +499,8 @@ class Test(unittest.TestCase):
         '3.15.4 Kontrola tech levelu, ze je 5'
         epp_cli.info_nsset(handle_nsset)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
-        errors = __check_equality__(FRED_DATA[3], epp_cli.is_val('data'))
-        self.assert_(len(errors), '\n'.join(errors))
+        errors = unitest_share.compare_nsset_info(epp_cli, FRED_DATA[3], epp_cli.is_val('data'))
+        self.assert_(len(errors)==0, '\n'.join(errors))
 
     def test_154(self):
         '3.15.5 Nastaveni tech levelu na 8'
@@ -500,8 +512,8 @@ class Test(unittest.TestCase):
         '3.15.6 Kontrola tech levelu, ze je 8'
         epp_cli.info_nsset(handle_nsset)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
-        errors = __check_equality__(FRED_DATA[3], epp_cli.is_val('data'))
-        self.assert_(len(errors), '\n'.join(errors))
+        errors = unitest_share.compare_nsset_info(epp_cli, FRED_DATA[3], epp_cli.is_val('data'))
+        self.assert_(len(errors)==0, '\n'.join(errors))
 
 
     def test_156(self):
@@ -615,59 +627,6 @@ class Test(unittest.TestCase):
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
 
-def __check_equality__(cols, data):
-    'Check if values are equal'
-    #print '%s\nCOLS:\n%s\n%s\nDATA:\n%s\n%s\n'%('='*60, str(cols), '-'*60, str(data), '_'*60)
-    errors = []
-    ##============================================================
-    ##COLS:
-    ##{'tech': ('contact1',), 
-    ##'id': 'test001', 
-    ##'dns': (
-    ##    {'name': 'ns.name1.cz', 'addr': ('127.0.0.1', '127.1.1.1', '127.2.2.2')}, 
-    ##    {'name': 'ns.name2.cz', 'addr': ('126.0.0.1', '126.1.1.1', '126.2.2.2')}
-    ##    ), 
-    ##    'auth_info': 'heslo'}
-    ##------------------------------------------------------------
-    ##DATA:
-    ##    saved_data = {'nsset:upID': u'REG-UNITTEST1', 
-    ##        'nsset:status.s': u'ok', 
-    ##        'nsset:id': u'test001', 
-    ##        'nsset:crDate': u'2006-08-03T09:38:05.0Z', 
-    ##        'nsset:ns': [
-    ##            [u'ns.name2.cz', [u'126.0.0.1', u'126.1.1.1', u'126.2.2.2']], 
-    ##            [u'ns.name1.cz', [u'127.0.0.1', u'127.1.1.1', u'127.2.2.2']]], 
-    ##        'nsset:clID': u'REG-UNITTEST1', 
-    ##        'nsset:roid': u'N0000000027-CZ', 
-    ##        'nsset:tech': u'CONTACT1'}
-    ##____________________________________________________________
-    # not checked: 
-    #   nsset:upID          u'REG-UNITTEST1'
-    #   nsset:status.s      u'ok'
-    #   nsset:crDate        u'2006-08-03T09:38:05.0Z'
-    #   nsset:roid          u'N0000000027-CZ'
-    key = 'nsset:upID'
-    username, password = epp_cli._epp.get_actual_username_and_password()
-    unitest_share.err_not_equal(errors, data, 'nsset:clID', username)
-    unitest_share.err_not_equal(errors, data, 'nsset:id', cols['id'])
-    unitest_share.err_not_equal(errors, data, 'nsset:tech', cols['tech'])
-    ns = data.get('nsset:ns',[])
-    dns = cols['dns']
-    if len(ns) == len(dns):
-        for name,addr in ns:
-            ref_addr = None
-            for d in dns:
-                if d['name'] == name:
-                    ref_addr = list(d['addr'])
-                    break
-            if ref_addr is None:
-                errors.append('DNS name "%s" nebyl nalezen'%name)
-            else:
-                if addr != ref_addr:
-                    errors.append('DNS "%s" addr nejsou shodne: jsou: %s maji byt: %s'%(name, str(addr), str(ref_addr)))
-    else:
-        errors.append('Seznam DNS nema pozadovany pocet. Ma %d a mel by mit %d.'%(len(ns),len(dns)))
-    return errors
 
 epp_cli, epp_cli_TRANSF, epp_to_log, log_fp, log_step, handle_contact, handle_nsset, poll_msg_id = (None,)*8
 
@@ -700,7 +659,7 @@ if 0:
         'nsset:clID': u'REG-UNITTEST1', 
         'nsset:roid': u'N0000000027-CZ', 
         'nsset:tech': (u'CONTACT1',)}
-    errors = __check_equality__(FRED_DATA[1], saved_data)
+    errors = unitest_share.compare_nsset_info(epp_cli, FRED_DATA[1], saved_data)
     if len(errors):
         print "ERRORS:"
         for e in errors:

@@ -99,7 +99,11 @@ def write_log(epp_cli, log_fp, log_step, fnc_name, fnc_doc, step=None):
             log_fp.write('%s\n'%re.sub('\x1b(\\[|\\()\d*(m|B)','',answer))
         edoc = fred.eppdoc.Message()
         edoc.parse_xml(epp_cli._epp._raw_answer)
-        log_fp.write(edoc.get_xml())
+        parsed_xml = edoc.get_xml()
+        if parsed_xml == '':
+            # in case if is not possible parse XML answer
+            parsed_xml = 'RAW ANSWER (UNPARSED): ' + epp_cli._epp._raw_answer
+        log_fp.write(parsed_xml)
         log_fp.write('\n%s\n'%('='*60))
 
 def reset_client(epp_cli):
@@ -311,7 +315,67 @@ def compare_domain_info(epp_cli, cols, data):
     if data['domain:crDate'][:10] != actual_time:
         errors.append('Data domain:crDate nesouhlasi: jsou: %s a mely by byt: %s'%(data['domain:crDate'],actual_time))
     return errors
+
     
+def compare_nsset_info(epp_cli, cols, data):
+    'Check if values are equal'
+    #print '%s\nCOLS:\n%s\n%s\nDATA:\n%s\n%s\n'%('='*60, str(cols), '-'*60, str(data), '_'*60)
+    errors = []
+    ##============================================================
+    ##COLS:
+    ##{'tech': ('contact1',), 
+    ##'id': 'test001', 
+    ##'dns': (
+    ##    {'name': 'ns.name1.cz', 'addr': ('127.0.0.1', '127.1.1.1', '127.2.2.2')}, 
+    ##    {'name': 'ns.name2.cz', 'addr': ('126.0.0.1', '126.1.1.1', '126.2.2.2')}
+    ##    ), 
+    ##    'auth_info': 'heslo'}
+    ##------------------------------------------------------------
+    ##DATA:
+    ##    saved_data = {'nsset:upID': u'REG-UNITTEST1', 
+    ##        'nsset:status.s': u'ok', 
+    ##        'nsset:id': u'test001', 
+    ##        'nsset:crDate': u'2006-08-03T09:38:05.0Z', 
+    ##        'nsset:ns': [
+    ##            [u'ns.name2.cz', [u'126.0.0.1', u'126.1.1.1', u'126.2.2.2']], 
+    ##            [u'ns.name1.cz', [u'127.0.0.1', u'127.1.1.1', u'127.2.2.2']]], 
+    ##        'nsset:clID': u'REG-UNITTEST1', 
+    ##        'nsset:roid': u'N0000000027-CZ', 
+    ##        'nsset:tech': u'CONTACT1'}
+    ##____________________________________________________________
+    # not checked: 
+    #   nsset:upID          u'REG-UNITTEST1'
+    #   nsset:status.s      u'ok'
+    #   nsset:crDate        u'2006-08-03T09:38:05.0Z'
+    #   nsset:roid          u'N0000000027-CZ'
+    key = 'nsset:upID'
+    username, password = epp_cli._epp.get_actual_username_and_password()
+    err_not_equal(errors, data, 'nsset:clID', username)
+    err_not_equal(errors, data, 'nsset:id', cols['id'])
+
+    tech = data.get('nsset:tech', [])
+    if type(tech) not in (list, tuple):
+        tech = (tech, )
+    if not are_equal(tech, cols['tech']):
+        errors.append('Data nsset:tech nesouhlasi. JSOU:%s MELY BYT:%s'%(make_str(tech), make_str(cols['tech'])))
+    
+    ns = data.get('nsset:ns',[])
+    dns = cols['dns']
+    if len(ns) == len(dns):
+        for name,addr in ns:
+            ref_addr = None
+            for d in dns:
+                if d['name'] == name:
+                    ref_addr = list(d['addr'])
+                    break
+            if ref_addr is None:
+                errors.append('DNS name "%s" nebyl nalezen'%name)
+            else:
+                if addr != ref_addr:
+                    errors.append('DNS "%s" addr nejsou shodne: jsou: %s maji byt: %s'%(name, str(addr), str(ref_addr)))
+    else:
+        errors.append('Seznam DNS nema pozadovany pocet. Ma %d a mel by mit %d.'%(len(ns),len(dns)))
+    return errors
     
     
 get_local_text = fred.session_base.get_ltext
