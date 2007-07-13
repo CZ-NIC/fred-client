@@ -997,8 +997,11 @@ class Message(MessageBase):
             # --- END disclose ------
             if __has_key__(chg,'vat'): data.append(('contact:chg','contact:vat', chg['vat'][0]))
             if __has_key_dict__(chg,'ident'):
-                ident = chg['ident'][0]
-                data.append(('contact:chg','contact:ident', ident['number'][0], (('type',ident['type'][0]),)))
+                ident = chg['ident'][0] # number is required
+                # type is optional
+                type = ident.get('type', [None])[0]
+                type_data = type and (('type', type),) or None
+                data.append(('contact:chg','contact:ident', ident['number'][0], type_data))
             if __has_key__(chg,'notify_email'): data.append(('contact:chg','contact:notifyEmail', chg['notify_email'][0]))
         data.append(('command', 'clTRID', self._dct.get(TAG_clTRID,[params[0]])[0]))
         self.__assemble_cmd__(data)

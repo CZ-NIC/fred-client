@@ -183,14 +183,14 @@ will be generated automaticly after succefull transfer."""),('transfer_domain do
             )),
             ('vat',(0,1),(),_T('VAT (Value-added tax)'),'7035555556','',()), # vat identificator
             ('ident',(0,1),(),_T('Identificator'),'','',( # mpsv: identifikator Ministerstva prace a socialnich veci
-                ('type',(1,1),map(lambda n:(n,), IDENT_TYPES),_T('Identificator type'),'op','',()),
                 ('number',(1,1),(),_T('Identificator number'),'8888888856','',()),
+                ('type',(1,1),map(lambda n:(n,), IDENT_TYPES),_T('Identificator type'),'op','',()),
             )),
             ('notify_email',(0,1),(),_T('Notification email'),'info@mymail.cz','',()),
             ],'%s\n\n%s\n\n%s'%(_T("""
 The EPP 'create_contact' command is used to create an instance of the contact.
 Contact can be used for values of the owner, registrant or technical contact."""),notice['disclose'],notice['ident']),(
-            "create_contact CID:ID01 'Jan Novak' info@mymail.cz Praha CZ mypassword 'Firma s.r.o.' 'Narodni trida 1230/12' '' 12000 +420.222745111 +420.222745111 (y (org fax email)) 7035555556 (op 8888888856) info@mymail.cz",
+            "create_contact CID:ID01 'Jan Novak' info@mymail.cz Praha CZ mypassword 'Firma s.r.o.' 'Narodni trida 1230/12' '' 12000 +420.222745111 +420.222745111 (y (org fax email)) 7035555556 (8888888856 op) info@mymail.cz",
             "create_contact CID:ID02 'Jan Ban' info@mail.com Brno CZ"
             )),
         #----------------------------------------------------
@@ -292,14 +292,14 @@ and maximum allowable period is defined in the Communication rules."""),('renew_
                 )),
                 ('vat',(0,1),(),_T('VAT'),'7035555556','',()),
                 ('ident',(0,1),(),_T('Identificator'),'','',(
-                    ('type',(1,1),map(lambda n:(n,), IDENT_TYPES),_T('Identificator type'),'op','',()),
                     ('number',(1,1),(),_T('Identificator number'),'8888888856','',()),
+                    ('type',(0,1),map(lambda n:(n,), IDENT_TYPES),_T('Identificator type'),'op','',()),
                 )),
                 ('notify_email',(0,1),(),_T('Notification email'),'notify@mymail.cz','',()),
             )),
             ],'%s\n\n%s\n\n%s'%(_T("""The EPP 'update_contact' command is used to update values in the contact."""),notice['disclose'],notice['ident']),
                 (
-                    "update_contact CID:ID01 (('Jan Nowak' 'Firma s.r.o.' (Praha CZ ('Na narodni 1230/12', 'Americka 12') Vinohrady 12000)) +420.222745111 +420.222745111 info@mymail.cz mypassword (y (org, voice, email)) 7035555556 (ico 8888888856) notify@mymail.cz)",
+                    "update_contact CID:ID01 (('Jan Nowak' 'Firma s.r.o.' (Praha CZ ('Na narodni 1230/12', 'Americka 12') Vinohrady 12000)) +420.222745111 +420.222745111 info@mymail.cz mypassword (y (org, voice, email)) 7035555556 (8888888856 ico) notify@mymail.cz)",
                     "update_contact CID:ID01 (() NULL NULL NULL NULL () NULL () change.only@notify-mail.cz)",
             )),
         #----------------------------------------------------

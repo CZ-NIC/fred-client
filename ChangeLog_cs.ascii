@@ -1,12 +1,18 @@
 FredClient 1.5.2
 
+Zmeny:
+    * v update_contact je ident.type nepovinny
+    * v update_contact v casti ident je prohozeno poradi (type number) na (number type)
+    * v create_contact v casti ident je prohozeno poradi (type number) na (number type)
+
 Opravy:
-    * disclose emailNotify
-    * reportlevel v technical_test
+    * opraven disclose emailNotify
+    * opraven reportlevel v technical_test
 
 
 FredClient 1.5.1
-    
+
+    * Prejmenovani funkci (contacts,nssets,domains)_by_all na prep_(contacts,nssets,domains)
     * Upraveno GUI pro nove list funkce.
 
 
