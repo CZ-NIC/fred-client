@@ -48,6 +48,12 @@ from fred.eppdoc_assemble import DISCLOSES
 from fred.session_base import decamell
 
 
+def is_not_empty(value):
+    'True when value is not empty'
+    if type(value) in (list, tuple):
+        return len(value)
+    return value != ''
+
 def find_available_handle(epp_cli, type_object, prefix):
     'Find first available object.'
     available_handle = ''
@@ -269,8 +275,10 @@ def compare_contact_info(prefix, cols, scope, key=None, pkeys=[]):
                 if not are_equal(vals,v):
                     errors.append('Data nesouhlasi:\n%s.%s JSOU:%s MELY BYT:%s'%(prevkeys, key, make_str(vals), make_str(v)))
         else:
-            if key != '%s:disclose_flag'%prefix: # except disclose_flag - it not shown
+            # if value (v) is not empty ('') and key is not ...:disclose_flag
+            if is_not_empty(v) and key != '%s:disclose_flag'%prefix: # except disclose_flag - it not shown
                 errors.append('Chybi klic %s'%key)
+                
     return errors
     
 def compare_domain_info(epp_cli, cols, data):

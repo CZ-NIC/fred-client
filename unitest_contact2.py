@@ -6,6 +6,7 @@ changes.
 import time
 import unittest
 import fred
+from fred.eppdoc_assemble import DISCLOSES
 import unitest_share
 
 get_ltext = fred.session_base.get_ltext
@@ -33,6 +34,7 @@ CONTACT_INFO = {   # create contact
 
 
 class TestContact(unittest.TestCase):
+
 
     def setUp(self):
         'Check if cilent is online.'
@@ -132,7 +134,7 @@ class TestContact(unittest.TestCase):
         global CONTACT_INFO
         CONTACT_INFO['city'] = u'Říčany u Prahy'
         CONTACT_INFO['cc'] = 'AU'
-        epp_cli.update_contact(CONTACT_HANDLE, {'postal_info':{'addr':{'city': CONTACT_INFO['city'], 'cc': CONTACT_INFO['cc']}}})
+        epp_cli.update_contact(CONTACT_HANDLE, {'postal_info': {'addr':_get_address(CONTACT_INFO)}})
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
     def test_075(self):
         '... Check all values after updating city and CC'
@@ -171,11 +173,7 @@ class TestContact(unittest.TestCase):
         global CONTACT_INFO
         key = 'street'
         CONTACT_INFO[key] = (u'Mřížová', u'Malušova', u'Hrušková')
-        epp_cli.update_contact(CONTACT_HANDLE, {key: CONTACT_INFO[key]})
-        epp_cli.update_contact(CONTACT_HANDLE, {'postal_info':{'addr':{
-            'city': CONTACT_INFO['city'], 
-            'cc': CONTACT_INFO['cc'], 
-            key: CONTACT_INFO[key]}}})
+        epp_cli.update_contact(CONTACT_HANDLE, {'postal_info': {'addr':_get_address(CONTACT_INFO)}})
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
     def test_115(self):
         '... Check all values after updating street'
@@ -188,11 +186,7 @@ class TestContact(unittest.TestCase):
         global CONTACT_INFO
         key = 'sp'
         CONTACT_INFO[key] = '0459'
-        epp_cli.update_contact(CONTACT_HANDLE, {key: CONTACT_INFO[key]})
-        epp_cli.update_contact(CONTACT_HANDLE, {'postal_info':{'addr':{
-            'city': CONTACT_INFO['city'], 
-            'cc': CONTACT_INFO['cc'], 
-            key: CONTACT_INFO[key]}}})
+        epp_cli.update_contact(CONTACT_HANDLE, {'postal_info': {'addr':_get_address(CONTACT_INFO)}})
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
     def test_125(self):
         '... Check all values after updating sp'
@@ -205,11 +199,7 @@ class TestContact(unittest.TestCase):
         global CONTACT_INFO
         key = 'pc'
         CONTACT_INFO[key] = '15800'
-        epp_cli.update_contact(CONTACT_HANDLE, {key: CONTACT_INFO[key]})
-        epp_cli.update_contact(CONTACT_HANDLE, {'postal_info':{'addr':{
-            'city': CONTACT_INFO['city'], 
-            'cc': CONTACT_INFO['cc'], 
-            key: CONTACT_INFO[key]}}})
+        epp_cli.update_contact(CONTACT_HANDLE, {'postal_info': {'addr':_get_address(CONTACT_INFO)}})
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
     def test_135(self):
         '... Check all values after updating pc'
@@ -247,7 +237,7 @@ class TestContact(unittest.TestCase):
         '13. Change disclose only'
         global CONTACT_INFO
         key = 'disclose'
-        CONTACT_INFO[key] = {'flag':'n', 'data':('voice','fax','email', 'vat')} # (name, )
+        CONTACT_INFO[key] = {'flag':'n', 'data':('voice', 'ident', 'email', 'vat')} # (name, )
         epp_cli.update_contact(CONTACT_HANDLE, {key: CONTACT_INFO[key]})
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
     def test_165(self):
@@ -269,6 +259,9 @@ class TestContact(unittest.TestCase):
         errors = unitest_share.compare_contact_info('contact', CONTACT_INFO, epp_cli.is_val('data'))
         self.assert_(len(errors)==0, '\n'.join(errors))
 
+        
+        
+        
     def test_180(self):
         '15. Change Ident only'
         global CONTACT_INFO
@@ -283,16 +276,223 @@ class TestContact(unittest.TestCase):
         self.assert_(len(errors)==0, '\n'.join(errors))
 
 
+    def test_190(self):
+        '16. Clear organisation'
+        global CONTACT_INFO
+        key = 'org'
+        CONTACT_INFO[key] = ''
+        epp_cli.update_contact(CONTACT_HANDLE, {'postal_info':{key: CONTACT_INFO[key]}})
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+    def test_195(self):
+        '... Check all values after clearing organisation'
+        epp_cli.info_contact(CONTACT_HANDLE)
+        errors = unitest_share.compare_contact_info('contact', CONTACT_INFO, epp_cli.is_val('data'))
+        self.assert_(len(errors)==0, '\n'.join(errors))
 
 
+    def test_200(self):
+        '18. Clear streets'
+        global CONTACT_INFO
+        key = 'street'
+        CONTACT_INFO[key] = ()
+        epp_cli.update_contact(CONTACT_HANDLE, {'postal_info': {'addr':_get_address(CONTACT_INFO)}})
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+    def test_205(self):
+        '... Check all values after clearing streets'
+        epp_cli.info_contact(CONTACT_HANDLE)
+        errors = unitest_share.compare_contact_info('contact', CONTACT_INFO, epp_cli.is_val('data'))
+        self.assert_(len(errors)==0, '\n'.join(errors))
+
+    def test_220(self):
+        '19. Clear sp'
+        global CONTACT_INFO
+        key = 'sp'
+        CONTACT_INFO[key] = ''
+        epp_cli.update_contact(CONTACT_HANDLE, {'postal_info': {'addr':_get_address(CONTACT_INFO)}})
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+    def test_225(self):
+        '... Check all values after clearing sp'
+        epp_cli.info_contact(CONTACT_HANDLE)
+        errors = unitest_share.compare_contact_info('contact', CONTACT_INFO, epp_cli.is_val('data'))
+        self.assert_(len(errors)==0, '\n'.join(errors))
+
+    def test_230(self):
+        '20. Clear pc'
+        global CONTACT_INFO
+        key = 'pc'
+        CONTACT_INFO[key] = ''
+        epp_cli.update_contact(CONTACT_HANDLE, {'postal_info': {'addr':_get_address(CONTACT_INFO)}})
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+    def test_235(self):
+        '... Check all values after clearing pc'
+        epp_cli.info_contact(CONTACT_HANDLE)
+        errors = unitest_share.compare_contact_info('contact', CONTACT_INFO, epp_cli.is_val('data'))
+        self.assert_(len(errors)==0, '\n'.join(errors))
+
+    def test_240(self):
+        '21. Clear voice'
+        global CONTACT_INFO
+        key = 'voice'
+        CONTACT_INFO[key] = ''
+        epp_cli.update_contact(CONTACT_HANDLE, {key: CONTACT_INFO[key]})
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+    def test_245(self):
+        '... Check all values after clearing voice'
+        epp_cli.info_contact(CONTACT_HANDLE)
+        errors = unitest_share.compare_contact_info('contact', CONTACT_INFO, epp_cli.is_val('data'))
+        self.assert_(len(errors)==0, '\n'.join(errors))
+        
+    def test_250(self):
+        '22. Clear fax'
+        global CONTACT_INFO
+        key = 'fax'
+        CONTACT_INFO[key] = ''
+        epp_cli.update_contact(CONTACT_HANDLE, {key: CONTACT_INFO[key]})
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+    def test_255(self):
+        '... Check all values after clearing fax'
+        epp_cli.info_contact(CONTACT_HANDLE)
+        errors = unitest_share.compare_contact_info('contact', CONTACT_INFO, epp_cli.is_val('data'))
+        self.assert_(len(errors)==0, '\n'.join(errors))
+
+
+    def test_270(self):
+        '24. Clear auth info'
+        key = 'auth_info'
+        CONTACT_INFO[key] = ''
+        epp_cli.update_contact(CONTACT_HANDLE, {key: CONTACT_INFO[key]})
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+    def test_275(self):
+        '... Check all values after clearing auth info'
+        epp_cli.info_contact(CONTACT_HANDLE)
+        errors = unitest_share.compare_contact_info('contact', CONTACT_INFO, epp_cli.is_val('data'))
+        self.assert_(len(errors)==0, '\n'.join(errors))
+        
+    def test_280(self):
+        '25. Clear vat'
+        key = 'vat'
+        CONTACT_INFO[key] = ''
+        epp_cli.update_contact(CONTACT_HANDLE, {key: CONTACT_INFO[key]})
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+    def test_285(self):
+        '... Check all values after clearing vat'
+        epp_cli.info_contact(CONTACT_HANDLE)
+        errors = unitest_share.compare_contact_info('contact', CONTACT_INFO, epp_cli.is_val('data'))
+        self.assert_(len(errors)==0, '\n'.join(errors))
+
+    def test_290(self):
+        '26. Clear notify email'
+        key = 'notify_email'
+        CONTACT_INFO[key] = ''
+        epp_cli.update_contact(CONTACT_HANDLE, {key: CONTACT_INFO[key]})
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+    def test_295(self):
+        '... Check all values after clearing notify email'
+        epp_cli.info_contact(CONTACT_HANDLE)
+        errors = unitest_share.compare_contact_info('contact', CONTACT_INFO, epp_cli.is_val('data'))
+        self.assert_(len(errors)==0, '\n'.join(errors))
+
+
+    def test_300(self):
+        '27. Change discloses one by one; flag: n'
+        global CONTACT_INFO
+        key = 'disclose'
+        CONTACT_INFO[key] = {'flag':'n'}
+        print '\n... disclose flag: %s'%CONTACT_INFO[key]['flag']
+        max = len(DISCLOSES)
+        for pos in range(max):
+            name = DISCLOSES[pos]
+            print '... disclose:', name
+            CONTACT_INFO[key]['data'] = (name, )
+            epp_cli.update_contact(CONTACT_HANDLE, {key: CONTACT_INFO[key]})
+            unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(pos, max))
+            self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
+            epp_cli.info_contact(CONTACT_HANDLE)
+            unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(pos, max))
+            errors = unitest_share.compare_contact_info('contact', CONTACT_INFO, epp_cli.is_val('data'))
+            self.assert_(len(errors)==0, '\n'.join(errors))
+
+    def test_310(self):
+        '28. Change discloses one by one; flag: y'
+        global CONTACT_INFO
+        key = 'disclose'
+        CONTACT_INFO[key] = {'flag':'y'}
+        print '\n... disclose flag: %s'%CONTACT_INFO[key]['flag']
+        max = len(DISCLOSES)
+        for pos in range(max):
+            name = DISCLOSES[pos]
+            print '... disclose:', name
+            CONTACT_INFO[key]['data'] = (name, )
+            epp_cli.update_contact(CONTACT_HANDLE, {key: CONTACT_INFO[key]})
+            unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(pos, max))
+            self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
+            epp_cli.info_contact(CONTACT_HANDLE)
+            unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(pos, max))
+            errors = unitest_share.compare_contact_info('contact', CONTACT_INFO, epp_cli.is_val('data'))
+            self.assert_(len(errors)==0, '\n'.join(errors))
+
+
+    def test_320(self):
+        '29. Change discloses impute in sequence; flag: n'
+        global CONTACT_INFO
+        key = 'disclose'
+        CONTACT_INFO[key] = {'flag':'n'}
+        print '\n... disclose flag: %s'%CONTACT_INFO[key]['flag']
+        max = len(DISCLOSES)
+        for pos in range(1, max+1):
+            names = DISCLOSES[:pos]
+            print '... disclose:', names
+            CONTACT_INFO[key]['data'] = names
+            epp_cli.update_contact(CONTACT_HANDLE, {key: CONTACT_INFO[key]})
+            unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(pos, max))
+            self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
+            epp_cli.info_contact(CONTACT_HANDLE)
+            unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(pos, max))
+            errors = unitest_share.compare_contact_info('contact', CONTACT_INFO, epp_cli.is_val('data'))
+            self.assert_(len(errors)==0, '\n'.join(errors))
+
+    def test_330(self):
+        '30. Change discloses impute in sequence; flag: y'
+        global CONTACT_INFO
+        key = 'disclose'
+        CONTACT_INFO[key] = {'flag':'y'}
+        print '\n... disclose flag: %s'%CONTACT_INFO[key]['flag']
+        max = len(DISCLOSES)
+        for pos in range(1, max+1):
+            names = DISCLOSES[:pos]
+            print '... disclose:', names
+            CONTACT_INFO[key]['data'] = names
+            epp_cli.update_contact(CONTACT_HANDLE, {key: CONTACT_INFO[key]})
+            unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(pos, max))
+            self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
+            epp_cli.info_contact(CONTACT_HANDLE)
+            unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(pos, max))
+            errors = unitest_share.compare_contact_info('contact', CONTACT_INFO, epp_cli.is_val('data'))
+            self.assert_(len(errors)==0, '\n'.join(errors))
+
+            
+        
     def test_999(self):
         'END: Smazání kontaktu'
         epp_cli.delete_contact(CONTACT_HANDLE)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
 
+        
+def _get_address(data):
+    address = {}
+    for name in ('city', 'cc', 'street', 'sp', 'pc'):
+        address[name] = data[name]
+    return address
+
+
 # global variables of the client object and login file
 epp_cli, epp_cli_log, log_fp, log_step = (None,)*4
+
 
 if __name__ == '__main__':
     if fred.translate.option_errors:
