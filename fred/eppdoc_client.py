@@ -168,13 +168,13 @@ will be generated automaticly after succefull transfer."""),('transfer_domain do
             ('contact_id',(1,1),(),_T('Contact ID'),'CID:ID01','',()),
             ('name',(1,1),(),_T('Name'), 'John Nowak','',()), # odtud shoda s update contact
             ('email',(1,1),(),_T('Email'),'info@mymail.cz','',()),
+            ('street',(1,3),(),_T('Street'), 'Downing street 1230/12','',()),
             ('city',(1,1),(),_T('City'),'Praha','',()),
+            ('pc',(1,1),(),_T('Postal code'),'12000',_T('postal code'),()),
             ('cc',(1,1),(),_T('Country code'),'CZ',_T('country code'),()),
-            ('auth_info',(0,1),(),_T('Password required by server to authorize the transfer'),'mypassword',_T('password'),()), # authorization information for transfer
-            ('org',(0,1),(),_T('Organisation'),'Firma s.r.o.','',()),
-            ('street',(0,3),(),_T('Street'), 'Downing street 1230/12','',()),
             ('sp',(0,1),(),_T('State or province'),'Outlands','',()),
-            ('pc',(0,1),(),_T('Postal code'),'12000',_T('postal code'),()),
+            ('org',(0,1),(),_T('Organisation'),'Firma s.r.o.','',()),
+            ('auth_info',(0,1),(),_T('Password required by server to authorize the transfer'),'mypassword',_T('password'),()), # authorization information for transfer
             ('voice',(0,1),(),_T('Phone'),'+420.222745111','',()),
             ('fax',(0,1),(),_T('Fax'),'+420.222745111','',()),
             ('disclose',(0,1),(),_T('Disclose'),'','',(
@@ -190,8 +190,8 @@ will be generated automaticly after succefull transfer."""),('transfer_domain do
             ],'%s\n\n%s\n\n%s'%(_T("""
 The EPP 'create_contact' command is used to create an instance of the contact.
 Contact can be used for values of the owner, registrant or technical contact."""),notice['disclose'],notice['ident']),(
-            "create_contact CID:ID01 'Jan Novak' info@mymail.cz Praha CZ mypassword 'Firma s.r.o.' 'Narodni trida 1230/12' '' 12000 +420.222745111 +420.222745111 (y (org fax email)) 7035555556 (8888888856 op) info@mymail.cz",
-            "create_contact CID:ID02 'Jan Ban' info@mail.com Brno CZ"
+            "create_contact CID:ID01 'Jan Novak' info@mymail.cz 'Narodni trida 1230/12' Praha 12000 CZ NULL 'Firma s.r.o.' mypassword  +420.222745111 +420.222745111 (y (org fax email)) 7035555556 (8888888856 op) info@mymail.cz",
+            "create_contact CID:ID02 'Jan Ban' info@mail.com Street Brno 123000 CZ"
             )),
         #----------------------------------------------------
         'create_domain': (2,[
@@ -275,11 +275,11 @@ and maximum allowable period is defined in the Communication rules."""),('renew_
                     ('name',(0,1),(),_T('Name'),u'Jan Nowak','',()),
                     ('org',(0,1),(),_T('Organisation'),'Firma s.r.o.','',()),
                     ('addr',(0,1),(),_T('Address'),'','',(
+                        ('street',(1,3),(),_T('Street'),u'Na narodni 1234/14','',()),
                         ('city',(1,1),(),_T('City'),'Praha','',()),
+                        ('pc',(1,1),(),_T('Postal code'),'12000','',()),
                         ('cc',(1,1),(),_T('Country code'),'CZ','',()),
-                        ('street',(0,3),(),_T('Street'),u'Na narodni 1234/14','',()),
                         ('sp',(0,1),(),_T('State or province'),'','',()),
-                        ('pc',(0,1),(),_T('Postal code'),'12000','',()),
                     )),
                 )),
                 ('voice',(0,1),(),_T('Phone'),'+420.222745111','',()),
@@ -299,7 +299,7 @@ and maximum allowable period is defined in the Communication rules."""),('renew_
             )),
             ],'%s\n\n%s\n\n%s'%(_T("""The EPP 'update_contact' command is used to update values in the contact."""),notice['disclose'],notice['ident']),
                 (
-                    "update_contact CID:ID01 (('Jan Nowak' 'Firma s.r.o.' (Praha CZ ('Na narodni 1230/12', 'Americka 12') Vinohrady 12000)) +420.222745111 +420.222745111 info@mymail.cz mypassword (y (org, voice, email)) 7035555556 (8888888856 ico) notify@mymail.cz)",
+                    "update_contact CID:ID01 (('Jan Nowak' 'Firma s.r.o.' (('Na narodni 1230/12', 'Americka 12') Praha 12000 CZ  Vinohrady )) +420.222745111 +420.222745111 info@mymail.cz mypassword (y (org, voice, email)) 7035555556 (8888888856 ico) notify@mymail.cz)",
                     "update_contact CID:ID01 (() NULL NULL NULL NULL () NULL () change.only@notify-mail.cz)",
             )),
         #----------------------------------------------------

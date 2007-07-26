@@ -764,7 +764,9 @@ class FredMainWindow(QtGui.QDialog):
                     ('id',_TU('contact ID')), 
                     ('name',_TU('name')), 
                     ('email',_TU('email')), 
+                    ('street',_TU('street')), 
                     ('city',_TU('city')), 
+                    ('pc',_TU('postal code')), 
                     ('cc',_TU('country code')))
                     ):
             d['contact_id'] = d['id'] # compatibility with API
@@ -819,6 +821,7 @@ class FredMainWindow(QtGui.QDialog):
             self.display_error(self.missing_required)
 
     def update_contact(self):
+        print 'update_contact()' #!!!
         if not self.check_is_online(): return
         d = {}
         p = self.panel_update_contact.ui
@@ -849,7 +852,17 @@ class FredMainWindow(QtGui.QDialog):
         ident['type'] = IDENT_TYPES[ident['type']]
         if ident.has_key('number'): chg['ident'] = ident
         if len(chg): d['chg'] = chg
-        if self.__check_required__(d, (('id',_TU('Contact ID')),)) and len(d) > 1:
+        # check required
+        valid = self.__check_required__(d, (('id',_TU('Contact ID')),)) and len(d) > 1
+        if valid and len(addr):
+            # check required again if any value in address block has ben set
+            valid = self.__check_required__(addr, (
+                    ('street',_TU('street')), 
+                    ('city',_TU('city')), 
+                    ('pc',_TU('postal code')), 
+                    ('cc',_TU('country code')))
+                    )
+        if valid:
             d['contact_id'] = d['id'] # compatibility with API
             self.disable_send_buttons()
             self.thread_epp.set_command('update_contact', d)

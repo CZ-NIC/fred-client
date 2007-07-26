@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'create_contact.ui'
 #
-# Created: Tue Jun 26 14:35:19 2007
+# Created: Thu Jul 26 10:19:36 2007
 #      by: PyQt4 UI code generator 4.1.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -25,20 +25,10 @@ class Ui_FredWindow(object):
         self.textLabel3.setWordWrap(False)
         self.textLabel3.setObjectName("textLabel3")
 
-        self.textLabel5 = QtGui.QLabel(FredWindow)
-        self.textLabel5.setGeometry(QtCore.QRect(10,450,160,20))
-        self.textLabel5.setWordWrap(False)
-        self.textLabel5.setObjectName("textLabel5")
-
         self.textLabel7 = QtGui.QLabel(FredWindow)
         self.textLabel7.setGeometry(QtCore.QRect(10,510,160,20))
         self.textLabel7.setWordWrap(False)
         self.textLabel7.setObjectName("textLabel7")
-
-        self.textLabel10 = QtGui.QLabel(FredWindow)
-        self.textLabel10.setGeometry(QtCore.QRect(10,420,160,20))
-        self.textLabel10.setWordWrap(False)
-        self.textLabel10.setObjectName("textLabel10")
 
         self.textLabel14 = QtGui.QLabel(FredWindow)
         self.textLabel14.setGeometry(QtCore.QRect(10,200,160,20))
@@ -85,11 +75,6 @@ class Ui_FredWindow(object):
         self.textLabel2.setGeometry(QtCore.QRect(10,110,160,20))
         self.textLabel2.setWordWrap(False)
         self.textLabel2.setObjectName("textLabel2")
-
-        self.textLabel4 = QtGui.QLabel(FredWindow)
-        self.textLabel4.setGeometry(QtCore.QRect(10,320,160,20))
-        self.textLabel4.setWordWrap(False)
-        self.textLabel4.setObjectName("textLabel4")
 
         self.textLabel6 = QtGui.QLabel(FredWindow)
         self.textLabel6.setGeometry(QtCore.QRect(10,750,160,20))
@@ -249,6 +234,21 @@ class Ui_FredWindow(object):
         self.disclose.setGeometry(QtCore.QRect(10,540,160,20))
         self.disclose.setObjectName("disclose")
 
+        self.textLabel5 = QtGui.QLabel(FredWindow)
+        self.textLabel5.setGeometry(QtCore.QRect(10,450,160,20))
+        self.textLabel5.setWordWrap(False)
+        self.textLabel5.setObjectName("textLabel5")
+
+        self.textLabel10 = QtGui.QLabel(FredWindow)
+        self.textLabel10.setGeometry(QtCore.QRect(10,420,160,20))
+        self.textLabel10.setWordWrap(False)
+        self.textLabel10.setObjectName("textLabel10")
+
+        self.textLabel4 = QtGui.QLabel(FredWindow)
+        self.textLabel4.setGeometry(QtCore.QRect(10,320,160,20))
+        self.textLabel4.setWordWrap(False)
+        self.textLabel4.setObjectName("textLabel4")
+
         self.retranslateUi(FredWindow)
         QtCore.QObject.connect(self.disclose,QtCore.SIGNAL("toggled(bool)"),self.groupBox2.setEnabled)
         QtCore.QObject.connect(self.create_contact_street,QtCore.SIGNAL("currentCellChanged(int,int,int,int)"),FredWindow.street_current_changed)
@@ -282,9 +282,7 @@ class Ui_FredWindow(object):
         FredWindow.setWindowTitle(QtGui.QApplication.translate("FredWindow", "Create Contact panel", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel1.setText(QtGui.QApplication.translate("FredWindow", "<b>country code</b>", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel3.setText(QtGui.QApplication.translate("FredWindow", "<b>email</b>", None, QtGui.QApplication.UnicodeUTF8))
-        self.textLabel5.setText(QtGui.QApplication.translate("FredWindow", "postal code", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel7.setText(QtGui.QApplication.translate("FredWindow", "fax", None, QtGui.QApplication.UnicodeUTF8))
-        self.textLabel10.setText(QtGui.QApplication.translate("FredWindow", "state or province", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel14.setText(QtGui.QApplication.translate("FredWindow", "<b>city</b>", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel15.setText(QtGui.QApplication.translate("FredWindow", "auth. for transfer", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel16.setText(QtGui.QApplication.translate("FredWindow", "<b>name</b>", None, QtGui.QApplication.UnicodeUTF8))
@@ -297,7 +295,6 @@ class Ui_FredWindow(object):
         "An object can be created for an indefinite period of time, or an\n"
         "object can be created for a specific validity period.", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel2.setText(QtGui.QApplication.translate("FredWindow", "<b>contact ID</b>", None, QtGui.QApplication.UnicodeUTF8))
-        self.textLabel4.setText(QtGui.QApplication.translate("FredWindow", "street", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel6.setText(QtGui.QApplication.translate("FredWindow", "value-added tax", None, QtGui.QApplication.UnicodeUTF8))
         self.textLabel9.setText(QtGui.QApplication.translate("FredWindow", "social security number", None, QtGui.QApplication.UnicodeUTF8))
         self.groupBox2_2.setTitle(QtGui.QApplication.translate("FredWindow", "social security number", None, QtGui.QApplication.UnicodeUTF8))
@@ -327,4 +324,7 @@ class Ui_FredWindow(object):
         self.create_contact_street.setHorizontalHeaderItem(0,headerItem)
         self.create_contact_cc.setText(QtGui.QApplication.translate("FredWindow", "CZ", None, QtGui.QApplication.UnicodeUTF8))
         self.disclose.setText(QtGui.QApplication.translate("FredWindow", "disclose", None, QtGui.QApplication.UnicodeUTF8))
+        self.textLabel5.setText(QtGui.QApplication.translate("FredWindow", "<b>postal code</b>", None, QtGui.QApplication.UnicodeUTF8))
+        self.textLabel10.setText(QtGui.QApplication.translate("FredWindow", "state or province", None, QtGui.QApplication.UnicodeUTF8))
+        self.textLabel4.setText(QtGui.QApplication.translate("FredWindow", "street (<b>required min. 1</b>)", None, QtGui.QApplication.UnicodeUTF8))
 

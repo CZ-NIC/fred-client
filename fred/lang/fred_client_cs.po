@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-06-27 10:22+0200\n"
+"POT-Creation-Date: 2007-07-26 13:43+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Zdeněk Böhm <zdenek.bohm@nic.cz>\n"
 "Language-Team: CS <ccreg-devel@lists.nic.cz>\n"
@@ -209,7 +209,7 @@ msgstr ""
 msgid "More details in verbose 2 or higher."
 msgstr "Více detailů je ve verbose 2 nebo vyšším."
 
-#: fred/console.py:183 fred/session_receiver.py:624
+#: fred/console.py:183 fred/session_receiver.py:625
 msgid "Command data XML document failed to validate."
 msgstr "XML dokument příkazu se nepodařilo zvalidovat."
 
@@ -222,8 +222,8 @@ msgstr "Nejste připojeni."
 msgid "Do you really want to send this command to the server?"
 msgstr "Opravdu chcete odeslat tento poříkaz na server?"
 
-#: fred/console.py:199 fred/session_receiver.py:630
-#: fred/session_receiver.py:634
+#: fred/console.py:199 fred/session_receiver.py:631
+#: fred/session_receiver.py:635
 msgid "Server answer XML document failed to validate."
 msgstr "Odpověď serveru v XML dokumentu se nepodařilo zvalidovat."
 
@@ -418,7 +418,7 @@ msgstr[0] "Chybí povinná hodnota"
 msgstr[1] "Chybí povinné hodnoty"
 msgstr[2] "Chybí povinné hodnoty"
 
-#: fred/eppdoc_assemble.py:1242
+#: fred/eppdoc_assemble.py:1245
 #, python-format
 msgid "Value can be a list of max %d value."
 msgid_plural "Value can be a list of max %d values."
@@ -426,11 +426,11 @@ msgstr[0] "Hodnota může být seznam o max. velikosti %d položky."
 msgstr[1] "Hodnota může být seznam o max. velikosti %d položek."
 msgstr[2] "Hodnota může být seznam o max. velikosti %d položek."
 
-#: fred/eppdoc_assemble.py:1244
+#: fred/eppdoc_assemble.py:1247
 msgid "Value can be an unbouded list of values."
 msgstr "Hodnota může být libovolně velký seznam."
 
-#: fred/eppdoc_assemble.py:1246
+#: fred/eppdoc_assemble.py:1249
 msgid "Minimum is"
 msgstr "Minimum je"
 
@@ -536,7 +536,7 @@ msgstr ""
 #: fred/eppdoc_client.py:142 fred/eppdoc_client.py:168
 #: fred/eppdoc_client.py:241 fred/eppdoc_client.py:272
 #: fred/eppdoc_client.py:342 fred/eppdoc_client.py:437
-#: fred/eppdoc_client.py:486 fred/eppdoc_client.py:554 guiqt4/main.py:852
+#: fred/eppdoc_client.py:486 fred/eppdoc_client.py:554 guiqt4/main.py:856
 msgid "Contact ID"
 msgstr "Kontakt ID"
 
@@ -581,8 +581,8 @@ msgstr ""
 #: fred/eppdoc_client.py:312 fred/eppdoc_client.py:323
 #: fred/eppdoc_client.py:356 fred/eppdoc_client.py:365
 #: fred/eppdoc_client.py:427 fred/eppdoc_client.py:527
-#: fred/eppdoc_client.py:537 fred/eppdoc_client.py:559 guiqt4/main.py:791
-#: guiqt4/main.py:889 guiqt4/main.py:1013
+#: fred/eppdoc_client.py:537 fred/eppdoc_client.py:559 guiqt4/main.py:793
+#: guiqt4/main.py:902 guiqt4/main.py:1026
 msgid "NSSET ID"
 msgstr "NSSET ID"
 
@@ -671,7 +671,7 @@ msgstr ""
 "dva kroky sloučit v jeden.\n"
 
 #: fred/eppdoc_client.py:143 fred/eppdoc_client.py:152
-#: fred/eppdoc_client.py:161 fred/eppdoc_client.py:173
+#: fred/eppdoc_client.py:161 fred/eppdoc_client.py:177
 #: fred/eppdoc_client.py:200 fred/eppdoc_client.py:226
 #: fred/eppdoc_client.py:288 fred/eppdoc_client.py:314
 #: fred/eppdoc_client.py:335
@@ -728,46 +728,46 @@ msgid "Email"
 msgstr ""
 
 #: fred/eppdoc_client.py:171 fred/eppdoc_client.py:278
-#: fred/eppdoc_client.py:497
-msgid "City"
-msgstr "Město"
-
-#: fred/eppdoc_client.py:172 fred/eppdoc_client.py:279
-#: fred/eppdoc_client.py:500
-msgid "Country code"
-msgstr "Kód země"
-
-#: fred/eppdoc_client.py:172 guiqt4/main.py:768
-msgid "country code"
-msgstr "kód země"
-
-#: fred/eppdoc_client.py:173 guiqt4/main.py:687
-msgid "password"
-msgstr "heslo"
-
-#: fred/eppdoc_client.py:174 fred/eppdoc_client.py:276
-#: fred/eppdoc_client.py:495
-msgid "Organisation"
-msgstr "Název organizace"
-
-#: fred/eppdoc_client.py:175 fred/eppdoc_client.py:280
 #: fred/eppdoc_client.py:496
 msgid "Street"
 msgstr "Ulice"
 
-#: fred/eppdoc_client.py:176 fred/eppdoc_client.py:281
-#: fred/eppdoc_client.py:498
-msgid "State or province"
-msgstr "Stát nebo kraj"
+#: fred/eppdoc_client.py:172 fred/eppdoc_client.py:279
+#: fred/eppdoc_client.py:497
+msgid "City"
+msgstr "Město"
 
-#: fred/eppdoc_client.py:177 fred/eppdoc_client.py:282
+#: fred/eppdoc_client.py:173 fred/eppdoc_client.py:280
 #: fred/eppdoc_client.py:499
 msgid "Postal code"
 msgstr "PSČ"
 
-#: fred/eppdoc_client.py:177
+#: fred/eppdoc_client.py:173 guiqt4/main.py:769 guiqt4/main.py:862
 msgid "postal code"
 msgstr "PSČ"
+
+#: fred/eppdoc_client.py:174 fred/eppdoc_client.py:281
+#: fred/eppdoc_client.py:500
+msgid "Country code"
+msgstr "Kód země"
+
+#: fred/eppdoc_client.py:174 guiqt4/main.py:770 guiqt4/main.py:863
+msgid "country code"
+msgstr "kód země"
+
+#: fred/eppdoc_client.py:175 fred/eppdoc_client.py:282
+#: fred/eppdoc_client.py:498
+msgid "State or province"
+msgstr "Stát nebo kraj"
+
+#: fred/eppdoc_client.py:176 fred/eppdoc_client.py:276
+#: fred/eppdoc_client.py:495
+msgid "Organisation"
+msgstr "Název organizace"
+
+#: fred/eppdoc_client.py:177 guiqt4/main.py:687
+msgid "password"
+msgstr "heslo"
 
 #: fred/eppdoc_client.py:178 fred/eppdoc_client.py:285
 #: fred/eppdoc_client.py:502
@@ -801,13 +801,13 @@ msgid "Identificator"
 msgstr "Identifikátor"
 
 #: fred/eppdoc_client.py:186 fred/eppdoc_client.py:295
+msgid "Identificator number"
+msgstr "Čislo identifikátoru"
+
+#: fred/eppdoc_client.py:187 fred/eppdoc_client.py:296
 #: fred/eppdoc_client.py:511
 msgid "Identificator type"
 msgstr "Typ identifikátoru"
-
-#: fred/eppdoc_client.py:187 fred/eppdoc_client.py:296
-msgid "Identificator number"
-msgstr "Čislo identifikátoru"
 
 #: fred/eppdoc_client.py:189 fred/eppdoc_client.py:298
 #: fred/eppdoc_client.py:505
@@ -932,7 +932,7 @@ msgid "The EPP 'delete_nsset' command is used to remove a record of the nsset."
 msgstr "EPP příkaz 'delete_nsset' se používá pro smazázní záznamu o NSSETu."
 
 #: fred/eppdoc_client.py:254 fred/eppdoc_client.py:524
-#: fred/eppdoc_client.py:566 fred/eppdoc_client.py:593 guiqt4/main.py:966
+#: fred/eppdoc_client.py:566 fred/eppdoc_client.py:593 guiqt4/main.py:979
 msgid "Expiration date"
 msgstr "Datum expirace"
 
@@ -1408,7 +1408,7 @@ msgstr "Interní chyba: Nadřazený uzel '%s' neexistuje."
 msgid "Internal error: Value is not dict type:"
 msgstr "Interní chyba: Hodnota není typu dict:"
 
-#: fred/__init__.py:922
+#: fred/__init__.py:926
 msgid "This program requires Python 2.4 or higher. Your version is"
 msgstr "Tento program vyžaduje Python 2.4 nebo vyšší. Vaše verze je"
 
@@ -2182,23 +2182,23 @@ msgstr "Spojení navázáno!"
 msgid "Login failed."
 msgstr "Login se nezdařil."
 
-#: fred/session_receiver.py:332
+#: fred/session_receiver.py:333
 msgid "Not in registry: Object is available."
 msgstr "Není v registru: Objekt je dostupný."
 
-#: fred/session_receiver.py:356
+#: fred/session_receiver.py:357
 msgid "Not available"
 msgstr "Nedostupný"
 
-#: fred/session_receiver.py:356
+#: fred/session_receiver.py:357
 msgid "Available"
 msgstr "Dostupný"
 
-#: fred/session_receiver.py:531
+#: fred/session_receiver.py:532
 msgid "The list is empty."
 msgstr "Seznam je prázdný."
 
-#: fred/session_receiver.py:541
+#: fred/session_receiver.py:542
 msgid ""
 "\n"
 "The list of the contacts is ready on the server buffer \n"
@@ -2209,7 +2209,7 @@ msgstr ""
 "Seznam kontaktů je připraven v bufferu na serveru a ukazatel je nastaven\n"
 "na začátek seznamu. Pro získání dat zadejte příkaz get_results."
 
-#: fred/session_receiver.py:548
+#: fred/session_receiver.py:549
 msgid ""
 "\n"
 "The list of the nssets is ready on the server buffer \n"
@@ -2220,7 +2220,7 @@ msgstr ""
 "Seznam nssetů je připraven v bufferu na serveru a ukazatel je nastaven\n"
 "na začátek seznamu. Pro získání dat zadejte příkaz get_results."
 
-#: fred/session_receiver.py:555
+#: fred/session_receiver.py:556
 msgid ""
 "\n"
 "The list of the domains is ready on the server buffer \n"
@@ -2231,7 +2231,7 @@ msgstr ""
 "Seznam domén je připraven v bufferu na serveru a ukazatel je nastaven\n"
 "na začátek seznamu. Pro získání dat zadejte příkaz get_results."
 
-#: fred/session_receiver.py:585
+#: fred/session_receiver.py:586
 msgid ""
 "The list of the domains is ready on the server buffer \n"
 "and pointer is set at the beginning of the list.\n"
@@ -2240,8 +2240,8 @@ msgstr ""
 "Seznam domén je připraven v bufferu na serveru a ukazatel je nastaven\n"
 "na začátek seznamu. Pro získání dat zadejte příkaz get_results."
 
-#: fred/session_receiver.py:591 fred/session_receiver.py:597
-#: fred/session_receiver.py:603
+#: fred/session_receiver.py:592 fred/session_receiver.py:598
+#: fred/session_receiver.py:604
 msgid ""
 "The list of the nssets is ready on the server buffer \n"
 "and pointer is set at the beginning of the list.\n"
@@ -2250,11 +2250,11 @@ msgstr ""
 "Seznam nssetů je připraven v bufferu na serveru a ukazatel je nastaven\n"
 "na začátek seznamu. Pro získání dat zadejte příkaz get_results."
 
-#: fred/session_receiver.py:642
+#: fred/session_receiver.py:643
 msgid "You are not logged. First type login."
 msgstr "Nejste zalogováni. Nejdříve zadejte login."
 
-#: fred/session_receiver.py:645
+#: fred/session_receiver.py:646
 msgid "You are not logged. You must call login() before working on the server."
 msgstr "Nejste zalogováni. Nejdříve musíte zadat login()."
 
@@ -2421,7 +2421,7 @@ msgstr "Zóna"
 msgid "credit"
 msgstr "Kredit"
 
-#: guiqt4/main.py:468 guiqt4/main.py:621 guiqt4/main.py:765 guiqt4/main.py:814
+#: guiqt4/main.py:468 guiqt4/main.py:621 guiqt4/main.py:765 guiqt4/main.py:816
 msgid "name"
 msgstr "Jméno"
 
@@ -2469,50 +2469,54 @@ msgstr "Kontakt ID"
 msgid "email"
 msgstr ""
 
-#: guiqt4/main.py:767
+#: guiqt4/main.py:767 guiqt4/main.py:860
+msgid "street"
+msgstr "ulice"
+
+#: guiqt4/main.py:768 guiqt4/main.py:861
 msgid "city"
 msgstr "Město"
 
-#: guiqt4/main.py:791
+#: guiqt4/main.py:793
 msgid "dns"
 msgstr ""
 
-#: guiqt4/main.py:791
+#: guiqt4/main.py:793
 msgid "tech. contact"
 msgstr "Technický kontakt"
 
-#: guiqt4/main.py:814
+#: guiqt4/main.py:816
 msgid "registrant"
 msgstr "držitel"
 
-#: guiqt4/main.py:840
+#: guiqt4/main.py:843
 msgid ""
 "In a part of address must be set both city and country code. For disabled "
 "this part leave both empty."
 msgstr ""
-" V části adresa musí být zadáno jméno města a kód země. Chcete-li tuto část "
+"V části adresa musí být zadáno jméno města a kód země. Chcete-li tuto část "
 "vynechat, nechte obě hodnoty prázdné."
 
-#: guiqt4/main.py:859 guiqt4/main.py:895 guiqt4/main.py:928
+#: guiqt4/main.py:872 guiqt4/main.py:908 guiqt4/main.py:941
 msgid "No values to update."
 msgstr "Žádné hodnoty pro aktualizaci."
 
-#: guiqt4/main.py:922 guiqt4/main.py:966 guiqt4/main.py:1013
+#: guiqt4/main.py:935 guiqt4/main.py:979 guiqt4/main.py:1026
 msgid "domain name"
 msgstr "Název domény"
 
-#: guiqt4/main.py:1144
+#: guiqt4/main.py:1157
 msgid "Close"
 msgstr "Zavřít"
 
-#: guiqt4/main.py:1152
+#: guiqt4/main.py:1165
 msgid "Credits"
 msgstr "Kredity"
 
-#: guiqt4/main.py:1159
+#: guiqt4/main.py:1172
 msgid "(No record.)"
 msgstr "(Žádný záznam.)"
 
-#: guiqt4/main.py:1160
+#: guiqt4/main.py:1173
 msgid "Internal errors"
 msgstr "Interní chyby"

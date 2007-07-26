@@ -168,8 +168,8 @@ OPTIONS:
   cltrid                   Client transaction ID"""
         return self._epp.api_command('check_nsset',{'name':name, 'cltrid':cltrid})
 
-    def create_contact(self, contact_id, name, email, city, cc, auth_info=None,
-            org=None, street=None, sp=None, pc=None, voice=None, fax=None, 
+    def create_contact(self, contact_id, name, email, street, city, pc, cc, 
+            sp=None, org=None, auth_info=None, voice=None, fax=None, 
             disclose=None, vat=None, ident=None, notify_email=None, 
             cltrid=None):
         """DESCRIPTION:
@@ -192,22 +192,25 @@ OPTIONS:
   contact_id (required)    Contact ID
   name (required)          Name
   email (required)         Email
+  street (required)        Street (list with max 3 items.)
   city (required)          City
+  pc (required)            Postal code
   cc (required)            Country code
-  auth_info                Password required by server to authorize the transfer
-  org                      Organisation
-  street                   Street (list with max 3 items.)
   sp                       State or province
-  pc                       Postal code
+  org                      Organisation
+  auth_info                Password required by server to authorize the transfer
   voice                    Phone
   fax                      Fax
   disclose                 Disclose
     flag (required)        Disclose flag (default y)
-    data                   Data for with is set the flag value (list with max 6 items.)
+                           (y,n)
+    data                   Data for with is set the flag value (list with max 9 items.)
+                           (name,org,addr,voice,fax,email,vat,ident,notify_email)
   vat                      VAT (Value-added tax)
   ident                    Identificator
-    type (required)        Identificator type
     number (required)      Identificator number
+    type (required)        Identificator type
+                           (op,passport,mpsv,ico,birthday)
   notify_email             Notification email
   cltrid                   Client transaction ID"""
         return self._epp.api_command('create_contact',{
@@ -589,11 +592,11 @@ OPTIONS:
       name                 Name
       org                  Organisation
       addr                 Address
+        street (required)  Street (list with max 3 items.)
         city (required)    City
+        pc (required)      Postal code
         cc (required)      Country code
-        street             Street (list with max 3 items.)
         sp                 State or province
-        pc                 Postal code
     voice                  Phone
     fax                    Fax
     email                  Email

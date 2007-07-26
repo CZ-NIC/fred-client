@@ -1,3 +1,34 @@
+FredClient 1.5.3
+
+Změny:
+    * nová verze schemat contact 1.3
+    * povinné hodnoty v kontaktu: ulice a PSČ
+    * přemístění položek v create_contact a update_contact v souvislosti s povinnými položkami:
+
+    create_contact    původní                   nové pořadí
+
+                      contact_id (povinný)      contact_id (povinný)
+                      name (povinný)            name (povinný)
+                      email (povinný)           email (povinný)
+                      city (povinný)            street (povinný)
+                      cc (povinný)              city (povinný)
+                      auth_info                 pc (povinný)
+                      org                       cc (povinný)
+                      street                    sp
+                      sp                        org
+                      pc                        auth_info
+                      voice                     voice
+
+    update_contact    původní                   nové pořadí
+
+                      addr                      addr
+                        city (povinný)            street (povinný)
+                        cc (povinný)              city (povinný)
+                        street                    pc (povinný)
+                        sp                        cc (povinný)
+                        pc                        sp
+
+
 FredClient 1.5.2
 
 Změny:
