@@ -98,7 +98,7 @@ class Test(unittest.TestCase):
 
     def test_030(self):
         '1. Zalozeni pomocneho kontaktu'
-        epp_cli.create_contact(FRED_CONTACT1,'Pepa Zdepa','pepa@zdepa.cz','Praha','CZ','heslo')
+        epp_cli.create_contact(FRED_CONTACT1,'Pepa Zdepa','pepa@zdepa.cz','Ulice','Praha','12300','CZ')
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_034(self):

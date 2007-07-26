@@ -187,8 +187,9 @@ class TestContact(unittest.TestCase):
         '2.3 Zalozeni neexistujiciho noveho kontaktu'
         d = FRED_CONTACT[1]
         epp_cli.create_contact(handle_contact, 
-            d['name'], d['email'], d['city'], d['cc'], d['auth_info'],  d['org'], 
-            d['street'], d['sp'], d['pc'], d['voice'], d['fax'], d['disclose'],
+            d['name'], d['email'], d['street'], d['city'], d['pc'], d['cc'], d['sp'], 
+            d['org'], d['auth_info'],
+            d['voice'], d['fax'], d['disclose'],
             d['vat'], d['ident'], d['notify_email'])
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
@@ -201,7 +202,7 @@ class TestContact(unittest.TestCase):
     def test_040(self):
         '2.4 Pokus o zalozeni existujiciho kontaktu'
         # contact_id, name, email, city, cc
-        epp_cli.create_contact(handle_contact,'Pepa Zdepa','pepa@zdepa.cz','Praha','CZ', 'heslo')
+        epp_cli.create_contact(handle_contact,'Pepa Zdepa','pepa@zdepa.cz','Ulice', 'Praha', '12300', 'CZ')
         self.assertNotEqual(epp_cli.is_val(), 1000, 'Contakt se vytvoril prestoze jiz existuje.')
 
     def test_050(self):

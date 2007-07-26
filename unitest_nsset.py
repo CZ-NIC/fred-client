@@ -166,11 +166,11 @@ class Test(unittest.TestCase):
 
     def test_031(self):
         '3.3.1 Zalozeni pomocnych kontaktu'
-        epp_cli.create_contact(FRED_CONTACT1,'Pepa Zdepa','pepa@zdepa.cz','Praha','CZ','heslo')
+        epp_cli.create_contact(FRED_CONTACT1,'Pepa Zdepa','pepa@zdepa.cz','Ulice','Praha', '12300','CZ')
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
     def test_032(self):
         '3.3.2 Zalozeni pomocnych kontaktu'
-        epp_cli.create_contact(FRED_CONTACT2,u'Miloš Pažout','milos@pazout.cz','Jevany','CZ','heslo')
+        epp_cli.create_contact(FRED_CONTACT2,u'Miloš Pažout','milos@pazout.cz','U drahy','Jevany','20800','CZ')
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_040(self):

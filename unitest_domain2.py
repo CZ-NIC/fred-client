@@ -87,12 +87,12 @@ class TestDomain(unittest.TestCase):
             
     def test_030(self):
         '2. Zalozeni 1. pomocneho kontaktu'
-        epp_cli.create_contact(FRED_CONTACT1,'Pepa Zdepa','pepa@zdepa.cz','Praha','CZ','heslo')
+        epp_cli.create_contact(FRED_CONTACT1,'Pepa Zdepa','pepa@zdepa.cz','Ulice','Praha','12300','CZ')
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
             
     def test_031(self):
         '3. Zalozeni 2. pomocneho kontaktu'
-        epp_cli.create_contact(FRED_CONTACT2, u'řehoř čuřil','rehor@curil.cz','Praha','CZ','heslo')
+        epp_cli.create_contact(FRED_CONTACT2, u'řehoř čuřil','rehor@curil.cz','Ulice','Praha','12300','CZ')
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_040(self):

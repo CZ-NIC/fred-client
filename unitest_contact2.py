@@ -78,8 +78,8 @@ class TestContact(unittest.TestCase):
         'Create contact'
         d = CONTACT_INFO
         epp_cli.create_contact(d['id'], 
-            d['name'], d['email'], d['city'], d['cc'], d['auth_info'],  d['org'], 
-            d['street'], d['sp'], d['pc'], d['voice'], d['fax'], d['disclose'],
+            d['name'], d['email'], d['street'], d['city'], d['pc'], d['cc'], d['sp'], 
+            d['org'], d['auth_info'], d['voice'], d['fax'], d['disclose'], 
             d['vat'], d['ident'], d['notify_email'])
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
@@ -290,44 +290,35 @@ class TestContact(unittest.TestCase):
         self.assert_(len(errors)==0, '\n'.join(errors))
 
 
-    def test_200(self):
-        '18. Clear streets'
-        global CONTACT_INFO
-        key = 'street'
-        CONTACT_INFO[key] = ()
-        epp_cli.update_contact(CONTACT_HANDLE, {'postal_info': {'addr':_get_address(CONTACT_INFO)}})
-        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
-    def test_205(self):
-        '... Check all values after clearing streets'
-        epp_cli.info_contact(CONTACT_HANDLE)
-        errors = unitest_share.compare_contact_info('contact', CONTACT_INFO, epp_cli.is_val('data'))
-        self.assert_(len(errors)==0, '\n'.join(errors))
+#    def test_200(self):
+#        '18. Clear streets'
+#        global CONTACT_INFO
+#        key = 'street'
+#        keep_value = CONTACT_INFO[key]
+#        CONTACT_INFO[key] = ()
+#        epp_cli.update_contact(CONTACT_HANDLE, {'postal_info': {'addr':_get_address(CONTACT_INFO)}})
+#        CONTACT_INFO[key] = keep_value
+#        self.assertNotEqual(epp_cli.is_val(), 1000, 'Kontakt se aktualizoval prestoze ulice nesmi byt prazdna.')
 
-    def test_220(self):
-        '19. Clear sp'
-        global CONTACT_INFO
-        key = 'sp'
-        CONTACT_INFO[key] = ''
-        epp_cli.update_contact(CONTACT_HANDLE, {'postal_info': {'addr':_get_address(CONTACT_INFO)}})
-        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
-    def test_225(self):
-        '... Check all values after clearing sp'
-        epp_cli.info_contact(CONTACT_HANDLE)
-        errors = unitest_share.compare_contact_info('contact', CONTACT_INFO, epp_cli.is_val('data'))
-        self.assert_(len(errors)==0, '\n'.join(errors))
+#    def test_220(self):
+#        '19. Clear sp'
+#        global CONTACT_INFO
+#        key = 'sp'
+#        keep_value = CONTACT_INFO[key]
+#        CONTACT_INFO[key] = ''
+#        epp_cli.update_contact(CONTACT_HANDLE, {'postal_info': {'addr':_get_address(CONTACT_INFO)}})
+#        CONTACT_INFO[key] = keep_value
+#        self.assertNotEqual(epp_cli.is_val(), 1000, 'Kontakt se aktualizoval prestoze sp nesmi byt prazdne.')
 
-    def test_230(self):
-        '20. Clear pc'
-        global CONTACT_INFO
-        key = 'pc'
-        CONTACT_INFO[key] = ''
-        epp_cli.update_contact(CONTACT_HANDLE, {'postal_info': {'addr':_get_address(CONTACT_INFO)}})
-        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
-    def test_235(self):
-        '... Check all values after clearing pc'
-        epp_cli.info_contact(CONTACT_HANDLE)
-        errors = unitest_share.compare_contact_info('contact', CONTACT_INFO, epp_cli.is_val('data'))
-        self.assert_(len(errors)==0, '\n'.join(errors))
+#    def test_230(self):
+#        '20. Clear pc'
+#        global CONTACT_INFO
+#        key = 'pc'
+#        keep_value = CONTACT_INFO[key]
+#        CONTACT_INFO[key] = ''
+#        epp_cli.update_contact(CONTACT_HANDLE, {'postal_info': {'addr':_get_address(CONTACT_INFO)}})
+#        CONTACT_INFO[key] = keep_value
+#        self.assertNotEqual(epp_cli.is_val(), 1000, 'Kontakt se aktualizoval prestoze pc nesmi byt prazdne.')
 
     def test_240(self):
         '21. Clear voice'
