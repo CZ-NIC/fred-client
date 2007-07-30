@@ -45,7 +45,7 @@ FRED_CONTACT = [
     'pc': '', #(nepovinný) PSČ
     'voice': '', #(nepovinný) telefon
     'fax': '', #(nepovinný) fax
-    'disclose': {'flag':'n', 'data':('addr','voice','fax','email', 'vat', 'ident', 'notify_email')},
+    'disclose': {'flag':'n', 'data':('voice','fax','email', 'vat', 'ident', 'notify_email')},
     'vat': '', #(nepovinný) DPH
     'ident': '', #(nepovinný) Ident
     'ident': {'type':'','number':''}, #(nepovinný) Ident
@@ -385,24 +385,3 @@ if __name__ == '__main__':
         unittest.TextTestRunner(verbosity=2).run(suite)
         if log_fp: log_fp.close()
 
-if 0:
-##if __name__ == '__main__':
-    # TEST equals data
-    DATA = (
-    #'2.3.1 Overevni vsech hodnot vznikleho kontaktu'
-    (FRED_CONTACT[1], {'contact:voice': u'+123.456789', 'contact:org': u'\u010c\xed\u017ekov\xe1 a spol', 'contact:fax': u'+321.564987', 'contact:status.s': u'ok', 'contact:disclose': ['name', 'org', 'addr', 'email', 'fax', 'voice'], 'contact:hide': [], 'contact:email': u'rehor.cizek@mail.cz', 'contact:city': u'\u010cesk\xfd Krumlov', 'contact:pc': u'12300', 'contact:crDate': u'2006-08-08T07:59:03.0Z', 'contact:street': [u'U pr\xe1ce', u'Za monitorem', u'Nad kl\xe1vesnic\xed'], 'contact:crID': u'REG-UNITTEST1', 'contact:sp': u'123', 'contact:roid': u'C0000426646-CZ', 'contact:cc': u'CZ', 'contact:name': u'\u0158eho\u0159 \u010c\xed\u017eek', 'contact:id': u'test001'}),
-    #'2.6 Info na existujici kontakt a overeni vsech hodnot'
-    (FRED_CONTACT[1], {'contact:voice': u'+123.456789', 'contact:org': u'\u010c\xed\u017ekov\xe1 a spol', 'contact:fax': u'+321.564987', 'contact:status.s': u'ok', 'contact:disclose': ['name', 'org', 'addr', 'voice', 'fax', 'email'], 'contact:hide': [], 'contact:email': u'rehor.cizek@mail.cz', 'contact:city': u'\u010cesk\xfd Krumlov', 'contact:pc': u'12300', 'contact:crDate': u'2006-08-08T07:59:03.0Z', 'contact:street': [u'U pr\xe1ce', u'Za monitorem', u'Nad kl\xe1vesnic\xed'], 'contact:crID': u'REG-UNITTEST1', 'contact:sp': u'123', 'contact:roid': u'C0000426646-CZ', 'contact:cc': u'CZ', 'contact:name': u'\u0158eho\u0159 \u010c\xed\u017eek', 'contact:id': u'test001'}),
-    #'2.7.1 Overevni vsech hodnot zmeneneho kontaktu'
-    (FRED_CONTACT[2], {'contact:voice': u'+321.987654', 'contact:org': u'Bolen\xed s.r.o.', 'contact:fax': u'+321.987564', 'contact:status.s': u'ok', 'contact:disclose': ['name', 'org', 'addr', 'voice', 'fax', 'email'], 'contact:hide': [], 'contact:email': u'breta.zlucnik@bricho.cz', 'contact:city': u'St\u0159evn\xedkov', 'contact:pc': u'23101', 'contact:crDate': u'2006-08-08T07:59:03.0Z', 'contact:street': (u'Na toaletách',u'U mísy'), 'contact:crID': u'REG-UNITTEST1', 'contact:sp': u'321', 'contact:roid': u'C0000426646-CZ', 'contact:cc': u'CZ', 'contact:name': u'B\u0159\xe9\u0165a \u017dlu\u010dn\xedk', 'contact:id': u'test001','contact:ident':'357','contact:notify_email':'info@zlucnikovi.cz','contact:vat':'753'}),
-    )
-    print '-'*60
-    for cols,vals in DATA:
-        errors = __info_contact__('contact', cols, vals)
-        if len(errors):
-            print "ERRORS:"
-            for e in errors:
-                print e
-        else:
-            print "OK, NO ERRORS."
-        print '_'*60

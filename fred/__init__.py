@@ -205,7 +205,7 @@ OPTIONS:
     flag (required)        Disclose flag (default y)
                            (y,n)
     data                   Data for with is set the flag value (list with max 9 items.)
-                           (addr,voice,fax,email,vat,ident,notify_email)
+                           (voice,fax,email,vat,ident,notify_email)
   vat                      VAT (Value-added tax)
   ident                    Identificator
     number (required)      Identificator number

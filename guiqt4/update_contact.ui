@@ -6,7 +6,7 @@
     <x>0</x>
     <y>0</y>
     <width>559</width>
-    <height>971</height>
+    <height>942</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -454,7 +454,7 @@ The EPP "update" command is used to update an instance of an existing object.
      <x>180</x>
      <y>580</y>
      <width>360</width>
-     <height>181</height>
+     <height>151</height>
     </rect>
    </property>
    <property name="title" >
@@ -468,58 +468,6 @@ The EPP "update" command is used to update an instance of an existing object.
       <width>85</width>
       <height>22</height>
      </rect>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="update_contact_disclose_addr" >
-    <property name="geometry" >
-     <rect>
-      <x>10</x>
-      <y>60</y>
-      <width>160</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text" >
-     <string>address</string>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="update_contact_disclose_fax" >
-    <property name="geometry" >
-     <rect>
-      <x>10</x>
-      <y>90</y>
-      <width>160</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text" >
-     <string>fax</string>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="update_contact_disclose_vat" >
-    <property name="geometry" >
-     <rect>
-      <x>10</x>
-      <y>120</y>
-      <width>160</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text" >
-     <string>VAT</string>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="update_contact_disclose_ident" >
-    <property name="geometry" >
-     <rect>
-      <x>10</x>
-      <y>150</y>
-      <width>160</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text" >
-     <string>ident</string>
     </property>
    </widget>
    <widget class="QCheckBox" name="update_contact_disclose_email" >
@@ -561,96 +509,51 @@ The EPP "update" command is used to update an instance of an existing object.
      <string>voice</string>
     </property>
    </widget>
-  </widget>
-  <widget class="QLabel" name="textLabel10" >
-   <property name="geometry" >
-    <rect>
-     <x>10</x>
-     <y>770</y>
-     <width>160</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text" >
-    <string>value-added tax</string>
-   </property>
-   <property name="wordWrap" >
-    <bool>false</bool>
-   </property>
-  </widget>
-  <widget class="QLabel" name="textLabel21" >
-   <property name="geometry" >
-    <rect>
-     <x>10</x>
-     <y>800</y>
-     <width>160</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text" >
-    <string>social security number</string>
-   </property>
-   <property name="wordWrap" >
-    <bool>false</bool>
-   </property>
-  </widget>
-  <widget class="QLabel" name="textLabel12" >
-   <property name="geometry" >
-    <rect>
-     <x>10</x>
-     <y>900</y>
-     <width>160</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text" >
-    <string>notify email</string>
-   </property>
-   <property name="wordWrap" >
-    <bool>false</bool>
-   </property>
-  </widget>
-  <widget class="QLabel" name="textLabel11" >
-   <property name="geometry" >
-    <rect>
-     <x>10</x>
-     <y>930</y>
-     <width>160</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text" >
-    <string>clTRID</string>
-   </property>
-   <property name="wordWrap" >
-    <bool>false</bool>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="update_contact_cltrid" >
-   <property name="geometry" >
-    <rect>
-     <x>180</x>
-     <y>930</y>
-     <width>360</width>
-     <height>22</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="update_contact_notify_email" >
-   <property name="geometry" >
-    <rect>
-     <x>180</x>
-     <y>900</y>
-     <width>360</width>
-     <height>22</height>
-    </rect>
-   </property>
+   <widget class="QCheckBox" name="update_contact_disclose_vat" >
+    <property name="geometry" >
+     <rect>
+      <x>10</x>
+      <y>90</y>
+      <width>160</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text" >
+     <string>VAT</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="update_contact_disclose_ident" >
+    <property name="geometry" >
+     <rect>
+      <x>10</x>
+      <y>120</y>
+      <width>160</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text" >
+     <string>ident</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="update_contact_disclose_fax" >
+    <property name="geometry" >
+     <rect>
+      <x>10</x>
+      <y>60</y>
+      <width>160</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text" >
+     <string>fax</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QGroupBox" name="groupBox2_2" >
    <property name="geometry" >
     <rect>
      <x>180</x>
-     <y>800</y>
+     <y>770</y>
      <width>360</width>
      <height>90</height>
     </rect>
@@ -708,11 +611,95 @@ The EPP "update" command is used to update an instance of an existing object.
     </property>
    </widget>
   </widget>
+  <widget class="QLineEdit" name="update_contact_notify_email" >
+   <property name="geometry" >
+    <rect>
+     <x>180</x>
+     <y>870</y>
+     <width>360</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="update_contact_cltrid" >
+   <property name="geometry" >
+    <rect>
+     <x>180</x>
+     <y>900</y>
+     <width>360</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="textLabel10" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>740</y>
+     <width>160</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>value-added tax</string>
+   </property>
+   <property name="wordWrap" >
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="textLabel21" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>770</y>
+     <width>160</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>social security number</string>
+   </property>
+   <property name="wordWrap" >
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="textLabel12" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>870</y>
+     <width>160</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>notify email</string>
+   </property>
+   <property name="wordWrap" >
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="textLabel11" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>900</y>
+     <width>160</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>clTRID</string>
+   </property>
+   <property name="wordWrap" >
+    <bool>false</bool>
+   </property>
+  </widget>
   <widget class="QLineEdit" name="update_contact_vat" >
    <property name="geometry" >
     <rect>
      <x>180</x>
-     <y>770</y>
+     <y>740</y>
      <width>360</width>
      <height>22</height>
     </rect>
@@ -736,7 +723,6 @@ The EPP "update" command is used to update an instance of an existing object.
   <tabstop>update_contact_auth_info</tabstop>
   <tabstop>disclose</tabstop>
   <tabstop>update_contact_disclose_flag</tabstop>
-  <tabstop>update_contact_disclose_addr</tabstop>
   <tabstop>update_contact_disclose_fax</tabstop>
   <tabstop>update_contact_disclose_voice</tabstop>
   <tabstop>update_contact_disclose_email</tabstop>
