@@ -190,7 +190,7 @@ will be generated automaticly after succefull transfer."""),('transfer_domain do
             ],'%s\n\n%s\n\n%s'%(_T("""
 The EPP 'create_contact' command is used to create an instance of the contact.
 Contact can be used for values of the owner, registrant or technical contact."""),notice['disclose'],notice['ident']),(
-            "create_contact CID:ID01 'Jan Novak' info@mymail.cz 'Narodni trida 1230/12' Praha 12000 CZ NULL 'Firma s.r.o.' mypassword  +420.222745111 +420.222745111 (y (org fax email)) 7035555556 (8888888856 op) info@mymail.cz",
+            "create_contact CID:ID01 'Jan Novak' info@mymail.cz 'Narodni trida 1230/12' Praha 12000 CZ NULL 'Firma s.r.o.' mypassword  +420.222745111 +420.222745111 (y (fax email)) 7035555556 (8888888856 op) info@mymail.cz",
             "create_contact CID:ID02 'Jan Ban' info@mail.com Street Brno 123000 CZ"
             )),
         #----------------------------------------------------
@@ -299,7 +299,7 @@ and maximum allowable period is defined in the Communication rules."""),('renew_
             )),
             ],'%s\n\n%s\n\n%s'%(_T("""The EPP 'update_contact' command is used to update values in the contact."""),notice['disclose'],notice['ident']),
                 (
-                    "update_contact CID:ID01 (('Jan Nowak' 'Firma s.r.o.' (('Na narodni 1230/12', 'Americka 12') Praha 12000 CZ  Vinohrady )) +420.222745111 +420.222745111 info@mymail.cz mypassword (y (org, voice, email)) 7035555556 (8888888856 ico) notify@mymail.cz)",
+                    "update_contact CID:ID01 (('Jan Nowak' 'Firma s.r.o.' (('Na narodni 1230/12', 'Americka 12') Praha 12000 CZ  Vinohrady )) +420.222745111 +420.222745111 info@mymail.cz mypassword (y (voice, email)) 7035555556 (8888888856 ico) notify@mymail.cz)",
                     "update_contact CID:ID01 (() NULL NULL NULL NULL () NULL () change.only@notify-mail.cz)",
             )),
         #----------------------------------------------------

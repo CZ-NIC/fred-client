@@ -39,7 +39,7 @@ except ImportError:
 
 UNBOUNDED = None
 # ''contact_disclose'' must be same format as eppdoc_client.update_status.
-DISCLOSES = ('name','org','addr','voice','fax','email', 'vat', 'ident', 'notify_email')
+DISCLOSES = ('addr','voice','fax','email', 'vat', 'ident', 'notify_email')
 contact_disclose = map(lambda n: (n,), DISCLOSES)
 history_filename = os.path.join(os.path.expanduser('~'),'.fred_history') # compatibility s MS Win
 

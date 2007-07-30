@@ -25,7 +25,7 @@ CONTACT_INFO = {   # create contact
     'pc': '12300', #(nepovinný) PSČ
     'voice': '+123.456789', #(nepovinný) telefon
     'fax': '+321.564987', #(nepovinný) fax
-    'disclose': {'flag':'n', 'data':('name',)},
+    'disclose': {'flag':'n', 'data':('voice',)},
     'vat': '963', #(nepovinný) DPH
     'ident': {'type':'op','number':'12345679'}, #(nepovinný) ident
     'notify_email': 'info@rehorovi.cz', #(nepovinný) oznámení na email

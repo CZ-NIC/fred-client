@@ -114,7 +114,6 @@ LIST_BY_COMMANDS = (
     )
 
 
-# ['name', 'org', 'addr', 'voice', 'fax', 'email', 'vat', 'ident', 'notify_email']
 contact_disclose = [n[0] for n in fred.eppdoc_assemble.contact_disclose]
 make_camell = fred.eppdoc_assemble.make_camell
 IDENT_TYPES = [n[0] for n in fred.eppdoc_client.IDENT_NAMES]
@@ -664,7 +663,7 @@ class FredMainWindow(QtGui.QDialog):
         if flag.isEnabled():
             disclose = {}
             d = ['flag'] + contact_disclose
-            for key in d: ## ('flag','name','org','addr','voice','fax','email', 'vat', 'ident', 'notify_email'):
+            for key in d:
                 append_key(disclose, key, getattr(wnd, prefix%key))
             dct['disclose'] = {
                 'flag': disclose['flag'] == 0 and 'y' or 'n',
