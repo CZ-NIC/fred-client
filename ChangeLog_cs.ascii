@@ -1,12 +1,7 @@
-FredClient 1.5.4
-
-Zmeny:
-    * Zruseny disclose name, org, addr
-
-
 FredClient 1.5.3
 
 Zmeny:
+    * Zruseny disclose name, org, addr
     * nova verze schemat contact 1.4 a fred-1.2
     * povinne hodnoty v kontaktu: ulice a PSC
     * premisteni polozek v create_contact a update_contact v souvislosti s povinnymi polozkami:
