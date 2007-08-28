@@ -1,3 +1,10 @@
+FredClient 1.5.4
+
+Zmeny:
+    * v info_domain odstranena duplicitni polozka "Last renew on", 
+      jeji hodnota je v "Expiration date" (domain:exDate)
+
+
 FredClient 1.5.3
 
 Zmeny:

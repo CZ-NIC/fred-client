@@ -523,7 +523,6 @@ def make_sort_by_names():
          ('upDate',      1,  _T('Last update on')),
          ('exDate',      1,  _T('Expiration date')),
          ('valExDate',   1,  _T('Validation expires at')), # vadit to date
-         ('renew',       1,  _T('Last renew on')),
          ('nsset',       1,  _T('NSSET ID')),
          ('authInfo',    1,  _T('Password for transfer')),
          ('status.s',    1,  _T('Status')),

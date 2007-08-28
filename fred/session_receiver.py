@@ -284,10 +284,6 @@ class ManagerReceiver(ManagerCommand):
                  'domain:contact','domain:contact type','domain:nsset',
                  'domain:crID','domain:clID','domain:upID',
                  'domain:crDate','domain:trDate','domain:upDate','domain:exDate','domain:authInfo'))
-            exDate = self.get_value_from_dict(('data','domain:exDate'))
-            if exDate:
-                m = re.match('\d{4}-\d{2}-\d{2}', exDate)
-                if m: self._dct_answer['data']['domain:renew'] = m.group(0) # value for renew-domain
             valExDate = eppdoc.get_dct_value(self._dict_answer['response'], ('extension','enumval:infData','enumval:valExDate'))
             if valExDate:
                 self._dct_answer['data']['domain:valExDate'] = valExDate
