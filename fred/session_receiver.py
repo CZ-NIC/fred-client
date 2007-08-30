@@ -654,13 +654,12 @@ class FredError(StandardError):
         self.args = (get_ltext(message),)
 
 
-def append_dct(dct,key,multiline):
+def append_dct(dct, key, value):
     'Appends value at the dict key.'
-    value = multiline.split('\n')
-    if len(value) == 1: value = value[0]
     if dct.has_key(key):
-        if type(dct[key]) is not list: dct[key] = [dct[key]]
-        getattr(dct[key], type(value) is list and 'extend' or 'append')(value)
+        if type(dct[key]) is not list:
+            dct[key] = [dct[key]] # keep all data in lists
+        getattr(dct[key], type(value) in (list, tuple) and 'extend' or 'append')(value)
     else:
         dct[key] = value
 

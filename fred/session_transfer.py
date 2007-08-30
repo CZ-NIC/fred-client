@@ -405,6 +405,13 @@ class ManagerTransfer(ManagerBase):
                 used.append(key)
                 continue
             value = dct_data.get(key,u'')
+            
+            if type(value) not in (list, tuple):
+                # split text into lines
+                lines = re.split('[\r\n]+', value)
+                if len(lines) > 1:
+                    value = lines
+                    
             if value not in ('',[]):
                 if is_check:
                     # Check response returns code and reason. Code is used to insert status into message.
@@ -547,6 +554,9 @@ class ManagerTransfer(ManagerBase):
                 key = key.strip() # client normaly trim whitespaces, but if you use sender, you can send everything...
                 value = dct_data.get(key,u'')
                 if value not in ('',[]):
+                    # nl2br: turnk ends of lines to HTML
+                    if type(value) not in (list, tuple):
+                        value = re.sub('\n', '<br/>\n', value)
                     if is_check:
                         # Tighten check response by code.
                         value = dct_data.get(key+':reason',u'')

@@ -4,6 +4,9 @@ Zmeny:
     * v info_domain odstranena duplicitni polozka "Last renew on", 
       jeji hodnota je v "Expiration date" (domain:exDate)
 
+Opravy:
+    * API is_val() opraven split enter
+
 
 FredClient 1.5.3
 
