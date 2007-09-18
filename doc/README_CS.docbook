@@ -142,8 +142,8 @@ verze schemat a další nastavení.
 </para>
 <para>
 Konfigurační soubor se implicitně hledá nejdříve v home uživatele (~/.fred_client.conf), 
-který skript spustil. Pokud tam není nalezen, hledá se v adresáři etc
-(/etc/fred_client.conf). Na POSIX systémech je to /etc, v MS Windows 
+který skript spustil. Pokud tam není nalezen, hledá se v adresáři etc/fred
+(/etc/fred/fred_client.conf). Na POSIX systémech je to /etc/fred, v MS Windows 
 to je v adresáři nastaveném v proměnné $ALLUSERSPROFILE.
 
 Přepínačem --config=filepath (nebo -f filepath) je možné konfigurační soubor 

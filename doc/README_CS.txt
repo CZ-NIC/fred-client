@@ -133,10 +133,10 @@ Konfiguracni soubor
 
    Konfiguracni soubor se implicitne hleda nejdrive v home uzivatele
    (~/.fred_client.conf), ktery skript spustil. Pokud tam neni nalezen, hleda
-   se v adresari etc (/etc/fred_client.conf). Na POSIX systemech je to /etc, v
-   MS Windows to je v adresari nastavenem v promenne $ALLUSERSPROFILE.
-   Prepinacem --config=filepath (nebo -f filepath) je mozne konfiguracni soubor
-   nacist z libovolneho souboru.
+   se v adresari etc/fred (/etc/fred/fred_client.conf). Na POSIX systemech je
+   to /etc/fred, v MS Windows to je v adresari nastavenem v promenne
+   $ALLUSERSPROFILE. Prepinacem --config=filepath (nebo -f filepath) je mozne
+   konfiguracni soubor nacist z libovolneho souboru.
 
    Pro zalozeni noveho konfiguracniho souboru je k dispozici priklad
    fred_client.conf.sample. Tento priklad muzete pouzit jako zaklad pro vas

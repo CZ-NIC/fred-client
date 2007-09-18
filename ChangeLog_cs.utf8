@@ -3,6 +3,9 @@ FredClient 1.5.4
 Změny:
     * v info_domain odstraněna duplicitní položka "Last renew on", 
       její hodnota je v "Expiration date" (domain:exDate)
+    * od verze 1.3.3 je fred_client.conf defaultně hledán v /etc/fred/ místo v /etc (týká se
+      jen posix systémů). Na této cestě je config hledán až v případě, že nebyl nalezen
+      v home uživatele.
 
 Opravy:
     * API is_val() opraven split enter
