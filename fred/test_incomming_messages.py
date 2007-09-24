@@ -642,4 +642,23 @@ data = ( # 0
     </trID>
   </response>
 </epp>"""), 
+    ('response', """<?xml version='1.0' encoding='utf-8' standalone="no"?>
+<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
+  <response>
+    <result code='2502'>
+      <msg lang='cs'>Session limit exceeded; server closing connection</msg>
+    </result>
+    <trID>
+      <clTRID>yltc012#07-09-24at15:31:12</clTRID>
+      <svTRID>ccReg-0000705643</svTRID>
+    </trID>
+  </response>
+</epp>
+"""), 
     )
+
+if __name__ == '__main__':
+    import session_transfer
+    m = session_transfer.ManagerTransfer()
+    print m.grab_command_name_from_xml(data[-1][1])
+

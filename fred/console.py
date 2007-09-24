@@ -36,10 +36,6 @@ duration of the particular processes. For enable this part of code
 you have to uncomment corresponding lines with PROFILER.
 """
 import sys, re, time
-try:
-    import readline
-except ImportError:
-    readline = None # for Unix like only
 
 import __init__
 from session_base import colored_output, VERBOSE, RECONNECT
@@ -82,7 +78,16 @@ Connection options:
   -n, --nologin    
                    Disable automatic connection to server at start
 """)
-                   
+
+def import_readline():
+    'Returns readline if exists'
+    try:
+        import readline
+    except ImportError:
+        readline = None
+    return readline
+
+
 def display_profiler(label, indent, debug_time):
     'For test only.'
     # For enable time uncomment all lines with PROFILER (and display_profiler)
@@ -117,7 +122,10 @@ def main(options):
     epp = __init__.ClientSession()
     if not check_options(epp): return # any option error occurs
     
+    readline = None
     if not options['command']:
+        # import readline if only not command mode
+        readline = import_readline()
         # join welcome message only in console mode
         epp.append_note(epp.welcome())
         
@@ -125,7 +133,7 @@ def main(options):
         epp.display() # display errors or notes
         return
 
-    epp.init_radline(readline) # readline behavior for Unix line OS
+    epp.init_readline(readline) # readline behavior for Unix line OS
     is_online = 0
     prompt = '> '
     online = prompt
@@ -137,7 +145,7 @@ def main(options):
         epp.display() # display errors or notes
         return
 
-    epp.restore_history()
+    epp.restore_history(readline)
     epp.display() # display errors or notes
     
     while 1:
@@ -166,7 +174,7 @@ def main(options):
                 break
             if command == '': continue
             if command in ('q','quit','exit'):
-                epp.remove_from_history()
+                epp.remove_from_history(readline)
                 epp.send_logout()
                 break
             
@@ -188,7 +196,7 @@ def main(options):
                 epp.display() # display errors or notes
                 if epp.is_confirm_cmd_name(command_name):
                     confirmation = raw_input('%s (y/N): '%_T('Do you really want to send this command to the server?'))
-                    epp.remove_from_history()
+                    epp.remove_from_history(readline)
                     if confirmation not in ('y','Y'): continue
                 #debug_time.append(('Save and restore history',time.time())) # PROFILER
                 epp.send(epp_doc)          # send to server
@@ -238,7 +246,7 @@ def main(options):
             break
     
     epp.close()
-    epp.save_history()
+    epp.save_history(readline)
     epp.display() # display logout messages
 
 def check_options(epp):

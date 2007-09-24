@@ -719,31 +719,33 @@ $fred_source_answer = '';      // source code (XML) of the answer prepared to di
             # init variables for notes and errros
             print self.get_init_php()
         
-    def save_history(self):
+    def save_history(self, readline):
         'Save history of command line.'
         if self._is_history:
-            eppdoc_client.eppdoc_assemble.save_history()
+            eppdoc_client.eppdoc_assemble.save_history(readline)
 
-    def restore_history(self):
+    def restore_history(self, readline):
         'Restore history of command line.'
         if self._is_history:
-            eppdoc_client.eppdoc_assemble.restore_history()
+            eppdoc_client.eppdoc_assemble.restore_history(readline)
 
-    def remove_from_history(self, count=1):
+    def remove_from_history(self, readline, count=1):
         'Remove count last commands from history.'
         if self._is_history:
-            eppdoc_client.eppdoc_assemble.remove_from_history(count)
+            eppdoc_client.eppdoc_assemble.remove_from_history(readline, count)
 
     #-------------------------------------
     # readline part
     #-------------------------------------
-    def init_radline(self, readline):
+    def init_readline(self, readline):
         'Init modul readline'
         if readline:
             readline.parse_and_bind("tab: complete")
             readline.set_completer(self.complete)
             readline.set_startup_hook(self.readline_startup_hook)
             self.readline = readline
+            self._epp_cmd.readline = readline
+            self._epp_response.readline = readline
 
     def __get_readline_words__(self, buffer):
         'Find set of words to choose in the prompt help'

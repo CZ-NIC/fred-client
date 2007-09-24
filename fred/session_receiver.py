@@ -115,6 +115,11 @@ class ManagerReceiver(ManagerCommand):
                 except ValueError, msg:
                     self._dct_answer['code'].append('%s: %s'%(_T('Invalid response code'),msg))
                     code = 0
+
+                if code == 2502:
+                    # Message: Session limit exceeded; server closing connection
+                    self._session[ONLINE] = 0 # logoff
+                    
                 reason = eppdoc.get_dct_value(result,'msg')
                 self._dct_answer['code'] = code
                 self._dct_answer['reason'] = reason

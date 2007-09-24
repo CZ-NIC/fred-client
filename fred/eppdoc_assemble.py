@@ -31,11 +31,6 @@ import session_base
 from translate import encoding
 from eppdoc import Message as MessageBase, SCHEMA_PREFIX
 
-try:
-    import readline
-    readline_is_present = 1
-except ImportError:
-    readline_is_present = 0
 
 UNBOUNDED = None
 # ''contact_disclose'' must be same format as eppdoc_client.update_status.
@@ -47,6 +42,8 @@ TAG_clTRID = 'cltrid' # Definition for --key-name = clTRID value.
 
 # Pattern (re.search(pattern)) for resolve ENUM domain type:
 ENUM_DOMAIN_TYPE_PATT = '\.e164\.arpa$'
+
+
 
 
 class Message(MessageBase):
@@ -472,7 +469,7 @@ class Message(MessageBase):
                 session_base.print_unicode('${BOLD}${YELLOW}%s${NORMAL}'%_T('Does not have any parameters, skipping interactive input mode.'))
             else:
                 session_base.print_unicode('${BOLD}%s${NORMAL}'%_T('Interactive input mode started. Press Ctrl+C to abort or Ctrl+D to finish command.'))
-                history_length = get_history_length()
+                history_length = get_history_length(self.readline)
                 user_typed_null, stop = self.__interactive_mode__(command_name, vals[1], dct, null_value)
                 if stop: stop -= 1 # 0 - normal; 1 - Finish command => normal; 2 - Abort => break interact.m. but not whole application;
                 if not stop: # user press ! or Ctrl+C or Ctrl+D
@@ -486,7 +483,7 @@ class Message(MessageBase):
                         stop = 1 # KeyboardInterrupt: Ctrl+C - Abort (Cancel)
                         example = ''
                         session_base.print_unicode('\n${BOLD}%s${NORMAL}'%_T('Command has been aborted.'))
-                remove_from_history(get_history_length() - history_length)
+                remove_from_history(get_history_length(self.readline) - history_length)
             errors = []
         else:
             errors = cmd_parser.parse(dct, columns, cmd)
@@ -1257,9 +1254,9 @@ class Message(MessageBase):
 #-----------------------------------------------------
 # Support of command line history
 #-----------------------------------------------------
-def save_history():
+def save_history(readline):
     'Save history of command line.'
-    if readline_is_present:
+    if readline:
         # Set maximum to 100 lines
         readline.set_history_length(100)
         try:
@@ -1267,25 +1264,25 @@ def save_history():
         except IOError, msg:
             print 'History IOError:',msg # some problem with history
 
-def restore_history():
+def restore_history(readline):
     'Restore history of command line.'
-    if readline_is_present:
+    if readline:
         try:
             readline.read_history_file(history_filename) # restore history (flush interactive params)
         except IOError, msg:
             pass # history doesn't exist, but no problem :-)
 
-def remove_from_history(count=1):
+def remove_from_history(readline, count=1):
     'Remove count last commands from history.'
-    if readline_is_present:
+    if readline:
         len = readline.get_current_history_length()
         if (len - count) >= 0:
             for pos in range(1,count+1):
                 readline.remove_history_item(len-pos)
 #-----------------------------------------------------
 
-def get_history_length():
-    return readline_is_present and readline.get_current_history_length() or 0
+def get_history_length(readline):
+    return readline and readline.get_current_history_length() or 0
             
 def __has_key__(dct, key):
     'Check if key exists and if any value is set. (dct MUST be in format: dct[key] = [{...}, ...])'

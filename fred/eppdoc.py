@@ -77,6 +77,7 @@ class Message:
         }
         self.set_schema_version('epp', VERSION_VERSION)
         self.getresults_loop = 0 # indicate if client starts messages loop
+        self.readline = None
 
     def get_schema_names(self):
         return self.schema_version.keys()
