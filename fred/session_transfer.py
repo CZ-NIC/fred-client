@@ -408,9 +408,12 @@ class ManagerTransfer(ManagerBase):
             
             if type(value) not in (list, tuple):
                 # split text into lines
-                lines = re.split('[\r\n]+', value)
-                if len(lines) > 1:
-                    value = lines
+                if type(value) is int:
+                    value = str(value)
+                else:
+                    lines = re.split('[\r\n]+', value)
+                    if len(lines) > 1:
+                        value = lines
                     
             if value not in ('',[]):
                 if is_check:

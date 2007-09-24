@@ -11,6 +11,8 @@ Změny:
 Opravy:
     * API is_val() opraven split enter
     * Odeslání příkazu logout při spuštění klienta v režimu jednoho příkazu (--command=COMMAND).
+    * Oprava výpisu odpovědi na příkazy check_...()
+    * Načítání mofulu readline se při módu --command vypíná.
 
 FredClient 1.5.3
 
