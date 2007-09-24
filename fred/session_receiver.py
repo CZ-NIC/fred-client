@@ -490,7 +490,12 @@ class ManagerReceiver(ManagerCommand):
         
         while 1:
             self._loop_status = LOOP_INSIDE # inside loop
-            self.api_command('get_results')
+            try:
+                self.api_command('get_results')
+            except FredError, fe:
+                self.append_error('\n'.join(fe.args))
+                self.display() # display errors or notes
+                break
             run_loop = self._dct_answer.get('data', {'count':0}).get('count', 0)
             if run_loop < 1:
                 self._loop_status = LOOP_LAST_STEP

@@ -58,3 +58,7 @@ verbose = 2
 ;; Symbol %d is replaced by number of the command.
 ;; Value 04 between % and d pads all numbers to four digits (leading zero).
 ; cltrid = myid%04d
+
+;; Reconnect automaticly if connection fell down (default yes)
+; reconnect = no
+

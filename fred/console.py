@@ -42,7 +42,7 @@ except ImportError:
     readline = None # for Unix like only
 
 import __init__
-from session_base import colored_output, VERBOSE
+from session_base import colored_output, VERBOSE, RECONNECT
 from translate import options, option_errors, script_name
 
 help_option = _T("""
@@ -195,6 +195,21 @@ def main(options):
                 #debug_time.append(('SEND to server',time.time())) # PROFILER
                 xml_answer = epp.receive()     # receive answer
                 #debug_time.append(('RECEIVE from server',time.time())) # PROFILER
+                
+                # if connection was interrupted try ro reconnect
+                # disabled for --command and also can be reset in config file.
+                if not epp.is_connected() and not options['command'] and epp.get_session(RECONNECT):
+                    epp.display() # display errors or notes
+                    # try reconnect and send command again
+                    epp.append_note(_T('Try to automaticly reconnect - send login.'))
+                    if not epp.automatic_login():
+                        epp.display() # display errors or notes
+                        break
+                    if epp.is_connected():
+                        # if login has been succefull send command again to the server
+                        epp.send(epp_doc)
+                        xml_answer = epp.receive() # receive answer
+                
                 if epp.is_connected():
                     is_valid = make_validation(epp, xml_answer, _T('Server answer XML document failed to validate.'))
                     #debug_time.append(('Validation',time.time())) # PROFILER
@@ -219,8 +234,9 @@ def main(options):
         if options['command']:
             # non-interactive mode (command from command line options)
             # It does only one EPP command and stops.
+            epp.send_logout('not-display-output')
             break
-        
+    
     epp.close()
     epp.save_history()
     epp.display() # display logout messages

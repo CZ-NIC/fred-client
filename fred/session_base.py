@@ -39,7 +39,7 @@ colored_output = terminal_controler.TerminalController()
 # The column names for data holding by manager.
 ONLINE, CMD_ID, LANG, POLL_AUTOACK, CONFIRM_SEND_COMMAND, \
    USERNAME, SESSION, HOST, COLORS, VALIDATE, VERBOSE, SORT_BY_COLUMNS, NULL_VALUE, \
-   TRANSLATE_ANSWER_COLUMN_NAMES, OUTPUT_TYPE, CLTRID = range(16)
+   TRANSLATE_ANSWER_COLUMN_NAMES, OUTPUT_TYPE, CLTRID, RECONNECT = range(17)
 # The column names for default values
 DEFS_LENGTH = 4
 LANGS,objURI,extURI,PREFIX = range(DEFS_LENGTH)
@@ -77,7 +77,8 @@ class ManagerBase:
                 'NULL', # NULL_VALUE
                 1,      # TRANSLATE_ANSWER_COLUMN_NAMES, TEST only
                 'text', # OUTPUT_TYPE (text, html)
-                None,  # CLTRID
+                None,   # CLTRID
+                'yes',  # RECONNECT
                 ]
         self._external_validator = 'xmllint'
         # defaults
@@ -574,6 +575,11 @@ $fred_client_errors = array(); // errors occuring during communication
             cltrid = self.get_config_value(section, 'cltrid', OMIT_ERROR)
         if cltrid and len(cltrid):
             self._session[CLTRID] = cltrid
+            
+        reconnect = self.get_config_value(section, 'reconnect', OMIT_ERROR)
+        if reconnect == 'no':
+            self._session[RECONNECT] = None
+        
         return 1 # OK
 
     def parse_verbose_value(self, verbose):

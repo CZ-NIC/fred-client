@@ -287,6 +287,13 @@ V sekci <emphasis>session</emphasis> jsou tato nastavení:</para>
     </para>
     </listitem>
 
+    <listitem>
+    <para><emphasis role='bold'>reconnect</emphasis> = no</para>
+    <para>V případě, že se během komunikace spojení přeruší, se klient pokusí
+    spojení znovu navázat. Tímto zápisem se funkce automatického navázání spojení vypne.
+    </para>
+    </listitem>
+
 </itemizedlist>
 
 <para>V sekci <emphasis>connect</emphasis> jsou tato nastavení:</para>

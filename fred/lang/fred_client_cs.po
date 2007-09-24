@@ -222,6 +222,9 @@ msgstr "Nejste připojeni."
 msgid "Do you really want to send this command to the server?"
 msgstr "Opravdu chcete odeslat tento poříkaz na server?"
 
+msgid "Try to automaticly reconnect - send login."
+msgstr "Pokus o obnovení spojení - odesílám login."
+
 #: fred/console.py:199 fred/session_receiver.py:631
 #: fred/session_receiver.py:635
 msgid "Server answer XML document failed to validate."

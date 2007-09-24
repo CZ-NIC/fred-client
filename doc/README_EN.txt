@@ -220,6 +220,8 @@ Configuration file
        The cltrID (client transaction ID) value. The %d symbol
        is replaced by the command number. The value between % and d rounds the number to four digits
        (zero is added).
+     * reconnect = no
+       In case if connection fell down client try to reconnect. Type this phrase is behivor disabled.
 
    The connect section contains the following settings:
      * dir = path to folder with certificates

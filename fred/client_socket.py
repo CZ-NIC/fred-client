@@ -265,6 +265,9 @@ class Lorry:
                 self._conn_ssl = None
             except (KeyboardInterrupt,EOFError):
                 self.append_error(_T('Interrupted by user'))
+        self._conn = None
+        self._conn_ssl = None
+
 
 if __name__ == '__main__':
     import sys
