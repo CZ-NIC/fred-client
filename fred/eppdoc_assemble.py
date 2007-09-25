@@ -483,7 +483,7 @@ class Message(MessageBase):
                         stop = 1 # KeyboardInterrupt: Ctrl+C - Abort (Cancel)
                         example = ''
                         session_base.print_unicode('\n${BOLD}%s${NORMAL}'%_T('Command has been aborted.'))
-                remove_from_history(get_history_length(self.readline) - history_length)
+                remove_from_history(self.readline, get_history_length(self.readline) - history_length)
             errors = []
         else:
             errors = cmd_parser.parse(dct, columns, cmd)

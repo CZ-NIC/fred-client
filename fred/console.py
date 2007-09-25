@@ -204,9 +204,16 @@ def main(options):
                 xml_answer = epp.receive()     # receive answer
                 #debug_time.append(('RECEIVE from server',time.time())) # PROFILER
                 
-                # if connection was interrupted try ro reconnect
-                # disabled for --command and also can be reset in config file.
-                if not epp.is_connected() and not options['command'] and epp.get_session(RECONNECT):
+                # try ro reconnect
+                #   if connection was interrupted 
+                #   and console is not in --command mode
+                #   and config doesn't disable reconnection
+                #   and answer is not code 2502 (Session limit exceeded; server closing connection)
+                if not epp.is_connected() \
+                    and not options['command'] \
+                    and epp.get_session(RECONNECT):
+##                    and epp.get_answer_dct().get('code') != 2502:
+                    
                     epp.display() # display errors or notes
                     # try reconnect and send command again
                     epp.append_note(_T('Try to automaticly reconnect - send login.'))
@@ -234,9 +241,15 @@ def main(options):
                     #if options['timer']:
                     #    display_profiler('Main LOOP time profiler','',debug_time)
                     #    display_profiler('From Main LOOP only "Parse answer"','\t',debug_time_answer)
+            
+##            if epp.get_answer_dct().get('code') == 2502:
+##                # Message: Session limit exceeded; server closing connection
+##                self.send_logout() # and close connection
+
             if is_valid and command_name == 'logout':
                 # only if we are online and command XML document is valid
                 epp.close() # close connection but not client
+                
         epp.display() # display errors or notes
         
         if options['command']:
