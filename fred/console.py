@@ -163,6 +163,8 @@ def main(options):
         if options['command']:
             # non-interactive mode (command from command line options)
             command = options['command']
+            # disable confirm mode
+            epp.set_confirm('OFF')
         else:
             # interactive mode
             try:
@@ -212,7 +214,6 @@ def main(options):
                 if not epp.is_connected() \
                     and not options['command'] \
                     and epp.get_session(RECONNECT):
-##                    and epp.get_answer_dct().get('code') != 2502:
                     
                     epp.display() # display errors or notes
                     # try reconnect and send command again
@@ -241,10 +242,6 @@ def main(options):
                     #if options['timer']:
                     #    display_profiler('Main LOOP time profiler','',debug_time)
                     #    display_profiler('From Main LOOP only "Parse answer"','\t',debug_time_answer)
-            
-##            if epp.get_answer_dct().get('code') == 2502:
-##                # Message: Session limit exceeded; server closing connection
-##                self.send_logout() # and close connection
 
             if is_valid and command_name == 'logout':
                 # only if we are online and command XML document is valid

@@ -405,6 +405,8 @@ class ManagerTransfer(ManagerBase):
                 used.append(key)
                 continue
             value = dct_data.get(key,u'')
+            if value is None:
+                value = u''
             
             if type(value) not in (list, tuple):
                 # split text into lines

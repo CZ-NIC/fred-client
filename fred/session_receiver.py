@@ -408,7 +408,9 @@ class ManagerReceiver(ManagerCommand):
                 dct['code'] = self._dct_answer['code']
                 dct['reason'] = 'req: %s\n%sack: %s'%(dct['reason'],' '*(self._ljust+1), self._dct_answer['reason'])
                 data = dct['data']
-                data['msgQ.count'] = self.get_value_from_dict(('data','msgQ.count'),self._dct_answer)
+                data['msgQ.count'] = self.get_value_from_dict(('data','msgQ.count'), self._dct_answer)
+                if data['msgQ.count'] is None:
+                    data['msgQ.count'] = 0
                 if self.get_value_from_dict(('data','msg'),self._dct_answer):
                     data['msg'] = '\n'.join((data['msg'], self._dct_answer['data']['msg']))
                 if len(self._dct_answer['errors']): dct['errors'].extend(self._dct_answer['errors'])

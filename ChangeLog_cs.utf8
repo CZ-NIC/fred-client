@@ -1,6 +1,7 @@
 FredClient 1.5.4
 
 Změny:
+    * automatické vypnutí confirm režimu při command módu.
     * v info_domain odstraněna duplicitní položka "Last renew on", 
       její hodnota je v "Expiration date" (domain:exDate)
     * od verze 1.3.3 je fred_client.conf defaultně hledán v /etc/fred/ místo v /etc (týká se
@@ -9,6 +10,7 @@ Změny:
     * Automatické navázání spojení, pokud se přeruší.
 
 Opravy:
+    * oprava výpisu počtu zpráv při poll dotazu.
     * API is_val() opraven split enter
     * Odeslání příkazu logout při spuštění klienta v režimu jednoho příkazu (--command=COMMAND).
     * Oprava výpisu odpovědi na příkazy check_...()
