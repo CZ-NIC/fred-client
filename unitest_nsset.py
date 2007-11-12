@@ -260,9 +260,38 @@ class Test(unittest.TestCase):
         epp_cli.create_nsset(d['id'], dns, d['tech'], d['auth_info'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
     
+    def test_060(self):
+        '3.5.4.0 Pokus o zalozeni nssetu s neplatnym DNS: ...cz'
+        d = FRED_DATA[1]
+        d['dns'][1]['name'] = '...cz'
+        epp_cli.create_nsset(d['id'], d['dns'], d['tech'], d['auth_info'])
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
+    def test_061(self):
+        '3.5.4.1 Pokus o zalozeni nssetu s neplatnym DNS: .pokus.cz'
+        d = FRED_DATA[1]
+        d['dns'][1]['name'] = '.pokus.cz'
+        epp_cli.create_nsset(d['id'], d['dns'], d['tech'], d['auth_info'])
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
+    def test_062(self):
+        '3.5.4.2 Pokus o zalozeni nssetu s neplatnym DNS: pokus..cz'
+        d = FRED_DATA[1]
+        d['dns'][1]['name'] = 'pokus..cz'
+        epp_cli.create_nsset(d['id'], d['dns'], d['tech'], d['auth_info'])
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
+    def test_063(self):
+        '3.5.4.3 Pokus o zalozeni nssetu s neplatnym DNS: pokus..test.cz'
+        d = FRED_DATA[1]
+        d['dns'][1]['name'] = 'pokus..test.cz'
+        epp_cli.create_nsset(d['id'], d['dns'], d['tech'], d['auth_info'])
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
     def test_076(self):
         '3.5.6 Zalozeni neexistujiciho noveho nssetu'
         d = FRED_DATA[1]
+        d['dns'][1]['name'] = 'ns.name2.cz' # obnoveni puvodniho stavu
         epp_cli.create_nsset(d['id'], d['dns'], d['tech'], d['auth_info'])
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
@@ -324,18 +353,56 @@ class Test(unittest.TestCase):
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_100(self):
-        '3.10.1 Zmena jen auth_info'
+        '3.10.0 Zmena jen auth_info'
         FRED_DATA[3]['auth_info'] = 'zmena-jen-hesla'
         epp_cli.update_nsset(FRED_DATA[3]['id'], None, None, FRED_DATA[3]['auth_info'])
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
-    def test_105(self):
-        '3.10.2 Kontrola zmenenych udaju po zmene pouze auth_info'
+    def test_101(self):
+        '3.10.1 Kontrola zmenenych udaju po zmene pouze auth_info'
         epp_cli.info_nsset(FRED_DATA[3]['id'])
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         errors = unitest_share.compare_nsset_info(epp_cli, FRED_DATA[3], epp_cli.is_val('data'))
         self.assert_(len(errors)==0, '\n'.join(errors))
+
+    def test_102(self):
+        '3.10.2 Update neplatneho DNS: .cz'
+        newdns = {'name':'.cz','addr':('217.31.207.130','217.31.207.129')}
+        epp_cli.update_nsset(FRED_HANDLE, {'dns':newdns})
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
+    def test_103(self):
+        '3.10.3 Update neplatneho DNS: ...cz'
+        newdns = {'name':'...cz','addr':('217.31.207.130','217.31.207.129')}
+        epp_cli.update_nsset(FRED_HANDLE, {'dns':newdns})
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         
+    def test_104(self):
+        '3.10.4 Update neplatneho DNS: .pokus.cz'
+        newdns = {'name':'.pokus.cz','addr':('217.31.207.130','217.31.207.129')}
+        epp_cli.update_nsset(FRED_HANDLE, {'dns':newdns})
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
+    def test_105(self):
+        '3.10.5 Update neplatneho DNS: pokus..cz'
+        newdns = {'name':'pokus..cz','addr':('217.31.207.130','217.31.207.129')}
+        epp_cli.update_nsset(FRED_HANDLE, {'dns':newdns})
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
+    def test_106(self):
+        '3.10.6 Update neplatneho DNS: pokus..test.cz'
+        newdns = {'name':'pokus..test.cz','addr':('217.31.207.130','217.31.207.129')}
+        epp_cli.update_nsset(FRED_HANDLE, {'dns':newdns})
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
+    def test_108(self):
+        '3.10.8 Pokus o odebrani dvou stejnych DNS'
+        nsname = FRED_DATA[2]['rem']['name'][0]
+        rem = {'name':(nsname, nsname)}
+        epp_cli.update_nsset(FRED_HANDLE, None, rem)
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
+
 ##    def test_100(self):
 ##        '3.10 Update stavu clientDeleteProhibited a pokus o smazani'
 ##        status = 'clientDeleteProhibited'
@@ -518,6 +585,8 @@ class Test(unittest.TestCase):
 
     def test_156(self):
         '3.16.1 Vymazani vsech poll zprav z fronty kvuli generovani poll zpravy z transferu'
+        # disable settings autoack
+        epp_cli._epp._session[fred.session_base.POLL_AUTOACK] = 0
         epp_cli.poll('req')
         self.failIf(epp_cli.is_val() not in (1000, 1300, 1301), unitest_share.get_reason(epp_cli))
         poll_msg_count = epp_cli.is_val(('data','msgQ.count'))
@@ -550,6 +619,7 @@ class Test(unittest.TestCase):
     def test_162(self):
         '3.16.4 Poll req - Kontrola, ze byla vygenerovana zprava o transferu.'
         global poll_msg_id
+        # disable settings autoack
         epp_cli.poll('req')
         self.assertEqual(epp_cli.is_val(), 1301, 'Poll zprava chybi, prestoze mela existovat.')
         msg = epp_cli.is_val(('data','msg'))
@@ -562,7 +632,8 @@ class Test(unittest.TestCase):
         '3.16.5 Poll ack - Vyrazeni zpravy o transferu z fronty.'
         self.failIf(type(poll_msg_id) is not int, 'Chybi ID poll zpravy')
         epp_cli.poll('ack', poll_msg_id)
-        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+        if epp_cli.is_val() not in (1000, 1300):
+            self.assertEqual(0, 1, unitest_share.get_reason(epp_cli))
         
     def test_164(self):
         '3.16.6 Druhy registrator: Zjisteni noveho hesla'
@@ -618,9 +689,15 @@ class Test(unittest.TestCase):
         epp_cli.delete_nsset(FRED_NSSET3)
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
+    def test_320(self):
+        '3.5 Pokus o vytvoreni nssetu, ktery byl prave smazan a musi byt v ochranne zone'
+        d = FRED_DATA[1]
+        epp_cli.create_nsset(d['id'], d['dns'], d['tech'], d['auth_info'])
+        self.assertEqual(epp_cli.is_val(), 2005, unitest_share.get_reason(epp_cli))
+        
 
     def test_900(self):
-        '3.23 Smazani pomocnych kontaktu'
+        '3.END Smazani pomocnych kontaktu'
         epp_cli.delete_contact(FRED_CONTACT1)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         epp_cli.delete_contact(FRED_CONTACT2)

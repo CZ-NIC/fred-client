@@ -272,6 +272,9 @@ def compare_contact_info(prefix, cols, scope, key=None, pkeys=[]):
                     vals = tuple(data[key])
                 else:
                     vals = data[key]
+                    # converts string to array
+                    if key == 'contact:street':
+                        vals = vals.split('\n')
                 if not are_equal(vals,v):
                     errors.append('Data nesouhlasi:\n%s.%s JSOU:%s MELY BYT:%s'%(prevkeys, key, make_str(vals), make_str(v)))
         else:
@@ -362,6 +365,8 @@ def compare_nsset_info(epp_cli, cols, data):
     err_not_equal(errors, data, 'nsset:id', cols['id'])
 
     tech = data.get('nsset:tech', [])
+    if type(tech) in (str, unicode):
+        tech = tech.split('\n')
     if type(tech) not in (list, tuple):
         tech = (tech, )
     if not are_equal(tech, cols['tech']):

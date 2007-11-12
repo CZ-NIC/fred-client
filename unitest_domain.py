@@ -312,7 +312,7 @@ class TestDomain(unittest.TestCase):
         global domain_renew
         # ziskani hodnoty cur_exp_date
         epp_cli.info_domain(FRED_DOMAIN2)
-        domain_renew = epp_cli.is_val(('data','domain:renew')) # cur_exp_date
+        domain_renew = epp_cli.is_val(('data','domain:exDate')) # (puvodni domain:renew) cur_exp_date
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_172(self):
@@ -383,7 +383,7 @@ class TestDomain(unittest.TestCase):
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         # prodlozeni o nastavenou periodu
         period = {'num':'3','unit':'y'}
-        renew = epp_cli.is_val(('data','domain:renew')) # cur_exp_date
+        renew = epp_cli.is_val(('data','domain:exDate')) # (domain:renew) cur_exp_date
         unitest_share.reset_client(epp_cli)
         epp_cli.renew_domain(FRED_DOMAIN1, renew, period)
         unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(2,3))
@@ -510,6 +510,8 @@ class TestDomain(unittest.TestCase):
     def test_290(self):
         '4.24.2 Poll req - Kontrola, ze byla vygenerovana zprava o transferu.'
         global poll_msg_id
+        # disable settings autoack
+        epp_cli._epp._session[fred.session_base.POLL_AUTOACK] = 0
         epp_cli.poll('req')
         self.assertEqual(epp_cli.is_val(), 1301, 'Poll zprava chybi, prestoze mela existovat.')
         msg = epp_cli.is_val(('data','msg'))
@@ -523,7 +525,8 @@ class TestDomain(unittest.TestCase):
         '4.24.3 Poll ack - Vyrazeni zpravy o transferu z fronty.'
         self.failIf(type(poll_msg_id) is not int, 'Chybi ID poll zpravy')
         epp_cli.poll('ack', poll_msg_id)
-        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+        if epp_cli.is_val() not in (1000, 1300):
+            self.assertEqual(0, 1, unitest_share.get_reason(epp_cli))
 
 
 

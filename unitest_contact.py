@@ -359,16 +359,27 @@ class TestContact(unittest.TestCase):
 
     def test_220(self):
         '2.22 Poll request'
+        global id_message
         # 1000 OK (ack)
         # 1300 No messages
         # 1301 Any message
+        
+        # disable settings autoack
+        epp_cli._epp._session[fred.session_base.POLL_AUTOACK] = 0
+        
         epp_cli.poll('req')
         if epp_cli.is_val() not in (1000,1300,1301):
             self.assertEqual(0, 1, unitest_share.get_reason(epp_cli))
         id_message = epp_cli.is_val(('data','msgQ.id'))
+
+    def test_223(self):
+        '2.23 Poll ack'
         if id_message:
             epp_cli.poll('ack', id_message)
-            self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+            if epp_cli.is_val() not in (1000, 1300):
+                self.assertEqual(0, 1, unitest_share.get_reason(epp_cli))
+        else:
+            self.__testMethodDoc += ' skip test (no message ID)'
 
 
 

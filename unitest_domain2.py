@@ -175,6 +175,12 @@ class TestDomain(unittest.TestCase):
         d = DOMAIN
         epp_cli.delete_domain(d['name'])
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
+#    def test_311(self):
+#        '11.1 Pokus o vytvoreni domeny, ktera byla prave smazana a musi byt v ochranne zone'
+#        d = DOMAIN
+#        epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], d['nsset'], d['period'], d['contact'])
+#        self.assertEqual(epp_cli.is_val(), 2005, unitest_share.get_reason(epp_cli))
         
     def test_350(self):
         '12. Smazani 2. pomocneho nssetu'
