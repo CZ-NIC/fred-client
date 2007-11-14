@@ -91,7 +91,37 @@ FRED_DATA = (
     'reportlevel':'0',
     },
     #-------------------------------------------------------
+    { # 4. invalid DNS
+    'id': FRED_HANDLE, # (required)
+    'auth_info': 'heslo', # (required)
+    'dns': ( # (required)               list with max 9 items.
+        {'name': 'ns.name1.cz', 'addr': ('217.31.207.130','217.31.207.129','217.31.207.128') },
+        {'name': 'ns.name2.cz', 'addr': ('217.31.206.130','217.31.206.129','217.31.206.128') },
+        ),
+    'tech': (FRED_CONTACT1,),  # (optional)             unbounded list
+    'reportlevel':'0',
+    },
+    
 )
+
+# list of handles what hasn't been created and now must be deleted
+HANDLES_TO_DELETE = [] # create
+HANDLES_TO_REMOVE = [] # update add
+
+def get_nssid_handle():
+    'Must be always unique by cause of the protected time'
+    return unitest_share.create_handle('NSSID:INV%02d' % len(HANDLES_TO_DELETE))
+
+def append_created_handle(epp_cli, handle):
+    global HANDLES_TO_DELETE
+    if epp_cli.is_val() == 1000:
+        HANDLES_TO_DELETE.append(handle)
+
+def append_updated_handle(epp_cli, name):
+    global HANDLES_TO_REMOVE
+    if epp_cli.is_val() == 1000:
+        HANDLES_TO_REMOVE.append(name)
+
 
 class Test(unittest.TestCase):
 
@@ -198,26 +228,35 @@ class Test(unittest.TestCase):
 
     def test_045(self):
         '3.4.5 Pokus o zalozeni nssetu s nepovolenym GLUE (Ticket #111)'
-        d = FRED_DATA[1]
+        d = FRED_DATA[4]
+        handle = get_nssid_handle()
         dns = list(d['dns'])
         dns.append({'name': 'ns.name1.net', 'addr': ('217.31.207.130','217.31.207.129','217.31.207.128') })
-        epp_cli.create_nsset(d['id'], dns, d['tech'], d['auth_info'])
+        epp_cli.create_nsset(handle, dns, d['tech'], d['auth_info'])
+        # if nsset has been created append handle for delete it later
+        append_created_handle(epp_cli, handle)
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_046(self):
         '3.4.6 Pokus o zalozeni nssetu s vyhrazenou IP: 127.0.0.1'
-        d = FRED_DATA[1]
+        d = FRED_DATA[4]
+        handle = get_nssid_handle()
         dns = list(d['dns'])
         dns.append({'name': 'ns.myname1.cz', 'addr': ('217.31.207.130','127.0.0.1') })
-        epp_cli.create_nsset(d['id'], dns, d['tech'], d['auth_info'])
+        epp_cli.create_nsset(handle, dns, d['tech'], d['auth_info'])
+        # if nsset has been created append handle for delete it later
+        append_created_handle(epp_cli, handle)
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
     
     def test_047(self):
         '3.4.7 Pokus o zalozeni nssetu s neplatnou IP: 217.31.130.256'
-        d = FRED_DATA[1]
+        d = FRED_DATA[4]
+        handle = get_nssid_handle()
         dns = list(d['dns'])
         dns.append({'name': 'ns.myname1.cz', 'addr': ('217.31.207.130','217.31.130.256') })
-        epp_cli.create_nsset(d['id'], dns, d['tech'], d['auth_info'])
+        epp_cli.create_nsset(handle, dns, d['tech'], d['auth_info'])
+        # if nsset has been created append handle for delete it later
+        append_created_handle(epp_cli, handle)
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
     
     #def test_048(self):
@@ -238,56 +277,137 @@ class Test(unittest.TestCase):
 
     def test_051(self):
         '3.5.1 Pokus o zalozeni nssetu s vyhrazenou IP: 10.0.0.0'
-        d = FRED_DATA[1]
+        d = FRED_DATA[4]
+        handle = get_nssid_handle()
         dns = list(d['dns'])
         dns.append({'name': 'ns.myname1.cz', 'addr': ('217.31.207.130','10.0.0.0') })
-        epp_cli.create_nsset(d['id'], dns, d['tech'], d['auth_info'])
+        epp_cli.create_nsset(handle, dns, d['tech'], d['auth_info'])
+        # if nsset has been created append handle for delete it later
+        append_created_handle(epp_cli, handle)
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_052(self):
         '3.5.2 Pokus o zalozeni nssetu s neplatnou IP: 172.16.0.0'
-        d = FRED_DATA[1]
+        d = FRED_DATA[4]
+        handle = get_nssid_handle()
         dns = list(d['dns'])
         dns.append({'name': 'ns.myname1.cz', 'addr': ('217.31.207.130','172.16.0.0') })
-        epp_cli.create_nsset(d['id'], dns, d['tech'], d['auth_info'])
+        epp_cli.create_nsset(handle, dns, d['tech'], d['auth_info'])
+        # if nsset has been created append handle for delete it later
+        append_created_handle(epp_cli, handle)
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_053(self):
         '3.5.3 Pokus o zalozeni nssetu s neplatnou IP: 192.168.0.0'
-        d = FRED_DATA[1]
+        d = FRED_DATA[4]
+        handle = get_nssid_handle()
         dns = list(d['dns'])
         dns.append({'name': 'ns.myname1.cz', 'addr': ('217.31.207.130','192.168.0.0') })
-        epp_cli.create_nsset(d['id'], dns, d['tech'], d['auth_info'])
+        epp_cli.create_nsset(handle, dns, d['tech'], d['auth_info'])
+        # if nsset has been created append handle for delete it later
+        append_created_handle(epp_cli, handle)
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
     
     def test_060(self):
         '3.5.4.0 Pokus o zalozeni nssetu s neplatnym DNS: ...cz'
-        d = FRED_DATA[1]
+        d = FRED_DATA[4]
+        handle = get_nssid_handle()
         d['dns'][1]['name'] = '...cz'
-        epp_cli.create_nsset(d['id'], d['dns'], d['tech'], d['auth_info'])
+        epp_cli.create_nsset(handle, d['dns'], d['tech'], d['auth_info'])
+        # if nsset has been created append handle for delete it later
+        append_created_handle(epp_cli, handle)
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_061(self):
         '3.5.4.1 Pokus o zalozeni nssetu s neplatnym DNS: .pokus.cz'
-        d = FRED_DATA[1]
+        d = FRED_DATA[4]
+        handle = get_nssid_handle()
         d['dns'][1]['name'] = '.pokus.cz'
-        epp_cli.create_nsset(d['id'], d['dns'], d['tech'], d['auth_info'])
+        epp_cli.create_nsset(handle, d['dns'], d['tech'], d['auth_info'])
+        # if nsset has been created append handle for delete it later
+        append_created_handle(epp_cli, handle)
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_062(self):
         '3.5.4.2 Pokus o zalozeni nssetu s neplatnym DNS: pokus..cz'
-        d = FRED_DATA[1]
+        d = FRED_DATA[4]
+        handle = get_nssid_handle()
         d['dns'][1]['name'] = 'pokus..cz'
-        epp_cli.create_nsset(d['id'], d['dns'], d['tech'], d['auth_info'])
+        epp_cli.create_nsset(handle, d['dns'], d['tech'], d['auth_info'])
+        # if nsset has been created append handle for delete it later
+        append_created_handle(epp_cli, handle)
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_063(self):
         '3.5.4.3 Pokus o zalozeni nssetu s neplatnym DNS: pokus..test.cz'
-        d = FRED_DATA[1]
+        d = FRED_DATA[4]
+        handle = get_nssid_handle()
         d['dns'][1]['name'] = 'pokus..test.cz'
-        epp_cli.create_nsset(d['id'], d['dns'], d['tech'], d['auth_info'])
+        epp_cli.create_nsset(handle, d['dns'], d['tech'], d['auth_info'])
+        # if nsset has been created append handle for delete it later
+        append_created_handle(epp_cli, handle)
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
+    def test_064(self):
+        '3.5.4.4 Pokus o zalozeni nssetu s nepovolenymi znaky'
+        global HANDLES_TO_DELETE
+        errors = []
+        d = FRED_DATA[4]
+        notallowed = '!"#$%&\'()*+,/:;<=>?@[\]^_`{|}~'
+        max = len(notallowed)
+        for position in range(max):
+            handle = get_nssid_handle()
+            name = 'ns.te%sbt.cz' % notallowed[position]
+            d['dns'][1]['name'] = name
+            epp_cli.create_nsset(handle, d['dns'], d['tech'], d['auth_info'])
+            # if nsset has been created append handle for delete it later
+            if epp_cli.is_val() == 1000:
+                errors.append('Name %s has been accepted.' % name)
+                HANDLES_TO_DELETE.append(handle)
+            unitest_share.write_log(epp_cli, log_fp, log_step, self.id(), 
+                                    self.shortDescription()+' [%s] %s'%(handle, name), (position, max))
+        self.failIf(len(errors) > 0, '\n'.join(errors))
+
+    def test_065(self):
+        '3.5.4.5 Pokus o zalozeni nssetu s neplatnym DNS: -pokus.cz'
+        d = FRED_DATA[4]
+        handle = get_nssid_handle()
+        d['dns'][1]['name'] = '-pokus.cz'
+        epp_cli.create_nsset(handle, d['dns'], d['tech'], d['auth_info'])
+        # if nsset has been created append handle for delete it later
+        append_created_handle(epp_cli, handle)
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
+    def test_066(self):
+        '3.5.4.6 Pokus o zalozeni nssetu s neplatnym DNS: pokus-.cz'
+        d = FRED_DATA[4]
+        handle = get_nssid_handle()
+        d['dns'][1]['name'] = 'pokus-.cz'
+        epp_cli.create_nsset(handle, d['dns'], d['tech'], d['auth_info'])
+        # if nsset has been created append handle for delete it later
+        append_created_handle(epp_cli, handle)
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+        
+    def test_067(self):
+        '3.5.4.7 Pokus o zalozeni nssetu s neplatnym DNS: pok--us.cz'
+        d = FRED_DATA[4]
+        handle = get_nssid_handle()
+        d['dns'][1]['name'] = 'pok--us.cz'
+        epp_cli.create_nsset(handle, d['dns'], d['tech'], d['auth_info'])
+        # if nsset has been created append handle for delete it later
+        append_created_handle(epp_cli, handle)
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
+    def test_068(self):
+        '3.5.4.8 Pokus o zalozeni nssetu s neplatnym DNS: a*64.cz'
+        d = FRED_DATA[4]
+        handle = get_nssid_handle()
+        d['dns'][1]['name'] = '%s.cz' % ('a'*64, )
+        epp_cli.create_nsset(handle, d['dns'], d['tech'], d['auth_info'])
+        # if nsset has been created append handle for delete it later
+        append_created_handle(epp_cli, handle)
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+        
     def test_076(self):
         '3.5.6 Zalozeni neexistujiciho noveho nssetu'
         d = FRED_DATA[1]
@@ -297,8 +417,11 @@ class Test(unittest.TestCase):
 
     def test_077(self):
         '3.5.7 Pokus o zalozeni existujiciho nssetu'
-        d = FRED_DATA[1]
-        epp_cli.create_nsset(d['id'], d['dns'], d['tech'], d['auth_info'])
+        d = FRED_DATA[4]
+        handle = get_nssid_handle()
+        epp_cli.create_nsset(handle, d['dns'], d['tech'], d['auth_info'])
+        # if nsset has been created append handle for delete it later
+        append_created_handle(epp_cli, handle)
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_078(self):
@@ -340,12 +463,6 @@ class Test(unittest.TestCase):
         epp_cli.update_nsset(d['id'], None, {'name':'ns.name3.cz'})
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
-##    def test_090(self):
-##        '3.9 Pokus o update vsech stavu server*[delete,update]'
-##        for status in ('serverDeleteProhibited', 'serverUpdateProhibited'):
-##            epp_cli.update_nsset(handle_nsset, {'status':status})
-##            self.assertNotEqual(epp_cli.is_val(), 1000, 'Status "%s" prosel prestoze nemel.'%status)
-        
     def test_094(self):
         '3.9.1 Pokus o odstraneni tech-kontaktu'
         d = FRED_DATA[2]
@@ -366,34 +483,60 @@ class Test(unittest.TestCase):
         self.assert_(len(errors)==0, '\n'.join(errors))
 
     def test_102(self):
-        '3.10.2 Update neplatneho DNS: .cz'
-        newdns = {'name':'.cz','addr':('217.31.207.130','217.31.207.129')}
+        '3.10.2 Pokus o pridani neplatneho DNS: .cz'
+        name = '.cz'
+        newdns = {'name':name,'addr':('217.31.207.130','217.31.207.129')}
         epp_cli.update_nsset(FRED_HANDLE, {'dns':newdns})
+        append_updated_handle(epp_cli, name)
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_103(self):
-        '3.10.3 Update neplatneho DNS: ...cz'
-        newdns = {'name':'...cz','addr':('217.31.207.130','217.31.207.129')}
+        '3.10.3 Pokus o pridani neplatneho DNS: ...cz'
+        name = '...cz'
+        newdns = {'name':name, 'addr':('217.31.207.130','217.31.207.129')}
         epp_cli.update_nsset(FRED_HANDLE, {'dns':newdns})
+        append_updated_handle(epp_cli, name)
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         
     def test_104(self):
-        '3.10.4 Update neplatneho DNS: .pokus.cz'
-        newdns = {'name':'.pokus.cz','addr':('217.31.207.130','217.31.207.129')}
+        '3.10.4 Pokus o pridani neplatneho DNS: .pokus.cz'
+        name = '.pokus.cz'
+        newdns = {'name':name, 'addr':('217.31.207.130','217.31.207.129')}
         epp_cli.update_nsset(FRED_HANDLE, {'dns':newdns})
+        append_updated_handle(epp_cli, name)
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_105(self):
-        '3.10.5 Update neplatneho DNS: pokus..cz'
-        newdns = {'name':'pokus..cz','addr':('217.31.207.130','217.31.207.129')}
+        '3.10.5 Pokus o pridani neplatneho DNS: pokus..cz'
+        name = 'pokus..cz'
+        newdns = {'name':name, 'addr':('217.31.207.130','217.31.207.129')}
         epp_cli.update_nsset(FRED_HANDLE, {'dns':newdns})
+        append_updated_handle(epp_cli, name)
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_106(self):
-        '3.10.6 Update neplatneho DNS: pokus..test.cz'
-        newdns = {'name':'pokus..test.cz','addr':('217.31.207.130','217.31.207.129')}
+        '3.10.6 Pokus o pridani neplatneho DNS: pokus..test.cz'
+        name = 'pokus..test.cz'
+        newdns = {'name':name, 'addr':('217.31.207.130','217.31.207.129')}
         epp_cli.update_nsset(FRED_HANDLE, {'dns':newdns})
+        append_updated_handle(epp_cli, name)
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
+    def test_107(self):
+        '3.10.7 Pokus o pridani neplatneho DNS s nepovolenymi znaky'
+        errors = []
+        notallowed = '!"#$%&\'()*+,/:;<=>?@[\]^_`{|}~'
+        max = len(notallowed)
+        for position in range(max):
+            name = 'ns.te%sbt.cz' % notallowed[position]
+            newdns = {'name':name,'addr':('217.31.207.130','217.31.207.129')}
+            epp_cli.update_nsset(FRED_HANDLE, {'dns':newdns})
+            if epp_cli.is_val() == 1000:
+                errors.append('Name %s has been added.' % name)
+                append_updated_handle(epp_cli, name)
+            unitest_share.write_log(epp_cli, log_fp, log_step, self.id(), 
+                                    self.shortDescription()+' %s'%name, (position, max))
+        self.failIf(len(errors) > 0, '\n'.join(errors))
 
     def test_108(self):
         '3.10.8 Pokus o odebrani dvou stejnych DNS'
@@ -402,30 +545,29 @@ class Test(unittest.TestCase):
         epp_cli.update_nsset(FRED_HANDLE, None, rem)
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
+    def test_109(self):
+        '3.10.9 Pokus o pridani neplatneho DNS: -pokus.cz'
+        name = '-pokus.cz'
+        newdns = {'name':name, 'addr':('217.31.207.130','217.31.207.129')}
+        epp_cli.update_nsset(FRED_HANDLE, {'dns':newdns})
+        append_updated_handle(epp_cli, name)
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
-##    def test_100(self):
-##        '3.10 Update stavu clientDeleteProhibited a pokus o smazani'
-##        status = 'clientDeleteProhibited'
-##        epp_cli.update_nsset(handle_nsset, {'status':status})
-##        self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se nastavit status: %s'%status)
-##        # pokus o smazání
-##        epp_cli.delete_nsset(handle_nsset)
-##        self.assertNotEqual(epp_cli.is_val(), 1000, 'Kontakt se smazal, prestoze mel nastaven %s'%status)
-##        # zrušení stavu
-##        epp_cli.update_nsset(handle_nsset, None, {'status':status})
-##        self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se odstranit status: %s'%status)
+    def test_110(self):
+        '3.10.10 Pokus o pridani neplatneho DNS: pokus-.cz'
+        name = 'pokus-.cz'
+        newdns = {'name':name, 'addr':('217.31.207.130','217.31.207.129')}
+        epp_cli.update_nsset(FRED_HANDLE, {'dns':newdns})
+        append_updated_handle(epp_cli, name)
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         
-##    def test_110(self):
-##        '3.11 Update stavu clientUpdateProhibited a pokus o zmenu objektu, smazani stavu'
-##        status = 'clientUpdateProhibited'
-##        epp_cli.update_nsset(handle_nsset, {'status':status})
-##        self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se nastavit status: %s'%status)
-##        # pokus o změnu
-##        epp_cli.update_nsset(handle_nsset, None, None, {'auth_info':'zmena hesla'})
-##        self.assertNotEqual(epp_cli.is_val(), 1000, 'Nsset se aktualizoval, prestoze mel nastaven %s'%status)
-##        # zrušení stavu
-##        epp_cli.update_nsset(handle_nsset, None, {'status':status})
-##        self.assertEqual(epp_cli.is_val(), 1000, 'Nepodarilo se odstranit status: %s'%status)
+    def test_111(self):
+        '3.10.9 Pokus o pridani neplatneho DNS: po--kus.cz'
+        name = 'po--kus.cz'
+        newdns = {'name':name, 'addr':('217.31.207.130','217.31.207.129')}
+        epp_cli.update_nsset(FRED_HANDLE, {'dns':newdns})
+        append_updated_handle(epp_cli, name)
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_112(self):
         '3.11.2 Pridani IPv6 2001:200::fea5:3015'
@@ -511,6 +653,20 @@ class Test(unittest.TestCase):
         epp_cli.update_nsset(d['id'], {'dns':{'name':'ns.fail11.cz','addr':('192.168.255.255',)}})
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
+    def test_125(self):
+        '3.11.15 Pokus o pridani neplatneho DNS: a*64.cz'
+        name = '%s.cz' % ('a'*64, )
+        newdns = {'name':name, 'addr':('217.31.207.130','217.31.207.129')}
+        epp_cli.update_nsset(FRED_HANDLE, {'dns':newdns})
+        append_updated_handle(epp_cli, name)
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+        
+    def test_128(self):
+        '3.11.16 Smazani dns, ktere nemely byt pridany'
+        if len(HANDLES_TO_REMOVE):
+            epp_cli.update_nsset(FRED_HANDLE, None, {'name':HANDLES_TO_REMOVE})
+            self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+        
     def test_130(self):
         '3.12 Vytvoreni domeny napojene na nsset'
         epp_cli.create_domain(FRED_DOMAIN, handle_contact, 'heslo', handle_nsset)
@@ -688,6 +844,19 @@ class Test(unittest.TestCase):
         '3.4 Smazani nssetu, pokud se vytvoril'
         epp_cli.delete_nsset(FRED_NSSET3)
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
+    def test_312(self):
+        '3.4.2 Smazani nssetu, ktere se nemely vytvorit, ale presto vznikly'
+        errors = []
+        max = len(HANDLES_TO_DELETE)
+        for position in range(max):
+            handle = HANDLES_TO_DELETE[position]
+            epp_cli.delete_nsset(handle)
+            if epp_cli.is_val() != 1000:
+                errors.append('Handle %s se nepodarilo smazat.' % handle)
+            unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),
+                                    self.shortDescription()+' %s'%handle, (position, max))
+        self.failIf(len(errors) > 0, '\n'.join(errors))
 
     def test_320(self):
         '3.5 Pokus o vytvoreni nssetu, ktery byl prave smazan a musi byt v ochranne zone'
