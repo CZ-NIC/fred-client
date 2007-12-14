@@ -1,5 +1,9 @@
 FredClient 1.5.4
 
+Nove funkce:
+    * Pridan prepinac escaped_input, ktera se nastavi on, kdyz vstupni data jsou jiz escapovany.
+      Napriklad kdyz je misto '<example&test>' zadano '&lt;example&amp;test&gt;'.
+
 Zmeny:
     * automaticke vypnuti confirm rezimu pri command modu.
     * v info_domain odstranena duplicitni polozka "Last renew on", 
@@ -10,6 +14,8 @@ Zmeny:
     * Automaticke navazani spojeni, pokud se prerusi.
 
 Opravy:
+    * oprava generovani xml, kdy prave ostre zavorky nebyly escapovany
+    * oprava exception pri preruseni spojeni v modu html vystupu
     * oprava vypisu poctu zprav pri poll dotazu.
     * API is_val() opraven split enter
     * Odeslani prikazu logout pri spusteni klienta v rezimu jednoho prikazu (--command=COMMAND).

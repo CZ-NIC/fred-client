@@ -65,7 +65,7 @@ Kapitola 3. Popis jednotlivych programu, parametry a konfiguracni soubor
 
    Dostupne skripty jsou nasledujici:
    fred_client - EPP konzole, komunikuje s EPP serverem
-   fred_create.py - Vytbori zdrojovy EPP XML prikaz
+   fred_create.py - Vytvori zdrojovy EPP XML prikaz
    fred_sender.py - Odesle soubor na EPP server
 
 Parametry pri spusteni (OPTIONS)
@@ -199,6 +199,9 @@ Konfiguracni soubor
        overuje.
      * colors = on/off
        Vystup na terminal muze byt barevny, pokud to terminal umoznuje.
+     * escaped_input = on/off
+       Pokud je vstup escapovany (&lt;example&amp;test&gt;), nastavte tuto
+       hodnotu na on.
      * verbose = 1/2/3
        Uroven vypisu 1 - strucna, 2 - cela, 3 - cela + XML zdrojove dokumenty.
      * lang = en/cs
@@ -220,6 +223,10 @@ Konfiguracni soubor
        Vlastni hodnota cltrID - Client client transaction ID. Symbol %d je
        nahrazen cislem prikazu. Hodnota mezi % a d zarovnava cislo na ctyri
        cislice (doplni se nula).
+     * reconnect = no
+       V pripade, ze se behem komunikace spojeni prerusi, se klient pokusi
+       spojeni znovu navazat. Timto zapisem se funkce automatickeho navazani
+       spojeni vypne.
 
    V sekci connect jsou tato nastaveni:
      * dir = cesta k adresari s certifikaty
@@ -569,6 +576,10 @@ poll_autoack je ON
    zobrazi, ale pak se zprava musi ze serveru odstranint prikazem "poll ack
    ID-zpravy". Pri automatickem poll-ack se bude odstranovani provadet
    automaticky po zobrazeni zpravy.
+> escaped_input [on/off]
+
+   Pokud je vstup escapovany (&lt;example&amp;test&gt;), nastavte tuto hodnotu
+   na on.
 > confirm [on/off]
 
    U EPP editacnich prikazu, ktere nejak meni hodnoty na serveru (create,
@@ -750,8 +761,7 @@ $fred_labels['domain:renew'] = 'Last renew on';
 
 Kapitola 7. Graficka nadstavba v Qt4.
 
-   Popis graficke nadstavby klienta je v samostatnem souboru. Hledejte
-   README_QT4...
+   Popis graficke nadstavby klienta je v samostatnem souboru README_QT4.
 
 Kapitola 8. Knihovna fred a popis API
 

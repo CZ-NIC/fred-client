@@ -62,7 +62,7 @@ Dostupné skripty jsou následující:
 
 <simplelist>
     <member>fred_client      - EPP konzole, komunikuje s EPP serverem</member>
-    <member>fred_create.py   - Vytboří zdrojový EPP XML příkaz</member>
+    <member>fred_create.py   - Vytvoří zdrojový EPP XML příkaz</member>
     <member>fred_sender.py   - Odešle soubor na EPP server</member>
 </simplelist>
 
@@ -239,12 +239,21 @@ V sekci <emphasis>session</emphasis> jsou tato nastavení:</para>
         Soubor, ve kterém má validátor hledat schemata, podle kterých dokumenty ověřuje.
     </para>
     </listitem>
+
     <listitem>
     <para><emphasis role='bold'>colors</emphasis> = on/off</para>
     <para>
         Výstup na terminál může být barevný, pokud to terminál umožňuje.
     </para>
     </listitem>
+
+    <listitem>
+    <para><emphasis role='bold'>escaped_input</emphasis> = on/off</para>
+    <para>
+        Pokud je vstup escapovaný (&amp;lt;example&amp;amp;test&amp;gt;), nastavte tuto hodnotu na on.
+    </para>
+    </listitem>
+
     <listitem>
     <para><emphasis role='bold'>verbose</emphasis> = 1/2/3</para>
     <para>
@@ -837,6 +846,13 @@ ze serveru pouze zobrazí, ale pak se zpráva musí ze serveru odstranint přík
 Při automatickém poll-ack se bude odstraňování provádět automaticky po zobrazení zprávy.
 
 <programlisting>
+&gt; escaped_input [on/off]
+</programlisting>
+
+Pokud je vstup escapovaný (&amp;lt;example&amp;amp;test&amp;gt;), nastavte tuto hodnotu na on.
+
+
+<programlisting>
 &gt; confirm [on/off]
 </programlisting>
 
@@ -1096,7 +1112,7 @@ $fred_labels['domain:renew'] = 'Last renew on';
 
 <chapter>
 <title>Grafická nadstavba v Qt4.</title>
-<para>Popis grafické nadstavby klienta je v samostatném souboru. Hledejte README_QT4...
+<para>Popis grafické nadstavby klienta je v samostatném souboru README_QT4.
 </para>
 </chapter>
 

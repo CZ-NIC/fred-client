@@ -561,6 +561,8 @@ class ManagerTransfer(ManagerBase):
                 if value not in ('',[]):
                     # nl2br: turnk ends of lines to HTML
                     if type(value) not in (list, tuple):
+                        if type(value) != str:
+                            value = str(value)
                         value = re.sub('\n', '<br/>\n', value)
                     if is_check:
                         # Tighten check response by code.
@@ -841,11 +843,11 @@ def __append_into_report__(body, k, v, explain, ljust, indent = '', no_terminal_
     if type(v) is str: v = v.decode(encoding)
     if no_terminal_tags == 2:
         # html
-        key = k
+        key = escape(k)
         ljustify = ''
     else:
         # text
-        key = (k+':').ljust(ljust)
+        key = (escape(k)+':').ljust(ljust)
         ljustify = ''.ljust(ljust+len(indent)+1)
     if is_list_type:
         key = ljustify = ''
@@ -863,7 +865,7 @@ def __append_into_report__(body, k, v, explain, ljust, indent = '', no_terminal_
             body.append(get_ltext(colored_output.render(patt[1]%(indent,key))))
     else:
         # value is not array
-        body.append(get_ltext(colored_output.render(patt[0]%(indent,key, v))))
+        body.append(get_ltext(colored_output.render(patt[0]%(indent,key, escape(v)))))
 
 def str_lists(text):
     """Prepare list or tuples for display. Same as str() but omit u'...' symbols

@@ -125,14 +125,17 @@ class Message:
         xml=''
         if self.dom:
             self.dom.normalize()
-            if PrettyPrint:
+            #if PrettyPrint:
+            # (PrettyPrint is disabled be cause of wrong result: "&lt;value>")
+            if 0: 
                 f = StringIO.StringIO()
                 PrettyPrint(self.dom, f, self.encoding)
                 f.seek(0,0)
                 xml = f.read()
             else:
                 # Kdyz chybi funkce PrettyPrint()
-                xml = self.dom.toprettyxml('', '', self.encoding)
+                #xml = self.dom.toprettyxml('', '', self.encoding)
+                xml = self.dom.toxml(self.encoding)
         # hook parametru standalone
         return re.sub('(<?xml .+?)\?>','\\1 standalone="no"?>',xml, re.I)
 

@@ -25,7 +25,7 @@ It is used by client session Manager in session_base.py module.
 #---------------------------------------------------
 # Here is defined FRED VERSION:
 #---------------------------------------------------
-fred_version = '1.5.3'
+fred_version = '1.5.4'
 
 required_defaults = {'port':700, 'timeout':10.0}
 config = """
@@ -46,7 +46,8 @@ validate = on
 schema = all-1.1.xsd
 poll_autoack = off
 confirm_send_commands = on
-# colors = yes
+# colors = on
+# escaped_input = on
 # verbose = 2
 # If lang is not set, ti used value from os.environ.LANG
 # lang = en

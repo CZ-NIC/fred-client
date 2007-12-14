@@ -20,6 +20,7 @@ import dircache # for TEST only, NOT present in release version
 import eppdoc
 import eppdoc_client
 import translate
+from xml.sax.saxutils import unescape as unescape_html
 
 from session_base import *
 from session_transfer import ManagerTransfer, human_readable
@@ -100,6 +101,10 @@ Interactive mode can be used with EPP commands only."""), ('!create_domain',)),
                 ((_T('switch'), OPTIONAL, _T('Turn function on/off.')),), 
                 _T('Turn on/off colored output.'), ('colors on',)),
 
+            (('escaped_input',), self.__escaped_input__, 
+                ((_T('switch'), OPTIONAL, _T('Set escaped input on/off.')),), 
+                _T('If your input is escaped (&lt;example&amp;test&gt;), set this value on.'), ('escaped_input on',)),
+                
             (('config',), self.manage_config, (), _T('Display actual configuration.'), ('config',)),
 
             (('confirm',), self.__session_confirm__, 
@@ -426,6 +431,8 @@ When you want not result in your prompt join option 'noprompt'
         command_params = ''
         stop = 0
         self.reset_round()
+        if self._session[ESCAPED_INPUT]:
+            command = unescape_html(command)
         cmd = EPP_command = session_command = command.strip()
         match = re.match('!+\s+(.+)',cmd)
         if match: cmd = '!%s'%match.group(1) # removing whitespaces after exclamation
@@ -588,6 +595,15 @@ When you want not result in your prompt join option 'noprompt'
             msg = _T('Colors mode is')
         self.append_note('%s ${BOLD}%s${NORMAL}'%(msg, self._session[COLORS] and 'ON' or 'OFF'))
 
+    def __escaped_input__(self, param):
+        'Set escaped input mode'
+        if param:
+            self._session[ESCAPED_INPUT] = param.lower()=='on' and 1 or 0
+            msg = _T('Escaped input mode has been set to')
+        else:
+            msg = _T('Escaped input mode is')
+        self.append_note('%s ${BOLD}%s${NORMAL}'%(msg, self._session[ESCAPED_INPUT] and 'ON' or 'OFF'))
+        
     def __session_verbose__(self, param):
         'Set verbose mode'
         if param:

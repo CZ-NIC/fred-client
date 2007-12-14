@@ -199,6 +199,8 @@ Configuration file
        documents.
      * colors = on/off
        The output may be colour-enabled, when possible.
+     * escaped_input = on/off
+       If your input is escaped (&lt;example&amp;test&gt;), set this value on.
      * verbose = 1/2/3
        List level 1 - brief, 2 - whole, 3 - whole + XML source documents.
      * lang = en/cs
@@ -596,12 +598,16 @@ Session commands
 
    List of session commands:
 
-> poll_autoack [on/off]
+   > poll_autoack [on/off]
 
    When this switch is ON, "poll ack" is automatically sent after "poll req" is entered. This function is useful when you have many messages at the server. The "poll req" displays the messages, but they have to be deleted by 
   entering "poll ack
    message_ID". With automated poll-ack, messages are automatically deleted
    after they are displayed.
+
+   > escaped_input [on/off]
+
+   If your input is escaped (&lt;example&amp;test&gt;), set this value on.
 
    > confirm [on/off]
 

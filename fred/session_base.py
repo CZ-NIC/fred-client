@@ -39,7 +39,7 @@ colored_output = terminal_controler.TerminalController()
 # The column names for data holding by manager.
 ONLINE, CMD_ID, LANG, POLL_AUTOACK, CONFIRM_SEND_COMMAND, \
    USERNAME, SESSION, HOST, COLORS, VALIDATE, VERBOSE, SORT_BY_COLUMNS, NULL_VALUE, \
-   TRANSLATE_ANSWER_COLUMN_NAMES, OUTPUT_TYPE, CLTRID, RECONNECT = range(17)
+   TRANSLATE_ANSWER_COLUMN_NAMES, OUTPUT_TYPE, CLTRID, RECONNECT, ESCAPED_INPUT = range(18)
 # The column names for default values
 DEFS_LENGTH = 4
 LANGS,objURI,extURI,PREFIX = range(DEFS_LENGTH)
@@ -79,6 +79,7 @@ class ManagerBase:
                 'text', # OUTPUT_TYPE (text, html)
                 None,   # CLTRID
                 'yes',  # RECONNECT
+                0,      # ESCAPED_INPUT
                 ]
         self._external_validator = 'xmllint'
         # defaults
@@ -557,6 +558,9 @@ $fred_client_errors = array(); // errors occuring during communication
         if colors:
             self._session[COLORS] = colors.lower() == 'on' and 1 or 0
             colored_output.set_mode(self._session[COLORS])
+        escaped_input = self.get_config_value(section,'escaped_input',OMIT_ERROR)
+        if escaped_input:
+            self._session[ESCAPED_INPUT] = escaped_input.lower() == 'on' and 1 or 0
         self.parse_verbose_value(self.get_config_value(section,'verbose',OMIT_ERROR))
         # set NULL value
         value = self.get_config_value(section,'null_value',OMIT_ERROR)

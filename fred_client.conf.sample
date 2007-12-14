@@ -43,7 +43,10 @@ confirm_send_commands = on
 validate = on
 
 ;; display colors on tty console
-colors = yes
+colors = on
+
+;; if your input is escaped ('&lt;example&amp;test&gt;'), set this value on
+escaped_input = on
 
 ;; set verbose level 1,2,3
 verbose = 2

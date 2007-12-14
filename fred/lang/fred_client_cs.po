@@ -222,9 +222,6 @@ msgstr "Nejste připojeni."
 msgid "Do you really want to send this command to the server?"
 msgstr "Opravdu chcete odeslat tento poříkaz na server?"
 
-msgid "Try to automaticly reconnect - send login."
-msgstr "Pokus o obnovení spojení - odesílám login."
-
 #: fred/console.py:199 fred/session_receiver.py:631
 #: fred/session_receiver.py:635
 msgid "Server answer XML document failed to validate."
@@ -2523,3 +2520,10 @@ msgstr "(Žádný záznam.)"
 #: guiqt4/main.py:1173
 msgid "Internal errors"
 msgstr "Interní chyby"
+
+msgid "Set escaped input on/off."
+msgstr "Zapnout/vypnout přepínač escapovaného vstupu."
+
+msgid "If your input is escaped (&lt;example&amp;test&gt;), set this value on."
+msgstr "Je-li váš vstup escapovaný (&lt;example&amp;test&gt;), nastavte tuto hodnotu na on."
+
