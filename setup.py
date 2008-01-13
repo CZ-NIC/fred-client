@@ -57,7 +57,16 @@ if __name__ == '__main__':
                 'fred/certificates/test-key.pem']),
             ('share/fred-client/schemas',[
                 'fred/schemas/ChangeLog',
-#                'fred/schemas/*.xsd',
+                'fred/schemas/all.xsd',
+                'fred/schemas/contact-1.4.xsd',
+                'fred/schemas/enumval-1.1.xsd',
+                'fred/schemas/epp-1.0.xsd',
+                'fred/schemas/fred-1.2.xsd',
+                'fred/schemas/all-1.4.xsd',
+                'fred/schemas/domain-1.3.xsd',
+                'fred/schemas/eppcom-1.0.xsd',
+                'fred/schemas/fredcom-1.1.xsd',
+                'fred/schemas/nsset-1.2.xsd',
                 'fred/schemas/README']),
             ('/etc/fred/',['fred-client.conf'])
             ]
