@@ -20,7 +20,7 @@ import sys
 from distutils.core import setup
 from fred.internal_variables import fred_version
 
-APP_SCRIPTS = ['fred_client','fred_client_qt4.pyw']
+APP_SCRIPTS = ['fred-client','fred-client-qt4.pyw']
 if 'bdist_wininst' in sys.argv and '--install-script=setup_postinstall.py' in sys.argv:
     # join postinstall only for WIN distribution
     APP_SCRIPTS.append('setup_postinstall.py')
@@ -36,15 +36,14 @@ if __name__ == '__main__':
         license = 'GNU GPL',
         packages = ['fred','guiqt4'],
         package_data={
-            'fred': ['INSTALL','LICENSE','CREDITS','*.txt','schemas/*.xsd',
+            'fred': ['INSTALL','LICENSE','CREDITS','*.txt',
                 'lang/fred_client_cs.po',
                 'lang/cs/LC_MESSAGES/fred_client.mo'],
             'guiqt4': ['*.py','*.png','*.qm'],
         },
         scripts = APP_SCRIPTS, 
         data_files=[
-            ('cznic_fred_docs',[
-                'fred_client.conf.sample',
+            ('share/fred-client',[
                 'doc/fred_howto_cs.html',
             
                 'doc/niccz_console.ico', 
@@ -52,7 +51,15 @@ if __name__ == '__main__':
                 'doc/help.ico',
                 
                 'doc/README_CS.html',
-                'doc/README_QT4_CS.pdf'])
+                'doc/README_QT4_CS.pdf']),
+            ('share/fred-client/ssl',[
+                'fred/certificates/test-cert.pem',
+                'fred/certificates/test-key.pem']),
+            ('share/fred-client/schemas',[
+                'fred/schemas/ChangeLog',
+#                'fred/schemas/*.xsd',
+                'fred/schemas/README']),
+            ('/etc/fred/',['fred-client.conf'])
             ]
         
         )

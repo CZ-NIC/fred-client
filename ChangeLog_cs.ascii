@@ -8,7 +8,7 @@ Zmeny:
     * automaticke vypnuti confirm rezimu pri command modu.
     * v info_domain odstranena duplicitni polozka "Last renew on", 
       jeji hodnota je v "Expiration date" (domain:exDate)
-    * od verze 1.3.3 je fred_client.conf defaultne hledan v /etc/fred/ misto v /etc (tyka se
+    * od verze 1.3.3 je fred-client.conf defaultne hledan v /etc/fred/ misto v /etc (tyka se
       jen posix systemu). Na teto ceste je config hledan az v pripade, ze nebyl nalezen
       v home uzivatele.
     * Automaticke navazani spojeni, pokud se prerusi.

@@ -30,10 +30,10 @@ include uninstall.py
 include setup_postinstall.py
 include ChangeLog_cs.utf8
 include ChangeLog_cs.ascii
-include fred_client.conf.sample
+include fred-client.conf
 include fred/CREDITS
 include fred/LICENSE
-include fred_client_qt4.pyw
+include fred-client-qt4.pyw
 include guiqt4/niccz.ico
 include guiqt4/*.py
 include guiqt4/*.png
@@ -44,6 +44,9 @@ include guiqt4/qt_client.project
 include guiqt4/INSTALL_CS.ascii
 include guiqt4/INSTALL_CS.utf8
 include setup.cfg
+
+include fred/certificates/test-cert.pem
+include fred/certificates/test-key.pem
 
 prune guiqt4/.svn
 

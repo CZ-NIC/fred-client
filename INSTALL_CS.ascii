@@ -47,7 +47,7 @@ install.log. Tento report je pak pouzit pri odinstalovani klienta.
 
 Tim je instalace dokoncena. Klienta spustite prikazem:
 
-    $ ./fred_client.py
+    $ ./fred-client
 
 
 Program FredClient neni nezbytne nutne instalovat. Je mozne jej spustit ihned po

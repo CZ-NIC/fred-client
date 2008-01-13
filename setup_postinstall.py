@@ -16,18 +16,18 @@ if sys.platform[:3] != 'win':
     sys.exit()
 
 # Name of the main console script
-script_name = 'fred_client'
+script_name = 'fred-client'
 help_name = 'fred_howto_cs.html'
 
 # BAT file is created to prevent closing the console after the script has been finished.
-bat_file  = 'fred_client.bat'
+bat_file  = 'fred-client.bat'
 readme_name = 'README_CS.html'
 
 # Folder with icon
-path_fred_doc = 'cznic_fred_docs'
+path_fred_doc = 'share/fred-client'
 
 # Name of the configuration sample
-path_conf_sample = 'fred_client.conf.sample'
+path_conf_sample = 'fred-client.conf'
 
 
 

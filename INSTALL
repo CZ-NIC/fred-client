@@ -46,7 +46,7 @@ into the report install.log. This report is used later for uninstallation proces
 That is all, the installation is done. For start client type:
 
 
-    $ ./fred_client.py
+    $ ./fred-client
 
 
 It is not necessary install FredClient if you want it just try for test. It is possible
