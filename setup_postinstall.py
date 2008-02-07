@@ -18,11 +18,11 @@ if sys.platform[:3] != 'win':
     sys.stderr.write('This script is designed only for MS Windows platform.\n')
     sys.exit()
 
-config_root = os.path.join(sys.prefix, r'etc\fred')
+config_root = os.path.join(sys.prefix, 'etc/fred')
 
 path = os.path.join(sys.prefix, 'share','fred-client')
 FRED_CLIENT_SSL_PATH = os.path.join(path,'ssl')
-FRED_CLIENT_SCHEMAS_FILEMANE = os.path.join(path, r'schemas\all-1.4.xsd')
+FRED_CLIENT_SCHEMAS_FILEMANE = os.path.join(path, 'schemas/all-1.4.xsd')
 
 # Name of the main console script
 script_name = 'fred-client'
