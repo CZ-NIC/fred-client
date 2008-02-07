@@ -4,7 +4,7 @@
 ;; EXPLANATION: Double semicolon (;;) means comment. Single semicolon (;) means disabled value.
 
 [connect]
-dir=/usr/share/fred-client/ssl/
+dir=FRED_CLIENT_SSL_PATH
 host = localhost
 port = 700
 ssl_cert = %(dir)s/test-cert.pem
@@ -33,7 +33,7 @@ timeout = 10.0
 ;nologin = y
 
 [session]
-schema = /usr/share/fred-client/schemas/all.xsd
+schema=FRED_CLIENT_SCHEMAS_FILEMANE
 
 ;; send "poll ack" right after to "poll req"
 poll_autoack = off

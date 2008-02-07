@@ -42,7 +42,7 @@ def load_config_from_file(filename, verbose):
         missing = ["Configuration file '%s' not found."%filename]
     return config, error, missing, names
 
-def get_etc_config_name(name):
+def get_etc_config_name(name=''):
     'Returns shared folder depends on OS type.'
     if os.name == 'posix':
         glob_conf = '/etc/fred/%s'%name

@@ -11,6 +11,7 @@ $ python setup.py bdist_wininst --install-script=setup_postinstall.py
 import sys, os
 import distutils.sysconfig
 from fred.internal_variables import fred_version
+from setup import config_name
 
 if sys.platform[:3] != 'win':
     sys.exit()
@@ -25,10 +26,6 @@ readme_name = 'README_CS.html'
 
 # Folder with icon
 path_fred_doc = 'share/fred-client'
-
-# Name of the configuration sample
-path_conf_sample = 'fred-client.conf'
-
 
 
 
@@ -60,9 +57,9 @@ create_shortcut(
     
 # Shortcut to the configuration sample on the desktop
 create_shortcut(
-    os.path.join(distutils.sysconfig.PREFIX, path_fred_doc, path_conf_sample), 
+    os.path.join(distutils.sysconfig.PREFIX, path_fred_doc, config_name), 
     'Fred Client configuration sample', 
-    os.path.join(desktopDir, '%s.lnk'%path_conf_sample),
+    os.path.join(desktopDir, '%s.lnk'%config_name),
     '', '', 
     os.path.join(distutils.sysconfig.PREFIX, path_fred_doc, 'configure.ico'))
 

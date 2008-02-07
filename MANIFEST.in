@@ -30,7 +30,7 @@ include uninstall.py
 include setup_postinstall.py
 include ChangeLog_cs.utf8
 include ChangeLog_cs.ascii
-include fred-client.conf
+include fred-client.conf.install
 include fred/CREDITS
 include fred/LICENSE
 include fred-client-qt4.pyw

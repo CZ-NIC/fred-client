@@ -16,15 +16,74 @@
 #    along with FredClient; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import sys
+import sys, os
+import re
 from distutils.core import setup
-from fred.internal_variables import fred_version
+from distutils.command.install import install
 
+from fred.internal_variables import fred_version
+from fred.session_config import get_etc_config_name
+
+config_name = 'fred-client.conf'
+
+FRED_CLIENT_SSL_PATH = 'share/fred-client/ssl/'
+FRED_CLIENT_SCHEMAS_FILEMANE = 'share/fred-client/schemas/all-1.4.xsd'
 APP_SCRIPTS = ['fred-client','fred-client-qt4.pyw']
 if 'bdist_wininst' in sys.argv and '--install-script=setup_postinstall.py' in sys.argv:
     # join postinstall only for WIN distribution
     APP_SCRIPTS.append('setup_postinstall.py')
 
+    
+def all_files_in(dir):
+    'Returns all fullnames'
+    return map(lambda s:os.path.join(dir, s), [n for n in os.listdir(dir) if os.path.isfile(os.path.join(dir,n))])
+
+class EPPClientInstall(install):
+
+    user_options = install.user_options
+    user_options.extend([
+            ('preservepath', None, 'Preserve path in configuration file.'), 
+            ])
+
+    def __init__(self, *attrs):
+        install.__init__(self, *attrs)
+        # keep valid paths during package creation
+        self.preservepath = None
+        self.is_bdist_mode = None 
+        # check if object runs in bdist mode
+        for dist in attrs:
+            for name in dist.commands:
+                if name == 'bdist':
+                    self.is_bdist_mode = 1 # it is bdist mode - we are on creating the package
+                    break
+            if self.is_bdist_mode:
+                break
+
+    def get_actual_root(self):
+        'Return actual root only in case if the process is not in creation of the package'
+        return ((self.is_bdist_mode or self.preservepath) and [''] or [type(self.root) is not None and self.root or ''])[0]
+    
+    def replace_patterns(self, body, names):
+        """Replace patterns in config file by real values.
+        Join paths with root and prefix values if they has been given.
+        """
+        root = self.get_actual_root()
+        for varname in names:
+            body = re.sub(varname, root+os.path.join(self.prefix, globals().get(varname)), body, 1)
+        return body
+
+    def update_fred_config(self):
+        'Update cherry config'
+        body = open(config_name+'.install').read()
+        body = self.replace_patterns(body, ('FRED_CLIENT_SSL_PATH', 'FRED_CLIENT_SCHEMAS_FILEMANE'))
+        open(config_name, 'w').write(body)
+        print 'File %s was created.'%config_name
+
+    def run(self):
+        self.update_fred_config()
+        install.run(self)
+
+    
 if __name__ == '__main__':
 
     setup(name = 'fred-client',
@@ -52,24 +111,16 @@ if __name__ == '__main__':
                 
                 'doc/README_CS.html',
                 'doc/README_QT4_CS.pdf']),
-            ('share/fred-client/ssl',[
+            ('share/fred-client/ssl', [
                 'fred/certificates/test-cert.pem',
                 'fred/certificates/test-key.pem']),
-            ('share/fred-client/schemas',[
-                'fred/schemas/ChangeLog',
-                'fred/schemas/all.xsd',
-                'fred/schemas/contact-1.4.xsd',
-                'fred/schemas/enumval-1.1.xsd',
-                'fred/schemas/epp-1.0.xsd',
-                'fred/schemas/fred-1.2.xsd',
-                'fred/schemas/all-1.4.xsd',
-                'fred/schemas/domain-1.3.xsd',
-                'fred/schemas/eppcom-1.0.xsd',
-                'fred/schemas/fredcom-1.1.xsd',
-                'fred/schemas/nsset-1.2.xsd',
-                'fred/schemas/README']),
-            ('/etc/fred/',['fred-client.conf'])
-            ]
+            ('share/fred-client/schemas', all_files_in('fred/schemas')),
+            (get_etc_config_name(),[config_name]) # '/etc/fred/' |  ALLUSERSPROFILE = C:\Documents and Settings\All Users
+            ], 
+            
+        cmdclass = {
+                'install': EPPClientInstall, 
+            }, 
         
         )
 
