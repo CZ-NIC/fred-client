@@ -21,10 +21,9 @@ import re
 from distutils.core import setup
 from distutils.command.install import install
 
-from fred.internal_variables import fred_version
+from fred.internal_variables import fred_version, config_name
 from fred.session_config import get_etc_config_name
 
-config_name = 'fred-client.conf'
 
 FRED_CLIENT_SSL_PATH = 'share/fred-client/ssl/'
 FRED_CLIENT_SCHEMAS_FILEMANE = 'share/fred-client/schemas/all-1.4.xsd'
@@ -34,9 +33,9 @@ if 'bdist_wininst' in sys.argv and '--install-script=setup_postinstall.py' in sy
     APP_SCRIPTS.append('setup_postinstall.py')
 
     
-def all_files_in(dir):
+def all_files_in(dirname):
     'Returns all fullnames'
-    return map(lambda s:os.path.join(dir, s), [n for n in os.listdir(dir) if os.path.isfile(os.path.join(dir,n))])
+    return map(lambda s:os.path.join(dirname, s), [n for n in os.listdir(dirname) if os.path.isfile(os.path.join(dirname,n))])
 
 class EPPClientInstall(install):
 

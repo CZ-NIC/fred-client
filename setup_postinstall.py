@@ -10,13 +10,19 @@ $ python setup.py bdist_wininst --install-script=setup_postinstall.py
 
 import sys, os, re
 import distutils.sysconfig
-from fred.internal_variables import fred_version
+from fred.internal_variables import fred_version, config_name
 from fred.session_config import get_etc_config_name
-from setup import config_name, FRED_CLIENT_SSL_PATH, FRED_CLIENT_SCHEMAS_FILEMANE
+
 
 if sys.platform[:3] != 'win':
     sys.stderr.write('This script is designed only for MS Windows platform.\n')
     sys.exit()
+
+config_root = os.path.join(sys.prefix, 'etc','fred')
+
+path = os.path.join(sys.prefix, 'share','fred-client')
+FRED_CLIENT_SSL_PATH = os.path.join(path,'ssl')
+FRED_CLIENT_SCHEMAS_FILEMANE = os.path.join(path, 'schemas','all-1.4.xsd')
 
 # Name of the main console script
 script_name = 'fred-client'
@@ -27,18 +33,17 @@ bat_file  = 'fred-client.bat'
 readme_name = 'README_CS.html'
 
 # Folder with icon
-path_fred_doc = 'share/fred-client'
+path_fred_doc = os.path.join('share','fred-client')
 
 
 def replace_patterns(body, names):
-    root = os.path.join(sys.executable, get_etc_config_name())
     for varname in names:
-        body = re.sub(varname, os.path.join(root, globals().get(varname)), body, 1)
+        body = re.sub(varname, os.path.join(config_root, globals().get(varname)), body, 1)
     return body
 
 def update_fred_config():
     'Update fred config after installation'
-    filename = os.path.join(sys.executable, get_etc_config_name(), config_name)
+    filename = os.path.join(config_root, config_name)
     body = open(filename).read()
     body = replace_patterns(body, ('FRED_CLIENT_SSL_PATH', 'FRED_CLIENT_SCHEMAS_FILEMANE'))
     open(filename, 'w').write(body)
@@ -46,11 +51,7 @@ def update_fred_config():
 
 
 # Create paths for join files with desktop
-try:
-    desktopDir = get_special_folder_path('CSIDL_COMMON_DESKTOPDIRECTORY')
-except NameError, e:
-    sys.stderr.write('NameError: %s\n'%e)
-    desktopDir = ''
+desktopDir = get_special_folder_path('CSIDL_COMMON_DESKTOPDIRECTORY')
 bat_file_path = os.path.join(distutils.sysconfig.PREFIX, 'Scripts', bat_file)
 
 
