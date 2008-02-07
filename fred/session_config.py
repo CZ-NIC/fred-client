@@ -66,6 +66,9 @@ def load_default_config(config_name, verbose):
             match = re.match(r'\.?([^\.]+)',config_name)
             if match:
                 error, names, not_found = load_config(config, get_etc_config_name('%s.ini'%match.group(1)), verbose)
+            if not_found:
+                error, names, not_found = load_config(config, os.path.join(sys.prefix, 'etc', 'fred', config_name[1:]), verbose)
+                
         if not_found: missing.extend(not_found)
     return config, error, missing, names
 
