@@ -43,6 +43,7 @@ class EPPClientInstall(install):
     user_options = install.user_options
     user_options.extend([
             ('preservepath', None, 'Preserve path in configuration file.'), 
+            ('keeppatt', None, 'Not change patterns in config file.'), 
             ])
 
     def __init__(self, *attrs):
@@ -50,14 +51,15 @@ class EPPClientInstall(install):
         # keep valid paths during package creation
         self.preservepath = None
         self.is_bdist_mode = None 
+        self.keeppatt = None
         # check if object runs in bdist mode
         for dist in attrs:
             for name in dist.commands:
                 if name == 'bdist':
                     self.is_bdist_mode = 1 # it is bdist mode - we are on creating the package
-                    break
-            if self.is_bdist_mode:
-                break
+                elif name == 'bdist_wininst':
+                    # if we create package for windows, we change patterns as late in postinstall process
+                    self.keeppatt = 1
 
     def get_actual_root(self):
         'Return actual root only in case if the process is not in creation of the package'
@@ -73,9 +75,10 @@ class EPPClientInstall(install):
         return body
 
     def update_fred_config(self):
-        'Update cherry config'
+        'Update fred config'
         body = open(config_name+'.install').read()
-        body = self.replace_patterns(body, ('FRED_CLIENT_SSL_PATH', 'FRED_CLIENT_SCHEMAS_FILEMANE'))
+        if not self.keeppatt:
+            body = self.replace_patterns(body, ('FRED_CLIENT_SSL_PATH', 'FRED_CLIENT_SCHEMAS_FILEMANE'))
         open(config_name, 'w').write(body)
         print 'File %s was created.'%config_name
 
@@ -115,7 +118,10 @@ if __name__ == '__main__':
                 'fred/certificates/test-cert.pem',
                 'fred/certificates/test-key.pem']),
             ('share/fred-client/schemas', all_files_in('fred/schemas')),
-            (get_etc_config_name(),[config_name]) # '/etc/fred/' |  ALLUSERSPROFILE = C:\Documents and Settings\All Users
+            # on posix: '/etc/fred/' 
+            # on windows:  ALLUSERSPROFILE = C:\Documents and Settings\All Users
+            # on windows if ALL... missing:  C:\Python25\ 
+            (get_etc_config_name(),[config_name]) 
             ], 
             
         cmdclass = {
