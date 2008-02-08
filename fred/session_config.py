@@ -65,9 +65,10 @@ def load_default_config(config_name, verbose):
             # In Windows try also open filename.ini
             match = re.match(r'\.?([^\.]+)',config_name)
             if match:
-                error, names, not_found = load_config(config, get_etc_config_name('%s.ini'%match.group(1)), verbose)
+                config_name = '%s.ini'%match.group(1)
+                error, names, not_found = load_config(config, get_etc_config_name(config_name), verbose)
             if not_found:
-                error, names, not_found = load_config(config, os.path.join(sys.prefix, 'etc', 'fred', config_name[1:]), verbose)
+                error, names, not_found = load_config(config, os.path.join(sys.prefix, 'etc', 'fred', config_name), verbose)
                 
         if not_found: missing.extend(not_found)
     return config, error, missing, names

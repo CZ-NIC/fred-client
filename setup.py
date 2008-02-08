@@ -16,7 +16,7 @@
 #    along with FredClient; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import sys, os
+import sys, os, re
 import re
 from distutils.core import setup
 from distutils.command.install import install
@@ -108,9 +108,12 @@ if __name__ == '__main__':
                 'doc/fred_howto_cs.html',
             
                 'doc/niccz_console.ico', 
+                'doc/niccz_gui.ico', 
                 'doc/configure.ico',
                 'doc/help.ico',
                 
+                'doc/README_EN.txt',
+                'doc/README_CS.txt',
                 'doc/README_CS.html',
                 'doc/README_QT4_CS.pdf']),
             ('share/fred-client/ssl', [
@@ -120,7 +123,8 @@ if __name__ == '__main__':
             # on posix: '/etc/fred/' 
             # on windows:  ALLUSERSPROFILE = C:\Documents and Settings\All Users
             # on windows if ALL... missing:  C:\Python25\ 
-            (get_etc_config_name(),[config_name]) 
+            #get_etc_config_name()
+            ('/etc/fred', [config_name]) 
             ], 
             
         cmdclass = {
