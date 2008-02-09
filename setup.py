@@ -28,7 +28,8 @@ from fred.session_config import get_etc_config_name
 FRED_CLIENT_SSL_PATH = 'share/fred-client/ssl/'
 FRED_CLIENT_SCHEMAS_FILEMANE = 'share/fred-client/schemas/all-1.4.xsd'
 APP_SCRIPTS = ['fred-client','fred-client-qt4.pyw']
-if 'bdist_wininst' in sys.argv and '--install-script=setup_postinstall.py' in sys.argv:
+#if 'bdist_wininst' in sys.argv and '--install-script=setup_postinstall.py' in sys.argv:
+if 'bdist_wininst' in sys.argv:
     # join postinstall only for WIN distribution
     APP_SCRIPTS.append('setup_postinstall.py')
 

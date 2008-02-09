@@ -62,8 +62,8 @@ bat_file_gui_path = os.path.join(distutils.sysconfig.PREFIX, 'Scripts', bat_file
 
 
 # Create BAT file
-open(bat_file_path,'w').write('%s -i %s\n'%(os.path.join(distutils.sysconfig.PREFIX,'python.exe'), script_name))
-open(bat_file_gui_path,'w').write('%s %s'%(os.path.join(distutils.sysconfig.PREFIX,'pythonw.exe'), os.path.join(sys.prefix, 'Scripts', gui_script_name)))
+open(bat_file_path,'w').write('"%s" -i "%s"\n'%(os.path.join(distutils.sysconfig.PREFIX,'python.exe'), script_name))
+open(bat_file_gui_path,'w').write('"%s" "%s"'%(os.path.join(distutils.sysconfig.PREFIX,'pythonw.exe'), os.path.join(sys.prefix, 'Scripts', gui_script_name)))
 
 
 # convert LF to CR/LF be cause of the MS Windows common end of lines

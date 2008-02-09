@@ -10,6 +10,6 @@
 # this solution record only plain *.py files (among other) using --no-compile
 # and then append pyc and pyo version to INSTALLED_FILES
 
-python setup.py install --root=$RPM_BUILD_ROOT --record=INSTALLED_FILES --no-compile
+python setup.py install --root=$RPM_BUILD_ROOT --record=INSTALLED_FILES --no-compile --preservepath
 find $RPM_BUILD_ROOT -name '*.py' | cut -c`echo $RPM_BUILD_ROOT | wc -c`- | sed 's/\(.*\).py$/\1.pyc/g' >> INSTALLED_FILES;
 find $RPM_BUILD_ROOT -name '*.py' | cut -c`echo $RPM_BUILD_ROOT | wc -c`- | sed 's/\(.*\).py$/\1.pyo/g' >> INSTALLED_FILES;
