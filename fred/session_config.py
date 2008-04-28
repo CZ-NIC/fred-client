@@ -45,7 +45,8 @@ def load_config_from_file(filename, verbose):
 def get_etc_config_name(name=''):
     'Returns shared folder depends on OS type.'
     if os.name == 'posix':
-        glob_conf = '/etc/fred/%s'%name
+        # this line will be changed during setup process
+        glob_conf = '/etc/fred/' + name
     else:
         # ALLUSERSPROFILE = C:\Documents and Settings\All Users
         glob_conf = os.path.join(os.path.expandvars('$ALLUSERSPROFILE'),name)

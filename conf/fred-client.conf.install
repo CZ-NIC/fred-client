@@ -5,8 +5,8 @@
 
 [connect]
 dir=FRED_CLIENT_SSL_PATH
-host = localhost
-port = 700
+host = FRED_CLIENT_HOST
+port = FRED_CLIENT_PORT
 ssl_cert = %(dir)s/test-cert.pem
 ssl_key  = %(dir)s/test-key.pem
 username = REG-FRED_A

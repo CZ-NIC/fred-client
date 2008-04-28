@@ -33,6 +33,11 @@ For batch mode is used modules fred.creator and fred.sender.
 For GUI moduel is used module guiqt.
 """
 import sys
+
+# setup.py will change this path to reflect changes in prefix
+# and/or root option during install
+sys.path.append('/usr/lib/python2.5/site-packages')
+
 import fred
 from fred.translate import options, option_errors
 import fred.console

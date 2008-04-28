@@ -28,7 +28,7 @@ try:
 except ImportError, e:
     sys.stderr.writelines(
         ( 'Missing module: ',str(e),'\n',
-          'For runnig this application you need install PyQt4 module. For more see README and INSATLL.\n'
+          'For runnig this application you need install PyQt4 module. For more see README and INSTALL.\n'
           ) )
     sys.exit(-1)
 
@@ -49,7 +49,7 @@ except ImportError:
     except ImportError, e:
         sys.stderr.writelines(
             ( 'Missing module: ',str(e),'\n',
-             'For runnig this application you need install fred module. See README and INSATLL.\n'
+             'For runnig this application you need install fred module. See README and INSTALL.\n'
             ) )
         sys.exit(-1)
 
