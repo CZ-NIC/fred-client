@@ -59,6 +59,11 @@ try:
 except ImportError:
     from command.clean import clean
 
+try:
+    from freddist.command.uninstall import uninstall
+except ImportError:
+    from command.uninstall import uninstall
+
 class Distribution(_Distribution):
     def __init__(self, attrs=None):
         self.srcdir = None
@@ -90,6 +95,8 @@ class Distribution(_Distribution):
             self.cmdclass['bdist_rpm'] = bdist_rpm
         if not self.cmdclass.get('clean'):
             self.cmdclass['clean'] = clean
+        if not self.cmdclass.get('uninstall'):
+            self.cmdclass['uninstall'] = uninstall
 
     def has_srcdir (self):
         return self.srcdir and len(self.srcdir) > 0

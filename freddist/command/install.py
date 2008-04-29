@@ -24,9 +24,12 @@ class install(_install):
         'documentation root [DATAROOTDIR/doc/NAME]'))
     user_options.append(('preservepath', None, 
         'Preserve path(s) in configuration file(s).'))
+    user_options.append(('dont-record', None,
+        'do not record list of installed files'))
 
     boolean_options = _install.boolean_options
     boolean_options.append('preservepath')
+    boolean_options.append('dont_record')
 
     def __init__(self, *attrs):
         _install.__init__(self, *attrs)
@@ -59,6 +62,7 @@ class install(_install):
         self.mandir = None
         self.docdir = None
         self.preservepath = None
+        self.dont_record = None
 
     def finalize_options(self):
         self.srcdir = self.distribution.srcdir
@@ -86,6 +90,8 @@ class install(_install):
         print self.docdir
 
         _install.finalize_options(self)
+        if not self.record and not self.dont_record:
+            self.record = 'install.log'
 
     def run(self):
         _install.run(self)
