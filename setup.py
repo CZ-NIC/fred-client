@@ -135,7 +135,6 @@ class EPPClientInstall_scripts(install_scripts):
         pythonLibPath = os.path.join('lib', 'python' +
                 str(sys.version_info[0]) + '.' + 
                 str(sys.version_info[1]), 'site-packages')
-        print os.path.join(self.build_dir, 'fred-client')
 
         body = open(os.path.join(self.build_dir, 'fred-client')).read()
 

@@ -19,10 +19,17 @@ class bdist_rpm(_bdist_rpm):
         'extra option(s) passed to build command'))
     user_options.append(('install-extra-opts=', None,
         'extra option(s) passed to install command'))
+    user_options.append(('dontpreservepath', None,
+        'do not automatically append `--preservepath\'\
+        option to `install-extra-opts\''))
+
+    boolean_options = _bdist_rpm.boolean_options
+    boolean_options.append('dontpreservepath')
 
     def initialize_options(self):
         self.build_extra_opts = None
         self.install_extra_opts = None
+        self.dontpreservepath = None
         _bdist_rpm.initialize_options(self)
 
     #FREDDIST new method
@@ -35,10 +42,11 @@ class bdist_rpm(_bdist_rpm):
 
     def finalize_options(self):
         self.set_undefined_options('bdist',
+                ('dontpreservepath', 'dontpreservepath'),
                 ('build_extra_opts', 'build_extra_opts'),
                 ('install_extra_opts', 'install_extra_opts'))
         self.srcdir = self.distribution.srcdir
-
+        
         self.set_undefined_options('bdist', ('bdist_base', 'bdist_base'))
         if self.rpm_base is None:
             if not self.rpm3_mode:
