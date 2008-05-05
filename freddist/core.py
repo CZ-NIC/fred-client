@@ -1,6 +1,17 @@
 """
-nicdist.core
+freddist.core
 """
+
+# freddist add one extra option to valid setup arguments.
+# This one is `srcdir' variable, which should be set to path to setup.py file.
+# Examle:
+#   core.setup(name='whatever',
+#           description='some boring stuff about whatever',
+#           srcdir=os.path.dirname(sys.argv[0]),
+#           author='your name',
+#           ... (setup argument go on)
+# Default value of `srcdir' is '.' (it means current directory)
+
 import os, sys
 from distutils.core import setup as _setup
 from distutils.core import _setup_stop_after

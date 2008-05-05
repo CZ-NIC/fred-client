@@ -99,7 +99,7 @@ class Distribution(_Distribution):
             self.cmdclass['uninstall'] = uninstall
 
     def has_srcdir (self):
-        return self.srcdir and len(self.srcdir) > 0
+        return self.srcdir or '.'
 
     def find_config_files (self):
         """Find as many configuration files as should be processed for this

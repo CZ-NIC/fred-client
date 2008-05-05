@@ -2,6 +2,17 @@ import os, re
 from distutils.command.install import install as _install
 from distutils.debug import DEBUG
 
+# Difference between freddist.install and distutils.install class isn't wide.
+# Only new options were added. Most of them are output directory related.
+# These are used so far by freddist.install_data class.
+# Others are `--preservepath' and `--dont-record'. Preservepath command is used
+# to cut root part of installation path (of course if `--root' is used) when
+# this installation path is e.g. used in config files.
+#
+# Default distutils bahaviour is not to create file with installed files list.
+# Freddist change it. Default is to create that file (due to uninstall class)
+# and `--dont-record' option prevent this.
+
 class install(_install):
     user_options = _install.user_options
     user_options.append(('sysconfdir=', None, 

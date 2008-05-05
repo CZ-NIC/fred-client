@@ -93,7 +93,6 @@ class bdist_rpm(_bdist_rpm):
     def run(self):
         _bdist_rpm.run(self)
 
-
     def _dist_path(self, path):
         return os.path.join(self.dist_dir, os.path.basename(path))
 
@@ -210,6 +209,7 @@ class bdist_rpm(_bdist_rpm):
             ('build', 'build_script', def_build),
             ('install', 'install_script',
              ("%s install "
+              "-cO2 "
               "--root=$RPM_BUILD_ROOT "
               "--record=INSTALLED_FILES %s") % 
                (def_setup_call, self.install_extra_opts or '')),
