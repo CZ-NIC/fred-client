@@ -16,10 +16,7 @@
 #    along with FredClient; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import sys, os, re
-import re
-# from distutils.core import setup
-# from distutils.command.install import install
+import sys, os
 from distutils import log
 from freddist.core import setup
 from freddist.command.install import install
@@ -28,12 +25,11 @@ from freddist.command.install_scripts import install_scripts
 from fred.internal_variables import fred_version, config_name
 from fred.session_config import get_etc_config_name
 
-
 # datarootdir/prog_name/ssl => /usr/local/share/fred-client/ssl (default)
-FRED_CLIENT_SSL_PATH = 'ssl/'
+DEFAULT_SSL_PATH = 'ssl'
 # datarootdir/prog_name/schemas/all-1.4.xsd =>
 # /usr/local/share/fred-client/schemas/all-1.4.xsd
-FRED_CLIENT_SCHEMAS_FILEMANE = 'schemas/all-1.4.xsd'
+DEFAULT_SCHEMAS_FILEMANE = 'schemas/all-1.4.xsd'
 
 APP_SCRIPTS = ['fred-client','fred-client-qt4.pyw']
 #if 'bdist_wininst' in sys.argv and '--install-script=setup_postinstall.py'
@@ -42,7 +38,7 @@ if 'bdist_wininst' in sys.argv:
     # join postinstall only for WIN distribution
     APP_SCRIPTS.append('setup_postinstall.py')
 
-g_srcdir = None
+g_srcdir = '.'
     
 def all_files_in(dirname):
     'Returns all fullnames'
@@ -88,31 +84,27 @@ class EPPClientInstall(install):
         if not self.port:
             self.port = '700'
 
-    def replace_patterns(self, body, names):
-        """Replace patterns in config file by real values.
-        Join paths with root and prefix values if they has been given.
-        """
-        root = self.get_actual_root()
-        for varname in names:
-            body = re.sub(varname, root+os.path.join(
-                self.datarootdir, self.distribution.metadata.name, globals().get(varname)), body)
-            # body = re.sub(varname, root+os.path.join(self.prefix, globals().get(varname)), body, 1)
-        return body
-
     def update_fred_config(self):
-        'Update fred config'
-        body = open(os.path.join(self.srcdir, 'conf', config_name+'.install')).read()
-
+        '''Update fred config'''
         if not self.keeppatt:
-            body = self.replace_patterns(body, ('FRED_CLIENT_SSL_PATH',
-                'FRED_CLIENT_SCHEMAS_FILEMANE'))
-            body = re.sub('FRED_CLIENT_HOST', self.host, body)
-            body = re.sub('FRED_CLIENT_PORT', self.port, body)
-
-        if not os.path.exists('build'):
-            os.makedirs('build')
-
-        open(os.path.join('build', config_name), 'w').write(body)
+            root = self.get_actual_root()
+            if not os.path.exists('build'):
+                os.makedirs('build')
+            values = []
+            values.append(('FRED_CLIENT_SSL_PATH', root + os.path.join(
+                self.datarootdir, 
+                self.distribution.metadata.name, 
+                DEFAULT_SSL_PATH)))
+            values.append(('FRED_CLIENT_SCHEMAS_FILEMANE', root + os.path.join(
+                self.datarootdir, 
+                self.distribution.metadata.name, 
+                DEFAULT_SCHEMAS_FILEMANE)))
+            values.append(('FRED_CLIENT_HOST', self.host))
+            values.append(('FRED_CLIENT_PORT', self.port))
+            self.replace_pattern(
+                os.path.join(self.srcdir, 'conf', config_name+'.install'),
+                os.path.join('build', config_name),
+                values)
         print 'File %s was created.'%config_name
 
     def run(self):
@@ -122,12 +114,10 @@ class EPPClientInstall(install):
 class EPPClientInstall_scripts(install_scripts):
     def update_session_config(self):
         filename = os.path.join(os.path.split(self.build_dir)[0], 'lib', 'fred', 'session_config.py')
-        body = open(filename).read()
-
-        body = re.sub(r"glob_conf = '/etc/fred/' \+ name",
-                "glob_conf = os.path.join('%s/fred/',  name)" % self.sysconfdir, body)
-
-        open(filename, 'w').write(body)
+        values = [((
+            r"glob_conf = '/etc/fred/' \+ name",
+            "glob_conf = os.path.join('%s/fred/',  name)" % self.sysconfdir))]
+        self.replace_pattern(filename, None, values)
         print "session_config.py file has been updated"
 
     def update_fred_client(self):
@@ -136,17 +126,15 @@ class EPPClientInstall_scripts(install_scripts):
                 str(sys.version_info[0]) + '.' + 
                 str(sys.version_info[1]), 'site-packages')
 
-        body = open(os.path.join(self.build_dir, 'fred-client')).read()
-
         if self.get_actual_root():
-            body = re.sub(r'(sys\.path\.append)\(\'[\w/_\- \.]*\'\)', r'\1' +
-                    "('" + os.path.join(self.root, self.prefix.lstrip(os.path.sep),
-                        pythonLibPath) + "')", body)
+            values = [((
+                r'(sys\.path\.append)\(\'[\w/_\- \.]*\'\)',
+                r'\1' + "('" + os.path.join(self.root,
+                    self.prefix.lstrip(os.path.sep), pythonLibPath) + "')"))]
         else:
-            body = re.sub(r'(sys\.path\.append)\(\'[\w/_\- \.]*\'\)', r'\1' +
-                    "('" + os.path.join(self.prefix, pythonLibPath) + "')", body)
-
-        open(os.path.join(self.build_dir, 'fred-client'), 'w').write(body)
+            values = [((r'(sys\.path\.append)\(\'[\w/_\- \.]*\'\)',
+                r'\1' + "('" + os.path.join(self.prefix, pythonLibPath) + "')"))]
+        self.replace_pattern(os.path.join(self.build_dir, 'fred-client'), None, values)
         print "fred-client file has been updated"
 
     def run(self):

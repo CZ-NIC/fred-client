@@ -1,0 +1,31 @@
+This directory contain freddist, a little bit modified Python distutils module.
+
+Differences and changes:
+
+ - Distutils cannot be invoked from 'remote' directory. So every temporary file
+   and directory as well as target files (such as archives, packages) are
+   created in directory containing setup.py file. Freddist create temporary
+   stuff in current working directory. Due to is to need add to core.setup
+   method one extra parameter `srcdir'. For further detail see comment in
+   freddist/core.py source file.
+   Almost all changes in freddist against distutils is due to this 'remote'
+   directory feature.
+
+ - Distutils offer only small number of standard system directories. Freddist
+   inspire self in autotools utils which contains directory such as sysconfdir,
+   libexecdir, datarootdir, localstatedir, e.g. Support for these directories
+   was added to freddist. Its main application is in install_data part of
+   install process. See comments in freddist/command/install_data.py file.
+
+ - Entirely new feature is uninstall command. Install now implicitly creates
+   `install.log' file (containing list of all installed files) which afterwards
+   can be used by uninstall to sweep installed files.
+
+ - RPM creation on Fedora Core is for somewhat reason broke with distutils
+   (for details see https://bugzilla.redhat.com/show_bug.cgi?id=236535).
+   Freddist came with fix this Fedora related feature (or bug - see webpage
+   above).
+
+ - Bdist (as well as bdist_rpm) command support adding extra options for
+   build and install phase (which bdist command invoke). These options are
+   `--build-extra-opts' and `--install-extra-opts'.

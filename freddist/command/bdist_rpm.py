@@ -3,14 +3,8 @@ from distutils.debug import DEBUG
 from distutils.command.bdist_rpm import bdist_rpm as _bdist_rpm
 
 import sys, os, string
-# import glob
 from types import *
-# from distutils.core import Command
-# from distutils.debug import DEBUG
-# from distutils.util import get_platform
 from distutils.file_util import write_file
-# from distutils.errors import *
-# from distutils.sysconfig import get_python_version
 from distutils import log
 
 class bdist_rpm(_bdist_rpm):
@@ -198,6 +192,9 @@ class bdist_rpm(_bdist_rpm):
 
         if self.build_extra_opts:
             def_build = def_build + ' ' + self.build_extra_opts.strip()
+
+        if self.install_extra_opts.find('preservepath') == -1:
+            self.install_extra_opts = self.install_extra_opts + ' --preservepath'
 
         # insert contents of files
 

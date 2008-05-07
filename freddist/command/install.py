@@ -1,6 +1,7 @@
 import os, re
 from distutils.command.install import install as _install
 from distutils.debug import DEBUG
+from common import replace_pattern as _replace_pattern
 
 # Difference between freddist.install and distutils.install class isn't wide.
 # Only new options were added. Most of them are output directory related.
@@ -56,7 +57,8 @@ class install(_install):
                 break
     def get_actual_root(self):
         '''
-        Return actual root only in case if the process is not in creation of the package
+        Return actual root only in case if the process is not in creation of
+        the package
         '''
         return ((self.is_bdist_mode or self.preservepath) and [''] or 
                 [type(self.root) is not None and self.root or ''])[0]
@@ -97,12 +99,69 @@ class install(_install):
         if not self.mandir:
             self.mandir = os.path.join(self.datarootdir, 'man')
         if not self.docdir:
-            self.docdir = os.path.join(self.datarootdir, 'doc', self.distribution.metadata.name)
-        print self.docdir
+            self.docdir = os.path.join(
+                    self.datarootdir, 'doc', self.distribution.metadata.name)
 
         _install.finalize_options(self)
         if not self.record and not self.dont_record:
             self.record = 'install.log'
 
+    def normalize_record(self):
+        """
+        Method normalize content of record file, prepend slashes (/) if needed
+        and remove double slashes (//) from paths.
+        """
+        if self.record:
+            oldRecord = open(self.record).readlines()
+            newRecord = []
+            for line in oldRecord:
+                if not line.startswith(os.path.sep):
+                    line = os.path.sep + line
+                newRecord.append(os.path.normpath(line))
+            open(self.record, 'w').writelines(newRecord)
+
+    def update_record(self):
+        """
+        If needed prepend self.root to each path
+        """
+        if self.get_actual_root() and self.record:
+            record = open(self.record).readlines()
+            for i in range(len(record)):
+                if os.path.normpath(record[i]).find(
+                        os.path.normpath(self.root)) == -1:
+                    record[i] = os.path.join(
+                        self.root, record[i].lstrip(os.path.sep))
+            open(self.record, 'w').writelines(record)
+
+
+
+    def add_to_record(self, files):
+        """
+        This method take as parameter list of files, which are added
+        into record file (if exists)
+        """
+        #proceed only if i record
+        if self.record:
+            record = open(self.record).readlines()
+            for file in files:
+                # i must ensure, that every file from files has new line
+                # character at end
+                file = file.strip() + '\n'
+                if not file in record:
+                    # file is not in record, so add it
+                    record.append(file)
+            open(self.record, 'w').writelines(record)
+            print "record file has been updated"
+
+    def replace_pattern(self, fileOpen, fileSave=None, values=[]):
+        """
+        Replace given patterns with new values, for example in config files.
+        Patterns and new values can contain regular expressions.
+        Structure of values parameter looks like:
+        [(pattern_1, new_val_1), (pattern_2, new_val_2), ...]
+        """
+        _replace_pattern(fileOpen, fileSave, values) 
+
     def run(self):
         _install.run(self)
+        self.normalize_record()

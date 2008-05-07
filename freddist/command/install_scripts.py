@@ -1,5 +1,6 @@
 import re
 from distutils.command.install_scripts import install_scripts as _install_scripts
+from common import replace_pattern as _replace_pattern
 
 class install_scripts(_install_scripts):
     user_options = _install_scripts.user_options
@@ -45,7 +46,8 @@ class install_scripts(_install_scripts):
                 break
     def get_actual_root(self):
         '''
-        Return actual root only in case if the process is not in creation of the package
+        Return actual root only in case if the process is not in creation of
+        the package
         '''
         return ((self.is_bdist_mode or self.preservepath) and [''] or 
                 [type(self.root) is not None and self.root or ''])[0]
@@ -82,6 +84,15 @@ class install_scripts(_install_scripts):
 
         self.srcdir = self.distribution.srcdir
         _install_scripts.finalize_options(self)
+
+    def replace_pattern(self, fileOpen, fileSave=None, values=[]):
+        """
+        Replace given patterns with new values, for example in config files.
+        Patterns and new values can contain regular expressions.
+        Structure of values parameter looks like:
+        [(pattern_1, new_val_1), (pattern_2, new_val_2), ...]
+        """
+        _replace_pattern(fileOpen, fileSave, values)
 
     def run(self):
         _install_scripts.run(self)

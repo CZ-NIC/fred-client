@@ -18,8 +18,6 @@ class sdist(_sdist):
         reading the manifest, or just using the default file set -- it all
         depends on the user's options and the state of the filesystem.
         """
-        print "get_file_list >>>>>>>>>>>>>>"
-        print "srcdir:", self.srcdir
 
         # If we have a manifest template, see if it's newer than the
         # manifest; if so, we'll regenerate the manifest.

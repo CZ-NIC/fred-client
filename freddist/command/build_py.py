@@ -19,10 +19,10 @@ class build_py(_build_py):
 
         if not self.package_dir:
             if path:
-                #NICDIST line changed
+                #FREDDIST line changed
                 return os.path.join(self.srcdir, apply(os.path.join, path))
             else:
-                #NICDIST line changed
+                #FREDDIST line changed
                 return self.srcdir
         else:
             tail = []
@@ -34,7 +34,7 @@ class build_py(_build_py):
                     del path[-1]
                 else:
                     tail.insert(0, pdir)
-                    #NICDIST line changed
+                    #FREDIST line changed
                     return os.path.join(self.srcdir, apply(os.path.join, tail))
             else:
                 # Oops, got all the way through 'path' without finding a
@@ -49,10 +49,10 @@ class build_py(_build_py):
                     tail.insert(0, pdir)
 
                 if tail:
-                    #NICDIST line changed
+                    #FREDDIST line changed
                     return os.path.join(self.srcdir, apply(os.path.join, tail))
                 else:
-                    #NICDIST line changed
+                    #FREDDIST line changed
                     return self.srcdir
     #get_package_dir()
 
