@@ -1,5 +1,6 @@
 __all__ = [
         'command',
         'core.py',
-        'dist.py'
+        'dist.py',
+        'file_util.py',
         ]

@@ -58,3 +58,5 @@ graft fred/lang
 prune .svn
 prune fred/.svn
 prune  qt3doc
+
+include unittest/*
