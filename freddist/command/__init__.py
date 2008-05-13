@@ -11,4 +11,5 @@ __all__ = [
         'bdist_rpm.py',
         'clean.py',
         'uninstall.py',
+        'install_lib.py',
         ]

@@ -21,6 +21,7 @@ from distutils import log
 from freddist.core import setup
 from freddist.command.install import install
 from freddist.command.install_scripts import install_scripts
+from freddist.command.install_lib import install_lib
 
 from fred.internal_variables import fred_version, config_name
 from fred.session_config import get_etc_config_name
@@ -105,20 +106,13 @@ class EPPClientInstall(install):
                 os.path.join(self.srcdir, 'conf', config_name+'.install'),
                 os.path.join('build', config_name),
                 values)
-        print 'File %s was created.'%config_name
+        print 'File %s was created.' % config_name
 
     def run(self):
         self.update_fred_config()
         install.run(self)
 
 class EPPClientInstall_scripts(install_scripts):
-    def update_session_config(self):
-        filename = os.path.join(os.path.split(self.build_dir)[0], 'lib', 'fred', 'session_config.py')
-        values = [((
-            r"glob_conf = '/etc/fred/' \+ name",
-            "glob_conf = os.path.join('%s/fred/',  name)" % self.sysconfdir))]
-        self.replace_pattern(filename, None, values)
-        print "session_config.py file has been updated"
 
     def update_fred_client(self):
         #create path where python modules are located
@@ -138,9 +132,27 @@ class EPPClientInstall_scripts(install_scripts):
         print "fred-client file has been updated"
 
     def run(self):
-        self.update_session_config()
         self.update_fred_client()
         install_scripts.run(self)
+
+class Install_lib(install_lib):
+    def update_session_config(self):
+        filename = os.path.join(self.build_dir, 'fred', 'session_config.py')
+        if self.get_actual_root():
+            values = [((
+                r"(glob_conf = )\'\'",
+                r"\1'" + os.path.join(self.root, self.sysconfdir.lstrip(os.path.sep), config_name) + "'" ))]
+        else:
+            values = [((
+                r"(glob_conf = )\'\'",
+                r"\1'" + os.path.join(self.sysconfdir, config_name) + "'"))]
+
+        self.replace_pattern(filename, None, values)
+        print "session_config.py file has been updated"
+
+    def run(self):
+        self.update_session_config()
+        install_lib.run(self)
     
 def main():
     try:
@@ -186,6 +198,7 @@ def main():
             cmdclass = {
                     'install': EPPClientInstall, 
                     'install_scripts': EPPClientInstall_scripts,
+                    'install_lib':Install_lib,
                 }, 
             srcdir = g_srcdir
             )

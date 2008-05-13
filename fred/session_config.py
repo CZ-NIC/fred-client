@@ -46,7 +46,9 @@ def get_etc_config_name(name=''):
     'Returns shared folder depends on OS type.'
     if os.name == 'posix':
         # this line will be changed during setup process
-        glob_conf = '/etc/fred/' + name
+        glob_conf = ''
+        if glob_conf == '':
+            glob_conf = os.path.join('/etc/fred', name)
     else:
         # ALLUSERSPROFILE = C:\Documents and Settings\All Users
         glob_conf = os.path.join(os.path.expandvars('$ALLUSERSPROFILE'),name)
@@ -61,7 +63,7 @@ def load_default_config(config_name, verbose):
     if not_found:
         missing.extend(not_found)
         # than try etc
-        error, names, not_found = load_config(config, get_etc_config_name(config_name[1:]), verbose)
+        error, names, not_found = load_config(config, get_etc_config_name(config_name), verbose)
         if not_found and sys.platform[:3] == 'win':
             # In Windows try also open filename.ini
             match = re.match(r'\.?([^\.]+)',config_name)
@@ -125,7 +127,11 @@ def main(config_name, options, verbose, OMIT_ERROR):
 
 if __name__ == '__main__':
     import sys
-    conf_name = len(sys.argv) > 1 and sys.argv[1] or '/home/zdenek/.fred_client.conf'
+    #conf_name = len(sys.argv) > 1 and sys.argv[1] or '/home/zdenek/.fred_client.conf'
+    if len(sys.argv) > 1 and sys.argv[1]:
+        conf_name = sys.argv[1]
+    else:
+        conf_name = ''
     #config, config_names, errors, missing = main(conf_name,{'config':'pokus'}, 3, 0)
     config, config_names, errors, missing = main(conf_name,{}, 3, 0)
     print "config",config
