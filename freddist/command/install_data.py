@@ -59,6 +59,22 @@ class install_data(_install_data):
             'LIBDIR', 'DATAROOTDIR', 'DATADIR', 'MANDIR', 'DOCDIR',
             'INFODIR']
 
+    dirs = ['prefix', 'libexecdir', 'localstatedir', 'libdir', 'datarootdir',
+            'datadir', 'infodir', 'mandir', 'docdir']
+    def getDir(self, directory):
+        """
+        Method returs actual value of some system directory and if needed it
+        prepend self.root path.
+        """
+        try:
+            dir = getattr(self, directory.lower())
+        except AttributeError:
+            return ''
+        if self.get_actual_root():
+            return os.path.join(self.root, dir.lstrip(os.path.sep))
+        else:
+            return dir
+
     def replaceSpecialDir(self, dir):
         """
         Method purpose is to replace `special directory' pattern passed to

@@ -119,16 +119,11 @@ class EPPClientInstall_scripts(install_scripts):
         pythonLibPath = os.path.join('lib', 'python' +
                 str(sys.version_info[0]) + '.' + 
                 str(sys.version_info[1]), 'site-packages')
-
-        if self.get_actual_root():
-            values = [((
-                r'(sys\.path\.append)\(\'[\w/_\- \.]*\'\)',
-                r'\1' + "('" + os.path.join(self.root,
-                    self.prefix.lstrip(os.path.sep), pythonLibPath) + "')"))]
-        else:
-            values = [((r'(sys\.path\.append)\(\'[\w/_\- \.]*\'\)',
-                r'\1' + "('" + os.path.join(self.prefix, pythonLibPath) + "')"))]
-        self.replace_pattern(os.path.join(self.build_dir, 'fred-client'), None, values)
+        values = [((r'(sys\.path\.append)\(\'[\w/_\- \.]*\'\)',
+            r'\1' + "('" + os.path.join(self.getDir('prefix'), pythonLibPath) +
+            "')"))]
+        self.replace_pattern(os.path.join(self.build_dir, 'fred-client'),
+                None, values)
         print "fred-client file has been updated"
 
     def run(self):
@@ -138,15 +133,12 @@ class EPPClientInstall_scripts(install_scripts):
 class Install_lib(install_lib):
     def update_session_config(self):
         filename = os.path.join(self.build_dir, 'fred', 'session_config.py')
-        if self.get_actual_root():
-            values = [((
-                r"(glob_conf = )\'\'",
-                r"\1'" + os.path.join(self.root, self.sysconfdir.lstrip(os.path.sep), config_name) + "'" ))]
-        else:
-            values = [((
-                r"(glob_conf = )\'\'",
-                r"\1'" + os.path.join(self.sysconfdir, config_name) + "'"))]
-
+        values = [((
+            r"(glob_conf = )\'\'",
+            r"\1'" + 
+            os.path.join(self.getDir('sysconfdir'), 'fred', config_name) + 
+            "'"))]
+        print values
         self.replace_pattern(filename, None, values)
         print "session_config.py file has been updated"
 

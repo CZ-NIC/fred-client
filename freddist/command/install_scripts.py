@@ -1,4 +1,4 @@
-import re
+import re, os
 from distutils.command.install_scripts import install_scripts as _install_scripts
 from common import replace_pattern as _replace_pattern
 
@@ -32,6 +32,9 @@ class install_scripts(_install_scripts):
     boolean_options = _install_scripts.boolean_options
     boolean_options.append('preservepath')
 
+    dirs = ['prefix', 'libexecdir', 'localstatedir', 'libdir', 'datarootdir',
+            'datadir', 'infodir', 'mandir', 'docdir']
+
     def __init__(self, *attrs):
         _install_scripts.__init__(self, *attrs)
 
@@ -51,6 +54,19 @@ class install_scripts(_install_scripts):
         '''
         return ((self.is_bdist_mode or self.preservepath) and [''] or 
                 [type(self.root) is not None and self.root or ''])[0]
+    def getDir(self, directory):
+        """
+        Method returs actual value of some system directory and if needed it
+        prepend self.root path.
+        """
+        try:
+            dir = getattr(self, directory.lower())
+        except AttributeError:
+            return ''
+        if self.get_actual_root():
+            return os.path.join(self.root, dir.lstrip(os.path.sep))
+        else:
+            return dir
 
     def initialize_options(self):
         _install_scripts.initialize_options(self)

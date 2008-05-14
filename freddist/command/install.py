@@ -2,6 +2,7 @@ import os, re
 from distutils.command.install import install as _install
 from distutils.debug import DEBUG
 from common import replace_pattern as _replace_pattern
+from distutils.util import convert_path, subst_vars, change_root
 
 # Difference between freddist.install and distutils.install class isn't wide.
 # Only new options were added. Most of them are output directory related.
@@ -43,6 +44,9 @@ class install(_install):
     boolean_options.append('preservepath')
     boolean_options.append('dont_record')
 
+    dirs = ['prefix', 'libexecdir', 'localstatedir', 'libdir', 'datarootdir',
+            'datadir', 'infodir', 'mandir', 'docdir']
+
     def __init__(self, *attrs):
         _install.__init__(self, *attrs)
 
@@ -55,6 +59,7 @@ class install(_install):
                     break
             if self.is_bdist_mode:
                 break
+
     def get_actual_root(self):
         '''
         Return actual root only in case if the process is not in creation of
@@ -106,6 +111,20 @@ class install(_install):
         if not self.record and not self.dont_record:
             self.record = 'install.log'
 
+    def getDir(self, directory):
+        """
+        Method returs actual value of some system directory and if needed it
+        prepend self.root path.
+        """
+        try:
+            dir = getattr(self, directory.lower())
+        except AttributeError:
+            return ''
+        if self.get_actual_root():
+            return os.path.join(self.root, dir.lstrip(os.path.sep))
+        else:
+            return dir
+
     def normalize_record(self):
         """
         Method normalize content of record file, prepend slashes (/) if needed
@@ -132,8 +151,6 @@ class install(_install):
                     record[i] = os.path.join(
                         self.root, record[i].lstrip(os.path.sep))
             open(self.record, 'w').writelines(record)
-
-
 
     def add_to_record(self, files):
         """
