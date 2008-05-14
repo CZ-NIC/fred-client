@@ -138,7 +138,6 @@ class Install_lib(install_lib):
             r"\1'" + 
             os.path.join(self.getDir('sysconfdir'), 'fred', config_name) + 
             "'"))]
-        print values
         self.replace_pattern(filename, None, values)
         print "session_config.py file has been updated"
 

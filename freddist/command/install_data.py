@@ -2,6 +2,7 @@ import types, os, re
 from distutils import util
 from distutils.command.install_data import install_data as _install_data
 from common import replace_pattern as _replace_pattern
+from install_parent import install_parent
 
 # freddist install_data came with one enhancement. It regards system directories.
 # And first simple example. This is part of core.setup function:
@@ -33,7 +34,7 @@ from common import replace_pattern as _replace_pattern
 # All these setting can be overriden by proper options.
 # On line 16 is example of creating empty directory.
 
-class install_data(_install_data):
+class install_data(_install_data, install_parent):
     user_options = _install_data.user_options
     user_options.append(('prefix=', None,
         'installation prefix'))
@@ -58,22 +59,6 @@ class install_data(_install_data):
     dir_patts = ['PREFIX', 'SYSCONFDIR', 'LOCALSTATEDIR', 'LIBEXECDIR',
             'LIBDIR', 'DATAROOTDIR', 'DATADIR', 'MANDIR', 'DOCDIR',
             'INFODIR']
-
-    dirs = ['prefix', 'libexecdir', 'localstatedir', 'libdir', 'datarootdir',
-            'datadir', 'infodir', 'mandir', 'docdir']
-    def getDir(self, directory):
-        """
-        Method returs actual value of some system directory and if needed it
-        prepend self.root path.
-        """
-        try:
-            dir = getattr(self, directory.lower())
-        except AttributeError:
-            return ''
-        if self.get_actual_root():
-            return os.path.join(self.root, dir.lstrip(os.path.sep))
-        else:
-            return dir
 
     def replaceSpecialDir(self, dir):
         """
@@ -119,15 +104,6 @@ class install_data(_install_data):
                 ('infodir', 'infodir'))
         self.srcdir = self.distribution.srcdir
         _install_data.finalize_options(self)
-
-    def replace_pattern(self, fileOpen, fileSave=None, values=[]):
-        """
-        Replace given patterns with new values, for example in config files.
-        Patterns and new values can contain regular expressions.
-        Structure of values parameter looks like:
-        [(pattern_1, new_val_1), (pattern_2, new_val_2), ...]
-        """
-        _replace_pattern(fileOpen, fileSave, values) 
 
     def run(self):
         #FREDDIST line added

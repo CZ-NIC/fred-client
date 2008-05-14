@@ -1,8 +1,9 @@
 import re, os
 from distutils.command.install_scripts import install_scripts as _install_scripts
 from common import replace_pattern as _replace_pattern
+from install_parent import install_parent
 
-class install_scripts(_install_scripts):
+class install_scripts(_install_scripts, install_parent):
     user_options = _install_scripts.user_options
     user_options.append(('root=', None,
         'install everything relative to this alternate root directory'))
@@ -32,9 +33,6 @@ class install_scripts(_install_scripts):
     boolean_options = _install_scripts.boolean_options
     boolean_options.append('preservepath')
 
-    dirs = ['prefix', 'libexecdir', 'localstatedir', 'libdir', 'datarootdir',
-            'datadir', 'infodir', 'mandir', 'docdir']
-
     def __init__(self, *attrs):
         _install_scripts.__init__(self, *attrs)
 
@@ -54,19 +52,6 @@ class install_scripts(_install_scripts):
         '''
         return ((self.is_bdist_mode or self.preservepath) and [''] or 
                 [type(self.root) is not None and self.root or ''])[0]
-    def getDir(self, directory):
-        """
-        Method returs actual value of some system directory and if needed it
-        prepend self.root path.
-        """
-        try:
-            dir = getattr(self, directory.lower())
-        except AttributeError:
-            return ''
-        if self.get_actual_root():
-            return os.path.join(self.root, dir.lstrip(os.path.sep))
-        else:
-            return dir
 
     def initialize_options(self):
         _install_scripts.initialize_options(self)
@@ -100,15 +85,6 @@ class install_scripts(_install_scripts):
 
         self.srcdir = self.distribution.srcdir
         _install_scripts.finalize_options(self)
-
-    def replace_pattern(self, fileOpen, fileSave=None, values=[]):
-        """
-        Replace given patterns with new values, for example in config files.
-        Patterns and new values can contain regular expressions.
-        Structure of values parameter looks like:
-        [(pattern_1, new_val_1), (pattern_2, new_val_2), ...]
-        """
-        _replace_pattern(fileOpen, fileSave, values)
 
     def run(self):
         _install_scripts.run(self)

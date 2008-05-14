@@ -1,7 +1,8 @@
 import os, re
+from install_parent import install_parent
 from distutils.command.install import install as _install
 from distutils.debug import DEBUG
-from common import replace_pattern as _replace_pattern
+#from common import replace_pattern as _replace_pattern
 from distutils.util import convert_path, subst_vars, change_root
 
 # Difference between freddist.install and distutils.install class isn't wide.
@@ -15,7 +16,7 @@ from distutils.util import convert_path, subst_vars, change_root
 # Freddist change it. Default is to create that file (due to uninstall class)
 # and `--dont-record' option prevent this.
 
-class install(_install):
+class install(_install, install_parent):
     user_options = _install.user_options
     user_options.append(('sysconfdir=', None, 
         'System configuration directory [PREFIX/etc]'))
@@ -43,9 +44,6 @@ class install(_install):
     boolean_options = _install.boolean_options
     boolean_options.append('preservepath')
     boolean_options.append('dont_record')
-
-    dirs = ['prefix', 'libexecdir', 'localstatedir', 'libdir', 'datarootdir',
-            'datadir', 'infodir', 'mandir', 'docdir']
 
     def __init__(self, *attrs):
         _install.__init__(self, *attrs)
@@ -111,20 +109,6 @@ class install(_install):
         if not self.record and not self.dont_record:
             self.record = 'install.log'
 
-    def getDir(self, directory):
-        """
-        Method returs actual value of some system directory and if needed it
-        prepend self.root path.
-        """
-        try:
-            dir = getattr(self, directory.lower())
-        except AttributeError:
-            return ''
-        if self.get_actual_root():
-            return os.path.join(self.root, dir.lstrip(os.path.sep))
-        else:
-            return dir
-
     def normalize_record(self):
         """
         Method normalize content of record file, prepend slashes (/) if needed
@@ -169,15 +153,6 @@ class install(_install):
                     record.append(file)
             open(self.record, 'w').writelines(record)
             print "record file has been updated"
-
-    def replace_pattern(self, fileOpen, fileSave=None, values=[]):
-        """
-        Replace given patterns with new values, for example in config files.
-        Patterns and new values can contain regular expressions.
-        Structure of values parameter looks like:
-        [(pattern_1, new_val_1), (pattern_2, new_val_2), ...]
-        """
-        _replace_pattern(fileOpen, fileSave, values) 
 
     def run(self):
         _install.run(self)
