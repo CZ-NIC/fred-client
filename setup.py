@@ -22,6 +22,7 @@ from freddist.core import setup
 from freddist.command.install import install
 from freddist.command.install_scripts import install_scripts
 from freddist.command.install_lib import install_lib
+from freddist.command.install_data import install_data
 
 from fred.internal_variables import fred_version, config_name
 from fred.session_config import get_etc_config_name
@@ -56,6 +57,13 @@ class EPPClientInstall(install):
         'fred server host [localhost]'))
     user_options.append(('port=', None,
         'fred server port [700]'))
+    user_options.append(('install-unittest', None,
+        'setup will install unittest scripts into PREFIX/lib/fred-client/unittest '
+        'directory'))
+
+
+    boolean_options = install.boolean_options
+    boolean_options.append('install-unittest')
 
     def __init__(self, *attrs):
         install.__init__(self, *attrs)
@@ -77,6 +85,7 @@ class EPPClientInstall(install):
         install.initialize_options(self)
         self.host = None
         self.port = None
+        self.install_unittest = None
 
     def finalize_options(self):
         install.finalize_options(self)
@@ -84,6 +93,11 @@ class EPPClientInstall(install):
             self.host = 'localhost'
         if not self.port:
             self.port = '700'
+
+        if self.install_unittest:
+            self.distribution.data_files.append(
+                    ('LIBDIR/%s/unittest' % self.distribution.get_name(), 
+                        all_files_in('unittest')))
 
     def update_fred_config(self):
         '''Update fred config'''
@@ -144,7 +158,7 @@ class Install_lib(install_lib):
     def run(self):
         self.update_session_config()
         install_lib.run(self)
-    
+
 def main():
     try:
         setup(name = 'fred-client',

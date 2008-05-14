@@ -2,7 +2,7 @@
 Parent class for all install* classes
 """
 
-import re
+import re, os
 
 class install_parent:
     dirs = ['prefix', 'libexecdir', 'localstatedir', 'libdir', 'datarootdir',
