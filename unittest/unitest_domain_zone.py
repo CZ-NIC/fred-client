@@ -6,6 +6,8 @@ Ticket #253 (defect)
     V tuto chvili se nikde netestuje zda ma prihlaseny registrator pravo na praci v dane zone. 
     V pripade ze nema je treba u opraci *_domain vyhodit chybovou hlasku.
 """
+import sys
+sys.path.insert(0, '')
 import time
 import unittest
 import fred

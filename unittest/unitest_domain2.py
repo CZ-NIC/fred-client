@@ -2,6 +2,8 @@
 # -*- coding: UTF-8 -*-
 """Check domain for changes after updating.
 """
+import sys
+sys.path.insert(0, '')
 import unittest
 import fred
 import unitest_share

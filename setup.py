@@ -23,6 +23,7 @@ from freddist.command.install import install
 from freddist.command.install_scripts import install_scripts
 from freddist.command.install_lib import install_lib
 from freddist.command.install_data import install_data
+from freddist import file_util
 
 from fred.internal_variables import fred_version, config_name
 from fred.session_config import get_etc_config_name
@@ -41,13 +42,8 @@ if 'bdist_wininst' in sys.argv:
     APP_SCRIPTS.append('setup_postinstall.py')
 
 g_srcdir = '.'
+g_install_unittest = None
     
-def all_files_in(dirname):
-    'Returns all fullnames'
-    return map(lambda s:os.path.join(g_srcdir, dirname, s),
-            [n for n in os.listdir(os.path.join(g_srcdir, dirname)) if 
-                os.path.isfile(os.path.join(g_srcdir, dirname,n))])
-
 class EPPClientInstall(install):
 
     user_options = install.user_options
@@ -97,7 +93,9 @@ class EPPClientInstall(install):
         if self.install_unittest:
             self.distribution.data_files.append(
                     ('LIBDIR/%s/unittest' % self.distribution.get_name(), 
-                        all_files_in('unittest')))
+                        file_util.all_files_in_2('unittest')))
+        global g_install_unittest
+        g_install_unittest = self.install_unittest
 
     def update_fred_config(self):
         '''Update fred config'''
@@ -159,6 +157,29 @@ class Install_lib(install_lib):
         self.update_session_config()
         install_lib.run(self)
 
+class Install_data(install_data):
+    def update_file(self, filename):
+        values = []
+        values.append((r'(sys\.path\.insert\(0,\ )\'\'\)',
+            r"\1'%s')" % os.path.join(self.getDir('prefix'),
+                self.pythonLibPath)))
+        self.replace_pattern(os.path.join(self.getDir('libdir'),
+            self.distribution.get_name(), 'unittest', filename),
+            None, values)
+        print "%s file has been updated" %filename
+
+    def run(self):
+        install_data.run(self)
+        # TODO unittest cannot be added into rpm package - because of
+        # update_file method don't know proper path
+        if g_install_unittest or self.is_bdist_mode:
+            self.pythonLibPath = os.path.join('lib', 'python' +
+                    str(sys.version_info[0]) + '.' + 
+                    str(sys.version_info[1]), 'site-packages')
+            files = file_util.all_files_in_2('unittest', onlyFilenames=True)
+            for file in files:
+                self.update_file(file)
+
 def main():
     try:
         setup(name = 'fred-client',
@@ -192,7 +213,7 @@ def main():
                 ('DATADIR/fred-client/ssl', [
                     'fred/certificates/test-cert.pem',
                     'fred/certificates/test-key.pem']),
-                ('DATADIR/fred-client/schemas', all_files_in('fred/schemas')),
+                ('DATADIR/fred-client/schemas', file_util.all_files_in_2('fred/schemas')),
                 # on posix: '/etc/fred/' 
                 # on windows:  ALLUSERSPROFILE = C:\Documents and Settings\All Users
                 # on windows if ALL... missing:  C:\Python25\ 
@@ -204,6 +225,7 @@ def main():
                     'install': EPPClientInstall, 
                     'install_scripts': EPPClientInstall_scripts,
                     'install_lib':Install_lib,
+                    'install_data':Install_data,
                 }, 
             srcdir = g_srcdir
             )

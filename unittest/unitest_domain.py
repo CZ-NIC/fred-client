@@ -2,6 +2,8 @@
 # -*- coding: UTF-8 -*-
 """Unitests on domains and connected contacts and nssets.
 """
+import sys
+sys.path.insert(0, '')
 import re
 import time
 import unittest

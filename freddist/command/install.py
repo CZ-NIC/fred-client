@@ -2,7 +2,6 @@ import os, re
 from install_parent import install_parent
 from distutils.command.install import install as _install
 from distutils.debug import DEBUG
-#from common import replace_pattern as _replace_pattern
 from distutils.util import convert_path, subst_vars, change_root
 
 # Difference between freddist.install and distutils.install class isn't wide.

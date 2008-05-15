@@ -3,6 +3,8 @@
 """Testing process update one contact item and than check
 changes.
 """
+import sys
+sys.path.insert(0, '')
 import time
 import unittest
 import fred

@@ -41,6 +41,7 @@ Connection options:
                    Use SSL private key to connect to server
 """
 import sys, re, time
+sys.path.insert(0, '')
 import random
 import fred
 from fred.translate import encoding

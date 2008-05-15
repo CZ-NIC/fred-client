@@ -8,6 +8,8 @@
 1.5 Zalogovani se spatnym otiskem certifikatu
 1.6 Zmena hesla tam a zpatky s kontrolnim zalogovanim
 """
+import sys
+sys.path.insert(0, '')
 import unittest
 import fred
 import unitest_share

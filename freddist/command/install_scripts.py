@@ -1,6 +1,5 @@
 import re, os
 from distutils.command.install_scripts import install_scripts as _install_scripts
-from common import replace_pattern as _replace_pattern
 from install_parent import install_parent
 
 class install_scripts(_install_scripts, install_parent):

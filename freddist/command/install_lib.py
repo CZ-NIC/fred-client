@@ -1,6 +1,5 @@
 import re, os
 from distutils.command.install_lib import install_lib as _install_lib
-from common import replace_pattern as _replace_pattern
 from install_parent import install_parent
 
 class install_lib(_install_lib, install_parent):

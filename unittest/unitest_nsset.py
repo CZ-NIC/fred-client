@@ -30,6 +30,8 @@ Ticket #113 Update adresy 2001:200::fea5:3015
 3.22 Check na smazany nsset
 3.23 Smazani pomocnych kontaktu
 """
+import sys
+sys.path.insert(0, '')
 import re
 import unittest
 import fred

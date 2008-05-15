@@ -17,6 +17,8 @@
 2.14 Smazani kontaktu 
 2.15 Check na smazany kontakt
 """
+import sys
+sys.path.insert(0, '')
 import time
 import unittest
 import fred
