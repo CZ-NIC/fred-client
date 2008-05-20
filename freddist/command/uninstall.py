@@ -12,6 +12,9 @@ Implements the freddist 'uninstall' command.
 # install_data script. Directories which must be created due to install files
 # are not normally removed as long as `--remove-empty-dirs' options is used.
 
+# TODO uninstall command do not work when installing to different root
+# (param --root is used)
+
 import os
 from distutils.core import Command
 

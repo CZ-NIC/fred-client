@@ -60,9 +60,12 @@ class install_data(_install_data, install_parent):
             'INFODIR']
     user_options.append(('preservepath', None, 
         'Preserve path(s) in configuration file(s).'))
+    user_options.append(('dont-create-pycpyo', None,
+        'do not create compiled pyc and optimized pyo files'))
 
     boolean_options = _install_data.boolean_options
     boolean_options.append('preservepath')
+    boolean_options.append('dont_create_pycpyo')
 
     def __init__(self, *attrs):
         _install_data.__init__(self, *attrs)
@@ -115,6 +118,7 @@ class install_data(_install_data, install_parent):
         self.mandir = None
         self.docdir = None
         self.preservepath = None
+        self.dont_create_pycpyo = None
 
     def finalize_options(self):
         self.set_undefined_options('install',
@@ -129,7 +133,8 @@ class install_data(_install_data, install_parent):
                 ('datadir', 'datadir'),
                 ('mandir', 'mandir'),
                 ('docdir', 'docdir'),
-                ('infodir', 'infodir'))
+                ('infodir', 'infodir'),
+                ('dont_create_pycpyo', 'dont_create_pycpyo'))
         self.srcdir = self.distribution.srcdir
         _install_data.finalize_options(self)
 
@@ -149,7 +154,7 @@ class install_data(_install_data, install_parent):
                 (out, _) = self.copy_file(f, self.install_dir)
                 self.outfiles.append(out)
 
-                if out.endswith('.py'):
+                if out.endswith('.py') and not self.dont_create_pycpyo:
                     os.system('python -c "import py_compile; \
                             py_compile.compile(\'%s\')"' % out)
                     self.outfiles.append(out)
@@ -183,7 +188,7 @@ class install_data(_install_data, install_parent):
                         (out, _) = self.copy_file(data, dir)
                         self.outfiles.append(out)
 
-                        if out.endswith('.py'):
+                        if out.endswith('.py') and not self.dont_create_pycpyo:
                             os.system('python -c "import py_compile; \
                                     py_compile.compile(\'%s\')"' % out)
                             self.outfiles.append(out + 'c')

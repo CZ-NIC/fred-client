@@ -6,6 +6,11 @@ Utility function for operating on files
 import os, sys, fnmatch
 from distutils.file_util import *
 
+# by default exclude hidden files/directories
+EXCLUDE_PATTERN = ['.*']
+# and include all other
+INCLUDE_PATTERN = ['*']
+
 def curdir(path):
     """Return directory where setup.py file is situated."""
     return os.path.join(os.path.dirname(sys.argv[0]), path)
@@ -17,7 +22,8 @@ def fit_pattern(filename, excludePattern):
             return True
     return False
 
-def all_files_in(dst_directory, directory, excludePattern=None, recursive=True):
+def all_files_in(dst_directory, directory, excludePattern=None,
+        includePattern=None, recursive=True):
     """
     Returns couples (directory, directory/file) to all files in directory.
     Files (as well as directories must not fit `excludePattern' mask.
@@ -27,27 +33,38 @@ def all_files_in(dst_directory, directory, excludePattern=None, recursive=True):
             excludePattern = EXCLUDE_PATTERN
         except NameError:
             excludePattern = ['']
+    if not includePattern:
+        try:
+            includePattern = INCLUDE_PATTERN
+        except NameError:
+            includePattern = ['*']
     paths = [] # list of couples (directory, directory/file) for all files
 
     for filename in os.listdir(curdir(directory)):
         if fit_pattern(filename, excludePattern):
             continue
+        if not fit_pattern(filename, includePattern):
+            continue
         full_path = os.path.join(directory, filename)
         if os.path.isfile(curdir(full_path)):
-            # exclude first directory in path from dst path (this include really only what is IN directory, not (directory AND files))
+            # exclude first directory in path from dst path (this include
+            # really only what is IN directory, not (directory AND files))
             splitted_directory = directory.split(os.path.sep, 1)
             if len(splitted_directory) > 1:
                 dst_subdirectory = splitted_directory[1]
             else: # directory is only one directory yet
                 dst_subdirectory = ''
-            paths.append((os.path.join(dst_directory, dst_subdirectory), [full_path]))
+            paths.append((os.path.join(dst_directory, dst_subdirectory),
+                [full_path]))
         elif os.path.isdir(curdir(full_path)) and recursive:
-            paths.extend(all_files_in(dst_directory, full_path))   
+            paths.extend(all_files_in(dst_directory, full_path, excludePattern,
+                includePattern))   
            
     return paths
 
 
-def all_files_in_2(directory, excludePattern=None, recursive=False, onlyFilenames=False):
+def all_files_in_2(directory, excludePattern=None, includePattern=None,
+        recursive=False, onlyFilenames=False):
     """
     Returns list (for example: ['filename1', 'filename2', ...]) of files in
     directory (directories if recursive). Files must not fit `excludePattern'
@@ -61,9 +78,17 @@ def all_files_in_2(directory, excludePattern=None, recursive=False, onlyFilename
             excludePattern = EXCLUDE_PATTERN
         except NameError:
             excludePattern = ['']
+    if not includePattern:
+        try:
+            includePattern = INCLUDE_PATTERN
+        except NameError:
+            includePattern = ['*']
+
     paths = []
     for filename in os.listdir(curdir(directory)):
         if fit_pattern(filename, excludePattern):
+            continue
+        if not fit_pattern(filename, includePattern):
             continue
         full_path = os.path.join(directory, filename)
         if os.path.isfile(curdir(full_path)):
@@ -72,6 +97,7 @@ def all_files_in_2(directory, excludePattern=None, recursive=False, onlyFilename
             else:
                 paths.append(full_path)
         if os.path.isdir(curdir(full_path)) and recursive:
-            paths.extend(all_files_in2(full_path, excludePattern, onlyFilenames, recursive))
+            paths.extend(all_files_in_2(full_path, excludePattern,
+                includePattern, onlyFilenames, recursive))
     return paths
 

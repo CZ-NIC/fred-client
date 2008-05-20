@@ -39,10 +39,13 @@ class install(_install, install_parent):
         'Preserve path(s) in configuration file(s).'))
     user_options.append(('dont-record', None,
         'do not record list of installed files'))
+    user_options.append(('dont-create-pycpyo', None,
+        'do not create compiled pyc and optimized pyo files'))
 
     boolean_options = _install.boolean_options
     boolean_options.append('preservepath')
     boolean_options.append('dont_record')
+    boolean_options.append('dont_create_pycpyo')
 
     def __init__(self, *attrs):
         _install.__init__(self, *attrs)
@@ -78,6 +81,7 @@ class install(_install, install_parent):
         self.docdir = None
         self.preservepath = None
         self.dont_record = None
+        self.dont_create_pycpyo = None
 
     def finalize_options(self):
         self.srcdir = self.distribution.srcdir
