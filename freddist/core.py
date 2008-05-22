@@ -10,7 +10,8 @@ freddist.core
 #           srcdir=os.path.dirname(sys.argv[0]),
 #           author='your name',
 #           ... (setup argument go on)
-# Default value of `srcdir' is '.' (it means current directory)
+# scrdir need not to be set in setup.py file, instead is set in setup function
+# to its default value (obtained from first command line argument string)
 
 import os, sys
 from distutils.core import setup as _setup
@@ -30,6 +31,14 @@ except ImportError:
 
 def setup(**attrs):
     global _setup_stop_after, _setup_distribution
+
+    # freddist: if 'srcdir' attribute is not present, lets set it to directory
+    # name obtained from first command line argument string.
+    if not attrs.has_key('srcdir'):
+        attrs['srcdir'] = os.path.dirname(sys.argv[0])
+    # if srcdir is empty set it to . (os.curdir)
+    if attrs['srcdir'] == '':
+        attrs['srcdir'] = os.curdir
 
     # Determine the distribution class -- either caller-supplied or
     # our Distribution (see below).

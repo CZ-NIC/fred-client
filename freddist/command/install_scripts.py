@@ -1,4 +1,4 @@
-import re, os
+import re, os, sys
 from distutils.command.install_scripts import install_scripts as _install_scripts
 from install_parent import install_parent
 
@@ -8,6 +8,10 @@ class install_scripts(_install_scripts, install_parent):
         'install everything relative to this alternate root directory'))
     user_options.append(('prefix=', None,
         'installation prefix'))
+    user_options.append(('bindir=', None,
+        'user executables [PREFIX/bin]'))
+    user_options.append(('sbindir=', None,
+        'system admin executables [PREFIX/sbin]'))
     user_options.append(('sysconfdir=', None, 
         'System configuration directory [PREFIX/etc]'))
     user_options.append(('libexecdir=', None,
@@ -16,6 +20,12 @@ class install_scripts(_install_scripts, install_parent):
         'Modifiable single machine data [PREFIX/var]'))
     user_options.append(('libdir=', None,
         'object code libraries [PREFIX/lib]'))
+    user_options.append(('pythondir=', None,
+        'python directory [LIBDIR/python%d.%d]' %
+        (sys.version_info[0], sys.version_info[1])))
+    user_options.append(('purelibdir=', None,
+        'python pure libraries [LIBDIR/python%d.%d/site-packages]' %
+        (sys.version_info[0], sys.version_info[1])))
     user_options.append(('datarootdir=', None,
         'read only architecture-independent data root [PREFIX/share]'))
     user_options.append(('datadir=', None,
@@ -26,6 +36,8 @@ class install_scripts(_install_scripts, install_parent):
         'man documentation [DATAROOTDIR/man]'))
     user_options.append(('docdir=', None,
         'documentation root [DATAROOTDIR/doc/NAME]'))
+    user_options.append(('localedir=', None,
+        'locale-dependent data [DATAROOTDIR/locale]'))
     user_options.append(('preservepath', None, 
         'Preserve path(s) in configuration file(s).'))
 
@@ -66,6 +78,11 @@ class install_scripts(_install_scripts, install_parent):
         self.infodir = None
         self.mandir = None
         self.docdir = None
+        self.bindir = None
+        self.sbindir = None
+        self.localedir = None
+        self.pythondir = None
+        self.purelibdir = None
 
     def finalize_options(self):
         self.set_undefined_options('install',
@@ -80,6 +97,11 @@ class install_scripts(_install_scripts, install_parent):
                 ('datadir', 'datadir'),
                 ('mandir', 'mandir'),
                 ('docdir', 'docdir'),
+                ('bindir', 'bindir'),
+                ('sbindir', 'sbindir'),
+                ('localedir', 'localedir'),
+                ('pythondir', 'pythondir'),
+                ('purelibdir', 'purelibdir'),
                 ('infodir', 'infodir'))
 
         self.srcdir = self.distribution.srcdir

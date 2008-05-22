@@ -1,4 +1,4 @@
-import types, os, re
+import types, os, re, sys
 from distutils import util
 from distutils.command.install_data import install_data as _install_data
 from install_parent import install_parent
@@ -37,6 +37,10 @@ class install_data(_install_data, install_parent):
     user_options = _install_data.user_options
     user_options.append(('prefix=', None,
         'installation prefix'))
+    user_options.append(('bindir=', None,
+        'user executables [PREFIX/bin]'))
+    user_options.append(('sbindir=', None,
+        'system admin executables [PREFIX/sbin]'))
     user_options.append(('sysconfdir=', None, 
         'System configuration directory [PREFIX/etc]'))
     user_options.append(('libexecdir=', None,
@@ -45,6 +49,12 @@ class install_data(_install_data, install_parent):
         'Modifiable single machine data [PREFIX/var]'))
     user_options.append(('libdir=', None,
         'object code libraries [PREFIX/lib]'))
+    user_options.append(('pythondir=', None,
+        'python directory [LIBDIR/python%d.%d]' %
+        (sys.version_info[0], sys.version_info[1])))
+    user_options.append(('purelibdir=', None,
+        'python pure libraries [LIBDIR/python%d.%d/site-packages]' %
+        (sys.version_info[0], sys.version_info[1])))
     user_options.append(('datarootdir=', None,
         'read only architecture-independent data root [PREFIX/share]'))
     user_options.append(('datadir=', None,
@@ -55,9 +65,15 @@ class install_data(_install_data, install_parent):
         'man documentation [DATAROOTDIR/man]'))
     user_options.append(('docdir=', None,
         'documentation root [DATAROOTDIR/doc/NAME]'))
+    user_options.append(('localedir=', None,
+        'locale-dependent data [DATAROOTDIR/locale]'))
+
+    # directory patterns which install_data recognize
     dir_patts = ['PREFIX', 'SYSCONFDIR', 'LOCALSTATEDIR', 'LIBEXECDIR',
             'LIBDIR', 'DATAROOTDIR', 'DATADIR', 'MANDIR', 'DOCDIR',
-            'INFODIR']
+            'INFODIR', 'BINDIR', 'SBINDIR', 'LOCALEDIR', 'PYTHONDIR',
+            'PURELIBDIR']
+
     user_options.append(('preservepath', None, 
         'Preserve path(s) in configuration file(s).'))
     user_options.append(('dont-create-pycpyo', None,
@@ -117,6 +133,11 @@ class install_data(_install_data, install_parent):
         self.infodir = None
         self.mandir = None
         self.docdir = None
+        self.bindir = None
+        self.sbindir = None
+        self.localedir = None
+        self.pythondir = None
+        self.purelibdir = None
         self.preservepath = None
         self.dont_create_pycpyo = None
 
@@ -134,6 +155,11 @@ class install_data(_install_data, install_parent):
                 ('mandir', 'mandir'),
                 ('docdir', 'docdir'),
                 ('infodir', 'infodir'),
+                ('bindir', 'bindir'),
+                ('sbindir', 'sbindir'),
+                ('localedir', 'localedir'),
+                ('pythondir', 'pythondir'),
+                ('purelibdir', 'purelibdir'),
                 ('dont_create_pycpyo', 'dont_create_pycpyo'))
         self.srcdir = self.distribution.srcdir
         _install_data.finalize_options(self)

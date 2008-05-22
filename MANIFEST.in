@@ -3,8 +3,9 @@ global-include extras/*.py
 global-exclude test_*.*
 global-exclude *.*~
 
-include freddist/*
-include freddist/command/*
+include freddist/*.py
+include freddist/README
+include freddist/command/*.py
 include conf/*
 
 include doc/README_EN.txt

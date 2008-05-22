@@ -14,6 +14,7 @@ class install_parent:
         Patterns and new values can contain regular expressions.
         Structure of values parameter looks like:
         [(pattern_1, new_val_1), (pattern_2, new_val_2), ...]
+        If targer directory does not exists, method will create it.
         """
         if not fileSave:
             fileSave = fileOpen
@@ -21,7 +22,11 @@ class install_parent:
 
         for value in values:
             body = re.sub(value[0], value[1], body)
-
+        try:
+            if not os.path.isdir(os.path.dirname(fileSave)):
+                os.makedirs(os.path.dirname(fileSave))
+        except Exception:
+            pass
         open(fileSave, 'w').write(body)
 
     def getDir(self, directory):

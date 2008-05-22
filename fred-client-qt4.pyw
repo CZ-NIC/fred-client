@@ -17,6 +17,11 @@
 #    along with FredClient; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 import sys
+
+# setup.py will change this path to reflect changes in prefix
+# and/or root option during install
+sys.path.append('/usr/lib/python2.5/site-packages')
+
 import fred
 from fred.translate import encoding, options, option_errors
 
