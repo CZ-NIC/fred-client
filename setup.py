@@ -127,25 +127,15 @@ class EPPClientInstall(install):
 class EPPClientInstall_scripts(install_scripts):
 
     def update_fred_client(self):
-        #create path where python modules are located
-        pythonLibPath = os.path.join('lib', 'python' +
-                str(sys.version_info[0]) + '.' + 
-                str(sys.version_info[1]), 'site-packages')
-        values = [((r'(sys\.path\.append)\(\'[\w/_\- \.]*\'\)',
-            r'\1' + "('" + os.path.join(self.getDir('prefix'), pythonLibPath) +
-            "')"))]
+        values = [((r"(sys\.path\.insert\(0, )\'\'\)",
+            r"\1'%s')" % self.getDir('purelibdir')))]
         self.replace_pattern(os.path.join(self.build_dir, 'fred-client'),
                 None, values)
         print "fred-client file has been updated"
 
     def update_fred_client_qt4(self):
-        #create path where python modules are located
-        pythonLibPath = os.path.join('lib', 'python' +
-                str(sys.version_info[0]) + '.' + 
-                str(sys.version_info[1]), 'site-packages')
-        values = [((r'(sys\.path\.append)\(\'[\w/_\- \.]*\'\)',
-            r'\1' + "('" + os.path.join(self.getDir('prefix'), pythonLibPath) +
-            "')"))]
+        values = [((r"(sys\.path\.insert\(0, )\'\'\)",
+            r"\1'%s')" % self.getDir('purelibdir')))]
         self.replace_pattern(os.path.join(self.build_dir, 'fred-client-qt4.pyw'),
                 None, values)
         print "fred-client-qt4.pyw file has been updated"
@@ -160,9 +150,8 @@ class Install_lib(install_lib):
         filename = os.path.join(self.build_dir, 'fred', 'session_config.py')
         values = [((
             r"(glob_conf = )\'\'",
-            r"\1'" + 
-            os.path.join(self.getDir('sysconfdir'), 'fred', config_name) + 
-            "'"))]
+            r"\1'%s'" % os.path.join(
+                self.getDir('sysconfdir'), 'fred', config_name)))]
         self.replace_pattern(filename, None, values)
         print "session_config.py file has been updated"
 
@@ -170,9 +159,8 @@ class Install_lib(install_lib):
         filename = os.path.join(self.build_dir, 'fred', 'session_base.py')
         values = [((
             r"(self\._config_name = )\'\'",
-            r"\1'" + 
-            os.path.join(self.getDir('sysconfdir'), 'fred', config_name) + 
-            "'"))]
+            r"\1'%s'" % os.path.join(
+                self.getDir('sysconfdir'), 'fred', config_name)))]
         self.replace_pattern(filename, None, values)
         print "session_base.py file has been updated"
 
@@ -185,8 +173,7 @@ class Install_data(install_data):
     def update_file(self, filename):
         values = []
         values.append((r'(sys\.path\.insert\(0,\ )\'\'\)',
-            r"\1'%s')" % os.path.join(self.getDir('prefix'),
-                self.pythonLibPath)))
+            r"\1'%s')" % self.getDir('purelibdir')))
         self.replace_pattern(os.path.join(self.getDir('libdir'),
             self.distribution.get_name(), 'unittest', filename),
             None, values)
@@ -197,9 +184,6 @@ class Install_data(install_data):
         # TODO unittest cannot be added into rpm package - because of
         # update_file method don't know proper path
         if g_install_unittest or self.is_bdist_mode:
-            self.pythonLibPath = os.path.join('lib', 'python' +
-                    str(sys.version_info[0]) + '.' + 
-                    str(sys.version_info[1]), 'site-packages')
             files = file_util.all_files_in_2('unittest', onlyFilenames=True)
             for file in files:
                 self.update_file(file)
@@ -251,15 +235,11 @@ def main():
                     'install_lib':Install_lib,
                     'install_data':Install_data,
                 }, 
-            srcdir = g_srcdir
             )
         return True
     except Exception, e:
         log.error("Error: %s", e)
         return False
 if __name__ == '__main__':
-    g_srcdir = os.path.dirname(sys.argv[0])
-    if not g_srcdir:
-        g_srcdir = os.curdir
     if main():
         print "All done!"

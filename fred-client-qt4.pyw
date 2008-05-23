@@ -20,7 +20,7 @@ import sys
 
 # setup.py will change this path to reflect changes in prefix
 # and/or root option during install
-sys.path.append('/usr/lib/python2.5/site-packages')
+sys.path.insert(0, '')
 
 import fred
 from fred.translate import encoding, options, option_errors
