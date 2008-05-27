@@ -235,7 +235,9 @@ class sdist(_sdist):
         # we're done making the distribution archives.)
 
         if hasattr(os, 'link'):        # can make hard links on this system
-            link = 'hard'
+            #link = 'hard'
+            # XXX do something with this
+            link = None
             msg = "making hard links in %s..." % base_dir
         else:                           # nope, have to copy
             link = None
