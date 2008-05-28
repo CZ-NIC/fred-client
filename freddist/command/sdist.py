@@ -1,14 +1,17 @@
-import os, types
+import os, types, sys
 from glob import glob
 from distutils import dep_util, log, dir_util
 from distutils.text_file import TextFile
 from distutils.command.sdist import sdist as _sdist
+from distutils.errors import *
+
+sys.path.append('..')
+from freddist.filelist import FileList
 
 class sdist(_sdist):
     def finalize_options(self):
         self.srcdir = self.distribution.srcdir
         _sdist.finalize_options(self)
-        self.manifest = os.path.join(self.srcdir, self.manifest)
         self.template = os.path.join(self.srcdir, self.template)
 
     def get_file_list (self):
@@ -178,7 +181,6 @@ class sdist(_sdist):
                             lstrip_ws=1,
                             rstrip_ws=1,
                             collapse_join=1)
-
         while 1:
             line = template.readline()
             if line is None:            # end of file
@@ -259,5 +261,25 @@ class sdist(_sdist):
     # make_release_tree ()
 
     def run(self):
-        _sdist.run(self)
+        # 'filelist' contains the list of files that will make up the
+        # manifest
+        self.filelist = FileList(srcdir=self.srcdir)
+
+        # Ensure that all required meta-data is given; warn if not (but
+        # don't die, it's not *that* serious!)
+        self.check_metadata()
+
+        # Do whatever it takes to get the list of files to process
+        # (process the manifest template, read an existing manifest,
+        # whatever).  File list is accumulated in 'self.filelist'.
+        self.get_file_list()
+
+        # If user just wanted us to regenerate the manifest, stop now.
+        if self.manifest_only:
+            return
+
+        # Otherwise, go ahead and create the source distribution tarball,
+        # or zipfile, or whatever.
+        self.make_distribution()
+        # _sdist.run(self)
 #class Sdist

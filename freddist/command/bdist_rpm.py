@@ -9,9 +9,9 @@ from distutils import log
 
 class bdist_rpm(_bdist_rpm):
     user_options = _bdist_rpm.user_options
-    user_options.append(('build-extra-opts=', None,
+    user_options.append(('build-extra-opts=', 'b',
         'extra option(s) passed to build command'))
-    user_options.append(('install-extra-opts=', None,
+    user_options.append(('install-extra-opts=', 'i',
         'extra option(s) passed to install command'))
     user_options.append(('dontpreservepath', None,
         'do not automatically append `--preservepath\'\

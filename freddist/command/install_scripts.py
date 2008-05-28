@@ -1,6 +1,9 @@
 import re, os, sys
 from distutils.command.install_scripts import install_scripts as _install_scripts
 from install_parent import install_parent
+from stat import ST_MODE
+from distutils.core import Command
+from distutils import log
 
 class install_scripts(_install_scripts, install_parent):
     user_options = _install_scripts.user_options
@@ -40,6 +43,8 @@ class install_scripts(_install_scripts, install_parent):
         'locale-dependent data [DATAROOTDIR/locale]'))
     user_options.append(('preservepath', None, 
         'Preserve path(s) in configuration file(s).'))
+    user_options.append(('dont-create-pycpyo', None,
+        'do not create compiled pyc and optimized pyo files'))
 
     boolean_options = _install_scripts.boolean_options
     boolean_options.append('preservepath')
@@ -83,6 +88,7 @@ class install_scripts(_install_scripts, install_parent):
         self.localedir = None
         self.pythondir = None
         self.purelibdir = None
+        self.dont_create_pycpyo = None
 
     def finalize_options(self):
         self.set_undefined_options('install',
@@ -102,10 +108,26 @@ class install_scripts(_install_scripts, install_parent):
                 ('localedir', 'localedir'),
                 ('pythondir', 'pythondir'),
                 ('purelibdir', 'purelibdir'),
-                ('infodir', 'infodir'))
+                ('infodir', 'infodir'),
+                ('dont_create_pycpyo', 'dont_create_pycpyo'))
 
         self.srcdir = self.distribution.srcdir
         _install_scripts.finalize_options(self)
 
     def run(self):
+        if not self.dont_create_pycpyo:
+            files = os.listdir(self.build_dir)
+            for file in files:
+                #file = os.path.join(self.build_dir, file)
+                if file.endswith('.py'):
+                    os.system('python -c "import py_compile; \
+                            py_compile.compile(\'%s\')"' % os.path.join(self.build_dir, file))
+                    print "creating compiled %s" % file + 'c'
+                    os.system('python -O -c "import py_compile; \
+                            py_compile.compile(\'%s\')"' % os.path.join(self.build_dir, file))
+                    print "creating optimized %s" % file + 'o'
+        if not self.skip_build:
+            self.run_command('build_scripts')
+
         _install_scripts.run(self)
+

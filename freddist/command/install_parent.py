@@ -6,7 +6,8 @@ import re, os
 
 class install_parent:
     dirs = ['prefix', 'libexecdir', 'localstatedir', 'libdir', 'datarootdir',
-            'datadir', 'infodir', 'mandir', 'docdir']
+            'datadir', 'infodir', 'mandir', 'docdir', 'bindir', 'sbindir',
+            'localedir', 'pythondir', 'purelibdir']
 
     def replace_pattern(self, fileOpen, fileSave=None, values = []):
         """

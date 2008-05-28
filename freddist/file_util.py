@@ -64,7 +64,7 @@ def all_files_in(dst_directory, directory, excludePattern=None,
 
 
 def all_files_in_2(directory, excludePattern=None, includePattern=None,
-        recursive=False, onlyFilenames=False):
+        recursive=False, onlyFilenames=False, cutSlashes=0):
     """
     Returns list (for example: ['filename1', 'filename2', ...]) of files in
     directory (directories if recursive). Files must not fit `excludePattern'
@@ -72,6 +72,10 @@ def all_files_in_2(directory, excludePattern=None, includePattern=None,
     also its source directory (usually something like `directory/filename'),
     otherwise only filename. Exclude pattern is list of wildcard mask, for
     further help see fnmatch module reference.
+    If cutSlashes is bigger than zero, then given number of path parts (divided
+    by slashes) will be removed from final path. For example if return from
+    function is ['home/whatever/foo/foo.c'] (cutSlashes is zero), then when
+    cutSlashes is set to 2 return will be ['foo/foo.c']
     """
     if not excludePattern:
         try:
@@ -95,9 +99,39 @@ def all_files_in_2(directory, excludePattern=None, includePattern=None,
             if onlyFilenames:
                 paths.append(filename)
             else:
-                paths.append(full_path)
+                if cutSlashes > 0:
+                    paths.append(full_path.split(os.path.sep, cutSlashes)[-1])
+                else:
+                    paths.append(full_path)
         if os.path.isdir(curdir(full_path)) and recursive:
             paths.extend(all_files_in_2(full_path, excludePattern,
-                includePattern, onlyFilenames, recursive))
+                includePattern, onlyFilenames, recursive, cutSlashes))
     return paths
+
+def all_subpackages_in(package, excludePattern=None, includePattern=None):
+    'Returns all subpackages (packages in subdirectories) (recursive)'
+    subpackages = []
+
+    if not excludePattern:
+        try:
+            excludePattern = EXCLUDE_PATTERN
+        except NameError:
+            excludePattern = ['']
+    if not includePattern:
+        try:
+            includePattern = INCLUDE_PATTERN
+        except NameError:
+            includePattern = ['*']
+    
+    for filename in os.listdir(curdir(package)):
+        if fit_pattern(filename, excludePattern):
+            continue
+        if not fit_pattern(filename, includePattern):
+            continue
+        full_path = os.path.join(package, filename)
+        if os.path.isdir(curdir(full_path)):
+            subpackages.append(full_path.replace('/', '.'))
+            subpackages.extend(all_subpackages_in(full_path))
+
+    return subpackages
 
