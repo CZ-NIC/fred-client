@@ -39,3 +39,7 @@ class clean(_clean):
         if os.path.exists(self.manifest):
             os.remove(self.manifest)
             log.info("%s removed" % self.manifest)
+
+        if os.path.exists('setup.cfg'):
+            os.remove('setup.cfg')
+            log.info("%s removed" % 'setup.cfg')
