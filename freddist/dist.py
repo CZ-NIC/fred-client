@@ -67,6 +67,7 @@ except ImportError:
 class Distribution(_Distribution):
     def __init__(self, attrs=None):
         self.srcdir = None
+        self.rundir = None
         self.requires = None
         
 
@@ -100,6 +101,9 @@ class Distribution(_Distribution):
 
     def has_srcdir (self):
         return self.srcdir or '.'
+
+    def has_rundir(self):
+        return self.rundir or '.'
 
     def find_config_files (self):
         """Find as many configuration files as should be processed for this
@@ -138,7 +142,7 @@ class Distribution(_Distribution):
 
         # All platforms support local setup.cfg
         #FREDDIST added self.srcdir
-        local_file = os.path.join(self.srcdir, "setup.cfg")
+        local_file = os.path.join(os.curdir, "setup.cfg")#os.path.join(self.srcdir, "setup.cfg")
         if os.path.isfile(local_file):
             files.append(local_file)
 

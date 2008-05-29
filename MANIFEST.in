@@ -52,10 +52,11 @@ include setup.cfg
 include fred/certificates/test-cert.pem
 include fred/certificates/test-key.pem
 
+recursive-include fred/schemas *
+recursive-include fred/lang *
+
 prune guiqt4/.svn
 
-graft fred/schemas
-graft fred/lang
 prune .svn
 prune fred/.svn
 prune  qt3doc

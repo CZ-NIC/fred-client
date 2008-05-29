@@ -41,7 +41,6 @@ if 'bdist_wininst' in sys.argv:
     # join postinstall only for WIN distribution
     APP_SCRIPTS.append('setup_postinstall.py')
 
-g_srcdir = '.'
 g_install_unittest = None
     
 class EPPClientInstall(install):

@@ -257,6 +257,10 @@ class sdist(_sdist):
                 dest = os.path.join(base_dir, file[len(self.srcdir)+1:])
                 self.copy_file(file, dest, link=link)
 
+        #copy setup.cfg into base_dir (because in base_dir is now setup.cfg
+        #from srcdir directory
+        self.copy_file('setup.cfg', os.path.join(base_dir, 'setup.cfg'))
+
         self.distribution.metadata.write_pkg_info(base_dir)
     # make_release_tree ()
 
