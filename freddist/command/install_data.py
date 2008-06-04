@@ -152,6 +152,7 @@ class install_data(_install_data, install_parent):
         self.set_directories(self.prefix)
         if not self.record and not self.dont_record:
             self.record = 'install.log'
+        self.srcdir = self.distribution.srcdir
 
 
     def run(self):

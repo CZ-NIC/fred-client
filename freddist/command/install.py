@@ -54,7 +54,7 @@ class install(_install, install_parent):
     user_options.append(('dont-create-pycpyo', None,
         'do not create compiled pyc and optimized pyo files'))
     user_options.append(('no-check-deps', None,
-        'do not check dependencie'))
+        'do not check dependencies'))
 
     boolean_options = _install.boolean_options
     boolean_options.append('preservepath')
@@ -77,8 +77,8 @@ class install(_install, install_parent):
 
 
     def finalize_options(self):
-        _install.finalize_options(self)
         install_parent.finalize_options(self)
+        _install.finalize_options(self)
         #self.set_directories()
         if not self.record and not self.dont_record:
             self.record = 'install.log'

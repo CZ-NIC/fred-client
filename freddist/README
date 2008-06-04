@@ -29,3 +29,10 @@ Differences and changes:
  - Bdist (as well as bdist_rpm) command support adding extra options for
    build and install phase (which bdist command invoke). These options are
    `--build-extra-opts' and `--install-extra-opts'.
+
+Known bugs:
+
+ - bdist command not work at all. To build rpm package is better to use
+   bdist_rpm command (will be fixed sometimes in the future).
+
+ - install_data command crash when executed with `--prefix=.' option.
