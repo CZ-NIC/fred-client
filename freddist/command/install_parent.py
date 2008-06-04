@@ -222,7 +222,6 @@ class install_parent(Command):
         if self.root:
             return os.path.join(self.root, dir.lstrip(os.path.sep))
         else:
-            print "ops"
             return dir
 
     def normalize_record(self):

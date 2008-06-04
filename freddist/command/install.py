@@ -79,6 +79,7 @@ class install(_install, install_parent):
     def finalize_options(self):
         _install.finalize_options(self)
         install_parent.finalize_options(self)
+        #self.set_directories()
         if not self.record and not self.dont_record:
             self.record = 'install.log'
 

@@ -74,30 +74,33 @@ class install_scripts(_install_scripts, install_parent):
 
     def finalize_options(self):
         _install_scripts.finalize_options(self)
-        install_parent.finalize_options(self)
-        self.set_undefined_options('install',
-                ('prefix', 'prefix'),
-                ('sysconfdir', 'sysconfdir'),
-                ('localstatedir', 'localstatedir'),
-                ('libexecdir', 'libexecdir'),
-                ('preservepath', 'preservepath'),
-                ('root', 'root'),
-                ('libdir', 'libdir'),
-                ('datarootdir', 'datarootdir'),
-                ('datadir', 'datadir'),
-                ('mandir', 'mandir'),
-                ('docdir', 'docdir'),
-                ('bindir', 'bindir'),
-                ('sbindir', 'sbindir'),
-                ('localedir', 'localedir'),
-                ('pythondir', 'pythondir'),
-                ('purelibdir', 'purelibdir'),
-                ('infodir', 'infodir'),
-                ('dont_create_pycpyo', 'dont_create_pycpyo'),
-                ('dont_record', 'dont_record'),
-                ('no_check_deps', 'no_check_deps'),
-                ('record', 'record'))
-        #install_parent.finalize_options(self)
+        if 'install' in sys.argv:
+            #install_parent.finalize_options(self)
+            self.set_undefined_options('install',
+                    ('prefix', 'prefix'),
+                    ('sysconfdir', 'sysconfdir'),
+                    ('localstatedir', 'localstatedir'),
+                    ('libexecdir', 'libexecdir'),
+                    ('preservepath', 'preservepath'),
+                    ('root', 'root'),
+                    ('libdir', 'libdir'),
+                    ('datarootdir', 'datarootdir'),
+                    ('datadir', 'datadir'),
+                    ('mandir', 'mandir'),
+                    ('docdir', 'docdir'),
+                    ('bindir', 'bindir'),
+                    ('sbindir', 'sbindir'),
+                    ('localedir', 'localedir'),
+                    ('pythondir', 'pythondir'),
+                    ('purelibdir', 'purelibdir'),
+                    ('infodir', 'infodir'),
+                    ('dont_create_pycpyo', 'dont_create_pycpyo'),
+                    ('dont_record', 'dont_record'),
+                    ('no_check_deps', 'no_check_deps'),
+                    ('record', 'record'))
+        else:
+           # self.set_directories(self.prefix)
+            install_parent.finalize_options(self)
         #self.srcdir = self.distribution.srcdir
         if not self.record and not self.dont_record:
             self.record = 'install.log'
