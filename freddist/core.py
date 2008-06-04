@@ -150,7 +150,6 @@ def copy_setup_cfg(source_dir, config_file):
 
 def update_setup_cfg(conf_file, options):
     conf = ConfigParser.ConfigParser()
-    print options
     conf.read(conf_file)
     for section in options:
         if not conf.has_section(section):

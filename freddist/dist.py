@@ -40,6 +40,11 @@ except ImportError:
     from command.install_scripts import install_scripts
 
 try:
+    from freddist.command.install_lib import install_lib
+except:
+    from command.install_lib import install_lib
+
+try:
     from freddist.command.sdist import sdist 
 except ImportError:
     from command.sdist import sdist
@@ -88,6 +93,8 @@ class Distribution(_Distribution):
             self.cmdclass['install_data'] = install_data
         if not self.cmdclass.get('install_scripts'):
             self.cmdclass['install_scripts'] = install_scripts
+        if not self.cmdclass.get('install_lib'):
+            self.cmdclass['install_lib'] = install_lib
         if not self.cmdclass.get('sdist'):
             self.cmdclass['sdist'] = sdist
         if not self.cmdclass.get('bdist'):

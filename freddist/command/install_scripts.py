@@ -43,54 +43,38 @@ class install_scripts(_install_scripts, install_parent):
         'locale-dependent data [DATAROOTDIR/locale]'))
     user_options.append(('preservepath', None, 
         'Preserve path(s) in configuration file(s).'))
+    user_options.append(('dont-record', None,
+        'do not record list of installed files'))
     user_options.append(('dont-create-pycpyo', None,
         'do not create compiled pyc and optimized pyo files'))
+    user_options.append(('no-check-deps', None,
+        'do not check dependencie'))
+    user_options.append(('record=', None, 'blabla'))
 
     boolean_options = _install_scripts.boolean_options
     boolean_options.append('preservepath')
+    boolean_options.append('dont_record')
+    boolean_options.append('dont_create_pycpyo')
+    boolean_options.append('no_check_deps')
+
+    # user_options.extend(install_parent.user_options)
+    # boolean_options = _install_scripts.boolean_options
+    # boolean_options.extend(install_parent.boolean_options)
 
     def __init__(self, *attrs):
         _install_scripts.__init__(self, *attrs)
-
-        self.is_bdist_mode = None
-
-        for dist in attrs:
-            for name in dist.commands:
-                if re.match('bdist', name): #'bdist' or 'bdist_rpm'
-                    self.is_bdist_mode = 1 #it is bdist mode - creating a package
-                    break
-            if self.is_bdist_mode:
-                break
-    def get_actual_root(self):
-        '''
-        Return actual root only in case if the process is not in creation of
-        the package
-        '''
-        return ((self.is_bdist_mode or self.preservepath) and [''] or 
-                [type(self.root) is not None and self.root or ''])[0]
+        install_parent.__init__(self, *attrs)
 
     def initialize_options(self):
-        _install_scripts.initialize_options(self)
         self.prefix = None
-        self.sysconfdir = None
-        self.localstatedir = None
-        self.libexecdir = None
-        self.preservepath = None
         self.root = None
-        self.libdir = None
-        self.datarootdir = None
-        self.datadir = None
-        self.infodir = None
-        self.mandir = None
-        self.docdir = None
-        self.bindir = None
-        self.sbindir = None
-        self.localedir = None
-        self.pythondir = None
-        self.purelibdir = None
-        self.dont_create_pycpyo = None
+        self.record = None
+        _install_scripts.initialize_options(self)
+        install_parent.initialize_options(self)
 
     def finalize_options(self):
+        _install_scripts.finalize_options(self)
+        install_parent.finalize_options(self)
         self.set_undefined_options('install',
                 ('prefix', 'prefix'),
                 ('sysconfdir', 'sysconfdir'),
@@ -109,12 +93,18 @@ class install_scripts(_install_scripts, install_parent):
                 ('pythondir', 'pythondir'),
                 ('purelibdir', 'purelibdir'),
                 ('infodir', 'infodir'),
-                ('dont_create_pycpyo', 'dont_create_pycpyo'))
-
-        self.srcdir = self.distribution.srcdir
-        _install_scripts.finalize_options(self)
+                ('dont_create_pycpyo', 'dont_create_pycpyo'),
+                ('dont_record', 'dont_record'),
+                ('no_check_deps', 'no_check_deps'),
+                ('record', 'record'))
+        #install_parent.finalize_options(self)
+        #self.srcdir = self.distribution.srcdir
+        if not self.record and not self.dont_record:
+            self.record = 'install.log'
 
     def run(self):
+        self.install_dir = self.getDir_nop('bindir')
+
         if not self.dont_create_pycpyo:
             files = os.listdir(self.build_dir)
             for file in files:
