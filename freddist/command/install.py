@@ -17,6 +17,8 @@ from distutils.util import convert_path, subst_vars, change_root
 
 class install(_install, install_parent):
     user_options = _install.user_options
+    boolean_options = _install.boolean_options
+
     user_options.append(('bindir=', None,
         'user executables [PREFIX/bin]'))
     user_options.append(('sbindir=', None,
@@ -47,25 +49,37 @@ class install(_install, install_parent):
         'documentation root [DATAROOTDIR/doc/NAME]'))
     user_options.append(('localedir=', None,
         'locale-dependent data [DATAROOTDIR/locale]'))
+
     user_options.append(('preservepath', None, 
         'Preserve path(s) in configuration file(s).'))
-    user_options.append(('dont-record', None,
+    user_options.append(('no-record', None,
         'do not record list of installed files'))
-    user_options.append(('dont-create-pycpyo', None,
+    user_options.append(('no-pycpyo', None,
         'do not create compiled pyc and optimized pyo files'))
     user_options.append(('no-check-deps', None,
         'do not check dependencies'))
 
-    boolean_options = _install.boolean_options
-    boolean_options.append('preservepath')
-    boolean_options.append('dont_record')
-    boolean_options.append('dont_create_pycpyo')
-    boolean_options.append('no_check_deps')
+    user_options.append(('fgen-setupcfg', None,
+        'force generate setup.cfg from template'))
+    user_options.append(('no-update-setupcfg', None,
+        'do not update setup.cfg file'))
+    user_options.append(('no-gen-setupcfg', None,
+        'do not generate setup.cfg file'))
+    user_options.append(('no-setupcfg', None,
+        'do not use setup.cfg file'))
+    user_options.append(('setupcfg-template=', None,
+        'template file for setup.cfg [setup.cfg.template]'))
+    user_options.append(('setupcfg-output=', None,
+        'output file with setup configuration [setup.cfg]'))
 
-    # user_options.extend(install_parent.user_options)
-# 
-    # boolean_options = _install.boolean_options
-    # boolean_options.extend(install_parent.boolean_options)
+    boolean_options.append('preservepath')
+    boolean_options.append('no_record')
+    boolean_options.append('no_pycpyo')
+    boolean_options.append('no_check_deps')
+    boolean_options.append('fgen_setupcfg')
+    boolean_options.append('no_update_setupcfg')
+    boolean_options.append('no_gen_setupcfg')
+    boolean_options.append('no_setupcfg')
 
     def __init__(self, *attrs):
         _install.__init__(self, *attrs)
@@ -79,8 +93,7 @@ class install(_install, install_parent):
     def finalize_options(self):
         install_parent.finalize_options(self)
         _install.finalize_options(self)
-        #self.set_directories()
-        if not self.record and not self.dont_record:
+        if not self.record and not self.no_record:
             self.record = 'install.log'
 
     def run(self):

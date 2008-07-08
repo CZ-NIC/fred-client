@@ -74,15 +74,46 @@ def setup(**attrs):
 
     config_file = './setup.cfg'
 
-    if not os.path.isfile(config_file):
-        copy_setup_cfg(attrs['srcdir'], config_file)
-    else:
-        print "%s already exists in current directory - no need to create it."\
-                % config_file
+    setupcfg_template = 'setup.cfg.template'
+    setupcfg_output = 'setup.cfg'
+    fgen_setupcfg = False
+    no_update_setupcfg = False
+    no_gen_setupcfg = False
+    no_setupcfg = False
+    bdist_rpm = False
+    no_join_opts = False
+    install_extra_opts = None
+
+    #TODO this setup configuration file and template (maybe) not save
+    #into setup.cfg file
+    for arg in sys.argv:
+        if arg.split('=', 1)[0] == '--setupcfg-template':
+            setupcfg_template = arg.split('=', 1)[1]
+        if arg.split('=', 1)[0] == '--setupcfg-output':
+            setupcfg_output = arg.split('=', 1)[1]
+    if '--fgen-setupcfg' in sys.argv:
+        fgen_setupcfg = True
+    if '--no-update-setupcfg' in sys.argv:
+        no_update_setupcfg = True
+    if '--no-gen-setupcfg' in sys.argv:
+        no_gen_setupcfg = True
+    if '--no-setupcfg' in sys.argv:
+        no_setupcfg = True
+    if 'bdist_rpm' in sys.argv:
+        bdist_rpm = True
+    if '--no-join-opts' in sys.argv:
+        no_join_opts = True
+
+    if (not os.path.isfile(setupcfg_output) or fgen_setupcfg) and not no_gen_setupcfg:
+        copy_setup_cfg(attrs['srcdir'], setupcfg_output, setupcfg_template)
 
     # Find and parse the config file(s): they will override options from
     # the setup script, but be overridden by the command line.
-    dist.parse_config_files()
+    if not no_setupcfg:
+        if setupcfg_output == 'setup.cfg':
+            dist.parse_config_files()
+        else:
+            dist.parse_config_files(setupcfg_output)
 
     if DEBUG:
         print "options (after parsing config files):"
@@ -91,6 +122,12 @@ def setup(**attrs):
     if _setup_stop_after == "config":
         return dist
 
+    #lets store install-extra-opts from config file (if exists)
+    if bdist_rpm and not no_join_opts:
+        if dist.command_options.has_key('bdist_rpm'):
+            bdist_rpm_val = dist.command_options['bdist_rpm']
+            if bdist_rpm_val.has_key('install_extra_opts'):
+                install_extra_opts = bdist_rpm_val['install_extra_opts'][1]
 
     # Parse the command line; any command-line errors are the end user's
     # fault, so turn them into SystemExit to suppress tracebacks.
@@ -106,14 +143,29 @@ def setup(**attrs):
     if _setup_stop_after == "commandline":
         return dist
 
-    update_setup_cfg(config_file, dist.command_options)
+    #goon only if I create rpm and I want join options (see no_join_opts option)
+    if bdist_rpm and not no_join_opts:
+        #goon only if in setup.cfg is now bdist_rpm part
+        if dist.command_options.has_key('bdist_rpm'):
+            bdist_rpm_val = dist.command_options['bdist_rpm']
+            #goon only if in setup.cfg is install_extra_opts line (under
+            #bdist_rpm paragraph)
+            if bdist_rpm_val.has_key('install_extra_opts'):
+                if bdist_rpm_val['install_extra_opts'][0] == 'command line' and\
+                        install_extra_opts:
+                    dist.command_options['bdist_rpm']['install_extra_opts'] =\
+                            ('command line', append_option(install_extra_opts,
+                                dist.command_options\
+                                        ['bdist_rpm']['install_extra_opts'][1]))
+
+    if not no_update_setupcfg:
+        update_setup_cfg(setupcfg_output, dist.command_options)
     # print "<'))>< thank you for all the fish"
     # exit()
 
     # store rundir and srcdir into dist
     dist.srcdir = attrs['srcdir']
     dist.rundir = attrs['rundir']
-
 
     # And finally, run all the commands found on the command line.
     if ok:
@@ -140,13 +192,36 @@ def setup(**attrs):
     return dist
 # setup ()
 
+def match_option(dest, src):
+    """return src position in dest list, or -1 if not present"""
+    for d in dest:
+        if src.split('=')[0] == d.split('=')[0]:
+            return dest.index(d)
+    return -1
 
-def copy_setup_cfg(source_dir, config_file):
-    if os.path.isfile(os.path.join(source_dir, config_file+'.template')):
-        shutil.copyfile(os.path.join(source_dir, config_file+'.template'),
+def append_option(dest, src):
+    """append option(s) from src to dest, check duplicities"""
+    dest_split = dest.split(' ')
+    src_split = src.split(' ')
+
+    for src in src_split:
+        pos = match_option(dest_split, src)
+        if pos == -1:
+            dest_split.append(src)
+        else:
+            dest_split[pos] = src
+    ret = ''
+    for d in dest_split:
+        ret = ret + d + ' '
+    return ret.strip()
+
+
+def copy_setup_cfg(source_dir, config_file, config_template):
+    if os.path.isfile(os.path.join(source_dir, config_template)):
+        shutil.copyfile(os.path.join(source_dir, config_template),
                 config_file)
         print "%s has been copied to %s." %\
-                (os.path.join(source_dir, config_file+'.template'), config_file)
+                (os.path.join(source_dir, config_template), config_file)
 
 def update_setup_cfg(conf_file, options):
     conf = ConfigParser.ConfigParser()

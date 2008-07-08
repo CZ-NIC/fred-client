@@ -7,8 +7,42 @@ from types import *
 from distutils.file_util import write_file
 from distutils import log
 
+# bdist_rpm notes:
+#
+# new command line options:
+# `--install-extra-opts'
+# `--build-extra-opts'
+#   both of this command are used to add extra option to install (as well
+#   as install_*) and build command. For example I can add prefix option,
+#   and so on.
+#   Default behaviour is first to load possible options from setup.cfg
+#   and then add any other from command line. For example if setup.cfg file
+#   looks like this:
+#
+#       [bdist_rpm]
+#       install-extra-opts=--prefix=/usr/local/
+#
+#   and on command line I type this:
+#
+#       $ python setup.py bdist_rpm --install-extra-opts="--bindir=/bin"
+#
+#   So resulting content of `--install-extra-opts' will be:
+#
+#       --prefix=/usr/local --bindir=/bin
+#
+#   If some option is used twice (i.e. in setup.cfg and on command line),
+#   then command line value is use.
+#
+# `--no-join-opts'
+#   if this option is used, then everything, what was explained in last
+#   paragraph is not valid anymore. After that only options passed by
+#   command line is used (so no joining options from setup and from
+#   command line).
+
 class bdist_rpm(_bdist_rpm):
     user_options = _bdist_rpm.user_options
+    boolean_options = _bdist_rpm.boolean_options
+
     user_options.append(('build-extra-opts=', 'b',
         'extra option(s) passed to build command'))
     user_options.append(('install-extra-opts=', 'i',
@@ -16,14 +50,37 @@ class bdist_rpm(_bdist_rpm):
     user_options.append(('dontpreservepath', None,
         'do not automatically append `--preservepath\'\
         option to `install-extra-opts\''))
+    user_options.append(('no-join-opts', None,
+        'do not join options from setup.cfg and command line'))
 
-    boolean_options = _bdist_rpm.boolean_options
+    user_options.append(('fgen-setupcfg', None,
+        'force generate setup.cfg from template'))
+    user_options.append(('no-update-setupcfg', None,
+        'do not update setup.cfg file'))
+    user_options.append(('no-gen-setupcfg', None,
+        'do not generate setup.cfg file'))
+    user_options.append(('no-setupcfg', None,
+        'do not use setup.cfg file'))
+    user_options.append(('setupcfg-template=', None,
+        'template file for setup.cfg [setup.cfg.template]'))
+    user_options.append(('setupcfg-output=', None,
+        'output file with setup configuration [setup.cfg]'))
+    
     boolean_options.append('dontpreservepath')
+    boolean_options.append('no_join_opts')
 
     def initialize_options(self):
         self.build_extra_opts = None
         self.install_extra_opts = None
         self.dontpreservepath = None
+        self.no_join_opts = None
+
+        self.fgen_setupcfg      = None
+        self.no_update_setupcfg = None
+        self.no_gen_setupcfg    = None
+        self.no_setupcfg        = None
+        self.setupcfg_template  = None
+        self.setupcfg_output    = None
         _bdist_rpm.initialize_options(self)
 
     #FREDDIST new method
@@ -82,9 +139,15 @@ class bdist_rpm(_bdist_rpm):
         self.pre_uninstall = self.joinsrcdir(self.pre_uninstall) 
         self.post_uninstall = self.joinsrcdir(self.post_uninstall) 
 
+        if not self.setupcfg_template:
+            self.setupcfg_template = 'setup.cfg.template'
+        if not self.setupcfg_output:
+            self.setupcfg_output = 'setup.cfg'
+
         self.finalize_package_data()
 
     def run(self):
+        #exit()
         _bdist_rpm.run(self)
 
     def _dist_path(self, path):

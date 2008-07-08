@@ -35,6 +35,10 @@ from install_parent import install_parent
 
 class install_data(_install_data, install_parent):
     user_options = _install_data.user_options
+    boolean_options = _install_data.boolean_options
+
+    user_options.append(('root=', None,
+        'install everything relative to this alternate root directory'))
     user_options.append(('prefix=', None,
         'installation prefix'))
     user_options.append(('bindir=', None,
@@ -67,24 +71,37 @@ class install_data(_install_data, install_parent):
         'documentation root [DATAROOTDIR/doc/NAME]'))
     user_options.append(('localedir=', None,
         'locale-dependent data [DATAROOTDIR/locale]'))
+
     user_options.append(('preservepath', None, 
         'Preserve path(s) in configuration file(s).'))
-    user_options.append(('dont-record', None,
+    user_options.append(('no-record', None,
         'do not record list of installed files'))
-    user_options.append(('dont-create-pycpyo', None,
+    user_options.append(('no-pycpyo', None,
         'do not create compiled pyc and optimized pyo files'))
     user_options.append(('no-check-deps', None,
         'do not check dependencies'))
 
-    boolean_options = _install_data.boolean_options
-    boolean_options.append('preservepath')
-    boolean_options.append('dont_record')
-    boolean_options.append('dont_create_pycpyo')
-    boolean_options.append('no_check_deps')
+    user_options.append(('fgen-setupcfg', None,
+        'force generate setup.cfg from template'))
+    user_options.append(('no-update-setupcfg', None,
+        'do not update setup.cfg file'))
+    user_options.append(('no-gen-setupcfg', None,
+        'do not generate setup.cfg file'))
+    user_options.append(('no-setupcfg', None,
+        'do not use setup.cfg file'))
+    user_options.append(('setupcfg-template=', None,
+        'template file for setup.cfg [setup.cfg.template]'))
+    user_options.append(('setupcfg-output=', None,
+        'output file with setup configuration [setup.cfg]'))
 
-    # user_options.extend(install_parent.user_options)
-    # boolean_options = _install_data.boolean_options
-    # boolean_options.extend(install_parent.boolean_options)
+    boolean_options.append('preservepath')
+    boolean_options.append('no_record')
+    boolean_options.append('no_pycpyo')
+    boolean_options.append('no_check_deps')
+    boolean_options.append('fgen_setupcfg')
+    boolean_options.append('no_update_setupcfg')
+    boolean_options.append('no_gen_setupcfg')
+    boolean_options.append('no_setupcfg')
 
     # directory patterns which install_data recognize
     dir_patts = ['PREFIX', 'SYSCONFDIR', 'LOCALSTATEDIR', 'LIBEXECDIR',
@@ -109,7 +126,7 @@ class install_data(_install_data, install_parent):
         Valid patterns are emplaced in self.`dir_patts' variable.
         """
         for str in self.dir_patts:
-            s = re.search(str, dir)
+            s = re.search("^"+str, dir)
             if s:
                 dir = self.__dict__[str.lower()] + dir[s.end():]
         return dir
@@ -123,37 +140,42 @@ class install_data(_install_data, install_parent):
 
     def finalize_options(self):
         _install_data.finalize_options(self)
-        #install_parent.finalize_options(self)
         if 'install' in sys.argv:
             self.set_undefined_options('install',
-                    ('prefix', 'prefix'),
-                    ('sysconfdir', 'sysconfdir'),
-                    ('localstatedir', 'localstatedir'),
-                    ('libexecdir', 'libexecdir'),
-                    ('preservepath', 'preservepath'),
-                    ('root', 'root'),
-                    ('libdir', 'libdir'),
-                    ('datarootdir', 'datarootdir'),
-                    ('datadir', 'datadir'),
-                    ('mandir', 'mandir'),
-                    ('docdir', 'docdir'),
-                    ('infodir', 'infodir'),
-                    ('bindir', 'bindir'),
-                    ('sbindir', 'sbindir'),
-                    ('localedir', 'localedir'),
-                    ('pythondir', 'pythondir'),
-                    ('purelibdir', 'purelibdir'),
-                    ('dont_create_pycpyo', 'dont_create_pycpyo'),
-                    ('dont_record', 'dont_record'))
+                    ('root',                'root'),
+                    ('prefix',              'prefix'),
+                    ('record',              'record'),
+                    ('bindir',              'bindir'),
+                    ('sbindir',             'sbindir'),
+                    ('sysconfdir',          'sysconfdir'),
+                    ('libexecdir',          'libexecdir'),
+                    ('localstatedir',       'localstatedir'),
+                    ('libdir',              'libdir'),
+                    ('pythondir',           'pythondir'),
+                    ('purelibdir',          'purelibdir'),
+                    ('datarootdir',         'datarootdir'),
+                    ('datadir',             'datadir'),
+                    ('infodir',             'infodir'),
+                    ('mandir',              'mandir'),
+                    ('docdir',              'docdir'),
+                    ('localstatedir',       'localstatedir'),
+                    ('preservepath',        'preservepath'),
+                    ('no_record',           'no_record'),
+                    ('no_pycpyo',           'no_pycpyo'),
+                    ('no_check_deps',       'no_check_deps'),
+                    ('fgen_setupcfg',       'fgen_setupcfg'),
+                    ('no_update_setupcfg',  'no_update_setupcfg'),
+                    ('no_gen_setupcfg',     'no_gen_setupcfg'),
+                    ('no_setupcfg',         'no_setupcfg'),
+                    ('setupcfg_template',   'setupcfg_template'),
+                    ('setupcfg_output',     'setupcfg_output'))
         else:
             install_parent.finalize_options(self)
-            #self.set_directories(self.prefix)
-        #install_parent.finalize_options(self)
         self.set_directories(self.prefix)
-        if not self.record and not self.dont_record:
+        if not self.record and not self.no_record:
             self.record = 'install.log'
         self.srcdir = self.distribution.srcdir
-
+        self.rundir = self.distribution.rundir
 
     def run(self):
         #FREDDIST line added
@@ -171,7 +193,7 @@ class install_data(_install_data, install_parent):
                 (out, _) = self.copy_file(f, self.install_dir)
                 self.outfiles.append(out)
 
-                if out.endswith('.py') and not self.dont_create_pycpyo:
+                if out.endswith('.py') and not self.no_pycpyo:
                     os.system('python -c "import py_compile; \
                             py_compile.compile(\'%s\')"' % out)
                     self.outfiles.append(out)
@@ -204,10 +226,12 @@ class install_data(_install_data, install_parent):
                                     os.path.join(self.srcdir, data))
                         (out, _) = self.copy_file(data, dir)
                         self.outfiles.append(out)
-                        if 'bin' in out.split(os.path.sep) or 'sbin' in out.split(os.path.sep):
+                        if 'bin' in out.split(os.path.sep) or\
+                                'sbin' in out.split(os.path.sep) or\
+                                'init.d' in out.split(os.path.sep):
                             os.chmod(out, 0755)
 
-                        if out.endswith('.py') and not self.dont_create_pycpyo:
+                        if out.endswith('.py') and not self.no_pycpyo:
                             os.system('python -c "import py_compile; \
                                     py_compile.compile(\'%s\')"' % out)
                             self.outfiles.append(out + 'c')

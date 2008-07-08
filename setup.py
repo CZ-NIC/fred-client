@@ -24,6 +24,7 @@ from freddist.command.install_scripts import install_scripts
 from freddist.command.install_lib import install_lib
 from freddist.command.install_data import install_data
 from freddist import file_util
+from freddist.file_util import *
 
 from fred.internal_variables import fred_version, config_name
 from fred.session_config import get_etc_config_name
@@ -187,7 +188,7 @@ class Install_data(install_data):
             for file in files:
                 self.update_file(file)
 
-def main():
+def main(directory):
     try:
         setup(name = 'fred-client',
             description = 'Client FRED (Free Registry for enum and domain)',
@@ -207,12 +208,10 @@ def main():
             data_files=[
                 ('DATADIR/fred-client',[
                     'doc/fred_howto_cs.html',
-                
                     'doc/niccz_console.ico', 
                     'doc/niccz_gui.ico', 
                     'doc/configure.ico',
                     'doc/help.ico',
-                    
                     'doc/README_EN.txt',
                     'doc/README_CS.txt',
                     'doc/README_CS.html',
@@ -220,14 +219,16 @@ def main():
                 ('DATADIR/fred-client/ssl', [
                     'fred/certificates/test-cert.pem',
                     'fred/certificates/test-key.pem']),
-                ('DATADIR/fred-client/schemas', file_util.all_files_in_2('fred/schemas')),
+                # ('DATADIR/fred-client/schemas', file_util.all_files_in_2('fred/schemas')),
                 # on posix: '/etc/fred/' 
                 # on windows:  ALLUSERSPROFILE = C:\Documents and Settings\All Users
                 # on windows if ALL... missing:  C:\Python25\ 
                 #get_etc_config_name()
                 ('SYSCONFDIR/fred', [os.path.join('build', config_name)]) 
-                ], 
-                
+                ]
+            + all_files_in_4(
+                os.path.join('DATADIR', 'fred-client', 'schemas'),
+                os.path.join(directory, 'fred', 'schemas')),
             cmdclass = {
                     'install': EPPClientInstall, 
                     'install_scripts': EPPClientInstall_scripts,
@@ -240,5 +241,10 @@ def main():
         log.error("Error: %s", e)
         return False
 if __name__ == '__main__':
-    if main():
+    dir = ''
+    if 'bdist' in sys.argv:
+        dir = ''
+    else:
+        dir = os.path.dirname(sys.argv[0])
+    if main(dir):
         print "All done!"
