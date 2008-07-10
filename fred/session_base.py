@@ -96,7 +96,7 @@ class ManagerBase:
         self._indent_left = 2 # indent from left border
         self._section_epp_login = 'epp_login' # section name in config for username and password
         # name for home folder; for share (etc) is mofified from this name
-        self._config_name = ''
+        self._config_name = '.%s' % internal_variables.config_name
         self._config_used_files = []
         self._message_missing_config = [] # messages with missing config filenames
         self.run_as_unittest = 0 # it can set variables for unittest: validate server answer
