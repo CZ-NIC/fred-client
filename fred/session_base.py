@@ -816,7 +816,8 @@ def get_unicode(text):
 def php_string(value):
     'Returns escaped string for place into PHP variable.'
     if type(value) in (str,unicode):
-        ret = "'%s'"%re.sub("([^\\\])'","\\1\\'",get_ltext(value)).strip()
+        # display variable like string type: "variable" or 'variable'
+        ret = repr(get_ltext(value).strip()).replace('\\n', '\n')
     elif type(value) in (list, tuple):
         items=[]
         for n in value:
