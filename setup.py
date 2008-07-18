@@ -29,6 +29,8 @@ from freddist.file_util import *
 from fred.internal_variables import fred_version, config_name
 from fred.session_config import get_etc_config_name
 
+g_directory = ''
+
 # datarootdir/prog_name/ssl => /usr/local/share/fred-client/ssl (default)
 DEFAULT_SSL_PATH = 'ssl'
 # datarootdir/prog_name/schemas/all-1.4.xsd =>
@@ -89,11 +91,9 @@ class EPPClientInstall(install):
             self.host = 'localhost'
         if not self.port:
             self.port = '700'
+        if not self.install_unittest:
+            self.install_unittest = 0
 
-        if self.install_unittest:
-            self.distribution.data_files.append(
-                    ('LIBDIR/%s/unittest' % self.distribution.get_name(), 
-                        file_util.all_files_in_2('unittest')))
         global g_install_unittest
         g_install_unittest = self.install_unittest
 
@@ -121,6 +121,10 @@ class EPPClientInstall(install):
         print 'File %s was created.' % config_name
 
     def run(self):
+        if g_install_unittest:
+            self.distribution.data_files = self.distribution.data_files + file_util.all_files_in_4(
+                    'LIBDIR/%s/unittest' % self.distribution.get_name(),
+                    os.path.join(g_directory, 'unittest'))
         self.update_fred_config()
         install.run(self)
 
@@ -181,12 +185,6 @@ class Install_data(install_data):
 
     def run(self):
         install_data.run(self)
-        # TODO unittest cannot be added into rpm package - because of
-        # update_file method don't know proper path
-        if g_install_unittest or self.is_bdist_mode:
-            files = file_util.all_files_in_2('unittest', onlyFilenames=True)
-            for file in files:
-                self.update_file(file)
 
 def main(directory):
     try:
@@ -246,5 +244,6 @@ if __name__ == '__main__':
         dir = ''
     else:
         dir = os.path.dirname(sys.argv[0])
+    g_directory = dir
     if main(dir):
         print "All done!"
