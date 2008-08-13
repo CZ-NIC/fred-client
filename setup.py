@@ -16,7 +16,7 @@
 #    along with FredClient; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import sys, os
+import sys, os, shutil
 from distutils import log
 from freddist.core import setup
 from freddist.command.install import install
@@ -120,11 +120,30 @@ class EPPClientInstall(install):
                 values)
         print 'File %s was created.' % config_name
 
+    def update_unittest_file(self, filename):
+        values = []
+        values.append((r'(sys\.path\.insert\(0,\ )\'[\w/_ \-\.]*\'\)', r"\1'%s')" %
+            self.getDir('purelibdir')))
+        self.replace_pattern(os.path.join('build', 'unittest', filename), None, values)
+        print "%s file has been updated" % filename
+
+    def update_unittests(self):
+        files = file_util.all_files_in_2(os.path.join('build', 'unittest'), onlyFilenames=True)
+        for file in files:
+            self.update_unittest_file(file)
+
     def run(self):
         if g_install_unittest:
+            if not os.path.exists(os.path.join('build', 'unittest')):
+                os.makedirs(os.path.join('build', 'unittest'))
+            for file in all_files_in_2(os.path.join(g_directory, 'unittest')):
+                shutil.copyfile(file, os.path.join('build', 'unittest', os.path.split(file)[1]))
+
+            self.update_unittests()
             self.distribution.data_files = self.distribution.data_files + file_util.all_files_in_4(
                     'LIBDIR/%s/unittest' % self.distribution.get_name(),
-                    os.path.join(g_directory, 'unittest'))
+                    os.path.join('build', 'unittest'))
+
         self.update_fred_config()
         install.run(self)
 
@@ -174,15 +193,6 @@ class Install_lib(install_lib):
         install_lib.run(self)
 
 class Install_data(install_data):
-    def update_file(self, filename):
-        values = []
-        values.append((r'(sys\.path\.insert\(0,\ )\'\'\)',
-            r"\1'%s')" % self.getDir('purelibdir')))
-        self.replace_pattern(os.path.join(self.getDir('libdir'),
-            self.distribution.get_name(), 'unittest', filename),
-            None, values)
-        print "%s file has been updated" %filename
-
     def run(self):
         install_data.run(self)
 
