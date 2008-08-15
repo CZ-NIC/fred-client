@@ -33,9 +33,9 @@ g_directory = ''
 
 # datarootdir/prog_name/ssl => /usr/local/share/fred-client/ssl (default)
 DEFAULT_SSL_PATH = 'ssl'
-# datarootdir/prog_name/schemas/all-1.4.xsd =>
-# /usr/local/share/fred-client/schemas/all-1.4.xsd
-DEFAULT_SCHEMAS_FILEMANE = 'schemas/all-1.4.xsd'
+# datarootdir/prog_name/schemas/all-2.0.xsd =>
+# /usr/local/share/fred-client/schemas/all-2.0.xsd
+DEFAULT_SCHEMAS_FILEMANE = 'schemas/all-2.0.xsd'
 
 APP_SCRIPTS = ['fred-client','fred-client-qt4.pyw']
 #if 'bdist_wininst' in sys.argv and '--install-script=setup_postinstall.py'

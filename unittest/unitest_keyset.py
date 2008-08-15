@@ -12,8 +12,8 @@ FRED_KEYSET1 = unitest_share.create_handle('KEYSID:U1')
 FRED_CONTACT1 = unitest_share.create_handle('CID:U1')
 FRED_CONTACT2 = unitest_share.create_handle('CID:U2')
 
-DS = [{'key_tag': '1',  'alg': '2',  'digest_type': '3', 'digest': '499602d2'}, 
-      {'key_tag': '11','alg': '22', 'digest_type': '33', 'digest': '499602d2', 'max_sig_life': '1'}]
+DS = [{'key_tag': '1',  'alg': '1',  'digest_type': '1', 'digest': '0123456789012345678901234567890123456789'}, 
+      {'key_tag': '1','alg': '5', 'digest_type': '1', 'digest': '9876543210987654321098765432109876543210', 'max_sig_life': '1'}]
 
 KEYSET = {
     'id': FRED_KEYSET1, # (required)
@@ -81,7 +81,7 @@ class Test(unittest.TestCase):
 
     def test_050(self):
         '5. Pridani DS'
-        newds = {'alg': '1', 'digest_type': '1', 'digest': '499602d3', 'key_tag': '3'}
+        newds = {'alg': '1', 'digest_type': '1', 'digest': 'ABCDE12345ABCDE12345ABCDE12345ABCDE12345', 'key_tag': '3'}
         KEYSET['ds'].append(newds)
         epp_cli.update_keyset(KEYSET['id'], {'ds':newds})
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
