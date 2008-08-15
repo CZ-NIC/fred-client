@@ -197,21 +197,21 @@ class Test(unittest.TestCase):
     def test_170(self):
         '4.17 (Ticket #250) Pokus o zalozeni domeny enum bez valExpDate'
         d = FRED_DATA[DOMAIN_2]
-        epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], d['nsset'], d['period'], d['contact'])
+        epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], d['nsset'], None, d['period'], d['contact'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_180(self):
         '4.18  Zalozeni ENUM domeny (enduser)'
         d = FRED_DATA[DOMAIN_2]
         val_ex_date = time.strftime("%Y-%m-%d",time.localtime(time.time()+60*60*24*30*2)) # dva měsíce
-        epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], d['nsset'], d['period'], d['contact'], val_ex_date)
+        epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], d['nsset'], None, d['period'], d['contact'], val_ex_date)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_190(self):
         '4.19 Zalozeni ENUM domeny (prefix)'
         d = FRED_DATA[DOMAIN_2]
         val_ex_date = time.strftime("%Y-%m-%d",time.localtime(time.time()+60*60*24*30*2)) # dva měsíce
-        epp_cli.create_domain(FRED_ENUM_PREFIX, d['registrant'], None, None, None, None, val_ex_date)
+        epp_cli.create_domain(FRED_ENUM_PREFIX, d['registrant'], None, None, None, None, None, val_ex_date)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         
     def test_200(self):
@@ -221,14 +221,14 @@ class Test(unittest.TestCase):
         d = FRED_DATA[DOMAIN_2]
         val_ex_date = time.strftime("%Y-%m-%d",time.localtime(time.time()+60*60*24*30*2)) # dva měsíce
         # epp_cli_TRANSF.create_domain(d['name'], d['registrant'], d['auth_info'], d['nsset'], d['period'], d['contact'], val_ex_date)
-        epp_cli_TRANSF.create_domain(FRED_DOMAIN3, d['registrant'], None, None, None, None, val_ex_date)
+        epp_cli_TRANSF.create_domain(FRED_DOMAIN3, d['registrant'], None, None, None, None, None, val_ex_date)
         self.assertNotEqual(epp_cli_TRANSF.is_val(), 1000, 'ENUM domena se vytvorila prestoze patri do jiz obsazene zony.')
 
     def test_210(self):
         '4.21 DRUHY REGISTRATOR: Pokus o zalozeni ENUM do jine zony (enduser je v rozsahu prefixu)'
         d = FRED_DATA[DOMAIN_2]
         val_ex_date = time.strftime("%Y-%m-%d",time.localtime(time.time()+60*60*24*30*2)) # dva měsíce
-        epp_cli_TRANSF.create_domain(FRED_ENUM_ENDUSER, d['registrant'], None, None, None, None, val_ex_date)
+        epp_cli_TRANSF.create_domain(FRED_ENUM_ENDUSER, d['registrant'], None, None, None, None, None, val_ex_date)
         self.assertNotEqual(epp_cli_TRANSF.is_val(), 1000, 'ENUM domena se vytvorila prestoze patri do jiz obsazene zony.')
 
     def test_220(self):
@@ -237,14 +237,14 @@ class Test(unittest.TestCase):
         epp_cli_log = epp_cli
         d = FRED_DATA[DOMAIN_2]
         val_ex_date = time.strftime("%Y-%m-%d",time.localtime(time.time()+60*60*24*30*2)) # dva měsíce
-        epp_cli.create_domain(FRED_DOMAIN3, d['registrant'], None, None, None, None, val_ex_date)
+        epp_cli.create_domain(FRED_DOMAIN3, d['registrant'], None, None, None, None, None, val_ex_date)
         self.assertNotEqual(epp_cli.is_val(), 1000, 'ENUM FRED_DOMAIN3 se vytvorila prestoze patri do jiz obsazene zony.')
 
     def test_230(self):
         '4.21 Pokus o zalozeni ENUM ve vlastni zone (enduser je v rozsahu prefixu)'
         d = FRED_DATA[DOMAIN_2]
         val_ex_date = time.strftime("%Y-%m-%d",time.localtime(time.time()+60*60*24*30*2)) # dva měsíce
-        epp_cli.create_domain(FRED_ENUM_ENDUSER, d['registrant'], None, None, None, None, val_ex_date)
+        epp_cli.create_domain(FRED_ENUM_ENDUSER, d['registrant'], None, None, None, None, None, val_ex_date)
         self.assertNotEqual(epp_cli.is_val(), 1000, 'ENUM FRED_ENUM_ENDUSER se vytvorila prestoze patri do jiz obsazene zony.')
         
     # -------------------------------------

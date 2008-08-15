@@ -168,6 +168,23 @@ OPTIONS:
   cltrid                   Client transaction ID"""
         return self._epp.api_command('check_nsset',{'name':name, 'cltrid':cltrid})
 
+    def check_keyset(self, name, cltrid=None):
+        """DESCRIPTION:
+  The EPP 'check_keyset' command is used to determine if an KEYSET can be
+  provisioned within a repository.  It provides a hint that allows a
+  client to anticipate the success or failure of provisioning an keyset
+  using the 'create_keyset' command as KEYSET provisioning requirements are
+  ultimately a matter of server policy.
+
+SYNTAX:
+  check_keyset name [other_options]
+
+OPTIONS:
+  name (required)          KEYSET ID (unbounded list)
+  cltrid                   Client transaction ID"""
+        return self._epp.api_command('check_keyset',{'name':name, 'cltrid':cltrid})
+
+
     def create_contact(self, contact_id, name, email, street, city, pc, cc, 
             sp=None, org=None, auth_info=None, voice=None, fax=None, 
             disclose=None, vat=None, ident=None, notify_email=None, 
@@ -219,7 +236,7 @@ OPTIONS:
             'disclose':disclose, 'vat':vat, 'ident':ident, 
             'notify_email':notify_email, 'cltrid':cltrid})
 
-    def create_domain(self, name, registrant, auth_info=None, nsset=None, period=None, admin=None, val_ex_date=None, 
+    def create_domain(self, name, registrant, auth_info=None, nsset=None, keyset=None, period=None, admin=None, val_ex_date=None, 
         cltrid=None):
         """DESCRIPTION:
   The EPP 'create_domain' command is used to create domain.
@@ -237,6 +254,7 @@ OPTIONS:
   registrant (required)    Registrant ID
   auth_info                Password required by server to authorize the transfer
   nsset                    NSSET ID
+  keyset                   KEYSET ID
   period                   Period
     num (required)         Number of months or years
     unit (required)        Period unit (y year(default), m month)
@@ -244,7 +262,7 @@ OPTIONS:
   val_ex_date              Validation expires at date. This value is required for ENUM domains.
   cltrid                   Client transaction ID"""
         return self._epp.api_command('create_domain',{'name':name,'auth_info':auth_info,
-            'period':period,'registrant':registrant,'nsset':nsset,'admin':admin,
+            'period':period,'registrant':registrant, 'nsset':nsset, 'keyset':keyset, 'admin':admin,
             'val_ex_date':val_ex_date, 'cltrid':cltrid})
 
     def create_nsset(self, nsset_id, dns, tech, auth_info=None, reportlevel=None, cltrid=None):
@@ -271,6 +289,28 @@ OPTIONS:
   cltrid                   Client transaction ID"""
         return self._epp.api_command('create_nsset',{'id':nsset_id, 'auth_info':auth_info,
             'dns':dns, 'tech':tech, 'reportlevel':reportlevel, 'cltrid':cltrid})
+
+
+    def create_keyset(self, keyset_id, ds, tech, auth_info=None, cltrid=None):
+        """DESCRIPTION:
+  The EPP 'create_keyset' command is used to create a record of the KEYSET.
+
+SYNTAX:
+  create_keyset id ds tech [other_options]
+
+OPTIONS:
+  id (required)            KEYSET ID
+  ds (required)            LIST of DS records (list with max 9 items.)
+    key_tag (required)     Key tag
+    alg (required)         Algorithm
+    digest_type (required) Digest Type
+    digest (required)      Digest
+    max_sig_life           Max.Sig.Life
+  tech (required)          Technical contact (unbounded list)
+  auth_info                Password required by server to authorize the transfer
+  cltrid                   Client transaction ID"""
+        return self._epp.api_command('create_keyset',{'id':keyset_id, 'auth_info':auth_info,
+            'ds':ds, 'tech':tech, 'cltrid':cltrid})
 
 
     def delete_contact(self, contact_id, cltrid=None):
@@ -310,6 +350,19 @@ OPTIONS:
   id (required)            NSSET ID
   cltrid                   Client transaction ID"""
         return self._epp.api_command('delete_nsset',{'id':nsset_id, 'cltrid':cltrid})
+
+
+    def delete_keyset(self, keyset_id, cltrid=None):
+        """DESCRIPTION:
+  The EPP 'delete_keyset' command is used to remove a record of the keyset.
+
+SYNTAX:
+  delete_keyset id [other_options]
+
+OPTIONS:
+  id (required)            KEYSET ID
+  cltrid                   Client transaction ID"""
+        return self._epp.api_command('delete_keyset',{'id':keyset_id, 'cltrid':cltrid})
 
 
     def hello(self):
@@ -373,6 +426,21 @@ OPTIONS:
   name (required)          NSSET ID
   cltrid                   Client transaction ID"""
         return self._epp.api_command('info_nsset',{'name':name, 'cltrid':cltrid})
+
+
+    def info_keyset(self, name, cltrid=None):
+        """DESCRIPTION:
+  The EPP 'info_keyset' command is used to retrieve information associated
+  with an existing KEYSET. The value 'Password for transfer' is shown only
+  for privileged user.
+
+SYNTAX:
+  info_keyset name [other_options]
+
+OPTIONS:
+  name (required)          KEYSET ID
+  cltrid                   Client transaction ID"""
+        return self._epp.api_command('info_keyset',{'name':name, 'cltrid':cltrid})
 
 
     def login(self, username, password, new_password=None, lang=None, cltrid=None):
@@ -485,6 +553,20 @@ OPTIONS:
   cltrid                   Client transaction ID"""
         return self._epp.api_command('sendauthinfo_nsset',{'id':nsset_id, 'cltrid':cltrid})
 
+    def sendauthinfo_keyset(self, keyset_id, cltrid=None):
+        """DESCRIPTION:
+  The EPP 'sendauthinfo_keyset' command transmit request for send password
+  to technical contact email. This command is usefull during transfer
+  when owner and new registrar needn't require previous registrar for password.
+
+SYNTAX:
+  sendauthinfo_keyset id [other_options]
+
+OPTIONS:
+  id (required)            KEYSET ID
+  cltrid                   Client transaction ID"""
+        return self._epp.api_command('sendauthinfo_keyset',{'id':keyset_id, 'cltrid':cltrid})
+
     def credit_info(self, cltrid=None):
         """DESCRIPTION:
   The EPP 'credit_info' command returns credit information.
@@ -568,6 +650,21 @@ OPTIONS:
   cltrid                   Client transaction ID"""
         return self._epp.api_command('transfer_nsset',{'name':name, 'auth_info':auth_info, 'cltrid':cltrid})
 
+    def transfer_keyset(self, name, auth_info, cltrid=None):
+        """DESCRIPTION:
+  The EPP 'transfer_keyset' command makes change in KEYSET sponsorship
+  of a designated registrar. New password for authorisation
+  will be generated automaticly after succefull transfer.
+
+SYNTAX:
+  transfer_keyset name auth_info [other_options]
+
+OPTIONS:
+  name (required)          KEYSET ID
+  auth_info (required)     Password required by server to authorize the transfer
+  cltrid                   Client transaction ID"""
+        return self._epp.api_command('transfer_keyset',{'name':name, 'auth_info':auth_info, 'cltrid':cltrid})
+
 
     def update_contact(self, contact_id, chg=None, cltrid=None):
         """DESCRIPTION:
@@ -628,6 +725,7 @@ OPTIONS:
   rem_tempc                Temporary contact ID (unbounded list)
   chg                      Change values
     nsset                  NSSET ID
+    keyset                 KEYSET ID
     registrant             Registrant ID
     auth_info              Password required by server to authorize the transfer
   val_ex_date              Validation expires at
@@ -658,6 +756,36 @@ OPTIONS:
   cltrid                   Client transaction ID"""
         return self._epp.api_command('update_nsset',{'id':nsset_id, 'add':add, 'rem':rem, 'auth_info':auth_info, 'reportlevel':reportlevel, 'cltrid':cltrid})
 
+    def update_keyset(self, keyset_id, add=None, rem=None, auth_info=None, reportlevel=None, cltrid=None):
+        """DESCRIPTION:
+  The EPP 'update_keyset' command is used to update values in the KEYSET.
+
+SYNTAX:
+  update_keyset id [other_options]
+
+OPTIONS:
+  id (required)            KEYSET ID
+  add                      Add values
+    ds (required)          LIST of DS records (list with max 9 items.)
+      key_tag (required)   Key tag
+      alg (required)       Algorithm
+      digest_type (required) Digest Type
+      digest (required)    Digest
+      max_sig_life         Max.Sig.Life
+    tech                   Technical contact ID (unbounded list)
+  rem                      Remove values
+    ds                     LIST of DS records (list with max 9 items.)
+      key_tag (required)   Key tag
+      alg (required)       Algorithm
+      digest_type (required) Digest Type
+      digest (required)    Digest
+      max_sig_life         Max.Sig.Life
+    tech                   Technical contact ID (unbounded list)
+  auth_info                Password required by server to authorize the transfer
+  cltrid                   Client transaction ID"""
+        return self._epp.api_command('update_keyset',{'id':keyset_id, 'add':add, 'rem':rem, 'auth_info':auth_info, 'reportlevel':reportlevel, 'cltrid':cltrid})
+
+
     def sendauthinfo_contact(self, id, cltrid=None):
         """DESCRIPTION:
   The EPP 'sendauthinfo_contact' command transmit request for send password
@@ -685,6 +813,20 @@ OPTIONS:
   id (required)            NSSET ID
   cltrid                   Client transaction ID"""
         return self._epp.api_command('sendauthinfo_nsset',{'id':id, 'cltrid':cltrid})
+
+    def sendauthinfo_keyset(self, id, cltrid=None):
+        """DESCRIPTION:
+  The EPP 'sendauthinfo_keyset' command transmit request for send password
+  to technical contact email. This command is usefull during transfer
+  when owner and new registrar needn't require previous registrar for password.
+
+SYNTAX:
+  sendauthinfo_keyset id [other_options]
+
+OPTIONS:
+  id (required)            KEYSET ID
+  cltrid                   Client transaction ID"""
+        return self._epp.api_command('sendauthinfo_keyset',{'id':id, 'cltrid':cltrid})
 
     def sendauthinfo_domain(self, name, cltrid=None):
         """DESCRIPTION:
@@ -780,6 +922,23 @@ EXAMPLES:
   prep_nssets"""
         return self._epp.api_command('prep_nssets',{'cltrid':cltrid})
 
+    def prep_keysets(self, cltrid=None):
+        """DESCRIPTION:
+  Prepare list of the KEYSETs. This command fills server buffer by list 
+  of keysets and set pointer at the beginning of the list. The list 
+  is taken in sequence by calling command 'get_results' repeatedly 
+  until any data comming.
+
+SYNTAX:
+  prep_keysets [other_options]
+
+OPTIONS:
+  cltrid                   Client transaction ID
+
+EXAMPLES:
+  prep_keysets"""
+        return self._epp.api_command('prep_keysets',{'cltrid':cltrid})
+        
     def prep_domains(self, cltrid=None):
         """DESCRIPTION:
   Prepare list of the domains. This command fills server buffer by list 
@@ -814,6 +973,24 @@ OPTIONS:
 EXAMPLES:
   prep_domains_by_nsset NSSID:VALID"""
         return self._epp.api_command('prep_domains_by_nsset',{'id':id, 'cltrid':cltrid})
+        
+    def prep_domains_by_keyset(self, id, cltrid=None):
+        """DESCRIPTION:
+  Prepare domains by KEYSET. This command fills server buffer by list 
+  of domains connected with defined keyset ID. The pointer is set 
+  at the beginning of the list. The list is taken in sequence 
+  by calling command 'get_results' repeatedly until any data comming.
+
+SYNTAX:
+  prep_domains_by_keyset id [other_options]
+
+OPTIONS:
+  id (required)            KEYSET ID
+  cltrid                   Client transaction ID
+
+EXAMPLES:
+  prep_domains_by_keyset KEYSID:VALID"""
+        return self._epp.api_command('prep_domains_by_keyset',{'id':id, 'cltrid':cltrid})
 
     def prep_domains_by_contact(self, id, cltrid=None):
         """DESCRIPTION:
@@ -852,6 +1029,24 @@ EXAMPLES:
   prep_nssets_by_contact CID:ADMIN"""
         return self._epp.api_command('prep_nssets_by_contact',{'id':id, 'cltrid':cltrid})
 
+    def prep_keysets_by_contact(self, id, cltrid=None):
+        """DESCRIPTION:
+  Prepare KEYSETs by contact. This command fills server buffer by list 
+  of keysets connected with defined technical contact ID. The pointer 
+  is set at the beginning of the list. The list is taken in sequence 
+  by calling command 'get_results' repeatedly until any data comming.
+
+SYNTAX:
+  prep_keysets_by_contact id [other_options]
+
+OPTIONS:
+  id (required)            Technical contact
+  cltrid                   Client transaction ID
+
+EXAMPLES:
+  prep_keysets_by_contact CID:ADMIN"""
+        return self._epp.api_command('prep_keysets_by_contact',{'id':id, 'cltrid':cltrid})
+        
     def prep_nssets_by_ns(self, name, cltrid=None):
         """DESCRIPTION:
   Prepare NSSETs by NS. This command fills server buffer by list of nssets 
@@ -869,7 +1064,7 @@ OPTIONS:
 EXAMPLES:
   prep_nssets_by_ns mydomain.cz"""
         return self._epp.api_command('prep_nssets_by_ns',{'name':name, 'cltrid':cltrid})
-        
+
     #==============================================================
         
     def get_answer_dct(self):

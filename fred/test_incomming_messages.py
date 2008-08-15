@@ -1,7 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
+import sys
 
-#Test on session_transfer.py
+# Test on session_transfer.py
+# $ python test_incomming_messages.py
+# $ python test_incomming_messages.py 1
+# $ python test_incomming_messages.py -1
+# $ for id in `seq 0 30`; do python test_incomming_messages.py $id; done
 
 #Command name from:
 #session_transfer.ManagerTransfer().grab_command_name_from_xml()
@@ -13,6 +18,7 @@
 #        Level 3:        contact:create
 #        Level 4:        fred:sendauthinfo, fred:creditinfo, fred:test
 
+ENCODING = 'utf8'
 
 """TEST the server answers.
 """
@@ -26,11 +32,11 @@ data = ( # 0
       <version>1.0</version>
       <lang>en</lang>
       <lang>cs</lang>
-      <objURI>http://www.nic.cz/xml/epp/contact-1.0</objURI>
-      <objURI>http://www.nic.cz/xml/epp/domain-1.0</objURI>
-      <objURI>http://www.nic.cz/xml/epp/nsset-1.0</objURI>
+      <objURI>http://www.nic.cz/xml/epp/contact-1.4</objURI>
+      <objURI>http://www.nic.cz/xml/epp/domain-1.3</objURI>
+      <objURI>http://www.nic.cz/xml/epp/nsset-1.2</objURI>
       <svcExtension>
-        <extURI>http://www.nic.cz/xml/epp/enumval-1.0</extURI>
+        <extURI>http://www.nic.cz/xml/epp/enumval-1.1</extURI>
       </svcExtension>
     </svcMenu>
     <dcp>
@@ -62,13 +68,11 @@ data = ( # 0
   <command>
     <transfer op="request">
       <domain:transfer
-       xmlns:domain="http://www.nic.cz/xml/epp/domain-1.0"
-       xsi:schemaLocation="http://www.nic.cz/xml/epp/domain-1.0
-       domain-1.0.xsd">
+       xmlns:domain="http://www.nic.cz/xml/epp/domain-1.3"
+       xsi:schemaLocation="http://www.nic.cz/xml/epp/domain-1.3
+       domain-1.3.xsd">
         <domain:name>example.cz</domain:name>
-        <domain:authInfo>
-            <domain:pw>2fooBAR</domain:pw>
-        </domain:authInfo>
+        <domain:authInfo>2fooBAR</domain:authInfo>
       </domain:transfer>
     </transfer>
     <clTRID>ABC-12345</clTRID>
@@ -140,13 +144,15 @@ data = ( # 0
     """),
     # 5
     ('contact:create',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
-<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:contact='http://www.nic.cz/xml/epp/contact-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
+<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:contact='http://www.nic.cz/xml/epp/contact-1.4' 
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' 
+    xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
   <response>
     <result code='1000'>
       <msg lang='cs'>Příkaz úspěšně proveden</msg>
     </result>
     <resData>
-      <contact:creData xsi:schemaLocation='http://www.nic.cz/xml/epp/contact-1.0 contact-1.0.xsd'>
+      <contact:creData xsi:schemaLocation='http://www.nic.cz/xml/epp/contact-1.4 contact-1.4.xsd'>
         <contact:id>lubosid</contact:id>
         <contact:crDate>2006-07-14T09:02:59.0Z</contact:crDate>
       </contact:creData>
@@ -159,16 +165,19 @@ data = ( # 0
 </epp>"""),
     # 6
     ('domain:create',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
-<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:domain='http://www.nic.cz/xml/epp/domain-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
+<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' 
+    xmlns:domain='http://www.nic.cz/xml/epp/domain-1.3' 
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' 
+    xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
   <response>
     <result code='1000'>
       <msg lang='cs'>Příkaz úspěšně proveden</msg>
     </result>
     <resData>
-      <domain:creData xsi:schemaLocation='http://www.nic.cz/xml/epp/domain-1.0 domain-1.0.xsd'>
+      <domain:creData xsi:schemaLocation='http://www.nic.cz/xml/epp/domain-1.3 domain-1.3.xsd'>
         <domain:name>lusk.cz</domain:name>
         <domain:crDate>2006-07-14T11:25:55.0Z</domain:crDate>
-        <domain:exDate>2006-07-14T00:00:00.0Z</domain:exDate>
+        <domain:exDate>2006-07-14</domain:exDate>
       </domain:creData>
     </resData>
     <trID>
@@ -180,15 +189,18 @@ data = ( # 0
 """),
     # 7
     ('domain:renew',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
-<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:domain='http://www.nic.cz/xml/epp/domain-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
+<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' 
+    xmlns:domain='http://www.nic.cz/xml/epp/domain-1.3' 
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' 
+    xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
   <response>
     <result code='1000'>
       <msg lang='cs'>Příkaz úspěšně proveden</msg>
     </result>
     <resData>
-      <domain:renData xsi:schemaLocation='http://www.nic.cz/xml/epp/domain-1.0 domain-1.0.xsd'>
+      <domain:renData xsi:schemaLocation='http://www.nic.cz/xml/epp/domain-1.3 domain-1.3.xsd'>
         <domain:name>LUSK.CZ</domain:name>
-        <domain:exDate>2008-07-14T00:00:00.0Z</domain:exDate>
+        <domain:exDate>2008-07-14</domain:exDate>
       </domain:renData>
     </resData>
     <trID>
@@ -200,22 +212,23 @@ data = ( # 0
 """),
     # 8
     ('nsset:info',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
-<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:nsset='http://www.nic.cz/xml/epp/nsset-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
+<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' 
+    xmlns:nsset='http://www.nic.cz/xml/epp/nsset-1.2' 
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' 
+    xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
   <response>
     <result code='1000'>
       <msg lang='cs'>Příkaz úspěšně proveden</msg>
     </result>
     <resData>
-      <nsset:infData xsi:schemaLocation='http://www.nic.cz/xml/epp/nsset-1.0 nsset-1.0.xsd'>
+      <nsset:infData xsi:schemaLocation='http://www.nic.cz/xml/epp/nsset-1.2 nsset-1.2.xsd'>
         <nsset:id>one</nsset:id>
         <nsset:roid>N0000000059-CZ</nsset:roid>
         <nsset:status s='ok'>NSSET is OK</nsset:status>
         <nsset:clID>REG-LRR</nsset:clID>
         <nsset:crDate>2006-06-30T09:09:57.0Z</nsset:crDate>
         <nsset:upID>REG-LRR</nsset:upID>
-        <nsset:authInfo>
-          <nsset:pw>heslo</nsset:pw>
-        </nsset:authInfo>
+        <nsset:authInfo>heslo</nsset:authInfo>
         <nsset:ns>
           <nsset:name>ns1.one.cz</nsset:name>
           <nsset:addr>192.23.54.1</nsset:addr>
@@ -228,6 +241,7 @@ data = ( # 0
           <nsset:addr>192.23.54.5</nsset:addr>
         </nsset:ns>
         <nsset:tech>NECOCZ-PETR</nsset:tech>
+        <nsset:reportlevel>1</nsset:reportlevel>
       </nsset:infData>
     </resData>
     <trID>
@@ -239,13 +253,16 @@ data = ( # 0
 """),
     # 9
     ('contact:info',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
-<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:contact='http://www.nic.cz/xml/epp/contact-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
+<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' 
+    xmlns:contact='http://www.nic.cz/xml/epp/contact-1.4' 
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' 
+    xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
   <response>
     <result code='1000'>
       <msg lang='cs'>Příkaz úspěšně proveden</msg>
     </result>
     <resData>
-      <contact:infData xsi:schemaLocation='http://www.nic.cz/xml/epp/contact-1.0 contact-1.0.xsd'>
+      <contact:infData xsi:schemaLocation='http://www.nic.cz/xml/epp/contact-1.4 contact-1.4.xsd'>
         <contact:id>test001</contact:id>
         <contact:roid>C0000000031-CZ</contact:roid>
         <contact:status s='ok'>Contact is OK</contact:status>
@@ -266,14 +283,14 @@ data = ( # 0
         <contact:voice>+123.456789</contact:voice>
         <contact:fax>+321.564987</contact:fax>
         <contact:email>rehor.cizek@mail.cz</contact:email>
+        <contact:clID>REG-LRR</contact:clID>
         <contact:crID>REG-LRR</contact:crID>
         <contact:crDate>2006-08-01T13:21:16.0Z</contact:crDate>
         <contact:disclose flag='0'>
           <contact:fax/>
-          <contact:voice/>
+          <contact:email/>
         </contact:disclose>
         <contact:vat>963</contact:vat>
-        <contact:ssn>852</contact:ssn>
         <contact:notifyEmail>info@rehorovi.cz</contact:notifyEmail>
         </contact:infData>
     </resData>
@@ -286,13 +303,16 @@ data = ( # 0
     """),
     # 10
     ('domain:check',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
-<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:domain='http://www.nic.cz/xml/epp/domain-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
+<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' 
+    xmlns:domain='http://www.nic.cz/xml/epp/domain-1.3' 
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' 
+    xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
   <response>
     <result code='1000'>
       <msg lang='cs'>Příkaz úspěšně proveden</msg>
     </result>
     <resData>
-      <domain:chkData xsi:schemaLocation='http://www.nic.cz/xml/epp/domain-1.0 domain-1.0.xsd'>
+      <domain:chkData xsi:schemaLocation='http://www.nic.cz/xml/epp/domain-1.3 domain-1.3.xsd'>
         <domain:cd>
           <domain:name avail='0'>nic.cz</domain:name>
           <domain:reason>In use</domain:reason>
@@ -337,13 +357,16 @@ data = ( # 0
     """),
     # 12
     ('contact:list',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
-<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:contact='http://www.nic.cz/xml/epp/contact-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
+<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' 
+    xmlns:contact='http://www.nic.cz/xml/epp/contact-1.4' 
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' 
+    xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
   <response>
     <result code='1000'>
       <msg lang='cs'>Příkaz úspěšně proveden</msg>
     </result>
     <resData>
-      <contact:listData xsi:schemaLocation='http://www.nic.cz/xml/epp/contact-1.0 contact-1.0.xsd'>
+      <contact:listData xsi:schemaLocation='http://www.nic.cz/xml/epp/contact-1.4 contact-1.4.xsd'>
         <contact:id>CID:FEELA</contact:id>
         <contact:id>CID:TEST</contact:id>
       </contact:listData>
@@ -357,13 +380,16 @@ data = ( # 0
 """),
     # 13
     ('nsset:list',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
-<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:nsset='http://www.nic.cz/xml/epp/nsset-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
+<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' 
+    xmlns:nsset='http://www.nic.cz/xml/epp/nsset-1.2' 
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' 
+    xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
   <response>
     <result code='1000'>
       <msg lang='cs'>Příkaz úspěšně proveden</msg>
     </result>
     <resData>
-      <nsset:listData xsi:schemaLocation='http://www.nic.cz/xml/epp/nsset-1.0 nsset-1.0.xsd'>
+      <nsset:listData xsi:schemaLocation='http://www.nic.cz/xml/epp/nsset-1.2 nsset-1.2.xsd'>
         <nsset:id>NSSID:NTEST</nsset:id>
         <nsset:id>NSSID:AAA</nsset:id>
         <nsset:id>NSSID:FEELA</nsset:id>
@@ -380,13 +406,16 @@ data = ( # 0
 """),
     # 14
     ('domain:list',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
-<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:domain='http://www.nic.cz/xml/epp/domain-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
+<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' 
+    xmlns:domain='http://www.nic.cz/xml/epp/domain-1.3' 
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' 
+    xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
   <response>
     <result code='1000'>
       <msg lang='cs'>Příkaz úspěšně proveden</msg>
     </result>
     <resData>
-      <domain:listData xsi:schemaLocation='http://www.nic.cz/xml/epp/domain-1.0 domain-1.0.xsd'>
+      <domain:listData xsi:schemaLocation='http://www.nic.cz/xml/epp/domain-1.3 domain-1.3.xsd'>
         <domain:name>test.cz</domain:name>
         <domain:name>2.1.1.5.4.7.2.2.2.0.2.4.e164.arpa</domain:name>
         <domain:name>feela.cz</domain:name>
@@ -420,6 +449,7 @@ data = ( # 0
   </response>
 </epp>
 """),
+    # 16
     ('contact:sendauthinfo',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
 <epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
   <response>
@@ -433,6 +463,7 @@ data = ( # 0
   </response>
 </epp>
 """),
+    # 17
     ('contact:delete',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
 <epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
   <response>
@@ -446,16 +477,20 @@ data = ( # 0
   </response>
 </epp>
 """),
+    # 18
     # fred:extcommand, fred:creditInfo
     # command: fred:creditinfo fnc_name: answer_response_fred_creditinfo
-    ('fred:creditinfo',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
-<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:fred='http://www.nic.cz/xml/epp/fred-1.0' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
+    ('fred:creditinfo', u"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
+<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' 
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' 
+    xmlns:fred='http://www.nic.cz/xml/epp/fred-1.2' 
+    xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
   <response>
     <result code='1000'>
-      <msg lang='cs'>P\u0159\u00edkaz \u00fasp\u011b\u0161n\u011b proveden</msg>
+      <msg lang='cs'>Příkaz úspěšně proveden</msg>
     </result>
     <resData>
-      <fred:resCreditInfo xsi:schemaLocation='http://www.nic.cz/xml/epp/fred-1.0 fred-1.0.xsd'>
+      <fred:resCreditInfo xsi:schemaLocation='http://www.nic.cz/xml/epp/fred-1.2 fred-1.2.xsd'>
         <fred:zoneCredit>
           <fred:zone>0.2.4.e164.arpa</fred:zone>
           <fred:credit>201.50</fred:credit>
@@ -472,15 +507,16 @@ data = ( # 0
     </trID>
   </response>
 </epp>
-"""),
-    ('credit_info',"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
-<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:fred='http://www.nic.cz/xml/epp/fred-1.0' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
+""".encode(ENCODING)),
+    # 19
+    ('credit_info', u"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
+<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:fred='http://www.nic.cz/xml/epp/fred-1.2' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
   <response>
     <result code='1000'>
-      <msg lang='cs'>P\u0159\u00edkaz \u00fasp\u011b\u0161n\u011b proveden</msg>
+      <msg lang='cs'>Příkaz úspěšně proveden</msg>
     </result>
     <resData>
-      <fred:resCreditInfo xsi:schemaLocation='http://www.nic.cz/xml/epp/fred-1.0 fred-1.0.xsd'>
+      <fred:resCreditInfo xsi:schemaLocation='http://www.nic.cz/xml/epp/fred-1.2 fred-1.2.xsd'>
         <fred:zoneCredit>
           <fred:zone>0.2.4.e164.arpa</fred:zone>
           <fred:credit>201.50</fred:credit>
@@ -497,65 +533,79 @@ data = ( # 0
     </trID>
   </response>
 </epp>
-"""),
-    ('transfer', """<?xml version='1.0' encoding='utf-8' standalone="no"?>
+""".encode(ENCODING)),
+    # 20
+    ('transfer', u"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
 <epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
   <response>
     <result code='2201'>
-      <msg lang='cs'>Chyba opr\u00e1vn\u011bn\u00ed</msg>
+      <msg lang='cs'>Chyba oprávnění</msg>
     </result>
     <trID>
       <clTRID>jaxt002#07-04-10at14:25:11</clTRID>
       <svTRID>ccReg-0000301928</svTRID>
     </trID>
   </response>
-</epp>"""),
-    ('transfer', """<?xml version='1.0' encoding='utf-8' standalone="no"?>
+</epp>""".encode(ENCODING)),
+    # 21
+    ('transfer', u"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
 <epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
   <response>
     <result code='1000'>
-      <msg lang='cs'>P\u0159\u00edkaz \u00fasp\u011b\u0161n\u011b proveden</msg>
+      <msg lang='cs'>Příkaz úspěšně proveden</msg>
     </result>
     <trID>
       <clTRID>jaxt003#07-04-10at14:25:12</clTRID>
       <svTRID>ccReg-0000301929</svTRID>
     </trID>
   </response>
-</epp>"""),
-    ('domain:info', """<?xml version="1.0" encoding="UTF-8"?>
-<epp xmlns="urn:ietf:params:xml:ns:epp-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd"><response><result code="1000"><msg lang="cs">P\u0159\u00edkaz \u00fasp\u011b\u0161n\u011b proveden</msg>
-</result>
-<resData><domain:infData xmlns:domain="http://www.nic.cz/xml/epp/domain-1.2" xsi:schemaLocation="http://www.nic.cz/xml/epp/domain-1.2 domain-1.1.xsd"><domain:name>test262403.cz</domain:name>
-<domain:roid>D0000009499-CZ</domain:roid>
-<domain:status s="ok">Domain is OK</domain:status>
-<domain:registrant>CID:D184452</domain:registrant>
-<domain:admin>CID:D184452</domain:admin>
-<domain:nsset>NSSID:D1917228</domain:nsset>
-<domain:clID>REG-UNITTEST1</domain:clID>
-<domain:crID>REG-UNITTEST1</domain:crID>
-<domain:crDate>2007-03-30T10:16:26+02:00</domain:crDate>
-<domain:upID>REG-UNITTEST1</domain:upID>
-<domain:upDate>2007-05-14T14:24:54+02:00</domain:upDate>
-<domain:exDate>2010-03-30</domain:exDate>
-<domain:authInfo>heslicko</domain:authInfo>
-<domain:tempcontact>CID:D184452</domain:tempcontact>
-<domain:tempcontact>CID:D184000</domain:tempcontact>
-</domain:infData>
-</resData>
-<trID><clTRID>nfxl003#07-05-15at11:02:33</clTRID>
-<svTRID>ccReg-0000314250</svTRID>
-</trID>
-</response>
-</epp>"""), 
-
-    ('fred:listdomains', """<?xml version='1.0' encoding='utf-8' standalone="no"?>
-<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:fred='http://www.nic.cz/xml/epp/fred-1.1' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
+</epp>""".encode(ENCODING)),
+    # 22
+    ('domain:info', u"""<?xml version="1.0" encoding="UTF-8"?>
+<epp xmlns="urn:ietf:params:xml:ns:epp-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd">
   <response>
-    <result code='1000'>
-      <msg lang='cs'>P\u0159\u00edkaz \u00fasp\u011b\u0161n\u011b proveden</msg>
+    <result code="1000">
+      <msg lang="cs">Příkaz úspěšně proveden</msg>
     </result>
     <resData>
-      <fred:infoResponse xsi:schemaLocation='http://www.nic.cz/xml/epp/fred-1.1 fred-1.1.xsd'>
+      <domain:infData xmlns:domain="http://www.nic.cz/xml/epp/domain-1.3" 
+        xsi:schemaLocation="http://www.nic.cz/xml/epp/domain-1.3 domain-1.3.xsd">
+        <domain:name>test262403.cz</domain:name>
+        <domain:roid>D0000009499-CZ</domain:roid>
+        <domain:status s="ok">Domain is OK</domain:status>
+        <domain:registrant>CID:D184452</domain:registrant>
+        <domain:admin>CID:D184452</domain:admin>
+        <domain:nsset>NSSID:D1917228</domain:nsset>
+        <domain:keyset>KEYSID:D1917228</domain:keyset>
+        <domain:clID>REG-UNITTEST1</domain:clID>
+        <domain:crID>REG-UNITTEST1</domain:crID>
+        <domain:crDate>2007-03-30T10:16:26+02:00</domain:crDate>
+        <domain:upID>REG-UNITTEST1</domain:upID>
+        <domain:upDate>2007-05-14T14:24:54+02:00</domain:upDate>
+        <domain:exDate>2010-03-30</domain:exDate>
+        <domain:authInfo>heslicko</domain:authInfo>
+        <domain:tempcontact>CID:D184452</domain:tempcontact>
+        <domain:tempcontact>CID:D184000</domain:tempcontact>
+      </domain:infData>
+    </resData>
+    <trID>
+      <clTRID>nfxl003#07-05-15at11:02:33</clTRID>
+      <svTRID>ccReg-0000314250</svTRID>
+    </trID>
+  </response>
+</epp>""".encode(ENCODING)), 
+
+    ('fred:listdomains', u"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
+<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' 
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' 
+    xmlns:fred='http://www.nic.cz/xml/epp/fred-1.2' 
+    xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
+  <response>
+    <result code='1000'>
+      <msg lang='cs'>Příkaz úspěšně proveden</msg>
+    </result>
+    <resData>
+      <fred:infoResponse xsi:schemaLocation='http://www.nic.cz/xml/epp/fred-1.2 fred-1.2.xsd'>
         <fred:count>2</fred:count>
       </fred:infoResponse>
     </resData>
@@ -564,15 +614,15 @@ data = ( # 0
       <svTRID>ccReg-0000315538</svTRID>
     </trID>
   </response>
-</epp>"""), 
-    ('fred:getresults', """<?xml version='1.0' encoding='utf-8' standalone="no"?>
-<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:fred='http://www.nic.cz/xml/epp/fred-1.1' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
+</epp>""".encode(ENCODING)), 
+    ('fred:getresults', u"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
+<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:fred='http://www.nic.cz/xml/epp/fred-1.2' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
   <response>
     <result code='1000'>
-      <msg lang='cs'>P\u0159\u00edkaz \u00fasp\u011b\u0161n\u011b proveden</msg>
+      <msg lang='cs'>Příkaz úspěšně proveden</msg>
     </result>
     <resData>
-      <fred:resultsList xsi:schemaLocation='http://www.nic.cz/xml/epp/fred-1.1 fred-1.1.xsd'>
+      <fred:resultsList xsi:schemaLocation='http://www.nic.cz/xml/epp/fred-1.2 fred-1.2.xsd'>
         <fred:item>CID:JEDNA</fred:item>
         <fred:item>CID:DVA</fred:item>
       </fred:resultsList>
@@ -583,15 +633,16 @@ data = ( # 0
     </trID>
   </response>
 </epp>
-"""), 
-    ('fred:domainsbycontact', """<?xml version='1.0' encoding='utf-8' standalone="no"?>
-<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:fred='http://www.nic.cz/xml/epp/fred-1.1' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
+""".encode(ENCODING)), 
+    # 25
+    ('fred:domainsbycontact', u"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
+<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:fred='http://www.nic.cz/xml/epp/fred-1.2' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
   <response>
     <result code='1000'>
-      <msg lang='cs'>P\u0159\u00edkaz \u00fasp\u011b\u0161n\u011b proveden</msg>
+      <msg lang='cs'>Příkaz úspěšně proveden</msg>
     </result>
     <resData>
-      <fred:infoResponse xsi:schemaLocation='http://www.nic.cz/xml/epp/fred-1.1 fred-1.1.xsd'>
+      <fred:infoResponse xsi:schemaLocation='http://www.nic.cz/xml/epp/fred-1.2 fred-1.2.xsd'>
         <fred:count>1</fred:count>
       </fred:infoResponse>
     </resData>
@@ -601,7 +652,7 @@ data = ( # 0
     </trID>
   </response>
 </epp>
-"""), 
+""".encode(ENCODING)), 
     ('poll', """<?xml version="1.0" encoding="UTF-8"?>
 <epp xmlns="urn:ietf:params:xml:ns:epp-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd"><response><result code="1301"><msg lang="cs">Prikaz uspasne proveden; potvrd za ucelem vyrazeni z fronty</msg>
 </result>
@@ -630,18 +681,18 @@ data = ( # 0
 </response>
 </epp>
 """), 
-    ('poll', """<?xml version='1.0' encoding='utf-8' standalone="no"?>
+    ('poll', u"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
 <epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
   <response>
     <result code='1000'>
-      <msg lang='cs'>P\u0159\u00edkaz \u00fasp\u011b\u0161n\u011b proveden</msg>
+      <msg lang='cs'>Příkaz úspěšně proveden</msg>
     </result>
     <trID>
       <clTRID>uflc007#07-06-27at10:02:35</clTRID>
       <svTRID>ccReg-0000319681</svTRID>
     </trID>
   </response>
-</epp>"""), 
+</epp>""".encode(ENCODING)), 
     ('response', """<?xml version='1.0' encoding='utf-8' standalone="no"?>
 <epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
   <response>
@@ -655,10 +706,81 @@ data = ( # 0
   </response>
 </epp>
 """), 
+    ('keyset:info', u"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
+<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' 
+    xmlns:keyset='http://www.nic.cz/xml/epp/keyset-1.0' 
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' 
+    xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
+  <response>
+    <result code='1000'>
+      <msg lang='cs'>Příkaz úspěšně proveden</msg>
+    </result>
+    <resData>
+      <keyset:infData xsi:schemaLocation='http://www.nic.cz/xml/epp/keyset-1.0
+        keyset-1.0.xsd'>
+        <keyset:id>one</keyset:id>
+        <keyset:roid>N0000000059-CZ</keyset:roid>
+        <keyset:status s='ok'>NSSET is OK</keyset:status>
+        <keyset:clID>REG-LRR</keyset:clID>
+        <keyset:crDate>2006-06-30T09:09:57.0Z</keyset:crDate>
+        <keyset:upID>REG-LRR</keyset:upID>
+        <keyset:authInfo>heslo</keyset:authInfo>
+        <keyset:ds>
+          <keyset:keyTag>1</keyset:keyTag>
+          <keyset:alg>1</keyset:alg>
+          <keyset:digestType>1</keyset:digestType>
+          <keyset:digest>aaa12409aaaaa098</keyset:digest>
+          <keyset:maxSigLife>100</keyset:maxSigLife>
+        </keyset:ds>
+        <keyset:ds>
+          <keyset:keyTag>2</keyset:keyTag>
+          <keyset:alg>2</keyset:alg>
+          <keyset:digestType>2</keyset:digestType>
+          <keyset:digest>aaa12409aaaaa098</keyset:digest>
+        </keyset:ds>
+        <keyset:tech>NECOCZ-PETR</keyset:tech>
+      </keyset:infData>
+    </resData>
+    <trID>
+      <clTRID>ljmm002#06-07-17at10:36:13</clTRID>
+      <svTRID>fred-0000011281</svTRID>
+    </trID>
+  </response>
+</epp>
+    """.encode(ENCODING)),
     )
 
 if __name__ == '__main__':
-    import session_transfer
-    m = session_transfer.ManagerTransfer()
-    print m.grab_command_name_from_xml(data[-1][1])
+    from __init__ import Client
+    import terminal_controler
+    
+    term = terminal_controler.TerminalController()
+    
+    client = Client()
+    client.load_config()
+    client.print_errors()
+    client._epp.parse_verbose_value(2)
+    #client._epp._session[14] = 'php' # OUTPUT_TYPE
+    print "Used schema path:", client._epp.__get_actual_schema_path__()
+    
+    try:
+        index = (len(sys.argv) > 1 and [int(sys.argv[1])] or [-1])[0]
+        xml_answer = data[index][1]
+    except IndexError, e:
+        sys.stderr.write('IndexError: %s\n'%e)
+    except ValueError, e:
+        sys.stderr.write('ValueError: %s\n'%e)
+    else:
+        print index, data[index][0], client._epp.grab_command_name_from_xml(xml_answer)
+        error = client._epp.is_epp_valid(xml_answer, 'Server answer XML document failed to validate.')
+        if error:
+            print term.RED + error + term.NORMAL
+        else:
+            print term.GREEN + 'OK' + term.NORMAL
+        print # spacer
+        client._epp.__session_language__('cs')
+        client._epp._command_sent = data[index][0]
+        client._epp.process_answer(xml_answer) # process answer
+        client._epp.display()
+        client.print_answer()
 

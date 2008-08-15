@@ -390,6 +390,61 @@ def compare_nsset_info(epp_cli, cols, data):
     else:
         errors.append('Seznam DNS nema pozadovany pocet. Ma %d a mel by mit %d.'%(len(ns),len(dns)))
     return errors
+
+def compare_keyset_info(epp_cli, cols, data):
+    'Check if values are equal'
+    #print '%s\nCOLS:\n%s\n%s\nDATA:\n%s\n%s\n'%('='*60, str(cols), '-'*60, str(data), '_'*60)
+#    COLS:
+#    {'tech': ['CID:U1353636'], 
+#    'auth_info': 'heslo', 
+#    'id': 'KEYSID:U1128843', 
+#    'ds': [{'alg': u'2', 'digest_type': u'3', 'digest': u'499602d2', 'key_tag': u'1'}, 
+#           {'alg': u'22', 'digest_type': u'33', 'max_sig_life': u'1', 'digest': u'499602d2', 'key_tag': u'11'}]}
+#    ------------------------------------------------------------
+#    DATA:
+#    {'keyset:roid': u'K0000000014-CZ', 
+#    'keyset:ds': [[u'1', u'2', u'3', u'499602d2', u'0'], 
+#                  [u'11', u'22', u'33', u'499602d2', u'1']], 
+#    'keyset:tech': u'CID:U1353636', 
+#    'keyset:crDate': u'2008-08-01T14:50:49+02:00', 
+#    'keyset:clID': u'REG-FRED_A', 
+#    'keyset:status': u'Objekt is without restrictions', 
+#    'keyset:id': u'KEYSID:U1128843', 
+#    'keyset:status.s': u'ok', 
+#    'keyset:crID': u'REG-FRED_A', 
+#    'keyset:authInfo': u'heslo'}
+#    ____________________________________________________________
+
+    errors = []
+
+    key = 'keyset:upID'
+    username, password = epp_cli._epp.get_actual_username_and_password()
+    err_not_equal(errors, data, 'keyset:clID', username)
+    err_not_equal(errors, data, 'keyset:id', cols['id'])
+
+    tech = data.get('keyset:tech', [])
+    if type(tech) in (str, unicode):
+        tech = tech.split('\n')
+    if type(tech) not in (list, tuple):
+        tech = (tech, )
+    if not are_equal(tech, cols['tech']):
+        errors.append('Data keyset:tech nesouhlasi. JSOU:%s MELY BYT:%s'%(make_str(tech), make_str(cols['tech'])))
+    
+    # check DS
+    ds_names = ('key_tag', 'alg', 'digest_type', 'digest', 'max_sig_life')
+    ds = data.get('keyset:ds',[])
+    cols_ds = cols['ds']
+    if len(ds) == len(cols_ds):
+        for pos in range(len(cols_ds)):
+            for n in range(len(ds[pos])):
+                ds_name = ds_names[n]
+                #print "[%d,%d,%s]:"%(pos, n, ds_name), ds[pos][n], "!=", cols_ds[pos].get(ds_name, '0') #DEBUG
+                if ds[pos][n] != cols_ds[pos].get(ds_name, '0'):
+                    errors.append('Neplatna hodnota %s. Je: %s, ale ma byt: %s. %s' % (ds_name, ds[pos][n], cols_ds[pos][ds_name], str(ds[pos])))
+    else:
+        errors.append('Seznam DS nema pozadovany pocet. Ma %d a mel by mit %d.'%(len(ds),len(cols_ds)))
+    return errors
+    
     
     
 get_local_text = fred.session_base.get_ltext

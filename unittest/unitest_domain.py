@@ -157,26 +157,26 @@ class TestDomain(unittest.TestCase):
     def test_050(self):
         '4.5  Pokus o zalozeni domeny s neexistujicim nssetem'
         d = FRED_DATA[DOMAIN_1]
-        epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], 'nsset-not-exists', d['period'], d['contact'])
+        epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], 'nsset-not-exists', None, d['period'], d['contact'])
         self.assertNotEqual(epp_cli.is_val(), 1000)
 
 
     def test_060(self):
         '4.6.1  Pokus o zalozeni domeny s neexistujicim registratorem'
         d = FRED_DATA[DOMAIN_1]
-        epp_cli.create_domain(d['name'], 'reg-not-exists', d['auth_info'], d['nsset'], d['period'], d['contact'])
+        epp_cli.create_domain(d['name'], 'reg-not-exists', d['auth_info'], d['nsset'], None, d['period'], d['contact'])
         self.assertNotEqual(epp_cli.is_val(), 1000)
 
     def test_062(self):
         '4.6.2  Pokus o zalozeni domeny s neexistujicim kontaktem'
         d = FRED_DATA[DOMAIN_1]
-        epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], d['nsset'], d['period'], 'CXXX0X')
+        epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], d['nsset'], None, d['period'], 'CXXX0X')
         self.assertNotEqual(epp_cli.is_val(), 1000)
 
     def test_070(self):
         '4.7  Pokusy o zalozeni domeny s neplatnym nazvem'
         d = FRED_DATA[DOMAIN_1]
-        epp_cli.create_domain(INVALID_DOMAIN_NAME, d['registrant'], d['auth_info'], d['nsset'], d['period'], d['contact'])
+        epp_cli.create_domain(INVALID_DOMAIN_NAME, d['registrant'], d['auth_info'], d['nsset'], None, d['period'], d['contact'])
         self.assertNotEqual(epp_cli.is_val(), 1000, 'Domena %s se vytvorila prestoze nemela.'%INVALID_DOMAIN_NAME)
 
     def test_071(self):
@@ -188,14 +188,14 @@ class TestDomain(unittest.TestCase):
     def test_072(self):
         '4.7.2  Pokus o zalozeni domeny se dvema stejnymi admin kontakty'
         d = FRED_DATA[DOMAIN_1]
-        epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], d['nsset'], d['period'], (FRED_CONTACT1, FRED_CONTACT1))
+        epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], d['nsset'], None, d['period'], (FRED_CONTACT1, FRED_CONTACT1))
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
         
     def test_080(self):
         '4.8  Zalozeni nove domeny'
         d = FRED_DATA[DOMAIN_1]
-        epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], d['nsset'], d['period'], d['contact'])
+        epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], d['nsset'], None, d['period'], d['contact'])
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_082(self):
@@ -206,21 +206,21 @@ class TestDomain(unittest.TestCase):
     def test_090(self):
         '4.9.1 Pokus o zalozeni domeny enum bez valExpDate'
         d = FRED_DATA[DOMAIN_2]
-        epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], d['nsset'], d['period'], d['contact'])
+        epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], d['nsset'], None, d['period'], d['contact'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_092(self):
         '4.9.2 Pokus o zalozeni domeny enum s valExDate = 6 mes + 1 den'
         d = FRED_DATA[DOMAIN_2]
         val_ex_date = unitest_share.datedelta_from_now(0, 6, 1) # sest mesicu a jeden den
-        epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], d['nsset'], d['period'], d['contact'], val_ex_date)
+        epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], d['nsset'], None, d['period'], d['contact'], val_ex_date)
         self.assertNotEqual(epp_cli.is_val(), 1000, 'Domena enum se vytvorila i kdyz valExDate byl neplatny')
 
     def test_093(self):
         '4.9.3 Pokus o zalozeni domeny enum s valExDate = aktualni datum'
         d = FRED_DATA[DOMAIN_2]
         val_ex_date = unitest_share.datedelta_from_now(0, 0, 0)
-        epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], d['nsset'], d['period'], d['contact'], val_ex_date)
+        epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], d['nsset'], None, d['period'], d['contact'], val_ex_date)
         self.assertNotEqual(epp_cli.is_val(), 1000, 'Domena enum se vytvorila i kdyz valExDate byl neplatny')
 
         
@@ -228,13 +228,13 @@ class TestDomain(unittest.TestCase):
         '4.9.3  Zalozeni nove domeny enum valExDate = dnes + 6 mes'
         d = FRED_DATA[DOMAIN_2]
         val_ex_date = unitest_share.datedelta_from_now(0, 6) # sest mesicu
-        epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], d['nsset'], d['period'], d['contact'], val_ex_date)
+        epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], d['nsset'], None, d['period'], d['contact'], val_ex_date)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         
     def test_100(self):
         '4.10  Pokus o zalozeni jiz existujici domeny'
         d = FRED_DATA[DOMAIN_1]
-        epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], d['nsset'], d['period'], d['contact'])
+        epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], d['nsset'], None, d['period'], d['contact'])
         self.assertNotEqual(epp_cli.is_val(), 1000, 'Domena se vytvorila prestoze jiz existuje')
 
     def test_110(self):

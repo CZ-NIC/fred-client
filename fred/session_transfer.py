@@ -853,19 +853,20 @@ def __append_into_report__(body, k, v, explain, ljust, indent = '', no_terminal_
         key = ljustify = ''
         patt[0] = patt[0].replace(' ', '')
     
+    key = get_ltext(key)
     if type(v) in (list,tuple):
         if len(v):
             # more lines: first is prefixed by column name
-            body.append(get_ltext(colored_output.render(patt[0]%(indent,key,escape(str_lists(v[0]))))))
+            body.append(colored_output.render(patt[0]%(indent, key, escape(get_ltext(str_lists(v[0]))))))
             # others are indented only
             for text in v[1:]:
-                body.append(get_ltext(patt[2]%(ljustify,escape(str_lists(text)))))
+                body.append(patt[2]%(ljustify, escape(get_ltext(str_lists(text)))))
         else:
             # one line only
-            body.append(get_ltext(colored_output.render(patt[1]%(indent,key))))
+            body.append(colored_output.render(patt[1]%(indent, key)))
     else:
         # value is not array
-        body.append(get_ltext(colored_output.render(patt[0]%(indent,key, escape(v)))))
+        body.append(colored_output.render(patt[0]%(indent, key, escape(get_ltext(v)))))
 
 def str_lists(text):
     """Prepare list or tuples for display. Same as str() but omit u'...' symbols

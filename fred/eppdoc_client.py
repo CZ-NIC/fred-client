@@ -99,6 +99,12 @@ are also 'Registrant ID' and 'Administrative contact'."""),('info_domain my-doma
 The EPP 'info_nsset' command is used to retrieve information associated
 with an existing NSSET. The value 'Password for transfer' is shown only 
 for privileged user."""),('info_nsset nssid:nsid',)),
+        'info_keyset': (1,[
+            ('name',(1,1),(),_T('KEYSET ID'),'KEYSET_ID','',()),
+        ],_T("""
+The EPP 'info_keyset' command is used to retrieve information associated
+with an existing KEYSET. The value 'Password for transfer' is shown only 
+for privileged user."""),('info_keyset keysid:ksid',)),
         #----------------------------------------------------
         'check_contact': (1,[
             ('name',(1,UNBOUNDED),(),_T('Contact ID'),'CID:ID01','',()),
@@ -124,6 +130,14 @@ provisioned within a repository.  It provides a hint that allows a
 client to anticipate the success or failure of provisioning an nsset
 using the 'create_nsset' command as NSSET provisioning requirements are
 ultimately a matter of server policy."""),('check_nsset nssid:id1 nssid:id2',)),
+        'check_keyset': (1,[
+            ('name',(1,UNBOUNDED),(),_T('KEYSET ID'),'KEYSET_ID','',()),
+        ],_T("""
+The EPP 'check_keyset' command is used to determine if an KEYSET can be
+provisioned within a repository. It provides a hint that allows a
+client to anticipate the success or failure of provisioning an nsset
+using the 'create_nsset' command as KEYSET provisioning requirements are
+ultimately a matter of server policy."""),('check_keyset keysid:id1 keysid:id2',)),
         #----------------------------------------------------
         'poll': (1,[
             ('op',(1,1),(('req',),('ack',)),_T('Query type'),'','',()),
@@ -154,6 +168,14 @@ will be generated automaticly after succefull transfer."""),('transfer_contact C
 The EPP 'transfer_nsset' command makes change in NSSET sponsorship 
 of a designated registrar. New password for authorisation 
 will be generated automaticly after succefull transfer."""),('transfer_nsset nssid:nsset password',)),
+        #----------------------------------------------------
+        'transfer_keyset': (2,[
+            ('name',(1,1),(),_T('KEYSET ID'),'KEYSET_ID','',()),
+            ('auth_info',(1,1),(),_T('Password required by server to authorize the transfer'),'mypassword','',()),
+        ],_T("""
+The EPP 'transfer_keyset' command makes change in KEYSET sponsorship 
+of a designated registrar. New password for authorisation 
+will be generated automaticly after succefull transfer."""),('transfer_keyset keysid:kset password',)),
         #----------------------------------------------------
         'transfer_domain': (2,[
             ('name',(1,1),(),_T('Domain name of domain to change sponsorship'),'domain.cz','',()),
@@ -199,6 +221,7 @@ Contact can be used for values of the owner, registrant or technical contact."""
             ('registrant',(1,1),(),_T('Registrant ID'),'CID:REGID','',()),
             ('auth_info',(0,1),(),_T('Password required by server to authorize the transfer'),'mypassword','',()),
             ('nsset',(0,1),(),_T('NSSET ID'),'NSSID:ID','',()),
+            ('keyset',(0,1),(),_T('KEYSET ID'),'KEYSID:ID','',()),
             ('period',(0,1),(),_T('Period'),'','',(
                 ('num',(1,1),(),_T('Number of months or years'),'3','',()),
                 ('unit',(1,1),(('y',),('m',)),_T('Period unit (y year(default), m month)'),'','',()),
@@ -212,8 +235,8 @@ a domain can be created for a specific validity period. Basicly
 you can create two types of the domain: cz and ENUM.
 The difference is in parameter val_ex_date. It is required 
 for ENUM domains."""),(
-                'create_domain domain.cz cid:regid password nssid:nsid (3 y) (cid:admin1,cid:admin2)',
-                'create_domain 1.1.1.7.4.5.2.2.2.0.2.4.e164.arpa cid:regid password nssid:nsid (3 y) (cid:admin1,cid:admin2) 2006-06-08'
+                'create_domain domain.cz cid:regid password nssid:nsid NULL (3 y) (cid:admin1,cid:admin2)',
+                'create_domain 1.1.1.7.4.5.2.2.2.0.2.4.e164.arpa cid:regid password nssid:nsid keysid:id (3 y) (cid:admin1,cid:admin2) 2006-06-08'
             )),
         #----------------------------------------------------
         'create_nsset': (3,[
@@ -237,6 +260,23 @@ lower level number. Valid range is from 0 to 10.
                 'create_nsset nssid:nsset1 ((ns1.domain.cz (217.31.207.130 217.31.207.129)),(ns2.domain.cz (217.31.206.130 217.31.206.129)),(ns3.domain.cz (217.31.205.130 217.31.205.129))) cid:regid passw',
             )),
         #----------------------------------------------------
+        'create_keyset': (3,[
+            ('id',(1,1),(),_T('KEYSET ID'),'KEYSID:ID','',()),
+            ('ds',(1,9),(),_T('LIST of DS records'),'','',(
+                ('key_tag',(1,1),(),_T('Key tag'),'1','',()),
+                ('alg',(1,1),(),_T('Algorithm'),'1','',()),
+                ('digest_type',(1,1),(),_T('Digest Type'),'1','',()),
+                ('digest',(1,1),(),_T('Digest'),'499602d2','',()),
+                ('max_sig_life',(0,1),(),_T('Max.Sig.Life'),'1','',()),
+            )),
+            ('tech',(1,UNBOUNDED),(),_T('Technical contact'),'CID:ID01','',()),
+            ('auth_info',(0,1),(),_T('Password required by server to authorize the transfer'),'mypassword','',()),
+            ],_T("""
+The EPP 'create_keyset' command is used to create a record of the KEYSET.
+"""),(
+                'create_keyset keysid:01 ((1 1 1 499602d2), (2 1 1 499602d2 1)) cid:regid passw',
+            )),
+        #----------------------------------------------------
         'delete_contact': (1,[
              ('id',(1,1),(),_T('Contact ID'),'CID:ID01','',()),
             ],_T("""The EPP 'delete_contact' command is used to remove a record of the contact."""),('delete_contact cid:id',)),
@@ -248,6 +288,10 @@ lower level number. Valid range is from 0 to 10.
         'delete_nsset': (1,[
             ('id',(1,1),(),_T('NSSET ID'),'NSSET_ID','',()),
             ],_T("""The EPP 'delete_nsset' command is used to remove a record of the nsset."""),('delete_nsset nssid:id',)),
+        #----------------------------------------------------
+        'delete_keyset': (1,[
+            ('id',(1,1),(),_T('KEYSET ID'),'KEYSET_ID','',()),
+            ],_T("""The EPP 'delete_keyset' command is used to remove a record of the keyset."""),('delete_keyset keysid:id',)),
         #----------------------------------------------------
         'renew_domain': (2,[
             ('name',(1,1),(),_T('Domain name'),'mydomain.cz','',()),
@@ -310,13 +354,14 @@ and maximum allowable period is defined in the Communication rules."""),('renew_
             ('rem_tempc',(0,UNBOUNDED),(),_T('Temporary contact ID'),'CID:ID01','',()),
             ('chg',(0,1),(),_T('Change values'),'','',(
                 ('nsset',(0,1),(),_T('NSSET ID'),'NSSET_ID','',()),
+                ('keyset',(0,1),(),_T('KEYSET ID'),'KEYSET_ID','',()),
                 ('registrant',(0,1),(),_T('Registrant ID'),'CID:ID01','',()),
                 ('auth_info',(0,1),(),_T('Password required by server to authorize the transfer'),'mypassword','',()),
             )),
             ('val_ex_date',(0,1),(),_T('Validation expires at'),'2008-12-03','',()),
             ],_T("""The EPP 'update_domain' command is used to update values in the domain."""),(
-                'update_domain mydomain.cz (CID:ID01, CID:ID02) CID:ID03 CID:TMP01 (NSSID:NSSET01 CID:ID04 mypass)',
-                'update_domain 1.1.1.7.4.5.2.2.2.0.2.4.e164.arpa (CID:ID01, CID:ID02) CID:ID03 CID:TMP01 (NSSID:NSSET01 CID:ID04 mypass) 2008-12-03',
+                'update_domain mydomain.cz (CID:ID01, CID:ID02) CID:ID03 CID:TMP01 (NSSID:NSSET01 NULL CID:ID04 mypass)',
+                'update_domain 1.1.1.7.4.5.2.2.2.0.2.4.e164.arpa (CID:ID01, CID:ID02) CID:ID03 CID:TMP01 (NSSID:NSSET01 KEYSID:KEYSET01 CID:ID04 mypass) 2008-12-03',
             )),
         #----------------------------------------------------
         'update_nsset': (1,[
@@ -336,6 +381,33 @@ and maximum allowable period is defined in the Communication rules."""),('renew_
             ('reportlevel',(0,1),(),_T('Report range level (0 - 10; higher = more detailed)'),'1','',()),
             ],_T("""The EPP 'update_nsset' command is used to update values in the NSSET."""),(
                 "update_nsset nssid:ns1 (((ns1.dns.cz (217.31.207.130, 217.31.207.131, 217.31.207.132)), (ns2.dns.cz (217.31.207.130, 217.31.207.131, 217.31.207.132))) (cid:tech1, cid:tech2, cid:tech3)) (((rem1.dns.cz, rem2.dns.cz) (cid:tech_rem01, cid:tech_rem02))) password",
+            )),
+        #----------------------------------------------------
+        'update_keyset': (1,[
+            ('id',(1,1),(),_T('KEYSET ID'),'KEYSET_ID','',()),
+            ('add',(0,1),(),_T('Add values'),'','',(
+                ('ds',(0,9),(),_T('LIST of DS records'),'','',(
+                    ('key_tag',(1,1),(),_T('Key tag'),'1','',()),
+                    ('alg',(1,1),(),_T('Algorithm'),'1','',()),
+                    ('digest_type',(1,1),(),_T('Digest Type'),'1','',()),
+                    ('digest',(1,1),(),_T('Digest'),'499602d2','',()),
+                    ('max_sig_life',(0,1),(),_T('Max.Sig.Life'),'1','',()),
+                )),
+                ('tech',(0,UNBOUNDED),(),_T('Technical contact ID'),'CID:ID01','',()),
+            )),
+            ('rem',(0,1),(),_T('Remove values'),'','',(
+                ('ds',(0,9),(),_T('LIST of DS records'),'','',(
+                    ('key_tag',(1,1),(),_T('Key tag'),'1','',()),
+                    ('alg',(1,1),(),_T('Algorithm'),'1','',()),
+                    ('digest_type',(1,1),(),_T('Digest Type'),'1','',()),
+                    ('digest',(1,1),(),_T('Digest'),'499602d2','',()),
+                    ('max_sig_life',(0,1),(),_T('Max.Sig.Life'),'1','',()),
+                )),
+                ('tech',(0,UNBOUNDED),(),_T('Technical contact ID'),'CID:ID01','',()),
+            )),
+            ('auth_info',(0,1),(),_T('Password required by server to authorize the transfer'),'new_password','',()),
+            ],_T("""The EPP 'update_keyset' command is used to update values in the KEYSET."""),(
+                "update_keyset keysid:k01 (((1 1 1 499602d2), (2 1 1 499602d2 1))) (((1 1 1 499602d2), (2 1 1 499602d2 1)) (cid:tech1, cid:tech2, cid:tech3)) password", 
             )),
         #----------------------------------------------------
         'sendauthinfo_contact': (1,[
@@ -358,6 +430,13 @@ when owner and new registrar needn't require previous registrar for password."""
 The EPP 'sendauthinfo_nsset' command transmit request for send password 
 to technical contact email. This command is usefull during transfer 
 when owner and new registrar needn't require previous registrar for password."""),('sendauthinfo_nsset nssid:id',)),
+        #----------------------------------------------------
+        'sendauthinfo_keyset': (1,[
+            ('id',(1,1),(),_T('KEYSET ID'),'KEYSID:MYID','',()),
+            ],_T("""
+The EPP 'sendauthinfo_keyset' command transmit request for send password 
+to technical contact email. This command is usefull during transfer 
+when owner and new registrar needn't require previous registrar for password."""),('sendauthinfo_keyset keysid:id',)),
         #----------------------------------------------------
         'credit_info': (0,[],_T("""The EPP 'credit_info' command returns credit information."""),('credit_info',)),
         #----------------------------------------------------
@@ -396,6 +475,13 @@ of nssets and set pointer at the beginning of the list. The list
 is taken in sequence by calling command 'get_results' repeatedly 
 until any data comming.
 """),('prep_nssets',)),
+        #----------------------------------------------------
+        'prep_keysets': (0,[],_T("""
+Prepare list of the KEYSETs. This command fills server buffer by list 
+of keysets and set pointer at the beginning of the list. The list 
+is taken in sequence by calling command 'get_results' repeatedly 
+until any data comming.
+"""),('prep_nssets',)),
 
         #----------------------------------------------------
         'get_results': (0,[],_T("""
@@ -421,6 +507,11 @@ of get_results commands until whole list of domain names not received.
 Returns list of nssets using command nssets_by_all and runs a loop 
 of get_results commands until whole list of nssets not received.
 """),('list_nssets',)),
+
+        'list_keysets': (0,[],_T("""
+Returns list of keysets using command nssets_by_all and runs a loop 
+of get_results commands until whole list of keysets not received.
+"""),('list_keysets',)),
         #----------------------------------------------------
 
         'prep_domains_by_nsset': (1,[
@@ -431,6 +522,15 @@ of domains connected with defined nsset ID. The pointer is set
 at the beginning of the list. The list is taken in sequence 
 by calling command 'get_results' repeatedly until any data comming.
 """),('prep_domains_by_nsset NSSID:VALID',)),
+        #----------------------------------------------------
+        'prep_domains_by_keyset': (1,[
+            ('id',(1,1),(),_T('KEYSET ID'),'KEYSID:VALID','',()),
+        ],_T("""
+Prepare domains by KEYSET. This command fills server buffer by list 
+of domains connected with defined keyset ID. The pointer is set 
+at the beginning of the list. The list is taken in sequence 
+by calling command 'get_results' repeatedly until any data comming.
+"""),('prep_domains_by_keyset KEYSID:VALID',)),
         #----------------------------------------------------
 
         'prep_domains_by_contact': (1,[
@@ -452,6 +552,15 @@ of nssets connected with defined technical contact ID. The pointer
 is set at the beginning of the list. The list is taken in sequence 
 by calling command 'get_results' repeatedly until any data comming.
 """),('prep_nssets_by_contact CID:ADMIN',)),
+
+        'prep_keysets_by_contact': (1,[
+            ('id',(1,1),(),_T('Technical contact'),'CID:ADMIN','',()),
+        ],_T("""
+Prepare KEYSETs by contact. This command fills server buffer by list 
+of keysets connected with defined technical contact ID. The pointer 
+is set at the beginning of the list. The list is taken in sequence 
+by calling command 'get_results' repeatedly until any data comming.
+"""),('prep_keysets_by_contact CID:ADMIN',)),
         #----------------------------------------------------
 
         'prep_nssets_by_ns': (1,[
@@ -462,6 +571,7 @@ connected with defined name server. The pointer is set at the beginning
 of the list. The list is taken in sequence by calling command 'get_results'
 repeatedly until any data comming.
 """),('prep_nssets_by_ns mydomain.cz',)),
+
         #----------------------------------------------------
         
     }
@@ -524,6 +634,7 @@ def make_sort_by_names():
          ('exDate',      1,  _T('Expiration date')),
          ('valExDate',   1,  _T('Validation expires at')), # vadit to date
          ('nsset',       1,  _T('NSSET ID')),
+         ('keyset',      1,  _T('KEYSET ID')),
          ('authInfo',    1,  _T('Password for transfer')),
          ('status.s',    1,  _T('Status')),
          ('status',      1,  _T('Status message')),
@@ -549,6 +660,23 @@ def make_sort_by_names():
          ('reportlevel', 1,  _T('Report level')),
          )),
 
+       'keyset:info': ('keyset',(
+         ('id',          1,  _T('KEYSET ID')),
+         ('roid',        1,  _T('Repository object ID')),
+         ('crID',        1,  _T("Created by")),
+         ('clID',        1,  _T("Designated registrar")),
+         ('upID',        1,  _T("Updated by")),
+         ('crDate',      1,  _T('Created on')),
+         ('trDate',      1,  _T('Last transfer on')),
+         ('upDate',      1,  _T('Last updated on')),
+         ('authInfo',    1,  _T('Password for transfer')),
+         ('status.s',    1,  _T('Status')),
+         ('status',      1,  _T('Status message')),
+         ('tech',        1,  _T('Technical contact')),
+         ('ds',          1,  _T('DS records')),
+         ('reportlevel', 1,  _T('Report level')),
+         )),
+         
        'contact:create': ('contact',(
          ('id',          1,  _T('Contact ID')),
          ('crDate',      1,  _T('Created on')),
@@ -559,6 +687,11 @@ def make_sort_by_names():
          ('crDate',      1,  _T('Created on')),
          )),
 
+       'keyset:create': ('keyset',(
+         ('id',          1,  _T('KEYSET ID')),
+         ('crDate',      1,  _T('Created on')),
+         )),
+         
        'domain:create': ('domain',(
          ('name',        1,  _T('Domain name')),
          ('crDate',      1,  _T('Created on')),
@@ -600,6 +733,10 @@ def make_sort_by_names():
          ('count',       1,  _T('Number of records')),
          ('notify',      2,  _T('Notify')),
          )),
+       'fred:listkeysets': ('',(
+         ('count',       1,  _T('Number of records')),
+         ('notify',      2,  _T('Notify')),
+         )),
        'fred:listdomains': ('',(
          ('count',       1,  _T('Number of records')),
          ('notify',      2,  _T('Notify')),
@@ -633,6 +770,11 @@ def make_sort_by_names():
     # append similar objects
     sort_by_names['contact:list']   = sort_by_names['domain:list']
     sort_by_names['nsset:list']     = sort_by_names['domain:list']
+    sort_by_names['keyset:list']    = sort_by_names['domain:list']
+    sort_by_names['fred:domainsbykeyset']  = sort_by_names['fred:domainsbynsset']
+    sort_by_names['fred:keysetsbycontact'] = sort_by_names['fred:nssetsbycontact']
+    sort_by_names['fred:keysetsbyns']      = sort_by_names['fred:nssetsbyns']
+    
     return sort_by_names
     
 class Message(eppdoc_assemble.Message):

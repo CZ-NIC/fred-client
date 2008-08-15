@@ -286,36 +286,56 @@ class ManagerReceiver(ManagerCommand):
             self.__append_note_from_dct__(domain_infData,
                 ('domain:name','domain:roid','domain:status s','domain:status',
                  'domain:registrant','domain:admin','domain:tempcontact',
-                 'domain:contact','domain:contact type','domain:nsset',
+                 'domain:contact','domain:contact type','domain:nsset','domain:keyset',
                  'domain:crID','domain:clID','domain:upID',
                  'domain:crDate','domain:trDate','domain:upDate','domain:exDate','domain:authInfo'))
             valExDate = eppdoc.get_dct_value(self._dict_answer['response'], ('extension','enumval:infData','enumval:valExDate'))
             if valExDate:
                 self._dct_answer['data']['domain:valExDate'] = valExDate
             
-    def answer_response_nsset_info(self, data):
-        "data=(response,result,code,msg)"
-        if self.__code_isnot_1000__(data, 'info:nsset'): return
+    def answer_response_anyset_info(self, prefix, data):
+        "prefix=namespace data=(response,result,code,msg)"
+        if self.__code_isnot_1000__(data, 'info:%s'%prefix): return
         try:
             resData = self._dict_answer['response']['resData']
-            nsset_infData = resData['nsset:infData']
+            nsset_infData = resData['%s:infData'%prefix]
         except KeyError, msg:
-            self.append_error('answer_response_nsset_info KeyError: %s'%msg)
+            self.append_error('answer_response_%s_info KeyError: %s'%(prefix, msg))
         else:
-            self.__append_note_from_dct__(nsset_infData,('nsset:id','nsset:roid',
-                'nsset:clID','nsset:crID','nsset:trID','nsset:upID',
-                'nsset:crDate','nsset:trDate','nsset:upDate','nsset:authInfo','nsset:tech',
-                'nsset:status s','nsset:status','nsset:reportlevel'))
-            if nsset_infData.has_key('nsset:ns'):
-                nsset_ns = nsset_infData['nsset:ns']
+            self.__append_note_from_dct__(nsset_infData, map(lambda n: '%s:%s'%(prefix, n),
+                ('id','roid',
+                'clID','crID','trID','upID',
+                'crDate','trDate','upDate','authInfo','tech',
+                'status s','status','reportlevel')))
+            if nsset_infData.has_key('%s:ns'%prefix):
+                nsset_ns = nsset_infData['%s:ns'%prefix]
                 dns = []
                 if not type(nsset_ns) == list: nsset_ns = (nsset_ns,)
-                for ns in nsset_ns:
-                    name = eppdoc.get_dct_value(ns, 'nsset:name')
-                    addr = eppdoc.get_dct_value(ns, 'nsset:addr').split('\n')
+                for row in nsset_ns:
+                    name = eppdoc.get_dct_value(row, '%s:name'%prefix)
+                    addr = eppdoc.get_dct_value(row, '%s:addr'%prefix).split('\n')
                     dns.append([name,addr])
-                self._dct_answer['data']['nsset:ns'] = dns
+                self._dct_answer['data']['%s:ns'%prefix] = dns
+            if nsset_infData.has_key('%s:ds'%prefix):
+                nsset_ns = nsset_infData['%s:ds'%prefix]
+                dns = []
+                if not type(nsset_ns) == list: nsset_ns = (nsset_ns,)
+                for row in nsset_ns:
+                    items = []
+                    for key in ['keyTag', 'alg', 'digestType', 'digest', 'maxSigLife']:
+                        value = eppdoc.get_dct_value(row, '%s:%s'%(prefix, key))
+                        if value:
+                            items.append(value)
+                    if items:
+                        dns.append(items)
+                self._dct_answer['data']['%s:ds'%prefix] = dns
 
+
+    def answer_response_nsset_info(self, data):
+        self.answer_response_anyset_info('nsset', data)
+
+    def answer_response_keyset_info(self, data):
+        self.answer_response_anyset_info('keyset', data)
 
     #-------------------------------------
     # *** check ***
@@ -375,6 +395,10 @@ class ManagerReceiver(ManagerCommand):
         "data=(response,result,code,msg)"
         self.__answer_response_check__(data, ('nsset','id'))
 
+    def answer_response_keyset_check(self, data):
+        "data=(response,result,code,msg)"
+        self.__answer_response_check__(data, ('keyset','id'))
+        
     def answer_response_poll(self, data):
         "data=(response,result,code,msg)"
         label='poll'
@@ -436,6 +460,9 @@ class ManagerReceiver(ManagerCommand):
     def answer_response_nsset_create(self, data):
         self.__response_create__(data, ('nsset','create','creData'), ('id','crDate'))
 
+    def answer_response_keyset_create(self, data):
+        self.__response_create__(data, ('keyset','create','creData'), ('id','crDate'))
+        
     def answer_response_domain_renew(self, data):
         self.__response_create__(data, ('domain','renew','renData'), ('name','exDate'))
 
@@ -458,6 +485,9 @@ class ManagerReceiver(ManagerCommand):
     def answer_response_nsset_list(self, data):
         "data=(response,result,code,msg)"
         self.__answer_response_list__(data, ('nsset','id'))
+    def answer_response_keyset_list(self, data):
+        "data=(response,result,code,msg)"
+        self.__answer_response_list__(data, ('keyset','id'))
     def answer_response_domain_list(self, data):
         "data=(response,result,code,msg)"
         self.__answer_response_list__(data, ('domain','name'))
@@ -558,6 +588,13 @@ Call get_results command for gain data."""))
 The list of the nssets is ready on the server buffer 
 and pointer is set at the beginning of the list.
 Call get_results command for gain data."""))
+
+    def answer_response_fred_listkeysets(self, data):
+        'Handler for fred:listkeysets command'
+        self.__fred_listobjects__(data, 'fred:listkeysets', _T("""
+The list of the keysets is ready on the server buffer 
+and pointer is set at the beginning of the list.
+Call get_results command for gain data."""))
     
     def answer_response_fred_listdomains(self, data):
         'Handler for fred:listdomains command'
@@ -607,9 +644,21 @@ Call get_results command for gain data."""))
 and pointer is set at the beginning of the list.
 Call get_results command for gain data."""))
 
+    def answer_response_fred_keysetsbycontact(self, data):
+        'Handler for fred:keysetsbycontact command'
+        self.__fred_listobjects__(data, 'fred:keysetsbycontact', _T("""The list of the keysets is ready on the server buffer 
+and pointer is set at the beginning of the list.
+Call get_results command for gain data."""))
+
     def answer_response_fred_nssetsbyns(self, data):
         'Handler for fred:nssetsbyns command'
         self.__fred_listobjects__(data, 'fred:nssetsbyns', _T("""The list of the nssets is ready on the server buffer 
+and pointer is set at the beginning of the list.
+Call get_results command for gain data."""))
+
+    def answer_response_fred_keysetsbyns(self, data):
+        'Handler for fred:keysetsbyns command'
+        self.__fred_listobjects__(data, 'fred:keysetsbyns', _T("""The list of the keysets is ready on the server buffer 
 and pointer is set at the beginning of the list.
 Call get_results command for gain data."""))
         
@@ -709,11 +758,11 @@ def adjust_dct_keys(dct, names):
         else:
             dct[name] = ()
 
-def test(name_amd_xml):
+def test(name_and_xml):
     m = ManagerReceiver()
     #m._session[VERBOSE] = 2
-    m._command_sent = name_amd_xml[0]
-    m.process_answer(name_amd_xml[1])
+    m._command_sent = name_and_xml[0]
+    m.process_answer(name_and_xml[1])
     m.display()
     m.print_answer()
 #    m.__put_raw_into_note__(m._dict_answer)
