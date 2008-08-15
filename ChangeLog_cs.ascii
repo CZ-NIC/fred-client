@@ -1,3 +1,9 @@
+FredClient 2.0.0
+
+Nove funkce:
+    * Pridany funkce manipulujici s objektem KeySet
+    * Upraveny funkce na manipulaci s domenou umoznujici pripojit KeySet  
+
 FredClient 1.5.4
 
 Nove funkce:
