@@ -104,14 +104,16 @@ class EPPClientInstall(install):
             if not os.path.exists('build'):
                 os.makedirs('build')
             values = []
-            values.append(('FRED_CLIENT_SSL_PATH', root + os.path.join(
-                self.datarootdir, 
-                self.distribution.metadata.name, 
-                DEFAULT_SSL_PATH)))
-            values.append(('FRED_CLIENT_SCHEMAS_FILEMANE', root + os.path.join(
-                self.datarootdir, 
-                self.distribution.metadata.name, 
-                DEFAULT_SCHEMAS_FILEMANE)))
+            values.append(('FRED_CLIENT_SSL_PATH',
+                os.path.join(
+                    self.getDir_std('appdir'),
+                    DEFAULT_SSL_PATH))
+                )
+            values.append(('FRED_CLIENT_SCHEMAS_FILEMANE',
+                os.path.join(
+                    self.getDir_std('appdir'),
+                    DEFAULT_SCHEMAS_FILEMANE))
+                )
             values.append(('FRED_CLIENT_HOST', self.host))
             values.append(('FRED_CLIENT_PORT', self.port))
             self.replace_pattern(
@@ -123,7 +125,7 @@ class EPPClientInstall(install):
     def update_unittest_file(self, filename):
         values = []
         values.append((r'(sys\.path\.insert\(0,\ )\'[\w/_ \-\.]*\'\)', r"\1'%s')" %
-            self.getDir('purelibdir')))
+            self.getDir_std('purelibdir')))
         self.replace_pattern(os.path.join('build', 'unittest', filename), None, values)
         print "%s file has been updated" % filename
 
@@ -151,14 +153,14 @@ class EPPClientInstall_scripts(install_scripts):
 
     def update_fred_client(self):
         values = [((r"(sys\.path\.insert\(0, )\'\'\)",
-            r"\1'%s')" % self.getDir('purelibdir')))]
+            r"\1'%s')" % self.getDir_std('purelibdir')))]
         self.replace_pattern(os.path.join(self.build_dir, 'fred-client'),
                 None, values)
         print "fred-client file has been updated"
 
     def update_fred_client_qt4(self):
         values = [((r"(sys\.path\.insert\(0, )\'\'\)",
-            r"\1'%s')" % self.getDir('purelibdir')))]
+            r"\1'%s')" % self.getDir_std('purelibdir')))]
         self.replace_pattern(os.path.join(self.build_dir, 'fred-client-qt4.pyw'),
                 None, values)
         print "fred-client-qt4.pyw file has been updated"
@@ -174,7 +176,7 @@ class Install_lib(install_lib):
         values = [((
             r"(glob_conf = )\'\'",
             r"\1'%s'" % os.path.join(
-                self.getDir('sysconfdir'), 'fred', config_name)))]
+                self.getDir_std('sysconfdir'), 'fred', config_name)))]
         self.replace_pattern(filename, None, values)
         print "session_config.py file has been updated"
 
@@ -183,7 +185,7 @@ class Install_lib(install_lib):
         values = [((
             r"(self\._config_name = )\'\'",
             r"\1'%s'" % os.path.join(
-                self.getDir('sysconfdir'), 'fred', config_name)))]
+                self.getDir_std('sysconfdir'), 'fred', config_name)))]
         self.replace_pattern(filename, None, values)
         print "session_base.py file has been updated"
 
@@ -249,11 +251,7 @@ def main(directory):
         log.error("Error: %s", e)
         return False
 if __name__ == '__main__':
-    dir = ''
-    if 'bdist' in sys.argv:
-        dir = ''
-    else:
-        dir = os.path.dirname(sys.argv[0])
-    g_directory = dir
-    if main(dir):
+    g_directory = os.path.dirname(sys.argv[0])
+    print g_directory
+    if main(g_directory):
         print "All done!"
