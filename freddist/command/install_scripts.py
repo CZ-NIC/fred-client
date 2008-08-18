@@ -65,6 +65,8 @@ class install_scripts(_install_scripts, install_parent):
         'template file for setup.cfg [setup.cfg.template]'))
     user_options.append(('setupcfg-output=', None,
         'output file with setup configuration [setup.cfg]'))
+    user_options.append(('replace-path-rel', None,
+        'When setup.py replace some path, replace it with relative path'))
 
     boolean_options.append('preservepath')
     boolean_options.append('no_record')
@@ -74,6 +76,7 @@ class install_scripts(_install_scripts, install_parent):
     boolean_options.append('no_update_setupcfg')
     boolean_options.append('no_gen_setupcfg')
     boolean_options.append('no_setupcfg')
+    boolean_options.append('replace_path_rel')
 
     def __init__(self, *attrs):
         _install_scripts.__init__(self, *attrs)
@@ -116,7 +119,8 @@ class install_scripts(_install_scripts, install_parent):
                     ('no_gen_setupcfg',     'no_gen_setupcfg'),
                     ('no_setupcfg',         'no_setupcfg'),
                     ('setupcfg_template',   'setupcfg_template'),
-                    ('setupcfg_output',     'setupcfg_output'))
+                    ('setupcfg_output',     'setupcfg_output'),
+                    ('replace_path_rel',    'replace_path_rel'))
         else:
             install_parent.finalize_options(self)
         if not self.record and not self.no_record:

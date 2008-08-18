@@ -61,6 +61,8 @@ class install_parent(Command):
         'template file for setup.cfg [setup.cfg.template]'))
     user_options.append(('setupcfg-output=', None,
         'output file with setup configuration [setup.cfg]'))
+    user_options.append(('replace-path-rel', None,
+        'When setup.py replace some path, replace it with relative path'))
 
     boolean_options.append('preservepath')
     boolean_options.append('no_record')
@@ -70,10 +72,11 @@ class install_parent(Command):
     boolean_options.append('no_update_setupcfg')
     boolean_options.append('no_gen_setupcfg')
     boolean_options.append('no_setupcfg')
+    boolean_options.append('replace_path_rel')
 
     dirs = ['prefix', 'bindir', 'sbindir', 'sysconfdir', 'libexecdir',
             'localstatedir', 'libdir', 'pythondir', 'purelibdir', 'datarootdir',
-            'datadir', 'infodir', 'mandir', 'docdir', 'localedir']
+            'datadir', 'infodir', 'mandir', 'docdir', 'localedir', 'appdir']
     # dirs = ['prefix', 'libexecdir', 'localstatedir', 'libdir', 'datarootdir',
             # 'datadir', 'infodir', 'mandir', 'docdir', 'bindir', 'sbindir',
             # 'localedir', 'pythondir', 'purelibdir']
@@ -108,6 +111,7 @@ class install_parent(Command):
         self.purelibdir     = None
         self.datarootdir    = None
         self.datadir        = None
+        self.appdir         = None
         self.infodir        = None
         self.mandir         = None
         self.docdir         = None
@@ -124,6 +128,7 @@ class install_parent(Command):
         self.no_setupcfg        = None
         self.setupcfg_template  = None
         self.setupcfg_output    = None
+        self.replace_path_rel   = None
 
     def finalize_options(self):
         self.srcdir = self.distribution.srcdir
@@ -151,6 +156,8 @@ class install_parent(Command):
             self.datarootdir = os.path.join(self.prefix, 'share')
         if not self.datadir:
             self.datadir = self.datarootdir
+        if not self.appdir:
+            self.appdir = os.path.join(self.datadir, self.distribution.metadata.name)
         if not self.infodir:
             self.infodir = os.path.join(self.datarootdir, 'info')
         if not self.mandir:
@@ -190,6 +197,8 @@ class install_parent(Command):
             self.datarootdir = os.path.join(self.prefix, 'share')
         if not self.datadir:
             self.datadir = self.datarootdir
+        if not self.appdir:
+            self.appdir = os.path.join(self.datadir, self.distribution.metadata.name)
         if not self.infodir:
             self.infodir = os.path.join(self.datarootdir, 'info')
         if not self.mandir:
@@ -199,8 +208,6 @@ class install_parent(Command):
                     self.datarootdir, 'doc', self.distribution.metadata.name)
         if not self.localedir:
             self.localedir = os.path.join(self.datarootdir, 'locale')
-
-
 
     def replace_pattern(self, fileOpen, fileSave=None, values = []):
         """
@@ -253,6 +260,29 @@ class install_parent(Command):
             return os.path.join(self.root, dir.lstrip(os.path.sep))
         else:
             return dir
+
+    def getDir_noprefix(self, directory):
+        """
+        Another ``getDir'' variant. This one return directory without prefix
+        part, as well as without optional root part.
+        """
+        try:
+            dir = getattr(self, directory.lower())
+        except AttributeError:
+            return ''
+        return dir.replace(os.path.commonprefix(
+            [self.prefix, dir]), '').strip(os.path.sep)
+
+    def getDir_std(self, directory):
+        """
+        This version of ``getDir'' is affected by value of ``replace_path_rel''
+        variable. So it can return result from standard getDir (i.e with prefix
+        and maybe with root) or result from ``getDir_noprefix'' (without prefix).
+        """
+        if self.replace_path_rel:
+            return self.getDir_noprefix(directory)
+        else:
+            return self.getDir(directory)
 
     def normalize_record(self):
         """

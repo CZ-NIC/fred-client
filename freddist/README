@@ -30,6 +30,9 @@ Differences and changes:
    build and install phase (which bdist command invoke). These options are
    `--build-extra-opts' and `--install-extra-opts'.
 
+ - Entirely new option ``bdist_simple'' which creates archive file with ready
+   to use module (no need to install, unpackage is sufficient to use & run).
+
 Known bugs:
 
  - bdist command not work at all. To build rpm package is better to use

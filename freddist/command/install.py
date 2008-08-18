@@ -71,6 +71,8 @@ class install(_install, install_parent):
         'template file for setup.cfg [setup.cfg.template]'))
     user_options.append(('setupcfg-output=', None,
         'output file with setup configuration [setup.cfg]'))
+    user_options.append(('replace-path-rel', None,
+        'When setup.py replace some path, replace it with relative path'))
 
     boolean_options.append('preservepath')
     boolean_options.append('no_record')
@@ -80,6 +82,7 @@ class install(_install, install_parent):
     boolean_options.append('no_update_setupcfg')
     boolean_options.append('no_gen_setupcfg')
     boolean_options.append('no_setupcfg')
+    boolean_options.append('replace_path_rel')
 
     def __init__(self, *attrs):
         _install.__init__(self, *attrs)

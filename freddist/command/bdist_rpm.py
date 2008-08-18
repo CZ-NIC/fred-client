@@ -68,6 +68,12 @@ class bdist_rpm(_bdist_rpm):
     
     boolean_options.append('dontpreservepath')
     boolean_options.append('no_join_opts')
+    boolean_options.append('fgen_setupcfg')
+    boolean_options.append('no_update_setupcfg')
+    boolean_options.append('no_gen_setupcfg')
+    boolean_options.append('no_setupcfg')
+    boolean_options.append('setupcfg_template')
+    boolean_options.append('setupcfg_output')
 
     def initialize_options(self):
         self.build_extra_opts = None
@@ -95,7 +101,16 @@ class bdist_rpm(_bdist_rpm):
         self.set_undefined_options('bdist',
                 ('dontpreservepath', 'dontpreservepath'),
                 ('build_extra_opts', 'build_extra_opts'),
-                ('install_extra_opts', 'install_extra_opts'))
+                ('install_extra_opts', 'install_extra_opts'),
+                ('no_join_opts', 'no_join_opts'),
+                ('fgen_setupcfg', 'fgen_setupcfg'),
+                ('no_update_setupcfg', 'no_update_setupcfg'),
+                ('no_gen_setupcfg', 'no_gen_setupcfg'),
+                ('no_setupcfg', 'no_setupcfg'),
+                ('setupcfg_template', 'setupcfg_template'),
+                ('setupcfg_output', 'setupcfg_output')
+                )
+
         self.srcdir = self.distribution.srcdir
         
         self.set_undefined_options('bdist', ('bdist_base', 'bdist_base'))
@@ -147,7 +162,6 @@ class bdist_rpm(_bdist_rpm):
         self.finalize_package_data()
 
     def run(self):
-        #exit()
         _bdist_rpm.run(self)
 
     def _dist_path(self, path):
@@ -256,6 +270,8 @@ class bdist_rpm(_bdist_rpm):
         if self.build_extra_opts:
             def_build = def_build + ' ' + self.build_extra_opts.strip()
 
+        # install_extra_opts in bdist_rpm MUST contain ``--preservepath'' option
+        # (when installing whole module into some temp location)
         if self.install_extra_opts.find('preservepath') == -1:
             self.install_extra_opts = self.install_extra_opts + ' --preservepath'
 

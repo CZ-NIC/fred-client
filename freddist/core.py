@@ -110,6 +110,7 @@ def setup(**attrs):
     # Find and parse the config file(s): they will override options from
     # the setup script, but be overridden by the command line.
     if not no_setupcfg:
+        print "parse setup file"
         if setupcfg_output == 'setup.cfg':
             dist.parse_config_files()
         else:
