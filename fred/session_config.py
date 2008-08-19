@@ -46,7 +46,7 @@ def get_etc_config_name(name=''):
     'Returns shared folder depends on OS type.'
     if os.name == 'posix':
         # this line will be changed during setup process
-        glob_conf = ''
+        glob_conf = 'conf/fred-client.conf'
         if glob_conf == '':
             glob_conf = os.path.join('/etc/fred', name)
     else:

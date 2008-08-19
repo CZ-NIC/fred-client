@@ -152,14 +152,14 @@ class EPPClientInstall(install):
 class EPPClientInstall_scripts(install_scripts):
 
     def update_fred_client(self):
-        values = [((r"(sys\.path\.insert\(0, )\'\'\)",
+        values = [((r"(sys\.path\.insert\(0, )\'[\w/_ \-\.]*\'\)",
             r"\1'%s')" % self.getDir_std('purelibdir')))]
         self.replace_pattern(os.path.join(self.build_dir, 'fred-client'),
                 None, values)
         print "fred-client file has been updated"
 
     def update_fred_client_qt4(self):
-        values = [((r"(sys\.path\.insert\(0, )\'\'\)",
+        values = [((r"(sys\.path\.insert\(0, )\'[\w/_ \-\.]*\'\)",
             r"\1'%s')" % self.getDir_std('purelibdir')))]
         self.replace_pattern(os.path.join(self.build_dir, 'fred-client-qt4.pyw'),
                 None, values)
@@ -174,24 +174,14 @@ class Install_lib(install_lib):
     def update_session_config(self):
         filename = os.path.join(self.build_dir, 'fred', 'session_config.py')
         values = [((
-            r"(glob_conf = )\'\'",
+            r"(glob_conf = )\'[\w/_ \-\.]*\'",
             r"\1'%s'" % os.path.join(
                 self.getDir_std('sysconfdir'), 'fred', config_name)))]
         self.replace_pattern(filename, None, values)
         print "session_config.py file has been updated"
 
-    def update_session_base(self):
-        filename = os.path.join(self.build_dir, 'fred', 'session_base.py')
-        values = [((
-            r"(self\._config_name = )\'\'",
-            r"\1'%s'" % os.path.join(
-                self.getDir_std('sysconfdir'), 'fred', config_name)))]
-        self.replace_pattern(filename, None, values)
-        print "session_base.py file has been updated"
-
     def run(self):
         self.update_session_config()
-        self.update_session_base()
         install_lib.run(self)
 
 class Install_data(install_data):

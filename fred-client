@@ -32,11 +32,17 @@ For console mode is used module fred.console.
 For batch mode is used modules fred.creator and fred.sender.
 For GUI moduel is used module guiqt.
 """
-import sys
+import sys, os
+
+old_cwd = os.getcwd()
+try:
+    os.chdir(os.path.dirname(sys.argv[0]))
+except OSError:
+    pass
 
 # setup.py will change this path to reflect changes in prefix
 # and/or root option during install
-sys.path.insert(0, '')
+sys.path.insert(0, '.')
 
 import fred
 from fred.translate import options, option_errors
@@ -69,4 +75,5 @@ if __name__ == '__main__':
                 main([],options['lang'])
             else:
                 fred.console.main(options)
+    os.chdir(old_cwd)
 
