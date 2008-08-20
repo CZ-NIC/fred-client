@@ -54,7 +54,8 @@ class ManagerBase:
     """This class holds buffers with error and note messages.
     Class collects messages and prepares them for output.
     """
-    def __init__(self):
+    def __init__(self, cwd=None):
+        self._cwd = cwd
         self._notes = [] # notes or warnings, it are show first, before errors
         self._errors = [] # error messages
         self._notes_afrer_errors = [] # notes witch must be displayed after error messages
@@ -103,6 +104,9 @@ class ManagerBase:
         self.run_as_unittest = 0 # it can set variables for unittest: validate server answer
         self._loop_status = LOOP_NONE # indicator of the loop list commands
         self._is_history = 1 # switch for activate/deactivate message history
+
+    def get_cwd(self):
+        return self._cwd
 
     def get_session(self, offset):
         return self._session[offset]
@@ -506,6 +510,9 @@ $fred_client_errors = array(); // errors occuring during communication
 
     def load_config(self, options=None):
         "Load config file and init internal variables. Returns 0 if fatal error occured."
+        oldcwd = os.getcwd()
+        if self.get_cwd():
+            os.chdir(self.get_cwd())
         # 1. first load values from config
         # 2. overwrite them by options from command line
         #
@@ -519,7 +526,8 @@ $fred_client_errors = array(); // errors occuring during communication
             self._is_history = 0
             
         # Load configuration file:
-        self._conf, self._config_used_files, config_errors, self._message_missing_config = session_config.main(self._config_name, self._options, self._session[VERBOSE], OMIT_ERROR)
+        self._conf, self._config_used_files, config_errors, self._message_missing_config =\
+                session_config.main(self._config_name, self._options, self._session[VERBOSE], OMIT_ERROR)
         # language from environment and configuration file:
         if len(self._options.get('lang','')): self._session[LANG] = self._options['lang']
         # overwrite config by option from command line:
@@ -531,6 +539,7 @@ $fred_client_errors = array(); // errors occuring during communication
             self.append_note('%s %s'%(_T('Using configuration from'), ', '.join(self._config_used_files)))
         if len(config_errors):
             self._errors.extend(config_errors)
+            os.chdir(oldcwd)
             return 0 # Errors occured during parsing config. Error of missing file not included!
         self._session[SESSION] = self._options.get('session','') # API definition of --session parameter.
         # set session variables
@@ -539,9 +548,11 @@ $fred_client_errors = array(); // errors occuring during communication
             if not self.__create_default_conf__():
                 self.append_error(_T('Fatal error: Default config create failed.'))
                 self.display() # display errors or notes
+                os.chdir(oldcwd)
                 return 0 # fatal error
             if self._options['session'] != '':
                 self.append_error(_T('Session "%s" without effect. No configuration file.')%self._options['session'])
+                os.chdir(oldcwd)
                 return 0
         # for login with no parameters
         section_connect = self.config_get_section_connect()
@@ -550,6 +561,7 @@ $fred_client_errors = array(); // errors occuring during communication
             partname = section_connect[8:]
             if partname == '': partname = section_connect
             self.append_error(_T('Configuration file has no section "%s".')%partname)
+            os.chdir(oldcwd)
             return 0 # fatal error
         # session
         section = 'session'
@@ -586,6 +598,7 @@ $fred_client_errors = array(); // errors occuring during communication
         if reconnect == 'no':
             self._session[RECONNECT] = None
         
+        os.chdir(oldcwd)
         return 1 # OK
 
     def parse_verbose_value(self, verbose):
@@ -659,6 +672,8 @@ $fred_client_errors = array(); // errors occuring during communication
         if not schema_path:
             # if schema is not defined for server get share default
             schema_path = self.get_config_value('session','schema')
+        if not os.path.isabs(schema_path) and self.get_cwd():
+            return os.path.normpath(os.path.join(self.get_cwd(), schema_path))
         return schema_path
     
     def is_epp_valid(self, message, note=''):

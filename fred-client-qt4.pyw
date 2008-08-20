@@ -69,6 +69,6 @@ if __name__ == '__main__':
         if option_errors:
             print option_errors
         else:
-            main([], options['lang'])
+            main([], options['lang'], os.getcwd())
 
     os.chdir(old_cwd)

@@ -21,6 +21,7 @@ It is used by session manager in session_base.py.
 """
 import os, sys, re
 import ConfigParser
+import pdb
 from translate import get_valid_lang
 
 def load_config_from_file(filename, verbose):
@@ -48,7 +49,7 @@ def get_etc_config_name(name=''):
         # this line will be changed during setup process
         glob_conf = 'conf/fred-client.conf'
         if glob_conf == '':
-            glob_conf = os.path.join('/etc/fred', name)
+            glob_conf = os.path.join('/etc/fred', name.strip('.'))
     else:
         # ALLUSERSPROFILE = C:\Documents and Settings\All Users
         glob_conf = os.path.join(os.path.expandvars('$ALLUSERSPROFILE'),name)

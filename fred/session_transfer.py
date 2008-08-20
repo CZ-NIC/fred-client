@@ -50,8 +50,9 @@ class ManagerTransfer(ManagerBase):
     Function process_answer() must be implemented by derived class.
     """
 
-    def __init__(self):
-        ManagerBase.__init__(self)
+    def __init__(self, cwd=None):
+        self._cwd = cwd
+        ManagerBase.__init__(self, cwd=self._cwd)
         self._epp_cmd = eppdoc_client.Message()
         self._epp_response = eppdoc_client.Message()
         self.defs[objURI] = self._epp_cmd.get_objURI()

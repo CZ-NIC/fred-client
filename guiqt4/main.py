@@ -158,7 +158,7 @@ class RedirectOutput:
 class FredMainWindow(QtGui.QDialog):
     'Main frame dialog.'
 
-    def __init__(self, app, epp_client, parent=None):
+    def __init__(self, app, epp_client, parent=None, cwd=None):
         QtGui.QWidget.__init__(self, parent)
         self._init_config = 1 # run only once
         self._app = app
@@ -166,6 +166,7 @@ class FredMainWindow(QtGui.QDialog):
         self.ui.setupUi(self)
         self.setFixedSize(694,656)
         self.epp = epp_client
+        self.oldcwd = cwd
         self.epp._epp._sep = '<br>\n' # separator for display lines in QtGui.QTextEdit as HTML
         self.missing_required = []
         self.src = {} # {'command_name':['command line','XML source','XML response'], ...}
@@ -238,8 +239,8 @@ class FredMainWindow(QtGui.QDialog):
         # Window handlers of the 'Send command' buttons:
         self._btn_send = [obj for name, obj in self.ui.__dict__.items() if re.match('send_',name)]
         # Redirect output and errors:
-        sys.stdout = RedirectOutput(self.ui.system_messages)
-        sys.stderr = RedirectOutput(None, self._thread_errors)
+        # sys.stdout = RedirectOutput(self.ui.system_messages)
+        # sys.stderr = RedirectOutput(None, self._thread_errors)
         # INIT
         self.load_config_and_autologin()
 
@@ -289,8 +290,18 @@ class FredMainWindow(QtGui.QDialog):
         username, password = self.epp._epp.get_actual_username_and_password()
         self.ui.connect_host.setText(data[0])
         self.ui.connect_port.setText(str(data[1]))
-        self.ui.connect_private_key.setText(data[2])
-        self.ui.connect_certificate.setText(data[3])
+
+        if not os.path.isabs(data[2]) and self.oldcwd:
+            self.ui.connect_private_key.setText(
+                    os.path.normpath(os.path.join(self.oldcwd, data[2])))
+        else:
+            self.ui.connect_private_key.setText(data[2])
+        if not os.path.isabs(data[3]) and self.oldcwd:
+            self.ui.connect_certificate.setText(
+                    os.path.normpath(os.path.join(self.oldcwd, data[3])))
+        else:
+            self.ui.connect_certificate.setText(data[3])
+
         self.ui.connect_timeout.setText(data[4])
         if username: self.ui.login_username.setText(username)
         if password: self.ui.login_password.setText(password)
@@ -1511,12 +1522,13 @@ def decamell(text):
     'Make camell type text to text with unit separator: nameType -> name_type'
     return re.sub('([A-Z])', '_\\1', text).lower()
     
-def main(argv, lang):
+def main(argv, lang, oldcwd):
+    epp = fred.Client(cwd=oldcwd)
+
     path = os.path.dirname(__file__)
     if path: os.chdir(path) # needs for correct load resources - images and translation
-    epp = fred.Client()
     app = QtGui.QApplication(sys.argv)
-    window = FredMainWindow(app, epp)
+    window = FredMainWindow(app, epp, cwd=oldcwd)
     window.show()
     sys.exit(app.exec_())
 

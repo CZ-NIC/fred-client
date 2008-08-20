@@ -37,6 +37,9 @@ class ManagerReceiver(ManagerCommand):
     """EPP client support.
     This class manage creations of the EPP documents.
     """
+    def __init__(self, cwd=None):
+        self._cwd = cwd
+        ManagerCommand.__init__(self, cwd=self._cwd)
 
     #==================================================
     #

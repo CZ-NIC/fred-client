@@ -56,8 +56,9 @@ class ManagerCommand(ManagerTransfer):
     This class manage creations of the EPP documents.
     """
 
-    def __init__(self):
-        ManagerTransfer.__init__(self)
+    def __init__(self, cwd=None):
+        self._cwd = cwd
+        ManagerTransfer.__init__(self, cwd=self._cwd)
         self.init_session_commands()
         # output
         #index = __find_index__(self._session_commands, 'output')

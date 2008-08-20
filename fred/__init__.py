@@ -107,13 +107,17 @@ class Client:
 
     Exception is raised if any error occurs.
     """
-    
-    def __init__(self):
-        self._epp = ManagerReceiver()
+    def __init__(self, cwd=None):
+        self._cwd = cwd
+        self._epp = ManagerReceiver(cwd=self._cwd)
+
+    def get_epp(self):
+        return self._epp
 
     def connect(self):
         'Connect to the server.'
         self._epp.connect()
+
     def close(self):
         'Close connection with server.'
         self._epp.close()
