@@ -158,7 +158,7 @@ class RedirectOutput:
 class FredMainWindow(QtGui.QDialog):
     'Main frame dialog.'
 
-    def __init__(self, app, epp_client, parent=None, cwd=None):
+    def __init__(self, app, epp_client, parent=None, cwd=None, opts=None):
         QtGui.QWidget.__init__(self, parent)
         self._init_config = 1 # run only once
         self._app = app
@@ -239,10 +239,10 @@ class FredMainWindow(QtGui.QDialog):
         # Window handlers of the 'Send command' buttons:
         self._btn_send = [obj for name, obj in self.ui.__dict__.items() if re.match('send_',name)]
         # Redirect output and errors:
-        # sys.stdout = RedirectOutput(self.ui.system_messages)
-        # sys.stderr = RedirectOutput(None, self._thread_errors)
+        sys.stdout = RedirectOutput(self.ui.system_messages)
+        sys.stderr = RedirectOutput(None, self._thread_errors)
         # INIT
-        self.load_config_and_autologin()
+        self.load_config_and_autologin(options=opts)
 
     def __init_combo__(self, hwnd_combo_box, keys):
         'Init names into combo box'
@@ -270,7 +270,7 @@ class FredMainWindow(QtGui.QDialog):
         msg = [get_unicode(ttytag2html(text)) for text in messages]
         self.ui.system_messages.insertHtml(u'<br>\n'.join(msg))
 
-    def load_config_and_autologin(self):
+    def load_config_and_autologin(self, options=None):
         'load data for connection'
         msg = []
         msg.append(self.epp._epp.version())
@@ -282,7 +282,12 @@ class FredMainWindow(QtGui.QDialog):
             msg.extend(self.epp._epp._notes_afrer_errors)
             self.append_system_messages(msg)
             return
-        self.epp._epp.join_missing_config_messages(2) # 2 - verbose
+        
+        # when you uncomment this line(*), then gui-client will not be able to
+        # perform autologin - if you don't believe, just try it ;)
+        # it complain about missing configuration file
+        #self.epp._epp.join_missing_config_messages(2) # 2 - verbose # * this line
+
         # Set translation defined in config file or command line option.
         self.__set_translation__(self.epp._epp.get_language())
         if fred.translate.warning: msg.append(fred.translate.warning)
@@ -291,16 +296,8 @@ class FredMainWindow(QtGui.QDialog):
         self.ui.connect_host.setText(data[0])
         self.ui.connect_port.setText(str(data[1]))
 
-        if not os.path.isabs(data[2]) and self.oldcwd:
-            self.ui.connect_private_key.setText(
-                    os.path.normpath(os.path.join(self.oldcwd, data[2])))
-        else:
-            self.ui.connect_private_key.setText(data[2])
-        if not os.path.isabs(data[3]) and self.oldcwd:
-            self.ui.connect_certificate.setText(
-                    os.path.normpath(os.path.join(self.oldcwd, data[3])))
-        else:
-            self.ui.connect_certificate.setText(data[3])
+        self.ui.connect_private_key.setText(data[2])
+        self.ui.connect_certificate.setText(data[3])
 
         self.ui.connect_timeout.setText(data[4])
         if username: self.ui.login_username.setText(username)
@@ -1522,13 +1519,13 @@ def decamell(text):
     'Make camell type text to text with unit separator: nameType -> name_type'
     return re.sub('([A-Z])', '_\\1', text).lower()
     
-def main(argv, lang, oldcwd):
+def main(argv, lang, oldcwd, options):
     epp = fred.Client(cwd=oldcwd)
 
     path = os.path.dirname(__file__)
     if path: os.chdir(path) # needs for correct load resources - images and translation
     app = QtGui.QApplication(sys.argv)
-    window = FredMainWindow(app, epp, cwd=oldcwd)
+    window = FredMainWindow(app, epp, cwd=oldcwd, opts=options)
     window.show()
     sys.exit(app.exec_())
 

@@ -93,7 +93,7 @@ def load_config(config, filename, verbose):
                 (verbose > 1 and ('\n' + str(msg)) or ' %s'%_T('See details in verbose 2 or higher.'))
             config = None
     else:
-        missing = ["Configuration file '%s' not found."%filename]
+        missing = ["HAHAHA Configuration file '%s' not found."%filename]
     return error, names, missing
 
 def get_config_value(config, section, option, omit_errors=0):

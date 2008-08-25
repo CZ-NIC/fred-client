@@ -117,7 +117,8 @@ class Lorry:
         if self._timeout:
             if verbose > 1: self.append_note('Socket timeout: ${BOLD}%.1f${NORMAL} sec.'%self._timeout)
             self._conn.settimeout(self._timeout)
-        self.append_note('%s ${BOLD}%s${NORMAL}, port %d ...'%(_T('Connecting to'), DATA[0], DATA[1]))
+        #self.append_note('%s ${BOLD}%s${NORMAL}, port %d ...'%(_T('Connecting to'), DATA[0], DATA[1]))
+        self.append_note('%s %s, port %d ...'%(_T('Connecting to'), DATA[0], DATA[1]))
         try:
             self._conn.connect((DATA[0], DATA[1]))
         except socket.error, tmsg:

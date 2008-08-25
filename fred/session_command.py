@@ -774,7 +774,8 @@ When you want not result in your prompt join option 'noprompt'
             if self._auto_connect and not self.is_connected():
                 # commection MUST be created BEFOR assembling login because of tags
                 # <objURI> and <extURI>
-                if not self.connect(): return # connect fails
+                if not self.connect():
+                    return # connect fails
             # prefix 4 ASCII characters for clTRID (new for every session)
             self._session[CMD_ID] = 0
             self.defs[PREFIX] = ''.join([chr(random.randint(97,122)) for n in range(4)])
@@ -793,9 +794,12 @@ When you want not result in your prompt join option 'noprompt'
 
     def automatic_login(self, no_outoupt=None):
         'Automatic login if all needed informations are known.'
-        if self._session[ONLINE]: return 1 # session is logged on already
-        if self.get_config_value(self.config_get_section_connect(), 'nologin', OMIT_ERROR): return 1
-        if not self.check_connect_data(self.get_connect_defaults()): return 0
+        if self._session[ONLINE]: 
+            return 1 # session is logged on already
+        if self.get_config_value(self.config_get_section_connect(), 'nologin', OMIT_ERROR):
+            return 1
+        if not self.check_connect_data(self.get_connect_defaults()):
+            return 0
         ok=0
         # set values from config or options as a parsed params
         self._epp_cmd._dct['username'] = [self.get_config_value(self._section_epp_login, 'username', OMIT_ERROR)]

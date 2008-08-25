@@ -178,6 +178,13 @@ class ManagerTransfer(ManagerBase):
         # overwrite username+password by command line
         if self._epp_cmd._dct.has_key('username'): data[6] = self._epp_cmd._dct['username'][0]
         if self._epp_cmd._dct.has_key('password'): data[7] = self._epp_cmd._dct['password'][0]
+
+        # add prefix if ssl_key or/and ssl_cert paths are relative
+        if not os.path.isabs(self.get_config_value(section, 'ssl_key', OMIT_ERROR)) and self.get_cwd():
+            data[2] = os.path.normpath(os.path.join(self.get_cwd(), self.get_config_value(section, 'ssl_key', OMIT_ERROR)))
+        if not os.path.isabs(self.get_config_value(section, 'ssl_cert', OMIT_ERROR)) and self.get_cwd():
+            data[3] = os.path.normpath(os.path.join(self.get_cwd(), self.get_config_value(section, 'ssl_cert', OMIT_ERROR)))
+
         # command options
         self._session[HOST] = data[0] # for prompt info
         return data
@@ -223,11 +230,13 @@ class ManagerTransfer(ManagerBase):
         
     def connect(self):
         "Connect transfer socket. data=(host,port,ssl_key,ssl_cert,timeout,socket,username,password)"
-        if self.is_connected(): return 1 # connection is established already
+        if self.is_connected():
+            return 1 # connection is established already
         self._lorry = client_socket.Lorry(self)
         self._lorry.handler_message = self.process_answer
         data = self.get_connect_defaults()
-        if not self.check_connect_data(data, 1): return 0 # 1 - omit username + password
+        if not self.check_connect_data(data, 1): 
+            return 0 # 1 - omit username + password
 
         success = self._lorry.connect(data, self._session[VERBOSE])
         if not success and self._lorry.try_again_with_timeout_zero:
