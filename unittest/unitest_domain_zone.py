@@ -7,7 +7,7 @@ Ticket #253 (defect)
     V pripade ze nema je treba u opraci *_domain vyhodit chybovou hlasku.
 """
 import sys
-sys.path.insert(0, '')
+sys.path.insert(0, '..')
 import time
 import unittest
 import fred

@@ -9,7 +9,7 @@
 1.6 Zmena hesla tam a zpatky s kontrolnim zalogovanim
 """
 import sys
-sys.path.insert(0, '')
+sys.path.insert(0, '..')
 import unittest
 import fred
 import unitest_share

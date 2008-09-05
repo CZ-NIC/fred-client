@@ -72,7 +72,6 @@ class Test(unittest.TestCase):
         epp_cli.create_contact(FRED_CONTACT2, u'řehoř čuřil','rehor@curil.cz','Dolni','Praha', '12300','CZ')
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
-        
     def test_040(self):
         '4. Zalozeni keysetu'
         n = KEYSET
@@ -80,66 +79,28 @@ class Test(unittest.TestCase):
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_050(self):
-        '5. Pridani DS'
-        newds = {'alg': '1', 'digest_type': '1', 'digest': 'ABCDE12345ABCDE12345ABCDE12345ABCDE12345', 'key_tag': '3'}
-        KEYSET['ds'].append(newds)
-        epp_cli.update_keyset(KEYSET['id'], {'ds':newds})
+        '5. Pridani kontaktu ke keysetu'
+        KEYSET['tech'].append(FRED_CONTACT2)
+        epp_cli.update_keyset(KEYSET['id'], {'tech':FRED_CONTACT2})
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
-
-    def test_055(self):
-        '.. Kontrola vsech hodnot keysetu po pridani DS'
-        epp_cli.info_keyset(FRED_KEYSET1)
-        errors = unitest_share.compare_keyset_info(epp_cli, KEYSET, epp_cli.is_val('data'))
-        self.assert_(len(errors)==0, '\n'.join(errors))
 
     def test_060(self):
-        '6. Odebrani DS'
-        ds = KEYSET['ds'].pop(0)
-        # rem: name, tech
-        epp_cli.update_keyset(FRED_KEYSET1, None, {'ds':ds})
-        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
-
-    def test_065(self):
-        '.. Kontrola vsech hodnot keysetu po odebrani DS'
+        '.. Kontrola vsech hodnot keysetu po pridani kontaktu'
         epp_cli.info_keyset(FRED_KEYSET1)
         errors = unitest_share.compare_keyset_info(epp_cli, KEYSET, epp_cli.is_val('data'))
         self.assert_(len(errors)==0, '\n'.join(errors))
-
 
     def test_070(self):
-        '7. Pridani tech. kontaktu'
-        KEYSET['tech'].append(FRED_CONTACT2)
-        epp_cli.update_keyset(FRED_KEYSET1, {'tech':FRED_CONTACT2})
+        '6. Odebrani kontaktu'
+        con = KEYSET['tech'].pop(0)
+        epp_cli.update_keyset(FRED_KEYSET1, None, {'tech':con})
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
-    def test_075(self):
-        '.. Kontrola vsech hodnot keysetu po pridani tech. kontaktu'
-        epp_cli.info_keyset(FRED_KEYSET1)
-        errors = unitest_share.compare_keyset_info(epp_cli, KEYSET, epp_cli.is_val('data'))
-        self.assert_(len(errors)==0, '\n'.join(errors))
 
     def test_080(self):
-        '8. Odebrani tech. kontaktu'
-        tech = KEYSET['tech'].pop(0)
-        epp_cli.update_keyset(FRED_KEYSET1, None, {'tech':tech})
-        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
-    def test_085(self):
-        '.. Kontrola vsech hodnot keysetu po odebrani tech. kontaktu'
+        '.. Kontrola vsech hodnot keysetu po odebrani kontaktu'
         epp_cli.info_keyset(FRED_KEYSET1)
         errors = unitest_share.compare_keyset_info(epp_cli, KEYSET, epp_cli.is_val('data'))
         self.assert_(len(errors)==0, '\n'.join(errors))
-
-    def test_090(self):
-        '9. Zmena auth info'
-        KEYSET['auth_info'] = 'nove heslo'
-        epp_cli.update_keyset(FRED_KEYSET1, None, None, KEYSET['auth_info'])
-        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
-    def test_095(self):
-        '.. Kontrola vsech hodnot keysetu po zmene auth info'
-        epp_cli.info_keyset(FRED_KEYSET1)
-        errors = unitest_share.compare_keyset_info(epp_cli, KEYSET, epp_cli.is_val('data'))
-        self.assert_(len(errors)==0, '\n'.join(errors))
-        
-
 
     def test_900(self):
         '11. Smazani keysetu'
