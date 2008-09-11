@@ -93,7 +93,8 @@ class Message:
 
     def get_objURI(self):
         'Returns the list of the objURI namesapces.'
-        return ['%s%s-%s'%(SCHEMA_PREFIX, name, self.schema_version[name]) for name in ('contact','nsset','domain',)]
+        return ['%s%s-%s'%(SCHEMA_PREFIX, name, self.schema_version[name]) 
+                    for name in ('contact','nsset','domain', 'keyset')]
 
 
     def get_extURI(self):

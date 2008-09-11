@@ -32,9 +32,10 @@ data = ( # 0
       <version>1.0</version>
       <lang>en</lang>
       <lang>cs</lang>
-      <objURI>http://www.nic.cz/xml/epp/contact-1.4</objURI>
-      <objURI>http://www.nic.cz/xml/epp/domain-1.3</objURI>
+      <objURI>http://www.nic.cz/xml/epp/contact-1.5</objURI>
+      <objURI>http://www.nic.cz/xml/epp/domain-1.4</objURI>
       <objURI>http://www.nic.cz/xml/epp/nsset-1.2</objURI>
+      <objURI>http://www.nic.cz/xml/epp/keyset-1.1</objURI>
       <svcExtension>
         <extURI>http://www.nic.cz/xml/epp/enumval-1.1</extURI>
       </svcExtension>
