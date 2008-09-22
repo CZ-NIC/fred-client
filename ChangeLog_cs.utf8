@@ -1,10 +1,13 @@
-FredClient 1.x
+FredClient 2.0.1
 
-Nové funkce:
-    * Přidány funkce pro keysety: create_keyset, update_keyset, delete_keyset, info_keyset,
-      check_keyset, list_keysets, prep_keysets, prep_keysets_by_contact, prep_keysets_by_ns,
-      sendauthinfo_keyset, transfer_keyset
+Zmeny:
+    * Pridana kontrola na verzi schemat pro objekt KeySet
 
+FredClient 2.0.0
+
+Nove funkce:
+    * Pridany funkce manipulujici s objektem KeySet
+    * Upraveny funkce na manipulaci s domenou umoznujici pripojit KeySet  
 
 FredClient 1.5.4
 
