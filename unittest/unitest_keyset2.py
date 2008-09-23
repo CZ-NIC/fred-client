@@ -142,12 +142,12 @@ class Test(unittest.TestCase):
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_042(self):
-        '4.2 pokus o zalozeni keysetu s neplatnym ds-zaznamem (digest prilis kratky)'
+        '4.2 pokus o zalozeni keysetu s neplatnym ds-zaznamem (digest prilis kratky - md5)'
         epp_cli.create_keyset(FRED_KEYSET2, BAD_DS_DIGEST_LEN_1, KEYSET['tech'], KEYSET['auth_info'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_043(self):
-        '4.3 pokus o zalozeni keysetu s neplatnym ds-zaznamem (digest prilis dlouhy)'
+        '4.3 pokus o zalozeni keysetu s neplatnym ds-zaznamem (digest prilis dlouhy - sha256)'
         epp_cli.create_keyset(FRED_KEYSET2, BAD_DS_DIGEST_LEN_2, KEYSET['tech'], KEYSET['auth_info'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
@@ -194,12 +194,12 @@ class Test(unittest.TestCase):
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_052(self):
-        '5.2 pokus o pridani neplatneho DS zaznamu (digest prilis kratky)'
+        '5.2 pokus o pridani neplatneho DS zaznamu (digest prilis kratky - md5)'
         epp_cli.update_keyset(KEYSET['id'], {'ds':BAD_DS_DIGEST_LEN_1})
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_053(self):
-        '5.3 pokus o pridani neplatneho DS zaznamu (digest prilis dlouhy)'
+        '5.3 pokus o pridani neplatneho DS zaznamu (digest prilis dlouhy - sha256)'
         epp_cli.update_keyset(KEYSET['id'], {'ds':BAD_DS_DIGEST_LEN_2})
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
