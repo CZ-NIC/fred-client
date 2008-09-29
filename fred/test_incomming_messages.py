@@ -270,7 +270,7 @@ data = ( # 0
         <contact:status s='linked'>Contact is admin or tech</contact:status>
         <contact:postalInfo>
           <contact:name>Řehoř Čížek</contact:name>
-          <contact:org>Čížková a spol</contact:org>
+          <contact:org>Čížková a \ \\ \\\ ' \' \\' \\\' "spol" a 'sro' nebo \\'backslashes\\\\' or \\"backslashes\\\\", end.</contact:org>
           <contact:addr>
             <contact:street>U práce</contact:street>
             <contact:street>Za monitorem</contact:street>
@@ -761,7 +761,7 @@ if __name__ == '__main__':
     client.load_config()
     client.print_errors()
     client._epp.parse_verbose_value(2)
-    #client._epp._session[14] = 'php' # OUTPUT_TYPE
+    client._epp._session[14] = 'php' # OUTPUT_TYPE
     print "Used schema path:", client._epp.__get_actual_schema_path__()
     
     try:

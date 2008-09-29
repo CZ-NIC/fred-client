@@ -829,11 +829,12 @@ def get_unicode(text):
             text = repr(re.sub('\$\{[A-Z]+\}','',text)) # remove color tags
     return text
 
+    
 def php_string(value):
     'Returns escaped string for place into PHP variable.'
     if type(value) in (str,unicode):
-        # display variable like string type: "variable" or 'variable'
-        ret = repr(get_ltext(value).strip()).replace('\\n', '\n')
+        text = get_ltext(value).strip().replace('\\n', '\n')
+        ret = "'%s'" % text.replace(r'\ '[:-1], r'\\ '[:-1]).replace(r"'", r"\'")
     elif type(value) in (list, tuple):
         items=[]
         for n in value:
