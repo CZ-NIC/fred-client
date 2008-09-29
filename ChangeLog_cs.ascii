@@ -1,3 +1,8 @@
+FredClient 2.0.2
+
+Zmeny:
+    * Oprava kodovani cestiny pri volbe --output=php
+
 FredClient 2.0.1
 
 Zmeny:
