@@ -569,11 +569,6 @@ class ManagerTransfer(ManagerBase):
                 key = key.strip() # client normaly trim whitespaces, but if you use sender, you can send everything...
                 value = dct_data.get(key,u'')
                 if value not in ('',[]):
-                    # nl2br: turnk ends of lines to HTML
-                    if type(value) not in (list, tuple):
-                        if type(value) != str:
-                            value = str(value)
-                        value = re.sub('\n', '<br/>\n', value)
                     if is_check:
                         # Tighten check response by code.
                         value = dct_data.get(key+':reason',u'')
@@ -865,15 +860,22 @@ def __append_into_report__(body, k, v, explain, ljust, indent = '', no_terminal_
     
     key = get_ltext(key)
     if type(v) in (list,tuple):
-        if len(v):
-            # more lines: first is prefixed by column name
-            body.append(colored_output.render(patt[0]%(indent, key, escape(get_ltext(str_lists(v[0]))))))
-            # others are indented only
-            for text in v[1:]:
-                body.append(patt[2]%(ljustify, escape(get_ltext(str_lists(text)))))
+
+        if no_terminal_tags == 2:
+            # html only
+            value = escape(get_ltext(str_lists(v)))
+            body.append(get_ltext(colored_output.render(patt[0]%(indent, key, value))))
         else:
-            # one line only
-            body.append(colored_output.render(patt[1]%(indent, key)))
+            # other output (text, php)
+            if len(v):
+                # more lines: first is prefixed by column name
+                body.append(colored_output.render(patt[0]%(indent, key, escape(get_ltext(str_lists(v[0]))))))
+                # others are indented only
+                for text in v[1:]:
+                    body.append(patt[2]%(ljustify, escape(get_ltext(str_lists(text)))))
+            else:
+                # one line only
+                body.append(colored_output.render(patt[1]%(indent, key)))
     else:
         # value is not array
         body.append(colored_output.render(patt[0]%(indent, key, escape(get_ltext(v)))))

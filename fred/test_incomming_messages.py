@@ -61,7 +61,7 @@ data = ( # 0
 </epp>
         """),
         # 1
-        ('transfer',"""<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+        ('transfer', """<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <epp xmlns="urn:ietf:params:xml:ns:epp-1.0"
      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
      xsi:schemaLocation="urn:ietf:params:xml:ns:epp-1.0
@@ -481,7 +481,7 @@ data = ( # 0
     # 18
     # fred:extcommand, fred:creditInfo
     # command: fred:creditinfo fnc_name: answer_response_fred_creditinfo
-    ('fred:creditinfo', u"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
+    ('fred:creditinfo', """<?xml version='1.0' encoding='utf-8' standalone="no"?>
 <epp xmlns='urn:ietf:params:xml:ns:epp-1.0' 
     xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' 
     xmlns:fred='http://www.nic.cz/xml/epp/fred-1.2' 
@@ -508,9 +508,9 @@ data = ( # 0
     </trID>
   </response>
 </epp>
-""".encode(ENCODING)),
+"""),
     # 19
-    ('credit_info', u"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
+    ('credit_info', """<?xml version='1.0' encoding='utf-8' standalone="no"?>
 <epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:fred='http://www.nic.cz/xml/epp/fred-1.2' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
   <response>
     <result code='1000'>
@@ -534,9 +534,9 @@ data = ( # 0
     </trID>
   </response>
 </epp>
-""".encode(ENCODING)),
+"""),
     # 20
-    ('transfer', u"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
+    ('transfer', """<?xml version='1.0' encoding='utf-8' standalone="no"?>
 <epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
   <response>
     <result code='2201'>
@@ -547,9 +547,9 @@ data = ( # 0
       <svTRID>ccReg-0000301928</svTRID>
     </trID>
   </response>
-</epp>""".encode(ENCODING)),
+</epp>"""),
     # 21
-    ('transfer', u"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
+    ('transfer', """<?xml version='1.0' encoding='utf-8' standalone="no"?>
 <epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
   <response>
     <result code='1000'>
@@ -560,9 +560,9 @@ data = ( # 0
       <svTRID>ccReg-0000301929</svTRID>
     </trID>
   </response>
-</epp>""".encode(ENCODING)),
+</epp>"""),
     # 22
-    ('domain:info', u"""<?xml version="1.0" encoding="UTF-8"?>
+    ('domain:info', """<?xml version="1.0" encoding="UTF-8"?>
 <epp xmlns="urn:ietf:params:xml:ns:epp-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd">
   <response>
     <result code="1000">
@@ -576,6 +576,8 @@ data = ( # 0
         <domain:status s="ok">Domain is OK</domain:status>
         <domain:registrant>CID:D184452</domain:registrant>
         <domain:admin>CID:D184452</domain:admin>
+        <domain:admin>CID:D222222</domain:admin>
+        <domain:admin>CID:D333333</domain:admin>
         <domain:nsset>NSSID:D1917228</domain:nsset>
         <domain:keyset>KEYSID:D1917228</domain:keyset>
         <domain:clID>REG-UNITTEST1</domain:clID>
@@ -594,9 +596,9 @@ data = ( # 0
       <svTRID>ccReg-0000314250</svTRID>
     </trID>
   </response>
-</epp>""".encode(ENCODING)), 
+</epp>"""), 
 
-    ('fred:listdomains', u"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
+    ('fred:listdomains', """<?xml version='1.0' encoding='utf-8' standalone="no"?>
 <epp xmlns='urn:ietf:params:xml:ns:epp-1.0' 
     xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' 
     xmlns:fred='http://www.nic.cz/xml/epp/fred-1.2' 
@@ -615,8 +617,8 @@ data = ( # 0
       <svTRID>ccReg-0000315538</svTRID>
     </trID>
   </response>
-</epp>""".encode(ENCODING)), 
-    ('fred:getresults', u"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
+</epp>"""), 
+    ('fred:getresults', """<?xml version='1.0' encoding='utf-8' standalone="no"?>
 <epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:fred='http://www.nic.cz/xml/epp/fred-1.2' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
   <response>
     <result code='1000'>
@@ -634,9 +636,9 @@ data = ( # 0
     </trID>
   </response>
 </epp>
-""".encode(ENCODING)), 
+"""), 
     # 25
-    ('fred:domainsbycontact', u"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
+    ('fred:domainsbycontact', """<?xml version='1.0' encoding='utf-8' standalone="no"?>
 <epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:fred='http://www.nic.cz/xml/epp/fred-1.2' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
   <response>
     <result code='1000'>
@@ -653,7 +655,7 @@ data = ( # 0
     </trID>
   </response>
 </epp>
-""".encode(ENCODING)), 
+"""), 
     ('poll', """<?xml version="1.0" encoding="UTF-8"?>
 <epp xmlns="urn:ietf:params:xml:ns:epp-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd"><response><result code="1301"><msg lang="cs">Prikaz uspasne proveden; potvrd za ucelem vyrazeni z fronty</msg>
 </result>
@@ -682,7 +684,7 @@ data = ( # 0
 </response>
 </epp>
 """), 
-    ('poll', u"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
+    ('poll', """<?xml version='1.0' encoding='utf-8' standalone="no"?>
 <epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
   <response>
     <result code='1000'>
@@ -693,7 +695,7 @@ data = ( # 0
       <svTRID>ccReg-0000319681</svTRID>
     </trID>
   </response>
-</epp>""".encode(ENCODING)), 
+</epp>"""), 
     ('response', """<?xml version='1.0' encoding='utf-8' standalone="no"?>
 <epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
   <response>
@@ -707,7 +709,7 @@ data = ( # 0
   </response>
 </epp>
 """), 
-    ('keyset:info', u"""<?xml version='1.0' encoding='utf-8' standalone="no"?>
+    ('keyset:info', """<?xml version='1.0' encoding='utf-8' standalone="no"?>
 <epp xmlns='urn:ietf:params:xml:ns:epp-1.0' 
     xmlns:keyset='http://www.nic.cz/xml/epp/keyset-1.0' 
     xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' 
@@ -748,7 +750,7 @@ data = ( # 0
     </trID>
   </response>
 </epp>
-    """.encode(ENCODING)),
+    """),
     )
 
 if __name__ == '__main__':
@@ -761,8 +763,11 @@ if __name__ == '__main__':
     client.load_config()
     client.print_errors()
     client._epp.parse_verbose_value(2)
-    client._epp._session[14] = 'php' # OUTPUT_TYPE
+    if len(sys.argv) > 2:
+        # OUTPUT_TYPE: 'php', 'html'
+        client._epp._session[14] = sys.argv[2]
     print "Used schema path:", client._epp.__get_actual_schema_path__()
+    print "Data size:", len(data)
     
     try:
         index = (len(sys.argv) > 1 and [int(sys.argv[1])] or [-1])[0]

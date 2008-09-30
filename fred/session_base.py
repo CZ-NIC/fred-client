@@ -324,7 +324,7 @@ $fred_client_errors = array(); // errors occuring during communication
         if xml_close_tag:
             msg.append('</FredClient>')
         
-        return sep.join(msg)
+        return sep.join(map(get_ltext, msg))
 
     def welcome(self):
         "Welcome message."
@@ -804,9 +804,12 @@ def join_unicode(u_list, sep='\n'):
 
 def get_ltext(text):
     'Encode unicode to string in the local encoding.'
-    if type(text) == str:
+    if type(text) is str:
         ltext = colored_output.render(text)
+    elif type(text) is int:
+        ltext = str(text)
     else:
+        # unicode
         try:
             ltext = text.encode(translate.encoding)
         except UnicodeEncodeError, msg:

@@ -720,6 +720,11 @@ class FredError(StandardError):
 
 def append_dct(dct, key, value):
     'Appends value at the dict key.'
+    
+    # split value into lines if contains enter(s)
+    if '\n' in value:
+        value = value.split('\n')
+    
     if dct.has_key(key):
         if type(dct[key]) is not list:
             dct[key] = [dct[key]] # keep all data in lists
@@ -766,8 +771,10 @@ def test(name_and_xml):
     #m._session[VERBOSE] = 2
     m._command_sent = name_and_xml[0]
     m.process_answer(name_and_xml[1])
+    #m._session[14] = 'php' # OUTPUT_TYPE
     m.display()
     m.print_answer()
+    print "API OUTPUT:", m._dct_answer
 #    m.__put_raw_into_note__(m._dict_answer)
 #    m.display()
 
@@ -780,6 +787,6 @@ if __name__ == '__main__':
         # TEST selected document:
         # Data item has format: ('command:name',"""<?xml ...XML document... >""")
         # For example: ('nsset:info',"""<?xml ...<epp ...><response> ... </epp>""")
-        test(test_incomming_messages.data[-1])
+        test(test_incomming_messages.data[22])
         #map(test, test_incomming_messages.data)
         #test(test_incomming_messages.data[9]) # test na contact:info status

@@ -1,13 +1,22 @@
+FredClient 2.0.2
+
+Změny:
+    * Oprava kódovani češtiny při volbě --output=php
+
+Opravy:
+    * Oprava hodnot v API slovníku "data", kde byl seznam interpretován jako string s entry.
+      (shodné s verzí 1.5.3)
+
 FredClient 2.0.1
 
-Zmeny:
-    * Pridana kontrola na verzi schemat pro objekt KeySet
+Změny:
+    * Přidána kontrola na verzi schemat pro objekt KeySet
 
 FredClient 2.0.0
 
-Nove funkce:
-    * Pridany funkce manipulujici s objektem KeySet
-    * Upraveny funkce na manipulaci s domenou umoznujici pripojit KeySet  
+Nové funkce:
+    * Přidány funkce manipulující s objektem KeySet
+    * Upraveny funkce na manipulaci s doménou umožňující připojit KeySet  
 
 FredClient 1.5.4
 

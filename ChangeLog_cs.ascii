@@ -3,6 +3,10 @@ FredClient 2.0.2
 Zmeny:
     * Oprava kodovani cestiny pri volbe --output=php
 
+Opravy:
+    * Oprava hodnot v API slovniku "data", kde byl seznam interpretovan jako string s entry.
+      (shodne s verzi 1.5.3)
+
 FredClient 2.0.1
 
 Zmeny:
