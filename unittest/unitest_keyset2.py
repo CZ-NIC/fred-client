@@ -152,9 +152,9 @@ class Test(unittest.TestCase):
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_044(self):
-        '4.4 pokus zalozeni noveho keysetu s ds-zaznamem, ktery jiz v databazi existuje'
+        '4.4 zalozeni noveho keysetu s ds-zaznamem, ktery jiz v databazi existuje'
         epp_cli.create_keyset(FRED_KEYSET3, KEYSET['ds'], [FRED_CONTACT3], KEYSET['auth_info'])
-        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_045(self):
         '4.5 pokus zalozeni noveho keysetu se dvema stejnyma ds-zaznamama'
@@ -204,10 +204,10 @@ class Test(unittest.TestCase):
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_054(self):
-        '5.4 pokus o pridani DS zaznamu ktery jiz v databazi existuje'
+        '5.4 pridani DS zaznamu ktery jiz v databazi existuje'
         newds = {'alg': '1', 'digest_type': '1', 'digest': 'ABCDE12345ABCDE12345ABCDE12345ABCDE12345', 'key_tag': '3'}
         epp_cli.update_keyset(KEYSET['id'], {'ds':newds})
-        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_055(self):
         '.. Kontrola vsech hodnot keysetu po pridani DS'
