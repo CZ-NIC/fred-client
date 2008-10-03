@@ -12,6 +12,7 @@ FRED_KEYSET1 = unitest_share.create_handle('KEYSID:U1')
 FRED_KEYSET2 = unitest_share.create_handle('KEYSID:U2')
 FRED_KEYSET3 = unitest_share.create_handle('KEYSID:U3')
 FRED_KEYSET4 = unitest_share.create_handle('KEYSID:U4')
+FRED_KEYSET5 = unitest_share.create_handle('KEYSID:U5')
 FRED_CONTACT1 = unitest_share.create_handle('CID:U1')
 FRED_CONTACT2 = unitest_share.create_handle('CID:U2')
 FRED_CONTACT3 = unitest_share.create_handle('CID:U3')
@@ -45,6 +46,8 @@ KEYSET = {
     'ds': DS, 
     'tech': [FRED_CONTACT1],   # (optional)             unbounded list
     }
+
+newds = {'alg': '1', 'digest_type': '1', 'digest': 'ABCDE12345BBBBBB2345ABCDE12345ABCDE12345', 'key_tag': '3'}
 
 class Test(unittest.TestCase):
 
@@ -178,7 +181,7 @@ class Test(unittest.TestCase):
 
     def test_049(self):
         '4.9 zalozeni keyset s mnoha adminiatratorskymi kontakty'
-        epp_cli.create_keyset(FRED_KEYSET3, DS_OK2, A_LOT_OF_CONTACTS, KEYSET['auth_info'])
+        epp_cli.create_keyset(FRED_KEYSET5, DS_OK2, A_LOT_OF_CONTACTS, KEYSET['auth_info'])
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_050(self):
@@ -205,13 +208,13 @@ class Test(unittest.TestCase):
 
     def test_054(self):
         '5.4 pridani DS zaznamu ktery jiz v databazi existuje'
-        newds = {'alg': '1', 'digest_type': '1', 'digest': 'ABCDE12345ABCDE12345ABCDE12345ABCDE12345', 'key_tag': '3'}
         epp_cli.update_keyset(KEYSET['id'], {'ds':newds})
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_055(self):
         '.. Kontrola vsech hodnot keysetu po pridani DS'
         epp_cli.info_keyset(FRED_KEYSET1)
+        DS.append(newds)
         errors = unitest_share.compare_keyset_info(epp_cli, KEYSET, epp_cli.is_val('data'))
         self.assert_(len(errors)==0, '\n'.join(errors))
 
@@ -328,7 +331,12 @@ class Test(unittest.TestCase):
 
     def test_112(self):
         '10.12 odebrani dvou ruznych kontaktu z mnoha'
-        epp_cli.update_keyset(FRED_KEYSET3, None, {'tech':[FRED_CONTACT11, FRED_CONTACT15, FRED_CONTACT12]})
+        epp_cli.update_keyset(FRED_KEYSET5, None, {'tech':[FRED_CONTACT11, FRED_CONTACT15, FRED_CONTACT12]})
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
+    def test_897(self):
+        '10.97 smazani keysetu'
+        epp_cli.delete_keyset(FRED_KEYSET5)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_898(self):
@@ -360,7 +368,6 @@ class Test(unittest.TestCase):
         '13. Smazani 1. pomocneho kontaktu'
         epp_cli.delete_contact(FRED_CONTACT1)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
-
     def test_930(self):
         '14.0 smazani pomocneho kontaktu'
         epp_cli.delete_contact(FRED_CONTACT10)

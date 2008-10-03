@@ -96,9 +96,9 @@ class Test(unittest.TestCase):
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_041(self):
-        '4.1 Pokus o zalozeni nevalidniho keysetu (1.ds-zaznam v poradku, 2.ds-zaznam spatny: jiz existuje v databazi)'
-        epp_cli.create_keyset(FRED_KEYSET2, DS_DUP, KEYSET['tech'], KEYSET['auth_info'])
-        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+        '4.1 zalozeni validniho keysetu (1.ds-zaznam v poradku, 2.ds-zaznam jiz existuje v databazi)'
+        epp_cli.create_keyset(FRED_KEYSET3, DS_DUP, KEYSET['tech'], KEYSET['auth_info'])
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_042(self):
         '4.2 Pokus o zalozeni nevalidniho keysetu (1.ds-zaznam v poradku, 2.ds-zaznam spatny: spatny typ digest-u)'
@@ -136,6 +136,11 @@ class Test(unittest.TestCase):
     def test_900(self):
         '11. Smazani keysetu'
         epp_cli.delete_keyset(FRED_KEYSET1)
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
+    def test_901(self):
+        '11.1 Smazani keysetu'
+        epp_cli.delete_keyset(FRED_KEYSET3)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     # def test_910(self):
