@@ -28,6 +28,8 @@ import time
 import ConfigParser
 import cmd_parser
 import session_base
+import base64
+
 from translate import encoding
 from eppdoc import Message as MessageBase, SCHEMA_PREFIX
 
@@ -922,9 +924,8 @@ class Message(MessageBase):
             for addr in dct_ns['addr']:
                 data.append(('nsset:ns', 'nsset:addr',addr))
 
-    def __append_keyset__(self, tag_name, data, dct_ks, prefix, change_namespace=None):
-        "Join ds elements for keyset"
-        parent_prefix = prefix
+    def __append_schema_location__(self, tag_name, data, element, prefix, change_namespace):
+        "Append namespace"
         if change_namespace:
             namespace = change_namespace
             ns = (
@@ -934,17 +935,49 @@ class Message(MessageBase):
                         SCHEMA_PREFIX, namespace, self.schema_version[namespace], \
                         namespace, self.schema_version[namespace])),
             )
-            data.append(('%s:%s'%(prefix, tag_name), '%s:ds'%prefix, None, ns))
+            data.append(('%s:%s'%(prefix, tag_name), element%prefix, None, ns))
             prefix = namespace
         else:
-            data.append(('%s:%s'%(prefix, tag_name), '%s:ds'%prefix))
+            data.append(('%s:%s'%(prefix, tag_name), element%prefix))
+
+    def __append_keyset__(self, tag_name, data, dct_ks, prefix, change_namespace=None):
+        "Join ds elements for keyset"
+        element = '%s:ds'
+        parent_prefix = prefix
+        self.__append_schema_location__(tag_name, data, element, prefix, change_namespace)
         for key in ('key_tag', 'alg', 'digest_type', 'digest'):
-            data.append(('%s:ds'%parent_prefix, '%s:%s'%(prefix, make_camell(key)), dct_ks[key][0]))
+            data.append((element%parent_prefix, '%s:%s'%(prefix, make_camell(key)), dct_ks[key][0]))
         # optional
         key = 'max_sig_life'
         if __has_key__(dct_ks, key):
-            data.append(('%s:ds'%prefix, '%s:%s'%(prefix, make_camell(key)), dct_ks[key][0]))
+            data.append((element%prefix, '%s:%s'%(prefix, make_camell(key)), dct_ks[key][0]))
 
+    def __append_dnskey__(self, tag_name, data, dct_ks, prefix, change_namespace=None):
+        "Join ds elements for keyset"
+        element = '%s:dnskey'
+        parent_prefix = prefix
+        self.__append_schema_location__(tag_name, data, element, prefix, change_namespace)
+        for key in ('flags', 'protocol', 'alg'):
+            data.append((element%parent_prefix, '%s:%s'%(prefix, make_camell(key)), dct_ks[key][0]))
+        # pubKey
+        key = 'pub_key'
+        certificate = self.load_certificate(dct_ks[key][0])
+        data.append((element%parent_prefix, '%s:%s'%(prefix, make_camell(key)), certificate))
+
+    def load_certificate(self, filename):
+        "Load file and encode it into base64"
+        # create absolute path
+        if filename[0] != '/':
+            filename = os.path.join(os.getcwd(), filename)
+        # load certificate
+        try:
+            body = open(filename, 'rb').read()
+        except IOError, e:
+            self.errors.append((0, 'certificate', 'IOError: %s'%e))
+            return ''
+        return base64.b64encode(body)
+
+    
     def __assemble_create_anyset__(self, prefix, *params):
         "Assemble XML EPP command."
         dct = self._dct
@@ -966,6 +999,9 @@ class Message(MessageBase):
         if __has_key__(dct,'ds'):
             for ds in dct['ds']:
                 self.__append_keyset__('create', data, ds, prefix)
+        if __has_key__(dct,'dnskey'):
+            for ds in dct['dnskey']:
+                self.__append_dnskey__('create', data, ds, prefix)
         # for nsset only
         if __has_key__(dct,'tech'):
             self.__append_values__(data, dct, 'tech', '%s:create'%prefix, '%s:tech'%prefix)

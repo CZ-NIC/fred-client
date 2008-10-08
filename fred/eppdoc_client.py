@@ -269,6 +269,12 @@ lower level number. Valid range is from 0 to 10.
                 ('digest',(1,1),(),_T('Digest'),'499602d2','',()),
                 ('max_sig_life',(0,1),(),_T('Max.Sig.Life'),'1','',()),
             )),
+            ('dnskey',(1,9),(),_T('LIST of keys'),'','',(
+                ('flags',(1,1),(),_T('Flags'),'1','',()),
+                ('protocol',(1,1),(),_T('Protocol'),'1','',()),
+                ('alg',(1,1),(),_T('Algorithm'),'1','',()),
+                ('pub_key',(1,1),(),_T('Public key filename path'),'certificates/publickey-cert.pem', '', ()),
+            )),
             ('tech',(1,UNBOUNDED),(),_T('Technical contact'),'CID:ID01','',()),
             ('auth_info',(0,1),(),_T('Password required by server to authorize the transfer'),'mypassword','',()),
             ],_T("""
