@@ -1,3 +1,9 @@
+FredClient 2.0.4
+
+Zmeny:
+    * Upravy create_keyset a update_keyset pro pridani dnskey
+
+
 FredClient 2.0.2
 
 Zmeny:

@@ -333,6 +333,21 @@ class ManagerReceiver(ManagerCommand):
                         dns.append(items)
                 self._dct_answer['data']['%s:ds'%prefix] = dns
 
+            if nsset_infData.has_key('%s:dnskey'%prefix):
+                nsset_ns = nsset_infData['%s:dnskey'%prefix]
+                dns = []
+                if not type(nsset_ns) == list: nsset_ns = (nsset_ns,)
+                for row in nsset_ns:
+                    items = []
+                    for key in ['flags', 'protocol', 'alg', 'pubKey']:
+                        value = eppdoc.get_dct_value(row, '%s:%s'%(prefix, key))
+                        if value:
+                            items.append(value)
+                    if items:
+                        dns.append(items)
+                self._dct_answer['data']['%s:dnskey'%prefix] = dns
+
+
 
     def answer_response_nsset_info(self, data):
         self.answer_response_anyset_info('nsset', data)

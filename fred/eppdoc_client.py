@@ -270,17 +270,17 @@ lower level number. Valid range is from 0 to 10.
                 ('max_sig_life',(0,1),(),_T('Max.Sig.Life'),'1','',()),
             )),
             ('dnskey',(1,9),(),_T('LIST of keys'),'','',(
-                ('flags',(1,1),(),_T('Flags'),'1','',()),
-                ('protocol',(1,1),(),_T('Protocol'),'1','',()),
-                ('alg',(1,1),(),_T('Algorithm'),'1','',()),
-                ('pub_key',(1,1),(),_T('Public key filename path'),'certificates/publickey-cert.pem', '', ()),
+                ('flags',(1,1),(),_T('Flags'),'257','',()),
+                ('protocol',(1,1),(),_T('Protocol'),'3','',()),
+                ('alg',(1,1),(),_T('Algorithm'),'5','',()),
+                ('pub_key',(1,1),(),_T('Public key filename path'),'unittest/dnskey.pub', '', ()),
             )),
             ('tech',(1,UNBOUNDED),(),_T('Technical contact'),'CID:ID01','',()),
             ('auth_info',(0,1),(),_T('Password required by server to authorize the transfer'),'mypassword','',()),
             ],_T("""
 The EPP 'create_keyset' command is used to create a record of the KEYSET.
 """),(
-                'create_keyset keysid:01 ((1 1 1 499602d2), (2 1 1 499602d2 1)) cid:regid passw',
+                'create_keyset KEYSID:01 ((1 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a41), (2 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a42 1)) ((257 3 5 unittest/dnskey.pub)) CID:ID01 passw',
             )),
         #----------------------------------------------------
         'delete_contact': (1,[
@@ -399,6 +399,12 @@ and maximum allowable period is defined in the Communication rules."""),('renew_
                     ('digest',(1,1),(),_T('Digest'),'499602d2','',()),
                     ('max_sig_life',(0,1),(),_T('Max.Sig.Life'),'1','',()),
                 )),
+                ('dnskey',(1,9),(),_T('LIST of keys'),'','',(
+                    ('flags',(1,1),(),_T('Flags'),'257','',()),
+                    ('protocol',(1,1),(),_T('Protocol'),'3','',()),
+                    ('alg',(1,1),(),_T('Algorithm'),'5','',()),
+                    ('pub_key',(1,1),(),_T('Public key filename path'),'unittest/dnskey.pub', '', ()),
+                )),                
                 ('tech',(0,UNBOUNDED),(),_T('Technical contact ID'),'CID:ID01','',()),
             )),
             ('rem',(0,1),(),_T('Remove values'),'','',(
@@ -413,7 +419,7 @@ and maximum allowable period is defined in the Communication rules."""),('renew_
             )),
             ('auth_info',(0,1),(),_T('Password required by server to authorize the transfer'),'new_password','',()),
             ],_T("""The EPP 'update_keyset' command is used to update values in the KEYSET."""),(
-                "update_keyset keysid:k01 (((1 1 1 499602d2), (2 1 1 499602d2 1))) (((1 1 1 499602d2), (2 1 1 499602d2 1)) (cid:tech1, cid:tech2, cid:tech3)) password", 
+            "update_keyset KEYSID:01 (((1 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a41), (2 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a42 1)), ((257 3 5 unittest/dnskey.pub))) (((1 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a41), (2 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a42 1)) (cid:tech1, cid:tech2, cid:tech3)) password", 
             )),
         #----------------------------------------------------
         'sendauthinfo_contact': (1,[
@@ -680,6 +686,7 @@ def make_sort_by_names():
          ('status',      1,  _T('Status message')),
          ('tech',        1,  _T('Technical contact')),
          ('ds',          1,  _T('DS records')),
+         ('dnskey',      1,  _T('DNSKEY records')),
          ('reportlevel', 1,  _T('Report level')),
          )),
          

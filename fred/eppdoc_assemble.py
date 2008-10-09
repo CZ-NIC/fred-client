@@ -28,7 +28,6 @@ import time
 import ConfigParser
 import cmd_parser
 import session_base
-import base64
 
 from translate import encoding
 from eppdoc import Message as MessageBase, SCHEMA_PREFIX
@@ -965,7 +964,7 @@ class Message(MessageBase):
         data.append((element%parent_prefix, '%s:%s'%(prefix, make_camell(key)), certificate))
 
     def load_certificate(self, filename):
-        "Load file and encode it into base64"
+        "Load file"
         # create absolute path
         if filename[0] != '/':
             filename = os.path.join(os.getcwd(), filename)
@@ -974,8 +973,8 @@ class Message(MessageBase):
             body = open(filename, 'rb').read()
         except IOError, e:
             self.errors.append((0, 'certificate', 'IOError: %s'%e))
-            return ''
-        return base64.b64encode(body)
+            body =  ''
+        return body
 
     
     def __assemble_create_anyset__(self, prefix, *params):
@@ -1166,6 +1165,9 @@ class Message(MessageBase):
             if __has_key_dict__(dct_add, 'ds'):
                 for ds in dct_add['ds']:
                     self.__append_keyset__('add', data, ds, prefix)
+            if __has_key_dict__(dct_add, 'dnskey'):
+                for ds in dct_add['dnskey']:
+                    self.__append_dnskey__('add', data, ds, prefix)
                 
             self.__append_values__(data, dct_add, 'tech', '%s:add'%prefix, '%s:tech'%prefix)
 

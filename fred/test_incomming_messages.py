@@ -711,7 +711,7 @@ data = ( # 0
 """), 
     ('keyset:info', """<?xml version='1.0' encoding='utf-8' standalone="no"?>
 <epp xmlns='urn:ietf:params:xml:ns:epp-1.0' 
-    xmlns:keyset='http://www.nic.cz/xml/epp/keyset-1.0' 
+    xmlns:keyset='http://www.nic.cz/xml/epp/keyset-1.2' 
     xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' 
     xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
   <response>
@@ -719,8 +719,8 @@ data = ( # 0
       <msg lang='cs'>Příkaz úspěšně proveden</msg>
     </result>
     <resData>
-      <keyset:infData xsi:schemaLocation='http://www.nic.cz/xml/epp/keyset-1.0
-        keyset-1.0.xsd'>
+      <keyset:infData xsi:schemaLocation='http://www.nic.cz/xml/epp/keyset-1.2
+        keyset-1.2.xsd'>
         <keyset:id>one</keyset:id>
         <keyset:roid>N0000000059-CZ</keyset:roid>
         <keyset:status s='ok'>NSSET is OK</keyset:status>
@@ -732,15 +732,83 @@ data = ( # 0
           <keyset:keyTag>1</keyset:keyTag>
           <keyset:alg>1</keyset:alg>
           <keyset:digestType>1</keyset:digestType>
-          <keyset:digest>aaa12409aaaaa098</keyset:digest>
+          <keyset:digest>1539349af5da340c2d3dd6ea6b2676bedb596a41</keyset:digest>
           <keyset:maxSigLife>100</keyset:maxSigLife>
         </keyset:ds>
         <keyset:ds>
           <keyset:keyTag>2</keyset:keyTag>
           <keyset:alg>2</keyset:alg>
           <keyset:digestType>2</keyset:digestType>
-          <keyset:digest>aaa12409aaaaa098</keyset:digest>
+          <keyset:digest>1539349af5da340c2d3dd6ea6b2676bedb596a42</keyset:digest>
         </keyset:ds>
+        <keyset:tech>NECOCZ-PETR</keyset:tech>
+      </keyset:infData>
+    </resData>
+    <trID>
+      <clTRID>ljmm002#06-07-17at10:36:13</clTRID>
+      <svTRID>fred-0000011281</svTRID>
+    </trID>
+  </response>
+</epp>
+    """),
+    ('keyset:info', """<?xml version='1.0' encoding='utf-8' standalone="no"?>
+<epp xmlns='urn:ietf:params:xml:ns:epp-1.0' 
+    xmlns:keyset='http://www.nic.cz/xml/epp/keyset-1.2' 
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' 
+    xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
+  <response>
+    <result code='1000'>
+      <msg lang='cs'>Příkaz úspěšně proveden</msg>
+    </result>
+    <resData>
+      <keyset:infData xsi:schemaLocation='http://www.nic.cz/xml/epp/keyset-1.2
+        keyset-1.2.xsd'>
+        <keyset:id>one</keyset:id>
+        <keyset:roid>N0000000060-CZ</keyset:roid>
+        <keyset:status s='ok'>NSSET is OK</keyset:status>
+        <keyset:clID>REG-LRR</keyset:clID>
+        <keyset:crDate>2006-06-30T09:09:57.0Z</keyset:crDate>
+        <keyset:upID>REG-LRR</keyset:upID>
+        <keyset:authInfo>heslo</keyset:authInfo>
+        <keyset:ds>
+          <keyset:keyTag>1</keyset:keyTag>
+          <keyset:alg>1</keyset:alg>
+          <keyset:digestType>1</keyset:digestType>
+          <keyset:digest>1539349af5da340c2d3dd6ea6b2676bedb596a41</keyset:digest>
+          <keyset:maxSigLife>100</keyset:maxSigLife>
+        </keyset:ds>
+        <keyset:ds>
+          <keyset:keyTag>2</keyset:keyTag>
+          <keyset:alg>2</keyset:alg>
+          <keyset:digestType>2</keyset:digestType>
+          <keyset:digest>1539349af5da340c2d3dd6ea6b2676bedb596a42</keyset:digest>
+        </keyset:ds>
+        <keyset:dnskey>
+          <keyset:flags>257</keyset:flags>
+          <keyset:protocol>3</keyset:protocol>
+          <keyset:alg>5</keyset:alg>
+          <keyset:pubKey>AwEAAdo9fGLzCyxz1yTlsHCT7JpHrg0q/yOlvDNg39n/gAUzg6H/5X9p
+jW6mpecJuZirIcPcRw5E7E8uR8g2ztH4uztoc/7ss01s3rTnEgXfilbd
+psEdXEuxIfhq+w6zL6PvCcE3qRSzsrc2//x/SXjWp8yeT4YY3W3kvB4Z
+g5ld0a8bAHBYo4ZY9x7a3qnqOhqunXSG8EfRPD9koUMgWCjdnFNR89L1
+5Bkzh+q1J7phTHIY5akKf3YnIB/5BnKmGBC7DimK4uSBLiBA3DLxHnvL
+ffMT5XtKKHuQ/uZ4IxHWqR2cpHz/6e2WaQvOVILwd0gk9lTCildBGjC7
+eNxOMnitkuM=
+</keyset:pubKey>
+        </keyset:dnskey>
+        <keyset:dnskey>
+          <keyset:flags>127</keyset:flags>
+          <keyset:protocol>2</keyset:protocol>
+          <keyset:alg>4</keyset:alg>
+          <keyset:pubKey>AwEAAdo9fGLzCyxz1yTlsHCT7JpHrg0q/yOlvDNg39n/gAUzg6H/5X9p
+jW6mpecJuZirIcPcRw5E7E8uR8g2ztH4uztoc/7ss01s3rTnEgXfilbd
+psEdXEuxIfhq+w6zL6PvCcE3qRSzsrc2//x/SXjWp8yeT4YY3W3kvB4Z
+g5ld0a8bAHBYo4ZY9x7a3qnqOhqunXSG8EfRPD9koUMgWCjdnFNR89L1
+5Bkzh+q1J7phTHIY5akKf3YnIB/5BnKmGBC7DimK4uSBLiBA3DLxHnvL
+ffMT5XtKKHuQ/uZ4IxHWqR2cpHz/6e2WaQvOVILwd0gk9lTCildBGjC7
+eNxOMnitkuM=
+</keyset:pubKey>
+        </keyset:dnskey>
         <keyset:tech>NECOCZ-PETR</keyset:tech>
       </keyset:infData>
     </resData>

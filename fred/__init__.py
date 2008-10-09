@@ -789,6 +789,11 @@ OPTIONS:
       digest_type (required) Digest Type
       digest (required)    Digest
       max_sig_life         Max.Sig.Life
+    dnskey (required)      LIST of keys (list with max 9 items.)
+      flags (required)     Flags
+      protocol (required)  Protocol
+      alg (required)       Algorithm
+      pub_key (required)   Public key filename path
     tech                   Technical contact ID (unbounded list)
   auth_info                Password required by server to authorize the transfer
   cltrid                   Client transaction ID"""
