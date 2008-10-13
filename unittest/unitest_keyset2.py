@@ -145,52 +145,52 @@ class Test(unittest.TestCase):
     def test_040(self):
         '4. Zalozeni keysetu'
         n = KEYSET
-        epp_cli.create_keyset(n['id'], n['ds'], n['dnskey'], n['tech'], n['auth_info'])
+        epp_cli.create_keyset(n['id'], n['ds'], n['dnskey'], None, n['tech'], n['auth_info'])
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_041(self):
         '4.1 pokus o zalozeni keysetu s neplatnym ds-zaznamem (spatna hodnota digest typu)'
-        epp_cli.create_keyset(FRED_KEYSET2, BAD_DS_DIGEST_TYPE, n['dnskey'], KEYSET['tech'], KEYSET['auth_info'])
+        epp_cli.create_keyset(FRED_KEYSET2, BAD_DS_DIGEST_TYPE, n['dnskey'], None, KEYSET['tech'], KEYSET['auth_info'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_042(self):
         '4.2 pokus o zalozeni keysetu s neplatnym ds-zaznamem (digest prilis kratky - md5)'
-        epp_cli.create_keyset(FRED_KEYSET2, BAD_DS_DIGEST_LEN_1, n['dnskey'], KEYSET['tech'], KEYSET['auth_info'])
+        epp_cli.create_keyset(FRED_KEYSET2, BAD_DS_DIGEST_LEN_1, n['dnskey'], None, KEYSET['tech'], KEYSET['auth_info'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_043(self):
         '4.3 pokus o zalozeni keysetu s neplatnym ds-zaznamem (digest prilis dlouhy - sha256)'
-        epp_cli.create_keyset(FRED_KEYSET2, BAD_DS_DIGEST_LEN_2, n['dnskey'], KEYSET['tech'], KEYSET['auth_info'])
+        epp_cli.create_keyset(FRED_KEYSET2, BAD_DS_DIGEST_LEN_2, n['dnskey'], None, KEYSET['tech'], KEYSET['auth_info'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_044(self):
         '4.4 zalozeni noveho keysetu s ds-zaznamem, ktery jiz v databazi existuje'
-        epp_cli.create_keyset(FRED_KEYSET3, KEYSET['ds'], n['dnskey'], [FRED_CONTACT3], KEYSET['auth_info'])
+        epp_cli.create_keyset(FRED_KEYSET3, KEYSET['ds'], n['dnskey'], None, [FRED_CONTACT3], KEYSET['auth_info'])
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_045(self):
         '4.5 pokus zalozeni noveho keysetu se dvema stejnyma ds-zaznamama'
-        epp_cli.create_keyset(FRED_KEYSET2, BAD_DS_SAME, n['dnskey'], KEYSET['tech'], KEYSET['auth_info'])
+        epp_cli.create_keyset(FRED_KEYSET2, BAD_DS_SAME, n['dnskey'], None, KEYSET['tech'], KEYSET['auth_info'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_046(self):
         '4.6 pokus zalozeni keysetu bez administratorskeho kontaktu'
-        epp_cli.create_keyset(FRED_KEYSET4, DS_OK, n['dnskey'], [""], KEYSET['auth_info'])
+        epp_cli.create_keyset(FRED_KEYSET4, DS_OK, n['dnskey'], None, [""], KEYSET['auth_info'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_047(self):
         '4.7 pokus o zalozeni keysetu s neexistujicim administratorskym kontaktem'
-        epp_cli.create_keyset(FRED_KEYSET4, DS_OK, n['dnskey'], ["CID:1234"], KEYSET['auth_info'])
+        epp_cli.create_keyset(FRED_KEYSET4, DS_OK, n['dnskey'], None, ["CID:1234"], KEYSET['auth_info'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_048(self):
         '4.8 pokus o zalozeni keysetu se dvama stejnymi administratorskymi kontakty'
-        epp_cli.create_keyset(FRED_KEYSET3, DS_OK2, n['dnskey'], [FRED_CONTACT11, FRED_CONTACT11], KEYSET['auth_info'])
+        epp_cli.create_keyset(FRED_KEYSET3, DS_OK2, n['dnskey'], None, [FRED_CONTACT11, FRED_CONTACT11], KEYSET['auth_info'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_049(self):
         '4.9 zalozeni keyset s mnoha adminiatratorskymi kontakty'
-        epp_cli.create_keyset(FRED_KEYSET5, DS_OK2, n['dnskey'], A_LOT_OF_CONTACTS, KEYSET['auth_info'])
+        epp_cli.create_keyset(FRED_KEYSET5, DS_OK2, n['dnskey'], None, A_LOT_OF_CONTACTS, KEYSET['auth_info'])
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_050(self):
@@ -275,7 +275,7 @@ class Test(unittest.TestCase):
         
     def test_098(self):
         '10.0 zalozeni keysetu'
-        epp_cli.create_keyset(FRED_KEYSET4, DS_OK, n['dnskey'], FRED_CONTACT3, KEYSET['auth_info'])
+        epp_cli.create_keyset(FRED_KEYSET4, DS_OK, n['dnskey'], None, FRED_CONTACT3, KEYSET['auth_info'])
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_099(self):

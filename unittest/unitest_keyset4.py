@@ -101,25 +101,25 @@ class Test(unittest.TestCase):
 
     def test_040(self):
         '4. Zalozeni validniho keysetu'
-        epp_cli.create_keyset(FRED_KEYSET1, DS, n['dnskey'], KEYSET['tech'], KEYSET['auth_info'])
+        epp_cli.create_keyset(FRED_KEYSET1, DS, n['dnskey'], None, KEYSET['tech'], KEYSET['auth_info'])
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_041(self):
         '4.1 zalozeni validniho keysetu (1.ds-zaznam v poradku, 2.ds-zaznam jiz existuje v databazi)'
-        epp_cli.create_keyset(FRED_KEYSET3, DS_DUP, n['dnskey'], KEYSET['tech'], KEYSET['auth_info'])
+        epp_cli.create_keyset(FRED_KEYSET3, DS_DUP, n['dnskey'], None, KEYSET['tech'], KEYSET['auth_info'])
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_042(self):
         '4.2 Pokus o zalozeni nevalidniho keysetu (1.ds-zaznam v poradku, 2.ds-zaznam spatny: spatny typ digest-u)'
-        epp_cli.create_keyset(FRED_KEYSET2, DS_BAD_TYPE, n['dnskey'], KEYSET['tech'], KEYSET['auth_info'])
+        epp_cli.create_keyset(FRED_KEYSET2, DS_BAD_TYPE, n['dnskey'], None, KEYSET['tech'], KEYSET['auth_info'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
     def test_043(self):
         '4.3 Pokus o zalozeni nevalidniho keysetu (1.ds-zaznam v poradku, 2.ds-zaznam spatny: digest prilis kratky (md5))'
-        epp_cli.create_keyset(FRED_KEYSET2, DS_BAD_DIGEST_1, n['dnskey'], KEYSET['tech'], KEYSET['auth_info'])
+        epp_cli.create_keyset(FRED_KEYSET2, DS_BAD_DIGEST_1, n['dnskey'], None, KEYSET['tech'], KEYSET['auth_info'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
     def test_044(self):
         '4.4 Pokus o zalozeni nevalidniho keysetu (1.ds-zaznam v poradku, 2.ds-zaznam spatny: digest prilis dlouhy (sha256))'
-        epp_cli.create_keyset(FRED_KEYSET2, DS_BAD_DIGEST_2, n['dnskey'], KEYSET['tech'], KEYSET['auth_info'])
+        epp_cli.create_keyset(FRED_KEYSET2, DS_BAD_DIGEST_2, n['dnskey'], None, KEYSET['tech'], KEYSET['auth_info'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_051(self):

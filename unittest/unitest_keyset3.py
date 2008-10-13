@@ -84,7 +84,7 @@ class Test(unittest.TestCase):
     def test_040(self):
         '4. Zalozeni keysetu'
         n = KEYSET
-        epp_cli.create_keyset(n['id'], n['ds'], n['dnskey'], n['tech'], n['auth_info'])
+        epp_cli.create_keyset(n['id'], n['ds'], n['dnskey'], None, n['tech'], n['auth_info'])
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_050(self):

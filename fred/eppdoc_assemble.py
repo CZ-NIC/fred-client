@@ -956,16 +956,18 @@ class Message(MessageBase):
         element = '%s:dnskey'
         parent_prefix = prefix
         self.__append_schema_location__(tag_name, data, element, prefix, change_namespace)
-        
-        # alternate input
-        flags = dct_ks['flags'][0]
-        if not re.match('\d+$', flags):
-            # flags can be a filenamepath of dnskey
-            # load data from this file into dct_ks
-            self.parse_certificate(dct_ks, flags)
-        
         for key in ('flags', 'protocol', 'alg', 'pub_key'):
             data.append((element%parent_prefix, '%s:%s'%(prefix, make_camell(key)), dct_ks[key][0]))
+
+    def __append_dnskey_fromfile__(self, tag_name, data, filename, prefix, change_namespace=None):
+        "Load dnskey from filename"
+        element = '%s:dnskey'
+        parent_prefix = prefix
+        self.__append_schema_location__(tag_name, data, element, prefix, change_namespace)
+        dct_ks = {}
+        if self.parse_certificate(dct_ks, filename):
+            for key in ('flags', 'protocol', 'alg', 'pub_key'):
+                data.append((element%parent_prefix, '%s:%s'%(prefix, make_camell(key)), dct_ks[key][0]))
 
     def load_certificate(self, filename):
         "Load file"
@@ -987,16 +989,17 @@ class Message(MessageBase):
         parts = re.split('\s+', self.load_certificate(filename))
         if len(parts) < 7:
             self.errors.append((0, 'certificate', 'Invalid DNSKEY file format.'))
-            return # invalid format
+            return False # invalid format
         if parts[1] != 'IN' and parts[2] != 'DNSKEY':
             self.errors.append((0, 'certificate', 'Invalid DNSKEY data format.'))
-            return
+            return False
         # fill dict by data from file
         dct_ks['flags'] = [parts[3]]
         dct_ks['protocol'] = [parts[4]]
         dct_ks['alg'] = [parts[5]]
         dct_ks['pub_key'] = ['\n'.join(parts[6:])]
-        
+        return True
+
     
     def __assemble_create_anyset__(self, prefix, *params):
         "Assemble XML EPP command."
@@ -1015,6 +1018,7 @@ class Message(MessageBase):
         if __has_key__(dct,'dns'):
             for dns in dct['dns']:
                 self.__append_nsset__('create', data, dns)
+        
         # for keyset only
         if __has_key__(dct,'ds'):
             for ds in dct['ds']:
@@ -1022,6 +1026,10 @@ class Message(MessageBase):
         if __has_key__(dct,'dnskey'):
             for ds in dct['dnskey']:
                 self.__append_dnskey__('create', data, ds, prefix)
+        if __has_key__(dct,'dnskeyref'):
+            for ds in dct['dnskeyref']:
+                self.__append_dnskey_fromfile__('create', data, ds, prefix)
+        
         # for nsset only
         if __has_key__(dct,'tech'):
             self.__append_values__(data, dct, 'tech', '%s:create'%prefix, '%s:tech'%prefix)
@@ -1175,6 +1183,7 @@ class Message(MessageBase):
         if __has_key_dict__(dct,'add'):
             data.append(('%s:update'%prefix,'%s:add'%prefix))
             dct_add = dct['add'][0]
+            
             # for nsset only
             if __has_key_dict__(dct_add,'dns'):
                 for dct_dns in dct_add['dns']:
@@ -1182,6 +1191,7 @@ class Message(MessageBase):
                     data.append(('%s:add'%prefix,'%s:ns'%prefix))
                     data.append(('%s:ns'%prefix,'%s:name'%prefix,dct_dns['name'][0]))
                     self.__append_values__(data, dct_dns, 'addr', '%s:ns'%prefix, '%s:addr'%prefix)
+            
             # for keyset only
             if __has_key_dict__(dct_add, 'ds'):
                 for ds in dct_add['ds']:
@@ -1189,18 +1199,29 @@ class Message(MessageBase):
             if __has_key_dict__(dct_add, 'dnskey'):
                 for ds in dct_add['dnskey']:
                     self.__append_dnskey__('add', data, ds, prefix)
+            if __has_key_dict__(dct_add, 'dnskeyref'):
+                for ds in dct_add['dnskeyref']:
+                    self.__append_dnskey_fromfile__('add', data, ds, prefix)
                 
             self.__append_values__(data, dct_add, 'tech', '%s:add'%prefix, '%s:tech'%prefix)
 
         if __has_key_dict__(dct,'rem'):
             data.append(('%s:update'%prefix,'%s:rem'%prefix))
             dct_rem = dct['rem'][0]
+            
+            # for keyset only
             if __has_key_dict__(dct_rem, 'ds'):
-                # for keyset only
                 for ds in dct_rem['ds']:
                     self.__append_keyset__('rem', data, ds, prefix)
-            else:
-                # for nsset only
+            if __has_key_dict__(dct_rem, 'dnskey'):
+                for ds in dct_rem['dnskey']:
+                    self.__append_dnskey__('rem', data, ds, prefix)
+            if __has_key_dict__(dct_rem, 'dnskeyref'):
+                for ds in dct_rem['dnskeyref']:
+                    self.__append_dnskey_fromfile__('rem', data, ds, prefix)
+            
+            # for nsset only
+            if __has_key_dict__(dct_rem, 'name'):
                 self.__append_values__(data, dct_rem, 'name', '%s:rem'%prefix, '%s:name'%prefix)
             self.__append_values__(data, dct_rem, 'tech', '%s:rem'%prefix, '%s:tech'%prefix)
 

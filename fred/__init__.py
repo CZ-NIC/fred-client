@@ -295,7 +295,7 @@ OPTIONS:
             'dns':dns, 'tech':tech, 'reportlevel':reportlevel, 'cltrid':cltrid})
 
 
-    def create_keyset(self, keyset_id, ds, dnskey, tech, auth_info=None, cltrid=None):
+    def create_keyset(self, keyset_id, ds, dnskey, dnskeyref, tech, auth_info=None, cltrid=None):
         """DESCRIPTION:
   The EPP 'create_keyset' command is used to create a record of the KEYSET.
 
@@ -310,16 +310,17 @@ OPTIONS:
     digest_type (required) Digest Type
     digest (required)      Digest
     max_sig_life           Max.Sig.Life
-  dnskey (required)        LIST of keys (list with max 9 items.)
+  dnskey                   LIST of keys (list with max 9 items.)
     flags (required)       Flags
     protocol (required)    Protocol
     alg (required)         Algorithm
-    pub_key (required)      Public key filename path
+    pub_key (required)     Public key code
+  dnskeyref                LIST of filenames (list with max 9 items.)
   tech (required)          Technical contact (unbounded list)
   auth_info                Password required by server to authorize the transfer
   cltrid                   Client transaction ID"""
         return self._epp.api_command('create_keyset',{'id':keyset_id, 'auth_info':auth_info,
-            'ds':ds, 'dnskey':dnskey, 'tech':tech, 'cltrid':cltrid})
+            'ds':ds, 'dnskey':dnskey, 'dnskeyref':dnskeyref, 'tech':tech, 'cltrid':cltrid})
 
 
     def delete_contact(self, contact_id, cltrid=None):
@@ -775,12 +776,18 @@ SYNTAX:
 OPTIONS:
   id (required)            KEYSET ID
   add                      Add values
-    ds (required)          LIST of DS records (list with max 9 items.)
+    ds                     LIST of DS records (list with max 9 items.)
       key_tag (required)   Key tag
       alg (required)       Algorithm
       digest_type (required) Digest Type
       digest (required)    Digest
       max_sig_life         Max.Sig.Life
+    dnskey                 LIST of keys (list with max 9 items.)
+      flags (required)     Flags
+      protocol (required)  Protocol
+      alg (required)       Algorithm
+      pub_key (required)   Public key code
+    dnskeyref              LIST of filenames (list with max 9 items.)
     tech                   Technical contact ID (unbounded list)
   rem                      Remove values
     ds                     LIST of DS records (list with max 9 items.)
@@ -789,11 +796,12 @@ OPTIONS:
       digest_type (required) Digest Type
       digest (required)    Digest
       max_sig_life         Max.Sig.Life
-    dnskey (required)      LIST of keys (list with max 9 items.)
+    dnskey                 LIST of keys (list with max 9 items.)
       flags (required)     Flags
       protocol (required)  Protocol
       alg (required)       Algorithm
-      pub_key (required)   Public key filename path
+      pub_key (required)   Public key code
+    dnskeyref              LIST of filenames (list with max 9 items.)
     tech                   Technical contact ID (unbounded list)
   auth_info                Password required by server to authorize the transfer
   cltrid                   Client transaction ID"""
