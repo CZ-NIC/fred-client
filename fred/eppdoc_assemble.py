@@ -956,14 +956,16 @@ class Message(MessageBase):
         element = '%s:dnskey'
         parent_prefix = prefix
         self.__append_schema_location__(tag_name, data, element, prefix, change_namespace)
-        for key in ('flags', 'protocol', 'alg'):
+        
+        # alternate input
+        flags = dct_ks['flags'][0]
+        if not re.match('\d+$', flags):
+            # flags can be a filenamepath of dnskey
+            # load data from this file into dct_ks
+            self.parse_certificate(dct_ks, flags)
+        
+        for key in ('flags', 'protocol', 'alg', 'pub_key'):
             data.append((element%parent_prefix, '%s:%s'%(prefix, make_camell(key)), dct_ks[key][0]))
-        # pubKey
-        key = 'pub_key'
-        # load from file
-        #certificate = self.load_certificate(dct_ks[key][0])
-        certificate = dct_ks[key][0]
-        data.append((element%parent_prefix, '%s:%s'%(prefix, make_camell(key)), certificate))
 
     def load_certificate(self, filename):
         "Load file"
@@ -977,7 +979,24 @@ class Message(MessageBase):
             self.errors.append((0, 'certificate', 'IOError: %s'%e))
             body =  ''
         return body
-
+    
+    def parse_certificate(self, dct_ks, filename):
+        "Parse certificate file"
+        # data format:
+        # cz. IN DNSKEY 256 3 5 BASE64CODE BASE64CODE BASE64CODE...
+        parts = re.split('\s+', self.load_certificate(filename))
+        if len(parts) < 7:
+            self.errors.append((0, 'certificate', 'Invalid DNSKEY file format.'))
+            return # invalid format
+        if parts[1] != 'IN' and parts[2] != 'DNSKEY':
+            self.errors.append((0, 'certificate', 'Invalid DNSKEY data format.'))
+            return
+        # fill dict by data from file
+        dct_ks['flags'] = [parts[3]]
+        dct_ks['protocol'] = [parts[4]]
+        dct_ks['alg'] = [parts[5]]
+        dct_ks['pub_key'] = ['\n'.join(parts[6:])]
+        
     
     def __assemble_create_anyset__(self, prefix, *params):
         "Assemble XML EPP command."

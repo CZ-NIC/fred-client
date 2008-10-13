@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-01 11:25+0200\n"
+"POT-Creation-Date: 2008-10-13 15:30+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Zdeněk Böhm <zdenek.bohm@nic.cz>\n"
 "Language-Team: CS <ccreg-devel@lists.nic.cz>\n"
@@ -52,40 +52,40 @@ msgstr "Soket typu IPv6 (AF_INET6) není v modulu socket dostupný."
 msgid "Used socket type"
 msgstr "Použitý typ soketu"
 
-#: client_socket.py:120
+#: client_socket.py:121
 msgid "Connecting to"
 msgstr "Připojuji se k"
 
-#: client_socket.py:124
+#: client_socket.py:125
 msgid "I cannot connect to the server"
 msgstr "Nemohu se připojit k serveru."
 
-#: client_socket.py:127 client_socket.py:160 client_socket.py:190
-#: client_socket.py:223 client_socket.py:255 client_socket.py:267
+#: client_socket.py:128 client_socket.py:161 client_socket.py:191
+#: client_socket.py:224 client_socket.py:256 client_socket.py:268
 msgid "Interrupted by user"
 msgstr "Přerušeno uživatelem"
 
-#: client_socket.py:132
+#: client_socket.py:133
 msgid "Connection established."
 msgstr "Spojení bylo navázáno."
 
-#: client_socket.py:133
+#: client_socket.py:134
 msgid "Try to open SSL layer..."
 msgstr "Otevírám SSL vrstvu..."
 
-#: client_socket.py:142
+#: client_socket.py:143
 msgid "Certificates missing. Trying to connect without SSL!"
 msgstr "Certifikát chybí. Zkouším spojení bez SSL!"
 
-#: client_socket.py:149
+#: client_socket.py:150
 msgid "Certificate not signed by verified certificate authority."
 msgstr "Použitý certifikát není podepsán uznávanou certifikační autoritou."
 
-#: client_socket.py:150
+#: client_socket.py:151
 msgid "Server configuration is not valid. Contact administrator."
 msgstr "Server není správně nakonfigurován. Obraťte se na správce serveru."
 
-#: client_socket.py:151
+#: client_socket.py:152
 msgid ""
 "If this client runs under MS Windows and timeout is not zero, it is probably "
 "SLL bug! Set timeout back to zero."
@@ -93,11 +93,11 @@ msgstr ""
 "Jestliže tento klient běží v MS Windows a timeout není nula, tak se "
 "pravděpodobně jedná o SSL bug! Nastavte timeout zpět na nulu."
 
-#: client_socket.py:162
+#: client_socket.py:163
 msgid "SSL layer opened."
 msgstr "SLL vrstva byla aktivována."
 
-#: client_socket.py:226
+#: client_socket.py:227
 msgid "Server returned an empty message."
 msgstr "Server nevrátil žádnou odpověď."
 
@@ -215,12 +215,12 @@ msgstr ""
 msgid "More details in verbose 2 or higher."
 msgstr "Více detailů je ve verbose 2 nebo vyšším."
 
-#: console.py:193 session_receiver.py:682
+#: console.py:193 session_receiver.py:700
 msgid "Command data XML document failed to validate."
 msgstr "XML dokument příkazu se nepodařilo zvalidovat."
 
-#: console.py:196 session_command.py:586 session_transfer.py:294
-#: session_transfer.py:321
+#: console.py:196 session_command.py:587 session_transfer.py:304
+#: session_transfer.py:331
 msgid "You are not connected."
 msgstr "Nejste připojeni."
 
@@ -232,7 +232,7 @@ msgstr "Opravdu chcete odeslat tento poříkaz na server?"
 msgid "Try to automaticly reconnect - send login."
 msgstr "Zkouším automatické obnovení spojení - posílám login."
 
-#: console.py:230 session_receiver.py:688 session_receiver.py:692
+#: console.py:230 session_receiver.py:706 session_receiver.py:710
 msgid "Server answer XML document failed to validate."
 msgstr "Odpověď serveru v XML dokumentu se nepodařilo zvalidovat."
 
@@ -245,22 +245,22 @@ msgstr ""
 "Použití: %s [parametry...]\n"
 "Více informací získáze zadáním '%s --help'."
 
-#: console.py:279 creator.py:104 sender.py:165 ../fred-client:52
+#: console.py:279 creator.py:104 sender.py:165 ../fred-client:58
 msgid "Usage"
 msgstr "Použití"
 
-#: console.py:281 creator.py:113 sender.py:178 ../fred-client:60
+#: console.py:281 creator.py:113 sender.py:178 ../fred-client:66
 msgid "See README for more information."
 msgstr "Více informací najdete v README."
 
-#: creator.py:46 eppdoc_assemble.py:452 session_command.py:403
-#: session_command.py:405
+#: creator.py:46 eppdoc_assemble.py:453 session_command.py:404
+#: session_command.py:406
 msgid "Unknown command"
 msgstr "Neznámý příkaz"
 
-#: creator.py:59 session_base.py:280 session_command.py:398
-#: session_command.py:401 session_command.py:403 session_command.py:405
-#: session_transfer.py:496
+#: creator.py:59 session_base.py:284 session_command.py:399
+#: session_command.py:402 session_command.py:404 session_command.py:406
+#: session_transfer.py:506
 msgid "ERROR"
 msgstr "CHYBA"
 
@@ -268,23 +268,23 @@ msgstr "CHYBA"
 msgid "Create EPP XML document from command line parameters."
 msgstr "Vytvoří EPP XML dokument ze zadaných parametrů."
 
-#: creator.py:106 sender.py:170 session_command.py:370
+#: creator.py:106 sender.py:170 session_command.py:371
 msgid "EXAMPLES"
 msgstr "PŘÍKLADY"
 
-#: eppdoc_assemble.py:57
+#: eppdoc_assemble.py:58
 msgid "optional"
 msgstr "nepovinný"
 
-#: eppdoc_assemble.py:57 eppdoc_assemble.py:70 session_command.py:297
+#: eppdoc_assemble.py:58 eppdoc_assemble.py:71 session_command.py:298
 msgid "required"
 msgstr "povinný"
 
-#: eppdoc_assemble.py:57
+#: eppdoc_assemble.py:58
 msgid "required only if part is set"
 msgstr "povinný jen je-li tato část zadána"
 
-#: eppdoc_assemble.py:75
+#: eppdoc_assemble.py:76
 #, python-format
 msgid "minimum %d item"
 msgid_plural "minimum %d items"
@@ -292,11 +292,11 @@ msgstr[0] "minimum je %d položka"
 msgstr[1] "minimum jsou %d položky"
 msgstr[2] "minimum je %d položek"
 
-#: eppdoc_assemble.py:79
+#: eppdoc_assemble.py:80
 msgid "unbounded list"
 msgstr "libovolně velký seznam"
 
-#: eppdoc_assemble.py:81
+#: eppdoc_assemble.py:82
 #, python-format
 msgid "list with max %d item."
 msgid_plural "list with max %d items."
@@ -304,102 +304,102 @@ msgstr[0] "seznam o maximálně %d položce."
 msgstr[1] "seznam o maximálně %d položkách."
 msgstr[2] "seznam o maximálně %d položkách."
 
-#: eppdoc_assemble.py:125
+#: eppdoc_assemble.py:126
 msgid "other_options"
 msgstr "další_parametry"
 
-#: eppdoc_assemble.py:129
+#: eppdoc_assemble.py:130
 msgid "Unknown EPP command. Select one from EPP commands list (Type help)."
 msgstr ""
 "Neznámý EPP příkaz. Vyberte jeden ze seznamu EPP příkazů (zadejte help)."
 
-#: eppdoc_assemble.py:136
+#: eppdoc_assemble.py:137
 msgid "Try"
 msgstr "Zkuste"
 
-#: eppdoc_assemble.py:167
+#: eppdoc_assemble.py:168
 msgid "Invalid parameter value."
 msgstr "Neplatná hodnota parametru."
 
-#: eppdoc_assemble.py:170
+#: eppdoc_assemble.py:171
 msgid "Invalid parameter"
 msgstr "Neplatný parametr"
 
-#: eppdoc_assemble.py:171
+#: eppdoc_assemble.py:172
 msgid "Corrupted value"
 msgstr "Neplatná hodnota"
 
-#: eppdoc_assemble.py:172
+#: eppdoc_assemble.py:173
 msgid "Correct format is"
 msgstr "Správný formát je"
 
-#: eppdoc_assemble.py:173
+#: eppdoc_assemble.py:174
 msgid "For example"
 msgstr "Například"
 
-#: eppdoc_assemble.py:185
+#: eppdoc_assemble.py:186
 msgid "poll req doesn't have msg_id value"
 msgstr "poll req hodnotu msg_id nemá"
 
-#: eppdoc_assemble.py:189
+#: eppdoc_assemble.py:190
 msgid "Command does not have any parameters."
 msgstr "Příkaz nemá žádné parametry."
 
-#: eppdoc_assemble.py:192
+#: eppdoc_assemble.py:193
 msgid "list of values overflow. Maximum is"
 msgstr "Počet položek v seznamu je překročen. Maximum je"
 
-#: eppdoc_assemble.py:202 eppdoc_assemble.py:265
+#: eppdoc_assemble.py:203 eppdoc_assemble.py:266
 #, python-format
 msgid "Value \"%s\" is not allowed. Valid is"
 msgstr "Hodnota \"%s\" není povolena. Platná je"
 
-#: eppdoc_assemble.py:217
+#: eppdoc_assemble.py:218
 msgid "missing"
 msgstr "chybí"
 
-#: eppdoc_assemble.py:238
+#: eppdoc_assemble.py:239
 msgid "Can't finish input, required values must be set. Press Ctrl+C to abort."
 msgstr ""
 "Nemohu dokončit zadání. Požadované hodnoty musí být zadány. Zadání zrušíte "
 "stisknutím Ctrl+C."
 
-#: eppdoc_assemble.py:245 eppdoc_assemble.py:250
+#: eppdoc_assemble.py:246 eppdoc_assemble.py:251
 msgid "Interactive input aborted."
 msgstr "Interaktivní mód byl zrušen."
 
-#: eppdoc_assemble.py:272
+#: eppdoc_assemble.py:273
 msgid "Value is required. It MUST be set."
 msgstr "Údaj je povinný. MUSÍ být zadán."
 
-#: eppdoc_assemble.py:303
+#: eppdoc_assemble.py:304
 msgid "Parameter MUST be a value from following list"
 msgstr "Parametr MUSÍ být hodnota z následujícího seznamu"
 
-#: eppdoc_assemble.py:305
+#: eppdoc_assemble.py:306
 msgid "Example"
 msgstr "Příklad"
 
-#: eppdoc_assemble.py:453
+#: eppdoc_assemble.py:454
 msgid "For more type"
 msgstr "Pro více informací zadejte"
 
-#: eppdoc_assemble.py:458
+#: eppdoc_assemble.py:459
 #, python-format
 msgid ""
 "Command %s does not have any parameters, skipping interactive input mode."
 msgstr "Příkaz %s nemá žádné parametry, interaktivní mód byl zrušen."
 
-#: eppdoc_assemble.py:460
+#: eppdoc_assemble.py:461
 #, python-format
 msgid "Command %s does not have any parameters."
 msgstr "Příkaz %s nemá žádné parametry."
 
-#: eppdoc_assemble.py:469
+#: eppdoc_assemble.py:470
 msgid "Does not have any parameters, skipping interactive input mode."
 msgstr "Žádné parametery nejsou třeba. Interaktivní mód ukončen."
 
-#: eppdoc_assemble.py:471
+#: eppdoc_assemble.py:472
 msgid ""
 "Interactive input mode started. Press Ctrl+C to abort or Ctrl+D to finish "
 "command."
@@ -407,26 +407,26 @@ msgstr ""
 "Start interaktivního módu. Mód zrušíte stisknutím Ctrl+C. Příkaz dokončíte "
 "kombinací Ctrl+D."
 
-#: eppdoc_assemble.py:479
+#: eppdoc_assemble.py:480
 msgid "Interactive input completed. [Press Enter]"
 msgstr "Interaktivní mód ukončen. [stiskněte Enter]"
 
-#: eppdoc_assemble.py:485
+#: eppdoc_assemble.py:486
 msgid "Command has been aborted."
 msgstr "Příkaz byl zrušen."
 
-#: eppdoc_assemble.py:498
+#: eppdoc_assemble.py:499
 msgid "Parameter val_ex_date is required dor ENUM domain."
 msgstr "Parameter val_ex_date je pro ENUM domény povinný."
 
-#: eppdoc_assemble.py:502
+#: eppdoc_assemble.py:503
 msgid "Missing required value."
 msgid_plural "Missing required values."
 msgstr[0] "Chybí povinná hodnota"
 msgstr[1] "Chybí povinné hodnoty"
 msgstr[2] "Chybí povinné hodnoty"
 
-#: eppdoc_assemble.py:1342
+#: eppdoc_assemble.py:1397
 #, python-format
 msgid "Value can be a list of max %d value."
 msgid_plural "Value can be a list of max %d values."
@@ -434,11 +434,11 @@ msgstr[0] "Hodnota může být seznam o max. velikosti %d položky."
 msgstr[1] "Hodnota může být seznam o max. velikosti %d položek."
 msgstr[2] "Hodnota může být seznam o max. velikosti %d položek."
 
-#: eppdoc_assemble.py:1344
+#: eppdoc_assemble.py:1399
 msgid "Value can be an unbouded list of values."
 msgstr "Hodnota může být libovolně velký seznam."
 
-#: eppdoc_assemble.py:1346
+#: eppdoc_assemble.py:1401
 msgid "Minimum is"
 msgstr "Minimum je"
 
@@ -541,9 +541,9 @@ msgstr ""
 "příkazové řádce.Heslo můžete změnit zadáním parametru 'new_password'.\n"
 
 #: eppdoc_client.py:84 eppdoc_client.py:110 eppdoc_client.py:156
-#: eppdoc_client.py:190 eppdoc_client.py:281 eppdoc_client.py:316
-#: eppdoc_client.py:414 eppdoc_client.py:537 eppdoc_client.py:610
-#: eppdoc_client.py:695
+#: eppdoc_client.py:190 eppdoc_client.py:288 eppdoc_client.py:323
+#: eppdoc_client.py:428 eppdoc_client.py:551 eppdoc_client.py:610
+#: eppdoc_client.py:696
 msgid "Contact ID"
 msgstr "Kontakt ID"
 
@@ -560,9 +560,9 @@ msgstr ""
 "jen oprávněnému uživateli."
 
 #: eppdoc_client.py:90 eppdoc_client.py:118 eppdoc_client.py:220
-#: eppdoc_client.py:285 eppdoc_client.py:297 eppdoc_client.py:351
-#: eppdoc_client.py:421 eppdoc_client.py:446 eppdoc_client.py:640
-#: eppdoc_client.py:710 eppdoc_client.py:738
+#: eppdoc_client.py:292 eppdoc_client.py:304 eppdoc_client.py:358
+#: eppdoc_client.py:435 eppdoc_client.py:460 eppdoc_client.py:640
+#: eppdoc_client.py:711 eppdoc_client.py:739
 msgid "Domain name"
 msgstr "Název domény"
 
@@ -581,10 +581,10 @@ msgstr ""
 "i hodnoty 'ID držitele' a 'Administrativní kontakt'."
 
 #: eppdoc_client.py:97 eppdoc_client.py:126 eppdoc_client.py:164
-#: eppdoc_client.py:223 eppdoc_client.py:243 eppdoc_client.py:289
-#: eppdoc_client.py:356 eppdoc_client.py:368 eppdoc_client.py:428
-#: eppdoc_client.py:444 eppdoc_client.py:518 eppdoc_client.py:650
-#: eppdoc_client.py:661 eppdoc_client.py:700
+#: eppdoc_client.py:223 eppdoc_client.py:243 eppdoc_client.py:296
+#: eppdoc_client.py:363 eppdoc_client.py:375 eppdoc_client.py:442
+#: eppdoc_client.py:458 eppdoc_client.py:532 eppdoc_client.py:650
+#: eppdoc_client.py:661 eppdoc_client.py:701
 msgid "NSSET ID"
 msgstr "NSSET ID"
 
@@ -601,10 +601,10 @@ msgstr ""
 "jen oprávněnému uživateli."
 
 #: eppdoc_client.py:103 eppdoc_client.py:134 eppdoc_client.py:173
-#: eppdoc_client.py:224 eppdoc_client.py:264 eppdoc_client.py:293
-#: eppdoc_client.py:357 eppdoc_client.py:387 eppdoc_client.py:435
-#: eppdoc_client.py:527 eppdoc_client.py:651 eppdoc_client.py:678
-#: eppdoc_client.py:705
+#: eppdoc_client.py:224 eppdoc_client.py:264 eppdoc_client.py:300
+#: eppdoc_client.py:364 eppdoc_client.py:394 eppdoc_client.py:449
+#: eppdoc_client.py:541 eppdoc_client.py:651 eppdoc_client.py:678
+#: eppdoc_client.py:706
 msgid "KEYSET ID"
 msgstr "KEYSET ID"
 
@@ -708,8 +708,8 @@ msgstr ""
 
 #: eppdoc_client.py:157 eppdoc_client.py:166 eppdoc_client.py:174
 #: eppdoc_client.py:183 eppdoc_client.py:199 eppdoc_client.py:222
-#: eppdoc_client.py:249 eppdoc_client.py:273 eppdoc_client.py:332
-#: eppdoc_client.py:359 eppdoc_client.py:380 eppdoc_client.py:408
+#: eppdoc_client.py:249 eppdoc_client.py:279 eppdoc_client.py:339
+#: eppdoc_client.py:366 eppdoc_client.py:387 eppdoc_client.py:421
 msgid "Password required by server to authorize the transfer"
 msgstr "Heslo požadované serverem pro autorizaci transferu"
 
@@ -765,23 +765,23 @@ msgstr ""
 "Pokud transfer proběhne úspěšně, vygeneruje se automaticky nové \n"
 "autorizační heslo pro transfer."
 
-#: eppdoc_client.py:191 eppdoc_client.py:319 eppdoc_client.py:618
+#: eppdoc_client.py:191 eppdoc_client.py:326 eppdoc_client.py:618
 msgid "Name"
 msgstr "Jméno"
 
-#: eppdoc_client.py:192 eppdoc_client.py:331
+#: eppdoc_client.py:192 eppdoc_client.py:338
 msgid "Email"
 msgstr ""
 
-#: eppdoc_client.py:193 eppdoc_client.py:322 eppdoc_client.py:620
+#: eppdoc_client.py:193 eppdoc_client.py:329 eppdoc_client.py:620
 msgid "Street"
 msgstr "Ulice"
 
-#: eppdoc_client.py:194 eppdoc_client.py:323 eppdoc_client.py:621
+#: eppdoc_client.py:194 eppdoc_client.py:330 eppdoc_client.py:621
 msgid "City"
 msgstr "Město"
 
-#: eppdoc_client.py:195 eppdoc_client.py:324 eppdoc_client.py:623
+#: eppdoc_client.py:195 eppdoc_client.py:331 eppdoc_client.py:623
 msgid "Postal code"
 msgstr "PSČ"
 
@@ -789,7 +789,7 @@ msgstr "PSČ"
 msgid "postal code"
 msgstr "PSČ"
 
-#: eppdoc_client.py:196 eppdoc_client.py:325 eppdoc_client.py:624
+#: eppdoc_client.py:196 eppdoc_client.py:332 eppdoc_client.py:624
 msgid "Country code"
 msgstr "Kód země"
 
@@ -797,11 +797,11 @@ msgstr "Kód země"
 msgid "country code"
 msgstr "kód země"
 
-#: eppdoc_client.py:197 eppdoc_client.py:326 eppdoc_client.py:622
+#: eppdoc_client.py:197 eppdoc_client.py:333 eppdoc_client.py:622
 msgid "State or province"
 msgstr "Stát nebo kraj"
 
-#: eppdoc_client.py:198 eppdoc_client.py:320 eppdoc_client.py:619
+#: eppdoc_client.py:198 eppdoc_client.py:327 eppdoc_client.py:619
 msgid "Organisation"
 msgstr "Název organizace"
 
@@ -809,19 +809,19 @@ msgstr "Název organizace"
 msgid "password"
 msgstr "heslo"
 
-#: eppdoc_client.py:200 eppdoc_client.py:329 eppdoc_client.py:626
+#: eppdoc_client.py:200 eppdoc_client.py:336 eppdoc_client.py:626
 msgid "Phone"
 msgstr "Telefon"
 
-#: eppdoc_client.py:201 eppdoc_client.py:330
+#: eppdoc_client.py:201 eppdoc_client.py:337
 msgid "Fax"
 msgstr ""
 
-#: eppdoc_client.py:202 eppdoc_client.py:333 eppdoc_client.py:632
+#: eppdoc_client.py:202 eppdoc_client.py:340 eppdoc_client.py:632
 msgid "Disclose"
 msgstr "Zveřejnit"
 
-#: eppdoc_client.py:203 eppdoc_client.py:334
+#: eppdoc_client.py:203 eppdoc_client.py:341
 msgid "Disclose flag (default y)"
 msgstr "Přepínač zveřejnit (default y)"
 
@@ -833,19 +833,19 @@ msgstr "Data, pro které se nastaví příznak"
 msgid "VAT (Value-added tax)"
 msgstr "VAT (daňový identifikátor)"
 
-#: eppdoc_client.py:207 eppdoc_client.py:338 eppdoc_client.py:636
+#: eppdoc_client.py:207 eppdoc_client.py:345 eppdoc_client.py:636
 msgid "Identificator"
 msgstr "Identifikátor"
 
-#: eppdoc_client.py:208 eppdoc_client.py:339
+#: eppdoc_client.py:208 eppdoc_client.py:346
 msgid "Identificator number"
 msgstr "Čislo identifikátoru"
 
-#: eppdoc_client.py:209 eppdoc_client.py:340 eppdoc_client.py:635
+#: eppdoc_client.py:209 eppdoc_client.py:347 eppdoc_client.py:635
 msgid "Identificator type"
 msgstr "Typ identifikátoru"
 
-#: eppdoc_client.py:211 eppdoc_client.py:342 eppdoc_client.py:629
+#: eppdoc_client.py:211 eppdoc_client.py:349 eppdoc_client.py:629
 msgid "Notification email"
 msgstr "Oznámení na email"
 
@@ -861,23 +861,23 @@ msgstr ""
 "Kontakt může být použit pro údaje vlastníka, registrátora nebo technického "
 "kontaktu."
 
-#: eppdoc_client.py:221 eppdoc_client.py:358 eppdoc_client.py:655
+#: eppdoc_client.py:221 eppdoc_client.py:365 eppdoc_client.py:655
 msgid "Registrant ID"
 msgstr "ID držitele"
 
-#: eppdoc_client.py:225 eppdoc_client.py:299
+#: eppdoc_client.py:225 eppdoc_client.py:306
 msgid "Period"
 msgstr "Období"
 
-#: eppdoc_client.py:226 eppdoc_client.py:300
+#: eppdoc_client.py:226 eppdoc_client.py:307
 msgid "Number of months or years"
 msgstr "Počet měsíců nebo roků"
 
-#: eppdoc_client.py:227 eppdoc_client.py:301
+#: eppdoc_client.py:227 eppdoc_client.py:308
 msgid "Period unit (y year(default), m month)"
 msgstr "Jednotka období (y rok(default), m měsíc)"
 
-#: eppdoc_client.py:229 eppdoc_client.py:352 eppdoc_client.py:353
+#: eppdoc_client.py:229 eppdoc_client.py:359 eppdoc_client.py:360
 msgid "Administrative contact ID"
 msgstr "Administrativní kontakt ID"
 
@@ -905,21 +905,21 @@ msgstr ""
 msgid "LIST of DNS"
 msgstr "Seznam DNS"
 
-#: eppdoc_client.py:245 eppdoc_client.py:371 eppdoc_client.py:377
-#: eppdoc_client.py:567
+#: eppdoc_client.py:245 eppdoc_client.py:378 eppdoc_client.py:384
+#: eppdoc_client.py:581
 msgid "Name server"
 msgstr "Jmenný server"
 
-#: eppdoc_client.py:246 eppdoc_client.py:372
+#: eppdoc_client.py:246 eppdoc_client.py:379
 msgid "Server address"
 msgstr "Adresa serveru"
 
-#: eppdoc_client.py:248 eppdoc_client.py:272 eppdoc_client.py:548
-#: eppdoc_client.py:557 eppdoc_client.py:672 eppdoc_client.py:689
+#: eppdoc_client.py:248 eppdoc_client.py:278 eppdoc_client.py:562
+#: eppdoc_client.py:571 eppdoc_client.py:672 eppdoc_client.py:689
 msgid "Technical contact"
 msgstr "Technický kontakt"
 
-#: eppdoc_client.py:250 eppdoc_client.py:381 eppdoc_client.py:445
+#: eppdoc_client.py:250 eppdoc_client.py:388 eppdoc_client.py:459
 msgid "Report range level (0 - 10; higher = more detailed)"
 msgstr "Rozsah testů (0 - 10; vyšší = detailnější)"
 
@@ -949,36 +949,48 @@ msgstr ""
 "stejnou nebo nižší než reportlevel. Číslo se pohybuje v intervalu od 0 do\n"
 "10.\n"
 
-#: eppdoc_client.py:265 eppdoc_client.py:389 eppdoc_client.py:399
+#: eppdoc_client.py:265 eppdoc_client.py:396 eppdoc_client.py:412
 msgid "LIST of DS records"
 msgstr "Seznam DS záznamů"
 
-#: eppdoc_client.py:266 eppdoc_client.py:390 eppdoc_client.py:400
-#: eppdoc_client.py:577
+#: eppdoc_client.py:266 eppdoc_client.py:397 eppdoc_client.py:413
 msgid "Key tag"
 msgstr "Tag klíče"
 
-#: eppdoc_client.py:267 eppdoc_client.py:391 eppdoc_client.py:401
-#: eppdoc_client.py:578
+#: eppdoc_client.py:267 eppdoc_client.py:275 eppdoc_client.py:398
+#: eppdoc_client.py:406 eppdoc_client.py:414
 msgid "Algorithm"
 msgstr "Algoritmus"
 
-#: eppdoc_client.py:268 eppdoc_client.py:392 eppdoc_client.py:402
-#: eppdoc_client.py:579
+#: eppdoc_client.py:268 eppdoc_client.py:399 eppdoc_client.py:415
 msgid "Digest Type"
 msgstr "Typ digestu"
 
-#: eppdoc_client.py:269 eppdoc_client.py:393 eppdoc_client.py:403
-#: eppdoc_client.py:580
+#: eppdoc_client.py:269 eppdoc_client.py:400 eppdoc_client.py:416
 msgid "Digest"
 msgstr "Přehled"
 
-#: eppdoc_client.py:270 eppdoc_client.py:394 eppdoc_client.py:404
-#: eppdoc_client.py:581
+#: eppdoc_client.py:270 eppdoc_client.py:401 eppdoc_client.py:417
 msgid "Max.Sig.Life"
 msgstr "Max.život.sig."
 
-#: eppdoc_client.py:274
+#: eppdoc_client.py:272 eppdoc_client.py:403
+msgid "LIST of keys"
+msgstr "Seznam klíčů"
+
+#: eppdoc_client.py:273 eppdoc_client.py:404
+msgid "Flags / Filename"
+msgstr "Příznak / Soubor"
+
+#: eppdoc_client.py:274 eppdoc_client.py:405
+msgid "Protocol"
+msgstr "Protokol"
+
+#: eppdoc_client.py:276 eppdoc_client.py:407
+msgid "Public key code"
+msgstr "Kód veřejného klíče"
+
+#: eppdoc_client.py:280
 msgid ""
 "\n"
 "The EPP 'create_keyset' command is used to create a record of the KEYSET.\n"
@@ -986,35 +998,35 @@ msgstr ""
 "\n"
 "EPP příkaz 'create_keyset' se používá pro vytvoření instance keysetu.\n"
 
-#: eppdoc_client.py:282
+#: eppdoc_client.py:289
 msgid ""
 "The EPP 'delete_contact' command is used to remove a record of the contact."
 msgstr "EPP příkaz 'delete_contact' se používá pro smazání záznamu o kontaktu."
 
-#: eppdoc_client.py:286
+#: eppdoc_client.py:293
 msgid ""
 "The EPP 'delete_domain' command is used to remove a record of the domain."
 msgstr "EPP příkaz 'delete_domain' se používá pro smazání záznamu o doméně."
 
-#: eppdoc_client.py:290
+#: eppdoc_client.py:297
 msgid "The EPP 'delete_nsset' command is used to remove a record of the nsset."
 msgstr "EPP příkaz 'delete_nsset' se používá pro smazázní záznamu o NSSETu."
 
-#: eppdoc_client.py:294
+#: eppdoc_client.py:301
 msgid ""
 "The EPP 'delete_keyset' command is used to remove a record of the keyset."
 msgstr "EPP příkaz 'delete_keyset' se používá pro smazázní záznamu o KEYSETu."
 
-#: eppdoc_client.py:298 eppdoc_client.py:648 eppdoc_client.py:712
-#: eppdoc_client.py:739
+#: eppdoc_client.py:305 eppdoc_client.py:648 eppdoc_client.py:713
+#: eppdoc_client.py:740
 msgid "Expiration date"
 msgstr "Datum expirace"
 
-#: eppdoc_client.py:303 eppdoc_client.py:361 eppdoc_client.py:649
+#: eppdoc_client.py:310 eppdoc_client.py:368 eppdoc_client.py:649
 msgid "Validation expires at"
 msgstr "Validace platná do"
 
-#: eppdoc_client.py:304
+#: eppdoc_client.py:311
 msgid ""
 "\n"
 "A domain names have a specified validity period. The server\n"
@@ -1038,73 +1050,73 @@ msgstr ""
 "Minimálí a maximální hodnota období platnosti je definována\n"
 "v Pravidlech komunikace."
 
-#: eppdoc_client.py:317 eppdoc_client.py:355
+#: eppdoc_client.py:324 eppdoc_client.py:362
 msgid "Change values"
 msgstr "Změna hodnot"
 
-#: eppdoc_client.py:318
+#: eppdoc_client.py:325
 msgid "Postal informations"
 msgstr "Poštovní informace"
 
-#: eppdoc_client.py:321
+#: eppdoc_client.py:328
 msgid "Address"
 msgstr "Adresa"
 
-#: eppdoc_client.py:335
+#: eppdoc_client.py:342
 msgid "data for with is set the flag value"
 msgstr "data, pro které se nastaví příznak"
 
-#: eppdoc_client.py:337 eppdoc_client.py:634
+#: eppdoc_client.py:344 eppdoc_client.py:634
 msgid "VAT"
 msgstr "DPH"
 
-#: eppdoc_client.py:344
+#: eppdoc_client.py:351
 msgid ""
 "The EPP 'update_contact' command is used to update values in the contact."
 msgstr ""
 "EPP příkaz 'update_contact' se používá pro aktualizaci hodnot vybraného "
 "kontaktu."
 
-#: eppdoc_client.py:354
+#: eppdoc_client.py:361
 msgid "Temporary contact ID"
 msgstr "Dočasný kontakt ID"
 
-#: eppdoc_client.py:362
+#: eppdoc_client.py:369
 msgid "The EPP 'update_domain' command is used to update values in the domain."
 msgstr ""
 "EPP příkaz 'update_domain' se používá pro aktualizaci hodnot záznamu vybrané "
 "domény."
 
-#: eppdoc_client.py:369 eppdoc_client.py:388
+#: eppdoc_client.py:376 eppdoc_client.py:395
 msgid "Add values"
 msgstr "Přidat hodnoty"
 
-#: eppdoc_client.py:370
+#: eppdoc_client.py:377
 msgid "List of DNS"
 msgstr "Seznam DNS"
 
-#: eppdoc_client.py:374 eppdoc_client.py:378 eppdoc_client.py:396
-#: eppdoc_client.py:406
+#: eppdoc_client.py:381 eppdoc_client.py:385 eppdoc_client.py:409
+#: eppdoc_client.py:419
 msgid "Technical contact ID"
 msgstr "Technický kontakt ID"
 
-#: eppdoc_client.py:376 eppdoc_client.py:398
+#: eppdoc_client.py:383 eppdoc_client.py:411
 msgid "Remove values"
 msgstr "Odebrat hodnoty"
 
-#: eppdoc_client.py:382
+#: eppdoc_client.py:389
 msgid "The EPP 'update_nsset' command is used to update values in the NSSET."
 msgstr ""
 "EPP příkaz 'update_nsset' se používá pro aktualizaci hodnot záznamu "
 "vybraného NSSETu."
 
-#: eppdoc_client.py:409
+#: eppdoc_client.py:422
 msgid "The EPP 'update_keyset' command is used to update values in the KEYSET."
 msgstr ""
 "EPP příkaz 'update_keyset' se používá pro aktualizaci hodnot záznamu "
 "vybraného KEYSETu."
 
-#: eppdoc_client.py:415
+#: eppdoc_client.py:429
 msgid ""
 "\n"
 "The EPP 'sendauthinfo_contact' command transmit request for send password \n"
@@ -1117,7 +1129,7 @@ msgstr ""
 "Tento příkaz je užitečný při transferu kdy vlastník a nový registrátor\n"
 "nemusí žádat původního registrátora o zaslání hesla."
 
-#: eppdoc_client.py:422
+#: eppdoc_client.py:436
 msgid ""
 "\n"
 "The EPP 'sendauthinfo_domain' command transmit request for send password \n"
@@ -1131,7 +1143,7 @@ msgstr ""
 "Tento příkaz je užitečný při transferu kdy vlastník a nový registrátor\n"
 "nemusí žádat původního registrátora o zaslání hesla."
 
-#: eppdoc_client.py:429
+#: eppdoc_client.py:443
 msgid ""
 "\n"
 "The EPP 'sendauthinfo_nsset' command transmit request for send password \n"
@@ -1144,7 +1156,7 @@ msgstr ""
 "Tento příkaz je užitečný při transferu kdy vlastník a nový registrátor\n"
 "nemusí žádat původního registrátora o zaslání hesla."
 
-#: eppdoc_client.py:436
+#: eppdoc_client.py:450
 msgid ""
 "\n"
 "The EPP 'sendauthinfo_keyset' command transmit request for send password \n"
@@ -1157,11 +1169,11 @@ msgstr ""
 "Tento příkaz je užitečný při transferu kdy vlastník a nový registrátor\n"
 "nemusí žádat původního registrátora o zaslání hesla."
 
-#: eppdoc_client.py:441
+#: eppdoc_client.py:455
 msgid "The EPP 'credit_info' command returns credit information."
 msgstr "Příkaz 'credit_info' zobrazí informace o kreditu."
 
-#: eppdoc_client.py:447
+#: eppdoc_client.py:461
 msgid ""
 "\n"
 "The EPP 'technical_test' command transmit request for technical test \n"
@@ -1180,7 +1192,7 @@ msgstr ""
 "které mají toto číslo shodé nebo nižší. Platný rozsah je 0 až 10.\n"
 "Nastavit report level je možné v příkazech create_nsset a update_nsset.\n"
 
-#: eppdoc_client.py:458
+#: eppdoc_client.py:472
 msgid ""
 "\n"
 "Prepare list of the contacts. This command fills server buffer by list \n"
@@ -1193,7 +1205,7 @@ msgstr ""
 "kontaktů a nastaví ukazatel na začátek seznamu. Data se načítají postupně \n"
 "opakovaným voláním příkazu 'get_results' dokud se vracejí nějaká data.\n"
 
-#: eppdoc_client.py:465
+#: eppdoc_client.py:479
 msgid ""
 "\n"
 "Prepare list of the domains. This command fills server buffer by list \n"
@@ -1206,7 +1218,7 @@ msgstr ""
 "domén a nastaví ukazatel na začátek seznamu. Data se načítají postupně \n"
 "opakovaným voláním příkazu 'get_results' dokud se vracejí nějaká data.\n"
 
-#: eppdoc_client.py:472
+#: eppdoc_client.py:486
 msgid ""
 "\n"
 "Prepare list of the NSSETs. This command fills server buffer by list \n"
@@ -1219,7 +1231,7 @@ msgstr ""
 "nssetů a nastaví ukazatel na začátek seznamu. Data se načítají postupně \n"
 "opakovaným voláním příkazu 'get_results' dokud se vracejí nějaká data.\n"
 
-#: eppdoc_client.py:479
+#: eppdoc_client.py:493
 msgid ""
 "\n"
 "Prepare list of the KEYSETs. This command fills server buffer by list \n"
@@ -1232,7 +1244,7 @@ msgstr ""
 "keysetů a nastaví ukazatel na začátek seznamu. Data se načítají postupně \n"
 "opakovaným voláním příkazu 'get_results' dokud se vracejí nějaká data.\n"
 
-#: eppdoc_client.py:487
+#: eppdoc_client.py:501
 msgid ""
 "\n"
 "Returns a data chunk from the list of the records in the server buffer.\n"
@@ -1250,7 +1262,7 @@ msgstr ""
 "nsset_by_all, domain_by_all, ...)\n"
 "nebo domains_by_contact, domains_by_nsset atd.\n"
 
-#: eppdoc_client.py:496
+#: eppdoc_client.py:510
 msgid ""
 "\n"
 "Returns list of contacts using command contacts_by_all and runs a loop \n"
@@ -1260,7 +1272,7 @@ msgstr ""
 "Vrátí seznam kontaktů za použití příkazu contacts_by_all a opakovaného\n"
 "spouštění příkazu get_results, dokud se nenačte celý seznam.\n"
 
-#: eppdoc_client.py:501
+#: eppdoc_client.py:515
 msgid ""
 "\n"
 "Returns list of domains using command domains_by_all and runs a loop \n"
@@ -1270,7 +1282,7 @@ msgstr ""
 "Vrátí seznam domén za použití příkazu domains_by_all a opakovaného\n"
 "spouštění příkazu get_results, dokud se nenačte celý seznam.\n"
 
-#: eppdoc_client.py:506
+#: eppdoc_client.py:520
 msgid ""
 "\n"
 "Returns list of nssets using command nssets_by_all and runs a loop \n"
@@ -1280,7 +1292,7 @@ msgstr ""
 "Vrátí seznam nssetů za použití příkazu nssets_by_all a opakovaného\n"
 "spouštění příkazu get_results, dokud se nenačte celý seznam.\n"
 
-#: eppdoc_client.py:511
+#: eppdoc_client.py:525
 msgid ""
 "\n"
 "Returns list of keysets using command nssets_by_all and runs a loop \n"
@@ -1290,7 +1302,7 @@ msgstr ""
 "Vrátí seznam keysetů za použití příkazu keysets_by_all a opakovaného\n"
 "spouštění příkazu get_results, dokud se nenačte celý seznam.\n"
 
-#: eppdoc_client.py:519
+#: eppdoc_client.py:533
 msgid ""
 "\n"
 "Prepare domains by NSSET. This command fills server buffer by list \n"
@@ -1306,7 +1318,7 @@ msgstr ""
 "'get_results'. Pokud již get_results žádné údaje nevrací, tak bylo \n"
 "dosaženo konce seznamu.\n"
 
-#: eppdoc_client.py:528
+#: eppdoc_client.py:542
 msgid ""
 "\n"
 "Prepare domains by KEYSET. This command fills server buffer by list \n"
@@ -1322,7 +1334,7 @@ msgstr ""
 "'get_results'. Pokud již get_results žádné údaje nevrací, tak bylo \n"
 "dosaženo konce seznamu.\n"
 
-#: eppdoc_client.py:538
+#: eppdoc_client.py:552
 msgid ""
 "\n"
 "Prepare domains by contact. This command fills server buffer by list \n"
@@ -1341,7 +1353,7 @@ msgstr ""
 "žádné\n"
 "údaje nevrací, tak bylo dosaženo konce seznamu.\n"
 
-#: eppdoc_client.py:549
+#: eppdoc_client.py:563
 msgid ""
 "\n"
 "Prepare NSSETs by contact. This command fills server buffer by list \n"
@@ -1358,7 +1370,7 @@ msgstr ""
 "žádné\n"
 "údaje nevrací, tak bylo dosaženo konce seznamu.\n"
 
-#: eppdoc_client.py:558
+#: eppdoc_client.py:572
 msgid ""
 "\n"
 "Prepare KEYSETs by contact. This command fills server buffer by list \n"
@@ -1375,7 +1387,7 @@ msgstr ""
 "žádné\n"
 "údaje nevrací, tak bylo dosaženo konce seznamu.\n"
 
-#: eppdoc_client.py:568
+#: eppdoc_client.py:582
 msgid ""
 "\n"
 "Prepare NSSETs by NS. This command fills server buffer by list of nssets \n"
@@ -1386,25 +1398,6 @@ msgstr ""
 "\n"
 "Připravit seznam NSSETů podle NS. Tento příkaz zaplní buffer na serveru \n"
 "seznamem nssetů, které mají přiřazen zadaný jmenný server. Ukazatel pro \n"
-"čtení je nastaven na začátek seznamu. Části  seznamu se načítají opakovaným\n"
-"voláním příkazu 'get_results'. Pokud již get_results žádné údaje nevrací, \n"
-"tak bylo dosaženo konce seznamu.\n"
-
-#: eppdoc_client.py:576
-msgid "DS record"
-msgstr "DS záznam"
-
-#: eppdoc_client.py:583
-msgid ""
-"\n"
-"Prepare KEYSETs by DS. This command fills server buffer by list of keysets \n"
-"connected with defined DS record. The pointer is set at the beginning \n"
-"of the list. The list is taken in sequence by calling command 'get_results'\n"
-"repeatedly until any data comming.\n"
-msgstr ""
-"\n"
-"Připravit seznam KEYSETů podle DS. Tento příkaz zaplní buffer na serveru \n"
-"seznamem keysetů, které mají přiřazen zadaný DS záznam. Ukazatel pro \n"
 "čtení je nastaven na začátek seznamu. Části  seznamu se načítají opakovaným\n"
 "voláním příkazu 'get_results'. Pokud již get_results žádné údaje nevrací, \n"
 "tak bylo dosaženo konce seznamu.\n"
@@ -1434,8 +1427,8 @@ msgid "Updated by"
 msgstr "Změnil"
 
 #: eppdoc_client.py:615 eppdoc_client.py:645 eppdoc_client.py:666
-#: eppdoc_client.py:683 eppdoc_client.py:696 eppdoc_client.py:701
-#: eppdoc_client.py:706 eppdoc_client.py:711
+#: eppdoc_client.py:683 eppdoc_client.py:697 eppdoc_client.py:702
+#: eppdoc_client.py:707 eppdoc_client.py:712
 msgid "Created on"
 msgstr "Vytvořeno dne"
 
@@ -1483,7 +1476,7 @@ msgstr "Poslední změna dne"
 msgid "Name servers"
 msgstr "Jmenné servery"
 
-#: eppdoc_client.py:674 eppdoc_client.py:691
+#: eppdoc_client.py:674 eppdoc_client.py:692
 msgid "Report level"
 msgstr "Stupeň detailů"
 
@@ -1491,90 +1484,95 @@ msgstr "Stupeň detailů"
 msgid "DS records"
 msgstr "DS záznamy"
 
-#: eppdoc_client.py:716
+#: eppdoc_client.py:691
+#, fuzzy
+msgid "DNSKEY records"
+msgstr "DS záznamy"
+
+#: eppdoc_client.py:717
 msgid "Available languages"
 msgstr "Podporované jazyky"
 
-#: eppdoc_client.py:717
+#: eppdoc_client.py:718
 msgid "Server ID"
 msgstr "ID serveru"
 
-#: eppdoc_client.py:718
+#: eppdoc_client.py:719
 msgid "Server date"
 msgstr "Datum serveru"
 
-#: eppdoc_client.py:719
+#: eppdoc_client.py:720
 msgid "Available protocols"
 msgstr "Podporované protokoly"
 
-#: eppdoc_client.py:720
+#: eppdoc_client.py:721
 msgid "Objects URI"
 msgstr "URI objekt"
 
-#: eppdoc_client.py:721
+#: eppdoc_client.py:722
 msgid "Extensions URI"
 msgstr "URI rozšíření"
 
-#: eppdoc_client.py:722
+#: eppdoc_client.py:723
 msgid "Data Collection policy"
 msgstr ""
 
-#: eppdoc_client.py:726 eppdoc_client.py:760
+#: eppdoc_client.py:727 eppdoc_client.py:761
 msgid "List"
 msgstr "Seznam"
 
-#: eppdoc_client.py:727 eppdoc_client.py:764 eppdoc_client.py:769
-#: eppdoc_client.py:774 eppdoc_client.py:779
+#: eppdoc_client.py:728 eppdoc_client.py:765 eppdoc_client.py:770
+#: eppdoc_client.py:775 eppdoc_client.py:780
 msgid "Count"
 msgstr "Počet"
 
-#: eppdoc_client.py:731
+#: eppdoc_client.py:732
 msgid "Queue size"
 msgstr "Počet zpráv"
 
-#: eppdoc_client.py:732
+#: eppdoc_client.py:733
 msgid "Message ID"
 msgstr "ID zprávy"
 
-#: eppdoc_client.py:733
+#: eppdoc_client.py:734
 msgid "Message date"
 msgstr "Zpráva vložena"
 
-#: eppdoc_client.py:734
+#: eppdoc_client.py:735
 msgid "Message content"
 msgstr "Text zprávy"
 
-#: eppdoc_client.py:743 eppdoc_client.py:747 eppdoc_client.py:751
-#: eppdoc_client.py:755
+#: eppdoc_client.py:744 eppdoc_client.py:748 eppdoc_client.py:752
+#: eppdoc_client.py:756
 msgid "Number of records"
 msgstr "Počet záznamů"
 
-#: eppdoc_client.py:744 eppdoc_client.py:748 eppdoc_client.py:752
-#: eppdoc_client.py:756 eppdoc_client.py:765 eppdoc_client.py:770
-#: eppdoc_client.py:775 eppdoc_client.py:780
+#: eppdoc_client.py:745 eppdoc_client.py:749 eppdoc_client.py:753
+#: eppdoc_client.py:757 eppdoc_client.py:766 eppdoc_client.py:771
+#: eppdoc_client.py:776 eppdoc_client.py:781
 msgid "Notify"
 msgstr "Oznámení"
 
-#: eppdoc.py:190
+#: eppdoc.py:191
 #, python-format
 msgid "Invalid XML document. ExpatError: %s"
 msgstr "Neplatný XML dokument. ExpatError: %s"
 
-#: eppdoc.py:193
+#: eppdoc.py:194
 #, python-format
 msgid "Document has wrong encoding. LookupError: %s"
 msgstr "Dokument má chybné kódování. LookupError: %s"
 
-#: eppdoc.py:221
+#: eppdoc.py:222
 #, python-format
 msgid "Internal error: Master node '%s' doesn't exist."
 msgstr "Interní chyba: Nadřazený uzel '%s' neexistuje."
 
-#: eppdoc.py:514
+#: eppdoc.py:515
 msgid "Internal error: Value is not dict type:"
 msgstr "Interní chyba: Hodnota není typu dict:"
 
-#: __init__.py:1144
+#: __init__.py:1135
 msgid "This program requires Python 2.4 or higher. Your version is"
 msgstr "Tento program vyžaduje Python 2.4 nebo vyšší. Vaše verze je"
 
@@ -1608,131 +1606,131 @@ msgstr ""
 "                   Zobrazit výstup jako text (default), html, xml, php "
 "(Pozor! Jen pro testování!)"
 
-#: session_base.py:149
+#: session_base.py:153
 msgid "Unknown output type. Valid types are"
 msgstr "Neznámý typ výstupu. Platné typy jsou"
 
-#: session_base.py:174
+#: session_base.py:178
 msgid "Command confirmation has been set to"
 msgstr "Potvrzení přikazu bylo nastaveno na"
 
-#: session_base.py:176
+#: session_base.py:180
 msgid "Invalid Command confirmation parametr"
 msgstr "Neplatný parametr příkazu Confirmation"
 
-#: session_base.py:177
+#: session_base.py:181
 msgid "Type 'help confirm' to get more information about confirm commands."
 msgstr "Zadejte 'help confirm' pro zobrazení detailů příkazu."
 
-#: session_base.py:327
+#: session_base.py:331
 msgid "Type \"help\", \"license\" or \"credits\" for more information."
 msgstr ""
 "Zadejte \"help\", \"license\" or \"credits\" pro zobrazení více informací."
 
-#: session_base.py:352
+#: session_base.py:356
 msgid "Invalid format of"
 msgstr "Neplatný formát"
 
-#: session_base.py:352 session_base.py:356
+#: session_base.py:356 session_base.py:360
 msgid "See help for more."
 msgstr "Více informací najdete v helpu."
 
-#: session_base.py:356
+#: session_base.py:360
 msgid "cannot be empty"
 msgstr "nemůže být prázdné"
 
-#: session_base.py:364
+#: session_base.py:368
 msgid "Actual config builded from files"
 msgstr "Aktuální config sestavený ze souborů"
 
-#: session_base.py:366
+#: session_base.py:370
 msgid "No configuration file. Defaults used instead it."
 msgstr "Konfigurační soubor nebyl zadán. Byly použity defaultní hodnoty."
 
-#: session_base.py:368
+#: session_base.py:372
 msgid "No config"
 msgstr "Žádný config"
 
-#: session_base.py:374
+#: session_base.py:378
 msgid "Actual connection HERE"
 msgstr "Aktuální spojení ZDE"
 
-#: session_base.py:403
+#: session_base.py:407
 msgid "Schema in session missing. This is invalid instalation."
 msgstr "Chybí schema v session. Tato instalace je neplatná."
 
-#: session_base.py:451
+#: session_base.py:455
 #, python-format
 msgid "Invalid version name %s. It must be one from (%s)."
 msgstr "Neplatné jméno verze %s. Musí být ze seznamu (%s)."
 
-#: session_base.py:453
+#: session_base.py:457
 msgid "Invalid version format"
 msgstr "Neplatný formát verze"
 
-#: session_base.py:531
+#: session_base.py:539
 msgid "Using configuration from"
 msgstr "Použit konfigurační soubor"
 
-#: session_base.py:540
+#: session_base.py:549
 msgid "Fatal error: Default config create failed."
 msgstr "Fatální chyba: Vytvoření defaultního konfiguračního souboru selhalo."
 
-#: session_base.py:544
+#: session_base.py:554
 #, python-format
 msgid "Session \"%s\" without effect. No configuration file."
 msgstr "Session \"%s\" nemá význam. Není načten žádný konfigurační soubor."
 
-#: session_base.py:552
+#: session_base.py:563
 #, python-format
 msgid "Configuration file has no section \"%s\"."
 msgstr "Konfigurační soubor nemá sekci \"%s\"."
 
-#: session_base.py:599
+#: session_base.py:612
 msgid "Invalid verbose parametr"
 msgstr "Neplatný parametr verbose"
 
-#: session_base.py:601 session_base.py:608
+#: session_base.py:614 session_base.py:621
 msgid "Type 'help verbose' to get more information about verbose levels."
 msgstr "Zadejte 'help verbose' pro zobrazení detailů příkazu."
 
-#: session_base.py:607
+#: session_base.py:620
 msgid "Verbose level is out of range. Available values are 1, 2, 3."
 msgstr ""
 "Hodnota módu výstupu je mimo stanovený rozsah. Dostupné hodnoty jsou 1, 2, 3."
 
-#: session_base.py:653
+#: session_base.py:666
 #, python-format
 msgid "External validator \"%s\" not found. XML validation has been disabled."
 msgstr "Externí validátor \"%s\" nebyl nalezen. XML validace byla vypnuta."
 
-#: session_base.py:668
+#: session_base.py:683
 msgid "XML document is empty."
 msgstr "XML dokument je prázdný"
 
-#: session_base.py:676
+#: session_base.py:691
 msgid "Client-side validation command:"
 msgstr "Příkaz pro validátor:"
 
-#: session_base.py:695
+#: session_base.py:710
 msgid "Reading xmllint errors result failed."
 msgstr "Čtení zprávy o chybách z xmllintu selhalo."
 
-#: session_base.py:706
+#: session_base.py:721
 msgid "Warning: Client-side validation failed."
 msgstr "Pozor: Validace na straně klienta selhala."
 
-#: session_base.py:708
+#: session_base.py:723
 #, python-format
 msgid "Client-side validation has been disabled. Type '%s' to enable it."
 msgstr "Validátor byl deaktivován. Opětná aktivace se provede zadáním %s."
 
-#: session_base.py:748
+#: session_base.py:763
 #, python-format
 msgid "Different %s schema version."
 msgstr "Odlišná verze %s schemat."
 
-#: session_base.py:749
+#: session_base.py:764
 #, python-format
 msgid "Client schema version is%s\t%s%sand on the server is%s\t%s"
 msgid_plural "Client schema versions are%s\t%s%sand on the server are%s\t%s"
@@ -1740,15 +1738,15 @@ msgstr[0] "Lokální verze schema je %s\t%s%skdežto na serveru je%s\t%s"
 msgstr[1] "Lokální verze schemat jsou %s\t%s%skdežto na serveru jsou%s\t%s"
 msgstr[2] "Lokální verze schemat jsou %s\t%s%skdežto na serveru jsou%s\t%s"
 
-#: session_command.py:91 session_command.py:120 session_command.py:700
+#: session_command.py:92 session_command.py:121 session_command.py:701
 msgid "command"
 msgstr "příkaz"
 
-#: session_command.py:91
+#: session_command.py:92
 msgid "Start interactive input mode on this command"
 msgstr "Spustit interaktivní režim zadávání na tomto příkazu"
 
-#: session_command.py:92
+#: session_command.py:93
 msgid ""
 "\n"
 "! starts interactive input mode. In interactive input mode the program asks\n"
@@ -1767,47 +1765,47 @@ msgstr ""
 "\n"
 "Interaktivní mód lze použít pouze na EPP příkazy."
 
-#: session_command.py:101 session_command.py:105 session_command.py:111
-#: session_command.py:149 session_command.py:179
+#: session_command.py:102 session_command.py:106 session_command.py:112
+#: session_command.py:150 session_command.py:180
 msgid "switch"
 msgstr "přepínač"
 
-#: session_command.py:101 session_command.py:111 session_command.py:149
+#: session_command.py:102 session_command.py:112 session_command.py:150
 msgid "Turn function on/off."
 msgstr "Zapnout/vypnout funkci on/off."
 
-#: session_command.py:102
+#: session_command.py:103
 msgid "Turn on/off colored output."
 msgstr "Zapnout/vypnout barevný výstup."
 
-#: session_command.py:105
+#: session_command.py:106
 msgid "Set escaped input on/off."
 msgstr "Zapnout/vypnout přepínač escapovaného vstupu."
 
-#: session_command.py:106
+#: session_command.py:107
 msgid "If your input is escaped (&lt;example&amp;test&gt;), set this value on."
 msgstr ""
 "Je-li váš vstup escapovaný (&lt;example&amp;test&gt;), nastavte tuto hodnotu "
 "na on."
 
-#: session_command.py:108
+#: session_command.py:109
 msgid "Display actual configuration."
 msgstr "Zobrazí aktuální konfiguraci."
 
-#: session_command.py:112
+#: session_command.py:113
 msgid ""
 "Set on/off command confirmation for sending editable commands to the server."
 msgstr "Zapnout/vypnout potvrzování odesílání editačních příkazů na server."
 
-#: session_command.py:117
+#: session_command.py:118
 msgid "Display credits."
 msgstr "Zobrazit credits."
 
-#: session_command.py:120
+#: session_command.py:121
 msgid "Get detailed help for this command."
 msgstr "Zobrazit detailní nápovědu pro tento příkaz."
 
-#: session_command.py:121
+#: session_command.py:122
 msgid ""
 "\n"
 "Help displays all available commands (type 'help') or displays \n"
@@ -1819,15 +1817,15 @@ msgstr ""
 "zobrazí detaily vybraného příkazu (zadejte 'help příkaz').\n"
 "Nápověda používá synonyma 'help', '?' nebo 'h'."
 
-#: session_command.py:127
+#: session_command.py:128
 msgid "code"
 msgstr "kód"
 
-#: session_command.py:127
+#: session_command.py:128
 msgid "Set user interface language."
 msgstr "Nastavení jazykové verze."
 
-#: session_command.py:128
+#: session_command.py:129
 msgid ""
 "\n"
 "Set the client language and server together. If you are online \n"
@@ -1842,11 +1840,11 @@ msgstr ""
 "Jazyk je také možné nastavit příkazem 'login', definováním \n"
 "v konfiguračním souboru nebo zadáním parametru v příkazové řádce."
 
-#: session_command.py:135
+#: session_command.py:136
 msgid "Displays license terms of this application."
 msgstr "Zobrazí licenční ujednání této aplikace."
 
-#: session_command.py:137
+#: session_command.py:138
 msgid ""
 "\n"
 "Set representation of the value what is used to mean nothing. Default is "
@@ -1867,19 +1865,19 @@ msgstr ""
 "kdy jsme zadali hodnotu nulové délky. Synonymum pro 'null_value' je 'null'.\n"
 "Více informací naleznete v helpu."
 
-#: session_command.py:145
+#: session_command.py:146
 msgid "type"
 msgstr "typ"
 
-#: session_command.py:145
+#: session_command.py:146
 msgid "Set the output type."
 msgstr "Nastavit formát výstupu."
 
-#: session_command.py:146
+#: session_command.py:147
 msgid "Display output in type."
 msgstr "Zobrazit výstup ve formátu."
 
-#: session_command.py:150
+#: session_command.py:151
 msgid ""
 "\n"
 "First see 'help poll' for understanding how to manage the server messages.\n"
@@ -1894,7 +1892,7 @@ msgstr ""
 "sloučit do jednoho příkazu tak, že po odeslání poll req klient automaticky\n"
 "odešle i poll ack. To umožňuje vybírání zpráv jen na jeden příkaz poll."
 
-#: session_command.py:156
+#: session_command.py:157
 msgid ""
 "\n"
 "Disconnects from the server and exits the application. Synonyms 'q' and "
@@ -1905,15 +1903,15 @@ msgstr ""
 "Odpojí se od serveru a ukončí aplikaci. Synonyma 'q' a 'exit' \n"
 "mají stejnou funkci."
 
-#: session_command.py:161 session_command.py:168
+#: session_command.py:162 session_command.py:169
 msgid "mode"
 msgstr "mód"
 
-#: session_command.py:161 session_command.py:168
+#: session_command.py:162 session_command.py:169
 msgid "Define display mode. XML (default) or DICT (dict or d)."
 msgstr "Nastavení módu zobrazení. XML (default) nebo slovník (dict or d)."
 
-#: session_command.py:162
+#: session_command.py:163
 msgid ""
 "\n"
 "Display XML source of the EPP answer. If you would display source\n"
@@ -1925,7 +1923,7 @@ msgstr ""
 "bez XML tagů, zadejte parametr 'dict' nebo jednoduše 'd'.\n"
 "Synonyma pro 'raw-answer' jsou 'raw-a', 'src-answer' a 'src-a'."
 
-#: session_command.py:169
+#: session_command.py:170
 msgid ""
 "\n"
 "Display XML source of the EPP command. If you would display source\n"
@@ -1937,26 +1935,26 @@ msgstr ""
 "bez XML tagů, zadejte parametr 'dict' nebo jednoduše 'd'.\n"
 "Synonyma pro 'raw-command' jsou 'raw-c', 'src-command' a 'src-c'."
 
-#: session_command.py:175
+#: session_command.py:176
 msgid "filename"
 msgstr "název souboru"
 
-#: session_command.py:175
+#: session_command.py:176
 msgid "any filename"
 msgstr "nějaký název souboru"
 
-#: session_command.py:176
+#: session_command.py:177
 msgid ""
 "Send any file to the server. If filename missing command shows actual folder."
 msgstr ""
 "Odeslat soubor na server. Pokud jméno souboru není zadáno zobrazí se "
 "aktuální adresář."
 
-#: session_command.py:179
+#: session_command.py:180
 msgid "Turn validation on/off."
 msgstr "Zapnout/vypnout validaci on/off."
 
-#: session_command.py:180
+#: session_command.py:181
 msgid ""
 "\n"
 "Client doesn't check command parameters itself. It uses for that external "
@@ -1974,15 +1972,15 @@ msgstr ""
 "Default je ON. Pokud xmllint není dostupný, tak se validace automaticky "
 "vypne."
 
-#: session_command.py:187
+#: session_command.py:188
 msgid "level"
 msgstr "úroveň"
 
-#: session_command.py:187
+#: session_command.py:188
 msgid "Set verbose level. Available levels are 1, 2, 3."
 msgstr "Nastavení úrovně výpisu. Dostupné úrovně jsou 1, 2, 3."
 
-#: session_command.py:188
+#: session_command.py:189
 msgid ""
 "\n"
 "Client displays various informations. They are disparted to verbose levels.\n"
@@ -2014,15 +2012,15 @@ msgstr ""
 "    2 - plný\n"
 "    3 - plný a XML zdroje"
 
-#: session_command.py:202
+#: session_command.py:203
 msgid "Command type."
 msgstr "Typ příkazu."
 
-#: session_command.py:203
+#: session_command.py:204
 msgid "Display on the output (no on the prompt)."
 msgstr "Zobrazit na výstupu (ne v příkazové řádce)."
 
-#: session_command.py:205
+#: session_command.py:206
 msgid ""
 "\n"
 "This function creates command from values returned by command \n"
@@ -2064,204 +2062,204 @@ msgstr ""
 "'n')\n"
 "a výsledek bude zobrazen na výstupu.\n"
 
-#: session_command.py:230
+#: session_command.py:231
 msgid "No data"
 msgstr "Žádná data"
 
-#: session_command.py:248
+#: session_command.py:249
 #, python-format
 msgid "Type '%s' for more information."
 msgstr "Pro více informací zadejte '%s'."
 
-#: session_command.py:249
+#: session_command.py:250
 msgid "Command to issue"
 msgstr "Příkaz k odeslání"
 
-#: session_command.py:278
+#: session_command.py:279
 msgid "No help available for"
 msgstr "Help nebyl nalezen pro"
 
-#: session_command.py:283
+#: session_command.py:284
 msgid "Type \"help command\" to get details of the chosen command."
 msgstr "Zadejte \"help command\" pro zobrazení detailů vybraného příkazu."
 
-#: session_command.py:284
+#: session_command.py:285
 msgid "Available session commands"
 msgstr "Dostupné session příkazy"
 
-#: session_command.py:286
+#: session_command.py:287
 msgid "Available EPP commands"
 msgstr "Dostupné EPP příkazy"
 
-#: session_command.py:288
+#: session_command.py:289
 msgid "Report bugs to"
 msgstr "Poruchy zasílejte na"
 
-#: session_command.py:350
+#: session_command.py:351
 msgid "Help for command"
 msgstr "Nápověda pro příkaz"
 
-#: session_command.py:358
+#: session_command.py:359
 msgid "DESCRIPTION"
 msgstr "POPIS"
 
-#: session_command.py:362
+#: session_command.py:363
 msgid "SYNTAX"
 msgstr "SYNTAXE"
 
-#: session_command.py:366
+#: session_command.py:367
 msgid "OPTIONS"
 msgstr "PARAMETRY"
 
-#: session_command.py:394
+#: session_command.py:395
 msgid "Type 'help' to list all available commands."
 msgstr "Zadejte 'help' pro výpis dostupných příkazů."
 
-#: session_command.py:398
+#: session_command.py:399
 msgid "Illegal use of interactive input mode."
 msgstr "Neplatné použití interaktivního módu."
 
-#: session_command.py:399
+#: session_command.py:400
 msgid ""
 "Type 'help !' to get more information about interactive input mode usage."
 msgstr ""
 "Popis používání interaktivního módu se zobrazí zadáním příkazu 'help !'"
 
-#: session_command.py:401
+#: session_command.py:402
 msgid "Interactive input mode works with EPP commands only."
 msgstr "Interaktivní mód zadání funguje pouze s EPP příkazy."
 
-#: session_command.py:447
+#: session_command.py:448
 msgid "ERROR: Missing command to start interactive input"
 msgstr "CHYBA: Interaktivnímu vstupu nebyl zadán příkaz"
 
-#: session_command.py:448
+#: session_command.py:449
 msgid "Type 'help !' for more information."
 msgstr "Pro více informací zadejte 'help !'."
 
-#: session_command.py:480
+#: session_command.py:481
 msgid "Hidden commands are"
 msgstr "Skryté příkazy jsou"
 
-#: session_command.py:499
+#: session_command.py:500
 msgid "Load file"
 msgstr "Načíst soubor"
 
-#: session_command.py:505
+#: session_command.py:506
 msgid "Not found"
 msgstr "Nenalezen"
 
-#: session_command.py:538
+#: session_command.py:539
 msgid "Translation of answer column names is"
 msgstr "Překlad jmen sloupců odpovědi je"
 
-#: session_command.py:545
+#: session_command.py:546
 msgid "Command confirmation is"
 msgstr "Potvrzování odesílání příkazů je"
 
-#: session_command.py:551
+#: session_command.py:552
 msgid "null_value has been set to"
 msgstr "null_value bylo nastaveno na"
 
-#: session_command.py:553
+#: session_command.py:554
 msgid "null_value is"
 msgstr "null_value je"
 
-#: session_command.py:562
+#: session_command.py:563
 msgid "Client-side validation has been set to"
 msgstr "Validace na straně klienta byla nastavena na"
 
-#: session_command.py:564
+#: session_command.py:565
 msgid "Invalid Client-side validation parametr"
 msgstr "Neplatný parametr příkazu validate"
 
-#: session_command.py:565
+#: session_command.py:566
 msgid ""
 "Type 'help validate' to get more information about client-side validation."
 msgstr "Zadejte 'help validate' pro výpis detailů o validaci."
 
-#: session_command.py:567
+#: session_command.py:568
 msgid "Client-side validation is"
 msgstr "Validace na straně klienta je"
 
-#: session_command.py:572
+#: session_command.py:573
 msgid "You are connected already. Type disconnect for close connection."
 msgstr "Již jste připojeni. Pro uzavření spojení zadejte disconnect."
 
-#: session_command.py:584
+#: session_command.py:585
 msgid "You has been disconnected."
 msgstr "Byli jste odpojeni."
 
-#: session_command.py:593
+#: session_command.py:594
 msgid "Colors mode has been set to"
 msgstr "Barevný výstup byl nastaven na"
 
-#: session_command.py:595
+#: session_command.py:596
 msgid "Colors mode is"
 msgstr "Mód barevnosti je"
 
-#: session_command.py:602
+#: session_command.py:603
 msgid "Escaped input mode has been set to"
 msgstr "Mód escapovaného vstupu byl nastaven na"
 
-#: session_command.py:604
+#: session_command.py:605
 msgid "Escaped input mode is"
 msgstr "Mód escapovaného vstupu je"
 
-#: session_command.py:611
+#: session_command.py:612
 msgid "Verbose mode has been set to"
 msgstr "Mód výpisu byl nastaven na"
 
-#: session_command.py:613
+#: session_command.py:614
 msgid "Verbose mode is"
 msgstr "Mód rozsahu výpisu je"
 
-#: session_command.py:639
+#: session_command.py:640
 #, python-format
 msgid "Unknown switch '%s'"
 msgstr "Neznámý přepínač '%s'"
 
-#: session_command.py:640
+#: session_command.py:641
 msgid "Type 'help poll_autoack' to get details on poll_autoack usage."
 msgstr "Zadejte 'help poll_autoack' pro zobrazení použití příkazu."
 
-#: session_command.py:643
+#: session_command.py:644
 msgid "Autoacknowledge poll has been set to"
 msgstr "Autopotvrzení poll bylo nastaveno na"
 
-#: session_command.py:645
+#: session_command.py:646
 msgid "poll_autoack is"
 msgstr "poll_autoack je"
 
-#: session_command.py:652
+#: session_command.py:653
 msgid "Output type has been set to"
 msgstr "Typ výstupu byl nastaven na"
 
-#: session_command.py:654
+#: session_command.py:655
 msgid "Output type is"
 msgstr "Typ výstupu je"
 
-#: session_command.py:663
+#: session_command.py:664
 msgid "Dir list"
 msgstr "Výpis adresáře"
 
-#: session_command.py:679
+#: session_command.py:680
 msgid "Interpreted answer"
 msgstr "Přeložená odpověď"
 
-#: session_command.py:682
+#: session_command.py:683
 msgid "Answer source"
 msgstr "Zdrojová odpověď"
 
-#: session_command.py:689
+#: session_command.py:690
 msgid "Interpreted command"
 msgstr "Přeložený příkaz"
 
-#: session_command.py:694
+#: session_command.py:695
 msgid "Command source"
 msgstr "Zdrojový příkaz"
 
-#: session_command.py:702
+#: session_command.py:703
 #, python-format
 msgid ""
 "Unsupported language code: '%s'.\n"
@@ -2270,116 +2268,116 @@ msgstr ""
 "Nepodporovaná jazyková verze: '%s'.\n"
 "Dostupné verze jsou: %s."
 
-#: session_command.py:703
+#: session_command.py:704
 msgid "Language is"
 msgstr "Jazyková verze je"
 
-#: session_command.py:706
+#: session_command.py:707
 msgid "User interface language is already"
 msgstr "Jazyková verze je již"
 
-#: session_command.py:714
+#: session_command.py:715
 msgid "User interface language has been set to"
 msgstr "Jazyková verze byla nastavena na"
 
-#: session_command.py:715
+#: session_command.py:716
 msgid "Reconnect to change server language too."
 msgstr "Znove se připojte k serveru chcete-li změnit jazyk i na něm."
 
-#: session_command.py:717
+#: session_command.py:718
 msgid "User interface language is"
 msgstr "Jazyková verze je"
 
-#: session_command.py:725
+#: session_command.py:726
 msgid "Missing command type. Available types"
 msgstr "Typ příkazu chybí. Platné typy jsou"
 
-#: session_command.py:732
+#: session_command.py:733
 msgid "Invalid command type. Valid types"
 msgstr "Neplatný typ příkazu. Platné typy jsou"
 
-#: session_command.py:737
+#: session_command.py:738
 msgid "At first you must receive values from info_[contact|nsset|domain]."
 msgstr "Nejdříve musíte získat hodnoty z info_[contact|nsset|domain]."
 
-#: session_command.py:742
+#: session_command.py:743
 #, python-format
 msgid "Previous info_%s didn't return data."
 msgstr "Předchozí info_%s nevrátilo žádné hodnoty."
 
-#: session_command.py:768
+#: session_command.py:769
 msgid "You are logged already."
 msgstr "Jste již zalogován"
 
-#: session_command.py:808
+#: session_command.py:813
 msgid "Login command sent to the server"
 msgstr "Příkaz login byl odeslán na server"
 
-#: session_config.py:37 session_config.py:91
+#: session_config.py:38 session_config.py:92
 msgid "File contains parsing errors."
 msgstr "Při parsování souboru se vyskytly chyby."
 
-#: session_config.py:38 session_config.py:92
+#: session_config.py:39 session_config.py:93
 msgid "See details in verbose 2 or higher."
 msgstr "Detaily jsou zobrazeny ve verbose 2 nebo vyšším."
 
-#: session_receiver.py:98
+#: session_receiver.py:101
 msgid "Element that caused a server error condition"
 msgstr "Element který způsobil chybu"
 
-#: session_receiver.py:99 session_transfer.py:490 session_transfer.py:541
+#: session_receiver.py:102 session_transfer.py:500 session_transfer.py:551
 msgid "Reason"
 msgstr "Důvod"
 
-#: session_receiver.py:116
+#: session_receiver.py:119
 msgid "Invalid response code"
 msgstr "Neplatný kód odpovědi"
 
-#: session_receiver.py:140
+#: session_receiver.py:143
 msgid "Missing result in the response message."
 msgstr "V odpovědi chybí část result"
 
-#: session_receiver.py:142
+#: session_receiver.py:145
 msgid "Unknown server response"
 msgstr "Odpověď serveru nebyla rozpoznána"
 
-#: session_receiver.py:174
+#: session_receiver.py:177
 msgid "Unknown response type"
 msgstr "Neznámý typ části response"
 
-#: session_receiver.py:214
+#: session_receiver.py:217
 msgid "All data are disclosed."
 msgstr "Všechna data jsou veřejná."
 
-#: session_receiver.py:217
+#: session_receiver.py:220
 msgid "All data are hidden."
 msgstr "Všechna data jsou skrytá."
 
-#: session_receiver.py:228
+#: session_receiver.py:231
 msgid "Connected!"
 msgstr "Spojení navázáno!"
 
-#: session_receiver.py:230
+#: session_receiver.py:233
 msgid "Login failed."
 msgstr "Login se nezdařil."
 
-#: session_receiver.py:354
+#: session_receiver.py:372
 msgid "Not in registry: Object is available."
 msgstr "Není v registru: Objekt je dostupný."
 
-#: session_receiver.py:378
+#: session_receiver.py:396
 msgid "Not available"
 msgstr "Nedostupný"
 
-#: session_receiver.py:378
+#: session_receiver.py:396
 msgid "Available"
 msgstr "Dostupný"
 
-#: session_receiver.py:570
+#: session_receiver.py:588
 msgid "The list is empty."
 msgstr "Seznam je prázdný."
 
-#: session_receiver.py:580
+#: session_receiver.py:598
 msgid ""
 "\n"
 "The list of the contacts is ready on the server buffer \n"
@@ -2390,7 +2388,7 @@ msgstr ""
 "Seznam kontaktů je připraven v bufferu na serveru a ukazatel je nastaven\n"
 "na začátek seznamu. Pro získání dat zadejte příkaz get_results."
 
-#: session_receiver.py:587
+#: session_receiver.py:605
 msgid ""
 "\n"
 "The list of the nssets is ready on the server buffer \n"
@@ -2401,7 +2399,7 @@ msgstr ""
 "Seznam nssetů je připraven v bufferu na serveru a ukazatel je nastaven\n"
 "na začátek seznamu. Pro získání dat zadejte příkaz get_results."
 
-#: session_receiver.py:594
+#: session_receiver.py:612
 msgid ""
 "\n"
 "The list of the keysets is ready on the server buffer \n"
@@ -2412,7 +2410,7 @@ msgstr ""
 "Seznam keysetů je připraven v bufferu na serveru a ukazatel je nastaven\n"
 "na začátek seznamu. Pro získání dat zadejte příkaz get_results."
 
-#: session_receiver.py:601
+#: session_receiver.py:619
 msgid ""
 "\n"
 "The list of the domains is ready on the server buffer \n"
@@ -2423,7 +2421,7 @@ msgstr ""
 "Seznam domén je připraven v bufferu na serveru a ukazatel je nastaven\n"
 "na začátek seznamu. Pro získání dat zadejte příkaz get_results."
 
-#: session_receiver.py:631
+#: session_receiver.py:649
 msgid ""
 "The list of the domains is ready on the server buffer \n"
 "and pointer is set at the beginning of the list.\n"
@@ -2432,7 +2430,7 @@ msgstr ""
 "Seznam domén je připraven v bufferu na serveru a ukazatel je nastaven\n"
 "na začátek seznamu. Pro získání dat zadejte příkaz get_results."
 
-#: session_receiver.py:637 session_receiver.py:643 session_receiver.py:655
+#: session_receiver.py:655 session_receiver.py:661 session_receiver.py:673
 msgid ""
 "The list of the nssets is ready on the server buffer \n"
 "and pointer is set at the beginning of the list.\n"
@@ -2441,7 +2439,7 @@ msgstr ""
 "Seznam nssetů je připraven v bufferu na serveru a ukazatel je nastaven\n"
 "na začátek seznamu. Pro získání dat zadejte příkaz get_results."
 
-#: session_receiver.py:649 session_receiver.py:661
+#: session_receiver.py:667 session_receiver.py:679
 msgid ""
 "The list of the keysets is ready on the server buffer \n"
 "and pointer is set at the beginning of the list.\n"
@@ -2450,123 +2448,123 @@ msgstr ""
 "Seznam keysetů je připraven v bufferu na serveru a ukazatel je nastaven\n"
 "na začátek seznamu. Pro získání dat zadejte příkaz get_results."
 
-#: session_receiver.py:700
+#: session_receiver.py:718
 msgid "You are not logged. First type login."
 msgstr "Nejste zalogováni. Nejdříve zadejte login."
 
-#: session_receiver.py:703
+#: session_receiver.py:721
 msgid "You are not logged. You must call login() before working on the server."
 msgstr "Nejste zalogováni. Nejdříve musíte zadat login()."
 
-#: session_transfer.py:112
+#: session_transfer.py:113
 #, python-format
 msgid "Connection to %s interrupted."
 msgstr "Spojení s %s bylo přerušeno."
 
-#: session_transfer.py:190
+#: session_transfer.py:198
 #, python-format
 msgid "Invalid port value: '%s'."
 msgstr "Neplatné číslo portu: '%s'."
 
-#: session_transfer.py:193
+#: session_transfer.py:201
 #, python-format
 msgid "Port is out of range: %d."
 msgstr "Port je mimo rozsah: %d."
 
-#: session_transfer.py:200
+#: session_transfer.py:208
 msgid "Hostname missing"
 msgstr "Chybí hostname"
 
-#: session_transfer.py:202
+#: session_transfer.py:210
 msgid "Server port number missing"
 msgstr "Chybí číslo portu serveru"
 
-#: session_transfer.py:207
+#: session_transfer.py:215
 msgid "Username missing"
 msgstr "Chybí username"
 
-#: session_transfer.py:208
+#: session_transfer.py:216
 msgid "Password missing"
 msgstr "Chybí heslo"
 
-#: session_transfer.py:210
+#: session_transfer.py:218
 msgid "SSL certificate name missing"
 msgstr "Název SSL certifikátu chybí"
 
-#: session_transfer.py:212
+#: session_transfer.py:220
 msgid "SSL certificate file not found"
 msgstr "Soubor se SSL certifikátem nebyl nalezen"
 
-#: session_transfer.py:214
+#: session_transfer.py:222
 msgid "SSL private key name missing"
 msgstr "Název SSL privátního klíče chybí."
 
-#: session_transfer.py:216
+#: session_transfer.py:224
 msgid "SSL private key file not found"
 msgstr "SSL privátní klíč nebyl nalezen"
 
-#: session_transfer.py:218
+#: session_transfer.py:226
 msgid "Can't connect to server"
 msgstr "Nemohu se připojit k serveru"
 
-#: session_transfer.py:236
+#: session_transfer.py:246
 msgid "Now I try again to connect with the zero timeout..."
 msgstr "Nyní se pokusím připojit znova s timeoutem nula..."
 
-#: session_transfer.py:239
+#: session_transfer.py:249
 msgid "Attempt at connection with the zero timeout has been successful."
 msgstr "Pokus o připojení s nulovým timeoutem byl úspěšný."
 
-#: session_transfer.py:240
+#: session_transfer.py:250
 msgid "Change timeout value to the zero in your configuration file."
 msgstr "Nastavte si v konfiguračním souboru hodnotu timeoutu na nulu."
 
-#: session_transfer.py:242
+#: session_transfer.py:252
 msgid ""
 "Attempt at connection again with the zero timeout, but this process failed."
 msgstr "Pokus o znovupřipojení s nulovým timeoutem, ale proces selhal."
 
-#: session_transfer.py:259
+#: session_transfer.py:269
 msgid "Server didn't return Greeting message. Contact server administrator."
 msgstr "Server nevrátil Greeting odpověď. Kontaktujte správce serveru."
 
-#: session_transfer.py:269
+#: session_transfer.py:279
 msgid "Ending session at"
 msgstr "Ukončení sezení na"
 
-#: session_transfer.py:270
+#: session_transfer.py:280
 msgid "Disconnected."
 msgstr "Odpojeno."
 
-#: session_transfer.py:304
+#: session_transfer.py:314
 msgid "Logout command sent to server"
 msgstr "Odeslán logout"
 
-#: session_transfer.py:447
+#: session_transfer.py:457
 msgid "updated"
 msgstr "aktualizováno"
 
-#: session_transfer.py:449
+#: session_transfer.py:459
 msgid "deleted"
 msgstr "smazáno"
 
-#: session_transfer.py:451
+#: session_transfer.py:461
 msgid "successfully transfered"
 msgstr "byla úspěšně transferována"
 
-#: session_transfer.py:453
+#: session_transfer.py:463
 msgid "request for send authorisation info transmited"
 msgstr "pořadavek na odeslání autorizačního hesla byl odeslán"
 
-#: session_transfer.py:455
+#: session_transfer.py:465
 msgid "The Request for technical test was successfully submitted."
 msgstr "Požadavek na technický test byl úspěšně odeslán."
 
-#: session_transfer.py:457
+#: session_transfer.py:467
 msgid "The message has been removed from the queue."
 msgstr "Zpráva byla odebrána z fronty zpráv."
 
-#: session_transfer.py:487 session_transfer.py:539
+#: session_transfer.py:497 session_transfer.py:549
 msgid "Return code"
 msgstr "Návratový kód"
 
@@ -2581,7 +2579,7 @@ msgstr ""
 "Použití: %s [parametry...]\n"
 "Více informací získáze zadáním '%s --help'."
 
-#: ../fred-client:54
+#: ../fred-client:60
 msgid ""
 "  -d COMMAND, --command=COMMAND\n"
 "                   Send command to server and exit\n"
@@ -2595,13 +2593,35 @@ msgstr ""
 "                   Zobrazit výstup jako text (default), html, xml, php "
 "(Pozor! Jen pro testování!)"
 
-#: ../fred-client:58
+#: ../fred-client:64
 msgid ""
 "  -q,  --qt\n"
 "                   Run client in Qt4 GUI  (Beware! For experimental only!)"
 msgstr ""
 "  -q,  --qt\n"
 "                   Spusť lkienta v Qt4 GUI (Pozor! Určeno jen pro testování!)"
+
+#~ msgid "DS record"
+#~ msgstr "DS záznam"
+
+#~ msgid ""
+#~ "\n"
+#~ "Prepare KEYSETs by DS. This command fills server buffer by list of "
+#~ "keysets \n"
+#~ "connected with defined DS record. The pointer is set at the beginning \n"
+#~ "of the list. The list is taken in sequence by calling command "
+#~ "'get_results'\n"
+#~ "repeatedly until any data comming.\n"
+#~ msgstr ""
+#~ "\n"
+#~ "Připravit seznam KEYSETů podle DS. Tento příkaz zaplní buffer na "
+#~ "serveru \n"
+#~ "seznamem keysetů, které mají přiřazen zadaný DS záznam. Ukazatel pro \n"
+#~ "čtení je nastaven na začátek seznamu. Části  seznamu se načítají "
+#~ "opakovaným\n"
+#~ "voláním příkazu 'get_results'. Pokud již get_results žádné údaje "
+#~ "nevrací, \n"
+#~ "tak bylo dosaženo konce seznamu.\n"
 
 #~ msgid "LIST of KEYSETS"
 #~ msgstr "Seznam KEYSETů"
