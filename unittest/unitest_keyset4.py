@@ -34,7 +34,11 @@ DS_BAD_DIGEST_2 = [
         {'key_tag': '1','alg': '1', 'digest_type': '1', 'digest': 'd382bf19eb86f79427f619895620d72f0c91bece235426dd0a4dc0b5100f254f', 'max_sig_life': '100'}]
 
 DNSKEY = [
-    {'flags': '257', 'protocol': '3', 'alg': '5', 'pub_key': 'unittest/dnskey.pub'}, 
+    {'flags': '257', 'protocol': '3', 'alg': '5', 
+        'pub_key': 'AwEAAddt2AkLfYGKgiEZB5SmIF8EvrjxNMH6HtxWEA4RJ9Ao6LCWheg8'
+        'TSoH4+jPNwiWmT3+PQVbL5TD90KVw6S09Ae9cYU8A7xnZWkfzq8q2pX6'
+        '7yVvshlQqJnuSV6uMBEMziIGu3NZEJb9eTl1T5q1cli7Fk+xTt5GVvZR' 
+        '3BJhtRAf'}, 
     ]
 
 KEYSET = {

@@ -960,7 +960,9 @@ class Message(MessageBase):
             data.append((element%parent_prefix, '%s:%s'%(prefix, make_camell(key)), dct_ks[key][0]))
         # pubKey
         key = 'pub_key'
-        certificate = self.load_certificate(dct_ks[key][0])
+        # load from file
+        #certificate = self.load_certificate(dct_ks[key][0])
+        certificate = dct_ks[key][0]
         data.append((element%parent_prefix, '%s:%s'%(prefix, make_camell(key)), certificate))
 
     def load_certificate(self, filename):

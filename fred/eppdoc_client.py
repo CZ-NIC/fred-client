@@ -273,14 +273,14 @@ lower level number. Valid range is from 0 to 10.
                 ('flags',(1,1),(),_T('Flags'),'257','',()),
                 ('protocol',(1,1),(),_T('Protocol'),'3','',()),
                 ('alg',(1,1),(),_T('Algorithm'),'5','',()),
-                ('pub_key',(1,1),(),_T('Public key filename path'),'unittest/dnskey.pub', '', ()),
+                ('pub_key',(1,1),(),_T('Public key filename path'),'AwEAAddt2AkLfYGKgiEZB5SmIF8EvrjxNMH6HtxWEA4RJ9Ao6LCWheg8', '', ()),
             )),
             ('tech',(1,UNBOUNDED),(),_T('Technical contact'),'CID:ID01','',()),
             ('auth_info',(0,1),(),_T('Password required by server to authorize the transfer'),'mypassword','',()),
             ],_T("""
 The EPP 'create_keyset' command is used to create a record of the KEYSET.
 """),(
-                'create_keyset KEYSID:01 ((1 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a41), (2 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a42 1)) ((257 3 5 unittest/dnskey.pub)) CID:ID01 passw',
+                'create_keyset KEYSID:01 ((1 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a41), (2 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a42 1)) ((257 3 5 AwEAAddt2AkLfYGKgiEZB5SmIF8EvrjxNMH6HtxWEA4RJ9Ao6LCWheg8)) CID:ID01 passw',
             )),
         #----------------------------------------------------
         'delete_contact': (1,[
@@ -403,8 +403,8 @@ and maximum allowable period is defined in the Communication rules."""),('renew_
                     ('flags',(1,1),(),_T('Flags'),'257','',()),
                     ('protocol',(1,1),(),_T('Protocol'),'3','',()),
                     ('alg',(1,1),(),_T('Algorithm'),'5','',()),
-                    ('pub_key',(1,1),(),_T('Public key filename path'),'unittest/dnskey.pub', '', ()),
-                )),                
+                    ('pub_key',(1,1),(),_T('Public key filename path'),'AwEAAddt2AkLfYGKgiEZB5SmIF8EvrjxNMH6HtxWEA4RJ9Ao6LCWheg8', '', ()),
+                )),
                 ('tech',(0,UNBOUNDED),(),_T('Technical contact ID'),'CID:ID01','',()),
             )),
             ('rem',(0,1),(),_T('Remove values'),'','',(
@@ -419,7 +419,7 @@ and maximum allowable period is defined in the Communication rules."""),('renew_
             )),
             ('auth_info',(0,1),(),_T('Password required by server to authorize the transfer'),'new_password','',()),
             ],_T("""The EPP 'update_keyset' command is used to update values in the KEYSET."""),(
-            "update_keyset KEYSID:01 (((1 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a41), (2 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a42 1)), ((257 3 5 unittest/dnskey.pub))) (((1 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a41), (2 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a42 1)) (cid:tech1, cid:tech2, cid:tech3)) password", 
+            "update_keyset KEYSID:01 (((1 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a41), (2 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a42 1)), ((257 3 5 AwEAAddt2AkLfYGKgiEZB5SmIF8EvrjxNMH6HtxWEA4RJ9Ao6LCWheg8))) (((1 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a41), (2 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a42 1)) (cid:tech1, cid:tech2, cid:tech3)) password", 
             )),
         #----------------------------------------------------
         'sendauthinfo_contact': (1,[

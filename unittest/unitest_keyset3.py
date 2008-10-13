@@ -16,7 +16,11 @@ DS = [{'key_tag': '1',  'alg': '1',  'digest_type': '1', 'digest': '012345678901
       {'key_tag': '1','alg': '5', 'digest_type': '1', 'digest': '9876543210987654321098765432109876543210', 'max_sig_life': '1'}]
 
 DNSKEY = [
-    {'flags': '257', 'protocol': '3', 'alg': '5', 'pub_key': 'unittest/dnskey.pub'}, 
+    {'flags': '257', 'protocol': '3', 'alg': '5', 
+        'pub_key': 'AwEAAddt2AkLfYGKgiEZB5SmIF8EvrjxNMH6HtxWEA4RJ9Ao6LCWheg8'
+        'TSoH4+jPNwiWmT3+PQVbL5TD90KVw6S09Ae9cYU8A7xnZWkfzq8q2pX6'
+        '7yVvshlQqJnuSV6uMBEMziIGu3NZEJb9eTl1T5q1cli7Fk+xTt5GVvZR' 
+        '3BJhtRAf'}, 
     ]
 
 KEYSET = {
