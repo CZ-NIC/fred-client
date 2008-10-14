@@ -266,7 +266,7 @@ lower level number. Valid range is from 0 to 10.
                 ('key_tag',(1,1),(),_T('Key tag'),'1','',()),
                 ('alg',(1,1),(),_T('Algorithm'),'1','',()),
                 ('digest_type',(1,1),(),_T('Digest Type'),'1','',()),
-                ('digest',(1,1),(),_T('Digest'),'499602d2','',()),
+                ('digest',(1,1),(),_T('Digest'),'1539349af5da340c2d3dd6ea6b2676bedb596a41','',()),
                 ('max_sig_life',(0,1),(),_T('Max.Sig.Life'),'1','',()),
             )),
             ('dsref',(0,9),(),_T('LIST of filenames with DS records'),'unittest/ds.cz','',()),
@@ -282,8 +282,8 @@ lower level number. Valid range is from 0 to 10.
             ],_T("""
 The EPP 'create_keyset' command is used to create a record of the KEYSET.
 """),(
-                'create_keyset KEYSID:01 ((1 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a41), (2 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a42 1)) (unittest/ds.cz) ((257 3 5 AwEAAddt2AkLfYGKgiEZB5SmIF8EvrjxNMH6HtxWEA4RJ9Ao6LCWheg8)) () CID:ID01 passw'
-                'create_keyset KEYSID:01 ((1 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a41), (2 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a42 1)) () () (unittest/dnskey.pub) CID:ID01 passw'
+                'create_keyset KEYSID:01 ((1 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a41), (2 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a42 1)) (unittest/ds.cz) ((257 3 5 AwEAAddt2AkLfYGKgiEZB5SmIF8EvrjxNMH6HtxWEA4RJ9Ao6LCWheg8)) () CID:ID01 passw', 
+                'create_keyset KEYSID:01 ((1 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a41), (2 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a42 1)) () () (unittest/dnskey.pub) CID:ID01 passw', 
             )),
         #----------------------------------------------------
         'delete_contact': (1,[
@@ -399,7 +399,7 @@ and maximum allowable period is defined in the Communication rules."""),('renew_
                     ('key_tag',(1,1),(),_T('Key tag'),'1','',()),
                     ('alg',(1,1),(),_T('Algorithm'),'1','',()),
                     ('digest_type',(1,1),(),_T('Digest Type'),'1','',()),
-                    ('digest',(1,1),(),_T('Digest'),'499602d2','',()),
+                    ('digest',(1,1),(),_T('Digest'),'1539349af5da340c2d3dd6ea6b2676bedb596a41','',()),
                     ('max_sig_life',(0,1),(),_T('Max.Sig.Life'),'1','',()),
                 )),
                 ('dsref',(0,9),(),_T('LIST of filenames with DS records'),'unittest/ds.cz','',()),
