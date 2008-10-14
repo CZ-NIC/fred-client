@@ -34,6 +34,7 @@ from eppdoc import Message as MessageBase, SCHEMA_PREFIX
 
 
 UNBOUNDED = None
+MAXLIST = 9
 # ''contact_disclose'' must be same format as eppdoc_client.update_status.
 DISCLOSES = ('voice','fax','email', 'vat', 'ident', 'notify_email')
 contact_disclose = map(lambda n: (n,), DISCLOSES)
@@ -950,6 +951,19 @@ class Message(MessageBase):
         key = 'max_sig_life'
         if __has_key__(dct_ks, key):
             data.append((element%prefix, '%s:%s'%(prefix, make_camell(key)), dct_ks[key][0]))
+        
+    def __append_anyset_fromfile__(self, tag_name, data, filename, prefix, name, parse_file, change_namespace=None):
+        "Load anyset from filename"
+        element = '%s:' + name
+        parent_prefix = prefix
+        self.__append_schema_location__(tag_name, data, element, prefix, change_namespace)
+        dct = {}
+        for key in parse_file(dct, filename):
+            data.append((element%parent_prefix, '%s:%s'%(prefix, make_camell(key)), dct[key]))
+        
+    def __append_keyset_fromfile__(self, tag_name, data, filename, prefix, change_namespace=None):
+        "Load ds from filename"
+        self.__append_anyset_fromfile__(tag_name, data, filename, prefix, 'ds', self.parse_ds_file, change_namespace)
 
     def __append_dnskey__(self, tag_name, data, dct_ks, prefix, change_namespace=None):
         "Join ds elements for keyset"
@@ -961,15 +975,10 @@ class Message(MessageBase):
 
     def __append_dnskey_fromfile__(self, tag_name, data, filename, prefix, change_namespace=None):
         "Load dnskey from filename"
-        element = '%s:dnskey'
-        parent_prefix = prefix
-        self.__append_schema_location__(tag_name, data, element, prefix, change_namespace)
-        dct_ks = {}
-        if self.parse_certificate(dct_ks, filename):
-            for key in ('flags', 'protocol', 'alg', 'pub_key'):
-                data.append((element%parent_prefix, '%s:%s'%(prefix, make_camell(key)), dct_ks[key][0]))
+        self.__append_anyset_fromfile__(tag_name, data, filename, prefix, 'dnskey', self.parse_dnskey_file, change_namespace)
 
-    def load_certificate(self, filename):
+
+    def load_filename(self, filename):
         "Load file"
         # create absolute path
         if filename[0] != '/':
@@ -978,38 +987,47 @@ class Message(MessageBase):
         try:
             body = open(filename, 'rb').read()
         except IOError, e:
-            self.errors.append((0, 'certificate', 'IOError: %s'%e))
+            self.errors.append((0, 'file', 'IOError: %s'%e))
             body =  ''
-        return body
+        return body.strip()
     
-    def parse_certificate(self, dct_ks, filename):
+    def parse_dnskey_file(self, dct, filename):
         "Parse certificate file"
         # data format:
         # cz. IN DNSKEY 256 3 5 BASE64CODE BASE64CODE BASE64CODE...
-        parts = re.split('\s+', self.load_certificate(filename))
+        parts = re.split('\s+', self.load_filename(filename))
         if len(parts) < 7:
-            self.errors.append((0, 'certificate', 'Invalid DNSKEY file format.'))
-            return False # invalid format
+            self.errors.append((0, 'dnskey file', 'Invalid DNSKEY file format.'))
+            return [] # invalid format
         if parts[1] != 'IN' and parts[2] != 'DNSKEY':
-            self.errors.append((0, 'certificate', 'Invalid DNSKEY data format.'))
-            return False
+            self.errors.append((0, 'dnskey file', 'Invalid DNSKEY data format.'))
+            return []
         # fill dict by data from file
-        dct_ks['flags'] = [parts[3]]
-        dct_ks['protocol'] = [parts[4]]
-        dct_ks['alg'] = [parts[5]]
-        dct_ks['pub_key'] = ['\n'.join(parts[6:])]
-        return True
+        dct['flags'] = parts[3]
+        dct['protocol'] = parts[4]
+        dct['alg'] = parts[5]
+        dct['pub_key'] = '\n'.join(parts[6:])
+        return ('flags', 'protocol', 'alg', 'pub_key')
 
-    def check_dnskey_limit(self, data, prefix):
-        MAXDNSKEY = 9
-        count = 0
-        element_name = prefix != '' and '%s:dnskey'%prefix or 'dnskey'
-        for value in data:
-            if len(value) > 1 and value[1] == element_name:
-                count += 1
-        if count > MAXDNSKEY:
-            self.errors.append((0, element_name, _T('Limit of keys exceeded. The maximum is %d.') % MAXDNSKEY))
-
+    def parse_ds_file(self, dct, filename):
+        "Parse certificate file"
+        # data format:
+        # cz.	3600	IN	DS	20487 5 1 1ff4b01e82cd41f2edb65b925d3f4b2ab68a4467
+        parts = re.split('\s+', self.load_filename(filename))
+        if len(parts) != 8:
+            self.errors.append((0, 'ds file', 'Invalid DS file format.'))
+            return [] # invalid format
+        if parts[2] != 'IN' and parts[3] != 'DS':
+            self.errors.append((0, 'ds file', 'Invalid DS data format.'))
+            return []
+        # fill dict by data from file
+        dct['key_tag'] = parts[4]
+        dct['alg'] = parts[5]
+        dct['digest_type'] = parts[6]
+        dct['digest'] = parts[7]
+        dct['max_sig_life'] = parts[1]
+        return ('key_tag', 'alg', 'digest_type', 'digest', 'max_sig_life')
+        
     
     def __assemble_create_anyset__(self, prefix, *params):
         "Assemble XML EPP command."
@@ -1030,17 +1048,33 @@ class Message(MessageBase):
                 self.__append_nsset__('create', data, dns)
         
         # for keyset only
+        count_ds = 0
         if __has_key__(dct,'ds'):
             for ds in dct['ds']:
                 self.__append_keyset__('create', data, ds, prefix)
+                count_ds += 1
+        if __has_key__(dct,'dsref'):
+            for ds in dct['dsref']:
+                self.__append_keyset_fromfile__('create', data, ds, prefix)
+                count_ds += 1
+        
+        count_dnskey = 0
         if __has_key__(dct,'dnskey'):
             for ds in dct['dnskey']:
                 self.__append_dnskey__('create', data, ds, prefix)
+                count_dnskey += 1
         if __has_key__(dct,'dnskeyref'):
             for ds in dct['dnskeyref']:
                 self.__append_dnskey_fromfile__('create', data, ds, prefix)
-        # check list limit
-        self.check_dnskey_limit(data, prefix)
+                count_dnskey += 1
+        
+        # check list limits
+        if count_ds + count_dnskey == 0:
+            self.errors.append((0, 'ds/dnskey', _T('At least one DS or DNSKEY must be set.')))
+        if count_ds > MAXLIST:
+            self.errors.append((0, 'ds', _T('Limit of list is exceeded. The maximum is %d.') % MAXLIST))
+        if count_dnskey > MAXLIST:
+            self.errors.append((0, 'dnskey', _T('Limit of list is exceeded. The maximum is %d.') % MAXLIST))
         
         # for nsset only
         if __has_key__(dct,'tech'):
@@ -1205,20 +1239,32 @@ class Message(MessageBase):
                     self.__append_values__(data, dct_dns, 'addr', '%s:ns'%prefix, '%s:addr'%prefix)
             
             # for keyset only
+            count_ds = 0
             if __has_key_dict__(dct_add, 'ds'):
                 for ds in dct_add['ds']:
                     self.__append_keyset__('add', data, ds, prefix)
+                    count_ds += 1
+            if __has_key_dict__(dct_add, 'dsref'):
+                for ds in dct_add['dsref']:
+                    self.__append_keyset_fromfile__('add', data, ds, prefix)
+                    count_ds += 1
+
             # two list of dnskeys will be join together
-            dnskey_data = []
+            count_dnskey = 0
             if __has_key_dict__(dct_add, 'dnskey'):
                 for ds in dct_add['dnskey']:
-                    self.__append_dnskey__('add', dnskey_data, ds, prefix)
+                    self.__append_dnskey__('add', data, ds, prefix)
+                    count_dnskey += 1
             if __has_key_dict__(dct_add, 'dnskeyref'):
                 for ds in dct_add['dnskeyref']:
-                    self.__append_dnskey_fromfile__('add', dnskey_data, ds, prefix)
-            # check list limit
-            self.check_dnskey_limit(dnskey_data, prefix)
-            data.extend(dnskey_data)
+                    self.__append_dnskey_fromfile__('add', data, ds, prefix)
+                    count_dnskey += 1
+            
+            # check list limits
+            if count_ds > MAXLIST:
+                self.errors.append((0, 'ds', _T('Limit of list is exceeded. The maximum is %d.') % MAXLIST))
+            if count_dnskey > MAXLIST:
+                self.errors.append((0, 'dnskey', _T('Limit of list is exceeded. The maximum is %d.') % MAXLIST))
             
             self.__append_values__(data, dct_add, 'tech', '%s:add'%prefix, '%s:tech'%prefix)
 
@@ -1227,20 +1273,32 @@ class Message(MessageBase):
             dct_rem = dct['rem'][0]
             
             # for keyset only
+            count_ds = 0
             if __has_key_dict__(dct_rem, 'ds'):
                 for ds in dct_rem['ds']:
                     self.__append_keyset__('rem', data, ds, prefix)
+                    count_ds += 1
+            if __has_key_dict__(dct_rem, 'dsref'):
+                for ds in dct_add['dsref']:
+                    self.__append_keyset_fromfile__('rem', data, ds, prefix)
+                    count_ds += 1
+            
             # two list of dnskeys will be join together
-            dnskey_data = []
+            count_dnskey = 0
             if __has_key_dict__(dct_rem, 'dnskey'):
                 for ds in dct_rem['dnskey']:
-                    self.__append_dnskey__('rem', dnskey_data, ds, prefix)
+                    self.__append_dnskey__('rem', data, ds, prefix)
+                    count_dnskey += 1
             if __has_key_dict__(dct_rem, 'dnskeyref'):
                 for ds in dct_rem['dnskeyref']:
-                    self.__append_dnskey_fromfile__('rem', dnskey_data, ds, prefix)
-            # check list limit
-            self.check_dnskey_limit(dnskey_data, prefix)
-            data.extend(dnskey_data)
+                    self.__append_dnskey_fromfile__('rem', data, ds, prefix)
+                    count_dnskey += 1
+            
+            # check list limits
+            if count_ds > MAXLIST:
+                self.errors.append((0, 'ds', _T('Limit of list is exceeded. The maximum is %d.') % MAXLIST))
+            if count_dnskey > MAXLIST:
+                self.errors.append((0, 'dnskey', _T('Limit of list is exceeded. The maximum is %d.') % MAXLIST))
             
             # for nsset only
             if __has_key_dict__(dct_rem, 'name'):

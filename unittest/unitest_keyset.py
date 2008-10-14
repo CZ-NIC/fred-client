@@ -14,6 +14,7 @@ FRED_CONTACT2 = unitest_share.create_handle('CID:U2')
 
 DS = [{'key_tag': '1',  'alg': '1',  'digest_type': '1', 'digest': '0123456789012345678901234567890123456789'}, 
       {'key_tag': '1','alg': '5', 'digest_type': '1', 'digest': '9876543210987654321098765432109876543210', 'max_sig_life': '1'}]
+DSREF = []
 
 DNSKEY = [
     {'flags': '257', 'protocol': '3', 'alg': '5', 
@@ -22,12 +23,15 @@ DNSKEY = [
         '7yVvshlQqJnuSV6uMBEMziIGu3NZEJb9eTl1T5q1cli7Fk+xTt5GVvZR' 
         '3BJhtRAf'}, 
     ]
-      
+DNSKEYREF = []
+
 KEYSET = {
     'id': FRED_KEYSET1, # (required)
     'auth_info': 'heslo', # (required)
     'ds': DS, 
+    'dsref': DSREF, 
     'dnskey': DNSKEY, 
+    'dnskeyref': DNSKEYREF, 
     'tech': [FRED_CONTACT1],   # (optional)             unbounded list
     }
 
@@ -85,7 +89,7 @@ class Test(unittest.TestCase):
     def test_040(self):
         '4. Zalozeni keysetu'
         n = KEYSET
-        epp_cli.create_keyset(n['id'], n['ds'], n['dnskey'], None, n['tech'], n['auth_info'])
+        epp_cli.create_keyset(n['id'], n['ds'], n['dsref'], n['dnskey'], n['dnskeyref'], n['tech'], n['auth_info'])
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_050(self):

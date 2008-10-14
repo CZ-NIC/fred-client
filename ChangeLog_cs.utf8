@@ -2,6 +2,7 @@ FredClient 2.0.4
 
 Změny:
     * Úpravy create_keyset a update_keyset pro přidání dnskey
+    * Přidáno alternativní vkládání DS a DNSKEY záznamů pomocí odakzů do douborů
 
 
 FredClient 2.0.2

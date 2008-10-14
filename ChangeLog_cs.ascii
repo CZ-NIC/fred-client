@@ -2,6 +2,7 @@ FredClient 2.0.4
 
 Zmeny:
     * Upravy create_keyset a update_keyset pro pridani dnskey
+    * Pridano alternativni vkladani DS a DNSKEY zaznamu pomoci odakzu do douboru
 
 
 FredClient 2.0.2
@@ -217,5 +218,4 @@ Opravy:
     * dopleni chybejici hodnoty domain:valExDate (Validace platna do) v info_domain
     * oprava ukladani historie prikazu
     * oprava parsovani hodnoty pojmenovaneho parametru
-
 

@@ -17,6 +17,7 @@ FRED_CONTACT1 = unitest_share.create_handle('CID:U1')
 FRED_CONTACT2 = unitest_share.create_handle('CID:U2')
 
 DS = [{'key_tag': '1',  'alg': '1',  'digest_type': '1', 'digest': 'dbccddaa768e340e0dfb2e7b39aa2b88d9069236', 'max_sig_life': '1000'}]
+DSREF = []
 DS_DUP = [
         {'key_tag': '1','alg': '5', 'digest_type': '1', 'digest': '1e99515b6bef7bc9aa1211fc062bb923c85b6e50'},
         {'key_tag': '1','alg': '1', 'digest_type': '1', 'digest': 'dbccddaa768e340e0dfb2e7b39aa2b88d9069236', 'max_sig_life': '1000'}]
@@ -40,12 +41,15 @@ DNSKEY = [
         '7yVvshlQqJnuSV6uMBEMziIGu3NZEJb9eTl1T5q1cli7Fk+xTt5GVvZR' 
         '3BJhtRAf'}, 
     ]
+DNSKEYREF = []
 
 KEYSET = {
     'id': FRED_KEYSET1, # (required)
     'auth_info': 'heslo', # (required)
     'ds': DS, 
+    'dsref': DSREF, 
     'dnskey': DNSKEY, 
+    'dnskeyref': DNSKEYREF, 
     'tech': [FRED_CONTACT1],   # (optional)             unbounded list
     }
 
@@ -101,25 +105,25 @@ class Test(unittest.TestCase):
 
     def test_040(self):
         '4. Zalozeni validniho keysetu'
-        epp_cli.create_keyset(FRED_KEYSET1, DS, n['dnskey'], None, KEYSET['tech'], KEYSET['auth_info'])
+        epp_cli.create_keyset(FRED_KEYSET1, DS, n['dsref'], n['dnskey'], n['dnskeyref'], KEYSET['tech'], KEYSET['auth_info'])
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_041(self):
         '4.1 zalozeni validniho keysetu (1.ds-zaznam v poradku, 2.ds-zaznam jiz existuje v databazi)'
-        epp_cli.create_keyset(FRED_KEYSET3, DS_DUP, n['dnskey'], None, KEYSET['tech'], KEYSET['auth_info'])
+        epp_cli.create_keyset(FRED_KEYSET3, DS_DUP, n['dsref'], n['dnskey'], n['dnskeyref'], KEYSET['tech'], KEYSET['auth_info'])
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_042(self):
         '4.2 Pokus o zalozeni nevalidniho keysetu (1.ds-zaznam v poradku, 2.ds-zaznam spatny: spatny typ digest-u)'
-        epp_cli.create_keyset(FRED_KEYSET2, DS_BAD_TYPE, n['dnskey'], None, KEYSET['tech'], KEYSET['auth_info'])
+        epp_cli.create_keyset(FRED_KEYSET2, DS_BAD_TYPE, n['dsref'], n['dnskey'], n['dnskeyref'], KEYSET['tech'], KEYSET['auth_info'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
     def test_043(self):
         '4.3 Pokus o zalozeni nevalidniho keysetu (1.ds-zaznam v poradku, 2.ds-zaznam spatny: digest prilis kratky (md5))'
-        epp_cli.create_keyset(FRED_KEYSET2, DS_BAD_DIGEST_1, n['dnskey'], None, KEYSET['tech'], KEYSET['auth_info'])
+        epp_cli.create_keyset(FRED_KEYSET2, DS_BAD_DIGEST_1, n['dsref'], n['dnskey'], n['dnskeyref'], KEYSET['tech'], KEYSET['auth_info'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
     def test_044(self):
         '4.4 Pokus o zalozeni nevalidniho keysetu (1.ds-zaznam v poradku, 2.ds-zaznam spatny: digest prilis dlouhy (sha256))'
-        epp_cli.create_keyset(FRED_KEYSET2, DS_BAD_DIGEST_2, n['dnskey'], None, KEYSET['tech'], KEYSET['auth_info'])
+        epp_cli.create_keyset(FRED_KEYSET2, DS_BAD_DIGEST_2, n['dsref'], n['dnskey'], n['dnskeyref'], KEYSET['tech'], KEYSET['auth_info'])
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_051(self):

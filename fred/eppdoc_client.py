@@ -262,13 +262,14 @@ lower level number. Valid range is from 0 to 10.
         #----------------------------------------------------
         'create_keyset': (3,[
             ('id',(1,1),(),_T('KEYSET ID'),'KEYSID:ID','',()),
-            ('ds',(1,9),(),_T('LIST of DS records'),'','',(
+            ('ds',(0,9),(),_T('LIST of DS records'),'','',(
                 ('key_tag',(1,1),(),_T('Key tag'),'1','',()),
                 ('alg',(1,1),(),_T('Algorithm'),'1','',()),
                 ('digest_type',(1,1),(),_T('Digest Type'),'1','',()),
                 ('digest',(1,1),(),_T('Digest'),'499602d2','',()),
                 ('max_sig_life',(0,1),(),_T('Max.Sig.Life'),'1','',()),
             )),
+            ('dsref',(0,9),(),_T('LIST of filenames with DS records'),'unittest/ds.cz','',()),
             ('dnskey',(0,9),(),_T('LIST of keys'),'','',(
                 ('flags',(1,1),(),_T('Flags'),'257','',()),
                 ('protocol',(1,1),(),_T('Protocol'),'3','',()),
@@ -281,8 +282,8 @@ lower level number. Valid range is from 0 to 10.
             ],_T("""
 The EPP 'create_keyset' command is used to create a record of the KEYSET.
 """),(
-                'create_keyset KEYSID:01 ((1 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a41), (2 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a42 1)) ((257 3 5 AwEAAddt2AkLfYGKgiEZB5SmIF8EvrjxNMH6HtxWEA4RJ9Ao6LCWheg8)) () CID:ID01 passw',
-                'create_keyset KEYSID:01 ((1 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a41), (2 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a42 1)) () (unittest/dnskey.pub) CID:ID01 passw'
+                'create_keyset KEYSID:01 ((1 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a41), (2 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a42 1)) (unittest/ds.cz) ((257 3 5 AwEAAddt2AkLfYGKgiEZB5SmIF8EvrjxNMH6HtxWEA4RJ9Ao6LCWheg8)) () CID:ID01 passw'
+                'create_keyset KEYSID:01 ((1 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a41), (2 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a42 1)) () () (unittest/dnskey.pub) CID:ID01 passw'
             )),
         #----------------------------------------------------
         'delete_contact': (1,[
@@ -401,6 +402,7 @@ and maximum allowable period is defined in the Communication rules."""),('renew_
                     ('digest',(1,1),(),_T('Digest'),'499602d2','',()),
                     ('max_sig_life',(0,1),(),_T('Max.Sig.Life'),'1','',()),
                 )),
+                ('dsref',(0,9),(),_T('LIST of filenames with DS records'),'unittest/ds.cz','',()),
                 ('dnskey',(0,9),(),_T('LIST of keys'),'','',(
                     ('flags',(1,1),(),_T('Flags'),'257','',()),
                     ('protocol',(1,1),(),_T('Protocol'),'3','',()),
@@ -418,6 +420,7 @@ and maximum allowable period is defined in the Communication rules."""),('renew_
                     ('digest',(1,1),(),_T('Digest'),'499602d2','',()),
                     ('max_sig_life',(0,1),(),_T('Max.Sig.Life'),'1','',()),
                 )),
+                ('dsref',(0,9),(),_T('LIST of filenames with DS records'),'unittest/ds.cz','',()),
                 ('dnskey',(0,9),(),_T('LIST of keys'),'','',(
                     ('flags',(1,1),(),_T('Flags'),'257','',()),
                     ('protocol',(1,1),(),_T('Protocol'),'3','',()),
@@ -429,8 +432,8 @@ and maximum allowable period is defined in the Communication rules."""),('renew_
             )),
             ('auth_info',(0,1),(),_T('Password required by server to authorize the transfer'),'new_password','',()),
             ],_T("""The EPP 'update_keyset' command is used to update values in the KEYSET."""),(
-            "update_keyset KEYSID:01 (((1 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a41), (2 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a42 1)) ((256 3 5 AwEAAddt2AkLfYGKgiEZB5SmIF8EvrjxNMH6HtxWEA4RJ9Ao6LCWheg8))) (((1 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a41), (2 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a42 1)) () () (cid:tech1, cid:tech2, cid:tech3)) password", 
-            "update_keyset KEYSID:01 (((1 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a41), (1 2 1 1539349af5da340c2d3dd6ea6b2676bedb596a42 1)) () unittest/dnskey.pub) (((1 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a41), (2 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a42 1)) () unittest/dnskey.pub (cid:tech1, cid:tech2, cid:tech3)) password", 
+            "update_keyset KEYSID:01 (((1 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a41), (2 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a42 1)) (unittest/ds.cz) ((256 3 5 AwEAAddt2AkLfYGKgiEZB5SmIF8EvrjxNMH6HtxWEA4RJ9Ao6LCWheg8))) (((1 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a41), (2 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a42 1)) () () () (cid:tech1, cid:tech2, cid:tech3)) password", 
+            "update_keyset KEYSID:01 (((1 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a41), (1 2 1 1539349af5da340c2d3dd6ea6b2676bedb596a42 1)) () () unittest/dnskey.pub) (((1 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a41), (2 1 1 1539349af5da340c2d3dd6ea6b2676bedb596a42 1)) unittest/ds.cz () unittest/dnskey.pub (cid:tech1, cid:tech2, cid:tech3)) password", 
             )),
         #----------------------------------------------------
         'sendauthinfo_contact': (1,[
