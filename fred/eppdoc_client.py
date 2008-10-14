@@ -275,7 +275,7 @@ lower level number. Valid range is from 0 to 10.
                 ('alg',(1,1),(),_T('Algorithm'),'5','',()),
                 ('pub_key',(1,1),(),_T('Public key code'),'AwEAAddt2AkLfYGKgiEZB5SmIF8EvrjxNMH6HtxWEA4RJ9Ao6LCWheg8', '', ()),
             )),
-            ('dnskeyref',(0,9),(),_T('LIST of filenames'),'unittest/dnskey.pub','',()),
+            ('dnskeyref',(0,9),(),_T('LIST of filenames with dns keys'),'unittest/dnskey.pub','',()),
             ('tech',(1,UNBOUNDED),(),_T('Technical contact'),'CID:ID01','',()),
             ('auth_info',(0,1),(),_T('Password required by server to authorize the transfer'),'mypassword','',()),
             ],_T("""
@@ -407,7 +407,7 @@ and maximum allowable period is defined in the Communication rules."""),('renew_
                     ('alg',(1,1),(),_T('Algorithm'),'5','',()),
                     ('pub_key',(1,1),(),_T('Public key code'),'AwEAAddt2AkLfYGKgiEZB5SmIF8EvrjxNMH6HtxWEA4RJ9Ao6LCWheg8', '', ()),
                 )),
-                ('dnskeyref',(0,9),(),_T('LIST of filenames'),'unittest/dnskey.pub','',()),
+                ('dnskeyref',(0,9),(),_T('LIST of filenames with dns keys'),'unittest/dnskey.pub','',()),
                 ('tech',(0,UNBOUNDED),(),_T('Technical contact ID'),'CID:ID01','',()),
             )),
             ('rem',(0,1),(),_T('Remove values'),'','',(
@@ -424,7 +424,7 @@ and maximum allowable period is defined in the Communication rules."""),('renew_
                     ('alg',(1,1),(),_T('Algorithm'),'5','',()),
                     ('pub_key',(1,1),(),_T('Public key code'),'AwEAAddt2AkLfYGKgiEZB5SmIF8EvrjxNMH6HtxWEA4RJ9Ao6LCWheg8', '', ()),
                 )),
-                ('dnskeyref',(0,9),(),_T('LIST of filenames'),'unittest/dnskey.pub','',()),
+                ('dnskeyref',(0,9),(),_T('LIST of filenames with dns keys'),'unittest/dnskey.pub','',()),
                 ('tech',(0,UNBOUNDED),(),_T('Technical contact ID'),'CID:ID01','',()),
             )),
             ('auth_info',(0,1),(),_T('Password required by server to authorize the transfer'),'new_password','',()),

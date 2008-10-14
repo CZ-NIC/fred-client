@@ -1000,6 +1000,16 @@ class Message(MessageBase):
         dct_ks['pub_key'] = ['\n'.join(parts[6:])]
         return True
 
+    def check_dnskey_limit(self, data, prefix):
+        MAXDNSKEY = 9
+        count = 0
+        element_name = prefix != '' and '%s:dnskey'%prefix or 'dnskey'
+        for value in data:
+            if len(value) > 1 and value[1] == element_name:
+                count += 1
+        if count > MAXDNSKEY:
+            self.errors.append((0, element_name, _T('Limit of keys exceeded. The maximum is %d.') % MAXDNSKEY))
+
     
     def __assemble_create_anyset__(self, prefix, *params):
         "Assemble XML EPP command."
@@ -1029,6 +1039,8 @@ class Message(MessageBase):
         if __has_key__(dct,'dnskeyref'):
             for ds in dct['dnskeyref']:
                 self.__append_dnskey_fromfile__('create', data, ds, prefix)
+        # check list limit
+        self.check_dnskey_limit(data, prefix)
         
         # for nsset only
         if __has_key__(dct,'tech'):
@@ -1196,13 +1208,18 @@ class Message(MessageBase):
             if __has_key_dict__(dct_add, 'ds'):
                 for ds in dct_add['ds']:
                     self.__append_keyset__('add', data, ds, prefix)
+            # two list of dnskeys will be join together
+            dnskey_data = []
             if __has_key_dict__(dct_add, 'dnskey'):
                 for ds in dct_add['dnskey']:
-                    self.__append_dnskey__('add', data, ds, prefix)
+                    self.__append_dnskey__('add', dnskey_data, ds, prefix)
             if __has_key_dict__(dct_add, 'dnskeyref'):
                 for ds in dct_add['dnskeyref']:
-                    self.__append_dnskey_fromfile__('add', data, ds, prefix)
-                
+                    self.__append_dnskey_fromfile__('add', dnskey_data, ds, prefix)
+            # check list limit
+            self.check_dnskey_limit(dnskey_data, prefix)
+            data.extend(dnskey_data)
+            
             self.__append_values__(data, dct_add, 'tech', '%s:add'%prefix, '%s:tech'%prefix)
 
         if __has_key_dict__(dct,'rem'):
@@ -1213,12 +1230,17 @@ class Message(MessageBase):
             if __has_key_dict__(dct_rem, 'ds'):
                 for ds in dct_rem['ds']:
                     self.__append_keyset__('rem', data, ds, prefix)
+            # two list of dnskeys will be join together
+            dnskey_data = []
             if __has_key_dict__(dct_rem, 'dnskey'):
                 for ds in dct_rem['dnskey']:
-                    self.__append_dnskey__('rem', data, ds, prefix)
+                    self.__append_dnskey__('rem', dnskey_data, ds, prefix)
             if __has_key_dict__(dct_rem, 'dnskeyref'):
                 for ds in dct_rem['dnskeyref']:
-                    self.__append_dnskey_fromfile__('rem', data, ds, prefix)
+                    self.__append_dnskey_fromfile__('rem', dnskey_data, ds, prefix)
+            # check list limit
+            self.check_dnskey_limit(dnskey_data, prefix)
+            data.extend(dnskey_data)
             
             # for nsset only
             if __has_key_dict__(dct_rem, 'name'):
