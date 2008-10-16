@@ -358,9 +358,9 @@ and maximum allowable period is defined in the Communication rules."""),('renew_
         #----------------------------------------------------
         'update_domain': (1,[
             ('name',(1,1),(),_T('Domain name'),'mydomain.cz','',()),
-            ('add_admin',(0,UNBOUNDED),(),_T('Administrative contact ID'),'CID:ID01','',()),
-            ('rem_admin',(0,UNBOUNDED),(),_T('Administrative contact ID'),'CID:ID01','',()),
-            ('rem_tempc',(0,UNBOUNDED),(),_T('Temporary contact ID'),'CID:ID01','',()),
+            ('add_admin',(0,UNBOUNDED),(),_T('Add administrative contact ID'),'CID:ID01','',()),
+            ('rem_admin',(0,UNBOUNDED),(),_T('Remove administrative contact ID'),'CID:ID01','',()),
+            ('rem_tempc',(0,UNBOUNDED),(),_T('Remove temporary contact ID'),'CID:ID01','',()),
             ('chg',(0,1),(),_T('Change values'),'','',(
                 ('nsset',(0,1),(),_T('NSSET ID'),'NSSET_ID','',()),
                 ('keyset',(0,1),(),_T('KEYSET ID'),'KEYSET_ID','',()),

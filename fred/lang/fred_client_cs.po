@@ -4,7 +4,7 @@
 # Zdeněk Böhm <zdenek.bohm@nic.cz>, 2006.
 #
 # cd fred/
-# xgettext -L Python --keyword=_T --keyword=_TU  --keyword=_TP:1,2 --keyword=_TPU:1,2 *.py *.py ../fred-client
+# xgettext -L Python --keyword=_T --keyword=_TU  --keyword=_TP:1,2 --keyword=_TPU:1,2 *.py ../fred-client
 # msgmerge -U lang/fred_client_cs.po messages.po
 # rm messages.po
 # gedit lang/fred_client_cs.po (and translate)
@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-14 13:45+0200\n"
+"POT-Creation-Date: 2008-10-16 17:20+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Zdeněk Böhm <zdenek.bohm@nic.cz>\n"
 "Language-Team: CS <ccreg-devel@lists.nic.cz>\n"
@@ -219,8 +219,8 @@ msgstr "Více detailů je ve verbose 2 nebo vyšším."
 msgid "Command data XML document failed to validate."
 msgstr "XML dokument příkazu se nepodařilo zvalidovat."
 
-#: console.py:196 session_command.py:587 session_transfer.py:304
-#: session_transfer.py:331
+#: console.py:196 session_command.py:587 session_transfer.py:307
+#: session_transfer.py:334
 msgid "You are not connected."
 msgstr "Nejste připojeni."
 
@@ -260,7 +260,7 @@ msgstr "Neznámý příkaz"
 
 #: creator.py:59 session_base.py:284 session_command.py:399
 #: session_command.py:402 session_command.py:404 session_command.py:406
-#: session_transfer.py:506
+#: session_transfer.py:509
 msgid "ERROR"
 msgstr "CHYBA"
 
@@ -887,7 +887,7 @@ msgstr "Počet měsíců nebo roků"
 msgid "Period unit (y year(default), m month)"
 msgstr "Jednotka období (y rok(default), m měsíc)"
 
-#: eppdoc_client.py:229 eppdoc_client.py:361 eppdoc_client.py:362
+#: eppdoc_client.py:229
 msgid "Administrative contact ID"
 msgstr "Administrativní kontakt ID"
 
@@ -1095,9 +1095,17 @@ msgstr ""
 "EPP příkaz 'update_contact' se používá pro aktualizaci hodnot vybraného "
 "kontaktu."
 
+#: eppdoc_client.py:361
+msgid "Add administrative contact ID"
+msgstr "Přidat administrativní kontakt ID"
+
+#: eppdoc_client.py:362
+msgid "Remove administrative contact ID"
+msgstr "Odebrat administrativní kontakt ID"
+
 #: eppdoc_client.py:363
-msgid "Temporary contact ID"
-msgstr "Dočasný kontakt ID"
+msgid "Remove temporary contact ID"
+msgstr "Odebrat dočasný kontakt ID"
 
 #: eppdoc_client.py:371
 msgid "The EPP 'update_domain' command is used to update values in the domain."
@@ -2342,7 +2350,7 @@ msgstr "Detaily jsou zobrazeny ve verbose 2 nebo vyšším."
 msgid "Element that caused a server error condition"
 msgstr "Element který způsobil chybu"
 
-#: session_receiver.py:102 session_transfer.py:500 session_transfer.py:551
+#: session_receiver.py:102 session_transfer.py:503 session_transfer.py:554
 msgid "Reason"
 msgstr "Důvod"
 
@@ -2478,110 +2486,110 @@ msgstr "Nejste zalogováni. Nejdříve musíte zadat login()."
 msgid "Connection to %s interrupted."
 msgstr "Spojení s %s bylo přerušeno."
 
-#: session_transfer.py:198
+#: session_transfer.py:201
 #, python-format
 msgid "Invalid port value: '%s'."
 msgstr "Neplatné číslo portu: '%s'."
 
-#: session_transfer.py:201
+#: session_transfer.py:204
 #, python-format
 msgid "Port is out of range: %d."
 msgstr "Port je mimo rozsah: %d."
 
-#: session_transfer.py:208
+#: session_transfer.py:211
 msgid "Hostname missing"
 msgstr "Chybí hostname"
 
-#: session_transfer.py:210
+#: session_transfer.py:213
 msgid "Server port number missing"
 msgstr "Chybí číslo portu serveru"
 
-#: session_transfer.py:215
+#: session_transfer.py:218
 msgid "Username missing"
 msgstr "Chybí username"
 
-#: session_transfer.py:216
+#: session_transfer.py:219
 msgid "Password missing"
 msgstr "Chybí heslo"
 
-#: session_transfer.py:218
+#: session_transfer.py:221
 msgid "SSL certificate name missing"
 msgstr "Název SSL certifikátu chybí"
 
-#: session_transfer.py:220
+#: session_transfer.py:223
 msgid "SSL certificate file not found"
 msgstr "Soubor se SSL certifikátem nebyl nalezen"
 
-#: session_transfer.py:222
+#: session_transfer.py:225
 msgid "SSL private key name missing"
 msgstr "Název SSL privátního klíče chybí."
 
-#: session_transfer.py:224
+#: session_transfer.py:227
 msgid "SSL private key file not found"
 msgstr "SSL privátní klíč nebyl nalezen"
 
-#: session_transfer.py:226
+#: session_transfer.py:229
 msgid "Can't connect to server"
 msgstr "Nemohu se připojit k serveru"
 
-#: session_transfer.py:246
+#: session_transfer.py:249
 msgid "Now I try again to connect with the zero timeout..."
 msgstr "Nyní se pokusím připojit znova s timeoutem nula..."
 
-#: session_transfer.py:249
+#: session_transfer.py:252
 msgid "Attempt at connection with the zero timeout has been successful."
 msgstr "Pokus o připojení s nulovým timeoutem byl úspěšný."
 
-#: session_transfer.py:250
+#: session_transfer.py:253
 msgid "Change timeout value to the zero in your configuration file."
 msgstr "Nastavte si v konfiguračním souboru hodnotu timeoutu na nulu."
 
-#: session_transfer.py:252
+#: session_transfer.py:255
 msgid ""
 "Attempt at connection again with the zero timeout, but this process failed."
 msgstr "Pokus o znovupřipojení s nulovým timeoutem, ale proces selhal."
 
-#: session_transfer.py:269
+#: session_transfer.py:272
 msgid "Server didn't return Greeting message. Contact server administrator."
 msgstr "Server nevrátil Greeting odpověď. Kontaktujte správce serveru."
 
-#: session_transfer.py:279
+#: session_transfer.py:282
 msgid "Ending session at"
 msgstr "Ukončení sezení na"
 
-#: session_transfer.py:280
+#: session_transfer.py:283
 msgid "Disconnected."
 msgstr "Odpojeno."
 
-#: session_transfer.py:314
+#: session_transfer.py:317
 msgid "Logout command sent to server"
 msgstr "Odeslán logout"
 
-#: session_transfer.py:457
+#: session_transfer.py:460
 msgid "updated"
 msgstr "aktualizováno"
 
-#: session_transfer.py:459
+#: session_transfer.py:462
 msgid "deleted"
 msgstr "smazáno"
 
-#: session_transfer.py:461
+#: session_transfer.py:464
 msgid "successfully transfered"
 msgstr "byla úspěšně transferována"
 
-#: session_transfer.py:463
+#: session_transfer.py:466
 msgid "request for send authorisation info transmited"
 msgstr "pořadavek na odeslání autorizačního hesla byl odeslán"
 
-#: session_transfer.py:465
+#: session_transfer.py:468
 msgid "The Request for technical test was successfully submitted."
 msgstr "Požadavek na technický test byl úspěšně odeslán."
 
-#: session_transfer.py:467
+#: session_transfer.py:470
 msgid "The message has been removed from the queue."
 msgstr "Zpráva byla odebrána z fronty zpráv."
 
-#: session_transfer.py:497 session_transfer.py:549
+#: session_transfer.py:500 session_transfer.py:552
 msgid "Return code"
 msgstr "Návratový kód"
 
