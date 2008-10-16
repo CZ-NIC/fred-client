@@ -166,6 +166,8 @@ class ManagerTransfer(ManagerBase):
         'Get connect defaults from config'
         if not self._conf: self.load_config() # load config, if was not been yet
         section = self.config_get_section_connect()
+        # OMIT_ERROR are used bycause these values can be set at the command line,
+        # so we will not display error messages when any value missing.
         data = [self.get_config_value(section,'host',OMIT_ERROR),
                 self.get_config_value(section,'port',OMIT_ERROR),
                 self.get_config_value(section,'ssl_key',OMIT_ERROR),
@@ -180,10 +182,11 @@ class ManagerTransfer(ManagerBase):
         if self._epp_cmd._dct.has_key('password'): data[7] = self._epp_cmd._dct['password'][0]
 
         # add prefix if ssl_key or/and ssl_cert paths are relative
-        if not os.path.isabs(self.get_config_value(section, 'ssl_key', OMIT_ERROR)) and self.get_cwd():
-            data[2] = os.path.normpath(os.path.join(self.get_cwd(), self.get_config_value(section, 'ssl_key', OMIT_ERROR)))
-        if not os.path.isabs(self.get_config_value(section, 'ssl_cert', OMIT_ERROR)) and self.get_cwd():
-            data[3] = os.path.normpath(os.path.join(self.get_cwd(), self.get_config_value(section, 'ssl_cert', OMIT_ERROR)))
+        ssl_key, ssl_cert = data[2], data[3]
+        if ssl_key and not os.path.isabs(ssl_key) and self.get_cwd():
+            data[2] = os.path.normpath(os.path.join(self.get_cwd(), ssl_key))
+        if ssl_cert and not os.path.isabs(ssl_cert) and self.get_cwd():
+            data[3] = os.path.normpath(os.path.join(self.get_cwd(), ssl_cert))
 
         # command options
         self._session[HOST] = data[0] # for prompt info
