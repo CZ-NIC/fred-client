@@ -1043,7 +1043,9 @@ class Message(MessageBase):
             ('create', '%s:create'%prefix, '', attr),
             ('%s:create'%prefix, '%s:id'%prefix, dct['id'][0])]
         # for nsset only
+        nsset_type = False
         if __has_key__(dct,'dns'):
+            nsset_type = True
             for dns in dct['dns']:
                 self.__append_nsset__('create', data, dns)
         
@@ -1068,13 +1070,14 @@ class Message(MessageBase):
                 self.__append_dnskey_fromfile__('create', data, ds, prefix)
                 count_dnskey += 1
         
-        # check list limits
-        if count_ds + count_dnskey == 0:
-            self.errors.append((0, 'ds/dnskey', _T('At least one DS or DNSKEY must be set.')))
-        if count_ds > MAXLIST:
-            self.errors.append((0, 'ds', _T('Limit of list is exceeded. The maximum is %d.') % MAXLIST))
-        if count_dnskey > MAXLIST:
-            self.errors.append((0, 'dnskey', _T('Limit of list is exceeded. The maximum is %d.') % MAXLIST))
+        if not nsset_type:
+            # check list limits only for keyset
+            if count_ds + count_dnskey == 0:
+                self.errors.append((0, 'ds/dnskey', _T('At least one DS or DNSKEY must be set.')))
+            if count_ds > MAXLIST:
+                self.errors.append((0, 'ds', _T('Limit of list is exceeded. The maximum is %d.') % MAXLIST))
+            if count_dnskey > MAXLIST:
+                self.errors.append((0, 'dnskey', _T('Limit of list is exceeded. The maximum is %d.') % MAXLIST))
         
         # for nsset only
         if __has_key__(dct,'tech'):
