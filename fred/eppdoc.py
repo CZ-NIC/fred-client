@@ -47,7 +47,7 @@ VERSION_DOMAIN   = '1.4'
 VERSION_NSSET    = '1.2'
 VERSION_KEYSET   = '1.2'
 VERSION_ENUMVAL  = '1.1'
-VERSION_FRED     = '1.3'
+VERSION_FRED     = '1.4'
 VERSION_VERSION  = '1.0'
 
 obj_uri = "urn:ietf:params:xml:ns:"
