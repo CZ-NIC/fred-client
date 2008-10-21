@@ -79,6 +79,8 @@ class install_scripts(_install_scripts, install_parent):
     boolean_options.append('replace_path_rel')
 
     def __init__(self, *attrs):
+        self.compile = 0
+        self.optimize = 0
         _install_scripts.__init__(self, *attrs)
         install_parent.__init__(self, *attrs)
 
@@ -135,10 +137,11 @@ class install_scripts(_install_scripts, install_parent):
             files = os.listdir(self.build_dir)
             for file in files:
                 #file = os.path.join(self.build_dir, file)
-                if file.endswith('.py'):
+                if file.endswith('.py') and self.compile == 1:
                     os.system('python -c "import py_compile; \
                             py_compile.compile(\'%s\')"' % os.path.join(self.build_dir, file))
                     print "creating compiled %s" % file + 'c'
+                if file.endswith('.py') and self.optimize == 1:
                     os.system('python -O -c "import py_compile; \
                             py_compile.compile(\'%s\')"' % os.path.join(self.build_dir, file))
                     print "creating optimized %s" % file + 'o'

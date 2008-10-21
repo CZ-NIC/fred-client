@@ -76,13 +76,14 @@ class install_parent(Command):
 
     dirs = ['prefix', 'bindir', 'sbindir', 'sysconfdir', 'libexecdir',
             'localstatedir', 'libdir', 'pythondir', 'purelibdir', 'datarootdir',
-            'datadir', 'infodir', 'mandir', 'docdir', 'localedir', 'appdir']
+            'datadir', 'infodir', 'mandir', 'docdir', 'localedir', 'appdir', 'srcdir']
     # dirs = ['prefix', 'libexecdir', 'localstatedir', 'libdir', 'datarootdir',
             # 'datadir', 'infodir', 'mandir', 'docdir', 'bindir', 'sbindir',
             # 'localedir', 'pythondir', 'purelibdir']
 
     def __init__(self, *attrs):
         self.is_bdist_mode = None
+        self.is_wininst = False
 
         for dist in attrs:
             for name in dist.commands:
@@ -235,6 +236,8 @@ class install_parent(Command):
         Method returs actual value of some system directory and if needed it
         prepend self.root path (depend on preservepath option).
         """
+        if self.is_wininst:
+            return self.install_dir
         try:
             dir = getattr(self, directory.lower())
         except AttributeError:
@@ -252,6 +255,8 @@ class install_parent(Command):
         used almost only inside freddist (but can be used everywhere as well).
         (rem: nop means NoPreservepath ;)
         """
+        if self.is_wininst:
+            return self.install_dir
         try:
             dir = getattr(self, directory.lower())
         except AttributeError:
@@ -279,6 +284,8 @@ class install_parent(Command):
         variable. So it can return result from standard getDir (i.e with prefix
         and maybe with root) or result from ``getDir_noprefix'' (without prefix).
         """
+        if self.is_wininst:
+            return self.install_dir
         if self.replace_path_rel:
             return self.getDir_noprefix(directory)
         else:
@@ -289,7 +296,6 @@ class install_parent(Command):
         Method normalize content of record file, prepend slashes (/) if needed
         and remove double slashes (//) from paths.
         """
-        print "normalize_record"
         if self.record:
             oldRecord = open(self.record).readlines()
             newRecord = []
@@ -303,7 +309,6 @@ class install_parent(Command):
         """
         If needed prepend self.root to each path
         """
-        print "update_record"
         if self.get_actual_root() and self.record:
             record = open(self.record).readlines()
             for i in range(len(record)):
@@ -318,7 +323,6 @@ class install_parent(Command):
         This method take as parameter list of files, which are added
         into record file (if exists)
         """
-        print "add_to_record"
         #proceed only if i record
         if self.record:
             record = open(self.record).readlines()

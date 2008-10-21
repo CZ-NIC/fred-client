@@ -33,9 +33,18 @@ Differences and changes:
  - Entirely new option ``bdist_simple'' which creates archive file with ready
    to use module (no need to install, unpackage is sufficient to use & run).
 
+ - bdist_wininst correctly creates Windows installation exe file (Was broken
+   before).
+
 Known bugs:
 
  - bdist command not work at all. To build rpm package is better to use
    bdist_rpm command (will be fixed sometimes in the future).
 
  - install_data command crash when executed with `--prefix=.' option.
+
+Unknown bugs:
+ 
+ - other commands, explicitly not mentioned in this document or changed
+   in source files, can be broken (as bdist_wininst in previous versions was).
+

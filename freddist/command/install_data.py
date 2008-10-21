@@ -110,9 +110,11 @@ class install_data(_install_data, install_parent):
     dir_patts = ['PREFIX', 'SYSCONFDIR', 'LOCALSTATEDIR', 'LIBEXECDIR',
             'LIBDIR', 'DATAROOTDIR', 'DATADIR', 'MANDIR', 'DOCDIR',
             'INFODIR', 'SBINDIR', 'BINDIR', 'LOCALEDIR', 'PYTHONDIR',
-            'PURELIBDIR', 'APPDIR']
+            'PURELIBDIR', 'APPDIR', 'SRCDIR']
 
     def __init__(self, *attrs):
+        self.compile = 1
+        self.optimize = 1
         _install_data.__init__(self, *attrs)
         install_parent.__init__(self, *attrs)
 
@@ -131,7 +133,14 @@ class install_data(_install_data, install_parent):
         for str in self.dir_patts:
             s = re.search("^"+str, dir)
             if s:
-                dir = self.__dict__[str.lower()] + dir[s.end():]
+                if self.is_wininst:
+                    self.is_wininst = False
+                    ret = os.path.join(self.getDir_noprefix(str.lower()), dir[s.end():].lstrip(os.path.sep))
+                    if str == 'SYSCONFDIR':
+                        ret = "+" + ret
+                    self.is_wininst = True
+                    return ret
+                dir = self.getDir(str.lower()) + dir[s.end():]
         return dir
 
     def initialize_options(self):
@@ -184,6 +193,11 @@ class install_data(_install_data, install_parent):
     def run(self):
         #FREDDIST line added
         self.mkpath(self.install_dir)
+
+        if self.no_pycpyo:
+            self.compile = 0
+            self.optimize = 0
+
         for f in self.data_files:
             if type(f) is types.StringType:
                 #FREDDIST next line changed
@@ -197,11 +211,12 @@ class install_data(_install_data, install_parent):
                 (out, _) = self.copy_file(f, self.install_dir)
                 self.outfiles.append(out)
 
-                if out.endswith('.py') and not self.no_pycpyo:
+                if out.endswith('.py') and self.compile == 1:
                     os.system('python -c "import py_compile; \
                             py_compile.compile(\'%s\')"' % out)
                     self.outfiles.append(out)
                     print "creating compiled %s" % out + 'c'
+                if out.endswith('.py') and self.optimize == 1:
                     os.system('python -O -c "import py_compile; \
                             py_compile.compile(\'%s\')"' % out)
                     self.outfiles.append(out)
@@ -210,7 +225,10 @@ class install_data(_install_data, install_parent):
                 # it's a tuple with path to install to and a list of files
                 dir = util.convert_path(self.replaceSpecialDir(f[0]))
                 if not os.path.isabs(dir):
-                    dir = os.path.join(self.install_dir, dir)
+                    if self.is_wininst and dir[0] == '+':
+                        dir = os.path.join(self.install_dir[:self.install_dir.rfind(os.path.sep)], dir[1:])
+                    else:
+                        dir = os.path.join(self.install_dir, dir)
                 elif self.root:
                     dir = util.change_root(self.root, dir)
                 self.mkpath(dir)
@@ -235,12 +253,15 @@ class install_data(_install_data, install_parent):
                                 'init.d' in out.split(os.path.sep):
                             os.chmod(out, 0755)
 
-                        if out.endswith('.py') and not self.no_pycpyo:
+                        if out.endswith('.py') and self.compile == 1:
                             os.system('python -c "import py_compile; \
                                     py_compile.compile(\'%s\')"' % out)
                             self.outfiles.append(out + 'c')
                             print "creating compiled %s" % out + 'c'
+
+                        if out.endswith('.py') and self.optimize == 1:
                             os.system('python -O -c "import py_compile; \
                                     py_compile.compile(\'%s\')"' % out)
                             self.outfiles.append(out + 'o')
                             print "creating optimized %s" % out + 'o'
+
