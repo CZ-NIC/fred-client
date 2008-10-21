@@ -120,6 +120,10 @@ class EPPClientInstall(install):
                 os.path.join(self.srcdir, 'conf', config_name+'.install'),
                 os.path.join('build', config_name),
                 values)
+        else:
+            shutil.copyfile(
+                    os.path.join(self.srcdir, 'conf', config_name + '.install'),
+                    os.path.join('build', config_name))
         print 'File %s was created.' % config_name
 
     def update_unittest_file(self, filename):
@@ -206,7 +210,7 @@ def main(directory):
             },
             scripts = APP_SCRIPTS, 
             data_files=[
-                ('DATADIR/fred-client',[
+                ('DATAROOTDIR/fred-client',[
                     'doc/fred_howto_cs.html',
                     'doc/niccz_console.ico', 
                     'doc/niccz_gui.ico', 
@@ -216,7 +220,7 @@ def main(directory):
                     'doc/README_CS.txt',
                     'doc/README_CS.html',
                     'doc/README_QT4_CS.pdf']),
-                ('DATADIR/fred-client/ssl', [
+                ('DATAROOTDIR/fred-client/ssl', [
                     'fred/certificates/test-cert.pem',
                     'fred/certificates/test-key.pem']),
                 # ('DATADIR/fred-client/schemas', file_util.all_files_in_2('fred/schemas')),
