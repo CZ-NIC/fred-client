@@ -475,7 +475,7 @@ Parametry jsou odděleny mezerou nebo mohou být odděleny i více mezerami.
 <itemizedlist>
     <listitem><emphasis role='bold'>' " uvozovky (jednoduché nebo dvojité)</emphasis></listitem>
     <listitem><emphasis role='bold'>( ) závorky</emphasis></listitem>
-    <listitem><emphasis role='bold'>- spojovník (divis)</emphasis></listitem>
+    <listitem><emphasis role='bold'>- spojovník (divis) a = (rovná se)</emphasis></listitem>
     <listitem><emphasis role='bold'>. tečka</emphasis></listitem>
     <listitem><emphasis role='bold'>[] hranaté závorky</emphasis></listitem>
 </itemizedlist>
@@ -484,7 +484,8 @@ Parametry jsou odděleny mezerou nebo mohou být odděleny i více mezerami.
 <itemizedlist>
 
     <listitem>
-    <para><emphasis role='bold'>' " uvozovky</emphasis> řeší požadavek na zadání hodnoty, která obsahuje mezery.
+    <para><emphasis role='bold'>' " uvozovky</emphasis> řeší požadavek na zadání hodnoty, která obsahuje 
+mezery nebo znak = (rovná se).
 Taková hodnota se uzavře do uvozovek. Je jedno jestli jednoduchých nebo dvojitých.
 Uvnitř uvozovek se pak mohou nacházet libovolné znaky včetně závorek, spojovníku a
 dalších uvozovek. Pokud to jsou ale uvozovky shodné s těmi, které jsou použity na uzavření
@@ -495,6 +496,8 @@ textu, tak se před ně musí dát zpětné lomítko \ (backslash):
 <programlisting>"text s 'jednoduchými' uvozovkami"</programlisting> 
 <para>nebo</para> 
 <programlisting>'text s "dvojtými" uvozovkami'</programlisting>
+<para>nebo</para> 
+<programlisting>'text s rovnítkem = '</programlisting>
     </listitem>
     <listitem>
     <para><emphasis role='bold'>( ) závorky</emphasis> se používají pro parametr, který může obsahovat seznam hodnot.
@@ -544,7 +547,7 @@ Porovnejte s příklady, které jsou uvedeny v helpu u každého příkazu.
     </listitem>
 
     <listitem>
-    <para><emphasis role='bold'>- spojovník (divis).</emphasis>
+    <para><emphasis role='bold'>- spojovník (divis) a = (rovná se).</emphasis>
 Parametry se musí zadávat ve stanoveném pořadí. Nejdříve se vždy zadávají povinné položky
 a pak nepovinné. Zadávání příkazu tedy můžete ukončit za posledním povinným parametrem.
 Pokud ale chcete zadat ještě nějaký nepovinný, který se shodou okolností nachází

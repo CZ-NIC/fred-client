@@ -328,12 +328,12 @@ Syntax of command parameters
    The special syntax contains the following elements:
      * ' " inverted commas (simple or double)
      * ( ) brackets
-     * - hyphen
+     * - = hyphen and equal
      * . full stop
      * [] square brackets
 
    Description of individual elements:
-     * ' " are used to specify values which contain spaces.
+     * ' " are used to specify values which contain spaces and equal character.
        Such values should be surrounded by inverted commas. Single or double inverted commas may be used. Any characters my be used in between the commas, including
       brackets, hyphens and additional inverted commas. When the type of inverted commas used inside the parameter
        is the same as the inverted commas used to separate the parameter, a backslash (\)
@@ -348,6 +348,11 @@ Syntax of command parameters
        or
 
        'text with "double" inverted commas'
+
+       or
+
+       'text with = "equal" cahracter'
+
 
      * ( ) brackets are used for parameters which may include a list of
        values. For example the street parameter in the create_contact command may be 
@@ -385,7 +390,9 @@ Syntax of command parameters
        ((name, org, (city, cc, street, sp, pc)) voice, fax, ...)
 
        Compare to examples listed in command help.
-     * - hyphen Parameters must be entered in a specific order.
+
+     * - = hyphen and equal 
+       Parameters must be entered in a specific order.
        Compulsory items are always entered first. Commands
        may therefore be terminated after the last compulsory parameter. When you
        want to enter another non-compulsory parameter
