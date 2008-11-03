@@ -54,6 +54,10 @@ def get_etc_config_name(name=''):
         # ALLUSERSPROFILE = C:\Documents and Settings\All Users
         glob_conf = os.path.join(os.path.expandvars('$ALLUSERSPROFILE'),name)
     return glob_conf
+
+def get_win_bdist_simple_config_name():
+    glob_conf = 'conf/fred-client.conf'
+    return os.path.join(glob_conf)
     
 def load_default_config(config_name, verbose):
     'Load default config. First try home than etc.'
@@ -73,6 +77,8 @@ def load_default_config(config_name, verbose):
                 error, names, not_found = load_config(config, get_etc_config_name(config_name), verbose)
             if not_found:
                 error, names, not_found = load_config(config, os.path.join(sys.prefix, 'etc', 'fred', config_name), verbose)
+                if not_found:
+                    error, names, not_found = load_config(config, get_win_bdist_simple_config_name(), verbose)
                 
         if not_found: missing.extend(not_found)
     return config, error, missing, names
