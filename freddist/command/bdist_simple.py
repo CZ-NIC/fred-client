@@ -167,7 +167,11 @@ class bdist_simple(Command):
                 self.output_file_name), 
                 os.path.basename(self.getRandTempDir()))
         elif self.format == 'zip':
-            cmd = 'zip c'
+            cmd = 'zip -r %s.zip %s' % (os.path.join(
+                cwd,
+                self.dist_dir,
+                self.output_file_name),
+                os.path.basename(self.getRandTempDir()))
         
         os.chdir(os.path.dirname(self.getRandTempDir()))
 
