@@ -177,10 +177,20 @@ class EPPClientInstall_scripts(install_scripts):
 class Install_lib(install_lib):
     def update_session_config(self):
         filename = os.path.join(self.build_dir, 'fred', 'session_config.py')
-        values = [((
-            r"(glob_conf = )\'[\w/_ \-\.]*\'",
-            r"\1'%s'" % os.path.join(
-                self.getDir_std('sysconfdir'), 'fred', config_name)))]
+        # when simple package creation is in progress this enviroment variable is set to 'True'
+        if os.environ.has_key('BDIST_SIMPLE'):
+            # simple package must use as a first configuration file its own
+            # file from ``data_files'' directory, not file from user home directory
+            # nor file from /etc or any other directory.
+            values = [((
+                r"os\.path\.join\(os\.path.expanduser\(\'\~\'\),config_name\)",
+                r"'%s'" % os.path.join(
+                    self.getDir_std('sysconfdir'), 'fred', config_name)))]
+        else:
+            values = [((
+                r"(glob_conf = )\'[\w/_ \-\.]*\'",
+                r"\1'%s'" % os.path.join(
+                    self.getDir_std('sysconfdir'), 'fred', config_name)))]
         self.replace_pattern(filename, None, values)
         print "session_config.py file has been updated"
 
@@ -245,6 +255,10 @@ def main(directory):
         log.error("Error: %s", e)
         return False
 if __name__ == '__main__':
+    if 'bdist_simple' in sys.argv:
+        # when creating bdist_simple package, enviroment variable
+        # ``BDIST_SIMPLE'' must be set
+        os.environ['BDIST_SIMPLE'] = 'True'
     g_directory = os.path.dirname(sys.argv[0])
     print g_directory
     if main(g_directory):
