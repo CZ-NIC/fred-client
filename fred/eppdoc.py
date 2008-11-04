@@ -234,6 +234,8 @@ class Message:
         else:
             master.appendChild(node)
         if value:
+            # strip backslashes before ' and " and \\
+            value = value.replace(r"\'", "'").replace(r'\"', '"').replace(r'\\ '[:-1], r'\ '[:-1])
             try:
                 node.appendChild(self.dom.createTextNode(value))
             except TypeError, msg:
