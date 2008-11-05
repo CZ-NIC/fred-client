@@ -1,3 +1,9 @@
+FredClient 2.1.1
+
+Zmeny:
+    * Oprava escapovani apostrofu v retezcich
+    * Drobna vylepseni v instalacni procedure
+
 FredClient 2.1.0
 
 Zmeny:
