@@ -50,15 +50,15 @@ import sys
 
 ## ----------- Settings --------------------------------------------
 
-# Cesta k adresari s ccReg modulem
+# Cesta k adresari s fred modulem
 sys.path.insert(0, '../')
 
 # Pocet vlaken
-threads = 4
+threads = 5 
 # Pocet objektu k vytvoreni
-targets = 100
+targets = 100 
 # Smazat objekty? # True / False, 0 / 1, 'cokoliv' / None
-delete_after_run = False
+delete_after_run = True
 
 ## ----------- SHOCK HAZARD ----------------------------------------
 ## ----------- NO USER SERVICEABLE PARTS INSIDE --------------------
@@ -74,25 +74,25 @@ import dialog
 import threading
 import Queue
 import random
-import ccReg
-from ccReg.translate import _T, options, option_errors, option_args
+import fred
+from fred.translate import options, option_errors, option_args
 
 prefix = ''.join([ random.choice(string.ascii_lowercase) for i in range(4) ])
-gepp = ccReg.ClientSession() # global epp for preloading of XML
+gepp = fred.ClientSession() # global epp for preloading of XML
 contact_list_xml = []
 contact_delete_list_xml = []
 contact_list_id = []
-contact_create_command = 'create_contact cid:%s%06d MyName email@email.cz Mesto CZ heslo'
+contact_create_command = 'create_contact cid:%s%06d Test info@mymail.cz Street Praha 12000 CZ NULL NULL mypassword'
 contact_delete_command = 'delete_contact %s'
 nsset_list_xml = []
 nsset_delete_list_xml = []
 nsset_list_id = []
-nsset_create_command = 'create_nsset nssid:%s%06d passw ((ns1.domain.cz (217.31.207.130 217.31.207.129))) (%s)'
+nsset_create_command = 'create_nsset nssid:%s%06d ((ns1.domain.cz (217.31.207.130 217.31.207.129)),(ns2.domain.cz (217.31.206.130 217.31.206.129))) (%s) passw'
 nsset_delete_command = 'delete_nsset %s'
 domain_list_xml = []
 domain_delete_list_xml = []
 domain_list_id = []
-domain_create_command = 'create_domain %s-%06d.cz pw %s %s' # prefix, num, cid, nssid
+domain_create_command = 'create_domain %s-%06d.cz %s pw %s' # prefix, num, cid, nssid
 domain_delete_command = 'delete_domain %s'
 list_id =  {'domain': domain_list_id, 'nsset': nsset_list_id, 'contact': contact_list_id}
 
@@ -132,7 +132,7 @@ do vysledku nezapocitava.
 
 Vychozi pocet pozadavku pro kazdy typ dotazu: %d
 """ % (targets)
-    d.msgbox(msg, height=15, width=75, title=" System pro testovani vykonu systemu ccReg ")
+    d.msgbox(msg, height=15, width=75, title=" System pro testovani vykonu systemu fred ")
 
 def outro(d):
     global list_times
@@ -155,83 +155,83 @@ Smazani domen trvalo: %(domain_delete).2f sekund
 Prumerny pocet pozadavku za sekundu: %(average).2f
 
 """ % (list_times)
-    d.msgbox(msg, height=21, width=55, title=" System pro testovani vykonu systemu ccReg ")
+    d.msgbox(msg, height=21, width=55, title=" System pro testovani vykonu systemu fred ")
 
 def create_contacts(d, num):
     d.gauge_start("Pripravuji objekt cislo: 1", title=" Generuji XML pro kontakty ")
     for i in range(1, num+1):
-	n = math.ceil(i*100/num)
-	contact_list_xml.append(gepp.create_eppdoc(contact_create_command % (prefix, i))[1])
-	contact_list_id.append('cid:%s%06d' % (prefix, i))
-	d.gauge_update(n, "Pripravuji objekt cislo: %d" % i, update_text=1)
+      n = math.ceil(i*100/num)
+      contact_list_xml.append(gepp.create_eppdoc(contact_create_command % (prefix, i))[1])
+      contact_list_id.append('cid:%s%06d' % (prefix, i))
+      d.gauge_update(n, "Pripravuji objekt cislo: %d" % i, update_text=1)
     d.gauge_stop()
 
 def delete_contacts(d):
     d.gauge_start("Pripravuji objekt cislo: 1", title=" Generuji XML pro mazani kontaktu ")
     for i in range(len(list_id['contact'])):
-	n = math.ceil((i+1)*100/len(list_id['contact']))
-	contact_delete_list_xml.append(gepp.create_eppdoc(contact_delete_command % (list_id['contact'][i]))[1])
-	d.gauge_update(n, "Pripravuji objekt cislo: %d" % (i+1), update_text=1)
+      n = math.ceil((i+1)*100/len(list_id['contact']))
+      contact_delete_list_xml.append(gepp.create_eppdoc(contact_delete_command % (list_id['contact'][i]))[1])
+      d.gauge_update(n, "Pripravuji objekt cislo: %d" % (i+1), update_text=1)
     d.gauge_stop()
 
 def create_nssets(d, num):
     d.gauge_start("Pripravuji objekt cislo: 1", title=" Generuji XML pro NSSETy ")
     for i in range(1, num+1):
-	n = math.ceil(i*100/num)
-	contact_id = random.choice(contact_list_id)
-	nsset_list_xml.append(gepp.create_eppdoc(nsset_create_command % (prefix, i, contact_id))[1])
-	nsset_list_id.append('nssid:%s%06d' % (prefix, i))
-	d.gauge_update(n, "Pripravuji objekt cislo: %d" % i, update_text=1)
+      n = math.ceil(i*100/num)
+      contact_id = random.choice(contact_list_id)
+      nsset_list_xml.append(gepp.create_eppdoc(nsset_create_command % (prefix, i, contact_id))[1])
+      nsset_list_id.append('nssid:%s%06d' % (prefix, i))
+      d.gauge_update(n, "Pripravuji objekt cislo: %d" % i, update_text=1)
     d.gauge_stop()
 
 def delete_nssets(d):
     d.gauge_start("Pripravuji objekt cislo: 1", title=" Generuji XML pro mazani NSSETu ")
     for i in range(len(list_id['nsset'])):
-	n = math.ceil((i+1)*100/len(list_id['nsset']))
-	nsset_delete_list_xml.append(gepp.create_eppdoc(nsset_delete_command % (list_id['nsset'][i]))[1])
-	d.gauge_update(n, "Pripravuji objekt cislo: %d" % (i+1), update_text=1)
+      n = math.ceil((i+1)*100/len(list_id['nsset']))
+      nsset_delete_list_xml.append(gepp.create_eppdoc(nsset_delete_command % (list_id['nsset'][i]))[1])
+      d.gauge_update(n, "Pripravuji objekt cislo: %d" % (i+1), update_text=1)
     d.gauge_stop()
 
 def create_domains(d, num):
     d.gauge_start("Pripravuji objekt cislo: 1", title=" Generuji XML pro domeny ")
     for i in range(1, num+1):
-	n = math.ceil(i*100/num)
-	contact_id = random.choice(contact_list_id)
-	nsset_id = random.choice(nsset_list_id)
-	domain_list_xml.append(gepp.create_eppdoc(domain_create_command % (prefix, i, contact_id, nsset_id))[1])
-	domain_list_id.append('%s-%06d.cz' % (prefix, i))
-	d.gauge_update(n, "Pripravuji objekt cislo: %d" % i, update_text=1)
+      n = math.ceil(i*100/num)
+      contact_id = random.choice(contact_list_id)
+      nsset_id = random.choice(nsset_list_id)
+      domain_list_xml.append(gepp.create_eppdoc(domain_create_command % (prefix, i, contact_id, nsset_id))[1])
+      domain_list_id.append('%s-%06d.cz' % (prefix, i))
+      d.gauge_update(n, "Pripravuji objekt cislo: %d" % i, update_text=1)
     d.gauge_stop()
 
 def delete_domains(d):
     d.gauge_start("Pripravuji objekt cislo: 1", title=" Generuji XML pro mazani domen ")
     for i in range(len(list_id['domain'])):
-	n = math.ceil((i+1)*100/len(list_id['domain']))
-	domain_delete_list_xml.append(gepp.create_eppdoc(domain_delete_command % (list_id['domain'][i]))[1])
-	d.gauge_update(n, "Pripravuji objekt cislo: %d" % (i+1), update_text=1)
+      n = math.ceil((i+1)*100/len(list_id['domain']))
+      domain_delete_list_xml.append(gepp.create_eppdoc(domain_delete_command % (list_id['domain'][i]))[1])
+      d.gauge_update(n, "Pripravuji objekt cislo: %d" % (i+1), update_text=1)
     d.gauge_stop()
 
 def worker(epp, xmllist):
     for item in xmllist:
-	epp.send(item)
-	queue.put_nowait(epp.receive())
+      epp.send(item)
+      queue.put_nowait(epp.receive())
 #	time.sleep(random.random()/10)
 #	queue.put_nowait(item)
 #	sys.stderr.write("\n%s" % item)
 
 def create_workers(objtype):
-    global workers
-    workers = []
-    xml = list_xml[objtype]
-    for x in range(threads):
-	epp = ccReg.ClientSession()
-	epp.load_config(options['session'])
-	epp.api_command('login', epp.get_default_params_from_config('login'))
-	partlist = []
-	for i in range(targets/threads):
-	    partlist.append(xml.pop(xml.index(random.choice(xml))))
-	t = threading.Thread(target=worker, args=(epp, partlist))
-	workers.append(t)
+  global workers
+  workers = []
+  xml = list_xml[objtype]
+  for x in range(threads):
+    epp = fred.ClientSession()
+    epp.load_config(options['session'])
+    epp.api_command('login', {'username': epp.get_config_value('connect','username'), 'password': epp.get_config_value('connect','password')})
+    partlist = []
+    for i in range(targets/threads):
+      partlist.append(xml.pop(xml.index(random.choice(xml))))
+    t = threading.Thread(target=worker, args=(epp, partlist))
+    workers.append(t)
 
 def controller(d, objtype, msg):
     global workers, list_times
@@ -240,10 +240,10 @@ def controller(d, objtype, msg):
     [ t.setDaemon(1) for t in workers ]
     [ t.start() for t in workers ]
     for i in range(1, targets+1):
-	n = math.ceil(i*100/targets)
-	item = queue.get(True)
-#	open('_xml_in.log', 'a').write("%s\n" % item)
-	d.gauge_update(n, "Odesilam objekt cislo: %d" % i, update_text=1)
+      n = math.ceil(i*100/targets)
+      item = queue.get(True)
+      open('_xml_in.log', 'a').write("%s\n" % item)
+      d.gauge_update(n, "Odesilam objekt cislo: %d" % i, update_text=1)
     endtime = time.time()
     totaltime = endtime-starttime
     list_times[objtype] = totaltime
@@ -253,22 +253,22 @@ def controller(d, objtype, msg):
 def main():
     global list_times
     d = dialog.Dialog(dialog="dialog")
-    d.add_persistent_args(["--backtitle", "Testovani vykonu systemu ccReg | Prefix: %s | david@nic.cz" % prefix.upper()])
+    d.add_persistent_args(["--backtitle", "Testovani vykonu systemu fred | Prefix: %s | david@nic.cz" % prefix.upper()])
 
     intro(d)
     
     create_contacts(d, targets)
-#    open('_contact.xml', 'w').write('\n'.join(contact_list_xml))
+    open('_contact.xml', 'w').write('\n'.join(contact_list_xml))
     create_workers('contact')
     controller(d, 'contact', ' Vytvarim kontakty... ')
 
     create_nssets(d, targets)
-#    open('_nsset.xml', 'w').write('\n'.join(nsset_list_xml))
+    open('_nsset.xml', 'w').write('\n'.join(nsset_list_xml))
     create_workers('nsset')
     controller(d, 'nsset', ' Vytvarim NSSETy... ')
 
     create_domains(d, targets)
-#    open('_domain.xml', 'w').write('\n'.join(domain_list_xml))
+    open('_domain.xml', 'w').write('\n'.join(domain_list_xml))
     create_workers('domain')
     controller(d, 'domain', ' Vytvarim domeny... ')
 
@@ -291,3 +291,5 @@ def main():
     outro(d)
 
 if __name__ == "__main__": main()
+
+
