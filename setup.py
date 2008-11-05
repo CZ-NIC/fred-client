@@ -16,7 +16,7 @@
 #    along with FredClient; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import sys, os, shutil, stat
+import sys, os, shutil
 from distutils import log
 from freddist.core import setup
 from freddist.command.install import install
@@ -160,6 +160,9 @@ class EPPClientInstall_scripts(install_scripts):
             r"\1'%s')" % self.getDir_std('purelibdir')))]
         self.replace_pattern(os.path.join(self.build_dir, 'fred-client'),
                 None, values)
+        if os.environ.has_key('BDIST_SIMPLE'):
+            self.replace_pattern(os.path.join(self.build_dir, 'fred-client.py'),
+                    None, values)
         print "fred-client file has been updated"
 
     def update_fred_client_qt4(self):
@@ -259,22 +262,15 @@ def main(directory):
 if __name__ == '__main__':
     g_directory = os.path.dirname(sys.argv[0])
     filename = 'fred-client.py'
-    print g_directory
-    # exit()
     if 'bdist_simple' in sys.argv:
         # when creating bdist_simple package, enviroment variable
         # ``BDIST_SIMPLE'' must be set
         os.environ['BDIST_SIMPLE'] = 'True'
-        # create executable script named ``fred-client.py'', which can be recognized in
-        # windows as python script
-        fred_script = open(os.path.join(g_directory, filename), "w")
-        # this script only runs original fred-client
-        lines = ("#!/usr/bin/env python\n", "import os\n", "os.system('python fred-client\')")
-        fred_script.writelines(lines)
-        fred_script.close()
-        # change mode to executable
-        mode = os.stat(os.path.join(g_directory, filename))
-        os.chmod(os.path.join(g_directory, filename), mode.st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
+        # copy fred-client to fred-client.py (windows do not recognize file
+        # without .py extension as a python script)
+        shutil.copy(
+                os.path.join(g_directory, "fred-client"),
+                os.path.join(g_directory, filename));
     print g_directory
     if main(g_directory):
         print "All done!"
