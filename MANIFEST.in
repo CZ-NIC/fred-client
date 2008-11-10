@@ -48,6 +48,7 @@ include guiqt4/qt_client.project
 include guiqt4/INSTALL_CS.ascii
 include guiqt4/INSTALL_CS.utf8
 include setup.cfg
+include setup.cfg.template
 
 include fred/certificates/test-cert.pem
 include fred/certificates/test-key.pem
@@ -62,3 +63,4 @@ prune fred/.svn
 prune  qt3doc
 
 include unittest/*
+include MANIFEST.in
