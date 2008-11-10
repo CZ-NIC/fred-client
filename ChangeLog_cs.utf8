@@ -1,3 +1,14 @@
+FredClient 2.1.2
+
+Změny:
+    * Oprava souboru MANIFEST.in nutného pro instalaci
+
+FredClient 2.1.1
+
+Změny:
+    * Oprava escapovaní apostrofů v řetězcích
+    * Drobná vylepšení v instalační procedůře
+
 FredClient 2.1.0
 
 Změny:
