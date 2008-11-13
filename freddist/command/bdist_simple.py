@@ -106,7 +106,7 @@ class bdist_simple(Command):
                 )
         if not self.output_file_name:
             self.output_file_name = self.distribution.metadata.name \
-                    + "_" \
+                    + "-" \
                     + self.distribution.metadata.version
         self.srcdir = self.distribution.srcdir
 
