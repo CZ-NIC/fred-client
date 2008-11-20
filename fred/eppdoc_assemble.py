@@ -1084,6 +1084,11 @@ class Message(MessageBase):
             self.__append_values__(data, dct, 'tech', '%s:create'%prefix, '%s:tech'%prefix)
         if dct.has_key('auth_info'): 
             data.append(('%s:create'%prefix,'%s:authInfo'%prefix, dct['auth_info'][0]))
+
+        # for nsset only
+        if dct.has_key('reportlevel'):
+            data.append(('%s:create'%prefix,'%s:reportlevel'%prefix, dct['reportlevel'][0]))
+        
         data.append(('command', 'clTRID', self._dct.get(TAG_clTRID,[params[0]])[0]))
         self.__assemble_cmd__(data)
 

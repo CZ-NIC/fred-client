@@ -3,6 +3,10 @@ FredClient 2.1.2
 Zmeny:
     * Oprava souboru MANIFEST.in nutneho pro instalaci
 
+Opravy:
+    * V create_nsset opraveno odesilani hodnoty reportlevel 
+
+
 FredClient 2.1.1
 
 Zmeny:
