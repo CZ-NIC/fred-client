@@ -687,6 +687,14 @@ $fred_source_answer = '';      // source code (XML) of the answer prepared to di
                 report('$fred_data_attrib = array(); // data attributes returned by server')
             dct_data = dct['data']
             is_check = re.match('\w+:check',dct['command']) and 1 or 0 # object:check
+            
+            # some veriables must be always array type
+            for key in ('domain:status', 'domain:status.s'):
+                if not dct_data.has_key(key):
+                    continue
+                if type(dct_data[key]) is unicode:
+                    dct_data[key] = [dct_data[key]] # make array from string
+            
             for key,verbose,explain in self.__get_column_items__(dct['command'], dct_data):
                 if verbose > self._session[VERBOSE]: continue
                 key = key.strip() # client normaly trim whitespaces, but if you use sender, you can send everything...

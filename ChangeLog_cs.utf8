@@ -1,3 +1,11 @@
+FredClient 2.1.3
+
+Změny:
+    * V odpovědi serveru ve formátu php jsou proměnné 'domain:status' a 
+      'domain:status.s' vždy typu array.
+
+
+
 FredClient 2.1.2
 
 Změny:
