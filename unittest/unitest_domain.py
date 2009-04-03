@@ -18,6 +18,7 @@ FRED_NSSET2 = unitest_share.create_handle('NSSID:D2')
 FRED_DOMAIN1 = '%s.cz'%unitest_share.create_handle('test')
 FRED_DOMAIN2 = unitest_share.create_enumdomain(); 
 FRED_DOMAIN3 = '%s.cz'%unitest_share.create_handle('tmp')
+FRED_DOMAIN_NONEXIST = 'dddaaaneexist.cz'
 FRED_DOMAIN_PASSW = 'heslicko'
 FRED_DOMAIN_PASSW_NEW = 'noveheslo'
 INVALID_DOMAIN_NAME = 'myname.net'
@@ -250,6 +251,16 @@ class TestDomain(unittest.TestCase):
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         errors = unitest_share.compare_domain_info(epp_cli, FRED_DATA[DOMAIN_1], epp_cli.is_val('data'))
         self.assert_(len(errors)==0, '\n'.join(errors))
+        
+    def test_123(self):
+        '4.12.1.1 Sendauthinfo na existujici domenu.'
+        epp_cli.sendauthinfo_domain(FRED_DOMAIN1)
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+                
+    def test_124(self):
+        '4.12.1.2 Sendauthinfo na neexistujici domenu.'
+        epp_cli.sendauthinfo_domain(FRED_DOMAIN_NONEXIST)
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_125(self):
         '4.12.2 Pokus o update domeny s dvema shodnymi admin kontakty'
@@ -582,6 +593,7 @@ class TestDomain(unittest.TestCase):
         epp_cli.delete_contact(FRED_CONTACT1)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
+    
 
 
 epp_cli, epp_cli_TRANSF, epp_cli_log, log_fp, log_step, poll_msg_id = (None,)*6

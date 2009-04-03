@@ -213,13 +213,23 @@ class TestContact(unittest.TestCase):
         epp_cli.check_contact(handles)
         self.assertEqual(epp_cli.is_val(('data',handle_contact)), 0)
         self.assertEqual(epp_cli.is_val(('data','CID:neexist002')), 1)
-
+        
     def test_060(self):
         '2.6 Info na existujici kontakt a overeni vsech hodnot'
         epp_cli.info_contact(handle_contact)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         errors = unitest_share.compare_contact_info('contact', FRED_CONTACT[1], epp_cli.is_val('data'))
         self.assert_(len(errors)==0, '\n'.join(errors))
+        
+    def test_064(self):
+        '2.6.0 Sendauthinfo na neexistujici kontakt.'
+        epp_cli.sendauthinfo_contact('CID:neexist002')
+        self.assertNotEqual(epp_cli.is_val(), 1000, 'Sendauthinfo na neexistujici kontakt proslo.')
+    
+    def test_065(self):
+        '2.6.1 Sendauthinfo na existujici kontakt.'
+        epp_cli.sendauthinfo_contact(handle_contact)
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_070(self):
         '2.7 Update vsech parametru krome stavu'

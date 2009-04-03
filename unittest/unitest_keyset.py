@@ -152,7 +152,15 @@ class Test(unittest.TestCase):
         errors = unitest_share.compare_keyset_info(epp_cli, KEYSET, epp_cli.is_val('data'))
         self.assert_(len(errors)==0, '\n'.join(errors))
         
-
+    def test_100(self):
+        '2.6.1 Sendauthinfo na existujici keyset.'
+        epp_cli.sendauthinfo_keyset(FRED_KEYSET1)
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+        
+    def test_105(self):
+        '2.6.2 Sendauthinfo na neexistujici keyset.'
+        epp_cli.sendauthinfo_keyset('KEYSID:notexist007')
+        self.assertNotEqual(epp_cli.is_val(), 1000, 'Sendauthinfo na neexistujici keyset proslo.')
 
     def test_900(self):
         '11. Smazani keysetu'

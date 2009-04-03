@@ -439,27 +439,37 @@ class Test(unittest.TestCase):
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         errors = unitest_share.compare_nsset_info(epp_cli, FRED_DATA[1], epp_cli.is_val('data'))
         self.assert_(len(errors)==0, '\n'.join(errors))
+        
+    def test_085(self):
+        '3.7.9.1 Sendauthinfo na existujici nsset.'
+        epp_cli.sendauthinfo_contact(handle_nsset)
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))        
+        
+    def test_086(self):
+        '3.7.9.2 Sendauthinfo na neexistujici nsset.'
+        epp_cli.sendauthinfo_contact('NSSID:notexist007')
+        self.assertNotEqual(epp_cli.is_val(), 1000, 'Sendauthinfo na neexistujici nsset proslo')        
 
-    def test_080(self):
+    def test_090(self):
         '3.8 Update vsech parametru krome stavu'
         d = FRED_DATA[2]
         epp_cli.update_nsset(d['id'], d['add'], d['rem'], d['auth_info'])
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
-    def test_081(self):
+    def test_091(self):
         '3.8.1 Overevni vsech hodnot zmeneneho nssetu'
         epp_cli.info_nsset(handle_nsset)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         errors = unitest_share.compare_nsset_info(epp_cli, FRED_DATA[3], epp_cli.is_val('data'))
         self.assert_(len(errors)==0, '\n'.join(errors))
 
-    def test_082(self):
+    def test_092(self):
         '3.8.2 Pokus o odebrani neexistujici dns'
         d = FRED_DATA[2]
         epp_cli.update_nsset(d['id'], None, {'name':'ns.namex.cz'})
         self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
-    def test_084(self):
+    def test_093(self):
         '3.8.3 Pokus o odebnani dns tak, aby v nssetu zustal jen jeden'
         d = FRED_DATA[2]
         epp_cli.update_nsset(d['id'], None, {'name':'ns.name3.cz'})
