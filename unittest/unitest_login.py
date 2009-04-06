@@ -117,6 +117,12 @@ class TestLogin(unittest.TestCase):
 
     def test_040(self):
         '1.4 Zalogovani se spravnym heslem a spravnym otiskem certifikatu'
+
+        login = epp_cli._epp.get_logins_and_passwords()[0]
+	global dct_login
+        dct_login['username'] = login[0]
+        dct_login['password'] = login[1]
+
         code, error = self.__login__(dct_login)
         self.assert_(len(error)==0, error)
         self.assertEqual(code, 1000, unitest_share.get_reason(epp_cli))
