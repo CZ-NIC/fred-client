@@ -442,13 +442,23 @@ class Test(unittest.TestCase):
         
     def test_085(self):
         '3.7.9.1 Sendauthinfo na existujici nsset.'
-        epp_cli.sendauthinfo_contact(handle_nsset)
+        epp_cli.sendauthinfo_nsset(handle_nsset)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))        
         
     def test_086(self):
         '3.7.9.2 Sendauthinfo na neexistujici nsset.'
         epp_cli.sendauthinfo_contact('NSSID:notexist007')
         self.assertNotEqual(epp_cli.is_val(), 1000, 'Sendauthinfo na neexistujici nsset proslo')        
+
+    def test_088(self):
+	'3.7.9.3 Technical test na nsset.'
+	epp_cli.technical_test(handle_nsset)
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))        
+
+    def test_089(self):
+	'3.7.9.4 Technical test na neexistujici nsset.'
+	epp_cli.technical_test('NSSID:notexist008')
+        self.assertNotEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))        
 
     def test_090(self):
         '3.8 Update vsech parametru krome stavu'
