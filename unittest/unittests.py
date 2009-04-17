@@ -13,6 +13,7 @@ import unitest_keyset2
 import unitest_keyset3
 import unitest_keyset4
 import unitest_keyset5
+import unitest_keyset6
 import unitest_login
 import unitest_nsset
 import unitest_nsset2
@@ -28,6 +29,7 @@ tests = [
     unitest_keyset3,
     unitest_keyset4,
     unitest_keyset5,
+    unitest_keyset6,
     unitest_login,
     unitest_nsset,
     unitest_nsset2
