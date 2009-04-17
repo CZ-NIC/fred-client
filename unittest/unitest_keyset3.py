@@ -130,6 +130,10 @@ class Test(unittest.TestCase):
         epp_cli.delete_contact(FRED_CONTACT1)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
+    def test_999(self):
+        '99. logout'
+        epp_cli.logout()
+        self.assertEqual(epp_cli.is_val(), 1500, unitest_share.get_reason(epp_cli))
         
         
 epp_cli, epp_cli_log, log_fp, log_step, poll_msg_id = (None,)*5

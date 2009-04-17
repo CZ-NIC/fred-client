@@ -205,6 +205,10 @@ class Test(unittest.TestCase):
 	epp_cli_TRANSF.transfer_keyset(KEYSET['id'], KEYSET['auth_info'])
 	self.assertEqual(epp_cli_TRANSF.is_val(), 1000, unitest_share.get_reason(epp_cli_TRANSF))
 
+    def test_999(self):
+        '99. logout'
+        epp_cli.logout()
+        self.assertEqual(epp_cli.is_val(), 1500, unitest_share.get_reason(epp_cli))
 
 epp_cli, epp_cli_TRANSF, epp_to_log, log_fp, handle_contact, handle_nsset,  log_step, id_message, poll_msg_id = (None,)*9
 

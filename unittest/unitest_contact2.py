@@ -469,10 +469,15 @@ class TestContact(unittest.TestCase):
 
             
         
-    def test_999(self):
+    def test_990(self):
         'END: Smazání kontaktu'
         epp_cli.delete_contact(CONTACT_HANDLE)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
+    def test_999(self):
+        '99. logout'
+        epp_cli.logout()
+        self.assertEqual(epp_cli.is_val(), 1500, unitest_share.get_reason(epp_cli))
 
 
         

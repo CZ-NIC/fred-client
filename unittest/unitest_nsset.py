@@ -894,6 +894,15 @@ class Test(unittest.TestCase):
         epp_cli.delete_contact(FRED_CONTACT2)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
+    def test_998(self):
+        '98. logout'
+        epp_cli_TRANSF.logout()
+        self.assertEqual(epp_cli_TRANSF.is_val(), 1500, unitest_share.get_reason(epp_cli))
+
+    def test_999(self):
+        '99. logout'
+        epp_cli.logout()
+        self.assertEqual(epp_cli.is_val(), 1500, unitest_share.get_reason(epp_cli))
 
 
 epp_cli, epp_cli_TRANSF, epp_to_log, log_fp, log_step, handle_contact, handle_nsset, poll_msg_id = (None,)*8
