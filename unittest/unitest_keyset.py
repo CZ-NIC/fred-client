@@ -12,8 +12,8 @@ FRED_KEYSET1 = unitest_share.create_handle('KEYSID:U1')
 FRED_CONTACT1 = unitest_share.create_handle('CID:U1')
 FRED_CONTACT2 = unitest_share.create_handle('CID:U2')
 
-DS = [{'key_tag': '1',  'alg': '1',  'digest_type': '1', 'digest': '0123456789012345678901234567890123456789'}, 
-      {'key_tag': '1','alg': '5', 'digest_type': '1', 'digest': '9876543210987654321098765432109876543210', 'max_sig_life': '1'}]
+DS = [{'key_tag': '1', 'alg': '1',  'digest_type': '1', 'digest': '0123456789012345678901234567890123456789'}, 
+      {'key_tag': '1', 'alg': '5', 'digest_type': '1', 'digest': '9876543210987654321098765432109876543210', 'max_sig_life': '1'}]
 DSREF = []
 
 DNSKEY = [
@@ -38,9 +38,8 @@ KEYSET = {
     
 class Test(unittest.TestCase):
 
-
     def setUp(self):
-        'Check if cilent is online.'
+        'Check if client is online.'
         if epp_cli: self.assert_(epp_cli.is_logon(),'client is offline')
 
     def tearDown(self):
@@ -92,6 +91,7 @@ class Test(unittest.TestCase):
         epp_cli.create_keyset(n['id'], n['ds'], n['dsref'], n['dnskey'], n['dnskeyref'], n['tech'], n['auth_info'])
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
+    
     def test_050(self):
         '5. Pridani DS'
         newds = {'alg': '1', 'digest_type': '1', 'digest': 'ABCDE12345ABCDE12345ABCDE12345ABCDE12345', 'key_tag': '3'}
@@ -118,12 +118,38 @@ class Test(unittest.TestCase):
         errors = unitest_share.compare_keyset_info(epp_cli, KEYSET, epp_cli.is_val('data'))
         self.assert_(len(errors)==0, '\n'.join(errors))
 
+    def test_066(self):
+	'6.5. Pridani DNSKEY zaznamu'
+	newdnskey = { 'flags': '256', 'protocol': '3', 'alg': '5', 'pub_key': 'AwEAAddt2AkLfYGKgiEZB5SmIF8EvrjxNMH6HtxWEA4RJ9Ao6LCWheg8TSoH4+jPNwiWmT3+PQVbL5TD90KVw6S09Ae9cYU8A7xnZWkfzq8q2pX67yVvshlQqJnuSV6uMBEMziIGu3NZEJb9eTl1T5q1cli7Fk+xTt5GVvZR3BJhtRAf'}
+	KEYSET['dnskey'].append(newdnskey)
+	epp_cli.update_keyset(KEYSET['id'], {'dnskey': newdnskey})
+
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
+    def test_067(self):
+	'.. Kontrola vsetch hodnot keysetu po pridany DNSKEY'
+	epp_cli.info_keyset(FRED_KEYSET1)
+        errors = unitest_share.compare_keyset_info(epp_cli, KEYSET, epp_cli.is_val('data'))
+        self.assert_(len(errors)==0, '\n'.join(errors))
+
+    def test_68(self):
+	'6.6. Odebrani DNSKEY zaznamu'
+	dnskey = KEYSET['dnskey'].pop(0)
+	epp_cli.update_keyset(FRED_KEYSET1, None, {'dnskey':dnskey})
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
+    def test_069(self):
+	'.. Kontrola vsetch hodnot keysetu po pridany DNSKEY'
+	epp_cli.info_keyset(FRED_KEYSET1)
+        errors = unitest_share.compare_keyset_info(epp_cli, KEYSET, epp_cli.is_val('data'))
+        self.assert_(len(errors)==0, '\n'.join(errors))
 
     def test_070(self):
         '7. Pridani tech. kontaktu'
         KEYSET['tech'].append(FRED_CONTACT2)
         epp_cli.update_keyset(FRED_KEYSET1, {'tech':FRED_CONTACT2})
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
     def test_075(self):
         '.. Kontrola vsech hodnot keysetu po pridani tech. kontaktu'
         epp_cli.info_keyset(FRED_KEYSET1)
