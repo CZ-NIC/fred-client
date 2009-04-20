@@ -15,6 +15,8 @@ FRED_CONTACT1 = unitest_share.create_handle('CID:D1')
 FRED_CONTACT2 = unitest_share.create_handle('CID:D2')
 FRED_NSSET1 = unitest_share.create_handle('NSSID:D1')
 FRED_NSSET2 = unitest_share.create_handle('NSSID:D2')
+FRED_KEYSET1 = unitest_share.create_handle('KEYSID:U1')
+FRED_KEYSET2 = unitest_share.create_handle('KEYSID:U2')
 FRED_DOMAIN1 = '%s.cz'%unitest_share.create_handle('test')
 FRED_DOMAIN2 = unitest_share.create_enumdomain(); 
 FRED_DOMAIN3 = '%s.cz'%unitest_share.create_handle('tmp')
@@ -30,6 +32,7 @@ FRED_DATA = (
        'name':FRED_DOMAIN1,
        'auth_info':FRED_DOMAIN_PASSW,
        'nsset':FRED_NSSET1,
+       'keyset':FRED_KEYSET1,
        'registrant':FRED_CONTACT1,
        'period': {'num':'3','unit':'y'},
        'contact':(FRED_CONTACT1,),
@@ -38,12 +41,14 @@ FRED_DATA = (
        'name':FRED_DOMAIN2,
        'auth_info':FRED_DOMAIN_PASSW,
        'nsset':FRED_NSSET1,
+       'keyset':FRED_KEYSET1,
        'registrant':FRED_CONTACT1,
        'period': {'num':'3','unit':'y'},
        'contact':(FRED_CONTACT1,),
     }, 
     { # modify CHANGE_DOMAIN
       'nsset': FRED_NSSET2,
+      'keyset':FRED_KEYSET2,
       'registrant': FRED_CONTACT2,
       'auth_info': FRED_DOMAIN_PASSW_NEW,
     },
@@ -51,6 +56,7 @@ FRED_DATA = (
        'name':FRED_DOMAIN1,
        'auth_info':FRED_DOMAIN_PASSW_NEW,
        'nsset':FRED_NSSET2, # tato hodnota se pak zresetuje
+       'keyset':FRED_KEYSET2,
        'registrant':FRED_CONTACT2,
        'period': {'num':'3','unit':'y'},
        'contact':(FRED_CONTACT1,),
@@ -61,6 +67,31 @@ NSSET_DNS = (
             {'name': u'ns.pokus1.cz', 'addr': ('217.31.204.130','217.31.204.129')},
             {'name': u'ns.pokus2.cz', 'addr': ('217.31.204.131','217.31.204.127')},
         )
+
+# data needed for creating a keyset
+
+DS = [{'key_tag': '1', 'alg': '1',  'digest_type': '1', 'digest': '0123456789012345678901234567890123456789'}, 
+      {'key_tag': '1', 'alg': '5', 'digest_type': '1', 'digest': '9876543210987654321098765432109876543210', 'max_sig_life': '1'}]
+DSREF = []
+
+DNSKEY = [
+    {'flags': '257', 'protocol': '3', 'alg': '5', 
+        'pub_key': 'AwEAAddt2AkLfYGKgiEZB5SmIF8EvrjxNMH6HtxWEA4RJ9Ao6LCWheg8'
+        'TSoH4+jPNwiWmT3+PQVbL5TD90KVw6S09Ae9cYU8A7xnZWkfzq8q2pX6'
+        '7yVvshlQqJnuSV6uMBEMziIGu3NZEJb9eTl1T5q1cli7Fk+xTt5GVvZR' 
+        '3BJhtRAf'}, 
+    ]
+DNSKEYREF = []
+
+KEYSET = {
+    'id': FRED_KEYSET1, # (required)
+    'auth_info': 'heslo', # (required)
+    'ds': DS, 
+    'dsref': DSREF, 
+    'dnskey': DNSKEY, 
+    'dnskeyref': DNSKEYREF, 
+    'tech': [FRED_CONTACT1],   # (optional)             unbounded list
+    }
 
 
 class TestDomain(unittest.TestCase):
@@ -155,6 +186,18 @@ class TestDomain(unittest.TestCase):
         epp_cli.create_nsset(FRED_NSSET2, NSSET_DNS, FRED_CONTACT1, 'heslo')
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
+    def test_045(self):
+	'4.4.5 Zalozeni 1. pomocneho keysetu'
+	k = KEYSET
+        epp_cli.create_keyset(FRED_KEYSET1, k['ds'], k['dsref'], k['dnskey'], k['dnskeyref'], k['tech'], k['auth_info'])
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
+    def test_046(self):
+	'4.4.5 Zalozeni 2. pomocneho keysetu'
+	k = KEYSET
+        epp_cli.create_keyset(FRED_KEYSET2, k['ds'], k['dsref'], k['dnskey'], k['dnskeyref'], k['tech'], k['auth_info'])
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
     def test_050(self):
         '4.5  Pokus o zalozeni domeny s neexistujicim nssetem'
         d = FRED_DATA[DOMAIN_1]
@@ -173,6 +216,7 @@ class TestDomain(unittest.TestCase):
         d = FRED_DATA[DOMAIN_1]
         epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], d['nsset'], None, d['period'], 'CXXX0X')
         self.assertNotEqual(epp_cli.is_val(), 1000)
+
 
     def test_070(self):
         '4.7  Pokusy o zalozeni domeny s neplatnym nazvem'
@@ -196,7 +240,7 @@ class TestDomain(unittest.TestCase):
     def test_080(self):
         '4.8  Zalozeni nove domeny'
         d = FRED_DATA[DOMAIN_1]
-        epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], d['nsset'], None, d['period'], d['contact'])
+        epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], d['nsset'], d['keyset'], d['period'], d['contact'])
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_082(self):
@@ -292,7 +336,6 @@ class TestDomain(unittest.TestCase):
         epp_cli.update_domain(FRED_DOMAIN1, chg = {'nsset':''})
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
-
     def test_137(self):
         '4.13.4 Kontrola zmenenych udaju po resetovani nssetu'
         epp_cli.info_domain(FRED_DOMAIN1)
@@ -300,6 +343,18 @@ class TestDomain(unittest.TestCase):
         errors = unitest_share.compare_domain_info(epp_cli, FRED_DATA[DOMAIN_3], epp_cli.is_val('data'))
         self.assert_(len(errors)==0, '\n'.join(errors))
 
+    def test_138(self):
+	'4.13.5 Resetovani keysetu'
+	FRED_DATA[DOMAIN_3]['keyset'] = '' # reset keysetu
+	epp_cli.update_domain(FRED_DOMAIN1, chg = {'keyset':''})
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
+    def test_139(self):
+        '4.13.6 Kontrola zmenenych udaju po resetovani keysetu'
+        epp_cli.info_domain(FRED_DOMAIN1)
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+        errors = unitest_share.compare_domain_info(epp_cli, FRED_DATA[DOMAIN_3], epp_cli.is_val('data'))
+        self.assert_(len(errors)==0, '\n'.join(errors))
 
     def test_140(self):
         '4.14.1 Zmena jen auth_info'
@@ -387,7 +442,6 @@ class TestDomain(unittest.TestCase):
         epp_cli.update_domain(FRED_DOMAIN2, val_ex_date = unitest_share.datedelta_from_now(0, 6, 14))
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
-
     def test_190(self):
         '4.19 Renew domain o tri roky'
         # ziskani hodnoty cur_exp_date
@@ -402,6 +456,11 @@ class TestDomain(unittest.TestCase):
         unitest_share.write_log(epp_cli, log_fp, log_step, self.id(),self.shortDescription(),(2,3))
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         unitest_share.reset_client(epp_cli)
+
+	# update FRED_DATA
+	number = int(FRED_DATA[DOMAIN_3]['period']['num'])
+	FRED_DATA[DOMAIN_3]['period']['num'] = str(number + 3)
+
         # kontrola nastaveni
         epp_cli.info_domain(FRED_DOMAIN1)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
@@ -409,37 +468,70 @@ class TestDomain(unittest.TestCase):
         exDate = epp_cli.is_val(('data','domain:exDate'))[:10]
         self.assert_(expiration == exDate, 'Expirace neprosla. Data domain:exDate nesouhlasi: je: %s ma byt: %s'%(exDate, expiration))
 
+    def test_191(self):
+        '4.19.1 Info na domenu a kontrola hodnot po renew domeny'
+        epp_cli.info_domain(FRED_DOMAIN1)
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+        errors = unitest_share.compare_domain_info(epp_cli, FRED_DATA[DOMAIN_3], epp_cli.is_val('data'))
+        self.assert_(len(errors)==0, '\n'.join(errors))
+
     # ##############################################
     #
     # Test List functions
 
     def test_200(self):
+	'4.20.0 prep_domains: Seznam domen'
+	epp_cli.prep_domains()
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+	self.failIf(int(epp_cli.is_val(('data','count'))) == 0, 'Seznam je prazdny prestoze by tam mela byt alespon jedna polozka.')
+
+    def test_205(self):
         '4.20.1 domains_by_contact: Overeni, ze domena je v seznamu'
         #TODO: Zatim se testuje jen ID drzitele
         epp_cli.prep_domains_by_contact(FRED_CONTACT2)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         self.failIf(int(epp_cli.is_val(('data','count'))) == 0, 'Seznam je prazdny prestoze by tam mela byt alespon jedna polozka.')
         
-    def test_210(self):
+    def test_206(self):
         '4.20.2 get_results: (prep_domains_by_contact) Overeni, ze domena je v seznamu'
         self.__get_results__(FRED_DOMAIN1, 'Domena')
 
-    def test_211(self):
+    def test_207(self):
         '4.20.3 Navraceni nssetu'
         FRED_DATA[DOMAIN_3]['nsset'] = FRED_NSSET2
         epp_cli.update_domain(FRED_DOMAIN1, chg = {'nsset': FRED_NSSET2})
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
-    def test_212(self):
+    def test_208(self):
+        '4.20.3.1 Info na domenu a kontrola hodnot po navraceni nssetu'
+        epp_cli.info_domain(FRED_DOMAIN1)
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+        errors = unitest_share.compare_domain_info(epp_cli, FRED_DATA[DOMAIN_3], epp_cli.is_val('data'))
+        self.assert_(len(errors)==0, '\n'.join(errors))
+
+    def test_209(self):
         '4.20.4 prep_domains_by_nsset: Overeni, ze domena je v seznamu'
         #TODO: Zatim se testuje jen ID drzitele
         epp_cli.prep_domains_by_nsset(FRED_NSSET2)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         self.failIf(int(epp_cli.is_val(('data','count'))) == 0, 'Seznam je prazdny prestoze by tam mela byt alespon jedna polozka.')
 
-    def test_213(self):
+    def test_210(self):
         '4.20.5 get_results: (prep_domains_by_nsset) Overeni, ze domena je v seznamu'
         self.__get_results__(FRED_DOMAIN1, 'Domena')
+
+    def test_211(self): 
+	'4.20.5.0 Navraceni keysetu'
+	FRED_DATA[DOMAIN_3]['keyset'] = FRED_KEYSET2
+        epp_cli.update_domain(FRED_DOMAIN1, chg = {'keyset': FRED_KEYSET2})
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
+    def test_212(self):
+        '4.20.5.1 Info na domenu a kontrola hodnot po navraceni keysetu'
+        epp_cli.info_domain(FRED_DOMAIN1)
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+        errors = unitest_share.compare_domain_info(epp_cli, FRED_DATA[DOMAIN_3], epp_cli.is_val('data'))
+        self.assert_(len(errors)==0, '\n'.join(errors))
 
     def test_214(self):
         '4.20.6 prep_nssets_by_contact: Overeni, ze nsset je v seznamu'
@@ -461,6 +553,15 @@ class TestDomain(unittest.TestCase):
         '4.20.9 get_results: (prep_nssets_by_ns) Overeni, ze nsset je v seznamu'
         self.__get_results__(FRED_NSSET1, 'Nsset')
 
+    def test_218(self):
+	'4.20.10 prep_domains_by_keyset: Overeni, ze domena je v seznamu'
+        epp_cli.prep_domains_by_keyset(FRED_KEYSET2)
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+        self.failIf(int(epp_cli.is_val(('data','count'))) == 0, 'Seznam je prazdny prestoze by tam mela byt alespon jedna polozka.')
+
+    def test_219(self):
+        '4.20.11 get_results: (prep_domains_by_keyset) Overeni, ze domena je v seznamu'
+        self.__get_results__(FRED_DOMAIN1, 'Domena')
 
 
     # ##############################################
@@ -572,24 +673,34 @@ class TestDomain(unittest.TestCase):
         epp_cli.check_domain(FRED_DOMAIN2)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
         self.assertEqual(epp_cli.is_val(('data',FRED_DOMAIN2)), 1, 'Domena existuje: %s'%FRED_DOMAIN2)
-        
+
+    def test_345(self):
+	'4.27.0 Smazani 2. pomocneho keysetu'
+	epp_cli.delete_keyset(FRED_KEYSET2)
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
+    def test_346(self):
+	'4.27.1 Smazani 1. pomocneho keysetu'
+	epp_cli.delete_keyset(FRED_KEYSET1)
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+            
     def test_350(self):
-        '4.27.0 Smazani 2. pomocneho nssetu'
+        '4.27.2 Smazani 2. pomocneho nssetu'
         epp_cli.delete_nsset(FRED_NSSET2)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_360(self):
-        '4.27.1 Smazani 1. pomocneho nssetu'
+        '4.27.3 Smazani 1. pomocneho nssetu'
         epp_cli.delete_nsset(FRED_NSSET1)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_370(self):
-        '4.27.2 Smazani 2. pomocneho kontaktu'
+        '4.27.4 Smazani 2. pomocneho kontaktu'
         epp_cli.delete_contact(FRED_CONTACT2)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_380(self):
-        '4.27.3 Smazani 1. pomocneho kontaktu'
+        '4.27.5 Smazani 1. pomocneho kontaktu'
         epp_cli.delete_contact(FRED_CONTACT1)
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
@@ -604,7 +715,6 @@ class TestDomain(unittest.TestCase):
         self.assertEqual(epp_cli.is_val(), 1500, unitest_share.get_reason(epp_cli))
 
     
-
 
 epp_cli, epp_cli_TRANSF, epp_cli_log, log_fp, log_step, poll_msg_id = (None,)*6
 domain_renew = ''
