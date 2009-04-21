@@ -12,6 +12,7 @@ import unitest_share
 #-----------------------
 FRED_CONTACT1 = unitest_share.create_handle('CID:D1')
 FRED_CONTACT2 = unitest_share.create_handle('CID:D2')
+FRED_KEYSET1 = unitest_share.create_handle('KEYSID:U1')
 FRED_NSSET1 = unitest_share.create_handle('NSSID:D1')
 FRED_NSSET2 = unitest_share.create_handle('NSSID:D2')
 FRED_DOMAIN1 = '%s.cz'%unitest_share.create_handle('test')
@@ -32,10 +33,37 @@ DOMAIN = {
        'name':FRED_DOMAIN1,
        'auth_info':FRED_DOMAIN_PASSW,
        'nsset':FRED_NSSET1,
+       'keyset':FRED_KEYSET1,
        'registrant':FRED_CONTACT1,
        'period': {'num':'3','unit':'y'},
        'contact':[FRED_CONTACT1],
           }        
+
+# data needed for creating a keyset
+
+DS = [{'key_tag': '1', 'alg': '1',  'digest_type': '1', 'digest': '0123456789012345678901234567890123456789'}, 
+      {'key_tag': '1', 'alg': '5', 'digest_type': '1', 'digest': '9876543210987654321098765432109876543210', 'max_sig_life': '1'}]
+DSREF = []
+
+DNSKEY = [
+    {'flags': '257', 'protocol': '3', 'alg': '5', 
+        'pub_key': 'AwEAAddt2AkLfYGKgiEZB5SmIF8EvrjxNMH6HtxWEA4RJ9Ao6LCWheg8'
+        'TSoH4+jPNwiWmT3+PQVbL5TD90KVw6S09Ae9cYU8A7xnZWkfzq8q2pX6'
+        '7yVvshlQqJnuSV6uMBEMziIGu3NZEJb9eTl1T5q1cli7Fk+xTt5GVvZR' 
+        '3BJhtRAf'}, 
+    ]
+DNSKEYREF = []
+
+KEYSET = {
+    'id': FRED_KEYSET1, # (required)
+    'auth_info': 'heslo', # (required)
+    'ds': DS, 
+    'dsref': DSREF, 
+    'dnskey': DNSKEY, 
+    'dnskeyref': DNSKEYREF, 
+    'tech': [FRED_CONTACT1],   # (optional)             unbounded list
+    }
+
 
 
 class TestDomain(unittest.TestCase):
@@ -107,12 +135,16 @@ class TestDomain(unittest.TestCase):
         epp_cli.create_nsset(FRED_NSSET2, NSSET_DNS, FRED_CONTACT1, 'heslo')
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
-
+    def test_045(self):
+	'5.5 Zalozeni pomocneho keysetu'
+	k = KEYSET
+        epp_cli.create_keyset(FRED_KEYSET1, k['ds'], k['dsref'], k['dnskey'], k['dnskeyref'], k['tech'], k['auth_info'])
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
     def test_080(self):
         '6. Zalozeni nove domeny'
         d = DOMAIN
-        epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], d['nsset'], None, d['period'], d['contact'])
+        epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], d['nsset'], d['keyset'], d['period'], d['contact'])
         self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
         
@@ -183,7 +215,12 @@ class TestDomain(unittest.TestCase):
 #        d = DOMAIN
 #        epp_cli.create_domain(d['name'], d['registrant'], d['auth_info'], d['nsset'], d['period'], d['contact'])
 #        self.assertEqual(epp_cli.is_val(), 2005, unitest_share.get_reason(epp_cli))
-        
+
+    def test_340(self):
+	'11.5 Smazani pomocneho keysetu'
+	epp_cli.delete_keyset(FRED_KEYSET1)
+        self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
+
     def test_350(self):
         '12. Smazani 2. pomocneho nssetu'
         epp_cli.delete_nsset(FRED_NSSET2)

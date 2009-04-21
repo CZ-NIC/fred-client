@@ -17,6 +17,7 @@ import unitest_keyset6
 import unitest_login
 import unitest_nsset
 import unitest_nsset2
+import unitest_invhandles
 
 tests = [
     unitest_contact, 
@@ -32,7 +33,8 @@ tests = [
     unitest_keyset6,
     unitest_login,
     unitest_nsset,
-    unitest_nsset2
+    unitest_nsset2,
+    unitest_invhandles
 ]
 
 if __name__ == '__main__':

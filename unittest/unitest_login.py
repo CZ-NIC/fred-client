@@ -127,6 +127,21 @@ class TestLogin(unittest.TestCase):
         self.assert_(len(error)==0, error)
         self.assertEqual(code, 1000, unitest_share.get_reason(epp_cli))
 
+    def test_045(self):
+        '1.4.1 Odlogovani'
+        unitest_share.reset_client(epp_cli)
+	epp_cli.login(USERNAME, PASSWORD);
+
+        if epp_cli: self.assert_(epp_cli.is_logon(),'client is offline')
+        try:
+            epp_cli.logout()
+        except fred.FredError, msg:
+            pass
+            print '\n1.5.2 Odlogovani:',msg
+
+        self.assertEqual(epp_cli.is_val(), 1500, unitest_share.get_reason(epp_cli))
+
+
     def test_050(self):
         '1.5.1 Zmena hesla tam a zpatky s kontrolnim zalogovanim: Zmena hesla'
         global dct_login
@@ -140,16 +155,7 @@ class TestLogin(unittest.TestCase):
         self.assert_(len(error)==0, error)
         self.assertEqual(code, 1000, unitest_share.get_reason(epp_cli))
 
-#    def test_060(self):
-#        '1.5.2 Odlogovani'
-#        unitest_share.reset_client(epp_cli)
-#        try:
-#            epp_cli.logout()
-#        except fred.FredError, msg:
-#            pass
-#            print '\n1.5.2 Odlogovani:',msg
-#        self.assertEqual(epp_cli.is_val(), 1500, unitest_share.get_reason(epp_cli))
-
+    
     def test_070(self):
         '1.5.3 Zalogovani s novym heslem'
         # zalogování pod novým heslem ........................
@@ -168,6 +174,7 @@ class TestLogin(unittest.TestCase):
 #            pass
 #            print '\n1.5.4 Odlogovani:',msg
 #        self.assertEqual(epp_cli.is_val(), 1500, unitest_share.get_reason(epp_cli))
+#
 
     def test_090(self):
         '1.5.5 Navraceni puvodniho hesla'
@@ -177,6 +184,15 @@ class TestLogin(unittest.TestCase):
         code, error = self.__login__(dct_login)
         self.assert_(len(error)==0, error)
         self.assertEqual(code, 1000, unitest_share.get_reason(epp_cli))
+
+    def test_100(self):
+	'1.6 Credit info'
+	# global epp_cli, epp_cli_log, handle_contact, handle_keyset, log_fp
+	epp_cli.login(USERNAME, PASSWORD);
+
+        if epp_cli: self.assert_(epp_cli.is_logon(),'client is offline')
+	epp_cli.credit_info()
+	self.assertEqual(epp_cli.is_val(), 1000, unitest_share.get_reason(epp_cli))
 
 
 epp_cli, log_fp, log_step = (None,)*3

@@ -314,9 +314,11 @@ def compare_domain_info(epp_cli, cols, data):
     ##    'domain:contact.type': u'admin'}
     ##____________________________________________________________
     username, password = epp_cli._epp.get_actual_username_and_password()
+
     err_not_equal(errors, data, 'domain:clID', username)
     err_not_equal(errors, data, 'domain:name', cols['name'])
     err_not_equal(errors, data, 'domain:nsset', cols['nsset'])
+    err_not_equal(errors, data, 'domain:keyset', cols['keyset'])
     err_not_equal(errors, data, 'domain:authInfo', cols['auth_info'])
     if not are_equal(data['domain:registrant'], cols['registrant']):
         errors.append('Data domain:registrant nesouhlasi. JSOU:%s MELY BYT:%s'%(make_str(data['domain:registrant']), make_str(cols['registrant'])))
@@ -444,7 +446,6 @@ def compare_keyset_info(epp_cli, cols, data):
     else:
         errors.append('Seznam DS nema pozadovany pocet. Ma %d a mel by mit %d.'%(len(ds),len(cols_ds)))
     return errors
-    
     
     
 get_local_text = fred.session_base.get_ltext
