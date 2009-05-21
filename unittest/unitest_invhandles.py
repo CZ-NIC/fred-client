@@ -43,72 +43,72 @@ class Test(unittest.TestCase):
         if fred.translate.options['log']: # zapnuti/vypuni ukladani prikazu do logu
             log_fp = open(fred.translate.options['log'],'w')
 
-
-    def test_060(self):
-        '1.0 Test info contact with some invalid handles'
-        errors = []
-        notallowed = '!"#$%&\'()*+,/:;<=>?@[\]^_`{|}~'
-        max = len(notallowed)
-        for position in range(max):
-	    invhandle = 'han%sdle' % notallowed[position]
-	    epp_cli.info_contact(invhandle)
-
-            # if nsset has been created append handle for delete it later
-            if epp_cli.is_val() == 1000:
-                errors.append('Name %s has been accepted.' % invhandle)
-            unitest_share.write_log(epp_cli, log_fp, log_step, self.id(), 
-                                    self.shortDescription()+' %s'%(invhandle), (position, max))
-        self.failIf(len(errors) > 0, '\n'.join(errors))
-
-
-    def test_061(self):
-        '1.1 Test info keyset with some invalid handles'
-        errors = []
-        notallowed = '!"#$%&\'()*+,/:;<=>?@[\]^_`{|}~'
-        max = len(notallowed)
-        for position in range(max):
-	    invhandle = 'han%sdle' % notallowed[position]
-	    epp_cli.info_keyset(invhandle)
-
-            # if nsset has been created append handle for delete it later
-            if epp_cli.is_val() == 1000:
-                errors.append('Name %s has been accepted.' % invhandle)
-            unitest_share.write_log(epp_cli, log_fp, log_step, self.id(), 
-                                    self.shortDescription()+' %s'%(invhandle), (position, max))
-        self.failIf(len(errors) > 0, '\n'.join(errors))
-
-    def test_062(self):
-        '1.2 Test info nsset with some invalid handles'
-        errors = []
-        notallowed = '!"#$%&\'()*+,/:;<=>?@[\]^_`{|}~'
-        max = len(notallowed)
-        for position in range(max):
-	    invhandle = 'han%sdle' % notallowed[position]
-	    epp_cli.info_nsset(invhandle)
-
-            # if nsset has been created append handle for delete it later
-            if epp_cli.is_val() == 1000:
-                errors.append('Name %s has been accepted.' % invhandle)
-            unitest_share.write_log(epp_cli, log_fp, log_step, self.id(), 
-                                    self.shortDescription()+' %s'%(invhandle), (position, max))
-        self.failIf(len(errors) > 0, '\n'.join(errors))
-
-    def test_063(self):
-        '1.3 Test info domain with some invalid handles'
-        errors = []
-        notallowed = '!"#$%&\'()*+,/:;<=>?@[\]^_`{|}~'
-        max = len(notallowed)
-        for position in range(max):
-	    invhandle = 'han%sdle' % notallowed[position]
-	    epp_cli.info_domain(invhandle)
-
-            # if nsset has been created append handle for delete it later
-            if epp_cli.is_val() == 1000:
-                errors.append('Name %s has been accepted.' % invhandle)
-            unitest_share.write_log(epp_cli, log_fp, log_step, self.id(), 
-                                    self.shortDescription()+' %s'%(invhandle), (position, max))
-        self.failIf(len(errors) > 0, '\n'.join(errors))
-
+#
+#    def test_060(self):
+#        '1.0 Test info contact with some invalid handles'
+#        errors = []
+#        notallowed = '!"#$%&\'()*+,/:;<=>?@[\]^_`{|}~'
+#        max = len(notallowed)
+#        for position in range(max):
+#	    invhandle = 'han%sdle' % notallowed[position]
+#	    epp_cli.info_contact(invhandle)
+#
+#            # if nsset has been created append handle for delete it later
+#            if epp_cli.is_val() == 1000:
+#                errors.append('Name %s has been accepted.' % invhandle)
+#            unitest_share.write_log(epp_cli, log_fp, log_step, self.id(), 
+#                                    self.shortDescription()+' %s'%(invhandle), (position, max))
+#        self.failIf(len(errors) > 0, '\n'.join(errors))
+#
+#
+#    def test_061(self):
+#        '1.1 Test info keyset with some invalid handles'
+#        errors = []
+#        notallowed = '!"#$%&\'()*+,/:;<=>?@[\]^_`{|}~'
+#        max = len(notallowed)
+#        for position in range(max):
+#	    invhandle = 'han%sdle' % notallowed[position]
+#	    epp_cli.info_keyset(invhandle)
+#
+#            # if nsset has been created append handle for delete it later
+#            if epp_cli.is_val() == 1000:
+#                errors.append('Name %s has been accepted.' % invhandle)
+#            unitest_share.write_log(epp_cli, log_fp, log_step, self.id(), 
+#                                    self.shortDescription()+' %s'%(invhandle), (position, max))
+#        self.failIf(len(errors) > 0, '\n'.join(errors))
+#
+#    def test_062(self):
+#        '1.2 Test info nsset with some invalid handles'
+#        errors = []
+#        notallowed = '!"#$%&\'()*+,/:;<=>?@[\]^_`{|}~'
+#        max = len(notallowed)
+#        for position in range(max):
+#	    invhandle = 'han%sdle' % notallowed[position]
+#	    epp_cli.info_nsset(invhandle)
+#
+#            # if nsset has been created append handle for delete it later
+#            if epp_cli.is_val() == 1000:
+#                errors.append('Name %s has been accepted.' % invhandle)
+#            unitest_share.write_log(epp_cli, log_fp, log_step, self.id(), 
+#                                    self.shortDescription()+' %s'%(invhandle), (position, max))
+#        self.failIf(len(errors) > 0, '\n'.join(errors))
+#
+#    def test_063(self):
+#        '1.3 Test info domain with some invalid handles'
+#        errors = []
+#        notallowed = '!"#$%&\'()*+,/:;<=>?@[\]^_`{|}~'
+#        max = len(notallowed)
+#        for position in range(max):
+#	    invhandle = 'han%sdle' % notallowed[position]
+#	    epp_cli.info_domain(invhandle)
+#
+#            # if nsset has been created append handle for delete it later
+#            if epp_cli.is_val() == 1000:
+#                errors.append('Name %s has been accepted.' % invhandle)
+#            unitest_share.write_log(epp_cli, log_fp, log_step, self.id(), 
+#                                    self.shortDescription()+' %s'%(invhandle), (position, max))
+#        self.failIf(len(errors) > 0, '\n'.join(errors))
+#
 
 
 
@@ -116,31 +116,40 @@ class Test(unittest.TestCase):
     def test_070(self):
         '2.0 Test check contact with some invalid handles'
         errors = []
-        notallowed = '!"#$%&\'()*+,/:;<=>?@[\]^_`{|}~'
+        notallowed = '!"#$%&\'()*+,/;<=>?@[\]^`{|}~'
         max = len(notallowed)
         for position in range(max):
 	    invhandle = 'han%sdle' % notallowed[position]
+
 	    epp_cli.check_contact(invhandle)
 
-            # if nsset has been created append handle for delete it later
-            if epp_cli.is_val() == 1000:
-                errors.append('Name %s has been accepted.' % invhandle)
+            if epp_cli.is_val() != 1000:
+                errors.append('Check contact did not return code 1000 for handle %s ' % invhandle)
+
+	    if epp_cli.is_val(('data', invhandle + ':reason')) != 'Not available. invalid format':
+		errors.append('Name %s has been accepted by check contact.' % invhandle)
+
             unitest_share.write_log(epp_cli, log_fp, log_step, self.id(), 
                                     self.shortDescription()+' %s'%(invhandle), (position, max))
         self.failIf(len(errors) > 0, '\n'.join(errors))
 
+
     def test_071(self):
+
         '2.1 Test check keyset with some invalid handles'
         errors = []
-        notallowed = '!"#$%&\'()*+,/:;<=>?@[\]^_`{|}~'
+        notallowed = '!"#$%&\'()*+,/;<=>?@[\]^`{|}~'
         max = len(notallowed)
         for position in range(max):
 	    invhandle = 'han%sdle' % notallowed[position]
 	    epp_cli.check_keyset(invhandle)
 
-            # if nsset has been created append handle for delete it later
-            if epp_cli.is_val() == 1000:
-                errors.append('Name %s has been accepted.' % invhandle)
+	    if epp_cli.is_val() != 1000:
+		errors.append('Check keyset did not return code 1000 for handle %s ' % invhandle)
+	    if epp_cli.is_val(('data', invhandle + ':reason')) != 'Not available. invalid format':
+		errors.append('Name %s has been accepted by check keyset.' % invhandle)
+
+
             unitest_share.write_log(epp_cli, log_fp, log_step, self.id(), 
                                     self.shortDescription()+' %s'%(invhandle), (position, max))
         self.failIf(len(errors) > 0, '\n'.join(errors))
@@ -148,15 +157,17 @@ class Test(unittest.TestCase):
     def test_072(self):
         '2.2 Test check nsset with some invalid handles'
         errors = []
-        notallowed = '!"#$%&\'()*+,/:;<=>?@[\]^_`{|}~'
+        notallowed = '!"#$%&\'()*+,/;<=>?@[\]^`{|}~'
         max = len(notallowed)
         for position in range(max):
 	    invhandle = 'han%sdle' % notallowed[position]
 	    epp_cli.check_nsset(invhandle)
 
-            # if nsset has been created append handle for delete it later
-            if epp_cli.is_val() == 1000:
-                errors.append('Name %s has been accepted.' % invhandle)
+	    if epp_cli.is_val() != 1000:
+		errors.append('Check nsset did not return code 1000 for handle %s ' % invhandle)
+	    if epp_cli.is_val(('data', invhandle + ':reason')) != 'Not available. invalid format':
+		errors.append('Name %s has been accepted by check nsset.' % invhandle)
+
             unitest_share.write_log(epp_cli, log_fp, log_step, self.id(), 
                                     self.shortDescription()+' %s'%(invhandle), (position, max))
         self.failIf(len(errors) > 0, '\n'.join(errors))
@@ -170,14 +181,14 @@ class Test(unittest.TestCase):
 	    invhandle = 'han%sdle' % notallowed[position]
 	    epp_cli.check_domain(invhandle)
 
-            # if nsset has been created append handle for delete it later
-            if epp_cli.is_val() == 1000:
-                errors.append('Name %s has been accepted.' % invhandle)
+	    if epp_cli.is_val() != 1000:
+		errors.append('Check domain did not return code 1000 for handle %s ' % invhandle)
+	    if epp_cli.is_val(('data', invhandle + ':reason')) != 'Not available. invalid format':
+	    	errors.append('Name %s has been accepted by check domain.' % invhandle)
+
             unitest_share.write_log(epp_cli, log_fp, log_step, self.id(), 
                                     self.shortDescription()+' %s'%(invhandle), (position, max))
         self.failIf(len(errors) > 0, '\n'.join(errors))
-
-
 
 
 # global variables of the client object and login file
