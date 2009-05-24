@@ -656,6 +656,12 @@ Call get_results command for gain data."""))
 and pointer is set at the beginning of the list.
 Call get_results command for gain data."""))
     
+    def answer_response_fred_domainsbykeyset(self, data):
+        'Handler for fred:domainsbykeyset command'
+        self.__fred_listobjects__(data, 'fred:domainsbykeyset', _T("""The list of the domains is ready on the server buffer 
+and pointer is set at the beginning of the list.
+Call get_results command for gain data."""))
+
     def answer_response_fred_nssetsbycontact(self, data):
         'Handler for fred:nssetsbycontact command'
         self.__fred_listobjects__(data, 'fred:nssetsbycontact', _T("""The list of the nssets is ready on the server buffer 
