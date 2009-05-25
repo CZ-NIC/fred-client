@@ -1,9 +1,14 @@
+FredClient 2.1.4
+
+Zmeny:
+    * Opravena navratova hodnota funkce prep_domainsbykeyset
+    * Pridany nove unittesty aby se pokryly vsechny EPP funkce
+
 FredClient 2.1.3
 
 Zmeny:
     * V odpovedi serveru ve formatu php jsou promenne 'domain:status' a 
       'domain:status.s' vzdy typu array.
-
 
 
 FredClient 2.1.2
