@@ -162,7 +162,7 @@ def check_date(date, nu, sql_date=None):
     if sql_date:
         ts = list(time.strptime(sql_date[:10],'%Y-%m-%d'))
     else:
-        ts = list(time.gmtime())
+        ts = list(time.localtime())
     num = int(nu['num'])
     if nu['unit'] == 'y':
         ts[0] += num
@@ -325,7 +325,7 @@ def compare_domain_info(epp_cli, cols, data):
     is_equal, exdate = check_date(data['domain:exDate'], cols['period'])
     if not is_equal:
         errors.append('Data domain:exDate nesouhlasi: jsou: %s a mely byt: %s'%(data['domain:exDate'], exdate))
-    actual_time = time.strftime('%Y-%m-%d',time.gmtime())
+    actual_time = time.strftime('%Y-%m-%d',time.localtime())
     if data['domain:crDate'][:10] != actual_time:
         errors.append('Data domain:crDate nesouhlasi: jsou: %s a mely by byt: %s'%(data['domain:crDate'],actual_time))
     return errors
