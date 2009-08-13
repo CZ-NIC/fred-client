@@ -416,7 +416,7 @@ class ManagerReceiver(ManagerCommand):
     def answer_response_keyset_check(self, data):
         "data=(response,result,code,msg)"
         self.__answer_response_check__(data, ('keyset','id'))
-        
+
     def answer_response_poll(self, data):
         "data=(response,result,code,msg)"
         label='poll'
@@ -429,7 +429,11 @@ class ManagerReceiver(ManagerCommand):
             self.__append_note_from_dct__(msgQ,('qDate','msg'))
             if not self._dct_answer['data'].has_key('msg'):
                 # if message is not simple text but XML document:
-                self._dct_answer['data']['msg'] = '\n'+eppdoc.prepare_display(msgQ.get('msg'), COLOR)
+                dmsg = msgQ.get('msg')
+                if dmsg is not None and len(dmsg) == 1:
+                    # remove topmost element if it is only one
+                    key, dmsg = dmsg.popitem()
+                self._dct_answer['data']['msg'] = '\n'+eppdoc.prepare_display(dmsg, COLOR)
             
         # convert str to int:
         for key in ('id','count'):

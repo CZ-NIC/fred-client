@@ -551,9 +551,9 @@ def get_dct_value(dict_data, names, sep=u'\n', attr_name='', defval=u''):
 def __pfd__(dict_data,color=0,indent=0):
     "Prepare dictionary data for display."
     if color:
-        patt=('${BOLD}%s:${NORMAL} %s','[${YELLOW}ATTR:${NORMAL} %s]','%s[${GREEN}%s${NORMAL}]:','%s[${GREEN}%s${NORMAL}]: %s')
+        patt=('${BOLD}%s:${NORMAL} %s', '[%s]', '%s${GREEN}%s${NORMAL}:','%s${GREEN}%s${NORMAL}: %s')
     else:
-        patt=('%s: %s','[ATTR: %s]','%s[%s]:','%s[%s]: %s')
+        patt=('%s: %s', '[%s]', '%s%s:', '%s%s: %s')
     body=[]
     if type(dict_data) in (list,tuple):
         for d in dict_data:
@@ -577,19 +577,23 @@ def __pfd__(dict_data,color=0,indent=0):
             if key in ('attr','data'): continue
             if dict_data[key] == {}:
                 # display empty node
-                body.append(patt[2]%(ind,key))
+                body.append(patt[2]%(ind,remove_ns(key)))
             else:
                 rows = __pfd__(dict_data[key],color,indent+4)
                 if len(rows):
                     if len(rows)>1:
                         # more lines [key]: and next lines with values
-                        body.append(patt[2]%(ind,key))
+                        body.append(patt[2]%(ind,remove_ns(key)))
                         for r in rows:
                             body.append('%s%s'%(ind,r))
                     else:
                         # one line - [key]: value
-                        body.append(patt[3]%(ind,key,rows[0]))
+                        body.append(patt[3]%(ind,remove_ns(key),rows[0]))
     return body
+
+def remove_ns(name):
+    "remove namespace from xml element"
+    return re.sub('.+:', '', name)
 
 def prepare_display(dict_data,color=0):
     "Prepare dictionary data for display."
