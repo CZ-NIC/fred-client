@@ -37,14 +37,14 @@ DEFAULT_SSL_PATH = 'ssl'
 # /usr/local/share/fred-client/schemas/all.xsd
 DEFAULT_SCHEMAS_FILEMANE = 'schemas/all.xsd'
 
-APP_SCRIPTS = ['fred-client','fred-client-qt4.pyw']
+APP_SCRIPTS = ['fred-client', 'fred-client-qt4.pyw']
 #if 'bdist_wininst' in sys.argv and '--install-script=setup_postinstall.py'
 #in sys.argv:
 if 'bdist_wininst' in sys.argv:
     # join postinstall only for WIN distribution
     APP_SCRIPTS.append('setup_postinstall.py')
 
-g_install_unittest = None
+
     
 class EPPClientInstall(install):
 
@@ -55,13 +55,9 @@ class EPPClientInstall(install):
         'fred server host [localhost]'))
     user_options.append(('port=', None,
         'fred server port [700]'))
-    user_options.append(('install-unittest', None,
-        'setup will install unittest scripts into PREFIX/lib/fred-client/unittest '
-        'directory'))
 
 
     boolean_options = install.boolean_options
-    boolean_options.append('install-unittest')
 
     def __init__(self, *attrs):
         install.__init__(self, *attrs)
@@ -83,7 +79,6 @@ class EPPClientInstall(install):
         install.initialize_options(self)
         self.host = None
         self.port = None
-        self.install_unittest = None
 
     def finalize_options(self):
         install.finalize_options(self)
@@ -91,11 +86,7 @@ class EPPClientInstall(install):
             self.host = 'localhost'
         if not self.port:
             self.port = '700'
-        if not self.install_unittest:
-            self.install_unittest = 0
 
-        global g_install_unittest
-        g_install_unittest = self.install_unittest
 
     def update_fred_config(self):
         '''Update fred config'''
@@ -126,30 +117,8 @@ class EPPClientInstall(install):
                     os.path.join('build', config_name))
         print 'File %s was created.' % config_name
 
-    def update_unittest_file(self, filename):
-        values = []
-        values.append((r'(sys\.path\.insert\(0,\ )\'[\w/_ \-\.]*\'\)', r"\1'%s')" %
-            self.getDir_std('purelibdir')))
-        self.replace_pattern(os.path.join('build', 'unittest', filename), None, values)
-        print "%s file has been updated" % filename
-
-    def update_unittests(self):
-        files = file_util.all_files_in_2(os.path.join('build', 'unittest'), onlyFilenames=True)
-        for file in files:
-            self.update_unittest_file(file)
 
     def run(self):
-        if g_install_unittest:
-            if not os.path.exists(os.path.join('build', 'unittest')):
-                os.makedirs(os.path.join('build', 'unittest'))
-            for file in all_files_in_2(os.path.join(g_directory, 'unittest')):
-                shutil.copyfile(file, os.path.join('build', 'unittest', os.path.split(file)[1]))
-
-            self.update_unittests()
-            self.distribution.data_files = self.distribution.data_files + file_util.all_files_in_4(
-                    'LIBDIR/%s/unittest' % self.distribution.get_name(),
-                    os.path.join('build', 'unittest'))
-
         self.update_fred_config()
         install.run(self)
 
