@@ -24,6 +24,7 @@ import terminal_controler
 import translate
 import session_config
 import internal_variables
+from subprocess import Popen, PIPE
 """
 Class ManagerBase is a part of one Manager object  what provide client session.
 This base class owns basic variables and functions needed for manage EPP XML 
@@ -646,7 +647,10 @@ $fred_client_errors = array(); // errors occuring during communication
         'Check if exists external validator (xmllint).'
         ok = 0
         try:
-            pipes = os.popen3(self._external_validator)
+            procs = Popen(self._external_validator, shell=True, stdin=PIPE, 
+                          stdout=PIPE, stderr=PIPE)
+            # pipes: (p.stdin, p.stdout, p.stderr)
+            pipes = (procs.stdin, procs.stdout, procs.stderr)
         except IOError, msg:
             self.append_note('check_validator: %s'%str(msg),('RED','BOLD'))
         standr = pipes[1].read()
@@ -691,7 +695,9 @@ $fred_client_errors = array(); // errors occuring during communication
             self.append_note(_T('Client-side validation command:'), 'BOLD')
             self.append_note(get_ltext(command))
         try:
-            pipes = os.popen3(command,'w+')
+            procs = Popen(command, shell=True, stdin=PIPE, stdout=PIPE, stderr=PIPE)
+            # pipes: (p.stdin, p.stdout, p.stderr)
+            pipes = (procs.stdin, procs.stdout, procs.stderr)
             pipes[0].write(message)
             pipes[0].close()
         except IOError, msg:

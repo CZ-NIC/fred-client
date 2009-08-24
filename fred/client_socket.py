@@ -22,6 +22,14 @@ import time
 import re
 import struct
 from translate import encoding
+
+try:
+    # python 2.6
+    import ssl
+except ImportError:
+    # python 2.5
+    ssl = None
+
 """Module client_socket manage connection handler. Create socket, open and close
 connection. Collect the errors and notes for displaying. Method of communication
 is described in RFC3734.txt - Transport Over TCP (4.  Data Unit Format) and
@@ -138,7 +146,13 @@ class Lorry:
         ssl_ok = 0
         try:
             if len(DATA) > 3 and DATA[2] and DATA[3]:
-                self._conn_ssl = socket.ssl(self._conn, DATA[2], DATA[3])
+                if ssl:
+                    # python 2.6
+                    self._conn_ssl = ssl.wrap_socket(self._conn, 
+                                             keyfile=DATA[2], certfile=DATA[3])
+                else:
+                    # python 2.5
+                    self._conn_ssl = socket.ssl(self._conn, DATA[2], DATA[3])
             else:
                 self.append_note(_T('Certificates missing. Trying to connect without SSL!'))
                 self._conn_ssl = socket.ssl(self._conn)
