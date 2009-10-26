@@ -677,7 +677,8 @@ def make_sort_by_names():
          ('trDate',      1,  _T('Last transfer on')),
          ('upDate',      1,  _T('Last update on')),
          ('exDate',      1,  _T('Expiration date')),
-         ('valExDate',   1,  _T('Validation expires at')), # vadit to date
+         ('valExDate',   1,  _T('Validation expires at')), # valid to date
+         ('publish',     1,  _T('Include into ENUM dict')),
          ('nsset',       1,  _T('NSSET ID')),
          ('keyset',      1,  _T('KEYSET ID')),
          ('authInfo',    1,  _T('Password for transfer')),

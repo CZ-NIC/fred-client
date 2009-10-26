@@ -295,6 +295,12 @@ class ManagerReceiver(ManagerCommand):
             valExDate = eppdoc.get_dct_value(self._dict_answer['response'], ('extension','enumval:infData','enumval:valExDate'))
             if valExDate:
                 self._dct_answer['data']['domain:valExDate'] = valExDate
+            # publish in ENUM dictionary
+            publish = eppdoc.get_dct_value(self._dict_answer['response'], ('extension','enumval:infData','enumval:publish'))
+            if publish:
+                self._dct_answer['data']['domain:publish'] = {
+                    'true': _T('yes'), 
+                    'false': _T('no')}.get(publish, publish)
             
     def answer_response_anyset_info(self, prefix, data):
         "prefix=namespace data=(response,result,code,msg)"
