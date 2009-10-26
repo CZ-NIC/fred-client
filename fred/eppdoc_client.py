@@ -245,6 +245,7 @@ Contact can be used for values of the owner, registrant or technical contact."""
             )),
             ('admin',(0,UNBOUNDED),(),_T('Administrative contact ID'),'CID:ADMIN_ID','',()),
             ('val_ex_date',(0,1),(),_T('Validation expires at date. This value is required for ENUM domains.'),'2008-12-03','',()),
+            ('publish', (0,1), (('y',), ('n',)), _T('Include ENUM domain into ENUM dictionary'), 'true', '', ()),
             ],_T("""
 The EPP 'create_domain' command is used to create domain.
 A domain can be created for an indefinite period of time, or 
@@ -253,7 +254,7 @@ you can create two types of the domain: cz and ENUM.
 The difference is in parameter val_ex_date. It is required 
 for ENUM domains."""),(
                 'create_domain domain.cz cid:regid password nssid:nsid NULL (3 y) (cid:admin1,cid:admin2)',
-                'create_domain 1.1.1.7.4.5.2.2.2.0.2.4.e164.arpa cid:regid password nssid:nsid keysid:id (3 y) (cid:admin1,cid:admin2) 2006-06-08'
+                'create_domain 1.1.1.7.4.5.2.2.2.0.2.4.e164.arpa cid:regid password nssid:nsid keysid:id (3 y) (cid:admin1,cid:admin2) 2006-06-08 y'
             )),
         #----------------------------------------------------
         'create_nsset': (3,[
@@ -385,9 +386,10 @@ and maximum allowable period is defined in the Communication rules."""),('renew_
                 ('auth_info',(0,1),(),_T('Password required by server to authorize the transfer'),'mypassword','',()),
             )),
             ('val_ex_date',(0,1),(),_T('Validation expires at'),'2008-12-03','',()),
+            ('publish', (0,1), (('y',), ('n',)), _T('Include ENUM domain into ENUM dictionary'), 'true', '', ()),
             ],_T("""The EPP 'update_domain' command is used to update values in the domain."""),(
                 'update_domain mydomain.cz (CID:ID01, CID:ID02) CID:ID03 CID:TMP01 (NSSID:NSSET01 NULL CID:ID04 mypass)',
-                'update_domain 1.1.1.7.4.5.2.2.2.0.2.4.e164.arpa (CID:ID01, CID:ID02) CID:ID03 CID:TMP01 (NSSID:NSSET01 KEYSID:KEYSET01 CID:ID04 mypass) 2008-12-03',
+                'update_domain 1.1.1.7.4.5.2.2.2.0.2.4.e164.arpa (CID:ID01, CID:ID02) CID:ID03 CID:TMP01 (NSSID:NSSET01 KEYSID:KEYSET01 CID:ID04 mypass) 2008-12-03 y',
             )),
         #----------------------------------------------------
         'update_nsset': (1,[

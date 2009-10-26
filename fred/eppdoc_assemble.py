@@ -810,7 +810,9 @@ class Message(MessageBase):
     #-------------------------------------------
     def __enum_extensions__(self, type, data, params, tag_name=''):
         'Enum extension for (create|renew)-domain commands.'
-        if not __has_key__(self._dct,'val_ex_date'): return
+        if not (__has_key__(self._dct, 'val_ex_date') or
+                __has_key__(self._dct, 'publish')):
+                return
         names = ('enumval',type)
         ns = '%s%s-%s'%(SCHEMA_PREFIX, names[0], self.schema_version['enum'])
         attr = (('xmlns:%s'%names[0],ns),
@@ -822,7 +824,12 @@ class Message(MessageBase):
         if tag_name:
             data.append(('%s:%s'%names,'%s:%s'%(names[0], tag_name))) # mezitag
             names = ('enumval',tag_name)
-        data.append(('%s:%s'%names,'%s:valExDate'%names[0], self._dct['val_ex_date'][0]))
+        if __has_key__(self._dct, 'val_ex_date'):
+            data.append(('%s:%s'%names,'%s:valExDate'%names[0], self._dct['val_ex_date'][0]))
+        if __has_key__(self._dct, 'publish'):
+            value = 'true' if self._dct['publish'][0] == 'y' else 'false'
+            data.append(('%s:%s'%names,'%s:publish'%names[0], value))
+
 
     def __append_disclose__(self, data, node_name, ds):
         'Create disclose nodes'
