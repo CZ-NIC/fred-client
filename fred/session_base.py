@@ -529,13 +529,17 @@ $fred_client_errors = array(); // errors occuring during communication
         # Load configuration file:
         self._conf, self._config_used_files, config_errors, self._message_missing_config =\
                 session_config.main(self._config_name, self._options, self._session[VERBOSE], OMIT_ERROR)
+        
+        language = self._session[LANG]
         # language from environment and configuration file:
-        if len(self._options.get('lang','')): self._session[LANG] = self._options['lang']
+        if len(self._options.get('lang','')):
+            language = self._options['lang']
         # overwrite config by option from command line:
         if self._options.has_key('lang_option'):
-            self._session[LANG] = self._options['lang_option']
-        # SET LANGUAGE VERSION:
-        translate.install_translation(self._session[LANG])
+            language = self._options['lang_option']
+        
+        self.set_language(language) # set translation
+        
         if len(self._config_used_files):
             self.append_note('%s %s'%(_T('Using configuration from'), ', '.join(self._config_used_files)))
         if len(config_errors):

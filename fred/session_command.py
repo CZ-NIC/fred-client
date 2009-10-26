@@ -695,6 +695,15 @@ When you want not result in your prompt join option 'noprompt'
             self.append_note(_T('Command source'),'BOLD')
             self.append_note(human_readable(self._raw_cmd),'GREEN')
 
+    def set_language(self, lang):
+        "Set translation to lang"
+        self._session[LANG] = lang
+        translate.install_translation(lang)
+        # Refresh texts in EPP Message objects and in EPP Manager:
+        self._epp_cmd.reset_translation()
+        self._epp_response.reset_translation()
+        self.init_session_commands()
+    
     def __session_language__(self, param):
         'Set language'
         if param:
@@ -706,12 +715,7 @@ When you want not result in your prompt join option 'noprompt'
                 if self._session[LANG] == lang:
                     self.append_note('%s ${BOLD}%s${NORMAL}'%(_T('User interface language is already'), self._session[LANG]))
                 else:
-                    self._session[LANG] = lang
-                    translate.install_translation(lang)
-                    # Refresh texts in EPP Message objects and in EPP Manager:
-                    self._epp_cmd.reset_translation()
-                    self._epp_response.reset_translation()
-                    self.init_session_commands()
+                    self.set_language(lang) # set translation
                     self.append_note('%s ${BOLD}%s${NORMAL}'%(_T('User interface language has been set to'), self._session[LANG]))
                     if self._session[ONLINE]: self.append_note(_T('Reconnect to change server language too.'))
         else:

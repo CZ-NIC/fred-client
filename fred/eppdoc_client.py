@@ -27,22 +27,39 @@ object for manage with EPP commands and answers.
 
 UNBOUNDED = eppdoc_assemble.UNBOUNDED
 
-IDENT_NAMES = (
-    ('op',       _T('Number identity card')),
-    ('passport', _T('Number of passport')),
-    ('mpsv',     _T('Number of Ministry of Labour and social affairs')),
-    ('ico',      _T('Number of company')), 
-    ('birthday', _T('Birthday date')), 
+
+def get_ident_names(keys=None, descr=None):
+    "Get names"
+    ident_names = (
+        ('op',       _T('Number identity card')),
+        ('passport', _T('Number of passport')),
+        ('mpsv',     _T('Number of Ministry of Labour and social affairs')),
+        ('ico',      _T('Number of company')), 
+        ('birthday', _T('Birthday date')), 
     )
-IDENT_TYPES = map(lambda n: n[0], IDENT_NAMES) # ('op','passport','mpsv','ico', 'birthday')
+    if keys:
+        # return keys only
+        return [key for key, description in ident_names]
+    if descr:
+        # return description only 
+        return [description for key, description in ident_names]
+    return ident_names
 
 
+def ident_type_list():
+    "Ident types"
+    return [(name, ) for name in get_ident_names(True)]
+
+
+    
 # Help
 def get_shared_notice():
     'Returns notice for EPP commands'
     return {   
    'disclose':_T('Names what are not included into disclose list are set to opposite value of the disclose flag value.'),
-    'ident': '%s\n%s'%(_T('Identificator type can be:'), '\n'.join(map(lambda n: '   %s%s'%(n[0].ljust(10), n[1]), IDENT_NAMES))), 
+    'ident': '%s\n%s'%(_T('Identificator type can be:'), 
+    '\n'.join(['%#-10s %s' % (name, desc) for name, desc in get_ident_names()])
+    ), 
 }
 
 def make_command_parameters():
@@ -206,7 +223,7 @@ will be generated automaticly after succefull transfer."""),('transfer_domain do
             ('vat',(0,1),(),_T('VAT (Value-added tax)'),'7035555556','',()), # vat identificator
             ('ident',(0,1),(),_T('Identificator'),'','',( # mpsv: identifikator Ministerstva prace a socialnich veci
                 ('number',(1,1),(),_T('Identificator number'),'8888888856','',()),
-                ('type',(1,1),map(lambda n:(n,), IDENT_TYPES),_T('Identificator type'),'op','',()),
+                ('type',(1,1), ident_type_list(), _T('Identificator type'),'op','',()),
             )),
             ('notify_email',(0,1),(),_T('Notification email'),'info@mymail.cz','',()),
             ],'%s\n\n%s\n\n%s'%(_T("""
@@ -346,7 +363,7 @@ and maximum allowable period is defined in the Communication rules."""),('renew_
                 ('vat',(0,1),(),_T('VAT'),'7035555556','',()),
                 ('ident',(0,1),(),_T('Identificator'),'','',(
                     ('number',(1,1),(),_T('Identificator number'),'8888888856','',()),
-                    ('type',(0,1),map(lambda n:(n,), IDENT_TYPES),_T('Identificator type'),'op','',()),
+                    ('type',(0,1), ident_type_list(), _T('Identificator type'),'op','',()),
                 )),
                 ('notify_email',(0,1),(),_T('Notification email'),'notify@mymail.cz','',()),
             )),

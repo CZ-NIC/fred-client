@@ -72,7 +72,8 @@ if __name__ == '__main__':
         else:
             if options['qt']:
                 from guiqt4.main import main
-                main([],options['lang'])
+                # (argv, lang, oldcwd, options)
+                main([], options['lang'], None, options)
             else:
                 fred.console.main(options)
     os.chdir(old_cwd)

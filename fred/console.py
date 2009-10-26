@@ -197,7 +197,13 @@ def main(options):
             elif is_valid: # only if we are online and command XML document is valid
                 epp.display() # display errors or notes
                 if epp.is_confirm_cmd_name(command_name):
-                    confirmation = raw_input('%s (y/N): '%_T('Do you really want to send this command to the server?'))
+                    try:
+                        confirmation = raw_input('%s (y/N): '%_T('Do you really want to send this command to the server?'))
+                    except (KeyboardInterrupt, EOFError), msg:
+                        # user breaks sending command
+                        epp.append_note(_T('skipped'))
+                        epp.display() # display errors or notes
+                        continue
                     epp.remove_from_history(readline)
                     if confirmation not in ('y','Y'): continue
                 #debug_time.append(('Save and restore history',time.time())) # PROFILER

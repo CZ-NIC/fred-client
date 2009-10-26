@@ -116,7 +116,8 @@ LIST_BY_COMMANDS = (
 
 contact_disclose = [n[0] for n in fred.eppdoc_assemble.contact_disclose]
 make_camell = fred.eppdoc_assemble.make_camell
-IDENT_TYPES = [n[0] for n in fred.eppdoc_client.IDENT_NAMES]
+IDENT_NAMES = fred.eppdoc_client.get_ident_names()
+IDENT_TYPES = fred.eppdoc_client.get_ident_names('only-types')
 
 class RunEPPCommunication(QtCore.QThread):
     'Run Epp communication in separate thread'
@@ -326,8 +327,8 @@ class FredMainWindow(QtGui.QDialog):
             self.ui.retranslateUi(self)
             
         # Init combo boxes create/update contact
-        self.__init_combo2__(self.panel_create_contact.ui.create_contact_ssn_type, fred.eppdoc_client.IDENT_NAMES)
-        self.__init_combo2__(self.panel_update_contact.ui.update_contact_ssn_type, fred.eppdoc_client.IDENT_NAMES)
+        self.__init_combo2__(self.panel_create_contact.ui.create_contact_ssn_type, IDENT_NAMES)
+        self.__init_combo2__(self.panel_update_contact.ui.update_contact_ssn_type, IDENT_NAMES)
 
 
 
@@ -828,7 +829,7 @@ class FredMainWindow(QtGui.QDialog):
             self.display_error(self.missing_required)
 
     def update_contact(self):
-        print 'update_contact()' #!!!
+        "update contact"
         if not self.check_is_online(): return
         d = {}
         p = self.panel_update_contact.ui
@@ -1520,6 +1521,7 @@ def decamell(text):
     return re.sub('([A-Z])', '_\\1', text).lower()
     
 def main(argv, lang, oldcwd, options):
+    "Main window loop"
     epp = fred.Client(cwd=oldcwd)
 
     path = os.path.dirname(__file__)

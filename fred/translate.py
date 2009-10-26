@@ -146,17 +146,15 @@ if len(sys.argv) > 1:
                     else:
                         options[key] = v
 
-# this code ignore 'lang' in configuration file and override it with 
-# env - should be fixed, for now removing
 if not len(options['lang']):
     # set language from environ
-#    code = os.environ.get('LANG') # 'cs_CZ.UTF-8'
-#    if type(code) is str and len(code) > 1:
-#        arg = code[:2].lower() # Windows returns 'CS'
-#        options['lang_environ'], error = get_valid_lang(arg,'os.environ.LANG')
-#        if error: warnings.append("%s Set default to: '%s'."%(error, default_lang))
-#        options['lang'] = options['lang_environ']
-#    else:
+    code = os.environ.get('LANG') # 'cs_CZ.UTF-8'
+    if type(code) is str and len(code) > 1:
+        arg = code[:2].lower() # Windows returns 'CS'
+        options['lang_environ'], error = get_valid_lang(arg,'os.environ.LANG')
+        if error: warnings.append("%s Set default to: '%s'."%(error, default_lang))
+        options['lang'] = options['lang_environ']
+    else:
         options['lang'] = default_lang
 
 #---------------------------
@@ -207,4 +205,4 @@ if __name__ == '__main__':
     for k,v in options.items():
         if not v: continue
         print k.ljust(20),v
-    
+
