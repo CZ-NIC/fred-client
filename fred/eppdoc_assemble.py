@@ -605,10 +605,7 @@ class Message(MessageBase):
             )),
             ('%s:extcommand'%namespace, '%s:%s'%(namespace,cols[0]))
             ]
-            if key == 'ds':
-                for ds in self._dct['ds']:
-                    self.__append_keyset__(cols[0], data, ds, namespace, 'keyset')
-            elif key:
+            if key:
                 if type(key) not in (list,tuple): key = (key,)
                 for key_name in key:
                     names = self._dct.get(key_name)
@@ -947,18 +944,6 @@ class Message(MessageBase):
         else:
             data.append(('%s:%s'%(prefix, tag_name), element%prefix))
 
-    def __append_keyset__(self, tag_name, data, dct_ks, prefix, change_namespace=None):
-        "Join ds elements for keyset"
-        element = '%s:ds'
-        parent_prefix = prefix
-        self.__append_schema_location__(tag_name, data, element, prefix, change_namespace)
-        for key in ('key_tag', 'alg', 'digest_type', 'digest'):
-            data.append((element%parent_prefix, '%s:%s'%(prefix, make_camell(key)), dct_ks[key][0]))
-        # optional
-        key = 'max_sig_life'
-        if __has_key__(dct_ks, key):
-            data.append((element%prefix, '%s:%s'%(prefix, make_camell(key)), dct_ks[key][0]))
-        
     def __append_anyset_fromfile__(self, tag_name, data, filename, prefix, name, parse_file, change_namespace=None):
         "Load anyset from filename"
         element = '%s:' + name
@@ -1058,10 +1043,6 @@ class Message(MessageBase):
         
         # for keyset only
         count_ds = 0
-        if __has_key__(dct,'ds'):
-            for ds in dct['ds']:
-                self.__append_keyset__('create', data, ds, prefix)
-                count_ds += 1
         if __has_key__(dct,'dsref'):
             for ds in dct['dsref']:
                 self.__append_keyset_fromfile__('create', data, ds, prefix)
@@ -1255,10 +1236,6 @@ class Message(MessageBase):
             
             # for keyset only
             count_ds = 0
-            if __has_key_dict__(dct_add, 'ds'):
-                for ds in dct_add['ds']:
-                    self.__append_keyset__('add', data, ds, prefix)
-                    count_ds += 1
             if __has_key_dict__(dct_add, 'dsref'):
                 for ds in dct_add['dsref']:
                     self.__append_keyset_fromfile__('add', data, ds, prefix)
@@ -1289,10 +1266,6 @@ class Message(MessageBase):
             
             # for keyset only
             count_ds = 0
-            if __has_key_dict__(dct_rem, 'ds'):
-                for ds in dct_rem['ds']:
-                    self.__append_keyset__('rem', data, ds, prefix)
-                    count_ds += 1
             if __has_key_dict__(dct_rem, 'dsref'):
                 for ds in dct_add['dsref']:
                     self.__append_keyset_fromfile__('rem', data, ds, prefix)
