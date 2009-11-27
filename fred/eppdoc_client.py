@@ -280,7 +280,6 @@ lower level number. Valid range is from 0 to 10.
         #----------------------------------------------------
         'create_keyset': (3,[
             ('id',(1,1),(),_T('KEYSET ID'),'KEYSID:ID','',()),
-            ('dsref',(0,9),(),_T('LIST of filenames with DS records'),'unittest/ds.cz','',()),
             ('dnskey',(0,9),(),_T('LIST of keys'),'','',(
                 ('flags',(1,1),(),_T('Flags'),'257','',()),
                 ('protocol',(1,1),(),_T('Protocol'),'3','',()),
@@ -293,8 +292,8 @@ lower level number. Valid range is from 0 to 10.
             ],_T("""
 The EPP 'create_keyset' command is used to create a record of the KEYSET.
 """),(
-                'create_keyset KEYSID:01 (unittest/ds.cz) ((257 3 5 AwEAAddt2AkLfYGKgiEZB5SmIF8EvrjxNMH6HtxWEA4RJ9Ao6LCWheg8)) () CID:ID01 passw', 
-                'create_keyset KEYSID:01 () () (unittest/dnskey.pub) CID:ID01 passw', 
+                'create_keyset KEYSID:01 ((257 3 5 AwEAAddt2AkLfYGKgiEZB5SmIF8EvrjxNMH6HtxWEA4RJ9Ao6LCWheg8)) () CID:ID01 passw', 
+                'create_keyset KEYSID:01 () (unittest/dnskey.pub) CID:ID01 passw', 
             )),
         #----------------------------------------------------
         'delete_contact': (1,[
@@ -407,7 +406,6 @@ and maximum allowable period is defined in the Communication rules."""),('renew_
         'update_keyset': (1,[
             ('id',(1,1),(),_T('KEYSET ID'),'KEYSET_ID','',()),
             ('add',(0,1),(),_T('Add values'),'','',(
-                ('dsref',(0,9),(),_T('LIST of filenames with DS records'),'unittest/ds.cz','',()),
                 ('dnskey',(0,9),(),_T('LIST of keys'),'','',(
                     ('flags',(1,1),(),_T('Flags'),'257','',()),
                     ('protocol',(1,1),(),_T('Protocol'),'3','',()),
@@ -418,7 +416,6 @@ and maximum allowable period is defined in the Communication rules."""),('renew_
                 ('tech',(0,UNBOUNDED),(),_T('Technical contact ID'),'CID:ID01','',()),
             )),
             ('rem',(0,1),(),_T('Remove values'),'','',(
-                ('dsref',(0,9),(),_T('LIST of filenames with DS records'),'unittest/ds.cz','',()),
                 ('dnskey',(0,9),(),_T('LIST of keys'),'','',(
                     ('flags',(1,1),(),_T('Flags'),'257','',()),
                     ('protocol',(1,1),(),_T('Protocol'),'3','',()),
@@ -430,9 +427,9 @@ and maximum allowable period is defined in the Communication rules."""),('renew_
             )),
             ('auth_info',(0,1),(),_T('Password required by server to authorize the transfer'),'new_password','',()),
             ],_T("""The EPP 'update_keyset' command is used to update values in the KEYSET."""),(
-            'update_keyset KEY01 (unittest/ds.cz ((256 3 5 AwEAAddt2AkLfYGKgiEZB5SmIF8EvrjxNMH6HtxWEA4RJ9Ao6LCWheg8))) (() () () (CID:TECH1, CID:TECH2, CID:TECH3)) password', 
-            'update_keyset KEY02 (unittest/ds.cz () unittest/dnskey.pub) (unittest/ds.cz () unittest/dnskey.pub)', 
-            'update_keyset KEY03 (unittest/ds.cz) (unittest/ds.cz () unittest/dnskey.pub)', 
+            'update_keyset KEY01 (((256 3 5 AwEAAddt2AkLfYGKgiEZB5SmIF8EvrjxNMH6HtxWEA4RJ9Ao6LCWheg8))) (() () () (CID:TECH1, CID:TECH2, CID:TECH3)) password', 
+            'update_keyset KEY02 (() unittest/dnskey.pub) (() unittest/dnskey.pub)', 
+            'update_keyset KEY03 () (() unittest/dnskey.pub)', 
             )),
         #----------------------------------------------------
         'sendauthinfo_contact': (1,[

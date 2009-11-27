@@ -1,7 +1,15 @@
+FredClient 2.2
+
+Zmeny:
+    * Z prikazu create_keyset, update_keyset odebrany polozky 'ds' a 'dsref'
+    * Do create_domain a update_domain pridan parametr publish
+
+
 FredClient 2.1.5
 
 Zmeny:
     * Podpora pro python 2.6
+
 
 FredClient 2.1.4
 

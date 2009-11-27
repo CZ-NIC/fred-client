@@ -295,22 +295,15 @@ OPTIONS:
             'dns':dns, 'tech':tech, 'reportlevel':reportlevel, 'cltrid':cltrid})
 
 
-    def create_keyset(self, keyset_id, ds, dsref, dnskey, dnskeyref, tech, auth_info=None, cltrid=None):
+    def create_keyset(self, keyset_id, dnskey, dnskeyref, tech, auth_info=None, cltrid=None):
         """DESCRIPTION:
   The EPP 'create_keyset' command is used to create a record of the KEYSET.
 
 SYNTAX:
-  create_keyset id ds tech [other_options]
+  create_keyset id dnskey tech [other_options]
 
 OPTIONS:
   id (required)            KEYSET ID
-  ds                       LIST of DS records (list with max 9 items.)
-    key_tag (required)     Key tag
-    alg (required)         Algorithm
-    digest_type (required) Digest Type
-    digest (required)      Digest
-    max_sig_life           Max.Sig.Life
-  dsref                    LIST of filenames with DS records (list with max 9 items.)
   dnskey                   LIST of keys (list with max 9 items.)
     flags (required)       Flags
     protocol (required)    Protocol
@@ -321,7 +314,7 @@ OPTIONS:
   auth_info                Password required by server to authorize the transfer
   cltrid                   Client transaction ID"""
         return self._epp.api_command('create_keyset',{'id':keyset_id, 'auth_info':auth_info,
-            'ds':ds, 'dsref':dsref, 'dnskey':dnskey, 'dnskeyref':dnskeyref, 'tech':tech, 'cltrid':cltrid})
+            'dnskey':dnskey, 'dnskeyref':dnskeyref, 'tech':tech, 'cltrid':cltrid})
 
 
     def delete_contact(self, contact_id, cltrid=None):
@@ -777,13 +770,6 @@ SYNTAX:
 OPTIONS:
   id (required)            KEYSET ID
   add                      Add values
-    ds                     LIST of DS records (list with max 9 items.)
-      key_tag (required)   Key tag
-      alg (required)       Algorithm
-      digest_type (required) Digest Type
-      digest (required)    Digest
-      max_sig_life         Max.Sig.Life
-    dsref                  LIST of filenames with DS records (list with max 9 items.)
     dnskey                 LIST of keys (list with max 9 items.)
       flags (required)     Flags
       protocol (required)  Protocol
@@ -792,13 +778,6 @@ OPTIONS:
     dnskeyref              LIST of filenames with dns keys (list with max 9 items.)
     tech                   Technical contact ID (unbounded list)
   rem                      Remove values
-    ds                     LIST of DS records (list with max 9 items.)
-      key_tag (required)   Key tag
-      alg (required)       Algorithm
-      digest_type (required) Digest Type
-      digest (required)    Digest
-      max_sig_life         Max.Sig.Life
-    dsref                  LIST of filenames with DS records (list with max 9 items.)
     dnskey                 LIST of keys (list with max 9 items.)
       flags (required)     Flags
       protocol (required)  Protocol

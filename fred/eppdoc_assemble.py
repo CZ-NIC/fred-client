@@ -828,12 +828,12 @@ class Message(MessageBase):
             data.append(('%s:%s'%names,'%s:publish'%names[0], value))
 
 
-    def __append_disclose__(self, data, node_name, ds):
+    def __append_disclose__(self, data, node_name, disclose):
         'Create disclose nodes'
         explicit = [] # typed by user
         implicit = [] # others not mentioned
-        flag = {'n':0,'y':1}.get(ds.get('flag',['n'])[0], 'n')
-        disit = ds.get('data',[])
+        flag = {'n':0,'y':1}.get(disclose.get('flag',['n'])[0], 'n')
+        disit = disclose.get('data',[])
         if len(disit):
             for key in DISCLOSES: ## [n[0] for n in contact_disclose]:
                 if key in disit:
@@ -1041,13 +1041,6 @@ class Message(MessageBase):
             for dns in dct['dns']:
                 self.__append_nsset__('create', data, dns)
         
-        # for keyset only
-        count_ds = 0
-        if __has_key__(dct,'dsref'):
-            for ds in dct['dsref']:
-                self.__append_keyset_fromfile__('create', data, ds, prefix)
-                count_ds += 1
-        
         count_dnskey = 0
         if __has_key__(dct,'dnskey'):
             for ds in dct['dnskey']:
@@ -1060,10 +1053,6 @@ class Message(MessageBase):
         
         if not nsset_type:
             # check list limits only for keyset
-            if count_ds + count_dnskey == 0:
-                self.errors.append((0, 'ds/dnskey', _T('At least one DS or DNSKEY must be set.')))
-            if count_ds > MAXLIST:
-                self.errors.append((0, 'ds', _T('Limit of list is exceeded. The maximum is %d.') % MAXLIST))
             if count_dnskey > MAXLIST:
                 self.errors.append((0, 'dnskey', _T('Limit of list is exceeded. The maximum is %d.') % MAXLIST))
         
@@ -1234,13 +1223,6 @@ class Message(MessageBase):
                     data.append(('%s:ns'%prefix,'%s:name'%prefix,dct_dns['name'][0]))
                     self.__append_values__(data, dct_dns, 'addr', '%s:ns'%prefix, '%s:addr'%prefix)
             
-            # for keyset only
-            count_ds = 0
-            if __has_key_dict__(dct_add, 'dsref'):
-                for ds in dct_add['dsref']:
-                    self.__append_keyset_fromfile__('add', data, ds, prefix)
-                    count_ds += 1
-
             # two list of dnskeys will be join together
             count_dnskey = 0
             if __has_key_dict__(dct_add, 'dnskey'):
@@ -1253,8 +1235,6 @@ class Message(MessageBase):
                     count_dnskey += 1
             
             # check list limits
-            if count_ds > MAXLIST:
-                self.errors.append((0, 'ds', _T('Limit of list is exceeded. The maximum is %d.') % MAXLIST))
             if count_dnskey > MAXLIST:
                 self.errors.append((0, 'dnskey', _T('Limit of list is exceeded. The maximum is %d.') % MAXLIST))
             
@@ -1263,13 +1243,6 @@ class Message(MessageBase):
         if __has_key_dict__(dct,'rem'):
             data.append(('%s:update'%prefix,'%s:rem'%prefix))
             dct_rem = dct['rem'][0]
-            
-            # for keyset only
-            count_ds = 0
-            if __has_key_dict__(dct_rem, 'dsref'):
-                for ds in dct_add['dsref']:
-                    self.__append_keyset_fromfile__('rem', data, ds, prefix)
-                    count_ds += 1
             
             # two list of dnskeys will be join together
             count_dnskey = 0
@@ -1283,8 +1256,6 @@ class Message(MessageBase):
                     count_dnskey += 1
             
             # check list limits
-            if count_ds > MAXLIST:
-                self.errors.append((0, 'ds', _T('Limit of list is exceeded. The maximum is %d.') % MAXLIST))
             if count_dnskey > MAXLIST:
                 self.errors.append((0, 'dnskey', _T('Limit of list is exceeded. The maximum is %d.') % MAXLIST))
             
