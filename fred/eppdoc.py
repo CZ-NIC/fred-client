@@ -42,11 +42,11 @@ import StringIO
 # Defaults - can overwrite by values from config or command line option
 #========================================================
 SCHEMA_PREFIX = 'http://www.nic.cz/xml/epp/'
-VERSION_CONTACT  = '1.5'
+VERSION_CONTACT  = '1.6'
 VERSION_DOMAIN   = '1.4'
 VERSION_NSSET    = '1.2'
-VERSION_KEYSET   = '1.2'
-VERSION_ENUMVAL  = '1.1'
+VERSION_KEYSET   = '1.3'
+VERSION_ENUMVAL  = '1.2'
 VERSION_FRED     = '1.4'
 VERSION_VERSION  = '1.0'
 
