@@ -16,16 +16,16 @@
 #    along with FredClient; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
-This tool sends any file to the EPP server.
+This tool sends any file to an EPP server.
 
-Whatever file can be sent but of course EPP server
-accept only valid EPP XML documents. So expected
-files are XML types. It possible type their names
-in command line or forward them throught pipe.
+Whatever file can be sent but of course the EPP server
+accepts only valid EPP XML documents. So expected
+files are XML types. It is possible to specify their names
+on command line or forward them through a pipe.
 
-One file can to contain more than one XML document.
-Script recognise it and split into chunks. Between
-XML parts is possible have got any text. This text
+One file can contain more than one XML document.
+Script recognizes it and splits it into chunks. There
+might be any text between XML parts. This text
 is only shown on the output. It is usualy error message 
 from the previous process of the document creation.
 
@@ -36,7 +36,7 @@ at the end Sender makes logout.
 """
 import sys
 try:
-    # standard instalation
+    # standard installation
     import fred.sender
 except ImportError:
     # run from actual folder with source codes
@@ -46,6 +46,6 @@ except ImportError:
         import fred.sender
     except ImportError, msg:
         print "ImportError:",msg
-        print 'For runnig this application you need install fred module. See help.'
+        print 'For running this application you need to install fred module. See help.'
         sys.exit(0)
 fred.sender.main()
