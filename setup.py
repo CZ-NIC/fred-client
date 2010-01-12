@@ -52,7 +52,8 @@ class EPPClientSDist(sdist):
     def run(self):
         "run main process"
         if not os.path.exists(os.path.join(self.srcdir, 'freddist')):
-            raise IOError(2, 'Folder freddist missing. Make symlink or copy.')
+            raise IOError(2, 'Folder freddist missing. Make symlink or copy '
+                             'from enum/distutils.')
         sdist.run(self)
     
 
