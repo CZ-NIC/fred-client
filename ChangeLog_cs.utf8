@@ -3,6 +3,8 @@ FredClient 2.2
 Změny:
     * Z příkazů create_keyset, update_keyset odebrány položky 'ds' a 'dsref'
     * Do create_domain a update_domain přidán parametr publish
+    * Kompatibilní pro python verze 2.5 a 2.6 (minimálně od revize 9282 z 26.10.2009)
+    * podpora instalace freddist přesunuta do samostatného projektu enum/distutils
 
 
 FredClient 2.1.5
