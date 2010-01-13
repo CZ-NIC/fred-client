@@ -824,7 +824,7 @@ class Message(MessageBase):
         if __has_key__(self._dct, 'val_ex_date'):
             data.append(('%s:%s'%names,'%s:valExDate'%names[0], self._dct['val_ex_date'][0]))
         if __has_key__(self._dct, 'publish'):
-            value = 'true' if self._dct['publish'][0] == 'y' else 'false'
+            value = self._dct['publish'][0] == 'y' and 'true' or 'false'
             data.append(('%s:%s'%names,'%s:publish'%names[0], value))
 
 
