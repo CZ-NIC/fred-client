@@ -90,6 +90,7 @@ class EPPClientInstall(install):
         install.initialize_options(self)
         self.host = None
         self.port = None
+        self.include_scripts = True
 
     def finalize_options(self):
         install.finalize_options(self)
