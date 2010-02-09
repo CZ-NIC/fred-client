@@ -1,6 +1,8 @@
 FredClient 2.2
 
 Změny:
+    * Úprava odpovědi na příkaz poll req. Přidána položka msg.nodes (Message type, Typ zprávy)
+    * Oprava vkládání formátovacích značek do odpovědi na příkaz poll.
     * Z příkazů create_keyset, update_keyset odebrány položky 'ds' a 'dsref'
     * Do create_domain a update_domain přidán parametr publish
     * Vrácena kompatibilita s python verzí 2.4 (vznikla od revize 9282 z 26.10.2009)

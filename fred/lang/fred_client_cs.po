@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-29 10:27+0100\n"
+"POT-Creation-Date: 2010-02-09 11:54+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Zdeněk Böhm <zdenek.bohm@nic.cz>\n"
 "Language-Team: CS <ccreg-devel@lists.nic.cz>\n"
@@ -215,7 +215,7 @@ msgstr ""
 msgid "More details in verbose 2 or higher."
 msgstr "Více detailů je ve verbose 2 nebo vyšším."
 
-#: console.py:193 session_receiver.py:716
+#: console.py:193 session_receiver.py:733
 msgid "Command data XML document failed to validate."
 msgstr "XML dokument příkazu se nepodařilo zvalidovat."
 
@@ -236,7 +236,7 @@ msgstr "zrušeno"
 msgid "Try to automaticly reconnect - send login."
 msgstr "Zkouším automatické obnovení spojení - posílám login."
 
-#: console.py:236 session_receiver.py:722 session_receiver.py:726
+#: console.py:236 session_receiver.py:739 session_receiver.py:743
 msgid "Server answer XML document failed to validate."
 msgstr "Odpověď serveru v XML dokumentu se nepodařilo zvalidovat."
 
@@ -430,17 +430,12 @@ msgstr[0] "Chybí povinná hodnota"
 msgstr[1] "Chybí povinné hodnoty"
 msgstr[2] "Chybí povinné hodnoty"
 
-#: eppdoc_assemble.py:1064
-msgid "At least one DS or DNSKEY must be set."
-msgstr "Musí být zadán nejméně jeden DS nebo DNSKEY záznam."
-
-#: eppdoc_assemble.py:1066 eppdoc_assemble.py:1068 eppdoc_assemble.py:1257
-#: eppdoc_assemble.py:1259 eppdoc_assemble.py:1287 eppdoc_assemble.py:1289
+#: eppdoc_assemble.py:1057 eppdoc_assemble.py:1239 eppdoc_assemble.py:1260
 #, python-format
 msgid "Limit of list is exceeded. The maximum is %d."
 msgstr "Počet položek v seznamu byl překročen. Maximum je %d."
 
-#: eppdoc_assemble.py:1486
+#: eppdoc_assemble.py:1457
 #, python-format
 msgid "Value can be a list of max %d value."
 msgid_plural "Value can be a list of max %d values."
@@ -448,11 +443,11 @@ msgstr[0] "Hodnota může být seznam o max. velikosti %d položky."
 msgstr[1] "Hodnota může být seznam o max. velikosti %d položek."
 msgstr[2] "Hodnota může být seznam o max. velikosti %d položek."
 
-#: eppdoc_assemble.py:1488
+#: eppdoc_assemble.py:1459
 msgid "Value can be an unbouded list of values."
 msgstr "Hodnota může být libovolně velký seznam."
 
-#: eppdoc_assemble.py:1490
+#: eppdoc_assemble.py:1461
 msgid "Minimum is"
 msgstr "Minimum je"
 
@@ -555,9 +550,9 @@ msgstr ""
 "příkazové řádce.Heslo můžete změnit zadáním parametru 'new_password'.\n"
 
 #: eppdoc_client.py:101 eppdoc_client.py:127 eppdoc_client.py:173
-#: eppdoc_client.py:207 eppdoc_client.py:301 eppdoc_client.py:336
-#: eppdoc_client.py:439 eppdoc_client.py:562 eppdoc_client.py:621
-#: eppdoc_client.py:708
+#: eppdoc_client.py:207 eppdoc_client.py:300 eppdoc_client.py:335
+#: eppdoc_client.py:436 eppdoc_client.py:559 eppdoc_client.py:618
+#: eppdoc_client.py:705
 msgid "Contact ID"
 msgstr "Kontakt ID"
 
@@ -574,9 +569,9 @@ msgstr ""
 "jen oprávněnému uživateli."
 
 #: eppdoc_client.py:107 eppdoc_client.py:135 eppdoc_client.py:237
-#: eppdoc_client.py:305 eppdoc_client.py:317 eppdoc_client.py:371
-#: eppdoc_client.py:446 eppdoc_client.py:471 eppdoc_client.py:651
-#: eppdoc_client.py:723 eppdoc_client.py:751
+#: eppdoc_client.py:304 eppdoc_client.py:316 eppdoc_client.py:370
+#: eppdoc_client.py:443 eppdoc_client.py:468 eppdoc_client.py:648
+#: eppdoc_client.py:720 eppdoc_client.py:749
 msgid "Domain name"
 msgstr "Název domény"
 
@@ -595,10 +590,10 @@ msgstr ""
 "i hodnoty 'ID držitele' a 'Administrativní kontakt'."
 
 #: eppdoc_client.py:114 eppdoc_client.py:143 eppdoc_client.py:181
-#: eppdoc_client.py:240 eppdoc_client.py:261 eppdoc_client.py:309
-#: eppdoc_client.py:376 eppdoc_client.py:389 eppdoc_client.py:453
-#: eppdoc_client.py:469 eppdoc_client.py:543 eppdoc_client.py:662
-#: eppdoc_client.py:673 eppdoc_client.py:713
+#: eppdoc_client.py:240 eppdoc_client.py:261 eppdoc_client.py:308
+#: eppdoc_client.py:375 eppdoc_client.py:388 eppdoc_client.py:450
+#: eppdoc_client.py:466 eppdoc_client.py:540 eppdoc_client.py:659
+#: eppdoc_client.py:670 eppdoc_client.py:710
 msgid "NSSET ID"
 msgstr "NSSET ID"
 
@@ -615,10 +610,10 @@ msgstr ""
 "jen oprávněnému uživateli."
 
 #: eppdoc_client.py:120 eppdoc_client.py:151 eppdoc_client.py:190
-#: eppdoc_client.py:241 eppdoc_client.py:282 eppdoc_client.py:313
-#: eppdoc_client.py:377 eppdoc_client.py:408 eppdoc_client.py:460
-#: eppdoc_client.py:552 eppdoc_client.py:663 eppdoc_client.py:690
-#: eppdoc_client.py:718
+#: eppdoc_client.py:241 eppdoc_client.py:282 eppdoc_client.py:312
+#: eppdoc_client.py:376 eppdoc_client.py:407 eppdoc_client.py:457
+#: eppdoc_client.py:549 eppdoc_client.py:660 eppdoc_client.py:687
+#: eppdoc_client.py:715
 msgid "KEYSET ID"
 msgstr "KEYSET ID"
 
@@ -722,8 +717,8 @@ msgstr ""
 
 #: eppdoc_client.py:174 eppdoc_client.py:183 eppdoc_client.py:191
 #: eppdoc_client.py:200 eppdoc_client.py:216 eppdoc_client.py:239
-#: eppdoc_client.py:267 eppdoc_client.py:292 eppdoc_client.py:352
-#: eppdoc_client.py:379 eppdoc_client.py:401 eppdoc_client.py:431
+#: eppdoc_client.py:267 eppdoc_client.py:291 eppdoc_client.py:351
+#: eppdoc_client.py:378 eppdoc_client.py:400 eppdoc_client.py:428
 msgid "Password required by server to authorize the transfer"
 msgstr "Heslo požadované serverem pro autorizaci transferu"
 
@@ -779,23 +774,23 @@ msgstr ""
 "Pokud transfer proběhne úspěšně, vygeneruje se automaticky nové \n"
 "autorizační heslo pro transfer."
 
-#: eppdoc_client.py:208 eppdoc_client.py:339 eppdoc_client.py:629
+#: eppdoc_client.py:208 eppdoc_client.py:338 eppdoc_client.py:626
 msgid "Name"
 msgstr "Jméno"
 
-#: eppdoc_client.py:209 eppdoc_client.py:351
+#: eppdoc_client.py:209 eppdoc_client.py:350
 msgid "Email"
 msgstr ""
 
-#: eppdoc_client.py:210 eppdoc_client.py:342 eppdoc_client.py:631
+#: eppdoc_client.py:210 eppdoc_client.py:341 eppdoc_client.py:628
 msgid "Street"
 msgstr "Ulice"
 
-#: eppdoc_client.py:211 eppdoc_client.py:343 eppdoc_client.py:632
+#: eppdoc_client.py:211 eppdoc_client.py:342 eppdoc_client.py:629
 msgid "City"
 msgstr "Město"
 
-#: eppdoc_client.py:212 eppdoc_client.py:344 eppdoc_client.py:634
+#: eppdoc_client.py:212 eppdoc_client.py:343 eppdoc_client.py:631
 msgid "Postal code"
 msgstr "PSČ"
 
@@ -803,7 +798,7 @@ msgstr "PSČ"
 msgid "postal code"
 msgstr "PSČ"
 
-#: eppdoc_client.py:213 eppdoc_client.py:345 eppdoc_client.py:635
+#: eppdoc_client.py:213 eppdoc_client.py:344 eppdoc_client.py:632
 msgid "Country code"
 msgstr "Kód země"
 
@@ -811,11 +806,11 @@ msgstr "Kód země"
 msgid "country code"
 msgstr "kód země"
 
-#: eppdoc_client.py:214 eppdoc_client.py:346 eppdoc_client.py:633
+#: eppdoc_client.py:214 eppdoc_client.py:345 eppdoc_client.py:630
 msgid "State or province"
 msgstr "Stát nebo kraj"
 
-#: eppdoc_client.py:215 eppdoc_client.py:340 eppdoc_client.py:630
+#: eppdoc_client.py:215 eppdoc_client.py:339 eppdoc_client.py:627
 msgid "Organisation"
 msgstr "Název organizace"
 
@@ -823,19 +818,19 @@ msgstr "Název organizace"
 msgid "password"
 msgstr "heslo"
 
-#: eppdoc_client.py:217 eppdoc_client.py:349 eppdoc_client.py:637
+#: eppdoc_client.py:217 eppdoc_client.py:348 eppdoc_client.py:634
 msgid "Phone"
 msgstr "Telefon"
 
-#: eppdoc_client.py:218 eppdoc_client.py:350
+#: eppdoc_client.py:218 eppdoc_client.py:349
 msgid "Fax"
 msgstr ""
 
-#: eppdoc_client.py:219 eppdoc_client.py:353 eppdoc_client.py:643
+#: eppdoc_client.py:219 eppdoc_client.py:352 eppdoc_client.py:640
 msgid "Disclose"
 msgstr "Zveřejnit"
 
-#: eppdoc_client.py:220 eppdoc_client.py:354
+#: eppdoc_client.py:220 eppdoc_client.py:353
 msgid "Disclose flag (default y)"
 msgstr "Přepínač zveřejnit (default y)"
 
@@ -847,19 +842,19 @@ msgstr "Data, pro které se nastaví příznak"
 msgid "VAT (Value-added tax)"
 msgstr "VAT (daňový identifikátor)"
 
-#: eppdoc_client.py:224 eppdoc_client.py:358 eppdoc_client.py:647
+#: eppdoc_client.py:224 eppdoc_client.py:357 eppdoc_client.py:644
 msgid "Identificator"
 msgstr "Identifikátor"
 
-#: eppdoc_client.py:225 eppdoc_client.py:359
+#: eppdoc_client.py:225 eppdoc_client.py:358
 msgid "Identificator number"
 msgstr "Čislo identifikátoru"
 
-#: eppdoc_client.py:226 eppdoc_client.py:360 eppdoc_client.py:646
+#: eppdoc_client.py:226 eppdoc_client.py:359 eppdoc_client.py:643
 msgid "Identificator type"
 msgstr "Typ identifikátoru"
 
-#: eppdoc_client.py:228 eppdoc_client.py:362 eppdoc_client.py:640
+#: eppdoc_client.py:228 eppdoc_client.py:361 eppdoc_client.py:637
 msgid "Notification email"
 msgstr "Oznámení na email"
 
@@ -875,19 +870,19 @@ msgstr ""
 "Kontakt může být použit pro údaje vlastníka, registrátora nebo technického "
 "kontaktu."
 
-#: eppdoc_client.py:238 eppdoc_client.py:378 eppdoc_client.py:667
+#: eppdoc_client.py:238 eppdoc_client.py:377 eppdoc_client.py:664
 msgid "Registrant ID"
 msgstr "ID držitele"
 
-#: eppdoc_client.py:242 eppdoc_client.py:319
+#: eppdoc_client.py:242 eppdoc_client.py:318
 msgid "Period"
 msgstr "Období"
 
-#: eppdoc_client.py:243 eppdoc_client.py:320
+#: eppdoc_client.py:243 eppdoc_client.py:319
 msgid "Number of months or years"
 msgstr "Počet měsíců nebo roků"
 
-#: eppdoc_client.py:244 eppdoc_client.py:321
+#: eppdoc_client.py:244 eppdoc_client.py:320
 msgid "Period unit (y year(default), m month)"
 msgstr "Jednotka období (y rok(default), m měsíc)"
 
@@ -899,7 +894,7 @@ msgstr "Administrativní kontakt ID"
 msgid "Validation expires at date. This value is required for ENUM domains."
 msgstr "Validace platná do data. Tato hodnota je pro ENUM domény povinná."
 
-#: eppdoc_client.py:248 eppdoc_client.py:382
+#: eppdoc_client.py:248 eppdoc_client.py:381
 msgid "Include ENUM domain into ENUM dictionary"
 msgstr "Přidat ENUM doménu do ENUM telefonního seznamu"
 
@@ -923,21 +918,21 @@ msgstr ""
 msgid "LIST of DNS"
 msgstr "Seznam DNS"
 
-#: eppdoc_client.py:263 eppdoc_client.py:392 eppdoc_client.py:398
-#: eppdoc_client.py:592
+#: eppdoc_client.py:263 eppdoc_client.py:391 eppdoc_client.py:397
+#: eppdoc_client.py:589
 msgid "Name server"
 msgstr "Jmenný server"
 
-#: eppdoc_client.py:264 eppdoc_client.py:393
+#: eppdoc_client.py:264 eppdoc_client.py:392
 msgid "Server address"
 msgstr "Adresa serveru"
 
-#: eppdoc_client.py:266 eppdoc_client.py:291 eppdoc_client.py:573
-#: eppdoc_client.py:582 eppdoc_client.py:684 eppdoc_client.py:701
+#: eppdoc_client.py:266 eppdoc_client.py:290 eppdoc_client.py:570
+#: eppdoc_client.py:579 eppdoc_client.py:681 eppdoc_client.py:698
 msgid "Technical contact"
 msgstr "Technický kontakt"
 
-#: eppdoc_client.py:268 eppdoc_client.py:402 eppdoc_client.py:470
+#: eppdoc_client.py:268 eppdoc_client.py:401 eppdoc_client.py:467
 msgid "Report range level (0 - 10; higher = more detailed)"
 msgstr "Rozsah testů (0 - 10; vyšší = detailnější)"
 
@@ -967,35 +962,31 @@ msgstr ""
 "stejnou nebo nižší než reportlevel. Číslo se pohybuje v intervalu od 0 do\n"
 "10.\n"
 
-#: eppdoc_client.py:283 eppdoc_client.py:410 eppdoc_client.py:421
-msgid "LIST of filenames with DS records"
-msgstr "Seznam jmen souborů s DS záznamy"
-
-#: eppdoc_client.py:284 eppdoc_client.py:411 eppdoc_client.py:422
+#: eppdoc_client.py:283 eppdoc_client.py:409 eppdoc_client.py:419
 msgid "LIST of keys"
 msgstr "Seznam klíčů"
 
-#: eppdoc_client.py:285 eppdoc_client.py:412 eppdoc_client.py:423
+#: eppdoc_client.py:284 eppdoc_client.py:410 eppdoc_client.py:420
 msgid "Flags"
 msgstr "Příznaky"
 
-#: eppdoc_client.py:286 eppdoc_client.py:413 eppdoc_client.py:424
+#: eppdoc_client.py:285 eppdoc_client.py:411 eppdoc_client.py:421
 msgid "Protocol"
 msgstr "Protokol"
 
-#: eppdoc_client.py:287 eppdoc_client.py:414 eppdoc_client.py:425
+#: eppdoc_client.py:286 eppdoc_client.py:412 eppdoc_client.py:422
 msgid "Algorithm"
 msgstr "Algoritmus"
 
-#: eppdoc_client.py:288 eppdoc_client.py:415 eppdoc_client.py:426
+#: eppdoc_client.py:287 eppdoc_client.py:413 eppdoc_client.py:423
 msgid "Public key code"
 msgstr "Kód veřejného klíče"
 
-#: eppdoc_client.py:290 eppdoc_client.py:417 eppdoc_client.py:428
+#: eppdoc_client.py:289 eppdoc_client.py:415 eppdoc_client.py:425
 msgid "LIST of filenames with dns keys"
 msgstr "Seznam jmen souborů s dns klíči"
 
-#: eppdoc_client.py:293
+#: eppdoc_client.py:292
 msgid ""
 "\n"
 "The EPP 'create_keyset' command is used to create a record of the KEYSET.\n"
@@ -1003,35 +994,35 @@ msgstr ""
 "\n"
 "EPP příkaz 'create_keyset' se používá pro vytvoření instance keysetu.\n"
 
-#: eppdoc_client.py:302
+#: eppdoc_client.py:301
 msgid ""
 "The EPP 'delete_contact' command is used to remove a record of the contact."
 msgstr "EPP příkaz 'delete_contact' se používá pro smazání záznamu o kontaktu."
 
-#: eppdoc_client.py:306
+#: eppdoc_client.py:305
 msgid ""
 "The EPP 'delete_domain' command is used to remove a record of the domain."
 msgstr "EPP příkaz 'delete_domain' se používá pro smazání záznamu o doméně."
 
-#: eppdoc_client.py:310
+#: eppdoc_client.py:309
 msgid "The EPP 'delete_nsset' command is used to remove a record of the nsset."
 msgstr "EPP příkaz 'delete_nsset' se používá pro smazázní záznamu o NSSETu."
 
-#: eppdoc_client.py:314
+#: eppdoc_client.py:313
 msgid ""
 "The EPP 'delete_keyset' command is used to remove a record of the keyset."
 msgstr "EPP příkaz 'delete_keyset' se používá pro smazázní záznamu o KEYSETu."
 
-#: eppdoc_client.py:318 eppdoc_client.py:659 eppdoc_client.py:725
-#: eppdoc_client.py:752
+#: eppdoc_client.py:317 eppdoc_client.py:656 eppdoc_client.py:722
+#: eppdoc_client.py:750
 msgid "Expiration date"
 msgstr "Datum expirace"
 
-#: eppdoc_client.py:323 eppdoc_client.py:381 eppdoc_client.py:660
+#: eppdoc_client.py:322 eppdoc_client.py:380 eppdoc_client.py:657
 msgid "Validation expires at"
 msgstr "Validace platná do"
 
-#: eppdoc_client.py:324
+#: eppdoc_client.py:323
 msgid ""
 "\n"
 "A domain names have a specified validity period. The server\n"
@@ -1055,81 +1046,81 @@ msgstr ""
 "Minimálí a maximální hodnota období platnosti je definována\n"
 "v Pravidlech komunikace."
 
-#: eppdoc_client.py:337 eppdoc_client.py:375
+#: eppdoc_client.py:336 eppdoc_client.py:374
 msgid "Change values"
 msgstr "Změna hodnot"
 
-#: eppdoc_client.py:338
+#: eppdoc_client.py:337
 msgid "Postal informations"
 msgstr "Poštovní informace"
 
-#: eppdoc_client.py:341
+#: eppdoc_client.py:340
 msgid "Address"
 msgstr "Adresa"
 
-#: eppdoc_client.py:355
+#: eppdoc_client.py:354
 msgid "data for with is set the flag value"
 msgstr "data, pro které se nastaví příznak"
 
-#: eppdoc_client.py:357 eppdoc_client.py:645
+#: eppdoc_client.py:356 eppdoc_client.py:642
 msgid "VAT"
 msgstr "DPH"
 
-#: eppdoc_client.py:364
+#: eppdoc_client.py:363
 msgid ""
 "The EPP 'update_contact' command is used to update values in the contact."
 msgstr ""
 "EPP příkaz 'update_contact' se používá pro aktualizaci hodnot vybraného "
 "kontaktu."
 
-#: eppdoc_client.py:372
+#: eppdoc_client.py:371
 msgid "Add administrative contact ID"
 msgstr "Přidat administrativní kontakt ID"
 
-#: eppdoc_client.py:373
+#: eppdoc_client.py:372
 msgid "Remove administrative contact ID"
 msgstr "Odebrat administrativní kontakt ID"
 
-#: eppdoc_client.py:374
+#: eppdoc_client.py:373
 msgid "Remove temporary contact ID"
 msgstr "Odebrat dočasný kontakt ID"
 
-#: eppdoc_client.py:383
+#: eppdoc_client.py:382
 msgid "The EPP 'update_domain' command is used to update values in the domain."
 msgstr ""
 "EPP příkaz 'update_domain' se používá pro aktualizaci hodnot záznamu vybrané "
 "domény."
 
-#: eppdoc_client.py:390 eppdoc_client.py:409
+#: eppdoc_client.py:389 eppdoc_client.py:408
 msgid "Add values"
 msgstr "Přidat hodnoty"
 
-#: eppdoc_client.py:391
+#: eppdoc_client.py:390
 msgid "List of DNS"
 msgstr "Seznam DNS"
 
-#: eppdoc_client.py:395 eppdoc_client.py:399 eppdoc_client.py:418
-#: eppdoc_client.py:429
+#: eppdoc_client.py:394 eppdoc_client.py:398 eppdoc_client.py:416
+#: eppdoc_client.py:426
 msgid "Technical contact ID"
 msgstr "Technický kontakt ID"
 
-#: eppdoc_client.py:397 eppdoc_client.py:420
+#: eppdoc_client.py:396 eppdoc_client.py:418
 msgid "Remove values"
 msgstr "Odebrat hodnoty"
 
-#: eppdoc_client.py:403
+#: eppdoc_client.py:402
 msgid "The EPP 'update_nsset' command is used to update values in the NSSET."
 msgstr ""
 "EPP příkaz 'update_nsset' se používá pro aktualizaci hodnot záznamu "
 "vybraného NSSETu."
 
-#: eppdoc_client.py:432
+#: eppdoc_client.py:429
 msgid "The EPP 'update_keyset' command is used to update values in the KEYSET."
 msgstr ""
 "EPP příkaz 'update_keyset' se používá pro aktualizaci hodnot záznamu "
 "vybraného KEYSETu."
 
-#: eppdoc_client.py:440
+#: eppdoc_client.py:437
 msgid ""
 "\n"
 "The EPP 'sendauthinfo_contact' command transmit request for send password \n"
@@ -1142,7 +1133,7 @@ msgstr ""
 "Tento příkaz je užitečný při transferu kdy vlastník a nový registrátor\n"
 "nemusí žádat původního registrátora o zaslání hesla."
 
-#: eppdoc_client.py:447
+#: eppdoc_client.py:444
 msgid ""
 "\n"
 "The EPP 'sendauthinfo_domain' command transmit request for send password \n"
@@ -1156,7 +1147,7 @@ msgstr ""
 "Tento příkaz je užitečný při transferu kdy vlastník a nový registrátor\n"
 "nemusí žádat původního registrátora o zaslání hesla."
 
-#: eppdoc_client.py:454
+#: eppdoc_client.py:451
 msgid ""
 "\n"
 "The EPP 'sendauthinfo_nsset' command transmit request for send password \n"
@@ -1169,7 +1160,7 @@ msgstr ""
 "Tento příkaz je užitečný při transferu kdy vlastník a nový registrátor\n"
 "nemusí žádat původního registrátora o zaslání hesla."
 
-#: eppdoc_client.py:461
+#: eppdoc_client.py:458
 msgid ""
 "\n"
 "The EPP 'sendauthinfo_keyset' command transmit request for send password \n"
@@ -1182,11 +1173,11 @@ msgstr ""
 "Tento příkaz je užitečný při transferu kdy vlastník a nový registrátor\n"
 "nemusí žádat původního registrátora o zaslání hesla."
 
-#: eppdoc_client.py:466
+#: eppdoc_client.py:463
 msgid "The EPP 'credit_info' command returns credit information."
 msgstr "Příkaz 'credit_info' zobrazí informace o kreditu."
 
-#: eppdoc_client.py:472
+#: eppdoc_client.py:469
 msgid ""
 "\n"
 "The EPP 'technical_test' command transmit request for technical test \n"
@@ -1205,7 +1196,7 @@ msgstr ""
 "které mají toto číslo shodé nebo nižší. Platný rozsah je 0 až 10.\n"
 "Nastavit report level je možné v příkazech create_nsset a update_nsset.\n"
 
-#: eppdoc_client.py:483
+#: eppdoc_client.py:480
 msgid ""
 "\n"
 "Prepare list of the contacts. This command fills server buffer by list \n"
@@ -1218,7 +1209,7 @@ msgstr ""
 "kontaktů a nastaví ukazatel na začátek seznamu. Data se načítají postupně \n"
 "opakovaným voláním příkazu 'get_results' dokud se vracejí nějaká data.\n"
 
-#: eppdoc_client.py:490
+#: eppdoc_client.py:487
 msgid ""
 "\n"
 "Prepare list of the domains. This command fills server buffer by list \n"
@@ -1231,7 +1222,7 @@ msgstr ""
 "domén a nastaví ukazatel na začátek seznamu. Data se načítají postupně \n"
 "opakovaným voláním příkazu 'get_results' dokud se vracejí nějaká data.\n"
 
-#: eppdoc_client.py:497
+#: eppdoc_client.py:494
 msgid ""
 "\n"
 "Prepare list of the NSSETs. This command fills server buffer by list \n"
@@ -1244,7 +1235,7 @@ msgstr ""
 "nssetů a nastaví ukazatel na začátek seznamu. Data se načítají postupně \n"
 "opakovaným voláním příkazu 'get_results' dokud se vracejí nějaká data.\n"
 
-#: eppdoc_client.py:504
+#: eppdoc_client.py:501
 msgid ""
 "\n"
 "Prepare list of the KEYSETs. This command fills server buffer by list \n"
@@ -1257,7 +1248,7 @@ msgstr ""
 "keysetů a nastaví ukazatel na začátek seznamu. Data se načítají postupně \n"
 "opakovaným voláním příkazu 'get_results' dokud se vracejí nějaká data.\n"
 
-#: eppdoc_client.py:512
+#: eppdoc_client.py:509
 msgid ""
 "\n"
 "Returns a data chunk from the list of the records in the server buffer.\n"
@@ -1275,7 +1266,7 @@ msgstr ""
 "nsset_by_all, domain_by_all, ...)\n"
 "nebo domains_by_contact, domains_by_nsset atd.\n"
 
-#: eppdoc_client.py:521
+#: eppdoc_client.py:518
 msgid ""
 "\n"
 "Returns list of contacts using command contacts_by_all and runs a loop \n"
@@ -1285,7 +1276,7 @@ msgstr ""
 "Vrátí seznam kontaktů za použití příkazu contacts_by_all a opakovaného\n"
 "spouštění příkazu get_results, dokud se nenačte celý seznam.\n"
 
-#: eppdoc_client.py:526
+#: eppdoc_client.py:523
 msgid ""
 "\n"
 "Returns list of domains using command domains_by_all and runs a loop \n"
@@ -1295,7 +1286,7 @@ msgstr ""
 "Vrátí seznam domén za použití příkazu domains_by_all a opakovaného\n"
 "spouštění příkazu get_results, dokud se nenačte celý seznam.\n"
 
-#: eppdoc_client.py:531
+#: eppdoc_client.py:528
 msgid ""
 "\n"
 "Returns list of nssets using command nssets_by_all and runs a loop \n"
@@ -1305,7 +1296,7 @@ msgstr ""
 "Vrátí seznam nssetů za použití příkazu nssets_by_all a opakovaného\n"
 "spouštění příkazu get_results, dokud se nenačte celý seznam.\n"
 
-#: eppdoc_client.py:536
+#: eppdoc_client.py:533
 msgid ""
 "\n"
 "Returns list of keysets using command nssets_by_all and runs a loop \n"
@@ -1315,7 +1306,7 @@ msgstr ""
 "Vrátí seznam keysetů za použití příkazu keysets_by_all a opakovaného\n"
 "spouštění příkazu get_results, dokud se nenačte celý seznam.\n"
 
-#: eppdoc_client.py:544
+#: eppdoc_client.py:541
 msgid ""
 "\n"
 "Prepare domains by NSSET. This command fills server buffer by list \n"
@@ -1331,7 +1322,7 @@ msgstr ""
 "'get_results'. Pokud již get_results žádné údaje nevrací, tak bylo \n"
 "dosaženo konce seznamu.\n"
 
-#: eppdoc_client.py:553
+#: eppdoc_client.py:550
 msgid ""
 "\n"
 "Prepare domains by KEYSET. This command fills server buffer by list \n"
@@ -1347,7 +1338,7 @@ msgstr ""
 "'get_results'. Pokud již get_results žádné údaje nevrací, tak bylo \n"
 "dosaženo konce seznamu.\n"
 
-#: eppdoc_client.py:563
+#: eppdoc_client.py:560
 msgid ""
 "\n"
 "Prepare domains by contact. This command fills server buffer by list \n"
@@ -1366,7 +1357,7 @@ msgstr ""
 "žádné\n"
 "údaje nevrací, tak bylo dosaženo konce seznamu.\n"
 
-#: eppdoc_client.py:574
+#: eppdoc_client.py:571
 msgid ""
 "\n"
 "Prepare NSSETs by contact. This command fills server buffer by list \n"
@@ -1383,7 +1374,7 @@ msgstr ""
 "žádné\n"
 "údaje nevrací, tak bylo dosaženo konce seznamu.\n"
 
-#: eppdoc_client.py:583
+#: eppdoc_client.py:580
 msgid ""
 "\n"
 "Prepare KEYSETs by contact. This command fills server buffer by list \n"
@@ -1400,7 +1391,7 @@ msgstr ""
 "žádné\n"
 "údaje nevrací, tak bylo dosaženo konce seznamu.\n"
 
-#: eppdoc_client.py:593
+#: eppdoc_client.py:590
 msgid ""
 "\n"
 "Prepare NSSETs by NS. This command fills server buffer by list of nssets \n"
@@ -1415,157 +1406,161 @@ msgstr ""
 "voláním příkazu 'get_results'. Pokud již get_results žádné údaje nevrací, \n"
 "tak bylo dosaženo konce seznamu.\n"
 
-#: eppdoc_client.py:605
+#: eppdoc_client.py:602
 msgid "Client transaction ID"
 msgstr "ID klient transakce"
 
-#: eppdoc_client.py:622 eppdoc_client.py:652 eppdoc_client.py:674
-#: eppdoc_client.py:691
+#: eppdoc_client.py:619 eppdoc_client.py:649 eppdoc_client.py:671
+#: eppdoc_client.py:688
 msgid "Repository object ID"
 msgstr "ID objektu v rep."
 
-#: eppdoc_client.py:623 eppdoc_client.py:653 eppdoc_client.py:675
-#: eppdoc_client.py:692
+#: eppdoc_client.py:620 eppdoc_client.py:650 eppdoc_client.py:672
+#: eppdoc_client.py:689
 msgid "Created by"
 msgstr "Vytvořil"
 
-#: eppdoc_client.py:624 eppdoc_client.py:654 eppdoc_client.py:676
-#: eppdoc_client.py:693
+#: eppdoc_client.py:621 eppdoc_client.py:651 eppdoc_client.py:673
+#: eppdoc_client.py:690
 msgid "Designated registrar"
 msgstr "Určený registrátor"
 
-#: eppdoc_client.py:625 eppdoc_client.py:655 eppdoc_client.py:677
-#: eppdoc_client.py:694
+#: eppdoc_client.py:622 eppdoc_client.py:652 eppdoc_client.py:674
+#: eppdoc_client.py:691
 msgid "Updated by"
 msgstr "Změnil"
 
-#: eppdoc_client.py:626 eppdoc_client.py:656 eppdoc_client.py:678
-#: eppdoc_client.py:695 eppdoc_client.py:709 eppdoc_client.py:714
-#: eppdoc_client.py:719 eppdoc_client.py:724
+#: eppdoc_client.py:623 eppdoc_client.py:653 eppdoc_client.py:675
+#: eppdoc_client.py:692 eppdoc_client.py:706 eppdoc_client.py:711
+#: eppdoc_client.py:716 eppdoc_client.py:721
 msgid "Created on"
 msgstr "Vytvořeno dne"
 
-#: eppdoc_client.py:627 eppdoc_client.py:657 eppdoc_client.py:679
-#: eppdoc_client.py:696
+#: eppdoc_client.py:624 eppdoc_client.py:654 eppdoc_client.py:676
+#: eppdoc_client.py:693
 msgid "Last transfer on"
 msgstr "Poslední transfer dne"
 
-#: eppdoc_client.py:628 eppdoc_client.py:658
+#: eppdoc_client.py:625 eppdoc_client.py:655
 msgid "Last update on"
 msgstr "Poslední změna dne"
 
-#: eppdoc_client.py:636 eppdoc_client.py:664 eppdoc_client.py:681
-#: eppdoc_client.py:698
+#: eppdoc_client.py:633 eppdoc_client.py:661 eppdoc_client.py:678
+#: eppdoc_client.py:695
 msgid "Password for transfer"
 msgstr "Heslo pro transfer"
 
-#: eppdoc_client.py:641 eppdoc_client.py:665 eppdoc_client.py:682
-#: eppdoc_client.py:699
+#: eppdoc_client.py:638 eppdoc_client.py:662 eppdoc_client.py:679
+#: eppdoc_client.py:696
 msgid "Status"
 msgstr "Stav"
 
-#: eppdoc_client.py:642 eppdoc_client.py:666 eppdoc_client.py:683
-#: eppdoc_client.py:700
+#: eppdoc_client.py:639 eppdoc_client.py:663 eppdoc_client.py:680
+#: eppdoc_client.py:697
 msgid "Status message"
 msgstr "Popis stavu"
 
-#: eppdoc_client.py:644
+#: eppdoc_client.py:641
 msgid "Hide"
 msgstr "Skrýt"
 
-#: eppdoc_client.py:661
+#: eppdoc_client.py:658
 msgid "Include into ENUM dict"
 msgstr "Přidat do ENUM tel.sezn."
 
-#: eppdoc_client.py:668
+#: eppdoc_client.py:665
 msgid "Administrative contact"
 msgstr "Administrativní kontakt"
 
-#: eppdoc_client.py:669
+#: eppdoc_client.py:666
 msgid "Temporary contact"
 msgstr "Dočasný kontakt"
 
-#: eppdoc_client.py:680 eppdoc_client.py:697
+#: eppdoc_client.py:677 eppdoc_client.py:694
 msgid "Last updated on"
 msgstr "Poslední změna dne"
 
-#: eppdoc_client.py:685
+#: eppdoc_client.py:682
 msgid "Name servers"
 msgstr "Jmenné servery"
 
-#: eppdoc_client.py:686 eppdoc_client.py:704
+#: eppdoc_client.py:683 eppdoc_client.py:701
 msgid "Report level"
 msgstr "Stupeň detailů"
 
-#: eppdoc_client.py:702
+#: eppdoc_client.py:699
 msgid "DS records"
 msgstr "DS záznamy"
 
-#: eppdoc_client.py:703
+#: eppdoc_client.py:700
 msgid "DNSKEY records"
 msgstr "DNSKEY záznamy"
 
-#: eppdoc_client.py:729
+#: eppdoc_client.py:726
 msgid "Available languages"
 msgstr "Podporované jazyky"
 
-#: eppdoc_client.py:730
+#: eppdoc_client.py:727
 msgid "Server ID"
 msgstr "ID serveru"
 
-#: eppdoc_client.py:731
+#: eppdoc_client.py:728
 msgid "Server date"
 msgstr "Datum serveru"
 
-#: eppdoc_client.py:732
+#: eppdoc_client.py:729
 msgid "Available protocols"
 msgstr "Podporované protokoly"
 
-#: eppdoc_client.py:733
+#: eppdoc_client.py:730
 msgid "Objects URI"
 msgstr "URI objekt"
 
-#: eppdoc_client.py:734
+#: eppdoc_client.py:731
 msgid "Extensions URI"
 msgstr "URI rozšíření"
 
-#: eppdoc_client.py:735
+#: eppdoc_client.py:732
 msgid "Data Collection policy"
 msgstr ""
 
-#: eppdoc_client.py:739 eppdoc_client.py:773
+#: eppdoc_client.py:736 eppdoc_client.py:771
 msgid "List"
 msgstr "Seznam"
 
-#: eppdoc_client.py:740 eppdoc_client.py:777 eppdoc_client.py:782
-#: eppdoc_client.py:787 eppdoc_client.py:792
+#: eppdoc_client.py:737 eppdoc_client.py:775 eppdoc_client.py:780
+#: eppdoc_client.py:785 eppdoc_client.py:790
 msgid "Count"
 msgstr "Počet"
 
-#: eppdoc_client.py:744
+#: eppdoc_client.py:741
 msgid "Queue size"
 msgstr "Počet zpráv"
 
-#: eppdoc_client.py:745
+#: eppdoc_client.py:742
 msgid "Message ID"
 msgstr "ID zprávy"
 
-#: eppdoc_client.py:746
+#: eppdoc_client.py:743
 msgid "Message date"
 msgstr "Zpráva vložena"
 
-#: eppdoc_client.py:747
+#: eppdoc_client.py:744
+msgid "Message type"
+msgstr "Typ zprávy"
+
+#: eppdoc_client.py:745
 msgid "Message content"
 msgstr "Text zprávy"
 
-#: eppdoc_client.py:756 eppdoc_client.py:760 eppdoc_client.py:764
-#: eppdoc_client.py:768
+#: eppdoc_client.py:754 eppdoc_client.py:758 eppdoc_client.py:762
+#: eppdoc_client.py:766
 msgid "Number of records"
 msgstr "Počet záznamů"
 
-#: eppdoc_client.py:757 eppdoc_client.py:761 eppdoc_client.py:765
-#: eppdoc_client.py:769 eppdoc_client.py:778 eppdoc_client.py:783
-#: eppdoc_client.py:788 eppdoc_client.py:793
+#: eppdoc_client.py:755 eppdoc_client.py:759 eppdoc_client.py:763
+#: eppdoc_client.py:767 eppdoc_client.py:776 eppdoc_client.py:781
+#: eppdoc_client.py:786 eppdoc_client.py:791
 msgid "Notify"
 msgstr "Oznámení"
 
@@ -1588,7 +1583,7 @@ msgstr "Interní chyba: Nadřazený uzel '%s' neexistuje."
 msgid "Internal error: Value is not dict type:"
 msgstr "Interní chyba: Hodnota není typu dict:"
 
-#: __init__.py:1146
+#: __init__.py:1125
 msgid "This program requires Python 2.4 or higher. Your version is"
 msgstr "Tento program vyžaduje Python 2.4 nebo vyšší. Vaše verze je"
 
@@ -2397,11 +2392,11 @@ msgstr "Nedostupný"
 msgid "Available"
 msgstr "Dostupný"
 
-#: session_receiver.py:598
+#: session_receiver.py:615
 msgid "The list is empty."
 msgstr "Seznam je prázdný."
 
-#: session_receiver.py:608
+#: session_receiver.py:625
 msgid ""
 "\n"
 "The list of the contacts is ready on the server buffer \n"
@@ -2412,7 +2407,7 @@ msgstr ""
 "Seznam kontaktů je připraven v bufferu na serveru a ukazatel je nastaven\n"
 "na začátek seznamu. Pro získání dat zadejte příkaz get_results."
 
-#: session_receiver.py:615
+#: session_receiver.py:632
 msgid ""
 "\n"
 "The list of the nssets is ready on the server buffer \n"
@@ -2423,7 +2418,7 @@ msgstr ""
 "Seznam nssetů je připraven v bufferu na serveru a ukazatel je nastaven\n"
 "na začátek seznamu. Pro získání dat zadejte příkaz get_results."
 
-#: session_receiver.py:622
+#: session_receiver.py:639
 msgid ""
 "\n"
 "The list of the keysets is ready on the server buffer \n"
@@ -2434,7 +2429,7 @@ msgstr ""
 "Seznam keysetů je připraven v bufferu na serveru a ukazatel je nastaven\n"
 "na začátek seznamu. Pro získání dat zadejte příkaz get_results."
 
-#: session_receiver.py:629
+#: session_receiver.py:646
 msgid ""
 "\n"
 "The list of the domains is ready on the server buffer \n"
@@ -2445,7 +2440,7 @@ msgstr ""
 "Seznam domén je připraven v bufferu na serveru a ukazatel je nastaven\n"
 "na začátek seznamu. Pro získání dat zadejte příkaz get_results."
 
-#: session_receiver.py:659 session_receiver.py:671
+#: session_receiver.py:676 session_receiver.py:688
 msgid ""
 "The list of the domains is ready on the server buffer \n"
 "and pointer is set at the beginning of the list.\n"
@@ -2454,7 +2449,7 @@ msgstr ""
 "Seznam domén je připraven v bufferu na serveru a ukazatel je nastaven\n"
 "na začátek seznamu. Pro získání dat zadejte příkaz get_results."
 
-#: session_receiver.py:665 session_receiver.py:677 session_receiver.py:689
+#: session_receiver.py:682 session_receiver.py:694 session_receiver.py:706
 msgid ""
 "The list of the nssets is ready on the server buffer \n"
 "and pointer is set at the beginning of the list.\n"
@@ -2463,7 +2458,7 @@ msgstr ""
 "Seznam nssetů je připraven v bufferu na serveru a ukazatel je nastaven\n"
 "na začátek seznamu. Pro získání dat zadejte příkaz get_results."
 
-#: session_receiver.py:683 session_receiver.py:695
+#: session_receiver.py:700 session_receiver.py:712
 msgid ""
 "The list of the keysets is ready on the server buffer \n"
 "and pointer is set at the beginning of the list.\n"
@@ -2472,11 +2467,11 @@ msgstr ""
 "Seznam keysetů je připraven v bufferu na serveru a ukazatel je nastaven\n"
 "na začátek seznamu. Pro získání dat zadejte příkaz get_results."
 
-#: session_receiver.py:734
+#: session_receiver.py:751
 msgid "You are not logged. First type login."
 msgstr "Nejste zalogováni. Nejdříve zadejte login."
 
-#: session_receiver.py:737
+#: session_receiver.py:754
 msgid "You are not logged. You must call login() before working on the server."
 msgstr "Nejste zalogováni. Nejdříve musíte zadat login()."
 
@@ -2625,3 +2620,8 @@ msgstr ""
 "  -q,  --qt\n"
 "                   Spusť lkienta v Qt4 GUI (Pozor! Určeno jen pro testování!)"
 
+#~ msgid "At least one DS or DNSKEY must be set."
+#~ msgstr "Musí být zadán nejméně jeden DS nebo DNSKEY záznam."
+
+#~ msgid "LIST of filenames with DS records"
+#~ msgstr "Seznam jmen souborů s DS záznamy"

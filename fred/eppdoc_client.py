@@ -741,6 +741,7 @@ def make_sort_by_names():
          ('msgQ.count',  1,  _T('Queue size')),
          ('msgQ.id',     1,  _T('Message ID')),
          ('qDate',       1,  _T('Message date')),
+         ('msg.nodes',   1,  _T('Message type')),
          ('msg',         1,  _T('Message content')),
          )),
 
