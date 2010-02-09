@@ -591,6 +591,26 @@ def __pfd__(dict_data,color=0,indent=0):
                         body.append(patt[3]%(ind,remove_ns(key),rows[0]))
     return body
 
+
+def split_prexis_name(qname):
+    "Split qualified name to prefix and local-name"
+    try:
+        retval = re.match('([^:]+):(.+)', qname).groups()
+    except AttributeError:
+        retval = '', qname # no any xmlns prefix
+    return retval
+
+
+def split_qattr_key(attr_name):
+    """Split the attribute qualified name to (prefix, localname).
+    Prefix is always required, localname is optional.
+    """
+    prefix, localname = split_prexis_name(attr_name)
+    if prefix == '':
+        localname, prefix = prefix, localname # localname missing
+    return prefix, localname
+
+
 def remove_ns(name):
     "remove namespace from xml element"
     return re.sub('.+:', '', name)

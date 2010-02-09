@@ -656,6 +656,7 @@ data = ( # 0
   </response>
 </epp>
 """), 
+    # 26
     ('poll', """<?xml version="1.0" encoding="UTF-8"?>
 <epp xmlns="urn:ietf:params:xml:ns:epp-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd"><response><result code="1301"><msg lang="cs">Prikaz uspasne proveden; potvrd za ucelem vyrazeni z fronty</msg>
 </result>
@@ -668,22 +669,34 @@ data = ( # 0
 </trID>
 </response>
 </epp>"""), 
+    # 27
     ('poll', """<?xml version="1.0" encoding="UTF-8"?>
-<epp xmlns="urn:ietf:params:xml:ns:epp-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd"><response><result code="1301"><msg lang="cs">Prikaz uspasne proveden; potvrd za ucelem vyrazeni z fronty</msg>
-</result>
-<msgQ count="1" id="1025"><qDate>2007-06-26T15:45:34+02:00</qDate>
-<msg><contact:trnData  xmlns:contact="http://www.nic.cz/xml/epp/contact-1.3" xsi:schemaLocation="http://www.nic.cz/xml/epp/contact-1.3 contact-1.3.xsd"  ><contact:id>CID:JARA</contact:id>
-<contact:trDate>2007-06-26T15:45:34+02:00</contact:trDate>
-<contact:clID>REG-UNITTEST2</contact:clID>
-</contact:trnData>
-</msg>
-</msgQ>
-<trID><clTRID>zpkl003#07-06-27at09:27:04</clTRID>
-<svTRID>ccReg-0000319649</svTRID>
-</trID>
-</response>
+<epp xmlns="urn:ietf:params:xml:ns:epp-1.0" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd">
+  <response>
+    <result code="1301">
+      <msg lang="cs">Prikaz uspasne proveden; potvrd za ucelem vyrazeni z fronty</msg>
+    </result>
+    <msgQ count="1" id="1025">
+      <qDate>2007-06-26T15:45:34+02:00</qDate>
+      <msg>
+        <trnData xmlns="http://www.nic.cz/xml/epp/contact-1.3" 
+            xsi:schemaLocation="http://www.nic.cz/xml/epp/contact-1.3 contact-1.3.xsd">
+          <id>CID:JARA</id>
+          <trDate>2007-06-26T15:45:34+02:00</trDate>
+          <clID>REG-UNITTEST2</clID>
+        </trnData>
+      </msg>
+    </msgQ>
+    <trID>
+      <clTRID>zpkl003#07-06-27at09:27:04</clTRID>
+      <svTRID>ccReg-0000319649</svTRID>
+    </trID>
+  </response>
 </epp>
 """), 
+    # 28
     ('poll', """<?xml version='1.0' encoding='utf-8' standalone="no"?>
 <epp xmlns='urn:ietf:params:xml:ns:epp-1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd'>
   <response>

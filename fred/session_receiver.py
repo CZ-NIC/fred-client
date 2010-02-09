@@ -431,9 +431,14 @@ class ManagerReceiver(ManagerCommand):
             return retval
         for key, data in dmsg.items():
             xmlns = ''
-            for attr in data.get('attr', []):
-                if attr[0][:6] == "xmlns:" and attr[0][6:] == key[:len(attr[0][6:])]:
-                    xmlns = " xmlns=%s" % attr[1]
+            for attr_key, att_value in data.get('attr', []):
+                # split prefix and local name
+                attr_pref, attr_name = eppdoc.split_qattr_key(attr_key)
+                key_pref, key_name = eppdoc.split_prexis_name(key)
+                # if attribute is xmlns and prefix is equal with node prefix
+                if attr_pref == 'xmlns' and attr_name == key_pref:
+                    # then join ns definition to node name
+                    xmlns = " xmlns=%s" % att_value
                     break
             retval.append("%s%s" % (eppdoc.remove_ns(key), xmlns))
         return retval
