@@ -70,14 +70,7 @@ def main():
     if msg_invalid:
         print msg_invalid
     else:
-        if not sys.stdin.isatty():
-            for cmd in re.split('[\r\n]+',sys.stdin.read()):
-                command = cmd.strip()
-                if command:
-                    options['command'] = command
-                    epp_doc, str_error = run_creation(options)
-                    display(epp_doc, str_error)
-        elif len(sys.argv) > 1:
+        if len(sys.argv) > 1:
             command = ' '.join(option_args)
             if options['range']:
                 epp_doc = str_error = ''
@@ -100,6 +93,13 @@ def main():
                 options['command'] = command
                 epp_doc, str_error = run_creation(options)
                 display(epp_doc, str_error)
+        elif not sys.stdin.isatty():
+            for cmd in re.split('[\r\n]+',sys.stdin.read()):
+                command = cmd.strip()
+                if command:
+                    options['command'] = command
+                    epp_doc, str_error = run_creation(options)
+                    display(epp_doc, str_error)
         else:
             print '%s: %s command params\n\n%s\n\n%s%s\n\n  %s\n'%(_T('Usage'), 'fred_create.py',
                 _T('Create EPP XML document from command line parameters.'),
