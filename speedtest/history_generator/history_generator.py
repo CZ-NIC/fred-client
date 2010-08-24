@@ -104,8 +104,8 @@ class EppCommander(object):
         elif object_type == 'keyset':    
             result, t_diff = time_measure(self.epp.create_keyset,
                 'KEYID:%s' % long_name, 
-                [{'key_tag': '12345', 'alg': '5', 'digest_type': '1', 'digest': '1234ABCD1234ABCD1234ABCD1234ABCD1234ABCD'}], 
-                [], [], [], [self.get_random_handle('contact')]
+                [{'flags': '257', 'alg': '7', 'protocol': '3', 'pub_key': 'AwEAAddt2AkLfYGKgiEZB5SmIF8EvrjxNMH6HtxWEA4RJ9Ao6LCWheg8'}], 
+                [], [self.get_random_handle('contact')]
             )
         elif object_type == 'domain':
             registrant_handle = self.get_random_handle('contact')
@@ -165,7 +165,7 @@ class EppGeneral(object):
             # key is propability of command (command propability is actually key/sum_of_all_keys)
             self.command_table = PropabilityList([
                 (self.eppc.create, 20),
-                (self.eppc.update, 75),
+                (self.eppc.update, 70),
                 (self.eppc.delete, 10),
             ])
             self.object_table = PropabilityList([
