@@ -822,8 +822,8 @@ class Message(eppdoc_assemble.Message):
                 names = []
         return names
 
-    def __init__(self):
-        eppdoc_assemble.Message.__init__(self)
+    def __init__(self, manager):
+        eppdoc_assemble.Message.__init__(self, manager)
         self._command_params = make_command_parameters()
         self.sort_by_names = make_sort_by_names()
     
@@ -836,9 +836,9 @@ class Message(eppdoc_assemble.Message):
 def test(commands):
     import pprint
     import session_base
-    manag = session_base.ManagerBase()
-    epp = Message()
-    manag.load_config()
+    manager = session_base.ManagerBase()
+    epp = Message(manager)
+    manager.load_config()
     print "#"*60
     for cmd in commands:
         print "COMMAND:",cmd
@@ -846,7 +846,7 @@ def test(commands):
         if not m: continue
         cmd_name = m.group(1)
         epp.reset()
-        errors, example, stop = epp.parse_cmd(cmd_name, cmd, manag._conf, 0, 2)
+        errors, example, stop = epp.parse_cmd(cmd_name, cmd, manager._conf, 0, 2)
         if stop == 2: break # User press Ctrl+C or Ctrl+D
         if errors:
             print "Errors:",errors
@@ -857,15 +857,17 @@ def test(commands):
             if errors:
                 print "Errors:",errors
             if xmlepp:
-                print 'VALID?',manag.is_epp_valid(xmlepp)
-        print "EXAMPLE:",epp.get_command_line(manag._session[session_base.NULL_VALUE])
+                print 'VALID?', manager.is_epp_valid(xmlepp)
+        print "EXAMPLE:",epp.get_command_line(manager._session[session_base.NULL_VALUE])
         print '='*60
 
 def test_help(command_names):
     import terminal_controler
+    import session_base
+    manager = session_base.ManagerBase()
     colored_output = terminal_controler.TerminalController()
     colored_output.set_mode(options['color'])
-    epp = Message()
+    epp = Message(manager)
     for command_name in command_names:
         command_line,command_help,notice, examples = epp.get_help(command_name)
         print colored_output.render(command_line)

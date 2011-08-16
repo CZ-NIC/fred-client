@@ -40,8 +40,9 @@ colored_output = terminal_controler.TerminalController()
 
 # The column names for data holding by manager.
 ONLINE, CMD_ID, LANG, POLL_AUTOACK, CONFIRM_SEND_COMMAND, \
-   USERNAME, SESSION, HOST, COLORS, VALIDATE, VERBOSE, SORT_BY_COLUMNS, NULL_VALUE, \
-   TRANSLATE_ANSWER_COLUMN_NAMES, OUTPUT_TYPE, CLTRID, RECONNECT, ESCAPED_INPUT = range(18)
+   USERNAME, SESSION, HOST, COLORS, VALIDATE, VERBOSE, SORT_BY_COLUMNS, \
+   NULL_VALUE, SKIP_VALUE, TRANSLATE_ANSWER_COLUMN_NAMES, OUTPUT_TYPE, CLTRID, \
+   RECONNECT, ESCAPED_INPUT = range(19)
 # The column names for default values
 DEFS_LENGTH = 4
 LANGS,objURI,extURI,PREFIX = range(DEFS_LENGTH)
@@ -78,6 +79,7 @@ class ManagerBase:
                 1,      # VERBOSE 1,2,3
                 [],     # SORT_BY_COLUMNS - support for sotring received values (used by check_...)
                 'NULL', # NULL_VALUE
+                'SKIP', # SKIP_VALUE
                 1,      # TRANSLATE_ANSWER_COLUMN_NAMES, TEST only
                 'text', # OUTPUT_TYPE (text, html)
                 None,   # CLTRID
@@ -359,7 +361,22 @@ $fred_client_errors = array(); // errors occuring during communication
                 self._session[NULL_VALUE] = value
         else:
             self.append_error('null_value %s. %s'%(_T('cannot be empty'),_T('See help for more.')), 'RED')
-        
+
+    def set_skip_value(self, value):
+        'Set string what represents SKIP value'
+        value = value.strip()
+        if len(value):
+            if re.search('[- \(\)]',value) or value in ('""',"''"):
+                self.append_error('%s skip_value: %s. %s'%(_T('Invalid format of'),value,_T('See help for more.')), 'RED')
+            else:
+                self._session[SKIP_VALUE] = value
+        else:
+            self.append_error('skip_value %s. %s'%(_T('cannot be empty'),_T('See help for more.')), 'RED')
+
+    def skip_element(self, value):
+        "True if value is SKIP for skipping EPP element"
+        return self._session[SKIP_VALUE] == value
+
     #---------------------------
     # config
     #---------------------------
@@ -584,6 +601,9 @@ $fred_client_errors = array(); // errors occuring during communication
         # set NULL value
         value = self.get_config_value(section,'null_value',OMIT_ERROR)
         if value: self.set_null_value(value)
+        # set SKIP value
+        value = self.get_config_value(section,'skip_value',OMIT_ERROR)
+        if value: self.set_skip_value(value)
         self.__init_versions_from_config__(section_connect)
         # init from command line options
         self.init_from_options(section_connect)

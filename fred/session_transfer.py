@@ -53,8 +53,8 @@ class ManagerTransfer(ManagerBase):
     def __init__(self, cwd=None):
         self._cwd = cwd
         ManagerBase.__init__(self, cwd=self._cwd)
-        self._epp_cmd = eppdoc_client.Message()
-        self._epp_response = eppdoc_client.Message()
+        self._epp_cmd = eppdoc_client.Message(self)
+        self._epp_response = eppdoc_client.Message(self)
         self.defs[objURI] = self._epp_cmd.get_objURI()
         self.defs[extURI] = self._epp_cmd.get_extURI()
         self._available_commands = self._epp_cmd.get_client_commands()
@@ -121,7 +121,7 @@ class ManagerTransfer(ManagerBase):
         # for method how to interpret received variables.
         # The type of the command must be grab directly from XML because
         # it is possible to send any XML from any unknown source or application.
-        epp_xml = eppdoc_client.Message()
+        epp_xml = eppdoc_client.Message(self)
         epp_xml.parse_xml(message)
         err = epp_xml.fetch_errors()
         command_name = epp_xml.get_epp_command_name()

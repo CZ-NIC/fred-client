@@ -289,6 +289,50 @@ V sekci <emphasis>session</emphasis> jsou tato nastavení:</para>
     </listitem>
 
     <listitem>
+    <para><emphasis role='bold' id="config_skip_value">skip_value</emphasis> = SKIP</para>
+    <para>
+        Speciální hodnota umožňující vynechat XML element v EPP dokumentu.
+        Zavedeno pro testovací účely. Aktuálně lze tuto hodnotu použít pouze
+        na element &lt;clTRID&gt;. Výchozí hodnota je nastavena na SKIP.
+    </para>
+
+    <para>Výchozí EPP dokument:</para>
+
+        <programlisting>
+        REG-FRED_A@localhost> credit_info
+        
+        &lt;?xml version="1.0"?&gt;
+        &lt;epp&gt;
+            &lt;fred:creditInfo/&gt;
+            <emphasis role="bold">&lt;fred:clTRID&gt;zhte004#11-08-12at09:00:27&lt;/fred:clTRID&gt;</emphasis>
+        &lt;/epp&gt;
+        </programlisting>
+
+    <para>Při použití hodnoty SKIP:</para>
+
+        <programlisting>
+        REG-FRED_A@localhost> credit_info SKIP
+
+        &lt;?xml version="1.0"?&gt;
+        &lt;epp&gt;
+            &lt;fred:creditInfo/&gt;
+        &lt;/epp&gt;            
+        </programlisting>
+    
+    <para>
+        <emphasis role='bold'>Formát hodnoty SKIP:</emphasis>
+        Zástupce může být libovolný, ale nesmí obsahovat <emphasis>spojovník</emphasis> (-), <emphasis>mezery</emphasis> a 
+        <emphasis>kulaté závorky</emphasis>.
+    </para>
+
+    <para>
+        Popis elementu clTRID:
+        <quote><link linkend='cltrid' endterm="cltrid.title"/></quote>
+    </para>
+
+    </listitem>
+
+    <listitem>
     <para><emphasis role='bold' id="config_cltrid">cltrid</emphasis> = myid%04d</para>
     <para>Vlastní hodnota cltrID - <link linkend="cltrid">Client client transaction ID</link>.
     Symbol %d je nahrazen číslem příkazu.
@@ -633,7 +677,7 @@ create_nsset nssid:nsset1 ((ns1.domain.cz (217.31.207.130 217.31.207.129))) --dn
 </section>
 
 <section id="cltrid">
-<title>Společný parametr cltrid (Client transaction ID)</title>
+<title id="cltrid.title">Společný parametr cltrid (Client transaction ID)</title>
 <para>
 Každý EPP příkaz, kromě příkazu <emphasis>hello</emphasis>, obsahuje 
 tag <emphasis role="bold">&lt;clTRID&gt;</emphasis>. Ten je vždy jako
@@ -642,6 +686,9 @@ Tato hodnota je identifikátor transakce. Ten si stanovuje klient a
 může být libovolný v rámci formátovacích pravidel definovaných ve
 schematech pro tuto hodnotu. Identifikátor je nepovinný a pokud 
 není zadán, tak jej klient automaticky doplní.
+</para>
+<para>
+Element &lt;clTRID&gt; lze potlačit speciální hodnotou <link linkend="config_skip_value">SKIP</link>.
 </para>
 <para>Další možnost, jak zadat tento parametr je nadefinovat jej v <link linkend="config_cltrid">konfiguračním souboru</link>
 nebo při spuštění klienta v <link linkend="options">parametrech při spuštění (options)</link>.
@@ -754,11 +801,10 @@ V <emphasis>interaktivním módu</emphasis> zadávání parametru zadáme <quote
 že zapíšeme prázdné uvozovky '' nebo "".
 </para>
 </section>
-
 </section>
 
-<section>
 
+<section>
 <title>Interaktivní mód vkládání parametrů</title>
 
 <para>

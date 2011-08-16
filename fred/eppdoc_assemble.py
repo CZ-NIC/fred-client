@@ -51,8 +51,8 @@ ENUM_DOMAIN_TYPE_PATT = '\.e164\.arpa$'
 class Message(MessageBase):
     "Client EPP commands."
 
-    def __init__(self):
-        MessageBase.__init__(self)
+    def __init__(self, manager):
+        MessageBase.__init__(self, manager)
         self.make_param_required_types()
 
     def make_param_required_types(self):
@@ -559,6 +559,14 @@ class Message(MessageBase):
             if len(v)>3: attr  = v[3]
             self.new_node_by_name(parent_name, name, value, attr)
 
+
+    def __append_cltrid__(self, data, default):
+        "Append clTRID if it is not skipped"
+        cltrid = self._dct.get(TAG_clTRID, [default])[0]
+        if not self.manager.skip_element(cltrid):
+            data.append(('command', 'clTRID', cltrid))
+
+
     def __asseble_command__(self, cols, key, params):
         """Internal fnc for assembly commands info, check. 
         cols=('check','contact','id' [,list])
@@ -585,7 +593,8 @@ class Message(MessageBase):
                 names = (names,)
             for value in names:
                 data.append((col1, col2, value))
-        data.append(('command', 'clTRID', self._dct.get(TAG_clTRID,[params[0]])[0]))
+
+        self.__append_cltrid__(data, params[0])
         self.__assemble_cmd__(data)
 
     def __asseble_extcommand__(self, cols, params, key=None, namespace='fred'):
@@ -645,7 +654,9 @@ class Message(MessageBase):
                     for value in names:
                         data.append((col1, nscol, value))
             # ------------------------------------------------
-        data.append(('%s:extcommand'%namespace, '%s:clTRID'%namespace, self._dct.get(TAG_clTRID,[params[0]])[0]))
+        cltrid = self._dct.get(TAG_clTRID, [params[0]])[0]
+        if not self.manager.skip_element(cltrid):
+            data.append(('%s:extcommand' % namespace, '%s:clTRID' % namespace, cltrid))
         self.__assemble_cmd__(data)
 
         
@@ -689,16 +700,19 @@ class Message(MessageBase):
             cols.append(('svcs', 'svcExtension'))
             for uri in params[1][2]:
                 cols.append(('svcExtension', 'extURI', uri))
-        cols.append(('command', 'clTRID', self._dct.get(TAG_clTRID,[params[0]])[0]))
+        self.__append_cltrid__(cols, params[0])
         self.__assemble_cmd__(cols)
 
     def assemble_logout(self, *params):
         "Assemble EPP command logount. *params: ('clTRID')"
-        self.__assemble_cmd__((
+        dom = [
             ('epp', 'command'),
             ('command', 'logout'),
-            ('command', 'clTRID', self._dct.get(TAG_clTRID,[params[0]])[0])
-        ))
+        ]
+        cltrid = self._dct.get(TAG_clTRID, [params[0]])[0]
+        if not self.manager.skip_element(cltrid):
+            dom.append(('command', 'clTRID', cltrid))
+        self.__assemble_cmd__(dom)
 
     #-------------------------------------------
     # Questions (query)
@@ -752,11 +766,14 @@ class Message(MessageBase):
             if type(msg_id) not in (unicode, str):
                 msg_id = str(msg_id) # translate type int
             attr.append(('msgID',msg_id))
-        self.__assemble_cmd__((
+        dom = [
             ('epp', 'command'),
             ('command', 'poll', '', attr),
-            ('command', 'clTRID', self._dct.get(TAG_clTRID,[params[0]])[0])
-        ))
+        ]
+        cltrid = self._dct.get(TAG_clTRID, [params[0]])[0]
+        if not self.manager.skip_element(cltrid):
+            dom.append(('command', 'clTRID', cltrid))
+        self.__assemble_cmd__(dom)
 
     #-------------------------------------------
     # Edit (query)
@@ -781,14 +798,17 @@ class Message(MessageBase):
         ns = '%s%s-%s'%(SCHEMA_PREFIX, names[0], VERSION)
         attr = (('xmlns:%s'%names[0],ns),
                 ('xsi:schemaLocation','%s %s-%s.xsd'%(ns, names[0], VERSION)))
-        self.__assemble_cmd__((
+        dom = [
             ('epp', 'command'),
             ('command', 'transfer', '', (('op','request'),)), # self._dct['op'][0]
-            ('transfer', '%s:transfer'%names[0], '', attr),
-            ('%s:transfer'%names[0], '%s:%s'%names, self._dct['name'][0]),
-            ('%s:transfer'%names[0], '%s:authInfo'%names[0], self._dct['auth_info'][0]),
-            ('command', 'clTRID', self._dct.get(TAG_clTRID,[params[0]])[0])
-        ))
+            ('transfer', '%s:transfer' % names[0], '', attr),
+            ('%s:transfer' % names[0], '%s:%s' % names, self._dct['name'][0]),
+            ('%s:transfer' % names[0], '%s:authInfo' % names[0], self._dct['auth_info'][0]),
+        ]
+        cltrid = self._dct.get(TAG_clTRID, [params[0]])[0]
+        if not self.manager.skip_element(cltrid):
+            dom.append(('command', 'clTRID', cltrid))
+        self.__assemble_cmd__(dom)
 
     def assemble_transfer_contact(self, *params):
         self.__assemble_transfer__(('contact','id'),params)
@@ -889,7 +909,7 @@ class Message(MessageBase):
             ident = dct['ident'][0]
             data.append(('contact:create','contact:ident', ident['number'][0], (('type',ident['type'][0]),)))
         if __has_key__(dct,'notify_email'): data.append(('contact:create','contact:notifyEmail', dct['notify_email'][0]))
-        data.append(('command', 'clTRID', self._dct.get(TAG_clTRID,[params[0]])[0]))
+        self.__append_cltrid__(data, params[0])
         self.__assemble_cmd__(data)
 
     def assemble_create_domain(self, *params):
@@ -916,7 +936,7 @@ class Message(MessageBase):
         if dct.has_key('auth_info'):
             data.append(('domain:create','domain:authInfo', dct['auth_info'][0]))
         self.__enum_extensions__('create',data, params)
-        data.append(('command', 'clTRID', self._dct.get(TAG_clTRID,[params[0]])[0]))
+        self.__append_cltrid__(data, params[0])
         self.__assemble_cmd__(data)
 
     def __append_nsset__(self, tag_name, data, dct_ns):
@@ -1066,7 +1086,7 @@ class Message(MessageBase):
         if dct.has_key('reportlevel'):
             data.append(('%s:create'%prefix,'%s:reportlevel'%prefix, dct['reportlevel'][0]))
         
-        data.append(('command', 'clTRID', self._dct.get(TAG_clTRID,[params[0]])[0]))
+        self.__append_cltrid__(data, params[0])
         self.__assemble_cmd__(data)
 
     def assemble_create_nsset(self, *params):
@@ -1097,7 +1117,7 @@ class Message(MessageBase):
             if not __has_key__(period,'unit'): period['unit']=('y',)
             data.append(('domain:renew','domain:period',period['num'][0], (('unit',period['unit'][0]),)))
         self.__enum_extensions__('renew',data, params)
-        data.append(('command', 'clTRID', self._dct.get(TAG_clTRID,[params[0]])[0]))
+        self.__append_cltrid__(data, params[0])
         self.__assemble_cmd__(data)
 
     def assemble_update_contact(self, *params):
@@ -1148,7 +1168,7 @@ class Message(MessageBase):
                 type_data = type and (('type', type),) or None
                 data.append(('contact:chg','contact:ident', ident['number'][0], type_data))
             if __has_key__(chg,'notify_email'): data.append(('contact:chg','contact:notifyEmail', chg['notify_email'][0]))
-        data.append(('command', 'clTRID', self._dct.get(TAG_clTRID,[params[0]])[0]))
+        self.__append_cltrid__(data, params[0])
         self.__assemble_cmd__(data)
 
     def assemble_update_domain(self, *params):
@@ -1192,7 +1212,7 @@ class Message(MessageBase):
             if __has_key_dict__(chg,'auth_info'):
                 data.append(('domain:chg','domain:authInfo', chg['auth_info'][0]))
         self.__enum_extensions__('update',data, params,'chg')
-        data.append(('command', 'clTRID', self._dct.get(TAG_clTRID,[params[0]])[0]))
+        self.__append_cltrid__(data, params[0])
         self.__assemble_cmd__(data)
 
     def __assemble_update_set__(self, prefix, *params):
@@ -1271,7 +1291,7 @@ class Message(MessageBase):
             if dct.has_key('reportlevel'): 
                 data.append(('%s:chg'%prefix,'%s:reportlevel'%prefix, dct['reportlevel'][0]))
 
-        data.append(('command', 'clTRID', self._dct.get(TAG_clTRID,[params[0]])[0]))
+        self.__append_cltrid__(data, params[0])
         self.__assemble_cmd__(data)
 
     def assemble_update_nsset(self, *params):

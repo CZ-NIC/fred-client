@@ -234,7 +234,7 @@ When you want not result in your prompt join option 'noprompt'
             self.append_note(eppdoc.prepare_display(data,COLOR))
         else:
             # XML EPP doc. only for better display
-            edoc = eppdoc_client.Message()
+            edoc = eppdoc_client.Message(self)
             edoc.parse_xml(data)
             if edoc.is_error():
                 self.append_note(data,'GREEN') # Some errors occured during parsing process.
@@ -688,7 +688,7 @@ When you want not result in your prompt join option 'noprompt'
         self.append_note(SEPARATOR)
         if param and param[0]=='d': # d dict
             self.append_note(_T('Interpreted command'),'BOLD')
-            edoc = eppdoc_client.Message()
+            edoc = eppdoc_client.Message(self)
             edoc.parse_xml(self._raw_cmd)
             self.__put_raw_into_note__(edoc.create_data())
         else: # e epp
@@ -747,7 +747,7 @@ When you want not result in your prompt join option 'noprompt'
             self.append_error(_T("Previous info_%s didn't return data.")%get_ltext(info_type))
             return
         # create command
-        eppdoc = eppdoc_client.Message()
+        eppdoc = eppdoc_client.Message(self)
         cmd = eppdoc.fetch_from_info(command_type, info_type, self._dct_answer, self._session[NULL_VALUE])
         if self.readline and display_as_note == 0:
             self._startup_hook = cmd # display directly on the prompt

@@ -114,8 +114,8 @@ Parametry pro spojeni:
   -d COMMAND, --command=COMMAND
                    Odeslat prikaz na server a skoncit
   -o OUTPUT_TYPE, --output=OUTPUT_TYPE
-                   Zobrazit vystup jako text (default), html, xml, php (Pozor!
-Jen pro testovani!)
+                   Zobrazit vystup jako text (default), html, xml, php (Pozor! J
+en pro testovani!)
   -q,  --qt
                    Spustit klienta v Qt4 GUI (Pozor! Jen pro testovani!)
 
@@ -222,6 +222,31 @@ Konfiguracni soubor
        obsahovat spojovnik (-), mezery a kulate zavorky.
        Vice se o teto hodnote dozvite v casti "Zadna hodnota / Prazdna
        hodnota"
+     * skip_value = SKIP
+       Specialni hodnota umoznujici vynechat XML element v EPP dokumentu.
+       Zavedeno pro testovaci ucely. Aktualne lze tuto hodnotu pouzit
+       pouze na element <clTRID>. Vychozi hodnota je nastavena na SKIP.
+       Vychozi EPP dokument:
+        REG-FRED_A@localhost> credit_info
+
+        <?xml version="1.0"?>
+        <epp>
+            <fred:creditInfo/>
+            <fred:clTRID>zhte004#11-08-12at09:00:27</fred:clTRID>
+        </epp>
+
+       Pri pouziti hodnoty SKIP:
+        REG-FRED_A@localhost> credit_info SKIP
+
+        <?xml version="1.0"?>
+        <epp>
+            <fred:creditInfo/>
+        </epp>
+
+       Format hodnoty SKIP: Zastupce muze byt libovolny, ale nesmi
+       obsahovat spojovnik (-), mezery a kulate zavorky.
+       Popis elementu clTRID: "Spolecny parametr cltrid (Client
+       transaction ID)"
      * cltrid = myid%04d
        Vlastni hodnota cltrID - Client client transaction ID. Symbol %d je
        nahrazen cislem prikazu. Hodnota mezi % a d zarovnava cislo na
@@ -295,8 +320,8 @@ Zobrazeni helpu
 
    Jake prikazy mate k dispozici zjistite zadanim prikazu "help" (nebo h,
    ?).
-    FredClient verze n.n.n Zadejte "help", "license" nebo "credits" pro zobraze
-ni vice informaci.
+    FredClient verze n.n.n Zadejte "help", "license" nebo "credits" pro zobrazen
+i vice informaci.
     > help
 
    Help vypise dve casti napovedy:
@@ -427,8 +452,8 @@ create_contact CID:ID jmeno email@email mesto CZ --disclose.flag = y
      * [] hranate zavorky. V pripade, ze hodnota je polozkou v seznamu, je
        mozne zadat i index seznamu. Ten se zadava pomoci cisla v hranatych
        zavorkach:
-create_nsset nssid:nsset1 ((ns1.domain.cz (217.31.207.130 217.31.207.129))) --d
-ns.addr[1] = tato_hodnota_prepise_druhou_adresu_217.31.207.129 cid:regid
+create_nsset nssid:nsset1 ((ns1.domain.cz (217.31.207.130 217.31.207.129))) --dn
+s.addr[1] = tato_hodnota_prepise_druhou_adresu_217.31.207.129 cid:regid
 
    Shrnuti:
    Parametry zadavejte v poradi, v jakem jsou vypsane v helpu.
@@ -449,6 +474,8 @@ Spolecny parametr cltrid (Client transaction ID)
    hodnotu. Identifikator je nepovinny a pokud neni zadan, tak jej klient
    automaticky doplni.
 
+   Element <clTRID> lze potlacit specialni hodnotou SKIP.
+
    Dalsi moznost, jak zadat tento parametr je nadefinovat jej v
    konfiguracnim souboru nebo pri spusteni klienta v parametrech pri
    spusteni (options).
@@ -460,8 +487,7 @@ myCtrlID%d  - je zkonvertovan na myCtrlID1, myCtrlID2, myCtrlID3, ...
 
    Chcete-li aby poradove cislo melo vzdy stejny pocet cislic, je mozne
    zadat:
-myCtrlID%04d  - je zkonvertovan na myCtrlID0001, myCtrlID0002, myCtrlID0003, ..
-.
+myCtrlID%04d  - je zkonvertovan na myCtrlID0001, myCtrlID0002, myCtrlID0003, ...
 
 Zadna hodnota / Prazdna hodnota
 
@@ -478,8 +504,8 @@ Zadna hodnota: NULL
    parametry: org, street, sp, cp. Misto nich zadate "zadnou hodnotu" -
    pokud jste nenastavili jinak, tak NULL. Tim jste telefonni cislo
    umistili na spravnou pozici v parametrech prikazu:
-   create_contact CID:ID01 'Jan Novak' info@mymail.cz Praha CZ mypassword NULL
-NULL NULL NULL +420.222745111
+   create_contact CID:ID01 'Jan Novak' info@mymail.cz Praha CZ mypassword NULL N
+ULL NULL NULL +420.222745111
 
    Uvedeny prikaz nebude v XML strukture vytvaret tagy pro hodnoty org,
    street, sp, cp:
@@ -508,7 +534,7 @@ Prazdna hodnota: '', ""
    generuje tag v XML dokumentu. Protoze je prazdna, tak dany XML tag bude
    take prazdny.
    create_contact CID:ID01 'Jan Novak' info@mymail.cz Praha CZ mypassword '' ''
- '' '' +420.222745111
+'' '' +420.222745111
 
    Prikaz vygeneruje XML, ve kterem budou u prazdnych hodnot prazdne tagy:
 <contact:id>CID:ID01</contact:id>
@@ -550,15 +576,15 @@ Interaktivni mod vkladani parametru
    "editacni" prikaz a je zapnuta funkce potvrzovani (confirm), tak se
    prikaz musi pred odeslanim na server jeste potvrdit:
 REG-LRR@epp-test.ccreg.nic.cz> !update_nsset
-Start interaktivniho modu. Mod zrusite stisknutim Ctrl+C. Prikaz dokoncite komb
-inaci Ctrl+D.
+Start interaktivniho modu. Mod zrusite stisknutim Ctrl+C. Prikaz dokoncite kombi
+naci Ctrl+D.
 NSSET ID [povinny]: nssid:id01
-Pridat hodnoty / Seznam DNS[1/9] / Jmenny server [povinny jen je-li tato cast z
-adana]: ns1.dns.cz
-Pridat hodnoty / Seznam DNS[1/9] / Adresa serveru[1/oo] [nepovinny]: 217.31.207
-.130
-Pridat hodnoty / Seznam DNS[1/9] / Adresa serveru[2/oo] [nepovinny]: 217.31.207
-.131
+Pridat hodnoty / Seznam DNS[1/9] / Jmenny server [povinny jen je-li tato cast za
+dana]: ns1.dns.cz
+Pridat hodnoty / Seznam DNS[1/9] / Adresa serveru[1/oo] [nepovinny]: 217.31.207.
+130
+Pridat hodnoty / Seznam DNS[1/9] / Adresa serveru[2/oo] [nepovinny]: 217.31.207.
+131
 Pridat hodnoty / Seznam DNS[1/9] / Adresa serveru[3/oo] [nepovinny]:
 Pridat hodnoty / Seznam DNS[2/9] / Jmenny server [nepovinny]:
 Pridat hodnoty / Technicky kontakt ID[1/oo] [nepovinny]: cid:myid01
@@ -566,8 +592,8 @@ Pridat hodnoty / Technicky kontakt ID[2/oo] [nepovinny]:
 Pridat hodnoty / Stav[1/6] [nepovinny]:
 Interaktivni mod ukoncen. [stisknete Enter]
 Prikaz k odeslani:
-update_nsset nssid:id01 (((ns1.dns.cz (217.31.207.130, 217.31.207.131))) cid:my
-id01)
+update_nsset nssid:id01 (((ns1.dns.cz (217.31.207.130, 217.31.207.131))) cid:myi
+d01)
 Opravdu chcete odeslat tento porikaz na server? (y/N): y
 nssid:id01 aktualizovano.
 REG-LRR@epp-test.ccreg.nic.cz>
@@ -716,8 +742,8 @@ Kapitola 5. Skripty fred_create.py a fred_sender.py
 
    2. PIPE - Zretezenim prikazu create a sender. Napriklad:
     $ ./fred_create.py check_domain cosi.cz nic.cz | ./fred_sender.py
-    $ echo -en "check_domain nic.cz\ninfo_domain nic.cz" | ./fred_create.py | .
-/fred_sender.py
+    $ echo -en "check_domain nic.cz\ninfo_domain nic.cz" | ./fred_create.py | ./
+fred_sender.py
 
 Kapitola 6. Integrace klienta do PHP kodu
 

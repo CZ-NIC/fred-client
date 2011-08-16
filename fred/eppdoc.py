@@ -58,7 +58,8 @@ default_encoding = 'utf-8' # default document output encoding
 class Message:
     'Struct maintaining DOM object and process errors.'
 
-    def __init__(self):
+    def __init__(self, manager):
+        self.manager = manager
         self.dom = None         # DOM object
         self.errors = []        # [(code, value, reason), ...]
         self.encoding = default_encoding
@@ -695,8 +696,11 @@ def test_display():
     print '='*60
     print prepare_display(exampe2)
 
+
 def test_parse(filename):
-    m = Message()
+    from session_base import ManagerBase
+    manager = ManagerBase()
+    m = Message(manager)
     xml = m.load_xml_doc(filename)
     errors = m.fetch_errors()
     if errors:
