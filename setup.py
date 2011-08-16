@@ -37,6 +37,7 @@ DEFAULT_SSL_PATH = 'ssl'
 # datarootdir/prog_name/schemas/all.xsd =>
 # /usr/local/share/fred-client/schemas/all.xsd
 DEFAULT_SCHEMAS_FILEMANE = 'schemas/all.xsd'
+EPP_SCHEMAS_PATH = os.environ.get('EPP_SCHEMAS_PATH', '../../mod-eppd/trunk/schemas/')
 
 APP_SCRIPTS = ['fred-client', 'fred-client-qt4.pyw']
 #if 'bdist_wininst' in sys.argv and '--install-script=setup_postinstall.py'
@@ -228,7 +229,7 @@ def main(directory):
                 ]
             + all_files_in_4(
                 os.path.join('DATADIR', 'fred-client', 'schemas'),
-                os.path.join(directory, 'fred', 'schemas')),
+                EPP_SCHEMAS_PATH),
             cmdclass = {
                     'sdist': EPPClientSDist, 
                     'install': EPPClientInstall, 
