@@ -93,7 +93,10 @@ class TerminalController:
         except: return
 
         # If the stream isn't a tty, then assume it has no capabilities.
-        if not term_stream.isatty(): return
+        if not hasattr(term_stream, "isatty"):
+            return
+        if not term_stream.isatty():
+            return
 
         # Check the terminal type.  If we fail, then assume that the
         # terminal has no capabilities.
