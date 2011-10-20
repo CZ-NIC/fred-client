@@ -47,16 +47,6 @@ if 'bdist_wininst' in sys.argv:
     APP_SCRIPTS.append('setup_postinstall.py')
 
 
-class EPPClientSDist(sdist):
-    "sdist check required"
-    
-    def run(self):
-        "run main process"
-        if not os.path.exists(os.path.join(self.srcdir, 'freddist')):
-            raise IOError(2, 'Folder freddist missing. Make symlink or copy '
-                             'from enum/distutils.')
-        sdist.run(self)
-    
 
 class EPPClientInstall(install):
 
@@ -231,7 +221,6 @@ def main(directory):
                 os.path.join('DATADIR', 'fred-client', 'schemas'),
                 EPP_SCHEMAS_PATH),
             cmdclass = {
-                    'sdist': EPPClientSDist, 
                     'install': EPPClientInstall, 
                     'install_scripts': EPPClientInstall_scripts,
                     'install_lib':Install_lib,
