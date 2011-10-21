@@ -53,13 +53,19 @@ class EPPClientSDist(sdist):
 
     def run(self):
         "run main process"
+
         # create temporary symlink
         link_name = os.path.join(self.srcdir, 'fred', 'schemas')
-        os.symlink(EPP_SCHEMAS_PATH, link_name)
+        if os.path.exists(link_name):
+            exists = True
+        else:
+            exists = False
+            os.symlink(EPP_SCHEMAS_PATH, link_name)
         # make sdist job
         sdist.run(self)
-        # remove temporary symlink
-        os.unlink(link_name)
+        if not exists:
+            # remove temporary symlink
+            os.unlink(link_name)
 
 
 class EPPClientInstall(install):
