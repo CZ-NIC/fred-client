@@ -48,6 +48,20 @@ if 'bdist_wininst' in sys.argv:
 
 
 
+class EPPClientSDist(sdist):
+    "sdist check required"
+
+    def run(self):
+        "run main process"
+        # create temporary symlink
+        link_name = os.path.join(self.srcdir, 'fred', 'schemas')
+        os.symlink(EPP_SCHEMAS_PATH, link_name)
+        # make sdist job
+        sdist.run(self)
+        # remove temporary symlink
+        os.unlink(link_name)
+
+
 class EPPClientInstall(install):
 
     user_options = install.user_options
@@ -125,6 +139,7 @@ class EPPClientInstall(install):
         self.update_fred_config()
         install.run(self)
 
+
 class EPPClientInstall_scripts(install_scripts):
 
     def update_fred_client(self):
@@ -148,6 +163,7 @@ class EPPClientInstall_scripts(install_scripts):
         self.update_fred_client()
         self.update_fred_client_qt4()
         install_scripts.run(self)
+
 
 class Install_lib(install_lib):
     def update_session_config(self):
@@ -173,9 +189,12 @@ class Install_lib(install_lib):
         self.update_session_config()
         install_lib.run(self)
 
+
 class Install_data(install_data):
     def run(self):
         install_data.run(self)
+
+
 
 def main(directory):
     if os.environ.has_key('BDIST_SIMPLE'):
@@ -221,6 +240,7 @@ def main(directory):
                 os.path.join('DATADIR', 'fred-client', 'schemas'),
                 EPP_SCHEMAS_PATH),
             cmdclass = {
+                    'sdist': EPPClientSDist,
                     'install': EPPClientInstall, 
                     'install_scripts': EPPClientInstall_scripts,
                     'install_lib':Install_lib,
