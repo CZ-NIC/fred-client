@@ -50,6 +50,15 @@ if 'bdist_wininst' in sys.argv:
 
 
 
+def get_epp_schema_path(directory):
+    "Return schemas path"
+    path = os.path.join(directory, 'fred', 'schemas')
+    if os.path.exists(path):
+        return path
+    return EPP_SCHEMAS_PATH
+
+
+
 class EPPClientSDist(sdist):
     "sdist check required"
 
@@ -245,7 +254,8 @@ def main(directory):
                 #get_etc_config_name()
                 ('SYSCONFDIR/fred', [os.path.join('build', config_name)]) 
                 ]
-            + all_files_in_4(os.path.join('DATADIR', 'fred-client', 'schemas'), EPP_SCHEMAS_PATH),
+            + all_files_in_4(os.path.join('DATADIR', 'fred-client', 'schemas'),
+                        get_epp_schema_path(directory)),
             cmdclass = {
                     'sdist': EPPClientSDist,
                     'install': EPPClientInstall, 
