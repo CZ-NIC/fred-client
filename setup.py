@@ -37,7 +37,9 @@ DEFAULT_SSL_PATH = 'ssl'
 # datarootdir/prog_name/schemas/all.xsd =>
 # /usr/local/share/fred-client/schemas/all.xsd
 DEFAULT_SCHEMAS_FILEMANE = 'schemas/all.xsd'
-EPP_SCHEMAS_PATH = os.environ.get('EPP_SCHEMAS_PATH', '../../mod-eppd/trunk/schemas/')
+
+# enum/mod-eppd/trunk/schemas/
+EPP_SCHEMAS_PATH = os.environ.get('EPP_SCHEMAS_PATH', 'fred/schemas')
 
 APP_SCRIPTS = ['fred-client', 'fred-client-qt4.pyw']
 #if 'bdist_wininst' in sys.argv and '--install-script=setup_postinstall.py'
@@ -55,17 +57,18 @@ class EPPClientSDist(sdist):
         "run main process"
 
         # create temporary symlink
+        created = False
         link_name = os.path.join(self.srcdir, 'fred', 'schemas')
-        if os.path.exists(link_name):
-            exists = True
-        else:
-            exists = False
+        if not os.path.exists(link_name):
             os.symlink(EPP_SCHEMAS_PATH, link_name)
-        # make sdist job
+            created = True
+
         sdist.run(self)
-        if not exists:
+
+        if created:
             # remove temporary symlink
             os.unlink(link_name)
+
 
 
 class EPPClientInstall(install):
@@ -242,9 +245,7 @@ def main(directory):
                 #get_etc_config_name()
                 ('SYSCONFDIR/fred', [os.path.join('build', config_name)]) 
                 ]
-            + all_files_in_4(
-                os.path.join('DATADIR', 'fred-client', 'schemas'),
-                EPP_SCHEMAS_PATH),
+            + all_files_in_4(os.path.join('DATADIR', 'fred-client', 'schemas'), EPP_SCHEMAS_PATH),
             cmdclass = {
                     'sdist': EPPClientSDist,
                     'install': EPPClientInstall, 
@@ -274,12 +275,12 @@ if __name__ == '__main__':
         os.environ['BDIST_SIMPLE'] = 'True'
         # copy fred-client to fred-client.py (windows do not recognize file
         # without .py extension as a python script)
-        shutil.copy(
-                os.path.join(g_directory, "fred-client"),
-                os.path.join(g_directory, filename));
-    print g_directory
+        shutil.copy(os.path.join(g_directory, "fred-client"),
+                    os.path.join(g_directory, filename))
+
     if main(g_directory):
         print "All done!"
+
     if os.environ.has_key('BDIST_SIMPLE'):
         # remove now useless fred-client.py file
         try:
