@@ -52,10 +52,18 @@ if 'bdist_wininst' in sys.argv:
 
 def get_epp_schema_path(directory):
     "Return schemas path"
-    path = os.path.join(directory, 'fred', 'schemas')
-    if os.path.exists(path):
-        return path
-    return EPP_SCHEMAS_PATH
+    global EPP_SCHEMAS_PATH
+
+    if 'EPP_SCHEMAS_PATH' in os.environ:
+        return os.environ['EPP_SCHEMAS_PATH']
+
+    for path in ('fred/schemas', '../../mod-eppd/trunk/schemas/', '../mod-eppd/schemas/'):
+        fullpath = os.path.normpath(os.path.join(directory, path))
+        if os.path.exists(fullpath):
+            EPP_SCHEMAS_PATH = fullpath
+            return fullpath
+
+    raise IOError("Path to schemas missing.")
 
 
 
