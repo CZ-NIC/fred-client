@@ -36,7 +36,7 @@ from eppdoc import Message as MessageBase, SCHEMA_PREFIX
 UNBOUNDED = None
 MAXLIST = 9
 # ''contact_disclose'' must be same format as eppdoc_client.update_status.
-DISCLOSES = ('voice','fax','email', 'vat', 'ident', 'notify_email')
+DISCLOSES = ('voice','fax','email', 'vat', 'ident', 'notify_email', 'addr')
 contact_disclose = map(lambda n: (n,), DISCLOSES)
 history_filename = os.path.join(os.path.expanduser('~'),'.fred_history') # compatibility s MS Win
 
