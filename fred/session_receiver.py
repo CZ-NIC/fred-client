@@ -259,7 +259,7 @@ class ManagerReceiver(ManagerCommand):
             if contact_addr:
                 self.__append_note_from_dct__(contact_addr,('contact:sp','contact:cc',
                     'contact:city','contact:street','contact:pc',))
-            disclosed = list(DISCLOSES)
+            disclosed = list(DISCLOSES) + ['addr']
             not_disclosed = []
             condis = contact_infData.get('contact:disclose',None)
             if condis:
