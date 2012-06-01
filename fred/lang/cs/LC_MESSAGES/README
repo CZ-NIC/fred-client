@@ -1,0 +1,2 @@
+# To create *.mo file use 'msgfmt':
+client/fred$ msgfmt lang/fred_client_cs.po -o lang/cs/LC_MESSAGES/fred_client.mo

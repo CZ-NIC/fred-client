@@ -1,1 +1,3 @@
 *.pyc
+*~
+fred/lang/cs/LC_MESSAGES/fred_client.mo
