@@ -30,6 +30,13 @@ from freddist.file_util import *
 from fred.internal_variables import fred_version, config_name
 from fred.session_config import get_etc_config_name
 
+PACKAGE_VERSION = '2.4'
+PROJECT_NAME = 'fred-client'
+PACKAGE_NAME = 'fred-client'
+
+SCRIPT_FILENAME = "%s.py" % PROJECT_NAME # fred-client.py
+QT4SCRIPT_FILENAME = "%s-qt4.pyw" % PROJECT_NAME # fred-client-qt4.pyw
+
 g_directory = ''
 
 # datarootdir/prog_name/ssl => /usr/local/share/fred-client/ssl (default)
@@ -41,7 +48,7 @@ DEFAULT_SCHEMAS_FILEMANE = 'schemas/all.xsd'
 # enum/mod-eppd/trunk/schemas/
 EPP_SCHEMAS_PATH = os.environ.get('EPP_SCHEMAS_PATH', 'fred/schemas')
 
-APP_SCRIPTS = ['fred-client', 'fred-client-qt4.pyw']
+APP_SCRIPTS = [PROJECT_NAME, QT4SCRIPT_FILENAME]
 #if 'bdist_wininst' in sys.argv and '--install-script=setup_postinstall.py'
 #in sys.argv:
 if 'bdist_wininst' in sys.argv:
@@ -171,19 +178,19 @@ class EPPClientInstall_scripts(install_scripts):
     def update_fred_client(self):
         values = [((r"(sys\.path\.insert\(0, )\'[\w/_ \-\.]*\'\)",
             r"\1'%s')" % self.getDir_std('purelibdir')))]
-        self.replace_pattern(os.path.join(self.build_dir, 'fred-client'),
+        self.replace_pattern(os.path.join(self.build_dir, PACKAGE_NAME),
                 None, values)
         if os.environ.has_key('BDIST_SIMPLE'):
-            self.replace_pattern(os.path.join(self.build_dir, 'fred-client.py'),
+            self.replace_pattern(os.path.join(self.build_dir, SCRIPT_FILENAME),
                     None, values)
-        print "fred-client file has been updated"
+        print "%s file has been updated" % SCRIPT_FILENAME
 
     def update_fred_client_qt4(self):
         values = [((r"(sys\.path\.insert\(0, )\'[\w/_ \-\.]*\'\)",
             r"\1'%s')" % self.getDir_std('purelibdir')))]
-        self.replace_pattern(os.path.join(self.build_dir, 'fred-client-qt4.pyw'),
+        self.replace_pattern(os.path.join(self.build_dir, QT4SCRIPT_FILENAME),
                 None, values)
-        print "fred-client-qt4.pyw file has been updated"
+        print "%s file has been updated" % QT4SCRIPT_FILENAME
 
     def run(self):
         self.update_fred_client()
@@ -211,8 +218,14 @@ class Install_lib(install_lib):
         self.replace_pattern(filename, None, values)
         print "session_config.py file has been updated"
 
+    def update_version(self):
+        "Update version number for client"
+        filename = os.path.join(self.build_dir, 'fred', 'internal_variables.py')
+        self.replace_pattern(filename, None, ((("PACKAGE_VERSION", PACKAGE_VERSION),)))
+
     def run(self):
         self.update_session_config()
+        self.update_version()
         install_lib.run(self)
 
 
@@ -224,14 +237,14 @@ class Install_data(install_data):
 
 def main(directory):
     if os.environ.has_key('BDIST_SIMPLE'):
-        APP_SCRIPTS.append('fred-client.py')
+        APP_SCRIPTS.append(SCRIPT_FILENAME)
     try:
-        setup(name = 'fred-client',
+        setup(name = PROJECT_NAME,
             description = 'Client FRED (Free Registry for enum and domain)',
             author = 'Zdenek Bohm, CZ.NIC',
             author_email = 'zdenek.bohm@nic.cz',
             url = 'http://www.nic.cz',
-            version = fred_version,
+            version = PACKAGE_VERSION,
             license = 'GNU GPL',
             packages = ['fred','guiqt4'],
             package_data={
@@ -242,7 +255,7 @@ def main(directory):
             },
             scripts = APP_SCRIPTS, 
             data_files=[
-                ('DATAROOTDIR/fred-client',[
+                ('DATAROOTDIR/%s' % PACKAGE_NAME, [
                     'doc/fred_howto_cs.html',
                     'doc/niccz_console.ico', 
                     'doc/niccz_gui.ico', 
@@ -252,7 +265,7 @@ def main(directory):
                     'doc/README_CS.txt',
                     'doc/README_CS.html',
                     'doc/README_QT4_CS.pdf']),
-                ('DATAROOTDIR/fred-client/ssl', [
+                ('DATAROOTDIR/%s/ssl' % PACKAGE_NAME, [
                     'fred/certificates/test-cert.pem',
                     'fred/certificates/test-key.pem']),
                 # ('DATADIR/fred-client/schemas', file_util.all_files_in_2('fred/schemas')),
@@ -262,7 +275,7 @@ def main(directory):
                 #get_etc_config_name()
                 ('SYSCONFDIR/fred', [os.path.join('build', config_name)]) 
                 ]
-            + all_files_in_4(os.path.join('DATADIR', 'fred-client', 'schemas'),
+            + all_files_in_4(os.path.join('DATADIR', PACKAGE_NAME, 'schemas'),
                         get_epp_schema_path(directory)),
             cmdclass = {
                     'sdist': EPPClientSDist,
@@ -286,14 +299,14 @@ def main(directory):
 
 if __name__ == '__main__':
     g_directory = os.path.dirname(sys.argv[0])
-    filename = 'fred-client.py'
+    filename = SCRIPT_FILENAME
     if 'bdist_simple' in sys.argv:
         # when creating bdist_simple package, enviroment variable
         # ``BDIST_SIMPLE'' must be set
         os.environ['BDIST_SIMPLE'] = 'True'
         # copy fred-client to fred-client.py (windows do not recognize file
         # without .py extension as a python script)
-        shutil.copy(os.path.join(g_directory, "fred-client"),
+        shutil.copy(os.path.join(g_directory, PACKAGE_NAME),
                     os.path.join(g_directory, filename))
 
     if main(g_directory):
