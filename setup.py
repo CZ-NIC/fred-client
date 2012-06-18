@@ -24,11 +24,10 @@ from freddist.command.install import install
 from freddist.command.install_scripts import install_scripts
 from freddist.command.install_lib import install_lib
 from freddist.command.install_data import install_data
-from freddist import file_util
-from freddist.file_util import *
+from freddist.file_util import all_files_in_4
+# fred
+from fred.internal_variables import config_name
 
-from fred.internal_variables import fred_version, config_name
-from fred.session_config import get_etc_config_name
 
 PACKAGE_VERSION = '2.4'
 PROJECT_NAME = 'fred-client'
@@ -37,7 +36,6 @@ PACKAGE_NAME = 'fred-client'
 SCRIPT_FILENAME = "%s.py" % PROJECT_NAME # fred-client.py
 QT4SCRIPT_FILENAME = "%s-qt4.pyw" % PROJECT_NAME # fred-client-qt4.pyw
 
-g_directory = ''
 
 # datarootdir/prog_name/ssl => /usr/local/share/fred-client/ssl (default)
 DEFAULT_SSL_PATH = 'ssl'
@@ -297,8 +295,9 @@ def main(directory):
         log.error("Error: %s", msg)
         return False
 
-if __name__ == '__main__':
-    g_directory = os.path.dirname(sys.argv[0])
+
+def run(argv):
+    g_directory = os.path.dirname(argv)
     filename = SCRIPT_FILENAME
     if 'bdist_simple' in sys.argv:
         # when creating bdist_simple package, enviroment variable
@@ -318,3 +317,7 @@ if __name__ == '__main__':
             os.remove(os.path.join(g_directory, filename))
         except OSError:
             pass
+
+
+if __name__ == '__main__':
+    run(sys.argv[0])
