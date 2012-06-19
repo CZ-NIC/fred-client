@@ -219,7 +219,7 @@ class Install_lib(install_lib):
     def update_version(self):
         "Update version number for client"
         filename = os.path.join(self.build_dir, 'fred', 'internal_variables.py')
-        self.replace_pattern(filename, None, ((("PACKAGE_VERSION", PACKAGE_VERSION),)))
+        self.replace_pattern(filename, None, ((("PACKAGE_VERSION", self.distribution.metadata.version),)))
 
     def run(self):
         self.update_session_config()

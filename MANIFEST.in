@@ -5,6 +5,7 @@ global-exclude *.*~
 
 include freddist/*.py
 include freddist/README
+include RELEASE-VERSION
 include freddist/command/*.py
 include conf/*
 
