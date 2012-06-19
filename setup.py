@@ -29,7 +29,6 @@ from freddist.file_util import all_files_in_4
 from fred.internal_variables import config_name
 
 
-PACKAGE_VERSION = '2.4'
 PROJECT_NAME = 'fred-client'
 PACKAGE_NAME = 'fred-client'
 
@@ -242,7 +241,6 @@ def main(directory):
             author = 'Zdenek Bohm, CZ.NIC',
             author_email = 'zdenek.bohm@nic.cz',
             url = 'http://www.nic.cz',
-            version = PACKAGE_VERSION,
             license = 'GNU GPL',
             packages = ['fred','guiqt4'],
             package_data={
