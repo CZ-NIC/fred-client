@@ -15,11 +15,14 @@
 #    You should have received a copy of the GNU General Public License
 #    along with FredClient; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+import os
+import shutil
+import sys
 
-import sys, os, shutil
 from distutils import log
-from freddist.core import setup, shutil
-from freddist.command.build import build
+from distutils.command.build import build
+
+from freddist.core import setup
 from freddist.command.sdist import sdist
 from freddist.command.install import install
 from freddist.command.install_scripts import install_scripts
