@@ -172,7 +172,9 @@ for key,value in langs.items():
             sys.exit(1)
         except IOError, (no,msg):
             langs[key] = gettext.NullTranslations() # no translation
-            print 'Translate IOError',no,msg,'\nMISSING:','%s/%s/LC_MESSAGES/%s.mo'%(tpath,options.get('lang','???'),domain)
+            if not re.search('setup.py$', sys.argv[0]):
+                # .mo file is not required to load during setup
+                print 'Translate IOError', no, msg, '\nMISSING:', '%s/%s/LC_MESSAGES/%s.mo' % (tpath, options.get('lang','???'), domain)
     else:
         langs[key] = gettext.NullTranslations() # no translation
 

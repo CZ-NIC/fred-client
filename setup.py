@@ -16,6 +16,11 @@
 #    along with FredClient; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+# There is ''setup.cfg.template'' where creating .mo files is disabled.
+# Run setup with your own config template if you need to create .mo file(s).
+# Example:
+#   python setup.py install --setupcfg-template=foo
+
 import sys, os
 from distutils import log
 from freddist.core import setup, shutil
