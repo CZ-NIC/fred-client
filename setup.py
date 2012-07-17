@@ -16,10 +16,9 @@
 #    along with FredClient; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import sys, os, shutil
+import sys, os
 from distutils import log
 from freddist.core import setup, shutil
-from freddist.command.build import build
 from freddist.command.sdist import sdist
 from freddist.command.install import install
 from freddist.command.install_scripts import install_scripts
@@ -70,27 +69,6 @@ def get_epp_schema_path(directory):
 
     raise IOError("Path to schemas missing.")
 
-
-
-class EPPClientBuild(build):
-    "sdist check required"
-
-    def run(self):
-        "run main process"
-        build.run(self)
-
-        src_path = os.path.join(self.build_lib, "fred", "lang")
-        dest_path = os.path.join(src_path, "cs", "LC_MESSAGES")
-        src_mo = os.path.join(src_path, "fred_client_cs.mo")
-        dest_mo = os.path.join(dest_path, "fred_client.mo")
-
-        if not os.path.isfile(dest_mo):
-            from distutils.dir_util import mkpath
-            if not os.path.isfile(src_mo):
-                from freddist.util import pomo_compile
-                pomo_compile([os.path.join(src_path, "fred_client_cs.po")])
-            mkpath(dest_path)
-            shutil.copyfile(src_mo, dest_mo)
 
 
 
@@ -297,7 +275,6 @@ def main(directory):
             + all_files_in_4(os.path.join('DATADIR', PACKAGE_NAME, 'schemas'),
                         get_epp_schema_path(directory)),
             cmdclass = {
-                    'build': EPPClientBuild,
                     'sdist': EPPClientSDist,
                     'install': EPPClientInstall, 
                     'install_scripts': EPPClientInstall_scripts,
