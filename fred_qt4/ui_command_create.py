@@ -13,7 +13,7 @@ from PyQt4 import QtCore, QtGui
 class Ui_CommandCreate(object):
     def setupUi(self, CommandCreate):
         CommandCreate.setObjectName("CommandCreate")
-        CommandCreate.resize(QtCore.QSize(QtCore.QRect(0,0,660,430).size()).expandedTo(CommandCreate.minimumSizeHint()))
+        CommandCreate.resize(QtCore.QSize(QtCore.QRect(0, 0, 660, 430).size()).expandedTo(CommandCreate.minimumSizeHint()))
 
         self.vboxlayout = QtGui.QVBoxLayout(CommandCreate)
         self.vboxlayout.setMargin(9)
@@ -22,7 +22,7 @@ class Ui_CommandCreate(object):
 
         self.command_create = QtGui.QLabel(CommandCreate)
 
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Policy(5),QtGui.QSizePolicy.Policy(0))
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Policy(5), QtGui.QSizePolicy.Policy(0))
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.command_create.sizePolicy().hasHeightForWidth())
@@ -65,7 +65,7 @@ class Ui_CommandCreate(object):
 
         self.btn_run = QtGui.QPushButton(CommandCreate)
 
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Policy(0),QtGui.QSizePolicy.Policy(0))
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Policy(0), QtGui.QSizePolicy.Policy(0))
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.btn_run.sizePolicy().hasHeightForWidth())
@@ -73,14 +73,14 @@ class Ui_CommandCreate(object):
         self.btn_run.setObjectName("btn_run")
         self.hboxlayout1.addWidget(self.btn_run)
 
-        spacerItem = QtGui.QSpacerItem(40,20,QtGui.QSizePolicy.Expanding,QtGui.QSizePolicy.Minimum)
+        spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.hboxlayout1.addItem(spacerItem)
         self.vboxlayout.addLayout(self.hboxlayout1)
 
         self.retranslateUi(CommandCreate)
-        QtCore.QObject.connect(self.cbox_action,QtCore.SIGNAL("currentIndexChanged(int)"),CommandCreate.changeAction)
-        QtCore.QObject.connect(self.cbox_object,QtCore.SIGNAL("currentIndexChanged(int)"),CommandCreate.changeObject)
-        QtCore.QObject.connect(self.btn_run,QtCore.SIGNAL("clicked()"),CommandCreate.pushRunButton)
+        QtCore.QObject.connect(self.cbox_action, QtCore.SIGNAL("currentIndexChanged(int)"), CommandCreate.changeAction)
+        QtCore.QObject.connect(self.cbox_object, QtCore.SIGNAL("currentIndexChanged(int)"), CommandCreate.changeObject)
+        QtCore.QObject.connect(self.btn_run, QtCore.SIGNAL("clicked()"), CommandCreate.pushRunButton)
         QtCore.QMetaObject.connectSlotsByName(CommandCreate)
 
     def retranslateUi(self, CommandCreate):
@@ -89,4 +89,3 @@ class Ui_CommandCreate(object):
         self.label.setText(QtGui.QApplication.translate("CommandCreate", "Action:", None, QtGui.QApplication.UnicodeUTF8))
         self.label_2.setText(QtGui.QApplication.translate("CommandCreate", "Object:", None, QtGui.QApplication.UnicodeUTF8))
         self.btn_run.setText(QtGui.QApplication.translate("CommandCreate", "Run", None, QtGui.QApplication.UnicodeUTF8))
-

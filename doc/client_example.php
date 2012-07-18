@@ -57,13 +57,13 @@ body {
     DATA/REASON table
 
 ------------------------------*/
-table.fred_data  { 
+table.fred_data  {
     border-collapse:collapse;
     border:solid 2px #8FBCBF;
     margin:6px 0;
 }
 .fred_data table { vertical-align:top; }
-.fred_data th, 
+.fred_data th,
 .fred_data td {
     border-right:solid 1px #7eafc0;
     border-bottom:solid 1px #7eafc0;
@@ -86,7 +86,7 @@ table.fred_data  {
 table#command  { border-collapse: collapse; }
 #command table { border-collapse: collapse; background-color:#FFF8DC; }
 #command tr { vertical-align:top; }
-#command th, 
+#command th,
 #command td {
     border-right:solid 1px #7eafc0;
     border-bottom:solid 1px #7eafc0;
@@ -155,7 +155,7 @@ table#command  { border-collapse: collapse; }
     if($_REQUEST['display_command_line']) $checked=' checked="checked"'; else $checked='';
     echo "<input type='checkbox' name='display_command_line'$checked /> Display command line (for TEST only).".CRLF;
     ?>
-    
+
     </td>
 </tr>
 
@@ -225,7 +225,7 @@ Mode <strong>PHP code</strong> generates PHP code what we redicert into file and
 <tr>
     <th>Command options</th>
     <td>
-    <input name="command_options" value="<?php echo htmlspecialchars(stripslashes($_POST['command_options'])); ?>" size="<?php echo $size; ?>" /> 
+    <input name="command_options" value="<?php echo htmlspecialchars(stripslashes($_POST['command_options'])); ?>" size="<?php echo $size; ?>" />
     <span class="note">
     (use if <strong>fred_client</strong> is not installed)<br/>
     <i>Example:</i> -s curlew -f /home/zdenek/.fred_client.conf<br/>
@@ -350,7 +350,7 @@ while(is_array($_POST['send'])) {
         echo '</pre>'.CRLF;
 
     }
-    
+
     break;
 }
 

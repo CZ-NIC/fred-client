@@ -1,7 +1,7 @@
 FredClient Installation
 
 CONTENTS
-   
+
     * Requirements
     * Installation
     * Uninstallation
@@ -14,8 +14,8 @@ if version is enought. But if you can check it yourself type:
 
     $ python -V
 
-FredClient uses for validation of the XML documents an external validator 
-xmllint. But it is not the necessary condition for running FredClient. 
+FredClient uses for validation of the XML documents an external validator
+xmllint. But it is not the necessary condition for running FredClient.
 When xmllint missing on the system the client turns validation automaticly off.
 
     $ xmllint --version
@@ -69,4 +69,3 @@ To unistall FredClient proceed following steps:
 2) Run uninstallation script with root privileges:
 
     $ sudo ./uninstall.py
-

@@ -14,12 +14,12 @@ FredClient
    What is FredClient:
    1. License
    2. System requirements and installation
-   3. Description of individual programs, parameters and the configuration file 
+   3. Description of individual programs, parameters and the configuration file
 
-        Options 
-        Configuration file 
+        Options
+        Configuration file
 
-   4. The fred_client program 
+   4. The fred_client program
 
         Display help
         EPP commands
@@ -33,10 +33,10 @@ FredClient
         Interactive parameter input mode
         Session commands
 
-   5. Fred_create.py and fred_sender.py scripts 
+   5. Fred_create.py and fred_sender.py scripts
    6. Integration of client into the PHP code
    7. Graphic interface in Qt4.
-   8. The Fred library and description of API 
+   8. The Fred library and description of API
 
         Online documentation:
         Examples of library use
@@ -60,8 +60,8 @@ Chapter 3. Description of individual programs, parameters and the configuration 
 
    CONTENTS
 
-   Options 
-   Configuration file 
+   Options
+   Configuration file
 
    The following scripts are provided:
    fred_client    - EPP console, communicates with the EPP server
@@ -132,8 +132,8 @@ Configuration file
    for example define names and locations of certification files, address of server to which
    the client should connect, schema versions, etc.
 
-   The configuration file is first looked up within the home directory of the user who initiated the script 
-   (~/.fred_client.conf). When the home directory contains no config file, it is looked up 
+   The configuration file is first looked up within the home directory of the user who initiated the script
+   (~/.fred_client.conf). When the home directory contains no config file, it is looked up
    in the etc directory (/etc/fred_client.conf). On POSIX systems, this is /etc, in
    MS Windows, this is the directory defined in the $ALLUSERSPROFILE variable.
    The --config=filepath (or -f filepath) switch enables the configuration file to be
@@ -157,9 +157,9 @@ Configuration file
    is expanded to:
    /home/username/certificates/private_key.pem after the configuration file is loaded
 
-   This method enables us to have full file paths in one location and 
+   This method enables us to have full file paths in one location and
    only add the name of the file needed. If you find this too complicated,
-   do not use variables and 
+   do not use variables and
    enter the entire address in all items.
 
    In the configuration file example, two paths must be specified like this: One to
@@ -244,8 +244,8 @@ Configuration file
      * password = password
        Password needed to log into the system.
      * timeout = time of waiting for answer in seconds.
-       The timeout settings tells the socket how long to wait for the answer from the 
-       server. When no answer is received within the specified time, 
+       The timeout settings tells the socket how long to wait for the answer from the
+       server. When no answer is received within the specified time,
        connection is considered interrupted. The default value is 10 seconds. CAUTION ! In MS Windows,
        the timeout procedure may contain a bug, which causes the connection not to be completed. In
        such a case, set the timeout to zero: timeout = 0
@@ -275,13 +275,13 @@ Chapter 4. The fred_client program
    Interactive parameter input mode
    Session commands
 
-  The  fred_client is a console, which communicates with the EPP server. 
+  The  fred_client is a console, which communicates with the EPP server.
   Launch the console by the
 
     $ fred_client [options]
 
-   When your configuration file contains a correct path to certificates and 
-   login and password, you can connect to the 
+   When your configuration file contains a correct path to certificates and
+   login and password, you can connect to the
    EPP server simply by entering the login name. The console is terminated using the "quit", or "q" command.
 
 Display help
@@ -318,7 +318,7 @@ EPP commands
 Syntax of command parameters
 
    EPP command parameters have certain special requirements
-   and use special syntax. Parameters for which this syntax does not have to be used are called 
+   and use special syntax. Parameters for which this syntax does not have to be used are called
    simple values. These are values which do not contain spaces and/or are not lists. Example:
 
    username password
@@ -355,7 +355,7 @@ Syntax of command parameters
 
 
      * ( ) brackets are used for parameters which may include a list of
-       values. For example the street parameter in the create_contact command may be 
+       values. For example the street parameter in the create_contact command may be
        a list with up to three items. When a single street is to be specified,
        enter:
 
@@ -383,7 +383,7 @@ Syntax of command parameters
        they may be further lists. Brackets must be entered so that the correct parameter structure is achieved. The structure of embedded lists is also
        explained in individual command helps. Each level is indented.
        For example the update_contact command contains the chg list, which in turn contains the
-       postal_info list, which contains the values of name, org and another list of 
+       postal_info list, which contains the values of name, org and another list of
        addresses (addr). The addr list contains city, cc, street, etc. Such lists
        are specified as follows:
 
@@ -391,12 +391,12 @@ Syntax of command parameters
 
        Compare to examples listed in command help.
 
-     * - = hyphen and equal 
+     * - = hyphen and equal
        Parameters must be entered in a specific order.
        Compulsory items are always entered first. Commands
        may therefore be terminated after the last compulsory parameter. When you
        want to enter another non-compulsory parameter
-       toward the end of the parameter, you would have to enter all 
+       toward the end of the parameter, you would have to enter all
        non-compulsory parameters before yours to ensure the correct order. This is not necessary when you enter the value using a
        """labelled parameter""".
        Labelled parameter is a way of entering a parameter value
@@ -412,11 +412,11 @@ Syntax of command parameters
 
        --name = value
 
-       Values defined using a named parameter are 
+       Values defined using a named parameter are
        OUTSIDE of the order of all other parameters. This means they can be used at
        any position between parameters and the values behind them still have the same
        position as if nothing was in front of them (see example below).
-       When you call up help for the create_contact command, 
+       When you call up help for the create_contact command,
        the last but one parameter is notify_email. Apart from compulsory parameters, you want to
        input this value only (the first five parameters are compulsory: ID,
        name, email, town and country code). Enter:
@@ -427,14 +427,14 @@ Syntax of command parameters
 
        create_contact --notify_email = my@email.net CID:ID name email@email town CZ
 
-     * . full stop It is more complicated if you want to define a value 
+     * . full stop It is more complicated if you want to define a value
        within an """embedded list""", that is a list within another list.
        Individual names in the list are joined by full stops then. Example:
 
        create_contact CID:ID name email@email town CZ --disclose.flag = y
 
-     * [] square brackets When a value is an item in a list, 
-       the input may be replaced by the lists's index. The index is input using a number in square 
+     * [] square brackets When a value is an item in a list,
+       the input may be replaced by the lists's index. The index is input using a number in square
        brackets:
 
        create_nsset nssid:nsset1 ((ns1.domain.cz (217.31.207.130 217.31.207.129))) --d
@@ -462,7 +462,7 @@ Common parameter cltrid (Client transaction ID)
    Another possibility of entering this parameter is to define it in the config file,
    or in options at client start-up.
 
-   Individual commands within a session are numbered. When the cltrid value 
+   Individual commands within a session are numbered. When the cltrid value
    contains %d, it is replaced by the command number:
 
    myCtrlID%d  - is converted to myCtrlID1, myCtrlID2, myCtrlID3, ...
@@ -506,7 +506,7 @@ No value: NULL
    In the interactive mode, the """nill value""" is entered by
    simply pressing the ENTER key.
 
-   The definition of nill value may be changed using the null_value command. 
+   The definition of nill value may be changed using the null_value command.
    It can also be defined in the configuration file.
 
 Empty value: '', ""
@@ -551,12 +551,12 @@ Interactive parameter input mode
    The console then displays the name of the parameters and waits for the value to be specified. When you do not want to
    specify the value, press enter and it will be jumped over.
    The interactive mode is cancelled at any time by pressing Ctrl+C (C as in
-   Cancel). After entering all compulsory parameters and when you do not wish to specify any non-compulsory ones, 
+   Cancel). After entering all compulsory parameters and when you do not wish to specify any non-compulsory ones,
    switch the interactive mode off by pressing Ctrl+D
    (D as in Done).
 
    When the interactive mode is cancelled, the command is not completed and
-   nothing is sent to the server. When the interactive mode is switched off (completed), the command is completed 
+   nothing is sent to the server. When the interactive mode is switched off (completed), the command is completed
    as if it was entered without an interactive mode. The command
    is then sent to the server. For """editing""" commands and when the
    confirm function is on, the command must be confirmed before
@@ -587,10 +587,10 @@ Interactive parameter input mode
 
 Session commands
 
-   The console has certain internal settings, which can be changed directly from the prompt line. 
+   The console has certain internal settings, which can be changed directly from the prompt line.
    This is done by commands called session commands. These are not EPP commands and are not
    intended for communication with the server. They are used to specify internal console settings, or
-   to display them. 
+   to display them.
    Settings specified in this way are not saved. They are only valid for the duration of the session.
    When you want to make such settings permanent, you have to specify them in the config file.
 
@@ -607,7 +607,7 @@ Session commands
 
    > poll_autoack [on/off]
 
-   When this switch is ON, "poll ack" is automatically sent after "poll req" is entered. This function is useful when you have many messages at the server. The "poll req" displays the messages, but they have to be deleted by 
+   When this switch is ON, "poll ack" is automatically sent after "poll req" is entered. This function is useful when you have many messages at the server. The "poll req" displays the messages, but they have to be deleted by
   entering "poll ack
    message_ID". With automated poll-ack, messages are automatically deleted
    after they are displayed.
@@ -663,8 +663,8 @@ Session commands
    > verbose [level]
 
    The client displays various information. This information has different level of detail.
-   The first (basic) display level is used for normal users and 
-   displays minimal information necessary for the use of the program. 
+   The first (basic) display level is used for normal users and
+   displays minimal information necessary for the use of the program.
    The second level displays all messages,
    occurring during communicationThe third level displays all messages and the XML
    source documents exchanged between the client and the server
@@ -681,7 +681,7 @@ Session commands
    The fetch_from_info function enables a command to be created using values,
    loaded from one info-type command in the previous step. This is useful,
    when you want to create a new command with similar parameters
-    Command types, which may be created using 
+    Command types, which may be created using
    fetch_from_info are: create, update, delete.
 
    For example when you want to create_contact, do the following three steps:
@@ -747,12 +747,12 @@ PHP Integration:
 
    The fred_client client may also be run by
    entering a command to be executed by the -d --command at the command line. In such a
-   case, the console does not run and the client functions as a batch. 
+   case, the console does not run and the client functions as a batch.
    This is the same as the combination of fred_create.py and fred_sender.py. The client only
    executes the command, displays output and terminates itself. Login and
    logout are automated and are not displayed at output. The configuration
    file must be correctly defined so that login can take place
-  
+
 
    The --output -o switch is used to modify the output to a desired format. When you only want to
    display the values in a browser, select HTML: --output=html.
@@ -764,7 +764,7 @@ PHP Integration:
    Select the PHP output mode: --outout=php
    Redirect the client output into a writtable directory: ... >
    /cache/outout.php
-   Enter the resulting code into the required_once('/cache/outout.php') page, 
+   Enter the resulting code into the required_once('/cache/outout.php') page,
    which makes the values available for the PHOP script.
 
    Variables from PHP output
@@ -784,7 +784,7 @@ PHP Integration:
    $fred_data = array(); // list of values
    $fred_source_command = '<?xml ... >'; source XML document of the command ( generated
    only in verbose 3).
-   $fred_source_answer = '<?xml ... >'; source XML document of the reply 
+   $fred_source_answer = '<?xml ... >'; source XML document of the reply
   (generated only in verbose 3).
 
    Example of data:
@@ -822,7 +822,7 @@ Chapter 8. The Fred library and description of API
 Online documentation:
 
    When you want to see individual classes and functions of the library, use the
-   documentation generator, which is a standard part of Python: 
+   documentation generator, which is a standard part of Python:
    Enter:
     $ pydoc -p 8080 at the command line
 
@@ -835,7 +835,7 @@ Online documentation:
    enter: http://localhost:8080/ into the address bar. A page is displayed, containing a link to fred (package) in the
    ../site-packages section.
 
-   When you have not installed, just copied the scripts, or when 
+   When you have not installed, just copied the scripts, or when
    you want to see scripts used for the fred library, follow the same start-up
    procedure, but start pydoc from the directory
    where the scripts are saved. The scripts are then displayed in help:
@@ -913,7 +913,7 @@ Examples of library use
     >>> epp.print_answer(my_retval)
     >>> epp.is_val('reason', my_retval)
 
-   The is_val() function may be entered without a parameter. In such a case, the default return is the 
+   The is_val() function may be entered without a parameter. In such a case, the default return is the
   "code" key:
    >>> epp.is_val()
     1,000
@@ -929,7 +929,3 @@ Examples of library use
 
    When a transfer error, or another error which blocks functionality occurs,
    the FredError exception is generated.
-
-
-
-

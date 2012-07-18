@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE book PUBLIC '-//OASIS//DTD DocBook XML V4.2//EN' 
+<!DOCTYPE book PUBLIC '-//OASIS//DTD DocBook XML V4.2//EN'
           'http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd'>
 <book lang="cs">
 
@@ -34,7 +34,7 @@ Aby se klient mohl připojit k serveru, je nutné vytvořit konfigurační soubo
 Kliknutím na odkaz <emphasis role='bold'>fred_console.conf.sample</emphasis> si jej otevřete,
 upravíte v něm potřebné hodnoty a uložíte jej pod názvem, který klient používá.
 </para>
-<para>Soubor neotevírejte v Notepadu (Zápisník), ale ve WordPadu nebo Wordu. 
+<para>Soubor neotevírejte v Notepadu (Zápisník), ale ve WordPadu nebo Wordu.
 Notepad neumí správně zobrazit konce řádků uložené v UNIX verzi.
 </para>
 
@@ -44,15 +44,15 @@ Dále zadejte své přihlašovací údaje - login a heslo.
 
 <para>Soubor musíte uložit do složky, ve které je klient hledá. Jméno této složky je uloženo
 v systémové proměnné ALLUSERSPROFILE, která má obvykle hodnotu
-<emphasis>"C:\Documents and Settings\All Users\"</emphasis>. 
+<emphasis>"C:\Documents and Settings\All Users\"</emphasis>.
 Soubor musí mít název <emphasis role='bold'>.fred_client.conf</emphasis> nebo ve Windows také
 <emphasis role='bold'>fred_client.ini</emphasis>. (Pozor na skryté extenze! Editační program
 může při ukládání přidat ke jménu ještě nějakou koncovku, kterou nemusí systém zobrazovat. Zobrazování/skrývání koncovek lze nastavit).
 </para>
-<para>Po editaci tedy uložte konfiguraci do souboru <emphasis>"C:\Documents and Settings\All Users\fred_client.ini"</emphasis>. 
+<para>Po editaci tedy uložte konfiguraci do souboru <emphasis>"C:\Documents and Settings\All Users\fred_client.ini"</emphasis>.
 </para>
 
-<para>Klikněte na ikonu aplikace <emphasis role='bold'>fred_client</emphasis>. 
+<para>Klikněte na ikonu aplikace <emphasis role='bold'>fred_client</emphasis>.
 Je-li vše v pořádku, aplikace se automaticky připojí k serveru a je připravena k zadávání příkazů.
 </para>
 

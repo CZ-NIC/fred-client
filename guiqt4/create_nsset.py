@@ -28,14 +28,14 @@ class FredWindow(QtGui.QWidget):
         QtGui.QWidget.__init__(self, parent)
         self.ui = Ui_FredWindow()
         self.ui.setupUi(self)
-        self.ui.tech.horizontalHeader().resizeSection(0,320)
+        self.ui.tech.horizontalHeader().resizeSection(0, 320)
         self._tech_item = QtCore.QString()
         self.dns_sets = add_dns_sets(self.ui.frame_dns, FredWindowDNS, 2)
 
-    def tech_current_changed(self,r,c,x,y):
+    def tech_current_changed(self, r, c, x, y):
         self._tech_item = table_current_changed(self.ui.tech, r, c)
 
-    def tech_value_changed(self,r,c):
+    def tech_value_changed(self, r, c):
         self._tech_item = table_value_changed(self.ui.tech, self._tech_item, r, c)
 
 if __name__ == "__main__":

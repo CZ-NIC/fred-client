@@ -8,10 +8,10 @@ class UnknownTypeWidget:
     pass
 
 def test_str():
-    print "fred.translate.encoding=",encoding
-    for text in (u'TEST', u'řečiště',u'ŘEČITĚ',u'žluťoučký kůň příšerně úpěl ďábelské ódy'):
+    print "fred.translate.encoding=", encoding
+    for text in (u'TEST', u'řečiště', u'ŘEČITĚ', u'žluťoučký kůň příšerně úpěl ďábelské ódy'):
         var = get_str(QtCore.QString(text))
-        print u'QString(%s):'%text, type(var), var
+        print u'QString(%s):' % text, type(var), var
 
 def test_widgets():
     app = QtGui.QApplication([])
@@ -46,7 +46,7 @@ def test_widgets():
     append_key(dct, key, widget)
 
     key = 'QTableWidget'
-    widget = QtGui.QTableWidget(2,1)
+    widget = QtGui.QTableWidget(2, 1)
     widget.setItem(0, 0, QtGui.QTableWidgetItem('first cell stuff'))
     widget.setItem(1, 0, QtGui.QTableWidgetItem('second cell stuff'))
     append_key(dct, key, widget)
@@ -55,13 +55,13 @@ def test_widgets():
     widget = UnknownTypeWidget()
     append_key(dct, key, widget)
 
-    for k,v in dct.items():
-        print '\t',k,':\t',v
+    for k, v in dct.items():
+        print '\t', k, ':\t', v
 
 if __name__ == "__main__":
     # TESTS
     import sys
-    sys.path.insert(0,'../')
+    sys.path.insert(0, '../')
     from fred.translate import encoding
     init_encoding(encoding)
     test_str()

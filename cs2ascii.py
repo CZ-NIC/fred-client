@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Použití pro převod textu s diakritikou na čisté ASCII.
-# Není to zcela dokončeno. 
+# Není to zcela dokončeno.
 # NEMÁ být součástí distribuce!!! Je to jen udělátko.
 #
 import sys
@@ -9,7 +9,7 @@ import re
 import string
 
 src = u'žščřďťňěáéíýóúůŽŠČŘĎŤŇĚÁÉÍÝÓÚŮ'  # ©„“ (ale nejde to tam dát)
-dst =  'zscrdtneaeiyouuZSCRDTNEAEIYOUU'  # c""
+dst = 'zscrdtneaeiyouuZSCRDTNEAEIYOUU'  # c""
 enc = 'iso-8859-2'
 ## u'\u251c' ©
 ## u'\u201e'„   u'\u201c'“
@@ -19,9 +19,9 @@ if len(sys.argv) > 1:
         try:
             body = open(sys.argv[1]).read()
         except IOError, (no, msg):
-            print 'Soubor nenalezen. IOError: [Errno %d] %s'%(no, msg)
+            print 'Soubor nenalezen. IOError: [Errno %d] %s' % (no, msg)
             break
-        encoding=''
+        encoding = ''
         if len(sys.argv) > 2:
             encoding = sys.argv[2]
         else:
@@ -40,28 +40,28 @@ if len(sys.argv) > 1:
                     encoding = 'cp852'
                     break
             if encoding:
-                print u'Rozpoznáno kódování:',encoding
+                print u'Rozpoznáno kódování:', encoding
             else:
                 print u'Kódování nebylo rozpoznáno. Musí se zadat jako parametr.'
                 break
         if not encoding: break
         # odstranění znaků mimo ASCII
         # UnicodeEncodeError: 'charmap' codec can't encode characters in position 30-32: character maps to <undefined>
-        body = re.sub(u'©'.encode('utf-8'),'(c)',body)
-        body = re.sub(u'[„“]'.encode('utf-8'),'"',body)
+        body = re.sub(u'©'.encode('utf-8'), '(c)', body)
+        body = re.sub(u'[„“]'.encode('utf-8'), '"', body)
         try:
             ubody = body.decode(encoding)
         except LookupError, msg:
-            print 'LookupError:',msg
+            print 'LookupError:', msg
             break
         except UnicodeDecodeError, msg:
-            print 'UnicodeDecodeError:',msg
+            print 'UnicodeDecodeError:', msg
             break
-        charset = string.maketrans(src.encode(enc),dst)
+        charset = string.maketrans(src.encode(enc), dst)
         try:
             print ubody.encode(enc).translate(charset)
         except UnicodeEncodeError, msg:
-            print 'UnicodeEncodeError:',msg
+            print 'UnicodeEncodeError:', msg
         break
 else:
     print u"""Použití: cs2ascii.py soubor [kódování]

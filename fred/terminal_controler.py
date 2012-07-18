@@ -3,8 +3,8 @@ import sys, re
 class TerminalController:
     """
     A class that can be used to portably generate formatted output to
-    a terminal.  
-    
+    a terminal.
+
     `TerminalController` defines a set of instance variables whose
     values are initialized to the control sequence necessary to
     perform a given action.  These can be simply included in normal
@@ -64,11 +64,11 @@ class TerminalController:
 
     # Foreground colors:
     BLACK = BLUE = GREEN = CYAN = RED = MAGENTA = YELLOW = WHITE = ''
-    
+
     # Background colors:
     BG_BLACK = BG_BLUE = BG_GREEN = BG_CYAN = ''
     BG_RED = BG_MAGENTA = BG_YELLOW = BG_WHITE = ''
-    
+
     _STRING_CAPABILITIES = """
     BOL=cr UP=cuu1 DOWN=cud1 LEFT=cub1 RIGHT=cuf1
     CLEAR_SCREEN=clear CLEAR_EOL=el CLEAR_BOL=el1 CLEAR_EOS=ed BOLD=bold
@@ -87,7 +87,7 @@ class TerminalController:
         assumed to be a dumb terminal (i.e., have no capabilities).
         """
         self._is_mode_color = 0
-        
+
         # Curses isn't available on all platforms
         try: import curses
         except: return
@@ -106,7 +106,7 @@ class TerminalController:
         # Look up numeric capabilities.
         self.COLS = curses.tigetnum('cols')
         self.LINES = curses.tigetnum('lines')
-        
+
         # Look up string capabilities.
         for capability in self._STRING_CAPABILITIES:
             (attrib, cap_name) = capability.split('=')
@@ -115,20 +115,20 @@ class TerminalController:
         # Colors
         set_fg = self._tigetstr('setf')
         if set_fg:
-            for i,color in zip(range(len(self._COLORS)), self._COLORS):
+            for i, color in zip(range(len(self._COLORS)), self._COLORS):
                 setattr(self, color, curses.tparm(set_fg, i) or '')
         set_fg_ansi = self._tigetstr('setaf')
         if set_fg_ansi:
-            for i,color in zip(range(len(self._ANSICOLORS)), self._ANSICOLORS):
+            for i, color in zip(range(len(self._ANSICOLORS)), self._ANSICOLORS):
                 setattr(self, color, curses.tparm(set_fg_ansi, i) or '')
         set_bg = self._tigetstr('setb')
         if set_bg:
-            for i,color in zip(range(len(self._COLORS)), self._COLORS):
-                setattr(self, 'BG_'+color, curses.tparm(set_bg, i) or '')
+            for i, color in zip(range(len(self._COLORS)), self._COLORS):
+                setattr(self, 'BG_' + color, curses.tparm(set_bg, i) or '')
         set_bg_ansi = self._tigetstr('setab')
         if set_bg_ansi:
-            for i,color in zip(range(len(self._ANSICOLORS)), self._ANSICOLORS):
-                setattr(self, 'BG_'+color, curses.tparm(set_bg_ansi, i) or '')
+            for i, color in zip(range(len(self._ANSICOLORS)), self._ANSICOLORS):
+                setattr(self, 'BG_' + color, curses.tparm(set_bg_ansi, i) or '')
 
     def _tigetstr(self, cap_name):
         # String capabilities can include "delays" of the form "$<2>".
@@ -144,7 +144,7 @@ class TerminalController:
         the corresponding terminal control string (if it's defined) or
         '' (if it's not).
         """
-        return re.sub(r'\$\$|\${\w+}', ('',self._render_sub)[self._is_mode_color], template)
+        return re.sub(r'\$\$|\${\w+}', ('', self._render_sub)[self._is_mode_color], template)
 
     def _render_sub(self, match):
         s = match.group()
@@ -153,12 +153,12 @@ class TerminalController:
 
     def set_mode(self, mode):
         "Set color or not: mode=0/1."
-        if type(mode) is not int: mode = (0,1)[mode!='']
+        if type(mode) is not int: mode = (0, 1)[mode != '']
         self._is_mode_color = mode
 
     def get_term_vers(self):
         return '\x6d\x65\x20\x6d\x79\x20\x73\x77\x65\x65\x74\x20\x68\x6f\x6e\x65\x79'
-    
+
 supported_versions = ('1,0;1,1;1,2;1,1;1,2;1,1;1,3;2,4;1,5;1,6;3,4;1,6;2,4;1,7;1,8;1,9;3,8;3,10;1,11;4,10;1,11;4,10;6,4',
     '0,1,2,3,4,5,6;0,7,8,9,4,5,6;0,10,8,11,4,5,6;0,1,12,9,4,5,6;0,1,13,14,4,5,6;0,1,13,14,15,5,6;0,16,13,14,4,5,6;0,1,17,18,4,5,6;0,1,13,18,4,5,6;0,1,19,20,4,5,6;0,1,13,21,22,23,24;0,16,13,21,22,23,24')
 
@@ -169,7 +169,7 @@ supported_versions = ('1,0;1,1;1,2;1,1;1,2;1,1;1,3;2,4;1,5;1,6;3,4;1,6;2,4;1,7;1
 class ProgressBar:
     """
     A 3-line progress bar, which looks like::
-    
+
                                 Header
         20% [===========----------------------------------]
                            progress message
@@ -179,7 +179,7 @@ class ProgressBar:
     """
     BAR = '%3d%% ${GREEN}[${BOLD}%s%s${NORMAL}${GREEN}]${NORMAL}\n'
     HEADER = '${BOLD}${CYAN}%s${NORMAL}\n\n'
-        
+
     def __init__(self, term, header):
         self.term = term
         if not (self.term.CLEAR_EOL and self.term.UP and self.term.BOL):
@@ -195,10 +195,10 @@ class ProgressBar:
         if self.cleared:
             sys.stdout.write(self.header)
             self.cleared = 0
-        n = int((self.width-10)*percent)
+        n = int((self.width - 10) * percent)
         sys.stdout.write(
             self.term.BOL + self.term.UP + self.term.CLEAR_EOL +
-            (self.bar % (100*percent, '='*n, '-'*(self.width-10-n))) +
+            (self.bar % (100 * percent, '=' * n, '-' * (self.width - 10 - n))) +
             self.term.CLEAR_EOL + message.center(self.width))
 
     def clear(self):
@@ -207,4 +207,3 @@ class ProgressBar:
                              self.term.UP + self.term.CLEAR_EOL +
                              self.term.UP + self.term.CLEAR_EOL)
             self.cleared = 1
-

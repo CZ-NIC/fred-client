@@ -34,9 +34,9 @@ def __auto_login__(epp, verbose):
         ok = 1
     except FredError, msg:
         ok = 0
-        dansw={}
-    if dansw.get('code',0) != 1000:
-        epp.append_error(get_ltext(dansw.get('reason',_T('Login failed'))))
+        dansw = {}
+    if dansw.get('code', 0) != 1000:
+        epp.append_error(get_ltext(dansw.get('reason', _T('Login failed'))))
     epp.display()
     return ok
 
@@ -46,22 +46,22 @@ def split_docs(docset):
     eppend = re.compile('(</epp>)', re.S)
     chops = re.split('(<\?xml)', docset)
     limit = len(chops)
-    n=0
+    n = 0
     while n < limit:
-        if xmltag.match(chops[n]) and n+1 < limit:
-            chunk = '%s%s'%(chops[n],chops[n+1])
-            n+=1
+        if xmltag.match(chops[n]) and n + 1 < limit:
+            chunk = '%s%s' % (chops[n], chops[n + 1])
+            n += 1
             parts = eppend.split(chunk)
-            if len(parts)>1:
-                docs.append((1,'%s%s'%(parts[0],parts[1]))) # body + last tag
+            if len(parts) > 1:
+                docs.append((1, '%s%s' % (parts[0], parts[1]))) # body + last tag
                 rest = len(parts) > 2 and parts[2] or ''
             else:
                 rest = _T('Invalid EPP XML document. Last tag missing.')
             mess = rest.strip()
-            if mess: docs.append((0,mess))
+            if mess: docs.append((0, mess))
         else:
-            if chops[n]: docs.append((0,chops[n]))
-        n+=1
+            if chops[n]: docs.append((0, chops[n]))
+        n += 1
     return docs
 
 
@@ -74,7 +74,7 @@ def send_docs(display_bar, docs=[]):
     if not epp.load_config():
         return
     epp.join_missing_config_messages(options['verbose'])
-    
+
     if len(options['verbose']):
         verbose = epp.set_verbose(options['verbose'])
     else:
@@ -87,7 +87,7 @@ def send_docs(display_bar, docs=[]):
         if os.path.isfile(filepath):
             docs.extend(split_docs(open(filepath).read()))
         else:
-            docs.append((0,'File not found: %s'%filepath))
+            docs.append((0, 'File not found: %s' % filepath))
     #-------------------------------------------------
     # For every loaded document
     #-------------------------------------------------
@@ -97,8 +97,8 @@ def send_docs(display_bar, docs=[]):
         bar = None
         bar_pos = 0
         max = len(docs)
-        bar_step = (100.0/max)*0.01
-        bar_header = '%s: %d'%(_T('Send files'),max)
+        bar_step = (100.0 / max) * 0.01
+        bar_header = '%s: %d' % (_T('Send files'), max)
     epp.print_tag(BEGIN) # enclose leak messages into tag (comment)
     epp.display() # display errors or notes
     for code, xmldoc in docs:
@@ -108,7 +108,7 @@ def send_docs(display_bar, docs=[]):
             # for check_* commands also grab list of names for sorting output
             command_name = epp.grab_command_name_from_xml(xmldoc)
             if len(command_name):
-                if command_name in ('hello','login'):
+                if command_name in ('hello', 'login'):
                     epp.connect() # No problem call connect() if we are connected already.
                 elif not epp.is_connected():
                     if not __auto_login__(epp, verbose): break
@@ -126,16 +126,16 @@ def send_docs(display_bar, docs=[]):
             epp.display() # display errors or notes
         else:
             if not display_bar:
-                print epp.get_formated_message(xmldoc,1) # 0 - note, 1 - ERROR
+                print epp.get_formated_message(xmldoc, 1) # 0 - note, 1 - ERROR
         if display_bar:
-            if bar is None: bar = terminal_controler.ProgressBar(colored_output,bar_header)
+            if bar is None: bar = terminal_controler.ProgressBar(colored_output, bar_header)
             bar.clear()
             bar.update(bar_pos, _T('sending...'))
             bar_pos += bar_step
     epp.print_tag(END) # end of enclosing leak messages
     if display_bar:
         # print final 100%
-        note = "Ran test in %.3f sec"%(time.time() - sart_at)
+        note = "Ran test in %.3f sec" % (time.time() - sart_at)
         bar.clear()
         bar.update(1.0, note)
 
@@ -162,7 +162,7 @@ def main():
                 send_docs(options['bar']) # commands from argv
             else:
                 from console import help_option
-                print '%s: %s [OPTIONS] [filenames]\n\n%s\n%s\n%s\n%s:\n%s\n\n%s\n'%(_T('Usage'), 'fred_sender.py',
+                print '%s: %s [OPTIONS] [filenames]\n\n%s\n%s\n%s\n%s:\n%s\n\n%s\n' % (_T('Usage'), 'fred_sender.py',
                 _T('Module for sending files to the EPP server.'),
                 help_option,
                 _T("""  -o OUTPUT_TYPE, --output=OUTPUT_TYPE
@@ -173,7 +173,7 @@ def main():
   ./fred_create.py info_contact reg-id pokus > cmd2.xml
   ./fred_sender.py cmd1.xml cmd2.xml
   ./fred_sender.py -s epp_host -l cs cmd1.xml cmd2.xml
-    
+
   echo -en "check_domain nic.cz\\ninfo_domain nic.cz" | ./fred_create.py | ./fred_sender.py""",
    _T('See README for more information.'))
 

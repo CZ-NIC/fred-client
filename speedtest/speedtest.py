@@ -5,7 +5,7 @@
 ## * login je ze sekce [connect] v ~/.ccreg_client.conf
 ## * targets: pocet vygenerovanych zaznamu od kazdeho typu
 ## * threads: pocet spoustenych vlaken
-## 
+##
 ## Poznamky:
 ## 1) targets/threads musi byt delitelne beze zbytku
 ##         (napr. targets 6000, threads [1, 2, 3, 4, 5, 6, 8, 10, 12, 15, ...]
@@ -44,7 +44,7 @@
 ## jejich casy. Pocitani casu je nyni ve funkci 'controller', ktera meri
 ## cas zaplneni fronty odpovidajicim poctem (= targets) odpovedi z epp
 ## objektu.
-## 
+##
 
 import sys
 
@@ -54,9 +54,9 @@ import sys
 sys.path.insert(0, '../')
 
 # Pocet vlaken
-threads = 5 
+threads = 5
 # Pocet objektu k vytvoreni
-targets = 100 
+targets = 100
 # Smazat objekty? # True / False, 0 / 1, 'cokoliv' / None
 delete_after_run = True
 
@@ -94,29 +94,29 @@ domain_delete_list_xml = []
 domain_list_id = []
 domain_create_command = 'create_domain %s-%06d.cz %s pw %s' # prefix, num, cid, nssid
 domain_delete_command = 'delete_domain %s'
-list_id =  {'domain': domain_list_id, 'nsset': nsset_list_id, 'contact': contact_list_id}
+list_id = {'domain': domain_list_id, 'nsset': nsset_list_id, 'contact': contact_list_id}
 
-list_xml = {	'domain': domain_list_xml,
-		'domain_delete': domain_delete_list_xml,
-		'nsset': nsset_list_xml, 
-		'nsset_delete': nsset_delete_list_xml,
-		'contact': contact_list_xml,
-		'contact_delete': contact_delete_list_xml,
+list_xml = {    'domain': domain_list_xml,
+        'domain_delete': domain_delete_list_xml,
+        'nsset': nsset_list_xml,
+        'nsset_delete': nsset_delete_list_xml,
+        'contact': contact_list_xml,
+        'contact_delete': contact_delete_list_xml,
 }
 
-list_times = {	'domain': 0,
-		'domain4sec': 0,
-		'domain_delete': 0,
-		'domain_delete4sec': 0,
-		'nsset': 0,
-		'nsset4sec': 0,
-		'nsset_delete': 0,
-		'nsset_delete4sec': 0,
-		'contact': 0,
-		'contact4sec': 0,
-		'contact_delete': 0,
-		'contact_delete4sec': 0,
-		'average': 0,
+list_times = {    'domain': 0,
+        'domain4sec': 0,
+        'domain_delete': 0,
+        'domain_delete4sec': 0,
+        'nsset': 0,
+        'nsset4sec': 0,
+        'nsset_delete': 0,
+        'nsset_delete4sec': 0,
+        'contact': 0,
+        'contact4sec': 0,
+        'contact_delete': 0,
+        'contact_delete4sec': 0,
+        'average': 0,
 }
 
 workers = []
@@ -127,7 +127,7 @@ def intro(d):
 
 Program nejdrive pred kazdym testem predgeneruje sadu XML dokumentu,
 ktere pak odesle na server. Meri se cas samotneho prenosu mezi
-klientem a serverem, cas potrebny k vygenerovani XML dokumentu se 
+klientem a serverem, cas potrebny k vygenerovani XML dokumentu se
 do vysledku nezapocitava.
 
 Vychozi pocet pozadavku pro kazdy typ dotazu: %d
@@ -138,18 +138,18 @@ def outro(d):
     global list_times
     msg = """\
 
-Vygenerovani kontaktu trvalo: %(contact).2f sekund 
+Vygenerovani kontaktu trvalo: %(contact).2f sekund
                              (%(contact4sec).2f za sekundu)
-Vygenerovani nssetu trvalo: %(nsset).2f sekund 
+Vygenerovani nssetu trvalo: %(nsset).2f sekund
                            (%(nsset4sec).2f za sekundu)
-Vygenerovani domen trvalo: %(domain).2f sekund 
+Vygenerovani domen trvalo: %(domain).2f sekund
                           (%(domain4sec).2f za sekundu)
 
-Smazani kontaktu trvalo: %(contact_delete).2f sekund 
+Smazani kontaktu trvalo: %(contact_delete).2f sekund
                         (%(contact_delete4sec).2f za sekundu)
-Smazani nssetu trvalo: %(nsset_delete).2f sekund 
+Smazani nssetu trvalo: %(nsset_delete).2f sekund
                       (%(nsset_delete4sec).2f za sekundu)
-Smazani domen trvalo: %(domain_delete).2f sekund 
+Smazani domen trvalo: %(domain_delete).2f sekund
                      (%(domain_delete4sec).2f za sekundu)
 
 Prumerny pocet pozadavku za sekundu: %(average).2f
@@ -159,8 +159,8 @@ Prumerny pocet pozadavku za sekundu: %(average).2f
 
 def create_contacts(d, num):
     d.gauge_start("Pripravuji objekt cislo: 1", title=" Generuji XML pro kontakty ")
-    for i in range(1, num+1):
-      n = math.ceil(i*100/num)
+    for i in range(1, num + 1):
+      n = math.ceil(i * 100 / num)
       contact_list_xml.append(gepp.create_eppdoc(contact_create_command % (prefix, i))[1])
       contact_list_id.append('cid:%s%06d' % (prefix, i))
       d.gauge_update(n, "Pripravuji objekt cislo: %d" % i, update_text=1)
@@ -169,15 +169,15 @@ def create_contacts(d, num):
 def delete_contacts(d):
     d.gauge_start("Pripravuji objekt cislo: 1", title=" Generuji XML pro mazani kontaktu ")
     for i in range(len(list_id['contact'])):
-      n = math.ceil((i+1)*100/len(list_id['contact']))
+      n = math.ceil((i + 1) * 100 / len(list_id['contact']))
       contact_delete_list_xml.append(gepp.create_eppdoc(contact_delete_command % (list_id['contact'][i]))[1])
-      d.gauge_update(n, "Pripravuji objekt cislo: %d" % (i+1), update_text=1)
+      d.gauge_update(n, "Pripravuji objekt cislo: %d" % (i + 1), update_text=1)
     d.gauge_stop()
 
 def create_nssets(d, num):
     d.gauge_start("Pripravuji objekt cislo: 1", title=" Generuji XML pro NSSETy ")
-    for i in range(1, num+1):
-      n = math.ceil(i*100/num)
+    for i in range(1, num + 1):
+      n = math.ceil(i * 100 / num)
       contact_id = random.choice(contact_list_id)
       nsset_list_xml.append(gepp.create_eppdoc(nsset_create_command % (prefix, i, contact_id))[1])
       nsset_list_id.append('nssid:%s%06d' % (prefix, i))
@@ -187,15 +187,15 @@ def create_nssets(d, num):
 def delete_nssets(d):
     d.gauge_start("Pripravuji objekt cislo: 1", title=" Generuji XML pro mazani NSSETu ")
     for i in range(len(list_id['nsset'])):
-      n = math.ceil((i+1)*100/len(list_id['nsset']))
+      n = math.ceil((i + 1) * 100 / len(list_id['nsset']))
       nsset_delete_list_xml.append(gepp.create_eppdoc(nsset_delete_command % (list_id['nsset'][i]))[1])
-      d.gauge_update(n, "Pripravuji objekt cislo: %d" % (i+1), update_text=1)
+      d.gauge_update(n, "Pripravuji objekt cislo: %d" % (i + 1), update_text=1)
     d.gauge_stop()
 
 def create_domains(d, num):
     d.gauge_start("Pripravuji objekt cislo: 1", title=" Generuji XML pro domeny ")
-    for i in range(1, num+1):
-      n = math.ceil(i*100/num)
+    for i in range(1, num + 1):
+      n = math.ceil(i * 100 / num)
       contact_id = random.choice(contact_list_id)
       nsset_id = random.choice(nsset_list_id)
       domain_list_xml.append(gepp.create_eppdoc(domain_create_command % (prefix, i, contact_id, nsset_id))[1])
@@ -206,18 +206,18 @@ def create_domains(d, num):
 def delete_domains(d):
     d.gauge_start("Pripravuji objekt cislo: 1", title=" Generuji XML pro mazani domen ")
     for i in range(len(list_id['domain'])):
-      n = math.ceil((i+1)*100/len(list_id['domain']))
+      n = math.ceil((i + 1) * 100 / len(list_id['domain']))
       domain_delete_list_xml.append(gepp.create_eppdoc(domain_delete_command % (list_id['domain'][i]))[1])
-      d.gauge_update(n, "Pripravuji objekt cislo: %d" % (i+1), update_text=1)
+      d.gauge_update(n, "Pripravuji objekt cislo: %d" % (i + 1), update_text=1)
     d.gauge_stop()
 
 def worker(epp, xmllist):
     for item in xmllist:
       epp.send(item)
       queue.put_nowait(epp.receive())
-#	time.sleep(random.random()/10)
-#	queue.put_nowait(item)
-#	sys.stderr.write("\n%s" % item)
+#    time.sleep(random.random()/10)
+#    queue.put_nowait(item)
+#    sys.stderr.write("\n%s" % item)
 
 def create_workers(objtype):
   global workers
@@ -226,9 +226,9 @@ def create_workers(objtype):
   for x in range(threads):
     epp = fred.ClientSession()
     epp.load_config(options['session'])
-    epp.api_command('login', {'username': epp.get_config_value('connect','username'), 'password': epp.get_config_value('connect','password')})
+    epp.api_command('login', {'username': epp.get_config_value('connect', 'username'), 'password': epp.get_config_value('connect', 'password')})
     partlist = []
-    for i in range(targets/threads):
+    for i in range(targets / threads):
       partlist.append(xml.pop(xml.index(random.choice(xml))))
     t = threading.Thread(target=worker, args=(epp, partlist))
     workers.append(t)
@@ -239,15 +239,15 @@ def controller(d, objtype, msg):
     d.gauge_start("Odesilam objekt cislo: 1", title=msg)
     [ t.setDaemon(1) for t in workers ]
     [ t.start() for t in workers ]
-    for i in range(1, targets+1):
-      n = math.ceil(i*100/targets)
+    for i in range(1, targets + 1):
+      n = math.ceil(i * 100 / targets)
       item = queue.get(True)
       open('_xml_in.log', 'a').write("%s\n" % item)
       d.gauge_update(n, "Odesilam objekt cislo: %d" % i, update_text=1)
     endtime = time.time()
-    totaltime = endtime-starttime
+    totaltime = endtime - starttime
     list_times[objtype] = totaltime
-    list_times["%s4sec" % (objtype)] = targets/totaltime
+    list_times["%s4sec" % (objtype)] = targets / totaltime
     d.gauge_stop()
 
 def main():
@@ -256,7 +256,7 @@ def main():
     d.add_persistent_args(["--backtitle", "Testovani vykonu systemu fred | Prefix: %s | david@nic.cz" % prefix.upper()])
 
     intro(d)
-    
+
     create_contacts(d, targets)
     open('_contact.xml', 'w').write('\n'.join(contact_list_xml))
     create_workers('contact')
@@ -273,23 +273,21 @@ def main():
     controller(d, 'domain', ' Vytvarim domeny... ')
 
     if delete_after_run:
-	delete_domains(d)
-	create_workers('domain_delete')
-	controller(d, 'domain_delete', ' Mazu domeny... ')
+    delete_domains(d)
+    create_workers('domain_delete')
+    controller(d, 'domain_delete', ' Mazu domeny... ')
 
-	delete_nssets(d)
-	create_workers('nsset_delete')
-	controller(d, 'nsset_delete', ' Mazu NSSETy... ')
+    delete_nssets(d)
+    create_workers('nsset_delete')
+    controller(d, 'nsset_delete', ' Mazu NSSETy... ')
 
-	delete_contacts(d)
-	create_workers('contact_delete')
-	controller(d, 'contact_delete', ' Mazu kontakty... ')
+    delete_contacts(d)
+    create_workers('contact_delete')
+    controller(d, 'contact_delete', ' Mazu kontakty... ')
 
     values = [ list_times[z] for z in [ x for x in list_times.keys() if list_times[x] and x.endswith('4sec') ] ]
-    list_times['average'] = sum(values)/len(values)
+    list_times['average'] = sum(values) / len(values)
 
     outro(d)
 
 if __name__ == "__main__": main()
-
-

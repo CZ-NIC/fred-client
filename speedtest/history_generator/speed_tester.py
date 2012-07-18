@@ -18,7 +18,7 @@ class EppSpeedTester(object):
                 if time_list:
                     avg_time = sum(time_list) / len(time_list)
                     print '%-30s %.3f' % ('Avg. time for %s %s:' % (command, obj), avg_time)
-                    
+
     def print_result_detailed(self):
         for command in ['create', 'update', 'delete']:
             for obj in ['contact', 'nsset', 'keyset', 'domain']:
@@ -29,7 +29,7 @@ class EppSpeedTester(object):
                     max_time = max(time_list)
                     print '%-30s %.3f   <%s, %s>' % ('Avg. time for %s %s:' % (command, obj), avg_time, min_time, max_time)
                     #print '\n'.join(['%10.3f' % item for item in time_list])
-        
+
     def measure_command(self, command, obj, count, *args, **kwd):
         command_func = getattr(self.eppc, command)
         for i in xrange(count):
@@ -38,13 +38,12 @@ class EppSpeedTester(object):
                 self.times[command][obj].append(t_diff)
             except EppCommanderError:
                 print 'Command not accomplished due to EppError (ignoring)'
-                
+
 
 if __name__ == '__main__':
     est = EppSpeedTester()
     #est.measure_command('update', 'contact', 10, 'CID:2009-3-6-11-49-56-376201')
     est.measure_command('create', 'contact', 100)
-    
+
     #est.print_result()
     est.print_result_detailed()
-    

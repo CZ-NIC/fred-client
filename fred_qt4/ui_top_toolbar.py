@@ -13,7 +13,7 @@ from PyQt4 import QtCore, QtGui
 class Ui_topToolbar(object):
     def setupUi(self, topToolbar):
         topToolbar.setObjectName("topToolbar")
-        topToolbar.resize(QtCore.QSize(QtCore.QRect(0,0,750,58).size()).expandedTo(topToolbar.minimumSizeHint()))
+        topToolbar.resize(QtCore.QSize(QtCore.QRect(0, 0, 750, 58).size()).expandedTo(topToolbar.minimumSizeHint()))
 
         self.hboxlayout = QtGui.QHBoxLayout(topToolbar)
         self.hboxlayout.setMargin(2)
@@ -29,7 +29,7 @@ class Ui_topToolbar(object):
         self.toolButton.setObjectName("toolButton")
         self.hboxlayout.addWidget(self.toolButton)
 
-        spacerItem = QtGui.QSpacerItem(40,20,QtGui.QSizePolicy.Expanding,QtGui.QSizePolicy.Minimum)
+        spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.hboxlayout.addItem(spacerItem)
 
         self.btn_check_domain = QtGui.QToolButton(topToolbar)
@@ -63,11 +63,11 @@ class Ui_topToolbar(object):
         self.hboxlayout.addWidget(self.btn_renew_domain)
 
         self.retranslateUi(topToolbar)
-        QtCore.QObject.connect(self.btn_check_domain,QtCore.SIGNAL("clicked()"),topToolbar.check_domain)
-        QtCore.QObject.connect(self.btn_info_domain,QtCore.SIGNAL("clicked()"),topToolbar.info_domain)
-        QtCore.QObject.connect(self.btn_create_domain,QtCore.SIGNAL("clicked()"),topToolbar.create_domain)
-        QtCore.QObject.connect(self.btn_update_domain,QtCore.SIGNAL("clicked()"),topToolbar.update_domain)
-        QtCore.QObject.connect(self.btn_renew_domain,QtCore.SIGNAL("clicked()"),topToolbar.renew_domain)
+        QtCore.QObject.connect(self.btn_check_domain, QtCore.SIGNAL("clicked()"), topToolbar.check_domain)
+        QtCore.QObject.connect(self.btn_info_domain, QtCore.SIGNAL("clicked()"), topToolbar.info_domain)
+        QtCore.QObject.connect(self.btn_create_domain, QtCore.SIGNAL("clicked()"), topToolbar.create_domain)
+        QtCore.QObject.connect(self.btn_update_domain, QtCore.SIGNAL("clicked()"), topToolbar.update_domain)
+        QtCore.QObject.connect(self.btn_renew_domain, QtCore.SIGNAL("clicked()"), topToolbar.renew_domain)
         QtCore.QMetaObject.connectSlotsByName(topToolbar)
 
     def retranslateUi(self, topToolbar):

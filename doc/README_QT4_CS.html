@@ -10,7 +10,7 @@
     $ fred_client.py -q
     </pre><p>
     Nebo klikněte na soubor fred_client_qt4.pyw
-    </p><div class="figure"><a id="id2489639"></a><p class="title"><b>Obrázek 3.1. Ikona aplikace.</b></p><div class="mediaobject"><table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="106"><tr><td><img src="img/app_icon.gif" alt="Ikona aplikace." /></td></tr></table></div></div><p>Okenní nadstavba používá stejný konfigurační soubor, 
+    </p><div class="figure"><a id="id2489639"></a><p class="title"><b>Obrázek 3.1. Ikona aplikace.</b></p><div class="mediaobject"><table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="106"><tr><td><img src="img/app_icon.gif" alt="Ikona aplikace." /></td></tr></table></div></div><p>Okenní nadstavba používá stejný konfigurační soubor,
     jako konzolová aplikace <span class="bold"><strong>FredClient</strong></span>.
     Pokud je konfigurační soubor nalezen a všechny přihlašovací informace
     jsou k dispozici, tak se applikace automaticky přihlásí k EPP erveru.
@@ -35,7 +35,7 @@
     knihovny fred.
     </p><div class="figure"><a id="id2452227"></a><p class="title"><b>Obrázek 4.1. Panel Welcome s možností nastavení údajů pro připojení.</b></p><div class="mediaobject"><table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="496"><tr><td><img src="img/welcome_offline.gif" alt="Panel Welcome s možností nastavení údajů pro připojení." /></td></tr></table></div></div></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2452250"></a>Connect</h2></div></div></div><p>Panel <span class="emphasis"><em>connect</em></span> obsahuje příkazy pro připojení k serveru a odpojení.
     Kromě toho je zde také příkaz <span class="emphasis"><em>hello</em></span>, kterým můžete ověřit, že server
-    je dosažitelný, jaké verze schemat podporuje, a další informace. 
+    je dosažitelný, jaké verze schemat podporuje, a další informace.
     Dále je zde příkaz <span class="emphasis"><em>poll</em></span>, kterým si vybíráte zprávy
     ze serveru a <span class="emphasis"><em>credit_info</em></span> s informacemi o vašem kreditu.
     </p><p>Hodnoty v příkazu <span class="emphasis"><em>login</em></span> jsou automaticky doplněny z konfiguračního
@@ -45,11 +45,11 @@
     </p><div class="figure"><a id="id2451072"></a><p class="title"><b>Obrázek 4.3. Panel contact pro správu kontaktů.</b></p><div class="mediaobject"><table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="496"><tr><td><img src="img/contact.gif" alt="Panel contact pro správu kontaktů." /></td></tr></table></div></div></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2451093"></a>NSSET</h2></div></div></div><p>Zde se nacházejí všechny příkazy, které lze použít pro správu záznamu NSSETu.
     </p><div class="figure"><a id="id2451105"></a><p class="title"><b>Obrázek 4.4. Panel NSSET pro správu záznamů o nssetech.</b></p><div class="mediaobject"><table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="496"><tr><td><img src="img/nsset.gif" alt="Panel NSSET pro správu záznamů o nssetech." /></td></tr></table></div></div></div><div class="section" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id2451127"></a>Domain</h2></div></div></div><p>Zde se nacházejí všechny příkazy, které lze použít pro správu záznamu o doméně.
     </p><div class="figure"><a id="id2451139"></a><p class="title"><b>Obrázek 4.5. Panel Domain pro správu záznamů o doménách.</b></p><div class="mediaobject"><table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="496"><tr><td><img src="img/domain.gif" alt="Panel Domain pro správu záznamů o doménách." /></td></tr></table></div></div></div></div><div class="chapter" lang="cs" xml:lang="cs"><div class="titlepage"><div><div><h2 class="title"><a id="id2451163"></a>Kapitola 5. Odeslání příkazu na server a příjem odpovědi</h2></div></div></div><p>Každý příkaz má svůj vlastní panel. Například <span class="emphasis"><em>contact/info</em></span>.
-    Přejděte na tento panel a do panelu <span class="bold"><strong>Příkaz</strong></span> 
+    Přejděte na tento panel a do panelu <span class="bold"><strong>Příkaz</strong></span>
     do okna <span class="emphasis"><em>kontakt ID</em></span> zadejte ID kontaktu,
     který chcete zobrazit:
     </p><div class="figure"><a id="id2451192"></a><p class="title"><b>Obrázek 5.1. Panel "Příkaz", kde se zadávají parametry příkazu.</b></p><div class="mediaobject"><table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="496"><tr><td><img src="img/contact_info_command.gif" alt="Panel &quot;Příkaz&quot;, kde se zadávají parametry příkazu." /></td></tr></table></div></div><p>Pak stiskněte tlačítko <span class="bold"><strong>Odeslat příkaz</strong></span>.
-    Příkaz se odešle na server. Jakmile ze serveru přijde odpověď, aplikace se 
+    Příkaz se odešle na server. Jakmile ze serveru přijde odpověď, aplikace se
     automaticky přepne do panelu <span class="emphasis"><em>Odpověď</em></span>, kde se zobrazí odpověď:
     </p><div class="figure"><a id="id2451233"></a><p class="title"><b>Obrázek 5.2. Panel "Odpověď", kde se zobrazuje odpověď serveru.</b></p><div class="mediaobject"><table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="496"><tr><td><img src="img/contact_info_answer.gif" alt="Panel &quot;Odpověď&quot;, kde se zobrazuje odpověď serveru." /></td></tr></table></div></div><p>V části <span class="bold"><strong>code</strong></span> se zobrazuje číslo typu odpovědi.
     Například hodnota 1000 znamená OK.

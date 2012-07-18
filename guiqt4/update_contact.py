@@ -27,13 +27,13 @@ class FredWindow(QtGui.QWidget):
         QtGui.QWidget.__init__(self, parent)
         self.ui = Ui_FredWindow()
         self.ui.setupUi(self)
-        self.ui.update_contact_street.horizontalHeader().resizeSection(0,294)
+        self.ui.update_contact_street.horizontalHeader().resizeSection(0, 294)
         self._street_item = QtCore.QString()
 
-    def street_current_changed(self,r,c,x,y):
+    def street_current_changed(self, r, c, x, y):
         self._street_item = table_current_changed(self.ui.update_contact_street, r, c)
 
-    def street_value_changed(self,r,c):
+    def street_value_changed(self, r, c):
         self._street_item = table_value_changed(self.ui.update_contact_street, self._street_item, r, c, 3)
 
 if __name__ == "__main__":

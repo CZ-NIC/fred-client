@@ -38,7 +38,7 @@ def trim_suffix_reasion_and_pop_others(data):
 def get_str(qtstr, encoding):
     'Translate QString. Trip whitespaces at the begining and end. Returns string in local charset.'
     if type(qtstr) is QtCore.QString:
-        text = unicode(qtstr.trimmed().toUtf8(),'utf8').encode(encoding)
+        text = unicode(qtstr.trimmed().toUtf8(), 'utf8').encode(encoding)
     else:
         if type(qtstr) not in (str, unicode): qtstr = str(qtstr)
         if type(qtstr) is unicode:
@@ -69,24 +69,24 @@ def append_key(dct, key, widget):
     elif wt in (QtGui.QRadioButton, QtGui.QCheckBox):
         dct[key] = widget.isChecked() and 1 or 0
     elif wt == QtGui.QDateEdit:
-        dct[key] = '%s'%widget.date().toString(QtCore.Qt.ISODate) # QDate; Qt.ISODate='YYYY-MM-DD'
+        dct[key] = '%s' % widget.date().toString(QtCore.Qt.ISODate) # QDate; Qt.ISODate='YYYY-MM-DD'
     elif wt == QtGui.QComboBox:
         dct[key] = widget.currentIndex()
     elif wt == QtGui.QTableWidget:
         data = []
         for r in range(widget.rowCount()):
-            tbl_item = widget.item(r,0)
+            tbl_item = widget.item(r, 0)
             if not tbl_item: continue
             value = get_str(tbl_item.text())
             if len(value): data.append(value)
         if len(data): dct[key] = data
     else:
-        print "INTERNAL ERROR: Unknown type widget:",type(widget)
-        
+        print "INTERNAL ERROR: Unknown type widget:", type(widget)
+
 def count_data_rows(dct):
     size = 0
     for v in dct.values():
-        if type(v) in (list,tuple):
+        if type(v) in (list, tuple):
             ln = len(v)
             size += ln
             if ln == 0: size += 1
@@ -100,7 +100,7 @@ def join_key_and_values(value):
     if type(value) in (list, tuple):
         if len(value) == 2 and type(value[0]) in (str, unicode):
             key, addr = value
-            value = '%s %s'%(key, join_items(addr))
+            value = '%s %s' % (key, join_items(addr))
         else:
             value = join_items(value)
     return value
@@ -114,7 +114,7 @@ def join_items(value):
             if text: items.append(text)
         if len(items):
             if len(items) > 1:
-                value = u'(%s)'%u', '.join(items) 
+                value = u'(%s)' % u', '.join(items)
             else:
                 value = items[0]
         else:
@@ -124,9 +124,9 @@ def join_items(value):
 def ttytag2html(text):
     'Convert tty tags to the html tags.'
     # ${BOLD}, ${NORMAL}, ${COLOR}
-    text = re.sub('\$\{BOLD\}(.*?)\$\{NORMAL\}','<b>\\1</b>',text)
-    text = text.replace('${NORMAL}','</span>')
-    text = re.sub('\$\{(\w+)\}','<span style="color:\\1">',text)
+    text = re.sub('\$\{BOLD\}(.*?)\$\{NORMAL\}', '<b>\\1</b>', text)
+    text = text.replace('${NORMAL}', '</span>')
+    text = re.sub('\$\{(\w+)\}', '<span style="color:\\1">', text)
     return text
 
 def get_exception():
@@ -135,7 +135,7 @@ def get_exception():
     ex = sys.exc_info()
     sys.exc_clear()
     for trace in traceback.extract_tb(ex[2]):
-        msg.append(' File "%s", line %d, in %s'%(trace[0], trace[1], trace[2]))
-        msg.append('    %s'%trace[3])
-    msg.append('%s: %s'%(ex[0], ex[1]))
+        msg.append(' File "%s", line %d, in %s' % (trace[0], trace[1], trace[2]))
+        msg.append('    %s' % trace[3])
+    msg.append('%s: %s' % (ex[0], ex[1]))
     return '\n'.join(msg)

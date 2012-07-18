@@ -31,12 +31,12 @@ from command_create import FredCommandCreate
 
 # prefix of translations
 translation_prefix = 'clientqt4_'
-NO_SPLIT_NAME, SPLIT_NAME = (0,1)
+NO_SPLIT_NAME, SPLIT_NAME = (0, 1)
 
 
 class FredMainWindow(QtGui.QMainWindow):
     'Main frame dialog.'
-    ident_types = ('op','rc','passport','mpsv','ico')
+    ident_types = ('op', 'rc', 'passport', 'mpsv', 'ico')
 
     def __init__(self, app, epp_client, encoding, translate_warning, parent=None):
         QtGui.QMainWindow.__init__(self, parent)
@@ -93,7 +93,7 @@ class FredMainWindow(QtGui.QMainWindow):
         dock.setWidget(self.history)
         dock.setAllowedAreas(QtCore.Qt.LeftDockWidgetArea | QtCore.Qt.RightDockWidgetArea)
         self.addDockWidget(QtCore.Qt.LeftDockWidgetArea, dock)
-        
+
         act = dock.toggleViewAction()
         act.setText(self.tr("Command &history"))
         act.setIcon(QtGui.QIcon(":/main_frame/images/linguist-phrasebookopen.png"))
@@ -108,7 +108,7 @@ class FredMainWindow(QtGui.QMainWindow):
     def createDockWindows(self):
         self.createDockHistory()
         self.createDockTopToolbar()
-        
+
 
     def append_system_messages(self, messages):
         'Appent text to the System message window'
@@ -118,9 +118,9 @@ class FredMainWindow(QtGui.QMainWindow):
         'Refresh status after login and logout.'
         if self.epp.is_logon():
             user, host = self.epp._epp.get_username_and_host()
-            status = '<b>%s</b> <b style="color:darkgreen">ONLINE: %s@%s</b>'%(_TU('status'), user, host)
+            status = '<b>%s</b> <b style="color:darkgreen">ONLINE: %s@%s</b>' % (_TU('status'), user, host)
         else:
-            status = ('<b>%s</b> <b style="color:red">%s</b>'%(_TU('status'),_TU('disconnect'))).decode('utf8') # translation is saved in utf8
+            status = ('<b>%s</b> <b style="color:red">%s</b>' % (_TU('status'), _TU('disconnect'))).decode('utf8') # translation is saved in utf8
 
 
     def load_config_and_autologin(self):
@@ -161,7 +161,7 @@ class FredMainWindow(QtGui.QMainWindow):
     def __set_translation__(self, lang):
         'Set translation language.'
         tr = QtCore.QTranslator()
-        modul_trans = os.path.join(os.path.split(__file__)[0],'%s%s'%(translation_prefix, lang))
+        modul_trans = os.path.join(os.path.split(__file__)[0], '%s%s' % (translation_prefix, lang))
         if tr.load(modul_trans):
 ##            self._app.installTranslator(tr)
 ##            self.panel_create_contact.ui.retranslateUi(self)
@@ -171,5 +171,3 @@ class FredMainWindow(QtGui.QMainWindow):
 ##            self.panel_create_nsset.ui.retranslateUi(self)
 ##            self.panel_update_nsset.ui.retranslateUi(self)
             self.ui.retranslateUi(self)
-
-

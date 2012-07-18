@@ -26,7 +26,7 @@ on command line or forward them through a pipe.
 One file can contain more than one XML document.
 Script recognizes it and splits it into chunks. There
 might be any text between XML parts. This text
-is only shown on the output. It is usualy error message 
+is only shown on the output. It is usualy error message
 from the previous process of the document creation.
 
 Before sending a first command Sender makes login
@@ -40,12 +40,12 @@ try:
     import fred.sender
 except ImportError:
     # run from actual folder with source codes
-    sys.path.insert(0,'../') # for running from this folder
-    sys.path.insert(0,'./') # for running from upper folder
+    sys.path.insert(0, '../') # for running from this folder
+    sys.path.insert(0, './') # for running from upper folder
     try:
         import fred.sender
     except ImportError, msg:
-        print "ImportError:",msg
+        print "ImportError:", msg
         print 'For running this application you need to install fred module. See help.'
         sys.exit(0)
 fred.sender.main()

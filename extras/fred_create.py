@@ -28,12 +28,12 @@ try:
     import fred.creator
 except ImportError:
     # run from actual folder with source codes
-    sys.path.insert(0,'../') # for running from this folder
-    sys.path.insert(0,'./') # for running from upper folder
+    sys.path.insert(0, '../') # for running from this folder
+    sys.path.insert(0, './') # for running from upper folder
     try:
         import fred.creator
     except ImportError, msg:
-        print "ImportError:",msg
+        print "ImportError:", msg
         print 'For runnig this application you need install fred module. See help.'
         sys.exit(0)
 fred.creator.main()

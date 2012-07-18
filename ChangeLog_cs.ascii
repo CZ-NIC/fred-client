@@ -38,7 +38,7 @@ Zmeny:
 FredClient 2.1.3
 
 Zmeny:
-    * V odpovedi serveru ve formatu php jsou promenne 'domain:status' a 
+    * V odpovedi serveru ve formatu php jsou promenne 'domain:status' a
       'domain:status.s' vzdy typu array.
 
 
@@ -48,7 +48,7 @@ Zmeny:
     * Oprava souboru MANIFEST.in nutneho pro instalaci
 
 Opravy:
-    * V create_nsset opraveno odesilani hodnoty reportlevel 
+    * V create_nsset opraveno odesilani hodnoty reportlevel
 
 
 FredClient 2.1.1
@@ -82,7 +82,7 @@ FredClient 2.0.0
 
 Nove funkce:
     * Pridany funkce manipulujici s objektem KeySet
-    * Upraveny funkce na manipulaci s domenou umoznujici pripojit KeySet  
+    * Upraveny funkce na manipulaci s domenou umoznujici pripojit KeySet
 
 FredClient 1.5.4
 
@@ -92,7 +92,7 @@ Nove funkce:
 
 Zmeny:
     * automaticke vypnuti confirm rezimu pri command modu.
-    * v info_domain odstranena duplicitni polozka "Last renew on", 
+    * v info_domain odstranena duplicitni polozka "Last renew on",
       jeji hodnota je v "Expiration date" (domain:exDate)
     * od verze 1.3.3 je fred-client.conf defaultne hledan v /etc/fred/ misto v /etc (tyka se
       jen posix systemu). Na teto ceste je config hledan az v pripade, ze nebyl nalezen
@@ -163,7 +163,7 @@ FredClient 1.5
 Zmeny:
     * Nove verze schemat: enum 1.1
     * Prepracovany funkce list_(contact,nsset,domain). Nyni se data nacitaji sekvencne
-      pres funkce (contact,nsset,domain)_by_all a get_results. Funkce list_... maji 
+      pres funkce (contact,nsset,domain)_by_all a get_results. Funkce list_... maji
       na konci pismeno 's'.
 
 
@@ -277,4 +277,3 @@ Opravy:
     * dopleni chybejici hodnoty domain:valExDate (Validace platna do) v info_domain
     * oprava ukladani historie prikazu
     * oprava parsovani hodnoty pojmenovaneho parametru
-

@@ -18,7 +18,7 @@
 """
 This is main script handling all functions of this client.
 Here it's deside what type of application will be running.
-Default is console. Next choice is running as a batch - 
+Default is console. Next choice is running as a batch -
 this is suitable using is in some shell scripts or for manage
 web pages (php, html). It also run it in GUI mode GUI with
 Qt environment.
@@ -55,7 +55,7 @@ if __name__ == '__main__':
     else:
         from fred.console import help_option
         if options['help']:
-            print '%s: %s [OPTIONS...]\n%s%s\n%s\n\n%s\n'%(_T('Usage'), 'fred-client',
+            print '%s: %s [OPTIONS...]\n%s%s\n%s\n\n%s\n' % (_T('Usage'), 'fred-client',
             help_option,
    _T("""  -d COMMAND, --command=COMMAND
                    Send command to server and exit
@@ -77,4 +77,3 @@ if __name__ == '__main__':
             else:
                 fred.console.main(options)
     os.chdir(old_cwd)
-

@@ -63,7 +63,7 @@ Connection options:
                    Use session from config file
 
   -h HOSTNAME, --host=HOSTNAME
-                   Fred server host 
+                   Fred server host
   -p PORT, --port=PORT
                    Server port (default: 700)
   -u USERNAME, --user=USERNAME
@@ -75,7 +75,7 @@ Connection options:
   -k PRIVATEKEY --privkey=PRIVATEKEY
                    Use SSL private key to connect to server
 
-  -n, --nologin    
+  -n, --nologin
                    Disable automatic connection to server at start
 """)
 
@@ -93,14 +93,14 @@ def display_profiler(label, indent, debug_time):
     # For enable time uncomment all lines with PROFILER (and display_profiler)
     # and in translate module option 'timer'.
     msg, prev_t = debug_time[0]
-    print '='*60
-    print indent,label
-    print '='*60
-    for msg,t in debug_time[1:]:
-        print indent,('%s:'%msg).ljust(30),'%02.4f sec.'%(t - prev_t)
+    print '=' * 60
+    print indent, label
+    print '=' * 60
+    for msg, t in debug_time[1:]:
+        print indent, ('%s:' % msg).ljust(30), '%02.4f sec.' % (t - prev_t)
         prev_t = t
-    print indent,'-'*43
-    print indent,'Total:'.ljust(30),'%02.4f sec.'%(t - debug_time[0][1])
+    print indent, '-' * 43
+    print indent, 'Total:'.ljust(30), '%02.4f sec.' % (t - debug_time[0][1])
 
 def make_validation(epp, xml_epp_doc, label):
     """Make validation and join error message according by verbose mode
@@ -114,21 +114,21 @@ def make_validation(epp, xml_epp_doc, label):
         if v > 1: epp.append_error(error_message)
         if v > 2: epp.append_error(xml_epp_doc)
     return (len(error_message) == 0)
-    
+
 def main(options):
     'Main console loop.'
     if __init__.translate.warning:
-        print colored_output.render("${BOLD}${RED}%s${NORMAL}"%__init__.translate.warning)
+        print colored_output.render("${BOLD}${RED}%s${NORMAL}" % __init__.translate.warning)
     epp = __init__.ClientSession()
     if not check_options(epp): return # any option error occurs
-    
+
     readline = None
     if not options['command']:
         # import readline if only not command mode
         readline = import_readline()
         # join welcome message only in console mode
         epp.append_note(epp.welcome())
-        
+
     if not epp.load_config():
         epp.display() # display errors or notes
         return
@@ -137,7 +137,7 @@ def main(options):
     is_online = 0
     prompt = '> '
     online = prompt
-    
+
     # options['command']
     # choke down the login message output in non-interactive (command) mode
     if not epp.automatic_login(options['command']):
@@ -147,7 +147,7 @@ def main(options):
 
     epp.restore_history(readline)
     epp.display() # display errors or notes
-    
+
     while 1:
         # change prompt status:
         if is_online:
@@ -158,8 +158,8 @@ def main(options):
             online = prompt
             if epp.is_logon():
                 is_online = 1
-                online = '%s@%s> '%epp.get_username_and_host()
-        
+                online = '%s@%s> ' % epp.get_username_and_host()
+
         if options['command']:
             # non-interactive mode (command from command line options)
             command = options['command']
@@ -175,11 +175,11 @@ def main(options):
                 epp.send_logout()
                 break
             if command == '': continue
-            if command in ('q','quit','exit'):
+            if command in ('q', 'quit', 'exit'):
                 epp.remove_from_history(readline)
                 epp.send_logout()
                 break
-            
+
         #debug_time = [('START',time.time())] # PROFILER
         command_name, epp_doc, stop_interactive_mode = epp.create_eppdoc(command)
         #debug_time.append(('Command created',time.time())) # PROFILER
@@ -193,34 +193,34 @@ def main(options):
             is_valid = make_validation(epp, epp_doc, _T('Command data XML document failed to validate.'))
             #debug_time.append(('Validation',time.time())) # PROFILER
             if not (epp.is_online(command_name) and epp.is_connected()):
-                epp.append_note(_T('You are not connected.'),('BOLD','RED'))
+                epp.append_note(_T('You are not connected.'), ('BOLD', 'RED'))
             elif is_valid: # only if we are online and command XML document is valid
                 epp.display() # display errors or notes
                 if epp.is_confirm_cmd_name(command_name):
                     try:
-                        confirmation = raw_input('%s (y/N): '%_T('Do you really want to send this command to the server?'))
+                        confirmation = raw_input('%s (y/N): ' % _T('Do you really want to send this command to the server?'))
                     except (KeyboardInterrupt, EOFError), msg:
                         # user breaks sending command
                         epp.append_note(_T('skipped'))
                         epp.display() # display errors or notes
                         continue
                     epp.remove_from_history(readline)
-                    if confirmation not in ('y','Y'): continue
+                    if confirmation not in ('y', 'Y'): continue
                 #debug_time.append(('Save and restore history',time.time())) # PROFILER
                 epp.send(epp_doc)          # send to server
                 #debug_time.append(('SEND to server',time.time())) # PROFILER
                 xml_answer = epp.receive()     # receive answer
                 #debug_time.append(('RECEIVE from server',time.time())) # PROFILER
-                
+
                 # try ro reconnect
-                #   if connection was interrupted 
+                #   if connection was interrupted
                 #   and console is not in --command mode
                 #   and config doesn't disable reconnection
                 #   and answer is not code 2502 (Session limit exceeded; server closing connection)
                 if not epp.is_connected() \
                     and not options['command'] \
                     and epp.get_session(RECONNECT):
-                    
+
                     epp.display() # display errors or notes
                     # try reconnect and send command again
                     epp.append_note(_T('Try to automaticly reconnect - send login.'))
@@ -231,7 +231,7 @@ def main(options):
                         # if login has been succefull send command again to the server
                         epp.send(epp_doc)
                         xml_answer = epp.receive() # receive answer
-                
+
                 if epp.is_connected():
                     is_valid = make_validation(epp, xml_answer, _T('Server answer XML document failed to validate.'))
                     #debug_time.append(('Validation',time.time())) # PROFILER
@@ -252,28 +252,28 @@ def main(options):
             if is_valid and command_name == 'logout':
                 # only if we are online and command XML document is valid
                 epp.close() # close connection but not client
-                
+
         epp.display() # display errors or notes
-        
+
         if options['command']:
             # non-interactive mode (command from command line options)
             # It does only one EPP command and stops.
             epp.send_logout('not-display-output')
             break
-    
+
     epp.close()
     epp.save_history(readline)
     epp.display() # display logout messages
 
 def check_options(epp):
     'Check options what needs epp object for validate.'
-    retval=1
+    retval = 1
     if options['verbose']:
         if epp.parse_verbose_value(options['verbose']) is None:
-            retval=0
+            retval = 0
             print epp.fetch_errors()
             print _T("""Usage: %s [OPTIONS...]
-Try '%s --help' for more information.""")%(script_name, script_name)
+Try '%s --help' for more information.""") % (script_name, script_name)
     return retval
 
 if __name__ == '__main__':
@@ -282,7 +282,7 @@ if __name__ == '__main__':
         print msg_invalid
     else:
         if options['help']:
-            print '%s: %s [OPTIONS...]\n%s\n%s\n'%(_T('Usage'), 'fred_console',
+            print '%s: %s [OPTIONS...]\n%s\n%s\n' % (_T('Usage'), 'fred_console',
             help_option,
             _T('See README for more information.'))
         elif options['version']:

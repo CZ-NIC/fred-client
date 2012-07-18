@@ -17,8 +17,8 @@ take zjistit prikazem:
     $ python -V
 
 FredClient pouziva pro validaci XML dokumentu externi validator xmllint.
-Tento program ale neni nutnou podminkou funkcnosti klienta. 
-Pokud se v systemu nenachazi, tak se overovani v klientovi automaticky 
+Tento program ale neni nutnou podminkou funkcnosti klienta.
+Pokud se v systemu nenachazi, tak se overovani v klientovi automaticky
 vypne.
 
     $ xmllint --version
@@ -54,7 +54,7 @@ Program FredClient neni nezbytne nutne instalovat. Je mozne jej spustit ihned po
 rozbaleni instalacniho souboru. Podminkou ale je, ze musi byt spusten z adresare,
 do ktereho jste program rozbalili.
 
-Aby se program mohl spustit odkudkoliv a aby jej mohli spoustet i ostatni uzivatele, 
+Aby se program mohl spustit odkudkoliv a aby jej mohli spoustet i ostatni uzivatele,
 je nutne jej nainstalovat.
 
 
@@ -69,5 +69,3 @@ ODINSTALACE
   2) Odinstalaci pustite prikazem:
 
     $ sudo ./uninstall.py
-
-

@@ -27,9 +27,9 @@ try:
     from PyQt4 import QtGui, QtCore
 except ImportError, e:
     sys.stderr.writelines(
-        ( 'Missing module: ',str(e),'\n',
+        ('Missing module: ', str(e), '\n',
           'For runnig this application you need install PyQt4 module. For more see README and INSTALL.\n'
-          ) )
+          ))
     sys.exit(-1)
 
 
@@ -43,14 +43,14 @@ try:
     import fred
 except ImportError:
     # and than from relative path
-    sys.path.insert(0,'../')
+    sys.path.insert(0, '../')
     try:
         import fred
     except ImportError, e:
         sys.stderr.writelines(
-            ( 'Missing module: ',str(e),'\n',
+            ('Missing module: ', str(e), '\n',
              'For runnig this application you need install fred module. See README and INSTALL.\n'
-            ) )
+            ))
         sys.exit(-1)
 
 import main_frame
@@ -60,10 +60,10 @@ import main_frame
 #------------------------------------
 from fred.translate import encoding, options, option_errors, get_valid_lang
 if not (options.has_key('lang_option') or options.has_key('lang_environ')):
-    locale_lang = '%s'%QtCore.QLocale.system().name().toAscii()
+    locale_lang = '%s' % QtCore.QLocale.system().name().toAscii()
     lang, error = get_valid_lang(locale_lang[:2], 'QtCore.QLocale.system().name()')
     if error:
-        fred.translate.warning += '\n%s'%error
+        fred.translate.warning += '\n%s' % error
     else:
         options['lang'] = options['lang_environ'] = lang
         fred.translate.install_translation(options['lang'])
@@ -90,4 +90,3 @@ if __name__ == '__main__':
             print option_errors
         else:
             main()
-

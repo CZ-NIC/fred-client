@@ -18,7 +18,7 @@
 
 # Example: echo -en "check_domain nic.cz\ninfo_domain nic.cz" | ./fred_create.py
 """Creator is one of the top modules what deals Fred client system. It can be used
-for create EPP XML document without sending anything to the server. 
+for create EPP XML document without sending anything to the server.
 
 Script receive text from standart input and returns XML text on the standard output.
 If any error occurs it is outputed in XML format for better process of the next XML
@@ -43,20 +43,20 @@ def run_creation(options):
     command_name, epp_doc, stop = epp.create_eppdoc(options['command'])
     errors = epp.fetch_errors()
     if not epp_doc and not errors:
-        errors = '%s %s'%(_T('Unknown command'),command_name.encode(encoding))
+        errors = '%s %s' % (_T('Unknown command'), command_name.encode(encoding))
     str_error = ''
     if errors:
         if type(command_name) == unicode: command_name = command_name.encode(encoding)
         if type(errors) == unicode: errors = errors.encode(encoding)
         if options['output'] == 'html':
-            str_error = '<div class="fred_errors">\n<strong>%s errors:</strong>\n<pre>\n%s</pre><div>'%(command_name,escape_html(errors))
+            str_error = '<div class="fred_errors">\n<strong>%s errors:</strong>\n<pre>\n%s</pre><div>' % (command_name, escape_html(errors))
         elif options['output'] == 'php':
-            str_error = '<?php\n$fred_error_create_name = %s;\n$fred_error_create_value = %s;\n%s\n?>'%(php_string(command_name),php_string(errors),epp.get_empty_php_code())
+            str_error = '<?php\n$fred_error_create_name = %s;\n$fred_error_create_value = %s;\n%s\n?>' % (php_string(command_name), php_string(errors), epp.get_empty_php_code())
         elif options['output'] == 'xml':
-            str_error = "<?xml version='1.0' encoding='%s'?>\n<errors>\n\t<error>%s</error>\n</errors>"%(encoding, errors)
+            str_error = "<?xml version='1.0' encoding='%s'?>\n<errors>\n\t<error>%s</error>\n</errors>" % (encoding, errors)
         else:
             # default 'text'
-            str_error = "%s: %s"%(_T('ERROR'),errors)
+            str_error = "%s: %s" % (_T('ERROR'), errors)
     return epp_doc, str_error
 
 def display(epp_doc, str_error):
@@ -64,7 +64,7 @@ def display(epp_doc, str_error):
         print str_error
     else:
         print epp_doc
-  
+
 def main():
     msg_invalid = check_python_version()
     if msg_invalid:
@@ -74,7 +74,7 @@ def main():
             command = ' '.join(option_args)
             if options['range']:
                 epp_doc = str_error = ''
-                m = re.match('([^\[]+)\[(\d+)(?:\s*,\s*(\d+))?\]',options['range'])
+                m = re.match('([^\[]+)\[(\d+)(?:\s*,\s*(\d+))?\]', options['range'])
                 if m:
                     min = 0
                     anchor = m.group(1)
@@ -83,25 +83,25 @@ def main():
                     else:
                         min = int(m.group(2))
                         max = int(m.group(3))
-                    for n in range(min,max):
-                        options['command'] = re.sub(anchor,'%s%d'%(anchor,n),command)
+                    for n in range(min, max):
+                        options['command'] = re.sub(anchor, '%s%d' % (anchor, n), command)
                         epp_doc, str_error = run_creation(options)
                         display(epp_doc, str_error)
                 else:
-                    print "<?xml encoding='%s'?><errors>Invalid range pattern: %s</errors>"%(encoding, options['range'])
+                    print "<?xml encoding='%s'?><errors>Invalid range pattern: %s</errors>" % (encoding, options['range'])
             else:
                 options['command'] = command
                 epp_doc, str_error = run_creation(options)
                 display(epp_doc, str_error)
         elif not sys.stdin.isatty():
-            for cmd in re.split('[\r\n]+',sys.stdin.read()):
+            for cmd in re.split('[\r\n]+', sys.stdin.read()):
                 command = cmd.strip()
                 if command:
                     options['command'] = command
                     epp_doc, str_error = run_creation(options)
                     display(epp_doc, str_error)
         else:
-            print '%s: %s command params\n\n%s\n\n%s%s\n\n  %s\n'%(_T('Usage'), 'fred_create.py',
+            print '%s: %s command params\n\n%s\n\n%s%s\n\n  %s\n' % (_T('Usage'), 'fred_create.py',
                 _T('Create EPP XML document from command line parameters.'),
                 _T('EXAMPLES'),
                 """

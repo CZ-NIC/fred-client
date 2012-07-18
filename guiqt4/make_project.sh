@@ -21,5 +21,3 @@ case $1 in
     echo "Usage: sh make_project make > file.project"
     ;;
 esac
-
-

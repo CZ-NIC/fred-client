@@ -12,6 +12,6 @@ def check_missing_names(body, columns, verbose_level, is_check, dct_data, used, 
     'Check if any valus missing in outout. For DEBUGING only.'
     if columns and not is_check:
         # in mode SORT_BY_COLUMNS check if all names was used
-        missing = [k for k in dct_data.keys() if k not in used and column_verbose.get(k,0) >= verbose_level]
+        missing = [k for k in dct_data.keys() if k not in used and column_verbose.get(k, 0) >= verbose_level]
         if len(missing):
-            body.append(colored_output.render('\n${BOLD}${RED}Here needs FIX code: %s${NORMAL}'%'(%s)'%', '.join(missing)))
+            body.append(colored_output.render('\n${BOLD}${RED}Here needs FIX code: %s${NORMAL}' % '(%s)' % ', '.join(missing)))

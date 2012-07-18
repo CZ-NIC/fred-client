@@ -19,10 +19,10 @@ import sys
 from PyQt4 import QtCore, QtGui
 from ui_command_create import Ui_CommandCreate
 
-actions = ('Check','Info','Create','Update','Delete',
-        'List', 'Transfer','Renew','Send AuthInfo',
-        'Hello','Poll','Technical test')
-objects = ('-','Contact','NSSET','Domain')
+actions = ('Check', 'Info', 'Create', 'Update', 'Delete',
+        'List', 'Transfer', 'Renew', 'Send AuthInfo',
+        'Hello', 'Poll', 'Technical test')
+objects = ('-', 'Contact', 'NSSET', 'Domain')
 
 class FredCommandCreate(QtGui.QWidget):
 
@@ -34,24 +34,22 @@ class FredCommandCreate(QtGui.QWidget):
         map(self.ui.cbox_action.addItem, actions)
         map(self.ui.cbox_object.addItem, objects)
 
-        
+
     def changeAction(self, pos):
         'Change list of the actions'
-        print 'changeAction:',pos #!!!
+        print 'changeAction:', pos #!!!
 
     def changeObject(self, pos):
         'Change list of the actions'
-        print 'changeObject:',pos #!!!
+        print 'changeObject:', pos #!!!
 
     def pushRunButton(self):
         'Run selected action'
         print 'Button Run has been pressed' #!!!
 
-        
+
 if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)
     window = FredCommandCreate()
     window.show()
     sys.exit(app.exec_())
-
-    

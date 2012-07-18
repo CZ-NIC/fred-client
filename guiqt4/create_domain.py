@@ -27,13 +27,13 @@ class FredWindow(QtGui.QWidget):
         QtGui.QWidget.__init__(self, parent)
         self.ui = Ui_FredWindow()
         self.ui.setupUi(self)
-        self.ui.admin.horizontalHeader().resizeSection(0,320)
+        self.ui.admin.horizontalHeader().resizeSection(0, 320)
         self._admin_item = QtCore.QString()
 
-    def admin_value_changed(self,r,c):
+    def admin_value_changed(self, r, c):
         self._admin_item = table_value_changed(self.ui.admin, self._admin_item, r, c)
 
-    def admin_current_changed(self,r,c,x,y):
+    def admin_current_changed(self, r, c, x, y):
         self._admin_item = table_current_changed(self.ui.admin, r, c)
 
 if __name__ == "__main__":

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE book PUBLIC '-//OASIS//DTD DocBook XML V4.2//EN' 
+<!DOCTYPE book PUBLIC '-//OASIS//DTD DocBook XML V4.2//EN'
           'http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd'>
 <book lang="cs">
 
@@ -45,7 +45,7 @@
     <title>Ikona aplikace.</title>
     <mediaobject><imageobject><imagedata fileref="img/app_icon.gif" scale="100" width="3cm" /></imageobject></mediaobject>
 </figure>
-    <para>Okenní nadstavba používá stejný konfigurační soubor, 
+    <para>Okenní nadstavba používá stejný konfigurační soubor,
     jako konzolová aplikace <emphasis role='bold'>FredClient</emphasis>.
     Pokud je konfigurační soubor nalezen a všechny přihlašovací informace
     jsou k dispozici, tak se applikace automaticky přihlásí k EPP erveru.
@@ -96,7 +96,7 @@
     <title>Connect</title>
     <para>Panel <emphasis>connect</emphasis> obsahuje příkazy pro připojení k serveru a odpojení.
     Kromě toho je zde také příkaz <emphasis>hello</emphasis>, kterým můžete ověřit, že server
-    je dosažitelný, jaké verze schemat podporuje, a další informace. 
+    je dosažitelný, jaké verze schemat podporuje, a další informace.
     Dále je zde příkaz <emphasis>poll</emphasis>, kterým si vybíráte zprávy
     ze serveru a <emphasis>credit_info</emphasis> s informacemi o vašem kreditu.
     </para>
@@ -145,7 +145,7 @@
   <chapter>
     <title>Odeslání příkazu na server a příjem odpovědi</title>
     <para>Každý příkaz má svůj vlastní panel. Například <emphasis>contact/info</emphasis>.
-    Přejděte na tento panel a do panelu <emphasis role='bold'>Příkaz</emphasis> 
+    Přejděte na tento panel a do panelu <emphasis role='bold'>Příkaz</emphasis>
     do okna <emphasis>kontakt ID</emphasis> zadejte ID kontaktu,
     který chcete zobrazit:
     </para>
@@ -154,7 +154,7 @@
     <mediaobject><imageobject><imagedata fileref="img/contact_info_command.gif" scale="100" width="14cm" /></imageobject></mediaobject>
 </figure>
     <para>Pak stiskněte tlačítko <emphasis role='bold'>Odeslat příkaz</emphasis>.
-    Příkaz se odešle na server. Jakmile ze serveru přijde odpověď, aplikace se 
+    Příkaz se odešle na server. Jakmile ze serveru přijde odpověď, aplikace se
     automaticky přepne do panelu <emphasis>Odpověď</emphasis>, kde se zobrazí odpověď:
     </para>
 <figure float="0">
@@ -167,7 +167,7 @@
     typu a dále chybová hlášení, která poslal server nebo vznikla během komunikace.
     A konečně okno <emphasis>Data</emphasis>, kde se nacházejí hodnoty samotné odpovědi.
     </para>
-    
+
   </chapter>
 
 

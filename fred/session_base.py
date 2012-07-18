@@ -27,8 +27,8 @@ import internal_variables
 from subprocess import Popen, PIPE
 """
 Class ManagerBase is a part of one Manager object  what provide client session.
-This base class owns basic variables and functions needed for manage EPP XML 
-document messages. For better orientatiton in the code are functions and data 
+This base class owns basic variables and functions needed for manage EPP XML
+document messages. For better orientatiton in the code are functions and data
 parted into several modules whitch every of them does a couple of similar actions.
 
 This base class is aimed for manage configuration file and external application
@@ -45,10 +45,10 @@ ONLINE, CMD_ID, LANG, POLL_AUTOACK, CONFIRM_SEND_COMMAND, \
    RECONNECT, ESCAPED_INPUT = range(19)
 # The column names for default values
 DEFS_LENGTH = 4
-LANGS,objURI,extURI,PREFIX = range(DEFS_LENGTH)
+LANGS, objURI, extURI, PREFIX = range(DEFS_LENGTH)
 OMIT_ERROR = 1
 
-OUTPUT_TYPES = ('text','html','php','xml')
+OUTPUT_TYPES = ('text', 'html', 'php', 'xml')
 
 LOOP_NONE, LOOP_FIRST_STEP, LOOP_INSIDE, LOOP_LAST_STEP = range(4)
 
@@ -66,35 +66,35 @@ class ManagerBase:
         # Session data:
         #-----------------------------------------
         self._session = [
-                0,      # ONLINE
-                0,      # CMD_ID
-                'en',   # LANG
-                0,      # POLL_AUTOACK
-                1,      # CONFIRM_SEND_COMMAND
-                '',     # USERNAME (for prompt info)
-                '',     # SESSION
-                '',     # HOST (for prompt info)
-                0,      # COLORS 0/1
-                1,      # VALIDATE
-                1,      # VERBOSE 1,2,3
-                [],     # SORT_BY_COLUMNS - support for sotring received values (used by check_...)
+                0, # ONLINE
+                0, # CMD_ID
+                'en', # LANG
+                0, # POLL_AUTOACK
+                1, # CONFIRM_SEND_COMMAND
+                '', # USERNAME (for prompt info)
+                '', # SESSION
+                '', # HOST (for prompt info)
+                0, # COLORS 0/1
+                1, # VALIDATE
+                1, # VERBOSE 1,2,3
+                [], # SORT_BY_COLUMNS - support for sotring received values (used by check_...)
                 'NULL', # NULL_VALUE
                 'SKIP', # SKIP_VALUE
-                1,      # TRANSLATE_ANSWER_COLUMN_NAMES, TEST only
+                1, # TRANSLATE_ANSWER_COLUMN_NAMES, TEST only
                 'text', # OUTPUT_TYPE (text, html)
-                None,   # CLTRID
-                'yes',  # RECONNECT
-                0,      # ESCAPED_INPUT
+                None, # CLTRID
+                'yes', # RECONNECT
+                0, # ESCAPED_INPUT
                 ]
         self._external_validator = 'xmllint'
         # defaults
-        self.defs = ['']*DEFS_LENGTH
+        self.defs = [''] * DEFS_LENGTH
         self.defs[PREFIX] = '' # new prefix for every new session
         self._conf = None ## <ConfigParser object> from session_config.py
         self._auto_connect = 1 # auto connection during login or hello
         self._options = translate.options # parameters from command line
         if type(self._options) is not dict:
-            self._options = {'lang':'en','colors':'off','verbose':'1','user':'','password':'','host':'',}
+            self._options = {'lang':'en', 'colors':'off', 'verbose':'1', 'user':'', 'password':'', 'host':'', }
         self._email_reports_bug = 'fred@nic.cz'
         # Used in detailed help:
         self._ljust = 25      # indent description column from names
@@ -113,7 +113,7 @@ class ManagerBase:
 
     def get_session(self, offset):
         return self._session[offset]
-        
+
     def get_language(self):
         return self._session[LANG]
 
@@ -121,13 +121,13 @@ class ManagerBase:
         'Init variables from options (after loaded config).'
         # connect
         op = self._options
-        if op['host']: self._conf.set(section_connect,'host',op['host'])
-        if op['port']: self._conf.set(section_connect,'port',op['port'])
-        if op['user']: self._conf.set(section_connect,'username',op['user'])
-        if op['password']: self._conf.set(section_connect,'password',op['password'])
-        if op['cert']: self._conf.set(section_connect,'ssl_cert',op['cert'])
-        if op['privkey']: self._conf.set(section_connect,'ssl_key',op['privkey'])
-        if op['nologin']: self._conf.set(section_connect,'nologin','nologin')
+        if op['host']: self._conf.set(section_connect, 'host', op['host'])
+        if op['port']: self._conf.set(section_connect, 'port', op['port'])
+        if op['user']: self._conf.set(section_connect, 'username', op['user'])
+        if op['password']: self._conf.set(section_connect, 'password', op['password'])
+        if op['cert']: self._conf.set(section_connect, 'ssl_cert', op['cert'])
+        if op['privkey']: self._conf.set(section_connect, 'ssl_key', op['privkey'])
+        if op['nologin']: self._conf.set(section_connect, 'nologin', 'nologin')
         # copy variables for individual commands
         self.copy_default_options(self._section_epp_login, section_connect, 'username')
         self.copy_default_options(self._section_epp_login, section_connect, 'password')
@@ -146,20 +146,20 @@ class ManagerBase:
 
     def fill_missing_required(self, section_connect):
         'Fill missing required values by defaults.'
-        for key in ('port','timeout'):
-            if self.get_config_value(section_connect,key,OMIT_ERROR) is None:
-                self._conf.set(section_connect,key,str(internal_variables.required_defaults[key]))
-        
+        for key in ('port', 'timeout'):
+            if self.get_config_value(section_connect, key, OMIT_ERROR) is None:
+                self._conf.set(section_connect, key, str(internal_variables.required_defaults[key]))
+
     def get_valid_output(self, key):
         'Get valid output type.'
         if not key in OUTPUT_TYPES:
-            self.append_error('%s: (%s)'%(_T('Unknown output type. Valid types are'),', '.join(OUTPUT_TYPES)))
+            self.append_error('%s: (%s)' % (_T('Unknown output type. Valid types are'), ', '.join(OUTPUT_TYPES)))
             key = self._session[OUTPUT_TYPE]
         return key
-        
+
     def set_auto_connect(self, switch):
         'Set auto connection ON/OFF. switch = 0/1.'
-        self._auto_connect = switch==1 and 1 or 0
+        self._auto_connect = switch == 1 and 1 or 0
 
     def is_logon(self):
         'Returns 0-offline,1-online.'
@@ -168,19 +168,19 @@ class ManagerBase:
     def get_username_and_host(self):
         'Returns username and host.'
         return self._session[USERNAME], self._session[HOST]
-        
+
     def is_confirm_cmd_name(self, command_name):
         'Returns 0-not conrifmation,1-need conrifmation.'
-        return self._session[CONFIRM_SEND_COMMAND] and re.match('(create|update|delete|transfer|renew)',command_name)
+        return self._session[CONFIRM_SEND_COMMAND] and re.match('(create|update|delete|transfer|renew)', command_name)
 
     def set_confirm(self, type):
         'Set switch confirm_commands_before_send'
         value = type.upper()
-        if value in ('ON','OFF'):
+        if value in ('ON', 'OFF'):
             self._session[CONFIRM_SEND_COMMAND] = value == 'ON' and 1 or 0
-            self.append_note('%s ${BOLD}%s${NORMAL}'%(_T('Command confirmation has been set to'),self._session[CONFIRM_SEND_COMMAND] and 'ON' or 'OFF'))
+            self.append_note('%s ${BOLD}%s${NORMAL}' % (_T('Command confirmation has been set to'), self._session[CONFIRM_SEND_COMMAND] and 'ON' or 'OFF'))
         else:
-            self.append_error('%s %s'%(_T('Invalid Command confirmation parametr'),type))
+            self.append_error('%s %s' % (_T('Invalid Command confirmation parametr'), type))
             self._notes_afrer_errors.append(_T("Type 'help confirm' to get more information about confirm commands."))
 
     def get_errors(self, sep='\n'):
@@ -212,7 +212,7 @@ class ManagerBase:
     def is_error(self):
         "Check if any error occurs."
         return len(self._errors)
-        
+
     def is_note(self):
         "Check if any note is in the stack"
         return len(self._notes)
@@ -223,7 +223,7 @@ class ManagerBase:
 $fred_client_notes = array();  // notes occuring during communication
 $fred_client_errors = array(); // errors occuring during communication
 """
-        
+
     def display(self):
         "Output all messages to stdout or log file."
         msg = self.get_messages()
@@ -242,7 +242,7 @@ $fred_client_errors = array(); // errors occuring during communication
 
         if is_xml:
             if self.is_note() or self.is_error() or self._notes_afrer_errors:
-                msg.append('<?xml version="1.0" encoding="%s"?>'%translate.encoding)
+                msg.append('<?xml version="1.0" encoding="%s"?>' % translate.encoding)
                 msg.append('<FredClient>')
                 xml_close_tag = 1
 
@@ -255,9 +255,9 @@ $fred_client_errors = array(); // errors occuring during communication
 
             for text in self._notes:
                 if is_php:
-                    msg.append('$fred_client_notes[] = %s;'%php_string(text))
+                    msg.append('$fred_client_notes[] = %s;' % php_string(text))
                 elif is_xml:
-                    msg.append('\t<note>%s</note>'%strip_colors(text))
+                    msg.append('\t<note>%s</note>' % strip_colors(text))
                 elif is_html:
                     msg.append(escape_html(strip_colors(text)))
                 else:
@@ -276,22 +276,22 @@ $fred_client_errors = array(); // errors occuring during communication
                 msg.append('<div class="errors">')
 
             if is_php:
-                msg.append('$fred_client_errors[] = %s;'%php_string(self._errors[0]))
+                msg.append('$fred_client_errors[] = %s;' % php_string(self._errors[0]))
             elif is_xml:
-                msg.append('\t<error>%s</error>'%strip_colors(self._errors[0]))
+                msg.append('\t<error>%s</error>' % strip_colors(self._errors[0]))
             elif is_html:
                 msg.append(escape_html(strip_colors(self._errors[0])))
             else:
                 if len(msg) and msg[-1] != '': msg.append('')
                 self._errors[-1] += colored_output.render('${NORMAL}')
                 label = _T('ERROR')
-                msg.append('%s%s: %s'%(colored_output.render('${RED}${BOLD}'),label, self._errors[0]))
+                msg.append('%s%s: %s' % (colored_output.render('${RED}${BOLD}'), label, self._errors[0]))
 
             for text in self._errors[1:]:
                 if is_php:
-                    msg.append('$fred_client_errors[] = %s;'%php_string(text))
+                    msg.append('$fred_client_errors[] = %s;' % php_string(text))
                 elif is_xml:
-                    msg.append('\t<error>%s</error>'%strip_colors(text))
+                    msg.append('\t<error>%s</error>' % strip_colors(text))
                 elif is_html:
                     msg.append(escape_html(strip_colors(text)))
                 else:
@@ -310,9 +310,9 @@ $fred_client_errors = array(); // errors occuring during communication
                 msg.append('<div class="remark">')
 
             if is_php:
-                msg.extend(map(lambda s: '$fred_client_notes[] = %s;'%php_string(s), self._notes_afrer_errors))
+                msg.extend(map(lambda s: '$fred_client_notes[] = %s;' % php_string(s), self._notes_afrer_errors))
             elif is_xml:
-                msg.extend(map(lambda s: '\t<remark>%s</remark>'%strip_colors(s), self._notes_afrer_errors))
+                msg.extend(map(lambda s: '\t<remark>%s</remark>' % strip_colors(s), self._notes_afrer_errors))
             elif is_html:
                 msg.extend(map(lambda s: escape_html(strip_colors(s)), self._notes_afrer_errors))
             else:
@@ -326,52 +326,52 @@ $fred_client_errors = array(); // errors occuring during communication
 
         if xml_close_tag:
             msg.append('</FredClient>')
-        
+
         return sep.join(map(get_ltext, msg))
 
     def welcome(self):
         "Welcome message."
-        return '%s\n%s\n'%(self.version(),_T('Type "help", "license" or "credits" for more information.'))
+        return '%s\n%s\n' % (self.version(), _T('Type "help", "license" or "credits" for more information.'))
 
     def version(self):
-        return 'FredClient %s'%internal_variables.fred_version # version of the client
+        return 'FredClient %s' % internal_variables.fred_version # version of the client
 
     def __next_clTRID__(self):
         """Generate next clTRID value.
         format: [4 random ASCII chars][3 digits of the commands order]#[date and time]
         """
-        self._session[CMD_ID]+=1 
+        self._session[CMD_ID] += 1
         if self._session[CLTRID]:
             # if user defines his own identificator
             cltrid = self._session[CLTRID]
-            if re.search('%\d*d',cltrid):
+            if re.search('%\d*d', cltrid):
                 # insert ID client transaction
-                cltrid = cltrid%self._session[CMD_ID]
+                cltrid = cltrid % self._session[CMD_ID]
         else:
-            cltrid = ('%s%03d#%s'%(self.defs[PREFIX], self._session[CMD_ID], time.strftime('%y-%m-%dat%H:%M:%S')))
+            cltrid = ('%s%03d#%s' % (self.defs[PREFIX], self._session[CMD_ID], time.strftime('%y-%m-%dat%H:%M:%S')))
         return cltrid
 
     def set_null_value(self, value):
         'Set string what represents NULL value'
         value = value.strip()
         if len(value):
-            if re.search('[- \(\)]',value) or value in ('""',"''"):
-                self.append_error('%s null_value: %s. %s'%(_T('Invalid format of'),value,_T('See help for more.')), 'RED')
+            if re.search('[- \(\)]', value) or value in ('""', "''"):
+                self.append_error('%s null_value: %s. %s' % (_T('Invalid format of'), value, _T('See help for more.')), 'RED')
             else:
                 self._session[NULL_VALUE] = value
         else:
-            self.append_error('null_value %s. %s'%(_T('cannot be empty'),_T('See help for more.')), 'RED')
+            self.append_error('null_value %s. %s' % (_T('cannot be empty'), _T('See help for more.')), 'RED')
 
     def set_skip_value(self, value):
         'Set string what represents SKIP value'
         value = value.strip()
         if len(value):
-            if re.search('[- \(\)]',value) or value in ('""',"''"):
-                self.append_error('%s skip_value: %s. %s'%(_T('Invalid format of'),value,_T('See help for more.')), 'RED')
+            if re.search('[- \(\)]', value) or value in ('""', "''"):
+                self.append_error('%s skip_value: %s. %s' % (_T('Invalid format of'), value, _T('See help for more.')), 'RED')
             else:
                 self._session[SKIP_VALUE] = value
         else:
-            self.append_error('skip_value %s. %s'%(_T('cannot be empty'),_T('See help for more.')), 'RED')
+            self.append_error('skip_value %s. %s' % (_T('cannot be empty'), _T('See help for more.')), 'RED')
 
     def skip_element(self, value):
         "True if value is SKIP for skipping EPP element"
@@ -383,9 +383,9 @@ $fred_client_errors = array(); // errors occuring during communication
     def manage_config(self, param):
         'Display config values or save config.'
         if len(self._config_used_files):
-            print_unicode('${BOLD}${YELLOW}%s:${NORMAL}\n\t%s'%(_T('Actual config builded from files'),'\n\t'.join(self._config_used_files)))
+            print_unicode('${BOLD}${YELLOW}%s:${NORMAL}\n\t%s' % (_T('Actual config builded from files'), '\n\t'.join(self._config_used_files)))
         else:
-            print_unicode('${BOLD}${RED}%s${NORMAL}'%_T('No configuration file. Defaults used instead it.'))
+            print_unicode('${BOLD}${RED}%s${NORMAL}' % _T('No configuration file. Defaults used instead it.'))
         if not self._conf:
             print_unicode(_T('No config'))
             return
@@ -393,10 +393,10 @@ $fred_client_errors = array(); // errors occuring during communication
         for section in self._conf.sections():
             msg = ''
             if section == selected_section:
-                msg = '${BOLD}${GREEN}*** %s ***${NORMAL}'%_T('Actual connection HERE')
-            print colored_output.render('${BOLD}[%s]${NORMAL} %s'%(section,msg))
+                msg = '${BOLD}${GREEN}*** %s ***${NORMAL}' % _T('Actual connection HERE')
+            print colored_output.render('${BOLD}[%s]${NORMAL} %s' % (section, msg))
             for option in self._conf.options(section):
-                print_unicode(colored_output.render('\t${BOLD}%s${NORMAL} = %s'%(option,str(self.get_config_value(section,option)))))
+                print_unicode(colored_output.render('\t${BOLD}%s${NORMAL} = %s' % (option, str(self.get_config_value(section, option)))))
 
     def copy_default_options(self, section, section_default, option):
         'Copy default options where they missing.'
@@ -410,8 +410,8 @@ $fred_client_errors = array(); // errors occuring during communication
     def __create_default_conf__(self):
         'Create default config file.'
         ok = 0
-        modul_path,fn = os.path.split(__file__)
-        root_path = os.path.normpath(os.path.join(modul_path,'..'))
+        modul_path, fn = os.path.split(__file__)
+        root_path = os.path.normpath(os.path.join(modul_path, '..'))
         try:
             self._conf.readfp(StringIO.StringIO(internal_variables.config))
             ok = 1
@@ -419,12 +419,12 @@ $fred_client_errors = array(); // errors occuring during communication
             self.append_error(msg)
         else:
             # schema = all-1.0.xsd
-            seop = ('session','schema')
+            seop = ('session', 'schema')
             name = self.get_config_value(seop[0], seop[1])
             if not name:
                 self.append_error(_T('Schema in session missing. This is invalid instalation.'))
                 return 0
-            self._conf.set(seop[0], seop[1], os.path.join(modul_path,'schemas',name))
+            self._conf.set(seop[0], seop[1], os.path.join(modul_path, 'schemas', name))
             # make copy if need
             new_section = ''
             section = self.config_get_section_connect()
@@ -432,21 +432,21 @@ $fred_client_errors = array(); // errors occuring during communication
                 new_section = section
                 section = 'connect'
             # adjust pathnames
-            modul_path,fn = os.path.split(__file__)
-            root_path = os.path.normpath(os.path.join(modul_path,'certificates'))
+            modul_path, fn = os.path.split(__file__)
+            root_path = os.path.normpath(os.path.join(modul_path, 'certificates'))
             self._conf.set(section, 'dir', root_path)
             if new_section:
                 # copy default values into new connection
                 self._conf.add_section(new_section)
-                for option in ('host','port','ssl_key','ssl_cert','dir'):
+                for option in ('host', 'port', 'ssl_key', 'ssl_cert', 'dir'):
                     self.copy_default_options(new_section, section, option)
-        return ok 
+        return ok
 
     def __init_versions_from_config__(self, section):
         'Overwrite default schema versions by values from config (if any)'
         pref = 'schema_version_%s'
         for key in self._epp_cmd.get_schema_names(): ## ('contact','nsset','domain','enum','fred','epp'):
-            name = pref%key
+            name = pref % key
             value = self.get_config_value(section, name, OMIT_ERROR)
             if value:
                 # overwtite schema version
@@ -470,15 +470,15 @@ $fred_client_errors = array(); // errors occuring during communication
                     self._epp_cmd.set_schema_version(key, value)
                     self._epp_response.set_schema_version(key, value)
                 else:
-                    self.append_error(_T('Invalid version name %s. It must be one from (%s).')%(key, ', '.join(names)))
+                    self.append_error(_T('Invalid version name %s. It must be one from (%s).') % (key, ', '.join(names)))
             else:
-                self.append_error('%s: %s'%(_T('Invalid version format'),item))
+                self.append_error('%s: %s' % (_T('Invalid version format'), item))
 
     def get_actual_username_and_password(self):
         'Returns tuple (username, password) what was used to login'
         return (
-            self.get_config_value(self._section_epp_login,'username',OMIT_ERROR),
-            self.get_config_value(self._section_epp_login,'password',OMIT_ERROR),
+            self.get_config_value(self._section_epp_login, 'username', OMIT_ERROR),
+            self.get_config_value(self._section_epp_login, 'password', OMIT_ERROR),
         )
 
     def get_logins_and_passwords(self, max=1):
@@ -487,40 +487,40 @@ $fred_client_errors = array(); // errors occuring during communication
         Parameter max means how many logins are returned.
         """
         logins = []
-        section  = self.config_get_section_connect()
+        section = self.config_get_section_connect()
         # default names are: username, password
         logins.append((self.get_config_value(section, 'username'), self.get_config_value(section, 'password')))
         # next continue: username2, password2
-        for n in range(2,max+1):
-            username = self.get_config_value(section, 'username%d'%n)
-            password = self.get_config_value(section, 'password%d'%n)
+        for n in range(2, max + 1):
+            username = self.get_config_value(section, 'username%d' % n)
+            password = self.get_config_value(section, 'password%d' % n)
             if not (username is None or password is None):
                 logins.append((username, password))
         return logins
-        
+
 
     def get_config_value(self, section, option, omit_errors=0):
         'Get value from config and catch exceptions.'
-        value=None
+        value = None
         if not self._conf: return value
         try:
-            value = self._conf.get(section,option)
+            value = self._conf.get(section, option)
         except (ConfigParser.NoSectionError, ConfigParser.NoOptionError, ConfigParser.InterpolationMissingOptionError), msg:
             if not omit_errors:
                 # disabled text as error type (text ERROR not displayed)
                 #self.append_error('ConfigError: %s (%s, %s)'%(msg,section,option))
-                self.append_note('Warning: Problem in configuration file. %s (%s, %s)'%(msg,section,option), ('RED','BOLD'))
+                self.append_note('Warning: Problem in configuration file. %s (%s, %s)' % (msg, section, option), ('RED', 'BOLD'))
         return value
 
     def config_get_section_connect(self):
         'Set section name "connect" in config.'
         if self._session[SESSION]:
-            section = 'connect_%s'%self._session[SESSION]
+            section = 'connect_%s' % self._session[SESSION]
         else:
             section = 'connect'
         return section
 
-    def join_missing_config_messages(self, verbose = None):
+    def join_missing_config_messages(self, verbose=None):
         'Join missing config message, if is any.'
         if verbose is None: verbose = self._session[VERBOSE]
         if verbose > 1 and  len(self._message_missing_config):
@@ -536,34 +536,34 @@ $fred_client_errors = array(); // errors occuring during communication
         #
         # keep options in Manager instance
         if type(options) is dict: self._options = options
-        
+
         if self._options.has_key('command') and len(self._options['command']):
             # Disable writting history in one-command-line mode.
             # It is usefull in cases fred_client is called by php page and
             # it is not privileges for write history.
             self._is_history = 0
-            
+
         # Load configuration file:
-        self._conf, self._config_used_files, config_errors, self._message_missing_config =\
+        self._conf, self._config_used_files, config_errors, self._message_missing_config = \
                 session_config.main(self._config_name, self._options, self._session[VERBOSE], OMIT_ERROR)
-        
+
         language = self._session[LANG]
         # language from environment and configuration file:
-        if len(self._options.get('lang','')):
+        if len(self._options.get('lang', '')):
             language = self._options['lang']
         # overwrite config by option from command line:
         if self._options.has_key('lang_option'):
             language = self._options['lang_option']
-        
+
         self.set_language(language) # set translation
-        
+
         if len(self._config_used_files):
-            self.append_note('%s %s'%(_T('Using configuration from'), ', '.join(self._config_used_files)))
+            self.append_note('%s %s' % (_T('Using configuration from'), ', '.join(self._config_used_files)))
         if len(config_errors):
             self._errors.extend(config_errors)
             os.chdir(oldcwd)
             return 0 # Errors occured during parsing config. Error of missing file not included!
-        self._session[SESSION] = self._options.get('session','') # API definition of --session parameter.
+        self._session[SESSION] = self._options.get('session', '') # API definition of --session parameter.
         # set session variables
         section = 'session'
         if not self._conf.has_section(section):
@@ -573,7 +573,7 @@ $fred_client_errors = array(); // errors occuring during communication
                 os.chdir(oldcwd)
                 return 0 # fatal error
             if self._options['session'] != '':
-                self.append_error(_T('Session "%s" without effect. No configuration file.')%self._options['session'])
+                self.append_error(_T('Session "%s" without effect. No configuration file.') % self._options['session'])
                 os.chdir(oldcwd)
                 return 0
         # for login with no parameters
@@ -582,27 +582,27 @@ $fred_client_errors = array(); // errors occuring during communication
             self._conf.add_section(section_connect)
             partname = section_connect[8:]
             if partname == '': partname = section_connect
-            self.append_error(_T('Configuration file has no section "%s".')%partname)
+            self.append_error(_T('Configuration file has no section "%s".') % partname)
             os.chdir(oldcwd)
             return 0 # fatal error
         # session
         section = 'session'
-        self._session[POLL_AUTOACK] = str(self.get_config_value(section,'poll_autoack',OMIT_ERROR)).lower() == 'on' and 1 or 0
-        self._session[CONFIRM_SEND_COMMAND] = self.get_config_value(section,'confirm_send_commands').lower() == 'on' and 1 or 0
-        self._session[VALIDATE] = self.get_config_value(section,'validate').lower() == 'on' and 1 or 0
-        colors = self.get_config_value(section,'colors',OMIT_ERROR)
+        self._session[POLL_AUTOACK] = str(self.get_config_value(section, 'poll_autoack', OMIT_ERROR)).lower() == 'on' and 1 or 0
+        self._session[CONFIRM_SEND_COMMAND] = self.get_config_value(section, 'confirm_send_commands').lower() == 'on' and 1 or 0
+        self._session[VALIDATE] = self.get_config_value(section, 'validate').lower() == 'on' and 1 or 0
+        colors = self.get_config_value(section, 'colors', OMIT_ERROR)
         if colors:
             self._session[COLORS] = colors.lower() == 'on' and 1 or 0
             colored_output.set_mode(self._session[COLORS])
-        escaped_input = self.get_config_value(section,'escaped_input',OMIT_ERROR)
+        escaped_input = self.get_config_value(section, 'escaped_input', OMIT_ERROR)
         if escaped_input:
             self._session[ESCAPED_INPUT] = escaped_input.lower() == 'on' and 1 or 0
-        self.parse_verbose_value(self.get_config_value(section,'verbose',OMIT_ERROR))
+        self.parse_verbose_value(self.get_config_value(section, 'verbose', OMIT_ERROR))
         # set NULL value
-        value = self.get_config_value(section,'null_value',OMIT_ERROR)
+        value = self.get_config_value(section, 'null_value', OMIT_ERROR)
         if value: self.set_null_value(value)
         # set SKIP value
-        value = self.get_config_value(section,'skip_value',OMIT_ERROR)
+        value = self.get_config_value(section, 'skip_value', OMIT_ERROR)
         if value: self.set_skip_value(value)
         self.__init_versions_from_config__(section_connect)
         # init from command line options
@@ -618,11 +618,11 @@ $fred_client_errors = array(); // errors occuring during communication
             cltrid = self.get_config_value(section, 'cltrid', OMIT_ERROR)
         if cltrid and len(cltrid):
             self._session[CLTRID] = cltrid
-            
+
         reconnect = self.get_config_value(section, 'reconnect', OMIT_ERROR)
         if reconnect == 'no':
             self._session[RECONNECT] = None
-        
+
         os.chdir(oldcwd)
         return 1 # OK
 
@@ -630,16 +630,16 @@ $fred_client_errors = array(); // errors occuring during communication
         'Init verbose mode.'
         if verbose is None: return self._session[VERBOSE]
         nverb = None
-        if type(verbose) in (str,unicode):
+        if type(verbose) in (str, unicode):
             try:
                 nverb = int(verbose)
             except ValueError, msg:
-                self.append_error('%s %s'%(_T('Invalid verbose parametr'),verbose))
+                self.append_error('%s %s' % (_T('Invalid verbose parametr'), verbose))
                 # self.append_error(_T('Valid verbose level is: 1, 2, 3.'))
                 self._notes_afrer_errors.append(_T("Type 'help verbose' to get more information about verbose levels."))
                 return None
         elif type(verbose) is int: nverb = verbose
-        if nverb in (0,1,2,3):
+        if nverb in (0, 1, 2, 3):
             self._session[VERBOSE] = nverb
         else:
             self.append_error(_T('Verbose level is out of range. Available values are 1, 2, 3.'))
@@ -658,7 +658,7 @@ $fred_client_errors = array(); // errors occuring during communication
         if self._session[OUTPUT_TYPE] != 'text' and self._session[VERBOSE] < 2:
             self._notes = []
             self._notes_afrer_errors = []
-    
+
     #---------------------------
     # validation
     #---------------------------
@@ -666,17 +666,17 @@ $fred_client_errors = array(); // errors occuring during communication
         'Set validate mode in session.'
         self._session[VALIDATE] = value
         if value: self.check_validator()
-    
+
     def check_validator(self, silent=0):
         'Check if exists external validator (xmllint).'
         ok = 0
         try:
-            procs = Popen(self._external_validator, shell=True, stdin=PIPE, 
+            procs = Popen(self._external_validator, shell=True, stdin=PIPE,
                           stdout=PIPE, stderr=PIPE)
             # pipes: (p.stdin, p.stdout, p.stderr)
             pipes = (procs.stdin, procs.stdout, procs.stderr)
         except IOError, msg:
-            self.append_note('check_validator: %s'%str(msg),('RED','BOLD'))
+            self.append_note('check_validator: %s' % str(msg), ('RED', 'BOLD'))
         standr = pipes[1].read()
         errors = pipes[2].read()
         map(lambda f: f.close(), pipes)
@@ -691,28 +691,28 @@ $fred_client_errors = array(); // errors occuring during communication
             if not silent:
                 # appent error to output if only not silent mode
                 self.append_note(uerr)
-                self.append_note(_T('External validator "%s" not found. XML validation has been disabled.')%self._external_validator)
+                self.append_note(_T('External validator "%s" not found. XML validation has been disabled.') % self._external_validator)
         return ok
 
     def __get_actual_schema_path__(self):
         'Returns schema path. Try first in individual connect section than share in session.'
-        schema_path = self.get_config_value(self.config_get_section_connect(),'schema',OMIT_ERROR)
+        schema_path = self.get_config_value(self.config_get_section_connect(), 'schema', OMIT_ERROR)
         if not schema_path:
             # if schema is not defined for server get share default
-            schema_path = self.get_config_value('session','schema')
+            schema_path = self.get_config_value('session', 'schema')
         if not os.path.isabs(schema_path) and self.get_cwd():
             return os.path.normpath(os.path.join(self.get_cwd(), schema_path))
         return schema_path
-    
+
     def is_epp_valid(self, message, note=''):
         "Check XML EPP by xmllint. OUT: '' - correct; '...' any error occurs."
         if not self._session[VALIDATE]: return '' # validation is disabled
-        if message=='':
+        if message == '':
             return _T('XML document is empty.')
         # check validation of the XML
         schema_path = self.__get_actual_schema_path__()
         if not schema_path: return '' # schema path is not set
-        command = '%s --noout --schema "%s" -'%(self._external_validator, schema_path)
+        command = '%s --noout --schema "%s" -' % (self._external_validator, schema_path)
         if self._session[VERBOSE] > 2 \
             and self._loop_status == LOOP_NONE \
             and self._session[OUTPUT_TYPE] != 'xml':
@@ -725,7 +725,7 @@ $fred_client_errors = array(); // errors occuring during communication
             pipes[0].write(message)
             pipes[0].close()
         except IOError, msg:
-            self.append_note(str(msg),('RED','BOLD'))
+            self.append_note(str(msg), ('RED', 'BOLD'))
         limit = 5 # maximal allowed steps for reading xmllint error result.
         while limit > 0:
             # wait for finishing validation process
@@ -744,33 +744,33 @@ $fred_client_errors = array(); // errors occuring during communication
             errors = '' # it seems be OK...
         else:
             # text 'nen\xa1...' is encoded in cp852 and is used for check localized message in MS Windows
-            if re.search('command not found',errors) \
-                or re.search('nen\xa1 n\xa0zvem vnit\xfdn\xa1ho ani vn\xd8j\xe7\xa1ho p\xfd\xa1kazu',errors) \
-                or re.search('Schemas parser error',errors):
+            if re.search('command not found', errors) \
+                or re.search('nen\xa1 n\xa0zvem vnit\xfdn\xa1ho ani vn\xd8j\xe7\xa1ho p\xfd\xa1kazu', errors) \
+                or re.search('Schemas parser error', errors):
                 # schema missing!
                 self.append_note(_T('Warning: Client-side validation failed.'))
                 if self._session[VERBOSE] > 1: self.append_note(get_ltext(errors))
-                self._notes_afrer_errors.append(_T("Client-side validation has been disabled. Type '%s' to enable it.")%'${BOLD}validate on${NORMAL}')
+                self._notes_afrer_errors.append(_T("Client-side validation has been disabled. Type '%s' to enable it.") % '${BOLD}validate on${NORMAL}')
                 self._session[VALIDATE] = 0 # disable validation automaticly
-                errors=''
+                errors = ''
         return errors
 
-    def __prepare_help__(self,sc):
+    def __prepare_help__(self, sc):
         'Prepare for help.'
         content = []
-        stt,src = [[n.split(',') for n in x.split(';')] for x in sc]
+        stt, src = [[n.split(',') for n in x.split(';')] for x in sc]
         chn = colored_output.TERM_SHORTCUTS.split('\n')
-        for m,o in stt:
-            content.extend(['\n'.join([chn[int(p)] for p in src[int(o)]])]*int(m))
+        for m, o in stt:
+            content.extend(['\n'.join([chn[int(p)] for p in src[int(o)]])] * int(m))
         return content
-    
-    def __do_help__(self,cont):
+
+    def __do_help__(self, cont):
         'Make help data'
-        clr = ('%s%s%s'%(colored_output.BOL,colored_output.CLEAR_EOL,colored_output.UP))*8
+        clr = ('%s%s%s' % (colored_output.BOL, colored_output.CLEAR_EOL, colored_output.UP)) * 8
         while 1:
             try:
                 for c in cont:
-                    print c,'\n[Ctrl+C]'
+                    print c, '\n[Ctrl+C]'
                     time.sleep(0.2)
                     print clr,
             except KeyboardInterrupt:
@@ -788,12 +788,12 @@ $fred_client_errors = array(); // errors occuring during communication
         local_obj = self.defs[objURI]
         server_obj = dct['objURI']
         """
-        locals, servers  = self.check_schema_versions(local_obj, server_obj)
+        locals, servers = self.check_schema_versions(local_obj, server_obj)
         if len(locals) or len(servers):
-            self.append_error(_T('Different %s schema version.')%name)
-            self.append_error(_TP('Client schema version is%s\t%s%sand on the server is%s\t%s','Client schema versions are%s\t%s%sand on the server are%s\t%s',len(locals))%(
-                self._sep, ('%s\t'%self._sep).join(locals), 
-                self._sep, self._sep, ('%s\t'%self._sep).join(servers))
+            self.append_error(_T('Different %s schema version.') % name)
+            self.append_error(_TP('Client schema version is%s\t%s%sand on the server is%s\t%s', 'Client schema versions are%s\t%s%sand on the server are%s\t%s', len(locals)) % (
+                self._sep, ('%s\t' % self._sep).join(locals),
+                self._sep, self._sep, ('%s\t' % self._sep).join(servers))
             )
 
     def check_schema_versions(self, local_schema, server_schema):
@@ -807,28 +807,28 @@ $fred_client_errors = array(); // errors occuring during communication
             [get_ltext(name) for name in local_schema if name not in server_schema], # local names what are not on the server
             [get_ltext(name) for name in server_schema if name not in local_schema], # server names what are not eqal with local version
         )
-        
+
 
 def append_with_colors(list_of_messages, msg, color):
     "Used by Manager::append_error() and Manager::append_note() functions"
     if color:
         if type(color) in (list, tuple):
-            c = ''.join(['${%s}'%c for c in color])
+            c = ''.join(['${%s}' % c for c in color])
         else:
-            c = '${%s}'%(color or 'WHITE') # default color
-        list_of_messages.append('%s%s${NORMAL}'%(c,msg))
+            c = '${%s}' % (color or 'WHITE') # default color
+        list_of_messages.append('%s%s${NORMAL}' % (c, msg))
     else:
         list_of_messages.append(msg)
 
 def join_unicode(u_list, sep='\n'):
     'Convert str objects to unicode and catch errors.'
-    out=[]
+    out = []
     for row in u_list:
         if type(row) == str:
             try:
                 row = row.decode(translate.encoding)
             except UnicodeDecodeError, error:
-                row = '(UnicodeDecodeError) '+repr(row)
+                row = '(UnicodeDecodeError) ' + repr(row)
         out.append(row)
     return sep.join(out)
 
@@ -843,7 +843,7 @@ def get_ltext(text):
         try:
             ltext = text.encode(translate.encoding)
         except UnicodeEncodeError, msg:
-            ltext = repr(re.sub('\x1b[^m]*m','',text))
+            ltext = repr(re.sub('\x1b[^m]*m', '', text))
         else:
             ltext = colored_output.render(ltext)
     return ltext
@@ -851,7 +851,7 @@ def get_ltext(text):
 def print_unicode(text):
     'Print text and catch encoding problems with unicode.'
     print get_ltext(text)
-        
+
 
 def get_unicode(text):
     'Convert to unicode and catch problems with conversion.'
@@ -859,20 +859,20 @@ def get_unicode(text):
         try:
             text = text.decode(translate.encoding)
         except UnicodeDecodeError:
-            text = repr(re.sub('\$\{[A-Z]+\}','',text)) # remove color tags
+            text = repr(re.sub('\$\{[A-Z]+\}', '', text)) # remove color tags
     return text
 
-    
+
 def php_string(value):
     'Returns escaped string for place into PHP variable.'
-    if type(value) in (str,unicode):
+    if type(value) in (str, unicode):
         text = get_ltext(value).strip().replace('\\n', '\n')
         ret = "'%s'" % text.replace(r'\ '[:-1], r'\\ '[:-1]).replace(r"'", r"\'")
     elif type(value) in (list, tuple):
-        items=[]
+        items = []
         for n in value:
             items.append(php_string(n))
-        ret = 'array(%s)'%', '.join(items)
+        ret = 'array(%s)' % ', '.join(items)
     else:
         ret = value # int or float
     return ret
@@ -885,14 +885,13 @@ def decamell(text):
     'Make camell type text to text with unit separator: nameType -> name_type'
     return re.sub('([A-Z])', '_\\1', text).lower()
 
-    
+
 if __name__ == '__main__':
     mb = ManagerBase()
     mb._conf = ConfigParser.SafeConfigParser()
     mb.__create_default_conf__()
     mb.display()
     for section in mb._conf.sections():
-        print '[%s]'%section
+        print '[%s]' % section
         for item in mb._conf.items(section):
-            print '\t%s = %s'%item
-
+            print '\t%s = %s' % item

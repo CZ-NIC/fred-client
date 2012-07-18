@@ -96,7 +96,7 @@ Instalace v MS Windows se sklada ze 3 kroku:
     2. Nastaveni promenne PATH
     3. PyQt4
 
-Ze strany http://www.trolltech.com/developer/downloads/qt/index si stahnete soubor 
+Ze strany http://www.trolltech.com/developer/downloads/qt/index si stahnete soubor
 qt-win-opensource-4.2.2-mingw.exe (56.2 MB) - Qt/Windows Open Source Edition
 
 
@@ -116,7 +116,7 @@ Promenna PATH je ulozena ve tvaru:
 
     PATH=%SystemRoot%\System32;C:\Program Files
 
-Pokud jste Qt4 framework nainstalovali napriklad do adresare C:\system\Qt\4.2.1, 
+Pokud jste Qt4 framework nainstalovali napriklad do adresare C:\system\Qt\4.2.1,
 tak do PATH pridate:
 
     PATH=%SystemRoot%\System32;C:\Program Files;C:\system\Qt\4.2.1
@@ -139,5 +139,3 @@ KROK 3:
 Ze strany http://www.riverbankcomputing.co.uk/pyqt/download.php si stahnete
 PyQt-win-gpl-4.1.1.zip  (6.1 MB)	PyQt v4 GPL for Windows
 Kliknutim na instalacni soubor jej nainstalujete.
-
-

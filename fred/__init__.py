@@ -36,7 +36,7 @@ except fred.FredError, msg:
 # or you can use function is_val() what returns value without KeyError:
 # You dont keep return values. The object holds them and functions is_val() and print_answer()  use them too.
 # Next possibility previous example:
-    
+
 try:
     epp = fred.Client()
     epp.login("reg-lrr","123456789")
@@ -81,7 +81,7 @@ import translate
 class Client:
     """EPP client API. Process whole EPP communication with server.
     Defaults values you can save into config file.
-    
+
     Every function does:
 
         - check input parameters
@@ -97,7 +97,7 @@ class Client:
                 reason:  (str) message witt reason
                 errors:   (list) errors
                 data:     (dict) individual values - see doc or help in functions
-        
+
     Functions accept parameters in this formats:
                        (for example)
         - string        login("user","pass")
@@ -123,7 +123,7 @@ class Client:
         self._epp.close()
 
     #==============================================================
-    
+
     def check_contact(self, name, cltrid=None):
         """DESCRIPTION:
   The EPP 'check_contact' command is used to determine if an contact can be
@@ -138,7 +138,7 @@ SYNTAX:
 OPTIONS:
   name (required)          Contact ID (unbounded list)
   cltrid                   Client transaction ID"""
-        return self._epp.api_command('check_contact',{'name':name, 'cltrid':cltrid})
+        return self._epp.api_command('check_contact', {'name':name, 'cltrid':cltrid})
 
     def check_domain(self, name, cltrid=None):
         """DESCRIPTION:
@@ -154,7 +154,7 @@ SYNTAX:
 OPTIONS:
   name (required)          Domain name (unbounded list)
   cltrid                   Client transaction ID"""
-        return self._epp.api_command('check_domain',{'name':name, 'cltrid':cltrid})
+        return self._epp.api_command('check_domain', {'name':name, 'cltrid':cltrid})
 
     def check_nsset(self, name, cltrid=None):
         """DESCRIPTION:
@@ -170,7 +170,7 @@ SYNTAX:
 OPTIONS:
   name (required)          NSSET ID (unbounded list)
   cltrid                   Client transaction ID"""
-        return self._epp.api_command('check_nsset',{'name':name, 'cltrid':cltrid})
+        return self._epp.api_command('check_nsset', {'name':name, 'cltrid':cltrid})
 
     def check_keyset(self, name, cltrid=None):
         """DESCRIPTION:
@@ -186,12 +186,12 @@ SYNTAX:
 OPTIONS:
   name (required)          KEYSET ID (unbounded list)
   cltrid                   Client transaction ID"""
-        return self._epp.api_command('check_keyset',{'name':name, 'cltrid':cltrid})
+        return self._epp.api_command('check_keyset', {'name':name, 'cltrid':cltrid})
 
 
-    def create_contact(self, contact_id, name, email, street, city, pc, cc, 
-            sp=None, org=None, auth_info=None, voice=None, fax=None, 
-            disclose=None, vat=None, ident=None, notify_email=None, 
+    def create_contact(self, contact_id, name, email, street, city, pc, cc,
+            sp=None, org=None, auth_info=None, voice=None, fax=None,
+            disclose=None, vat=None, ident=None, notify_email=None,
             cltrid=None):
         """DESCRIPTION:
   The EPP 'create_contact' command is used to create an instance of the contact.
@@ -234,13 +234,13 @@ OPTIONS:
                            (op,passport,mpsv,ico,birthday)
   notify_email             Notification email
   cltrid                   Client transaction ID"""
-        return self._epp.api_command('create_contact',{
+        return self._epp.api_command('create_contact', {
             'contact_id':contact_id, 'name':name, 'email':email, 'city':city, 'cc':cc, 'auth_info':auth_info,
             'org':org, 'street':street, 'sp':sp, 'pc':pc, 'voice':voice, 'fax':fax,
-            'disclose':disclose, 'vat':vat, 'ident':ident, 
+            'disclose':disclose, 'vat':vat, 'ident':ident,
             'notify_email':notify_email, 'cltrid':cltrid})
 
-    def create_domain(self, name, registrant, auth_info=None, nsset=None, keyset=None, period=None, admin=None, val_ex_date=None, 
+    def create_domain(self, name, registrant, auth_info=None, nsset=None, keyset=None, period=None, admin=None, val_ex_date=None,
         cltrid=None):
         """DESCRIPTION:
   The EPP 'create_domain' command is used to create domain.
@@ -265,8 +265,8 @@ OPTIONS:
   admin                    Administrative contact ID (unbounded list)
   val_ex_date              Validation expires at date. This value is required for ENUM domains.
   cltrid                   Client transaction ID"""
-        return self._epp.api_command('create_domain',{'name':name,'auth_info':auth_info,
-            'period':period,'registrant':registrant, 'nsset':nsset, 'keyset':keyset, 'admin':admin,
+        return self._epp.api_command('create_domain', {'name':name, 'auth_info':auth_info,
+            'period':period, 'registrant':registrant, 'nsset':nsset, 'keyset':keyset, 'admin':admin,
             'val_ex_date':val_ex_date, 'cltrid':cltrid})
 
     def create_nsset(self, nsset_id, dns, tech, auth_info=None, reportlevel=None, cltrid=None):
@@ -291,7 +291,7 @@ OPTIONS:
   auth_info                Password required by server to authorize the transfer
   reportlevel              Report level. Range 0 - 10
   cltrid                   Client transaction ID"""
-        return self._epp.api_command('create_nsset',{'id':nsset_id, 'auth_info':auth_info,
+        return self._epp.api_command('create_nsset', {'id':nsset_id, 'auth_info':auth_info,
             'dns':dns, 'tech':tech, 'reportlevel':reportlevel, 'cltrid':cltrid})
 
 
@@ -313,7 +313,7 @@ OPTIONS:
   tech (required)          Technical contact (unbounded list)
   auth_info                Password required by server to authorize the transfer
   cltrid                   Client transaction ID"""
-        return self._epp.api_command('create_keyset',{'id':keyset_id, 'auth_info':auth_info,
+        return self._epp.api_command('create_keyset', {'id':keyset_id, 'auth_info':auth_info,
             'dnskey':dnskey, 'dnskeyref':dnskeyref, 'tech':tech, 'cltrid':cltrid})
 
 
@@ -327,7 +327,7 @@ SYNTAX:
 OPTIONS:
   id (required)            Contact ID
   cltrid                   Client transaction ID"""
-        return self._epp.api_command('delete_contact',{'id':contact_id, 'cltrid':cltrid})
+        return self._epp.api_command('delete_contact', {'id':contact_id, 'cltrid':cltrid})
 
 
     def delete_domain(self, name, cltrid=None):
@@ -340,7 +340,7 @@ SYNTAX:
 OPTIONS:
   name (required)          Domain name
   cltrid                   Client transaction ID"""
-        return self._epp.api_command('delete_domain',{'name':name, 'cltrid':cltrid})
+        return self._epp.api_command('delete_domain', {'name':name, 'cltrid':cltrid})
 
 
     def delete_nsset(self, nsset_id, cltrid=None):
@@ -353,7 +353,7 @@ SYNTAX:
 OPTIONS:
   id (required)            NSSET ID
   cltrid                   Client transaction ID"""
-        return self._epp.api_command('delete_nsset',{'id':nsset_id, 'cltrid':cltrid})
+        return self._epp.api_command('delete_nsset', {'id':nsset_id, 'cltrid':cltrid})
 
 
     def delete_keyset(self, keyset_id, cltrid=None):
@@ -366,7 +366,7 @@ SYNTAX:
 OPTIONS:
   id (required)            KEYSET ID
   cltrid                   Client transaction ID"""
-        return self._epp.api_command('delete_keyset',{'id':keyset_id, 'cltrid':cltrid})
+        return self._epp.api_command('delete_keyset', {'id':keyset_id, 'cltrid':cltrid})
 
 
     def hello(self):
@@ -398,7 +398,7 @@ SYNTAX:
 OPTIONS:
   name (required)          Contact ID
   cltrid                   Client transaction ID"""
-        return self._epp.api_command('info_contact',{'name':name, 'cltrid':cltrid})
+        return self._epp.api_command('info_contact', {'name':name, 'cltrid':cltrid})
 
 
     def info_domain(self, name, cltrid=None):
@@ -414,7 +414,7 @@ SYNTAX:
 OPTIONS:
   name (required)          Domain name
   cltrid                   Client transaction ID"""
-        return self._epp.api_command('info_domain',{'name':name, 'cltrid':cltrid})
+        return self._epp.api_command('info_domain', {'name':name, 'cltrid':cltrid})
 
 
     def info_nsset(self, name, cltrid=None):
@@ -429,7 +429,7 @@ SYNTAX:
 OPTIONS:
   name (required)          NSSET ID
   cltrid                   Client transaction ID"""
-        return self._epp.api_command('info_nsset',{'name':name, 'cltrid':cltrid})
+        return self._epp.api_command('info_nsset', {'name':name, 'cltrid':cltrid})
 
 
     def info_keyset(self, name, cltrid=None):
@@ -444,7 +444,7 @@ SYNTAX:
 OPTIONS:
   name (required)          KEYSET ID
   cltrid                   Client transaction ID"""
-        return self._epp.api_command('info_keyset',{'name':name, 'cltrid':cltrid})
+        return self._epp.api_command('info_keyset', {'name':name, 'cltrid':cltrid})
 
 
     def login(self, username, password, new_password=None, lang=None, cltrid=None):
@@ -464,18 +464,18 @@ OPTIONS:
   new_password             New password
   lang                     Language version
   cltrid                   Client transaction ID"""
-        
+
         if self._epp._conf:
             # if parameters are set as a list, use first item only. This list haven't been never empty.
-            if type(username) in (list,tuple): username = username[0]
-            if type(password) in (list,tuple):  password = password[0]
+            if type(username) in (list, tuple): username = username[0]
+            if type(password) in (list, tuple):  password = password[0]
             # We need save username+password to config section epp_login.
             # It is used by function get_actual_username_and_password() for obtain
             # actual login values. This is used in unittest for check value equality.
             self._epp._conf.set(self._epp._section_epp_login, 'username', username)
             self._epp._conf.set(self._epp._section_epp_login, 'password', password)
 
-        return self._epp.api_command('login',{'username':username, 
+        return self._epp.api_command('login', {'username':username,
             'password':password, 'new_password':new_password, 'lang':lang, 'cltrid':cltrid})
 
 
@@ -490,7 +490,7 @@ SYNTAX:
 
 OPTIONS:
   cltrid                   Client transaction ID"""
-        return self._epp.api_command('logout',{'cltrid':cltrid})
+        return self._epp.api_command('logout', {'cltrid':cltrid})
 
 
     def poll(self, op, msg_id=None, cltrid=None):
@@ -512,7 +512,7 @@ OPTIONS:
   cltrid                   Client transaction ID"""
         if type(msg_id) is int:
             msg_id = str(msg_id) # allowed strings only
-        return self._epp.api_command('poll',{'op':op,'msg_id':msg_id, 'cltrid':cltrid})
+        return self._epp.api_command('poll', {'op':op, 'msg_id':msg_id, 'cltrid':cltrid})
 
 
     def sendauthinfo_contact(self, contact_id, cltrid=None):
@@ -527,7 +527,7 @@ SYNTAX:
 OPTIONS:
   id (required)            Contact ID
   cltrid                   Client transaction ID"""
-        return self._epp.api_command('sendauthinfo_contact',{'id':contact_id, 'cltrid':cltrid})
+        return self._epp.api_command('sendauthinfo_contact', {'id':contact_id, 'cltrid':cltrid})
 
     def sendauthinfo_domain(self, name, cltrid=None):
         """DESCRIPTION:
@@ -541,7 +541,7 @@ SYNTAX:
 OPTIONS:
   name (required)          Domain name
   cltrid                   Client transaction ID"""
-        return self._epp.api_command('sendauthinfo_domain',{'name':name, 'cltrid':cltrid})
+        return self._epp.api_command('sendauthinfo_domain', {'name':name, 'cltrid':cltrid})
 
     def sendauthinfo_nsset(self, nsset_id, cltrid=None):
         """DESCRIPTION:
@@ -555,7 +555,7 @@ SYNTAX:
 OPTIONS:
   id (required)            NSSET ID
   cltrid                   Client transaction ID"""
-        return self._epp.api_command('sendauthinfo_nsset',{'id':nsset_id, 'cltrid':cltrid})
+        return self._epp.api_command('sendauthinfo_nsset', {'id':nsset_id, 'cltrid':cltrid})
 
     def sendauthinfo_keyset(self, keyset_id, cltrid=None):
         """DESCRIPTION:
@@ -569,7 +569,7 @@ SYNTAX:
 OPTIONS:
   id (required)            KEYSET ID
   cltrid                   Client transaction ID"""
-        return self._epp.api_command('sendauthinfo_keyset',{'id':keyset_id, 'cltrid':cltrid})
+        return self._epp.api_command('sendauthinfo_keyset', {'id':keyset_id, 'cltrid':cltrid})
 
     def credit_info(self, cltrid=None):
         """DESCRIPTION:
@@ -580,7 +580,7 @@ SYNTAX:
 
 OPTIONS:
   cltrid                   Client transaction ID"""
-        return self._epp.api_command('credit_info',{'cltrid':cltrid})
+        return self._epp.api_command('credit_info', {'cltrid':cltrid})
 
     def renew_domain(self, name, cur_exp_date, period=None, val_ex_date=None, cltrid=None):
         """DESCRIPTION:
@@ -605,7 +605,7 @@ OPTIONS:
     unit (required)        Period unit (y year(default), m month)
   val_ex_date              Validation expires at
   cltrid                   Client transaction ID"""
-        return self._epp.api_command('renew_domain',{'name':name, 'cur_exp_date':cur_exp_date, 
+        return self._epp.api_command('renew_domain', {'name':name, 'cur_exp_date':cur_exp_date,
             'period':period, 'val_ex_date':val_ex_date, 'cltrid':cltrid})
 
 
@@ -622,7 +622,7 @@ OPTIONS:
   name (required)          Contact ID
   auth_info (required)     Password required by server to authorize the transfer
   cltrid                   Client transaction ID"""
-        return self._epp.api_command('transfer_contact',{'name':name, 'auth_info':auth_info, 'cltrid':cltrid})
+        return self._epp.api_command('transfer_contact', {'name':name, 'auth_info':auth_info, 'cltrid':cltrid})
 
     def transfer_domain(self, name, auth_info, cltrid=None):
         """DESCRIPTION:
@@ -637,7 +637,7 @@ OPTIONS:
   name (required)          Domain name of domain to change sponsorship
   auth_info (required)     Password required by server to authorize the transfer
   cltrid                   Client transaction ID"""
-        return self._epp.api_command('transfer_domain',{'name':name, 'auth_info':auth_info, 'cltrid':cltrid})
+        return self._epp.api_command('transfer_domain', {'name':name, 'auth_info':auth_info, 'cltrid':cltrid})
 
     def transfer_nsset(self, name, auth_info, cltrid=None):
         """DESCRIPTION:
@@ -652,7 +652,7 @@ OPTIONS:
   name (required)          NSSET ID
   auth_info (required)     Password required by server to authorize the transfer
   cltrid                   Client transaction ID"""
-        return self._epp.api_command('transfer_nsset',{'name':name, 'auth_info':auth_info, 'cltrid':cltrid})
+        return self._epp.api_command('transfer_nsset', {'name':name, 'auth_info':auth_info, 'cltrid':cltrid})
 
     def transfer_keyset(self, name, auth_info, cltrid=None):
         """DESCRIPTION:
@@ -667,15 +667,15 @@ OPTIONS:
   name (required)          KEYSET ID
   auth_info (required)     Password required by server to authorize the transfer
   cltrid                   Client transaction ID"""
-        return self._epp.api_command('transfer_keyset',{'name':name, 'auth_info':auth_info, 'cltrid':cltrid})
+        return self._epp.api_command('transfer_keyset', {'name':name, 'auth_info':auth_info, 'cltrid':cltrid})
 
 
     def update_contact(self, contact_id, chg=None, cltrid=None):
         """DESCRIPTION:
   The EPP 'update_contact' command is used to update values in the contact.
-  
+
   Names what are not included into disclose list are set to opposite value of the disclose flag value.
-  
+
   Identificator type can be:
      op        Number identity card
      passport  Number of passport
@@ -711,7 +711,7 @@ OPTIONS:
       number (required)    Identificator number
     notify_email           Notification email
   cltrid                   Client transaction ID"""
-        return self._epp.api_command('update_contact',{'contact_id':contact_id,
+        return self._epp.api_command('update_contact', {'contact_id':contact_id,
             'chg':chg, 'cltrid':cltrid})
 
 
@@ -734,7 +734,7 @@ OPTIONS:
     auth_info              Password required by server to authorize the transfer
   val_ex_date              Validation expires at
   cltrid                   Client transaction ID"""
-        return self._epp.api_command('update_domain',{'name':name, 
+        return self._epp.api_command('update_domain', {'name':name,
             'add_admin':add_admin, 'rem_admin':rem_admin, 'rem_tempc':rem_tempc, 'chg':chg, 'val_ex_date':val_ex_date, 'cltrid':cltrid})
 
 
@@ -758,7 +758,7 @@ OPTIONS:
   auth_info                Password required by server to authorize the transfer
   reportlevel              Report level. Range 0 - 10
   cltrid                   Client transaction ID"""
-        return self._epp.api_command('update_nsset',{'id':nsset_id, 'add':add, 'rem':rem, 'auth_info':auth_info, 'reportlevel':reportlevel, 'cltrid':cltrid})
+        return self._epp.api_command('update_nsset', {'id':nsset_id, 'add':add, 'rem':rem, 'auth_info':auth_info, 'reportlevel':reportlevel, 'cltrid':cltrid})
 
     def update_keyset(self, keyset_id, add=None, rem=None, auth_info=None, reportlevel=None, cltrid=None):
         """DESCRIPTION:
@@ -787,7 +787,7 @@ OPTIONS:
     tech                   Technical contact ID (unbounded list)
   auth_info                Password required by server to authorize the transfer
   cltrid                   Client transaction ID"""
-        return self._epp.api_command('update_keyset',{'id':keyset_id, 'add':add, 'rem':rem, 'auth_info':auth_info, 'reportlevel':reportlevel, 'cltrid':cltrid})
+        return self._epp.api_command('update_keyset', {'id':keyset_id, 'add':add, 'rem':rem, 'auth_info':auth_info, 'reportlevel':reportlevel, 'cltrid':cltrid})
 
 
     def sendauthinfo_contact(self, id, cltrid=None):
@@ -802,7 +802,7 @@ SYNTAX:
 OPTIONS:
   id (required)            Contact ID
   cltrid                   Client transaction ID"""
-        return self._epp.api_command('sendauthinfo_contact',{'id':id, 'cltrid':cltrid})
+        return self._epp.api_command('sendauthinfo_contact', {'id':id, 'cltrid':cltrid})
 
     def sendauthinfo_nsset(self, id, cltrid=None):
         """DESCRIPTION:
@@ -816,7 +816,7 @@ SYNTAX:
 OPTIONS:
   id (required)            NSSET ID
   cltrid                   Client transaction ID"""
-        return self._epp.api_command('sendauthinfo_nsset',{'id':id, 'cltrid':cltrid})
+        return self._epp.api_command('sendauthinfo_nsset', {'id':id, 'cltrid':cltrid})
 
     def sendauthinfo_keyset(self, id, cltrid=None):
         """DESCRIPTION:
@@ -830,7 +830,7 @@ SYNTAX:
 OPTIONS:
   id (required)            KEYSET ID
   cltrid                   Client transaction ID"""
-        return self._epp.api_command('sendauthinfo_keyset',{'id':id, 'cltrid':cltrid})
+        return self._epp.api_command('sendauthinfo_keyset', {'id':id, 'cltrid':cltrid})
 
     def sendauthinfo_domain(self, name, cltrid=None):
         """DESCRIPTION:
@@ -844,7 +844,7 @@ SYNTAX:
 OPTIONS:
   name (required)          Domain name
   cltrid                   Client transaction ID"""
-        return self._epp.api_command('sendauthinfo_domain',{'name':name, 'cltrid':cltrid})
+        return self._epp.api_command('sendauthinfo_domain', {'name':name, 'cltrid':cltrid})
 
     def credit_info(self, cltrid=None):
         """DESCRIPTION:
@@ -855,7 +855,7 @@ SYNTAX:
 
 OPTIONS:
   cltrid                   Client transaction ID"""
-        return self._epp.api_command('credit_info',{'cltrid':cltrid})
+        return self._epp.api_command('credit_info', {'cltrid':cltrid})
 
     def technical_test(self, id, level=None, name=None, cltrid=None):
         """DESCRIPTION:
@@ -875,7 +875,7 @@ OPTIONS:
   level                    Report range level (0 - 10; higher = more detailed)
   name                     Domain name
   cltrid                   Client transaction ID"""
-        return self._epp.api_command('technical_test',{'id':id, 'level':level, 'name':name, 'cltrid':cltrid})
+        return self._epp.api_command('technical_test', {'id':id, 'level':level, 'name':name, 'cltrid':cltrid})
 
     def get_results(self, cltrid=None):
         """DESCRIPTION:
@@ -890,13 +890,13 @@ OPTIONS:
 
 EXAMPLES:
   get_results"""
-        return self._epp.api_command('get_results',{'cltrid':cltrid})
+        return self._epp.api_command('get_results', {'cltrid':cltrid})
 
     def prep_contacts(self, cltrid=None):
         """DESCRIPTION:
-  Prepare list of the contacts. This command fills server buffer by list 
-  of contacts and set pointer at the beginning of the list. The list 
-  is taken in sequence by calling command 'get_results' repeatedly 
+  Prepare list of the contacts. This command fills server buffer by list
+  of contacts and set pointer at the beginning of the list. The list
+  is taken in sequence by calling command 'get_results' repeatedly
   until any data comming.
 
 SYNTAX:
@@ -907,13 +907,13 @@ OPTIONS:
 
 EXAMPLES:
   prep_contacts"""
-        return self._epp.api_command('prep_contacts',{'cltrid':cltrid})
-        
+        return self._epp.api_command('prep_contacts', {'cltrid':cltrid})
+
     def prep_nssets(self, cltrid=None):
         """DESCRIPTION:
-  Prepare list of the NSSETs. This command fills server buffer by list 
-  of nssets and set pointer at the beginning of the list. The list 
-  is taken in sequence by calling command 'get_results' repeatedly 
+  Prepare list of the NSSETs. This command fills server buffer by list
+  of nssets and set pointer at the beginning of the list. The list
+  is taken in sequence by calling command 'get_results' repeatedly
   until any data comming.
 
 SYNTAX:
@@ -924,13 +924,13 @@ OPTIONS:
 
 EXAMPLES:
   prep_nssets"""
-        return self._epp.api_command('prep_nssets',{'cltrid':cltrid})
+        return self._epp.api_command('prep_nssets', {'cltrid':cltrid})
 
     def prep_keysets(self, cltrid=None):
         """DESCRIPTION:
-  Prepare list of the KEYSETs. This command fills server buffer by list 
-  of keysets and set pointer at the beginning of the list. The list 
-  is taken in sequence by calling command 'get_results' repeatedly 
+  Prepare list of the KEYSETs. This command fills server buffer by list
+  of keysets and set pointer at the beginning of the list. The list
+  is taken in sequence by calling command 'get_results' repeatedly
   until any data comming.
 
 SYNTAX:
@@ -941,13 +941,13 @@ OPTIONS:
 
 EXAMPLES:
   prep_keysets"""
-        return self._epp.api_command('prep_keysets',{'cltrid':cltrid})
-        
+        return self._epp.api_command('prep_keysets', {'cltrid':cltrid})
+
     def prep_domains(self, cltrid=None):
         """DESCRIPTION:
-  Prepare list of the domains. This command fills server buffer by list 
-  of domains and set pointer at the beginning of the list. The list is 
-  taken in sequence by calling command 'get_results' repeatedly until 
+  Prepare list of the domains. This command fills server buffer by list
+  of domains and set pointer at the beginning of the list. The list is
+  taken in sequence by calling command 'get_results' repeatedly until
   any data comming.
 
 SYNTAX:
@@ -958,13 +958,13 @@ OPTIONS:
 
 EXAMPLES:
   prep_domains"""
-        return self._epp.api_command('prep_domains',{'cltrid':cltrid})
-        
+        return self._epp.api_command('prep_domains', {'cltrid':cltrid})
+
     def prep_domains_by_nsset(self, id, cltrid=None):
         """DESCRIPTION:
-  Prepare domains by NSSET. This command fills server buffer by list 
-  of domains connected with defined nsset ID. The pointer is set 
-  at the beginning of the list. The list is taken in sequence 
+  Prepare domains by NSSET. This command fills server buffer by list
+  of domains connected with defined nsset ID. The pointer is set
+  at the beginning of the list. The list is taken in sequence
   by calling command 'get_results' repeatedly until any data comming.
 
 SYNTAX:
@@ -976,13 +976,13 @@ OPTIONS:
 
 EXAMPLES:
   prep_domains_by_nsset NSSID:VALID"""
-        return self._epp.api_command('prep_domains_by_nsset',{'id':id, 'cltrid':cltrid})
-        
+        return self._epp.api_command('prep_domains_by_nsset', {'id':id, 'cltrid':cltrid})
+
     def prep_domains_by_keyset(self, id, cltrid=None):
         """DESCRIPTION:
-  Prepare domains by KEYSET. This command fills server buffer by list 
-  of domains connected with defined keyset ID. The pointer is set 
-  at the beginning of the list. The list is taken in sequence 
+  Prepare domains by KEYSET. This command fills server buffer by list
+  of domains connected with defined keyset ID. The pointer is set
+  at the beginning of the list. The list is taken in sequence
   by calling command 'get_results' repeatedly until any data comming.
 
 SYNTAX:
@@ -994,14 +994,14 @@ OPTIONS:
 
 EXAMPLES:
   prep_domains_by_keyset KEYSID:VALID"""
-        return self._epp.api_command('prep_domains_by_keyset',{'id':id, 'cltrid':cltrid})
+        return self._epp.api_command('prep_domains_by_keyset', {'id':id, 'cltrid':cltrid})
 
     def prep_domains_by_contact(self, id, cltrid=None):
         """DESCRIPTION:
-  Prepare domains by contact. This command fills server buffer by list 
-  of domains where occurs defined contact ID. It can be Registrant 
-  ID or Admin ID or Temporary ID. The pointer is set at the beginning 
-  of the list. The list is taken in sequence by calling command 
+  Prepare domains by contact. This command fills server buffer by list
+  of domains where occurs defined contact ID. It can be Registrant
+  ID or Admin ID or Temporary ID. The pointer is set at the beginning
+  of the list. The list is taken in sequence by calling command
   'get_results' repeatedly until any data comming.
 
 SYNTAX:
@@ -1013,13 +1013,13 @@ OPTIONS:
 
 EXAMPLES:
   prep_domains_by_contact CID:TECH"""
-        return self._epp.api_command('prep_domains_by_contact',{'id':id, 'cltrid':cltrid})
+        return self._epp.api_command('prep_domains_by_contact', {'id':id, 'cltrid':cltrid})
 
     def prep_nssets_by_contact(self, id, cltrid=None):
         """DESCRIPTION:
-  Prepare NSSETs by contact. This command fills server buffer by list 
-  of nssets connected with defined technical contact ID. The pointer 
-  is set at the beginning of the list. The list is taken in sequence 
+  Prepare NSSETs by contact. This command fills server buffer by list
+  of nssets connected with defined technical contact ID. The pointer
+  is set at the beginning of the list. The list is taken in sequence
   by calling command 'get_results' repeatedly until any data comming.
 
 SYNTAX:
@@ -1031,13 +1031,13 @@ OPTIONS:
 
 EXAMPLES:
   prep_nssets_by_contact CID:ADMIN"""
-        return self._epp.api_command('prep_nssets_by_contact',{'id':id, 'cltrid':cltrid})
+        return self._epp.api_command('prep_nssets_by_contact', {'id':id, 'cltrid':cltrid})
 
     def prep_keysets_by_contact(self, id, cltrid=None):
         """DESCRIPTION:
-  Prepare KEYSETs by contact. This command fills server buffer by list 
-  of keysets connected with defined technical contact ID. The pointer 
-  is set at the beginning of the list. The list is taken in sequence 
+  Prepare KEYSETs by contact. This command fills server buffer by list
+  of keysets connected with defined technical contact ID. The pointer
+  is set at the beginning of the list. The list is taken in sequence
   by calling command 'get_results' repeatedly until any data comming.
 
 SYNTAX:
@@ -1049,12 +1049,12 @@ OPTIONS:
 
 EXAMPLES:
   prep_keysets_by_contact CID:ADMIN"""
-        return self._epp.api_command('prep_keysets_by_contact',{'id':id, 'cltrid':cltrid})
-        
+        return self._epp.api_command('prep_keysets_by_contact', {'id':id, 'cltrid':cltrid})
+
     def prep_nssets_by_ns(self, name, cltrid=None):
         """DESCRIPTION:
-  Prepare NSSETs by NS. This command fills server buffer by list of nssets 
-  connected with defined name server. The pointer is set at the beginning 
+  Prepare NSSETs by NS. This command fills server buffer by list of nssets
+  connected with defined name server. The pointer is set at the beginning
   of the list. The list is taken in sequence by calling command 'get_results'
   repeatedly until any data comming.
 
@@ -1067,10 +1067,10 @@ OPTIONS:
 
 EXAMPLES:
   prep_nssets_by_ns mydomain.cz"""
-        return self._epp.api_command('prep_nssets_by_ns',{'name':name, 'cltrid':cltrid})
+        return self._epp.api_command('prep_nssets_by_ns', {'name':name, 'cltrid':cltrid})
 
     #==============================================================
-        
+
     def get_answer_dct(self):
         """Returns dict object answer. Same as every function returns.
         You can use this if you dont catch retvals from functions.
@@ -1091,17 +1091,17 @@ EXAMPLES:
 
     def src(self):
         'Display EPP sources of the command and answer.'
-        return '%s:\n%s\n%s\n%s:\n%s'%('Command',self._epp._raw_cmd,'-'*60,'Answer',self._epp._raw_answer)
+        return '%s:\n%s\n%s\n%s:\n%s' % ('Command', self._epp._raw_cmd, '-' * 60, 'Answer', self._epp._raw_answer)
 
     def set_validate(self, mode):
         'Set process validate ON/OFF. mode: 0/1.'
         self._epp.set_validate(mode)
 
-    def is_val(self, names = 'code', dct=None):
+    def is_val(self, names='code', dct=None):
         """Returns safetly value form dict (treat missing keys).
         Parametr names can by str or list ro tuple.
         """
-        return self._epp.get_value_from_dict(names,dct)
+        return self._epp.get_value_from_dict(names, dct)
 
     def is_logon(self):
         'Check if client is login on the server.'
@@ -1115,14 +1115,14 @@ EXAMPLES:
     def set_data_connect(self, dc):
         'Set data for connection: dc = {host: str, port: str, priv_key: str, cert: str, timeout: str }'
         return self._epp.set_data_connect(dc)
-    
+
 def check_python_version():
     """Check for needed Python version. Returns "" if OK anf "..." not valid.
     Alert! This function has no effect, because when translate module is imported
     it use function incompatible with older python version: gettext.translation()
     """
-    if sys.version_info[:2] < (2,4):
-        invalid = _T('This program requires Python 2.4 or higher. Your version is'),'.'.join([str(x) for x in sys.version_info[:3]])
+    if sys.version_info[:2] < (2, 4):
+        invalid = _T('This program requires Python 2.4 or higher. Your version is'), '.'.join([str(x) for x in sys.version_info[:3]])
     else:
         invalid = ''
     return invalid
@@ -1133,6 +1133,5 @@ class ClientSession(ManagerReceiver):
 
 if __name__ == '__main__':
     epp = Client()
-    print epp.login("reg-lrr","123456789")
+    print epp.login("reg-lrr", "123456789")
     print "[END]"
-

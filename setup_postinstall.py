@@ -22,7 +22,7 @@ config_root = os.path.join(sys.prefix, 'etc/fred')
 config_name_ini = re.sub(r'\.conf', '.ini', config_name)
 
 path = os.path.join(sys.prefix, 'share/fred-client')
-FRED_CLIENT_SSL_PATH = os.path.join(path,'ssl')
+FRED_CLIENT_SSL_PATH = os.path.join(path, 'ssl')
 FRED_CLIENT_SCHEMAS_FILEMANE = os.path.join(path, 'schemas/all-1.4.xsd')
 
 # Name of the main console script
@@ -31,7 +31,7 @@ gui_script_name = 'fred-client-qt4.pyw'
 help_name = 'fred_howto_cs.html'
 
 # BAT file is created to prevent closing the console after the script has been finished.
-bat_file  = 'fred-client.bat'
+bat_file = 'fred-client.bat'
 bat_file_gui = 'fred-client-gui.bat'
 readme_name = 'README_EN.txt'
 
@@ -62,8 +62,8 @@ bat_file_gui_path = os.path.join(distutils.sysconfig.PREFIX, 'Scripts', bat_file
 
 
 # Create BAT file
-open(bat_file_path,'w').write('"%s" -i "%s"\n'%(os.path.join(distutils.sysconfig.PREFIX,'python.exe'), script_name))
-open(bat_file_gui_path,'w').write('"%s" "%s"'%(os.path.join(distutils.sysconfig.PREFIX,'pythonw.exe'), os.path.join(sys.prefix, 'Scripts', gui_script_name)))
+open(bat_file_path, 'w').write('"%s" -i "%s"\n' % (os.path.join(distutils.sysconfig.PREFIX, 'python.exe'), script_name))
+open(bat_file_gui_path, 'w').write('"%s" "%s"' % (os.path.join(distutils.sysconfig.PREFIX, 'pythonw.exe'), os.path.join(sys.prefix, 'Scripts', gui_script_name)))
 
 
 # convert LF to CR/LF be cause of the MS Windows common end of lines
@@ -75,46 +75,46 @@ for name in (readme_name, 'README_CS.txt'):
 
 # Shortcut to the BAT with the main console script on the desktop
 create_shortcut(
-    bat_file_path, 
-    'Fred Client Console %s'%fred_version,
-    os.path.join(desktopDir, '%s.lnk'%script_name), 
-    '', 
+    bat_file_path,
+    'Fred Client Console %s' % fred_version,
+    os.path.join(desktopDir, '%s.lnk' % script_name),
+    '',
     os.path.join(distutils.sysconfig.PREFIX, 'Scripts'),
     os.path.join(distutils.sysconfig.PREFIX, path_fred_doc, 'niccz_console.ico'))
 
 # Shortcut to the GUI EPP client on the desktop
 create_shortcut(
-    #'%s %s'%(os.path.join(distutils.sysconfig.PREFIX,'pythonw.exe'), os.path.join(sys.prefix, 'Scripts', gui_script_name)), 
+    #'%s %s'%(os.path.join(distutils.sysconfig.PREFIX,'pythonw.exe'), os.path.join(sys.prefix, 'Scripts', gui_script_name)),
     bat_file_gui_path,
-    'Fred Client GUI %s'%fred_version,
-    os.path.join(desktopDir, '%s.lnk'%gui_script_name), 
-    '', 
+    'Fred Client GUI %s' % fred_version,
+    os.path.join(desktopDir, '%s.lnk' % gui_script_name),
+    '',
     os.path.join(distutils.sysconfig.PREFIX, 'Scripts'),
     os.path.join(distutils.sysconfig.PREFIX, path_fred_doc, 'niccz_gui.ico'))
-    
+
 ## Shortcut to the HOWTO on the desktop
 #create_shortcut(
-#    os.path.join(distutils.sysconfig.PREFIX, path_fred_doc, help_name), 
+#    os.path.join(distutils.sysconfig.PREFIX, path_fred_doc, help_name),
 #    'How to configure',
-#    os.path.join(desktopDir, '%s.lnk'%help_name), 
-#    '', '', 
+#    os.path.join(desktopDir, '%s.lnk'%help_name),
+#    '', '',
 #    os.path.join(distutils.sysconfig.PREFIX, path_fred_doc, 'help.ico'))
 
-    
+
 # Shortcut to the configuration file on the desktop
 create_shortcut(
-    os.path.join(sys.prefix, 'etc', 'fred', config_name_ini), 
-    'Fred Client configuration file', 
-    os.path.join(desktopDir, '%s.lnk'%config_name_ini),
-    '', '', 
+    os.path.join(sys.prefix, 'etc', 'fred', config_name_ini),
+    'Fred Client configuration file',
+    os.path.join(desktopDir, '%s.lnk' % config_name_ini),
+    '', '',
     os.path.join(distutils.sysconfig.PREFIX, path_fred_doc, 'configure.ico'))
 
 # Shortcut to the README on the desktop
 create_shortcut(
-    os.path.join(distutils.sysconfig.PREFIX, path_fred_doc, readme_name), 
+    os.path.join(distutils.sysconfig.PREFIX, path_fred_doc, readme_name),
     'Fred README',
-    os.path.join(desktopDir, '%s.lnk'%readme_name), 
-    '', '', 
+    os.path.join(desktopDir, '%s.lnk' % readme_name),
+    '', '',
     os.path.join(distutils.sysconfig.PREFIX, path_fred_doc, 'help.ico'))
 
 

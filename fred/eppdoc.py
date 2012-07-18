@@ -42,16 +42,16 @@ import StringIO
 # Defaults - can overwrite by values from config or command line option
 #========================================================
 SCHEMA_PREFIX = 'http://www.nic.cz/xml/epp/'
-VERSION_CONTACT  = '1.6'
-VERSION_DOMAIN   = '1.4'
-VERSION_NSSET    = '1.2'
-VERSION_KEYSET   = '1.3'
-VERSION_ENUMVAL  = '1.2'
-VERSION_FRED     = '1.5'
-VERSION_VERSION  = '1.0'
+VERSION_CONTACT = '1.6'
+VERSION_DOMAIN = '1.4'
+VERSION_NSSET = '1.2'
+VERSION_KEYSET = '1.3'
+VERSION_ENUMVAL = '1.2'
+VERSION_FRED = '1.5'
+VERSION_VERSION = '1.0'
 
 obj_uri = "urn:ietf:params:xml:ns:"
-xmlns_xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns_xsi = "http://www.w3.org/2001/XMLSchema-instance"
 default_encoding = 'utf-8' # default document output encoding
 #========================================================
 
@@ -70,12 +70,12 @@ class Message:
         self.server_disclose_policy = 1 # Data collection policy: Access; default: 1 - disclosed
         self._handle_ID = '' # keep object handle (ID)
         self.schema_version = {
-            'contact': VERSION_CONTACT, 
-            'nsset':   VERSION_NSSET, 
-            'keyset':  VERSION_KEYSET, 
-            'domain':  VERSION_DOMAIN, 
-            'enum':    VERSION_ENUMVAL, 
-            'fred':    VERSION_FRED, 
+            'contact': VERSION_CONTACT,
+            'nsset':   VERSION_NSSET,
+            'keyset':  VERSION_KEYSET,
+            'domain':  VERSION_DOMAIN,
+            'enum':    VERSION_ENUMVAL,
+            'fred':    VERSION_FRED,
             'epp':     VERSION_VERSION,
         }
         self.set_schema_version('epp', VERSION_VERSION)
@@ -89,18 +89,18 @@ class Message:
         'Set schema version'
         self.schema_version[key] = value
         if key == 'epp':
-            self.xmlns = "%sepp-%s"%(obj_uri, value)
-            self.xsi_schemaLocation = "%s epp-%s.xsd"%(self.xmlns, value)
+            self.xmlns = "%sepp-%s" % (obj_uri, value)
+            self.xsi_schemaLocation = "%s epp-%s.xsd" % (self.xmlns, value)
 
     def get_objURI(self):
         'Returns the list of the objURI namesapces.'
-        return ['%s%s-%s'%(SCHEMA_PREFIX, name, self.schema_version[name]) 
-                    for name in ('contact','nsset','domain', 'keyset')]
+        return ['%s%s-%s' % (SCHEMA_PREFIX, name, self.schema_version[name])
+                    for name in ('contact', 'nsset', 'domain', 'keyset')]
 
 
     def get_extURI(self):
         'Returns the list of the extURI namesapces.'
-        return ['%senumval-%s'%(SCHEMA_PREFIX, self.schema_version['enum'])]
+        return ['%senumval-%s' % (SCHEMA_PREFIX, self.schema_version['enum'])]
 
 
     def reset(self):
@@ -126,22 +126,22 @@ class Message:
 
     def get_xml(self):
         'Build XML form DOM.'
-        xml=''
+        xml = ''
         if self.dom:
             self.dom.normalize()
             #if PrettyPrint:
             # (PrettyPrint is disabled be cause of wrong result: "&lt;value>")
-            if 0: 
+            if 0:
                 f = StringIO.StringIO()
                 PrettyPrint(self.dom, f, self.encoding)
-                f.seek(0,0)
+                f.seek(0, 0)
                 xml = f.read()
             else:
                 # Kdyz chybi funkce PrettyPrint()
                 #xml = self.dom.toprettyxml('', '', self.encoding)
                 xml = self.dom.toxml(self.encoding)
         # hook parametru standalone
-        return re.sub('(<?xml .+?)\?>','\\1 standalone="no"?>',xml, re.I)
+        return re.sub('(<?xml .+?)\?>', '\\1 standalone="no"?>', xml, re.I)
 
     def join_errors(self, errors):
         self.errors.extend(errors)
@@ -151,33 +151,33 @@ class Message:
 
     def fetch_errors(self, sep=None):
         ret = self.get_errors(sep)
-        self.errors=[]
+        self.errors = []
         return ret
 
     def get_errors(self, sep=None):
-        if sep==None: sep=self._cr
-        errors=['[%d] (%s) %s'%(code,str(value),reason) for code,value,reason in self.errors]
+        if sep == None: sep = self._cr
+        errors = ['[%d] (%s) %s' % (code, str(value), reason) for code, value, reason in self.errors]
         return sep.join(errors)
 
     def get_results(self, sep=None):
         #errors,xml_epp
-        if sep==None: sep=self._cr
+        if sep == None: sep = self._cr
         return self.get_errors(sep), self.get_xml()
 
     def append_attribNS(self, node, attribs, ns=''):
         """Append attributes into top node.
         IN: attribs ((name,value), (name,value), ....)
         """
-        for n,v in attribs:
-            node.setAttributeNS(ns,n,v)
+        for n, v in attribs:
+            node.setAttributeNS(ns, n, v)
 
     def load_xml_doc(self, filepath):
         'Load XML file. Used for EPP templates.'
         try:
             xml_doc = open(filepath).read()
-        except IOError, (no,msg):
+        except IOError, (no, msg):
             # when template missing
-            self.errors.append((2000, filepath, 'IOError: %d, %s'%(no,msg)))
+            self.errors.append((2000, filepath, 'IOError: %d, %s' % (no, msg)))
             xml_doc = None
         return xml_doc
 
@@ -189,16 +189,16 @@ class Message:
             self.dom.normalize()
         except xml.parsers.expat.ExpatError, msg:
             # when XML is invalid
-            self.errors.append((2001, None, _T('Invalid XML document. ExpatError: %s'%msg)))
+            self.errors.append((2001, None, _T('Invalid XML document. ExpatError: %s' % msg)))
         except LookupError, msg:
             # invalid or unknown encoding
-            self.errors.append((2001, None, _T('Document has wrong encoding. LookupError: %s'%msg)))
+            self.errors.append((2001, None, _T('Document has wrong encoding. LookupError: %s' % msg)))
 
     def join_top_attribs(self):
-        ns=(
-            ('xmlns',self.xmlns),
-            ('xmlns:xsi',xmlns_xsi),
-            ('xsi:schemaLocation',self.xsi_schemaLocation),
+        ns = (
+            ('xmlns', self.xmlns),
+            ('xmlns:xsi', xmlns_xsi),
+            ('xsi:schemaLocation', self.xsi_schemaLocation),
         )
         self.append_attribNS(self.dom.documentElement, ns)
 
@@ -207,7 +207,7 @@ class Message:
         self.__reset_dom__()
         # Lasta parameter (0) define DTD and if it is 0 than document has not DTD.
         # ("jmeny_prostor","korenovy-element",0)
-        self.dom = xml.dom.getDOMImplementation().createDocument('',top_name,0)
+        self.dom = xml.dom.getDOMImplementation().createDocument('', top_name, 0)
         self.join_top_attribs()
 
     def new_node_by_name(self, master_name, name, value=None, attribs=None):
@@ -217,18 +217,18 @@ class Message:
             # If valus is list, than take always last node.
             if len(master): master = master[-1]
         if master:
-            node=self.new_node(master, name, value, attribs)
+            node = self.new_node(master, name, value, attribs)
         else:
             # if upper node doesn't exist, sahll we stop it?
-            self.errors.append((2001, None, _T("Internal error: Master node '%s' doesn't exist."%master_name)))
-            raise "Internal Error: Master node '%s' doesn't exist."%master_name # TODO ????
-            node=None # TODO ????
+            self.errors.append((2001, None, _T("Internal error: Master node '%s' doesn't exist." % master_name)))
+            raise "Internal Error: Master node '%s' doesn't exist." % master_name # TODO ????
+            node = None # TODO ????
         return node
-        
+
     def new_node(self, master, name, value=None, attribs=None):
         "Create new node and attach to the master node. attribs=((name,value), (name,value), ....)"
         if not master:
-            raise "ERROR: new_node(%s) Master missing!"%name # TODO ????
+            raise "ERROR: new_node(%s) Master missing!" % name # TODO ????
         node = self.dom.createElement(name)
         if type(master) == xml.dom.minicompat.NodeList:
             master[0].appendChild(node)
@@ -240,25 +240,25 @@ class Message:
             try:
                 node.appendChild(self.dom.createTextNode(value))
             except TypeError, msg:
-                print "FredClient Internal Error: ",name,type(value),value
-                raise 'TypeError:',msg
+                print "FredClient Internal Error: ", name, type(value), value
+                raise 'TypeError:', msg
         if attribs:
             self.append_attribNS(node, attribs)
         return node
 
     def get_element_node(self, node):
         'Return first node of type Node.ELEMENT_NODE or None.'
-        ret=None
+        ret = None
         for n in node.childNodes:
             if n.nodeType == Node.ELEMENT_NODE:
-                ret=n
+                ret = n
                 break
         return ret
 
     def get_epp_command_name(self):
-        """Returns top EPP command name. 
+        """Returns top EPP command name.
         Level 1: epp.greeting
-        Level 1: epp.command 
+        Level 1: epp.command
         Level 2:     info, check, create, ....
         Level 3:        contact:create
         Level 4:        fred:sendauthinfo, fred:creditinfo, fred:test
@@ -269,12 +269,12 @@ class Message:
             node = self.get_element_node(self.dom.documentElement)
             if not node: return name
             name = node.nodeName.lower()
-            if name in ('command','extension'):
+            if name in ('command', 'extension'):
                 # Level 2.
                 node = self.get_element_node(node)
                 if not node: return name
                 name = node.nodeName.lower()
-                if name not in ('login','logout','poll'):
+                if name not in ('login', 'logout', 'poll'):
                     # Level 3.
                     node = self.get_element_node(node)
                     if not node: return name
@@ -292,15 +292,15 @@ class Message:
 
     def get_check_names(self, type):
         'Returs list of names from object:check commands. It can be used for sorting.'
-        names=[]
+        names = []
         if not self.dom: return names
-        node_name = type == 'domain' and 'domain:name' or '%s:id'%type
+        node_name = type == 'domain' and 'domain:name' or '%s:id' % type
         # <command> <check> <domain:check> <domain:name>
         for node in self.dom.getElementsByTagName(node_name):
             if node.nodeType == Node.ELEMENT_NODE and len(node.childNodes):
                 names.append(node.childNodes[0].nodeValue)
         return names
-        
+
     #====================================
     # Parse to Dict / Data class
     #====================================
@@ -313,14 +313,14 @@ class Message:
         #....................................
         # attr
         #....................................
-        attr=[]
+        attr = []
         for a in el.attributes.values():
             attr.append((a.name, a.value)) # <xml.dom.minidom.Attr instance>
         if len(attr):
             if is_class:
                 current_obj._attr = attr
             else:
-                append_to_dict(current_obj,'attr',attr)
+                append_to_dict(current_obj, 'attr', attr)
         #....................................
         # data
         #....................................
@@ -332,7 +332,7 @@ class Message:
                         if is_class:
                             current_obj._data += val
                         else:
-                            append_to_dict(current_obj,'data',val)
+                            append_to_dict(current_obj, 'data', val)
         #....................................
         # next nodes
         #....................................
@@ -342,9 +342,9 @@ class Message:
         for name, count in [(name, nodes.count(name))for name in set(nodes)]:
             if count > 1:
                 if is_class:
-                    current_obj.__dict__[name] = [None]*count
+                    current_obj.__dict__[name] = [None] * count
                 else:
-                    current_obj[name] = [None]*count
+                    current_obj[name] = [None] * count
             else:
                 if is_class:
                     current_obj.__dict__[name] = Data(current_obj)
@@ -404,14 +404,14 @@ def get_node_attributes(nodes, name):
     return {'attr':retval}
 #-------------------------------------------------
 
-        
+
 class Data:
     """Data class. Have members along to a EPP DOM tree.
     Access to member values write member.data or member.attr.
-    For example: 
+    For example:
         epp.svcMenu.data
         epp.svcMenu.attr
-    
+
     Explain class struct you simply write object member name.
     For example member epp.svcMenu displays:
 <CLASS:
@@ -430,9 +430,9 @@ class Data:
         self._data = ''
     def __getattr__(self, key):
         # Avoid AttributeError
-        if key in ('attr','data'):
+        if key in ('attr', 'data'):
             # class members
-            ret = self.__dict__['_%s'%key]
+            ret = self.__dict__['_%s' % key]
         # ........................................
         # Here we can disable exception AttributeError and give back common behavior.
 ##        else:
@@ -440,7 +440,7 @@ class Data:
         # ........................................
         # Here we can disable exception AttributeError
         # (need make comment previous two lines: else a ret = ...)
-        elif key[:2]=='__':
+        elif key[:2] == '__':
             # internal calls
             ret = super.__getattr__(key)
         else:
@@ -449,7 +449,7 @@ class Data:
         # ........................................
         return ret
     def __repr__(self):
-        return '<CLASS:\n\tdata: %s\n\tattr: %s\n\tnodes: %s\n>'%(self._data, self._attr, self.__doc__)
+        return '<CLASS:\n\tdata: %s\n\tattr: %s\n\tnodes: %s\n>' % (self._data, self._attr, self.__doc__)
 
     def __make_data_help__(self):
         "Make help in format 'name: (name, name: (name[3], name), name)'"
@@ -459,27 +459,27 @@ class Data:
         for key in self.__dict__:
             if key[0] == '_': continue
             member = self.__dict__[key]
-            if type(member)==list:
-                subname = '%s[%d]'%(key,len(member))
-                subdoc=[]
+            if type(member) == list:
+                subname = '%s[%d]' % (key, len(member))
+                subdoc = []
                 for item in member:
                     subitem = item.__make_data_help__()
                     if subitem != key: subdoc.append(subitem) # element, what is empty doesn't need join
                 if len(subdoc):
-                    doc.append('%s: (%s)'%(subname,', '.join(subdoc)))
+                    doc.append('%s: (%s)' % (subname, ', '.join(subdoc)))
                 else:
                     doc.append(subname)
             else:
                 doc.append(member.__make_data_help__())
         if len(doc):
-            self.__doc__ = '%s: (%s)'%(self.__doc__, ', '.join(doc))
+            self.__doc__ = '%s: (%s)' % (self.__doc__, ', '.join(doc))
         return self.__doc__
 
 
-def append_to_dict(d,key,val):
+def append_to_dict(d, key, val):
     "Append or extend values along to insert type."
     if d.has_key(key):
-        if type(d[key]) in (str,unicode):
+        if type(d[key]) in (str, unicode):
             d[key] += val
         else:
             d[key].extend(val)
@@ -496,30 +496,30 @@ def get_value_from_dict(dct, names):
     """
     scope = dct
     name = names
-    if type(names) in (list, tuple) and len(names)>1:
+    if type(names) in (list, tuple) and len(names) > 1:
         for name in names[:-1]:
-            if scope.get(name,None):
+            if scope.get(name, None):
                 scope = scope[name]
             else:
                 return None
         name = names[-1]
-    return scope.get(name,None)
-    
+    return scope.get(name, None)
+
 def get_dct_values(dict_data, names, attr_name=''):
     "Returns raw data or attribute from names queue."
-    ret=[]
-    if type(names) not in (tuple,list):
+    ret = []
+    if type(names) not in (tuple, list):
         names = (names,)
     if len(names):
         for i in range(len(names)):
             name = names[i]
-            if name in ('data','attr'): continue
+            if name in ('data', 'attr'): continue
             if type(dict_data) is not dict:
-                ret.append('%s %s'%(_T('Internal error: Value is not dict type:'),str(dict_data)))
+                ret.append('%s %s' % (_T('Internal error: Value is not dict type:'), str(dict_data)))
                 continue
-            if not dict_data.get(name,None): continue
-            inames = names[i+1:]
-            if type(dict_data[name]) in (list,tuple):
+            if not dict_data.get(name, None): continue
+            inames = names[i + 1:]
+            if type(dict_data[name]) in (list, tuple):
                 for item in dict_data[name]:
                     vals = get_dct_values(item, inames, attr_name)
                     if vals: ret.extend(vals)
@@ -529,14 +529,14 @@ def get_dct_values(dict_data, names, attr_name=''):
     else:
         if type(dict_data) == dict:
             if attr_name:
-                vals = dict_data.get('attr',u'')
+                vals = dict_data.get('attr', u'')
                 if vals:
-                    for k,v in vals:
-                        if k==attr_name:
+                    for k, v in vals:
+                        if k == attr_name:
                             if v: ret.append(v)
                             break
             else:
-                vals = dict_data.get('data',u'')
+                vals = dict_data.get('data', u'')
                 if vals: ret.append(vals)
         else:
             ret.append(dict_data)
@@ -545,51 +545,51 @@ def get_dct_values(dict_data, names, attr_name=''):
 def get_dct_value(dict_data, names, sep=u'\n', attr_name='', defval=u''):
     "Returns value as a string from names queue."
     retvals = get_dct_values(dict_data, names, attr_name)
-    if type(retvals) in (list,tuple): retvals = sep.join(retvals)
+    if type(retvals) in (list, tuple): retvals = sep.join(retvals)
     if retvals == '': retvals = defval
     return retvals
 
-def __pfd__(dict_data,color=0,indent=0):
+def __pfd__(dict_data, color=0, indent=0):
     "Prepare dictionary data for display."
     if color:
-        patt=('${BOLD}%s:${NORMAL} %s', '[%s]', '%s${GREEN}%s${NORMAL}:','%s${GREEN}%s${NORMAL}: %s')
+        patt = ('${BOLD}%s:${NORMAL} %s', '[%s]', '%s${GREEN}%s${NORMAL}:', '%s${GREEN}%s${NORMAL}: %s')
     else:
-        patt=('%s: %s', '[%s]', '%s%s:', '%s%s: %s')
-    body=[]
-    if type(dict_data) in (list,tuple):
+        patt = ('%s: %s', '[%s]', '%s%s:', '%s%s: %s')
+    body = []
+    if type(dict_data) in (list, tuple):
         for d in dict_data:
-            rows = __pfd__(d,color,indent)
+            rows = __pfd__(d, color, indent)
             if len(rows): body.extend(rows)
     else:
         if indent and dict_data.has_key('attr'):
             # attributs, but not from root
-            attr=[]
-            for k,v in dict_data['attr']:
-                attr.append(patt[0]%(k,v))
-            body.append(patt[1]%'; '.join(attr))
+            attr = []
+            for k, v in dict_data['attr']:
+                attr.append(patt[0] % (k, v))
+            body.append(patt[1] % '; '.join(attr))
         # data
         if dict_data is None:
             return body
         if dict_data.has_key('data'): body.append(dict_data['data'])
-        # other children nodes    
-        ind = ' '*indent
+        # other children nodes
+        ind = ' ' * indent
         for key in dict_data.keys():
             # descendents nodes
-            if key in ('attr','data'): continue
+            if key in ('attr', 'data'): continue
             if dict_data[key] == {}:
                 # display empty node
-                body.append(patt[2]%(ind,remove_ns(key)))
+                body.append(patt[2] % (ind, remove_ns(key)))
             else:
-                rows = __pfd__(dict_data[key],color,indent+4)
+                rows = __pfd__(dict_data[key], color, indent + 4)
                 if len(rows):
-                    if len(rows)>1:
+                    if len(rows) > 1:
                         # more lines [key]: and next lines with values
-                        body.append(patt[2]%(ind,remove_ns(key)))
+                        body.append(patt[2] % (ind, remove_ns(key)))
                         for r in rows:
-                            body.append('%s%s'%(ind,r))
+                            body.append('%s%s' % (ind, r))
                     else:
                         # one line - [key]: value
-                        body.append(patt[3]%(ind,remove_ns(key),rows[0]))
+                        body.append(patt[3] % (ind, remove_ns(key), rows[0]))
     return body
 
 
@@ -616,44 +616,44 @@ def remove_ns(name):
     "remove namespace from xml element"
     return re.sub('.+:', '', name)
 
-def prepare_display(dict_data,color=0):
+def prepare_display(dict_data, color=0):
     "Prepare dictionary data for display."
     # Second version of prepare_for_dispaly(), what is mode compact and
     # where onerow values are on the line with key.
-    return '\n'.join(__pfd__(dict_data,color))
+    return '\n'.join(__pfd__(dict_data, color))
 
-def prepare_for_display(dict_values,color=0,indent=0):
+def prepare_for_display(dict_values, color=0, indent=0):
     "Prepare dictionary data for display."
-    body=[]
-    if type(dict_values) in (list,tuple):
+    body = []
+    if type(dict_values) in (list, tuple):
         for d in dict_values:
-            data = prepare_for_display(d,color,indent)
+            data = prepare_for_display(d, color, indent)
             if data: body.append(data)
     else:
         if color:
-            patt = ('%s[${YELLOW}${BOLD}ATTR${NORMAL}: %s]','%s[${GREEN}%s${NORMAL}]:\n%s','${GREEN}%s:${NORMAL} %s')
+            patt = ('%s[${YELLOW}${BOLD}ATTR${NORMAL}: %s]', '%s[${GREEN}%s${NORMAL}]:\n%s', '${GREEN}%s:${NORMAL} %s')
         else:
-            patt = ('%s[ATTR: %s]','%s[%s]:\n%s','%s: %s')
+            patt = ('%s[ATTR: %s]', '%s[%s]:\n%s', '%s: %s')
         for key in dict_values.keys():
-            ind = ' '*indent
+            ind = ' ' * indent
             if key == 'attr':
                 if not indent: continue # node attributes, but not these from root
                 attr = []
-                for k,v in dict_values[key]:
+                for k, v in dict_values[key]:
                     v = v.strip()
-                    if v: attr.append(patt[2]%(k,v))
-                body.append(patt[0]%(ind,', '.join(attr)))
+                    if v: attr.append(patt[2] % (k, v))
+                body.append(patt[0] % (ind, ', '.join(attr)))
             elif key == 'data':
                 # nodes data
                 v = dict_values[key].strip()
-                if v: body.append('%s%s'%(ind,v))
+                if v: body.append('%s%s' % (ind, v))
             else:
                 # descendants nodes
                 if type(dict_values[key]) == dict:
-                    data = prepare_for_display(dict_values[key],color,indent+4)
-                    if data: body.append(patt[1]%(ind,key,data))
+                    data = prepare_for_display(dict_values[key], color, indent + 4)
+                    if data: body.append(patt[1] % (ind, key, data))
                 else:
-                    body.append(patt[1]%(ind,key,dict_values[key]))
+                    body.append(patt[1] % (ind, key, dict_values[key]))
     return '\n'.join(body)
 
 
@@ -667,33 +667,33 @@ def test_display():
                                     'retention': {'stated': {}}}},
               'svDate': {'data': u'2006-05-13T07:44:37.0Z'},
               'svID': {'data': u'EPP server of cz.nic' },
-              'svIDx': { 'attr':[('test','value'),('some','next value')], 'data': u'EPP server of cz.nic' },
-              'svcMenu': {'lang': [{'data': u'en'},{'data': u'cz'}],
+              'svIDx': { 'attr':[('test', 'value'), ('some', 'next value')], 'data': u'EPP server of cz.nic' },
+              'svcMenu': {'lang': [{'data': u'en'}, {'data': u'cz'}],
                           'version': {'data': u'1.0'}},
               'svcs': {'objURI': [{'data': u'http://www.nic.cz/xml/epp/contact-1.0'},
                                   {'data': u'http://www.nic.cz/xml/epp/domain-1.0'},
                                   {'data': u'http://www.nic.cz/xml/epp/nsset-1.0'}]}}}
 
-    exampe2 = {'attr': [(u'xmlns:xsi', u'http://www.w3.org/2001/XMLSchema-instance'), 
-        ('xmlns', xmlns), 
-        (u'xsi:schemaLocation', 'urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd')], 
-    'response': {'trID': 
-    {'clTRID': {'data': u'jzqq002#06-07-07at14:08:37'}, 
-     'svTRID': {'data': u'fred-0000010021'}}, 
-    'result': {'msg': {'data': 'Prikaz uspesne proveden', 
-        'attr': [(u'lang', u'cs')]}, 
+    exampe2 = {'attr': [(u'xmlns:xsi', u'http://www.w3.org/2001/XMLSchema-instance'),
+        ('xmlns', xmlns),
+        (u'xsi:schemaLocation', 'urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd')],
+    'response': {'trID':
+    {'clTRID': {'data': u'jzqq002#06-07-07at14:08:37'},
+     'svTRID': {'data': u'fred-0000010021'}},
+    'result': {'msg': {'data': 'Prikaz uspesne proveden',
+        'attr': [(u'lang', u'cs')]},
         'attr': [(u'code', u'1000')]
-        }, 
-        'resData': {'contact:chkData': 
-            {'attr': [(u'xmlns:contact', u'http://www.nic.cz/xml/epp/contact-1.0'), 
-            (u'xsi:schemaLocation', 
+        },
+        'resData': {'contact:chkData':
+            {'attr': [(u'xmlns:contact', u'http://www.nic.cz/xml/epp/contact-1.0'),
+            (u'xsi:schemaLocation',
                 u'http://www.nic.cz/xml/epp/contact-1.0 contact-1.0.xsd')],
         'contact:cd': [
-            {'contact:id': {'data': u'handle2', 'attr': [(u'avail', u'1')]}}, 
+            {'contact:id': {'data': u'handle2', 'attr': [(u'avail', u'1')]}},
             {'contact:id': {'data': u'handle1', 'attr': [(u'avail', u'0')]}}]}}}}
-            
+
     print prepare_for_display(exampe2)
-    print '='*60
+    print '=' * 60
     print prepare_display(exampe2)
 
 
@@ -712,13 +712,13 @@ def test_parse(filename):
     epp_dict = m.create_data()
     print prepare_display(epp_dict)
 
-    
+
 
 if __name__ == '__main__':
     "Test of parsing XML document and mapping XML.DOM into python dict/class."
     import sys
     _T = lambda s: s
-    if len(sys.argv)>1:
+    if len(sys.argv) > 1:
         test_parse(sys.argv[1])
     else:
         print 'Usage: eppdoc.py eppfile.xml'

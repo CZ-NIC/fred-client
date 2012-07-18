@@ -80,4 +80,3 @@ Tento dokument je uložen v kódování UTF-8
      | hodnoty nastavení    |     | zobrazení barev       |     | adresář s xsd EPP    |
      | session (managera)   |     | na konzoli            |     | schematy pro validaci|
      +======================+     +=======================+     +======================+
-

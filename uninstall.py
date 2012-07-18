@@ -23,19 +23,19 @@ def remove_all(top):
     for root, dirs, files in os.walk(top, topdown=False):
         for name in files:
             path = os.path.join(root, name)
-            print 'Remove file:',path
+            print 'Remove file:', path
             try:
                 os.remove(path)
             except OSError, msg:
-                print 'OSError:',msg
+                print 'OSError:', msg
                 return 0
         for name in dirs:
             path = os.path.join(root, name)
-            print 'Remove folder:',path
+            print 'Remove folder:', path
             try:
                 os.rmdir(path)
             except OSError, msg:
-                print 'OSError:',msg
+                print 'OSError:', msg
                 return 0
     return 1
 
@@ -54,7 +54,7 @@ def main():
         return 0
 
     status = 1
-    
+
     print "REMOVE LIBRARY"
     for name in ('fred', 'guiqt4'):
         pathname = os.path.join(get_python_lib(), name)
@@ -65,13 +65,13 @@ def main():
     print "REMOVE SCRIPTS"
     for name in APP_SCRIPTS:
         pathname = os.path.join(get_config_var('BINDIR'), name)
-        print 'Remove script:',pathname
+        print 'Remove script:', pathname
         try:
             os.remove(pathname)
         except OSError, msg:
-            print 'OSError:',msg
+            print 'OSError:', msg
             status = 0
-    
+
     return status
 
 
