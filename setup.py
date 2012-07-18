@@ -251,7 +251,7 @@ def main(directory):
             packages = ['fred','guiqt4'],
             package_data={
                 'fred': ['INSTALL','LICENSE','CREDITS','*.txt',
-                    'lang/fred_client_cs.po',
+                    'lang/cs/LC_MESSAGES/fred_client.po',
                     'lang/cs/LC_MESSAGES/fred_client.mo'],
                 'guiqt4': ['*.py','*.png','*.qm'],
             },

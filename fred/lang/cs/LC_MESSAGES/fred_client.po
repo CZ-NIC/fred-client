@@ -3,17 +3,17 @@
 # This file is distributed under the same license as the fred package.
 # Zdeněk Böhm <zdenek.bohm@nic.cz>, 2006.
 #
-# cd fred/
-#
+# CODE=cs
+# cd fred
 # xgettext -L Python --keyword=_T --keyword=_TU  --keyword=_TP:1,2 --keyword=_TPU:1,2 *.py ../fred-client
-# msgmerge -U lang/fred_client_cs.po messages.po
+# msgmerge -U lang/$CODE/LC_MESSAGES/fred_client.po messages.po
 # rm messages.po
 #
-# gedit lang/fred_client_cs.po (and translate)
-# msgfmt lang/fred_client_cs.po -o lang/cs/LC_MESSAGES/fred_client.mo
+# gedit lang/$CODE/LC_MESSAGES/fred_client.po (and translate)
+# msgfmt lang/$CODE/LC_MESSAGES/fred_client.po -o lang/$CODE/LC_MESSAGES/fred_client.mo
 #
 # prepare translations for storing into revision control system (git):
-# msgattrib --sort-output --no-location --no-obsolete -o lang/fred_client_cs.po lang/fred_client_cs.po
+# msgattrib --sort-output --no-location --no-obsolete -o lang/$CODE/LC_MESSAGES/fred_client.po lang/$CODE/LC_MESSAGES/fred_client.po
 #
 msgid ""
 msgstr ""
