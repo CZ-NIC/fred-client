@@ -19,6 +19,8 @@
 # There is ''setup.cfg.template'' where creating .mo files is disabled.
 # Run setup with your own config template if you need to create .mo file(s).
 # Example:
+#   python setup.py install --no-setupcfg
+#     or
 #   python setup.py install --setupcfg-template=foo
 
 import sys, os
