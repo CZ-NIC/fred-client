@@ -15,17 +15,14 @@
 #    You should have received a copy of the GNU General Public License
 #    along with FredClient; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+import os
+import shutil
+import sys
 
-# There is ''setup.cfg.template'' where creating .mo files is disabled.
-# Run setup with your own config template if you need to create .mo file(s).
-# Example:
-#   python setup.py install --no-setupcfg
-#     or
-#   python setup.py install --setupcfg-template=foo
-
-import sys, os
 from distutils import log
-from freddist.core import setup, shutil
+from distutils.command.build import build
+
+from freddist.core import setup
 from freddist.command.sdist import sdist
 from freddist.command.install import install
 from freddist.command.install_scripts import install_scripts
