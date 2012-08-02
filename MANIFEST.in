@@ -5,7 +5,6 @@ global-exclude *.*~
 
 include freddist/*.py
 include freddist/README
-include RELEASE-VERSION
 include freddist/command/*.py
 include conf/*
 
@@ -27,7 +26,6 @@ include doc/*.ico
 
 exclude fred/fred_debug.py
 
-include README
 include INSTALL
 include INSTALL_CS.ascii
 include INSTALL_CS.utf8
@@ -48,8 +46,6 @@ include guiqt4/*.ui
 include guiqt4/qt_client.project
 include guiqt4/INSTALL_CS.ascii
 include guiqt4/INSTALL_CS.utf8
-include setup.cfg
-include setup.cfg.template
 
 include fred/certificates/test-cert.pem
 include fred/certificates/test-key.pem
