@@ -20,8 +20,6 @@ import shutil
 import sys
 
 from distutils import log
-from distutils.command.build import build
-
 from freddist.core import setup
 from freddist.command.sdist import sdist
 from freddist.command.install import install
