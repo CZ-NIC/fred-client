@@ -56,20 +56,25 @@ if 'bdist_wininst' in sys.argv:
 
 
 
-def get_epp_schema_path(directory):
+def get_epp_schema_files(directory):
     "Return schemas path"
     global EPP_SCHEMAS_PATH
 
-    if 'EPP_SCHEMAS_PATH' in os.environ:
-        return os.environ['EPP_SCHEMAS_PATH']
+    schema_path = directory
+    if not schema_path:
+        if 'EPP_SCHEMAS_PATH' in os.environ:
+            schema_path = os.environ['EPP_SCHEMAS_PATH']
+        else:
+            for path in ('fred/schemas', '../../mod-eppd/trunk/schemas/', '../mod-eppd/schemas/'):
+                fullpath = os.path.normpath(os.path.join(directory, path))
+                if os.path.exists(fullpath):
+                    EPP_SCHEMAS_PATH = fullpath
+                    schema_path = fullpath
 
-    for path in ('fred/schemas', '../../mod-eppd/trunk/schemas/', '../mod-eppd/schemas/'):
-        fullpath = os.path.normpath(os.path.join(directory, path))
-        if os.path.exists(fullpath):
-            EPP_SCHEMAS_PATH = fullpath
-            return fullpath
-
-    raise IOError("Path to schemas missing.")
+    if schema_path:
+        return all_files_in_4(os.path.join('DATADIR', PACKAGE_NAME, 'schemas'), schema_path)
+    else:
+        return []
 
 
 
@@ -274,8 +279,7 @@ def main(directory):
                 #get_etc_config_name()
                 ('SYSCONFDIR/fred', [os.path.join('build', config_name)])
                 ]
-            + all_files_in_4(os.path.join('DATADIR', PACKAGE_NAME, 'schemas'),
-                        get_epp_schema_path(directory)),
+            + get_epp_schema_files(directory),
             cmdclass={
                     'sdist': EPPClientSDist,
                     'install': EPPClientInstall,
