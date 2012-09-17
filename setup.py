@@ -16,124 +16,58 @@
 #    along with FredClient; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 import os
+import re
 import shutil
 import sys
 
-from distutils import log
-from freddist.core import setup
-from freddist.command.sdist import sdist
 from freddist.command.install import install
-from freddist.command.install_scripts import install_scripts
-from freddist.command.install_lib import install_lib
-from freddist.command.install_data import install_data
-from freddist.file_util import all_files_in_4
-# fred
+from freddist.core import setup
+from freddist.util import find_data_files
+
 from fred.internal_variables import config_name
 
 
 PROJECT_NAME = 'fred-client'
 PACKAGE_NAME = 'fred-client'
 
-SCRIPT_FILENAME = "%s.py" % PROJECT_NAME # fred-client.py
-QT4SCRIPT_FILENAME = "%s-qt4.pyw" % PROJECT_NAME # fred-client-qt4.pyw
+SCRIPT_FILENAME = PROJECT_NAME
+WIN_SCRIPT_FILENAME = '%s.py' % SCRIPT_FILENAME
+QT4SCRIPT_FILENAME = "%s-qt4.pyw" % PROJECT_NAME
+SCRIPTS = [SCRIPT_FILENAME, QT4SCRIPT_FILENAME]
 
 
-# datarootdir/prog_name/ssl => /usr/local/share/fred-client/ssl (default)
-DEFAULT_SSL_PATH = 'ssl'
-# datarootdir/prog_name/schemas/all.xsd =>
-# /usr/local/share/fred-client/schemas/all.xsd
-DEFAULT_SCHEMAS_FILEMANE = 'schemas/all.xsd'
-
-# enum/mod-eppd/trunk/schemas/
-EPP_SCHEMAS_PATH = os.environ.get('EPP_SCHEMAS_PATH', 'fred/schemas')
-
-APP_SCRIPTS = [PROJECT_NAME, QT4SCRIPT_FILENAME]
-#if 'bdist_wininst' in sys.argv and '--install-script=setup_postinstall.py'
-#in sys.argv:
-if 'bdist_wininst' in sys.argv:
-    # join postinstall only for WIN distribution
-    APP_SCRIPTS.append('setup_postinstall.py')
-
-
-
-def get_epp_schema_files(directory):
-    "Return schemas path"
-    global EPP_SCHEMAS_PATH
-
-    schema_path = None
-
-    if 'EPP_SCHEMAS_PATH' in os.environ:
-        schema_path = os.environ['EPP_SCHEMAS_PATH']
+# Find schemas, if not set, try some common directories
+EPP_SCHEMAS_PATH = os.environ.get('EPP_SCHEMAS_PATH')
+if EPP_SCHEMAS_PATH:
+    # Ignore if schemas do not exist
+    if not os.path.exists(EPP_SCHEMAS_PATH):
+        sys.stderr.write("Ignoring missing schemas at '%s'.\n" % os.environ['EPP_SCHEMAS_PATH'])
+        EPP_SCHEMAS_PATH = None
+else:
+    for path in ('fred/schemas', '../mod-eppd/schemas/'):
+        if os.path.exists(path):
+            EPP_SCHEMAS_PATH = os.path.normpath(os.path.abspath(path))
+            break
     else:
-        for path in ('fred/schemas', '../../mod-eppd/trunk/schemas/', '../mod-eppd/schemas/'):
-            fullpath = os.path.normpath(os.path.join(directory, path))
-            if os.path.exists(fullpath):
-                EPP_SCHEMAS_PATH = fullpath
-                schema_path = fullpath
-
-    if schema_path:
-        return all_files_in_4(os.path.join('DATADIR', PACKAGE_NAME, 'schemas'), schema_path)
-    else:
-        return []
-
-
-
-
-class EPPClientSDist(sdist):
-    "sdist check required"
-
-    def run(self):
-        "run main process"
-
-        # create temporary symlink
-        created = False
-        link_name = os.path.join(self.srcdir, 'fred', 'schemas')
-        if not os.path.exists(link_name):
-            os.symlink(EPP_SCHEMAS_PATH, link_name)
-            created = True
-
-        sdist.run(self)
-
-        if created:
-            # remove temporary symlink
-            os.unlink(link_name)
-
+        EPP_SCHEMAS_PATH = None
+        sys.stderr.write("Schemas not found.\n")
 
 
 class EPPClientInstall(install):
-
-    user_options = install.user_options
-    user_options.append(('keeppatt', None,
-        'not change patterns in config file.'))
-    user_options.append(('host=', None,
-        'fred server host [localhost]'))
-    user_options.append(('port=', None,
-        'fred server port [700]'))
-
-
-    boolean_options = install.boolean_options
-
-    def __init__(self, *attrs):
-        install.__init__(self, *attrs)
-        # keep valid paths during package creation
-        self.is_bdist_mode = None
-        self.keeppatt = None
-        # check if object runs in bdist mode
-        for dist in attrs:
-            for name in dist.commands:
-                if name == 'bdist':
-                    # it is bdist mode - we are on creating the package
-                    self.is_bdist_mode = 1
-                elif name == 'bdist_wininst':
-                    # if we create package for windows, we change patterns
-                    # as late in postinstall process
-                    self.keeppatt = 1
+    user_options = install.user_options + [
+        ('keeppatt', None,
+         "do not change patterns in config file."),
+        ('host=', None,
+         "fred server host [localhost]"),
+        ('port=', None,
+         "fred server port [700]"),
+    ]
 
     def initialize_options(self):
         install.initialize_options(self)
+        self.keeppatt = None
         self.host = None
         self.port = None
-        self.include_scripts = True
 
     def finalize_options(self):
         install.finalize_options(self)
@@ -141,188 +75,113 @@ class EPPClientInstall(install):
             self.host = 'localhost'
         if not self.port:
             self.port = '700'
+        # if we create package for windows, we change patterns in postinstall process
+        if not self.keeppatt and 'bdist_wininst' in self.distribution.commands:
+            self.keeppatt = 1
 
-
-    def update_fred_config(self):
-        '''Update fred config'''
-        if not self.keeppatt:
-            root = self.get_actual_root()
-            if not os.path.exists('build'):
-                os.makedirs('build')
-            values = []
-            values.append(('FRED_CLIENT_SSL_PATH',
-                os.path.join(
-                    self.getDir_std('appdir'),
-                    DEFAULT_SSL_PATH))
-                )
-            values.append(('FRED_CLIENT_SCHEMAS_FILEMANE',
-                os.path.join(
-                    self.getDir_std('appdir'),
-                    DEFAULT_SCHEMAS_FILEMANE))
-                )
-            values.append(('FRED_CLIENT_HOST', self.host))
-            values.append(('FRED_CLIENT_PORT', self.port))
-            self.replace_pattern(
-                os.path.join(self.srcdir, 'conf', config_name + '.install'),
-                os.path.join('build', config_name),
-                values)
+    def update_config(self, filename):
+        '''Update config file'''
+        # No change required
+        if self.keeppatt:
+            return
+        content = open(filename).read()
+        pattern = re.compile(r'^dir=.*$', re.MULTILINE)
+        content = pattern.sub('dir = %s' % self.expand_filename('$data/share/%s/ssl' % PACKAGE_NAME), content)
+        pattern = re.compile(r'^host = .*$', re.MULTILINE)
+        content = pattern.sub('host = %s' % self.host, content)
+        pattern = re.compile(r'^port = .*$', re.MULTILINE)
+        content = pattern.sub('port = %s' % self.port, content)
+        # Schemas config
+        if EPP_SCHEMAS_PATH:
+            pattern = re.compile(r'^schema=.*$', re.MULTILINE)
+            content = pattern.sub('schema = %s' % self.expand_filename('$purelib/fred/schemas/all.xsd'), content)
         else:
-            shutil.copyfile(
-                    os.path.join(self.srcdir, 'conf', config_name + '.install'),
-                    os.path.join('build', config_name))
-        print 'File %s was created.' % config_name
+            pattern = re.compile(r'^validate =.*$', re.MULTILINE)
+            content = pattern.sub('validate = off', content)
+        open(filename, 'w').write(content)
+        self.announce("File %s was updated." % filename)
 
-
-    def run(self):
-        self.update_fred_config()
-        install.run(self)
-
-
-class EPPClientInstall_scripts(install_scripts):
-
-    def update_fred_client(self):
-        values = [((r"(sys\.path\.insert\(0, )\'[\w/_ \-\.]*\'\)",
-            r"\1'%s')" % self.getDir_std('purelibdir')))]
-        self.replace_pattern(os.path.join(self.build_dir, PACKAGE_NAME),
-                None, values)
+    def update_session_config(self, filename):
+        content = open(filename).read()
         if os.environ.has_key('BDIST_SIMPLE'):
-            self.replace_pattern(os.path.join(self.build_dir, SCRIPT_FILENAME),
-                    None, values)
-        print "%s file has been updated" % SCRIPT_FILENAME
-
-    def update_fred_client_qt4(self):
-        values = [((r"(sys\.path\.insert\(0, )\'[\w/_ \-\.]*\'\)",
-            r"\1'%s')" % self.getDir_std('purelibdir')))]
-        self.replace_pattern(os.path.join(self.build_dir, QT4SCRIPT_FILENAME),
-                None, values)
-        print "%s file has been updated" % QT4SCRIPT_FILENAME
-
-    def run(self):
-        self.update_fred_client()
-        self.update_fred_client_qt4()
-        install_scripts.run(self)
-
-
-class Install_lib(install_lib):
-    def update_session_config(self):
-        filename = os.path.join(self.build_dir, 'fred', 'session_config.py')
-        # when simple package creation is in progress this enviroment variable is set to 'True'
-        if os.environ.has_key('BDIST_SIMPLE'):
-            # simple package must use as a first configuration file its own
-            # file from ``data_files'' directory, not file from user home directory
-            # nor file from /etc or any other directory.
-            values = [((
-                r"os\.path\.join\(os\.path.expanduser\(\'\~\'\),config_name\)",
-                r"'%s'" % os.path.join(
-                    self.getDir_std('sysconfdir'), 'fred', config_name)))]
+            content = content.replace("os.path.join(os.path.expanduser('~'), config_name)",
+                                      "'%s'" % self.expand_filename('$sysconf/fred/%s' % config_name))
         else:
-            values = [((
-                r"(glob_conf = )\'[\w/_ \-\.]*\'",
-                r"\1'%s'" % os.path.join(
-                    self.getDir_std('sysconfdir'), 'fred', config_name)))]
-        self.replace_pattern(filename, None, values)
-        print "session_config.py file has been updated"
+            content = content.replace("glob_conf = 'conf/fred-client.conf'",
+                                      "glob_conf = '%s'" % self.expand_filename('$sysconf/fred/%s' % config_name))
+        open(filename, 'w').write(content)
+        self.announce("File '%s' was updated" % filename)
 
-    def update_version(self):
+    def update_version(self, filename):
         "Update version number for client"
-        filename = os.path.join(self.build_dir, 'fred', 'internal_variables.py')
-        self.replace_pattern(filename, None, ((("PACKAGE_VERSION", self.distribution.metadata.version),)))
+        content = open(filename).read()
+        content = content.replace('PACKAGE_VERSION', self.distribution.metadata.version)
+        open(filename, 'w').write(content)
+        self.announce("File '%s' was updated" % filename)
 
-    def run(self):
-        self.update_session_config()
-        self.update_version()
-        install_lib.run(self)
-
-
-class Install_data(install_data):
-    def run(self):
-        install_data.run(self)
-
+    def update_script(self, filename):
+        content = open(filename).read()
+        content = content.replace('sys.path.insert(0, \'.\')',
+                                  'sys.path.insert(0, \'%s\')' % self.expand_filename('$purelib'))
+        open(filename, 'w').write(content)
+        self.announce("File '%s' was updated" % filename)
 
 
-def main(directory):
-    if os.environ.has_key('BDIST_SIMPLE'):
-        APP_SCRIPTS.append(SCRIPT_FILENAME)
-    try:
-        setup(name=PROJECT_NAME,
-            description='Client FRED (Free Registry for enum and domain)',
-            author='Zdenek Bohm, CZ.NIC',
-            author_email='zdenek.bohm@nic.cz',
-            url='http://www.nic.cz',
-            license='GNU GPL',
-            packages=['fred', 'guiqt4'],
-            package_data={
-                'fred': ['INSTALL', 'LICENSE', 'CREDITS', '*.txt',
-                    'lang/cs/LC_MESSAGES/fred_client.po',
-                    'lang/cs/LC_MESSAGES/fred_client.mo'],
-                'guiqt4': ['*.py', '*.png', '*.qm'],
-            },
-            scripts=APP_SCRIPTS,
-            data_files=[
-                ('DATAROOTDIR/%s' % PACKAGE_NAME, [
-                    'doc/fred_howto_cs.html',
-                    'doc/niccz_console.ico',
-                    'doc/niccz_gui.ico',
-                    'doc/configure.ico',
-                    'doc/help.ico',
-                    'doc/README_EN.txt',
-                    'doc/README_CS.txt',
-                    'doc/README_CS.html',
-                    'doc/README_QT4_CS.pdf']),
-                ('DATAROOTDIR/%s/ssl' % PACKAGE_NAME, [
-                    'fred/certificates/test-cert.pem',
-                    'fred/certificates/test-key.pem']),
-                # ('DATADIR/fred-client/schemas', file_util.all_files_in_2('fred/schemas')),
-                # on posix: '/etc/fred/'
-                # on windows:  ALLUSERSPROFILE = C:\Documents and Settings\All Users
-                # on windows if ALL... missing:  C:\Python25\
-                #get_etc_config_name()
-                ('SYSCONFDIR/fred', [os.path.join('build', config_name)])
-                ]
-            + get_epp_schema_files(directory),
-            cmdclass={
-                    'sdist': EPPClientSDist,
-                    'install': EPPClientInstall,
-                    'install_scripts': EPPClientInstall_scripts,
-                    'install_lib':Install_lib,
-                    'install_data':Install_data,
-                },
-            )
-        return True
-    except OSError, msg:
-        message = "%s" % msg
-        log.error("OSError: %s.", message)
-        if 'schemas' in message:
-            log.error("Schemas missing. Use them from the project mod-eppd and "
-                      "copy or make symlink fred/schemas.")
-        return False
-    except Exception, msg:
-        log.error("Error: %s", msg)
-        return False
+def main():
+    srcdir = os.path.dirname(__file__)
 
+    #XXX: Because of win, we have to create a copy of start script. This should be solved in repository, e.g. Provide
+    # script that will run on win.
+    copy_script = False
+    if 'bdist_wininst' in sys.argv:
+        # We have another set of scripts for win
+        SCRIPTS.extend((WIN_SCRIPT_FILENAME, 'setup_postinstall.py'))
+        SCRIPTS.remove(SCRIPT_FILENAME)
+        copy_script = True
+    elif 'sdist' in sys.argv:
+        SCRIPTS.append(WIN_SCRIPT_FILENAME)
+        copy_script = True
 
-def run(argv):
-    g_directory = os.path.dirname(argv)
-    filename = SCRIPT_FILENAME
-    if 'bdist_simple' in sys.argv:
-        # when creating bdist_simple package, enviroment variable
-        # ``BDIST_SIMPLE'' must be set
-        os.environ['BDIST_SIMPLE'] = 'True'
-        # copy fred-client to fred-client.py (windows do not recognize file
-        # without .py extension as a python script)
-        shutil.copy(os.path.join(g_directory, PACKAGE_NAME),
-                    os.path.join(g_directory, filename))
+    if copy_script:
+        win_script = '%s.py' % SCRIPT_FILENAME
+        shutil.copy(os.path.join(srcdir, SCRIPT_FILENAME), os.path.join(srcdir, win_script))
 
-    if main(g_directory):
-        print "All done!"
+    data_files = [('share/%s' % PACKAGE_NAME, ['doc/fred_howto_cs.html', 'doc/niccz_console.ico', 'doc/niccz_gui.ico',
+                                               'doc/configure.ico', 'doc/help.ico', 'doc/README_EN.txt',
+                                               'doc/README_CS.txt', 'doc/README_CS.html', 'doc/README_QT4_CS.pdf']),
+                  ('share/%s/ssl' % PACKAGE_NAME, ['fred/certificates/test-cert.pem',
+                                                   'fred/certificates/test-key.pem']),
+                  ('$sysconf/fred', [os.path.join('conf', config_name)])]
+    if EPP_SCHEMAS_PATH:
+        data_files += [(os.path.join('share/%s/schemas' % PACKAGE_NAME, dest), files)
+                       for dest, files in find_data_files('.', EPP_SCHEMAS_PATH)]
 
-    if os.environ.has_key('BDIST_SIMPLE'):
-        # remove now useless fred-client.py file
+    setup(name=PROJECT_NAME,
+          description='Client FRED (Free Registry for enum and domain)',
+          author='Zdenek Bohm, CZ.NIC',
+          author_email='zdenek.bohm@nic.cz',
+          url='http://www.nic.cz',
+          license='GNU GPL',
+          packages=['fred', 'guiqt4'],
+          package_data={'fred': ['INSTALL', 'LICENSE', 'CREDITS', '*.txt'],
+                        'guiqt4': ['*.png', '*.qm']},
+          i18n_files=['fred/lang/cs/LC_MESSAGES/fred_client.po'],
+          scripts=SCRIPTS,
+          data_files=data_files,
+          cmdclass={'install': EPPClientInstall},
+          modify_files={'$purelib/fred/internal_variables.py': 'update_version',
+                        '$purelib/fred/session_config.py': 'update_session_config',
+                        '$scripts/%s' % SCRIPT_FILENAME: 'update_script',
+                        '$scripts/%s' % QT4SCRIPT_FILENAME: 'update_script',
+                        '$sysconf/fred/%s' % config_name: 'update_config'})
+
+    # Remove the copy of a script
+    if copy_script:
         try:
-            os.remove(os.path.join(g_directory, filename))
-        except OSError:
+            os.unlink(os.path.join(srcdir, win_script))
+        except IOError:
             pass
 
 
 if __name__ == '__main__':
-    run(sys.argv[0])
+    main()

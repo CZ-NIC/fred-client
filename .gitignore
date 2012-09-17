@@ -1,5 +1,4 @@
 *.pyc
 *~
-fred/lang/fred_client_cs.mo
-fred/lang/cs/LC_MESSAGES/fred_client.mo
+*.mo
 RELEASE-VERSION
