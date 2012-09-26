@@ -620,7 +620,7 @@ msgid ""
 msgstr ""
 "\n"
 "EPP příkaz 'create_domain' se používá pro vytvoření instance domény.\n"
-"Objekt může být vytvořen na neučitý časový úsek nebo na přesně\n"
+"Objekt může být vytvořen na neurčitý časový úsek nebo na přesně\n"
 "definované období. Lze vytvořit domény dvou typů: cz a ENUM.\n"
 "Rozdíl je v parametru val_ex_date. Ten je pro ENUM domény povinný."
 
