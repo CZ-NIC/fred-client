@@ -80,7 +80,7 @@ class Message(MessageBase):
             if max is UNBOUNDED:
                 attrib.append(_T('unbounded list'))
             elif max > 1:
-                attrib.append(_TP('list with max %d item.', 'list with max %d items.', max) % max)
+                attrib.append(_TP('list with max %d item', 'list with max %d items', max) % max)
 
             if description:
                 if len(attrib): sattrib = ' (%s)' % ', '.join(attrib)
