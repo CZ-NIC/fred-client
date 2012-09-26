@@ -2073,11 +2073,11 @@ msgid "list of values overflow. Maximum is"
 msgstr "Počet položek v seznamu je překročen. Maximum je"
 
 #, python-format
-msgid "list with max %d item."
-msgid_plural "list with max %d items."
-msgstr[0] "seznam o maximálně %d položce."
-msgstr[1] "seznam o maximálně %d položkách."
-msgstr[2] "seznam o maximálně %d položkách."
+msgid "list with max %d item"
+msgid_plural "list with max %d items"
+msgstr[0] "seznam o maximálně %d položce"
+msgstr[1] "seznam o maximálně %d položkách"
+msgstr[2] "seznam o maximálně %d položkách"
 
 #, python-format
 msgid "minimum %d item"
