@@ -457,7 +457,7 @@ class Message(MessageBase):
         if not vals[1]:
             # takes only command hello
             if interactive:
-                error.append(_T('Command %s does not have any parameters, skipping interactive input mode.') % command_name)
+                error.append(_T('Command %s does not have any parameters, skipping interactive input mode.') % local8bit(command_name))
             elif len(cmd.split(' ')) > 1:
                 error.append(_T('Command %s does not have any parameters.') % local8bit(command_name))
             return error, example, stop # no parameters
