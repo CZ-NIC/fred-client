@@ -1559,7 +1559,7 @@ def escape(text):
 
 def append_quotes(text):
     'Function append quotes if in text is any blank character and text is not in quotes.'
-    if len(text) and text[0] not in '\'"' and re.search('\s', text):
+    if len(text) and text[0] not in '\'"' and re.search('[\s,]', text):
         text = "'%s'" % escape(text)
     return text
 
