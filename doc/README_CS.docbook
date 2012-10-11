@@ -529,7 +529,7 @@ Parametry jsou odděleny mezerou nebo mohou být odděleny i více mezerami.
 
     <listitem>
     <para><emphasis role='bold'>' " uvozovky</emphasis> řeší požadavek na zadání hodnoty, která obsahuje
-mezery nebo znak = (rovná se).
+mezery nebo čárku "," nebo znak = (rovná se).
 Taková hodnota se uzavře do uvozovek. Je jedno jestli jednoduchých nebo dvojitých.
 Uvnitř uvozovek se pak mohou nacházet libovolné znaky včetně závorek, spojovníku a
 dalších uvozovek. Pokud to jsou ale uvozovky shodné s těmi, které jsou použity na uzavření

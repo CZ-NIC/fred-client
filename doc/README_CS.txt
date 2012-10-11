@@ -365,8 +365,8 @@ username password
 
    Popis jednotlivych prvku:
      * ' " uvozovky resi pozadavek na zadani hodnoty, ktera obsahuje
-       mezery nebo znak = (rovna se). Takova hodnota se uzavre do
-       uvozovek. Je jedno jestli jednoduchych nebo dvojitych. Uvnitr
+       mezery nebo carku "," nebo znak = (rovna se). Takova hodnota se uzavre
+       do uvozovek. Je jedno jestli jednoduchych nebo dvojitych. Uvnitr
        uvozovek se pak mohou nachazet libovolne znaky vcetne zavorek,
        spojovniku a dalsich uvozovek. Pokud to jsou ale uvozovky shodne s
        temi, ktere jsou pouzity na uzavreni textu, tak se pred ne musi dat
