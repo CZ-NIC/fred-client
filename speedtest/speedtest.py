@@ -273,7 +273,7 @@ def main():
     controller(d, 'domain', ' Vytvarim domeny... ')
 
     if delete_after_run:
-    delete_domains(d)
+        delete_domains(d)
     create_workers('domain_delete')
     controller(d, 'domain_delete', ' Mazu domeny... ')
 
