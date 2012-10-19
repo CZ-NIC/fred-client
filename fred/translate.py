@@ -81,6 +81,7 @@ app_name = 'FredClient'
 ##config_name = '.fred_client.conf'
 domain = 'fred_client' # gettext translate domain
 langs = {'en': 0, 'cs': 1} # 0 - no translate, 1 - make translation
+lang_labels = {'en': 'English', 'cs': 'Czech'}
 default_lang = 'en'
 optcols = (
     '? help',
@@ -174,7 +175,8 @@ for key, value in langs.items():
             langs[key] = gettext.NullTranslations() # no translation
             if not re.search('setup.py$', sys.argv[0]):
                 # .mo file is not required to load during setup
-                print 'Translate IOError', no, msg, '\nMISSING:', '%s/%s/LC_MESSAGES/%s.mo' % (tpath, key, domain)
+                print "%s translation not available" % lang_labels[key]
+                ##print 'Translate IOError', no, msg, '\nMISSING:', '%s/%s/LC_MESSAGES/%s.mo' % (tpath, key, domain)
     else:
         langs[key] = gettext.NullTranslations() # no translation
 
