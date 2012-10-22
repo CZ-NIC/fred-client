@@ -1196,7 +1196,7 @@ msgid "Domain name"
 msgstr "Název domény"
 
 msgid "Domain name of domain to change sponsorship"
-msgstr "Doménové jméno u kterého se změní editor"
+msgstr "Doménové jméno, u kterého se změní editor"
 
 msgid "ERROR"
 msgstr "CHYBA"
