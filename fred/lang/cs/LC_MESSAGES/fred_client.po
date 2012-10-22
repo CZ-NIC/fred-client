@@ -1640,7 +1640,7 @@ msgid "Reason"
 msgstr "Důvod"
 
 msgid "Reconnect to change server language too."
-msgstr "Znovu se připojte k serveru chcete-li změnit jazyk i na něm."
+msgstr "Znovu se připojte k serveru, chcete-li změnit jazyk i na něm."
 
 msgid "Registrant ID"
 msgstr "ID držitele"
