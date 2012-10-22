@@ -503,7 +503,7 @@ Prepare list of the KEYSETs. This command fills server buffer by list
 of keysets and set pointer at the beginning of the list. The list
 is taken in sequence by calling command 'get_results' repeatedly
 until any data comming.
-"""), ('prep_nssets',)),
+"""), ('prep_keysets',)),
 
         #----------------------------------------------------
         'get_results': (0, [], _T("""
