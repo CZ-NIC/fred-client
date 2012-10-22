@@ -1410,8 +1410,8 @@ msgstr "KEYSET ID"
 msgid "LIST of DNS"
 msgstr "Seznam DNS"
 
-msgid "LIST of filenames with dns keys"
-msgstr "Seznam jmen souborů s dns klíči"
+msgid "LIST of filenames with DNS keys"
+msgstr "Seznam jmen souborů s DNS klíči"
 
 msgid "LIST of keys"
 msgstr "Seznam klíčů"
