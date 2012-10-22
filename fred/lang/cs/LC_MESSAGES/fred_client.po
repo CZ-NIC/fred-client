@@ -1508,7 +1508,7 @@ msgid ""
 "Names what are not included into disclose list are set to opposite value of "
 "the disclose flag value."
 msgstr ""
-"Jména která nejsou uvedena v seznamu disclose, jsou nastavena na opačnou "
+"Jména, která nejsou uvedena v seznamu disclose, jsou nastavena na opačnou "
 "hodnotu než má disclose flag."
 
 msgid "New password"
@@ -2057,9 +2057,6 @@ msgstr "příkaz"
 
 msgid "country code"
 msgstr "kód země"
-
-msgid "data for with is set the flag value"
-msgstr "data, pro které se nastaví příznak"
 
 msgid "deleted"
 msgstr "smazáno"
