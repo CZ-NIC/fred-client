@@ -394,7 +394,7 @@ When you want not result in your prompt join option 'noprompt'
             else:
                 note = _T("Type 'help' to list all available commands.")
                 if m.group(1) == '!':
-                    if m.group(2) in self._available_session_commands:
+                    if m.group(2) in self._available_session_commands + ["h", "?"]:
                         if m.group(2).strip() == '!':
                             msg = '%s: %s' % (_T('ERROR'), _T('Illegal use of interactive input mode.'))
                             note = _T("Type 'help !' to get more information about interactive input mode usage.")
