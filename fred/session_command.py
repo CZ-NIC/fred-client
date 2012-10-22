@@ -716,7 +716,7 @@ When you want not result in your prompt join option 'noprompt'
                     self.append_note('%s ${BOLD}%s${NORMAL}' % (_T('User interface language is already'), self._session[LANG]))
                 else:
                     self.set_language(lang) # set translation
-                    self.append_note('%s ${BOLD}%s${NORMAL}' % (_T('User interface language has been set to'), self._session[LANG]))
+                    self.append_note('%s ${BOLD}%s${NORMAL}.' % (_T('User interface language has been set to'), self._session[LANG]))
                     if self._session[ONLINE]: self.append_note(_T('Reconnect to change server language too.'))
         else:
             self.append_note('%s ${BOLD}%s${NORMAL}' % (_T('User interface language is'), self._session[LANG]))
