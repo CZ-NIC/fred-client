@@ -60,16 +60,16 @@ def get_epp_schema_files(directory):
     "Return schemas path"
     global EPP_SCHEMAS_PATH
 
-    schema_path = directory
-    if not schema_path:
-        if 'EPP_SCHEMAS_PATH' in os.environ:
-            schema_path = os.environ['EPP_SCHEMAS_PATH']
-        else:
-            for path in ('fred/schemas', '../../mod-eppd/trunk/schemas/', '../mod-eppd/schemas/'):
-                fullpath = os.path.normpath(os.path.join(directory, path))
-                if os.path.exists(fullpath):
-                    EPP_SCHEMAS_PATH = fullpath
-                    schema_path = fullpath
+    schema_path = None
+
+    if 'EPP_SCHEMAS_PATH' in os.environ:
+        schema_path = os.environ['EPP_SCHEMAS_PATH']
+    else:
+        for path in ('fred/schemas', '../../mod-eppd/trunk/schemas/', '../mod-eppd/schemas/'):
+            fullpath = os.path.normpath(os.path.join(directory, path))
+            if os.path.exists(fullpath):
+                EPP_SCHEMAS_PATH = fullpath
+                schema_path = fullpath
 
     if schema_path:
         return all_files_in_4(os.path.join('DATADIR', PACKAGE_NAME, 'schemas'), schema_path)
