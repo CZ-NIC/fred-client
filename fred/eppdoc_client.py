@@ -351,7 +351,7 @@ and maximum allowable period is defined in the Communication rules."""), ('renew
                 ('auth_info', (0, 1), (), _T('Password required by server to authorize the transfer'), 'mypassword', '', ()),
                 ('disclose', (0, 1), (), _T('Disclose'), '', '', (
                     ('flag', (1, 1), (('y',), ('n',)), _T('Disclose flag (default y)'), '', '', ()),
-                    ('data', (0, len(eppdoc_assemble.contact_disclose)), eppdoc_assemble.contact_disclose, _T('Data for with is set the flag value'), '', '', ()),
+                    ('data', (0, len(eppdoc_assemble.contact_disclose_update)), eppdoc_assemble.contact_disclose_update, _T('Data for with is set the flag value'), '', '', ()),
                 )),
                 ('vat', (0, 1), (), _T('VAT'), '7035555556', '', ()),
                 ('ident', (0, 1), (), _T('Identificator'), '', '', (

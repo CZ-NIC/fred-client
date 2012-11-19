@@ -37,7 +37,9 @@ UNBOUNDED = None
 MAXLIST = 9
 # ''contact_disclose'' must be same format as eppdoc_client.update_status.
 DISCLOSES = ('voice', 'fax', 'email', 'vat', 'ident', 'notify_email')
+DISCLOSES_UPDATE = ('addr',) + DISCLOSES
 contact_disclose = map(lambda n: (n,), DISCLOSES)
+contact_disclose_update = map(lambda n: (n,), DISCLOSES_UPDATE)
 history_filename = os.path.join(os.path.expanduser('~'), '.fred_history') # compatibility s MS Win
 
 TAG_clTRID = 'cltrid' # Definition for --key-name = clTRID value.
@@ -855,7 +857,8 @@ class Message(MessageBase):
         flag = {'n':0, 'y':1}.get(disclose.get('flag', ['n'])[0], 'n')
         disit = disclose.get('data', [])
         if len(disit):
-            for key in DISCLOSES: ## [n[0] for n in contact_disclose]:
+            available_names = DISCLOSES_UPDATE if node_name == "chg" else DISCLOSES
+            for key in available_names:
                 if key in disit:
                     explicit.append(make_camell(key))
                 else:
