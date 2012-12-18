@@ -364,7 +364,7 @@ username password
      * [] hranate zavorky
 
    Popis jednotlivych prvku:
-     * ' " uvozovky resi pozadavek na zadani hodnoty, ktera obsahuje
+     * Uvozovky ' " resi pozadavek na zadani hodnoty, ktera obsahuje
        mezery nebo carku "," nebo znak = (rovna se). Takova hodnota se uzavre
        do uvozovek. Je jedno jestli jednoduchych nebo dvojitych. Uvnitr
        uvozovek se pak mohou nachazet libovolne znaky vcetne zavorek,

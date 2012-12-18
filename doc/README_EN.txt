@@ -333,7 +333,7 @@ Syntax of command parameters
      * [] square brackets
 
    Description of individual elements:
-     * ' " are used to specify values which contain spaces and equal character.
+     * Quotation marks ' " are used to specify values which contain spaces or comma or equal character.
        Such values should be surrounded by inverted commas. Single or double inverted commas may be used. Any characters my be used in between the commas, including
       brackets, hyphens and additional inverted commas. When the type of inverted commas used inside the parameter
        is the same as the inverted commas used to separate the parameter, a backslash (\)

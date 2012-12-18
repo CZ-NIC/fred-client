@@ -528,7 +528,7 @@ Parametry jsou odděleny mezerou nebo mohou být odděleny i více mezerami.
 <itemizedlist>
 
     <listitem>
-    <para><emphasis role='bold'>' " uvozovky</emphasis> řeší požadavek na zadání hodnoty, která obsahuje
+    <para>Uvozovky <emphasis role='bold'>' "</emphasis> řeší požadavek na zadání hodnoty, která obsahuje
 mezery nebo čárku "," nebo znak = (rovná se).
 Taková hodnota se uzavře do uvozovek. Je jedno jestli jednoduchých nebo dvojitých.
 Uvnitř uvozovek se pak mohou nacházet libovolné znaky včetně závorek, spojovníku a
