@@ -128,7 +128,7 @@ class EPPClientInstall(install):
 
 
 def main():
-    srcdir = os.path.dirname(__file__)
+    srcdir = os.path.dirname(os.path.abspath(__file__))
 
     #XXX: Because of win, we have to create a copy of start script. This should be solved in repository, e.g. Provide
     # script that will run on win.
