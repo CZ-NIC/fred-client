@@ -1,3 +1,9 @@
+FredClient 2.7
+
+Zmeny:
+   * Opravy tykajici se build procesu s novou verzi fred-distutils
+   * Opravy v readme
+
 FredClient 2.6
 
 Zmeny:
