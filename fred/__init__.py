@@ -304,12 +304,12 @@ SYNTAX:
 
 OPTIONS:
   id (required)            KEYSET ID
-  dnskey                   LIST of keys (list with max 9 items.)
+  dnskey                   LIST of keys (list with max 10 items.)
     flags (required)       Flags
     protocol (required)    Protocol
     alg (required)         Algorithm
     pub_key (required)     Public key code
-  dnskeyref                LIST of filenames with dns keys (list with max 9 items.)
+  dnskeyref                LIST of filenames with dns keys (list with max 10 items.)
   tech (required)          Technical contact (unbounded list)
   auth_info                Password required by server to authorize the transfer
   cltrid                   Client transaction ID"""

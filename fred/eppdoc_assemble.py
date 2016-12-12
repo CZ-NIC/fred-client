@@ -34,7 +34,7 @@ from eppdoc import Message as MessageBase, SCHEMA_PREFIX
 
 
 UNBOUNDED = None
-MAXLIST = 9
+MAXLIST = 10
 # ''contact_disclose'' must be same format as eppdoc_client.update_status.
 DISCLOSES = ('voice', 'fax', 'email', 'vat', 'ident', 'notify_email')
 DISCLOSES_UPDATE = ('addr',) + DISCLOSES
