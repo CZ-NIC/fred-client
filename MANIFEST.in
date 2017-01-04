@@ -26,3 +26,4 @@ include guiqt4/INSTALL_CS.ascii
 include guiqt4/INSTALL_CS.utf8
 
 include MANIFEST.in
+include fred-client.spec
