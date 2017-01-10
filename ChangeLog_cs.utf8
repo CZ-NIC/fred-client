@@ -1,3 +1,10 @@
+FredClient 2.8
+
+Zmeny:
+   * Keyset nyni muze obsahovat az 10 dns klicu
+   * Pridani komentaru k jednotlivym volbam v konfiguracnim souboru
+   * Pridan spec soubor
+
 FredClient 2.7
 
 Zmeny:
