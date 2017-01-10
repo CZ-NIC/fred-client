@@ -34,7 +34,7 @@ from eppdoc import Message as MessageBase, SCHEMA_PREFIX
 
 
 UNBOUNDED = None
-MAXLIST = 9
+DNSKEY_LIST_MAX = 10
 # ''contact_disclose'' must be same format as eppdoc_client.update_status.
 DISCLOSES = ('voice', 'fax', 'email', 'vat', 'ident', 'notify_email')
 DISCLOSES_UPDATE = ('addr',) + DISCLOSES
@@ -1076,8 +1076,8 @@ class Message(MessageBase):
 
         if not nsset_type:
             # check list limits only for keyset
-            if count_dnskey > MAXLIST:
-                self.errors.append((0, 'dnskey', _T('Limit of list is exceeded. The maximum is %d.') % MAXLIST))
+            if count_dnskey > DNSKEY_LIST_MAX:
+                self.errors.append((0, 'dnskey', _T('Limit of list is exceeded. The maximum is %d.') % DNSKEY_LIST_MAX))
 
         # for nsset only
         if __has_key__(dct, 'tech'):
@@ -1258,8 +1258,8 @@ class Message(MessageBase):
                     count_dnskey += 1
 
             # check list limits
-            if count_dnskey > MAXLIST:
-                self.errors.append((0, 'dnskey', _T('Limit of list is exceeded. The maximum is %d.') % MAXLIST))
+            if count_dnskey > DNSKEY_LIST_MAX:
+                self.errors.append((0, 'dnskey', _T('Limit of list is exceeded. The maximum is %d.') % DNSKEY_LIST_MAX))
 
             self.__append_values__(data, dct_add, 'tech', '%s:add' % prefix, '%s:tech' % prefix)
 
@@ -1279,8 +1279,8 @@ class Message(MessageBase):
                     count_dnskey += 1
 
             # check list limits
-            if count_dnskey > MAXLIST:
-                self.errors.append((0, 'dnskey', _T('Limit of list is exceeded. The maximum is %d.') % MAXLIST))
+            if count_dnskey > DNSKEY_LIST_MAX:
+                self.errors.append((0, 'dnskey', _T('Limit of list is exceeded. The maximum is %d.') % DNSKEY_LIST_MAX))
 
             # for nsset only
             if __has_key_dict__(dct_rem, 'name'):

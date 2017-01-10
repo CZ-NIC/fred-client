@@ -280,13 +280,13 @@ lower level number. Valid range is from 0 to 10.
         #----------------------------------------------------
         'create_keyset': (3, [
             ('id', (1, 1), (), _T('KEYSET ID'), 'KEYSID:ID', '', ()),
-            ('dnskey', (0, 9), (), _T('LIST of keys'), '', '', (
+            ('dnskey', (0, eppdoc_assemble.DNSKEY_LIST_MAX), (), _T('LIST of keys'), '', '', (
                 ('flags', (1, 1), (), _T('Flags'), '257', '', ()),
                 ('protocol', (1, 1), (), _T('Protocol'), '3', '', ()),
                 ('alg', (1, 1), (), _T('Algorithm'), '5', '', ()),
                 ('pub_key', (1, 1), (), _T('Public key code'), 'AwEAAddt2AkLfYGKgiEZB5SmIF8EvrjxNMH6HtxWEA4RJ9Ao6LCWheg8', '', ()),
             )),
-            ('dnskeyref', (0, 9), (), _T('LIST of filenames with DNS keys'), 'unittest/dnskey.pub', '', ()),
+            ('dnskeyref', (0, eppdoc_assemble.DNSKEY_LIST_MAX), (), _T('LIST of filenames with DNS keys'), 'unittest/dnskey.pub', '', ()),
             ('tech', (1, UNBOUNDED), (), _T('Technical contact'), 'CID:ID01', '', ()),
             ('auth_info', (0, 1), (), _T('Password required by server to authorize the transfer'), 'mypassword', '', ()),
             ], _T("""
@@ -406,23 +406,23 @@ and maximum allowable period is defined in the Communication rules."""), ('renew
         'update_keyset': (1, [
             ('id', (1, 1), (), _T('KEYSET ID'), 'KEYSET_ID', '', ()),
             ('add', (0, 1), (), _T('Add values'), '', '', (
-                ('dnskey', (0, 9), (), _T('LIST of keys'), '', '', (
+                ('dnskey', (0, eppdoc_assemble.DNSKEY_LIST_MAX), (), _T('LIST of keys'), '', '', (
                     ('flags', (1, 1), (), _T('Flags'), '257', '', ()),
                     ('protocol', (1, 1), (), _T('Protocol'), '3', '', ()),
                     ('alg', (1, 1), (), _T('Algorithm'), '5', '', ()),
                     ('pub_key', (1, 1), (), _T('Public key code'), 'AwEAAddt2AkLfYGKgiEZB5SmIF8EvrjxNMH6HtxWEA4RJ9Ao6LCWheg8', '', ()),
                 )),
-                ('dnskeyref', (0, 9), (), _T('LIST of filenames with DNS keys'), 'unittest/dnskey.pub', '', ()),
+                ('dnskeyref', (0, eppdoc_assemble.DNSKEY_LIST_MAX), (), _T('LIST of filenames with DNS keys'), 'unittest/dnskey.pub', '', ()),
                 ('tech', (0, UNBOUNDED), (), _T('Technical contact ID'), 'CID:ID01', '', ()),
             )),
             ('rem', (0, 1), (), _T('Remove values'), '', '', (
-                ('dnskey', (0, 9), (), _T('LIST of keys'), '', '', (
+                ('dnskey', (0, eppdoc_assemble.DNSKEY_LIST_MAX), (), _T('LIST of keys'), '', '', (
                     ('flags', (1, 1), (), _T('Flags'), '257', '', ()),
                     ('protocol', (1, 1), (), _T('Protocol'), '3', '', ()),
                     ('alg', (1, 1), (), _T('Algorithm'), '5', '', ()),
                     ('pub_key', (1, 1), (), _T('Public key code'), 'AwEAAddt2AkLfYGKgiEZB5SmIF8EvrjxNMH6HtxWEA4RJ9Ao6LCWheg8', '', ()),
                 )),
-                ('dnskeyref', (0, 9), (), _T('LIST of filenames with DNS keys'), 'unittest/dnskey.pub', '', ()),
+                ('dnskeyref', (0, eppdoc_assemble.DNSKEY_LIST_MAX), (), _T('LIST of filenames with DNS keys'), 'unittest/dnskey.pub', '', ()),
                 ('tech', (0, UNBOUNDED), (), _T('Technical contact ID'), 'CID:ID01', '', ()),
             )),
             ('auth_info', (0, 1), (), _T('Password required by server to authorize the transfer'), 'new_password', '', ()),
