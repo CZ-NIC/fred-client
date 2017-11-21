@@ -25,13 +25,27 @@ try:
         ret = epp.check_contact(("handle1","handle2"))
         if ret['data']['handle1']:
             # handle is available
-            ret = epp.create_contact("handle1", "My Name", "email@email.net", "City", "CZ")
+            ret = epp.create_contact("handle1", "My Name", "email@email.net", "Street", "City", "12300", "CZ")
             epp.print_answer(ret)
         ret = epp.info_contact("handle1")
         epp.print_answer(ret)
         epp.logout()
 except fred.FredError, msg:
     print msg
+
+# Example of set Mailing address: (If attr. 'extensions' is malformatted ClientUsageException is risen.)
+ret = epp.create_contact("handle1", "My Name", "email@email.net", "Street", "City", "12300", "CZ", extensions={
+    'mailing_addr': {'street': 'M. street', 'city': 'M. City', 'pc': '12301', 'cc': 'CZ'}})
+print(epp._epp._raw_cmd)
+
+# Example of update Mailing address:
+ret = epp.update_contact("CIDID01", extensions={'chg': {'mailing_addr': {
+    'street': 'M. street', 'city': 'M. City', 'pc': '12301', 'cc': 'CZ'}}})
+print(epp._epp._raw_cmd)
+
+# Example of remove Mailing address:
+ret = epp.update_contact("CIDID01", extensions={'rem': ['mailing_addr']})
+print(epp._epp._raw_cmd)
 
 # or you can use function is_val() what returns value without KeyError:
 # You dont keep return values. The object holds them and functions is_val() and print_answer()  use them too.
@@ -43,7 +57,7 @@ try:
     if epp.is_val() == 1000:
         epp.check_contact(("handle1","handle2"))
         if epp.is_val(('data','handle1')):
-            epp.create_contact("handle1", "My Name", "email@email.net", "City", "CZ")
+            epp.create_contact("handle1", "My Name", "email@email.net", "Street", "City", "12300", "CZ")
         else:
             epp.info_contact("handle1")
             epp.print_answer()
@@ -77,6 +91,11 @@ import sys
 from session_receiver import ManagerReceiver
 from session_receiver import FredError
 import translate
+
+
+class ClientUsageException(Exception):
+    "Client usage API excption."
+
 
 class Client:
     """EPP client API. Process whole EPP communication with server.
@@ -192,7 +211,7 @@ OPTIONS:
     def create_contact(self, contact_id, name, email, street, city, pc, cc,
             sp=None, org=None, auth_info=None, voice=None, fax=None,
             disclose=None, vat=None, ident=None, notify_email=None,
-            cltrid=None):
+            cltrid=None, extensions=None):
         """DESCRIPTION:
   The EPP 'create_contact' command is used to create an instance of the contact.
   Contact can be used for values of the owner, registrant or technical contact.
@@ -210,35 +229,46 @@ SYNTAX:
   create_contact contact_id name email city cc [other_options]
 
 OPTIONS:
-  contact_id (required)    Contact ID
-  name (required)          Name
-  email (required)         Email
-  street (required)        Street (list with max 3 items.)
-  city (required)          City
-  pc (required)            Postal code
-  cc (required)            Country code
-  sp                       State or province
-  org                      Organisation
-  auth_info                Password required by server to authorize the transfer
-  voice                    Phone
-  fax                      Fax
-  disclose                 Disclose
-    flag (required)        Disclose flag (default y)
-                           (y,n)
-    data                   Data for with is set the flag value (list with max 9 items.)
-                           (voice,fax,email,vat,ident,notify_email)
-  vat                      VAT (Value-added tax)
-  ident                    Identificator
-    number (required)      Identificator number
-    type (required)        Identificator type
-                           (op,passport,mpsv,ico,birthday)
-  notify_email             Notification email
-  cltrid                   Client transaction ID"""
+  contact_id (required)     Contact ID
+  name (required)           Name
+  email (required)          Email
+  street (required)         Street (list with max 3 items.)
+  city (required)           City
+  pc (required)             Postal code
+  cc (required)             Country code
+  sp                        State or province
+  org                       Organisation
+  auth_info                 Password required by server to authorize the transfer
+  voice                     Phone
+  fax                       Fax
+  disclose                  Disclose
+    flag (required)         Disclose flag (default y)
+                            (y,n)
+    data                    Data for with is set the flag value (list with max 9 items.)
+                            (voice,fax,email,vat,ident,notify_email)
+  vat                       VAT (Value-added tax)
+  ident                     Identificator
+    number (required)       Identificator number
+    type (required)         Identificator type
+                            (op,passport,mpsv,ico,birthday)
+  notify_email              Notification email
+  cltrid                    Client transaction ID
+  extensions                Extensions
+    mailing_addr (required) Mailing address
+      street (required)     Street (list with max 3 items.)
+      city (required)       City
+      pc (required)         Postal code
+      cc (required)         Country code
+      sp                    State or province
+  """
+        if extensions:
+            if extensions.keys() != ["mailing_addr"]:
+                raise ClientUsageException("Extensions dict must have only one key 'mailing_addr'.")
+            self.check_address_keys(extensions["mailing_addr"].keys())
         return self._epp.api_command('create_contact', {
-            'contact_id':contact_id, 'name':name, 'email':email, 'city':city, 'cc':cc, 'auth_info':auth_info,
-            'org':org, 'street':street, 'sp':sp, 'pc':pc, 'voice':voice, 'fax':fax,
-            'disclose':disclose, 'vat':vat, 'ident':ident,
-            'notify_email':notify_email, 'cltrid':cltrid})
+            'contact_id':contact_id, 'name':name, 'email':email, 'city':city, 'cc':cc, 'auth_info':auth_info, 'org':org,
+            'street':street, 'sp':sp, 'pc':pc, 'voice':voice, 'fax':fax, 'disclose':disclose, 'vat':vat, 'ident':ident,
+            'notify_email':notify_email, 'cltrid':cltrid, 'extensions': extensions})
 
     def create_domain(self, name, registrant, auth_info=None, nsset=None, keyset=None, period=None, admin=None, val_ex_date=None,
         cltrid=None):
@@ -670,7 +700,7 @@ OPTIONS:
         return self._epp.api_command('transfer_keyset', {'name':name, 'auth_info':auth_info, 'cltrid':cltrid})
 
 
-    def update_contact(self, contact_id, chg=None, cltrid=None):
+    def update_contact(self, contact_id, chg=None, cltrid=None, extensions=None):
         """DESCRIPTION:
   The EPP 'update_contact' command is used to update values in the contact.
 
@@ -687,33 +717,59 @@ SYNTAX:
   update_contact contact_id [other_options]
 
 OPTIONS:
-  contact_id (required)    Contact ID
-  chg                      Change values
-    postal_info            Postal informations
-      name                 Name
-      org                  Organisation
-      addr                 Address
-        street (required)  Street (list with max 3 items.)
-        city (required)    City
-        pc (required)      Postal code
-        cc (required)      Country code
-        sp                 State or province
-    voice                  Phone
-    fax                    Fax
-    email                  Email
-    auth_info              Password required by server to authorize the transfer
-    disclose               Disclose
-      flag (required)      Disclose flag (default y)
-      data                 data for with is set the flag value (list with max 6 items.)
-    vat                    VAT
-    ident                  Identificator
-      type (required)      Identificator type
-      number (required)    Identificator number
-    notify_email           Notification email
-  cltrid                   Client transaction ID"""
-        return self._epp.api_command('update_contact', {'contact_id':contact_id,
-            'chg':chg, 'cltrid':cltrid})
+  contact_id (required)       Contact ID
+  chg                         Change values
+    postal_info               Postal informations
+      name                    Name
+      org                     Organisation
+      addr                    Address
+        street (required)     Street (list with max 3 items.)
+        city (required)       City
+        pc (required)         Postal code
+        cc (required)         Country code
+        sp                    State or province
+    voice                     Phone
+    fax                       Fax
+    email                     Email
+    auth_info                 Password required by server to authorize the transfer
+    disclose                  Disclose
+      flag (required)         Disclose flag (default y)
+      data                    data for with is set the flag value (list with max 6 items.)
+    vat                       VAT
+    ident                     Identificator
+      type (required)         Identificator type
+      number (required)       Identificator number
+    notify_email              Notification email
+  rem                         Remove values
+    mailing_addr              Mailing address
+  cltrid                      Client transaction ID
+  extensions                  Extensions
+    chg                       Change value(s)
+      mailing_addr (required) Mailing address
+        street (required)     Street (list with max 3 items.)
+        city (required)       City
+        pc (required)         Postal code
+        cc (required)         Country code
+        sp                    State or province
+    rem                       Remove value(s)
+      mailing_addr (required) Mailing address
+  """
+        if extensions:
+            ext_keys = extensions.keys()
+            if not (ext_keys == ["chg"] or ext_keys == ["rem"]):
+                raise ClientUsageException("Extensions dict must have only one key: 'chg' or 'rem'.")
+            names = extensions["rem"] if ext_keys == ["rem"] else extensions["chg"].keys()
+            if names != ["mailing_addr"]:
+                raise ClientUsageException("Item 'chg' or 'rem' accept only key 'mailing_addr'.")
+            if ext_keys == ["chg"]:
+                self.check_address_keys(extensions["chg"]["mailing_addr"].keys())
+        return self._epp.api_command('update_contact', {'contact_id': contact_id, 'chg': chg, 'cltrid': cltrid,
+                                                        'extensions': extensions})
 
+    @staticmethod
+    def check_address_keys(addr):
+        if not (len(addr) > 3 and set(addr) <= set(['street', 'city', 'pc', 'cc', 'sp'])):
+            raise ClientUsageException("Address must have keys 'street', 'city', 'pc', 'cc', 'sp' and optional 'sp'.")
 
     def update_domain(self, name, add_admin=None, rem_admin=None, rem_tempc=None, chg=None, val_ex_date=None, cltrid=None):
         """DESCRIPTION:

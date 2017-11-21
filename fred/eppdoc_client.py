@@ -203,8 +203,8 @@ The EPP 'transfer_domain' command makes change in domain sponsorship
 of a designated registrar. New password for authorisation
 will be generated automaticly after succefull transfer."""), ('transfer_domain domain.cz password',)),
         #----------------------------------------------------
-        'create_contact': (5, [
-            ('contact_id', (1, 1), (), _T('Contact ID'), 'CID:ID01', '', ()),
+        'create_contact': (7, [
+            ('contact_id', (1, 1), (), _T('Contact ID'), 'CIDID01', '', ()),
             ('name', (1, 1), (), _T('Name'), 'John Nowak', '', ()), # odtud shoda s update contact
             ('email', (1, 1), (), _T('Email'), 'info@mymail.cz', '', ()),
             ('street', (1, 3), (), _T('Street'), 'Downing street 1230/12', '', ()),
@@ -226,11 +226,22 @@ will be generated automaticly after succefull transfer."""), ('transfer_domain d
                 ('type', (1, 1), ident_type_list(), _T('Identificator type'), 'op', '', ()),
             )),
             ('notify_email', (0, 1), (), _T('Notification email'), 'info@mymail.cz', '', ()),
+            ('extensions', (0, 1), (), _T('Extensions'), '', '', (
+                ('mailing_addr', (1, 1), (), _T('Mailing address'), '', '', (
+                    ('street', (1, 3), (), _T('Street'), 'Mailing street 42', '', ()),
+                    ('city', (1, 1), (), _T('City'), 'Mailing City', '', ()),
+                    ('pc', (1, 1), (), _T('Postal code'), '12001', '', ()),
+                    ('cc', (1, 1), (), _T('Country code'), 'CZ', '', ()),
+                    ('sp', (0, 1), (), _T('State or province'), '', '', ()),
+                )),
+            )),
             ], '%s\n\n%s\n\n%s' % (_T("""
 The EPP 'create_contact' command is used to create an instance of the contact.
 Contact can be used for values of the owner, registrant or technical contact."""), notice['disclose'], notice['ident']), (
-            "create_contact CID:ID01 'Jan Novak' info@mymail.cz 'Narodni trida 1230/12' Praha 12000 CZ NULL 'Firma s.r.o.' mypassword  +420.222745111 +420.222745111 (y (fax email)) 7035555556 (8888888856 op) info@mymail.cz",
-            "create_contact CID:ID02 'Jan Ban' info@mail.com Street Brno 123000 CZ"
+            "create_contact CIDID01 'Jan Novak' info@mymail.cz 'Narodni trida 1230/12' Praha 12000 CZ NULL 'Firma s.r.o.' mypassword  +420.222745111 +420.222745111 (y (fax email)) 7035555556 (8888888856 op) info@mymail.cz",
+            "create_contact CIDID02 'Jan Ban' info@mail.com Street Brno 123000 CZ NULL 'Firma s.r.o.' mypassword",
+            "create_contact CIDID01 'John Nowak' info@mymail.cz 'Downing street 1230/12' Praha 12000 CZ NULL NULL NULL NULL NULL () NULL () NULL (('Mailing street 42' 'Mailing City' 12001 CZ))",
+            "create_contact CIDID02 'Jan Ban' info@mail.com Street Brno 123000 CZ --extensions.mailing_addr.street='Mailing street' --extensions.mailing_addr.city='Maling City' --extensions.mailing_addr.pc=12300 --extensions.mailing_addr.cc=CZ",
             )),
         #----------------------------------------------------
         'create_domain': (2, [
@@ -332,7 +343,7 @@ units specified using the 'unit' attribute.  Valid values for the
 and maximum allowable period is defined in the Communication rules."""), ('renew_domain nic.cz 2008-06-02 (6 y)',)), # The EPP renew_domain command is used to extend validity of an existing domain.
         #----------------------------------------------------
         'update_contact': (1, [
-            ('contact_id', (1, 1), (), _T('Contact ID'), 'CID:ID01', '', ()),
+            ('contact_id', (1, 1), (), _T('Contact ID'), 'CIDID01', '', ()),
             ('chg', (0, 1), (), _T('Change values'), '', '', (
                 ('postal_info', (0, 1), (), _T('Postal informations'), '', '', (
                     ('name', (0, 1), (), _T('Name'), u'Jan Nowak', '', ()),
@@ -360,10 +371,26 @@ and maximum allowable period is defined in the Communication rules."""), ('renew
                 )),
                 ('notify_email', (0, 1), (), _T('Notification email'), 'notify@mymail.cz', '', ()),
             )),
+            ('extensions', (0, 1), (), _T('Extensions'), '', '', (
+                ('chg', (0, 1), (), _T('Change items'), 'mailing_addr', '', (
+                    ('mailing_addr', (1, 1), (), _T('Mailing address'), '', '', (
+                        ('street', (1, 3), (), _T('Street'), 'Mailing street 42', '', ()),
+                        ('city', (1, 1), (), _T('City'), 'Mailing City', '', ()),
+                        ('pc', (1, 1), (), _T('Postal code'), '12001', '', ()),
+                        ('cc', (1, 1), (), _T('Country code'), 'CZ', '', ()),
+                        ('sp', (0, 1), (), _T('State or province'), '', '', ()),
+                    )),
+                )),
+                ('rem', (0, 1), (('mailing_addr', ), ), _T('Remove items'), 'mailing_addr', '', ()),
+            )),
             ], '%s\n\n%s\n\n%s' % (_T("""The EPP 'update_contact' command is used to update values in the contact."""), notice['disclose'], notice['ident']),
                 (
-                    "update_contact CID:ID01 (('Jan Nowak' 'Firma s.r.o.' (('Na narodni 1230/12', 'Americka 12') Praha 12000 CZ  Vinohrady )) +420.222745111 +420.222745111 info@mymail.cz mypassword (y (voice, email)) 7035555556 (8888888856 ico) notify@mymail.cz)",
-                    "update_contact CID:ID01 (() NULL NULL NULL NULL () NULL () change.only@notify-mail.cz)",
+                    "update_contact CIDID01 (('Jan Nowak' 'Firma s.r.o.' (('Na narodni 1230/12', 'Americka 12') Praha 12000 CZ Vinohrady)) +420.222745111 +420.222745111 info@mymail.cz mypassword (y (voice, email)) 7035555556 (8888888856 ico) notify@mymail.cz)",
+                    "update_contact CIDID01 (('Jan Nowak' 'Firma s.r.o.' (('Na narodni 1234/14', 'Americka 12') Praha 12000 CZ)) +420.222745111 +420.222745111 info@mymail.cz mypassword (y (voice, email)) 7035555556 (8888888856 ico) notify@mymail.cz) ((('Mailing street 42' 'Mailing City' 12001 CZ)))",
+                    "update_contact CIDID01 (() NULL NULL NULL NULL () NULL () change.only@notify-mail.cz)",
+                    "update_contact CIDID01 () ((('Update mailing street' City 12300 CZ State)))",
+                    "update_contact CIDID01 () (() mailing_addr)",
+                    "update_contact CIDID01 --extensions.rem=mailing_addr",
             )),
         #----------------------------------------------------
         'update_domain': (1, [
@@ -630,6 +657,11 @@ def make_sort_by_names():
          ('sp', 1, _T('State or province')),
          ('pc', 1, _T('Postal code')),
          ('cc', 1, _T('Country code')),
+         ('extensions.mailingAddr.street', 1, _T('Mailing address / Street')),
+         ('extensions.mailingAddr.city', 1, _T('Mailing address / City')),
+         ('extensions.mailingAddr.sp', 1, _T('Mailing address / State or province')),
+         ('extensions.mailingAddr.pc', 1, _T('Mailing address / Postal code')),
+         ('extensions.mailingAddr.cc', 1, _T('Mailing address / Country code')),
          ('authInfo', 1, _T('Password for transfer')),
          ('voice', 1, _T('Phone')),
          ('fax', 1, 'Fax'),
@@ -811,7 +843,7 @@ class Message(eppdoc_assemble.Message):
             # check commands sort by parameters
             names = map(lambda s: (s, 1, s), self._dct.get('name', [])) # (key, verbose_level, description)
         else:
-            # othes commands sort by defined namse
+            # othes commands sort by defined names
             scope = self.sort_by_names.get(command_name, None)
             if scope:
                 if scope[0]:

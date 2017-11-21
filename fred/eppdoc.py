@@ -49,6 +49,7 @@ VERSION_KEYSET = '1.3'
 VERSION_ENUMVAL = '1.2'
 VERSION_FRED = '1.5'
 VERSION_VERSION = '1.0'
+VERSION_EXTRA_ADDRESS = '1.0'
 
 obj_uri = "urn:ietf:params:xml:ns:"
 xmlns_xsi = "http://www.w3.org/2001/XMLSchema-instance"
@@ -77,6 +78,7 @@ class Message:
             'enum':    VERSION_ENUMVAL,
             'fred':    VERSION_FRED,
             'epp':     VERSION_VERSION,
+            'extra-addr': VERSION_EXTRA_ADDRESS,
         }
         self.set_schema_version('epp', VERSION_VERSION)
         self.getresults_loop = 0 # indicate if client starts messages loop
