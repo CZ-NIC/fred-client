@@ -1,3 +1,8 @@
+FredClient 2.9
+
+Změny:
+    * Do kontaktu byla přidána Korespondenční adresa - create_contact, update_contact, info_contact
+
 FredClient 2.8
 
 Zmeny:

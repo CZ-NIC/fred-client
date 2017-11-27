@@ -4,6 +4,9 @@
 <book lang="cs">
 
 <bookinfo>
+    <![CDATA[
+        xsltproc /usr/share/xml/docbook/stylesheet/nwalsh/xhtml/docbook.xsl README_CS.docbook | xmllint --encode utf-8 --format - | sed 's/[[:space:]]\+$//' > README_CS.html
+    ]]>
     <title>Manuál pro FredClient konzoli a knihovnu fred</title>
     <subtitle>FredClient</subtitle>
     <copyright>
@@ -21,6 +24,7 @@
      1.11.2006;
      7.11.2006;
      17.1.2007;
+     24.11.2017;
     </releaseinfo>
   </bookinfo>
 
@@ -582,7 +586,7 @@ Seznam <emphasis>addr</emphasis> obsahuje položky <emphasis>city</emphasis>, <e
 Takový seznam se zapíše asi takto:
 
 <programlisting>
-((name, org, (city, cc, street, sp, pc)) voice, fax, ...)
+((name, org, (street, city, pc, cc, sp) (street, city, pc, cc, sp)) voice, fax, ...)
 </programlisting>
 
 Porovnejte s příklady, které jsou uvedeny v helpu u každého příkazu.
@@ -730,22 +734,24 @@ chcete kromě povinných parametrů uvést už jen telefonní číslo
 Tím jste telefonní číslo umístili na správnou pozici v parametrech příkazu:
 
 <programlisting>
-   create_contact CID:ID01 'Jan Novak' info@mymail.cz Praha CZ mypassword NULL NULL NULL NULL +420.222745111
+   create_contact CIDID01 'Jan Novak' info@mymail.cz 'Vinohradská 8' Praha 12000 CZ NULL NULL NULL mypassword +420.222745111
 </programlisting>
 
 Uvedený příkaz <emphasis role="bold">nebude</emphasis> v XML struktuře vytvářet tagy pro hodnoty
-<emphasis>org, street, sp, cp</emphasis>:
+<emphasis>sp, mailing_addr, org</emphasis>:
 
 <programlisting>
-&lt;contact:id&gt;CID:ID01&lt;/contact:id&gt;
+    &lt;contact:id&gt;CID:ID01&lt;/contact:id&gt;
         &lt;contact:postalInfo&gt;
-          &lt;contact:name&gt;Jan Novak&lt;/contact:name&gt;
-          &lt;contact:addr&gt;
-            &lt;contact:city&gt;Praha&lt;/contact:city&gt;
-            &lt;contact:cc&gt;CZ&lt;/contact:cc&gt;
-          &lt;/contact:addr&gt;
+            &lt;contact:name&gt;Jan Novak&lt;/contact:name&gt;
+            &lt;contact:addr&gt;
+                &lt;contact:street&gt;Vinohradská 8&lt;/contact:street&gt;
+                &lt;contact:city&gt;Praha&lt;/contact:city&gt;
+                &lt;contact:pc&gt;12000&lt;/contact:pc&gt;
+                &lt;contact:cc&gt;CZ&lt;/contact:cc&gt;
+            &lt;/contact:addr&gt;
         &lt;/contact:postalInfo&gt;
-        &lt;contact:voice&gt;+420.222745111&lt;/contact:voice&gt;
+    &lt;contact:voice&gt;+420.222745111&lt;/contact:voice&gt;
 </programlisting>
 
 
@@ -773,25 +779,25 @@ Rozdíl mezi práznou hodnotou a žádnou je v tom, že tato hodnota generuje ta
 dokumentu. Protože je prázdná, tak daný XML tag bude také prázdný.
 
 <programlisting>
-   create_contact CID:ID01 'Jan Novak' info@mymail.cz Praha CZ mypassword '' '' '' '' +420.222745111
+   create_contact CIDID01 'Jan Novak' info@mymail.cz 'Vinohradská 8' Praha 12000 CZ '' NULL '' mypassword +420.222745111
 </programlisting>
 
-Příkaz vygeneruje XML, ve kterém budou u prázdných hodnot prázdné tagy:
+Příkaz vygeneruje XML, ve kterém budou u prázdných hodnot prázdné tagy (Organizace, Stát nebo kraj):
 
 <programlisting>
-&lt;contact:id&gt;CID:ID01&lt;/contact:id&gt;
+    &lt;contact:id&gt;CID:ID01&lt;/contact:id&gt;
         &lt;contact:postalInfo&gt;
-          &lt;contact:name&gt;Jan Novak&lt;/contact:name&gt;
-          <emphasis role="bold">&lt;contact:org/&gt;
-          &lt;contact:addr&gt;
-            &lt;contact:street/&gt;</emphasis>
-            &lt;contact:city&gt;Praha&lt;/contact:city&gt;
-           <emphasis role="bold">&lt;contact:sp/&gt;
-            &lt;contact:pc/&gt;</emphasis>
-            &lt;contact:cc&gt;CZ&lt;/contact:cc&gt;
-          &lt;/contact:addr&gt;
+            &lt;contact:name&gt;Jan Novak&lt;/contact:name&gt;
+            <emphasis role="bold">&lt;contact:org/&gt;</emphasis>
+            &lt;contact:addr&gt;
+                &lt;contact:street&gt;Vinohradská 8&lt;/contact:street&gt;
+                &lt;contact:city&gt;Praha&lt;/contact:city&gt;
+                &lt;contact:pc&gt;12000&lt;/contact:pc&gt;
+                &lt;contact:cc&gt;CZ&lt;/contact:cc&gt;
+                <emphasis role="bold">&lt;contact:sp/&gt;</emphasis>
+            &lt;/contact:addr&gt;
         &lt;/contact:postalInfo&gt;
-        &lt;contact:voice>+420.222745111&lt;/contact:voice&gt;
+    &lt;contact:voice&gt;+420.222745111&lt;/contact:voice&gt;
 </programlisting>
 
 </para>
@@ -1350,5 +1356,172 @@ výjimka FredError.
 </section>
 
 </chapter>
+
+  <chapter>
+    <title>Verze klienta 2.9 - Korespondenční adresa v kontaktu</title>
+    <para>
+        Od verze 2.9 je možné v kontaktu editovat korespondenční adresu. Oproti předchozí verzi se změnilo
+        zadávání údajů v příkazech <emphasis>create_contact</emphasis> a <emphasis>update_contact</emphasis>.
+        Příkaz <emphasis>info_contact</emphasis> pak umí korespondenční adresu zobrazit.
+    </para>
+
+    <section>
+        <title>Příkaz create_contact</title>
+        <para>
+            V příkazu <emphasis>create_contact</emphasis> se korespondenční adresa zadává na konci příkazu:
+        </para>
+        <programlisting>
+    create_contact CIDID02 'Jan Ban' info@mail.com 'Hlavní ulice' Praha 12000 CZ NULL NULL NULL NULL NULL () NULL () NULL (('Korespondenční ulice' 'Korespondenční Město' 12001 CZ))
+        </programlisting>
+        <para>
+            S pojmenovanými parametry se korespondenční adresa zadává například takto:
+        </para>
+        <programlisting>
+    create_contact CIDID02 'Jan Ban' info@mail.com Street Brno 123000 CZ --extensions.mailing_addr.street='Mailing street' --extensions.mailing_addr.city='Maling City' --extensions.mailing_addr.pc=12300 --extensions.mailing_addr.cc=CZ
+        </programlisting>
+        <section>
+            <title>API create_contact</title>
+            <para>
+                Ve funkci <emphasis>create_contact</emphasis> byl přidán nový atribut
+                <emphasis role='bold'>extensions</emphasis>. Atribut je nepovinný:
+            </para>
+            <programlisting>
+    def create_contact(self, contact_id, name, email, street, city, pc, cc, sp=None, org=None, auth_info=None,
+                       voice=None, fax=None, disclose=None, vat=None, ident=None, notify_email=None,
+                       cltrid=None, <emphasis role='bold'>extensions=None</emphasis>):
+            </programlisting>
+            <para>
+                Korespondenční adresa se zadá například takto:
+            </para>
+            <programlisting>
+    ret = epp.create_contact("handle1", "My Name", "email@email.net", "Street", "City", "12300", "CZ", extensions={
+        'mailing_addr': {'street': 'M. street', 'city': 'M. City', 'pc': '12301', 'cc': 'CZ'}})
+            </programlisting>
+            <para>
+                Jsou li klíče v parametru <emphasis>extensions</emphasis> v nesprávném formátu, vyvolá se výjimka
+                <emphasis role='bold'>ClientUsageException</emphasis>.
+            </para>
+        </section>
+    </section>
+
+    <section>
+        <title>Příkaz update_contact</title>
+        <para>
+            V příkazu <emphasis>update_contact</emphasis> se korespondenční adresa upravuje nebo odebírá na konci příkazu:
+        </para>
+        <programlisting>
+    update_contact CIDID02 () ((('Update mailing street' City 12300 CZ State)))
+        </programlisting>
+        <para>
+            Korespondenční adresu z kontaktu smažete zadáním <emphasis>mailing_addr</emphasis> hodnoty do parametru <emphasis>extensions.rem</emphasis>:
+        </para>
+        <programlisting>
+    update_contact CIDID01 () (() mailing_addr)
+        </programlisting>
+        <para>nebo</para>
+        <programlisting>
+    update_contact CIDID01 --extensions.rem=mailing_addr
+        </programlisting>
+        <section>
+            <title>API update_contact</title>
+            <para>
+                Ve funkci <emphasis>update_contact</emphasis> byl přidán nový atribut
+                <emphasis role='bold'>extensions</emphasis>. Atribut je nepovinný:
+            </para>
+            <programlisting>
+    def update_contact(self, contact_id, chg=None, cltrid=None, <emphasis role='bold'>extensions=None</emphasis>):
+            </programlisting>
+            <para>
+                Hodnota <emphasis>extensions</emphasis> obsahuje slovník s klíčem <emphasis role='bold'>chg</emphasis>
+                nebo s <emphasis role='bold'>rem</emphasis>. Klíč <emphasis role='bold'>chg</emphasis> aktualizuje
+                korespondenční adresu kontaktu:
+            </para>
+            <programlisting>
+    ret = epp.update_contact("CIDID01", extensions={'chg': {'mailing_addr': {
+            'street': 'M. street', 'city': 'M. City', 'pc': '12301', 'cc': 'CZ'}}})
+            </programlisting>
+            <para>
+                Klíč <emphasis role='bold'>rem</emphasis> korespondenční adresu z kontaktu odebere:
+            </para>
+            <programlisting>
+    ret = epp.update_contact("CIDID01", extensions={'rem': ['mailing_addr']})
+            </programlisting>
+            <para>
+                Jsou li klíče v parametru <emphasis>extensions</emphasis> v nesprávném formátu, vyvolá se výjimka
+                <emphasis role='bold'>ClientUsageException</emphasis>.
+            </para>
+        </section>
+    </section>
+
+    <section>
+        <title>Příkaz info_contact</title>
+        <para>
+            Příkaz <emphasis>info_contact CIDID02</emphasis> za hlavní adresou zobrazí také korespondenční adresu (je-li zadána):
+        </para>
+        <programlisting>
+Návratový kód:            1000
+Důvod:                    Příkaz úspěšně proveden
+
+Kontakt ID:               CIDID02
+ID objektu v rep.:        C0000000007-CZ
+Vytvořil:                 REG-FRED_A
+Určený registrátor:       REG-FRED_A
+Změnil:                   REG-FRED_A
+Vytvořeno dne:            2017-11-22T09:49:17+01:00
+Poslední změna dne:       2017-11-22T14:20:30+01:00
+Jméno:                    Jan Ban
+Název organizace:         Firma s.r.o.
+Ulice:                    Hlavní ulice
+                          Hlavní ulice 2
+Město:                    Praha
+Stát nebo kraj:           Vinohrady
+PSČ:                      12000
+Kód země:                 CZ
+Korespondenční adresa / Ulice: Korespondenční ulice 1234/14
+Korespondenční adresa / Město: Korespondenční Město
+Korespondenční adresa / PSČ: 12001
+Korespondenční adresa / Kód země: CZ
+Heslo pro transfer:       mypassword
+Email:                    info@mail.com
+Stav:                     ok - Objekt je bez omezení
+Zveřejnit:                voice
+                          fax
+                          email
+                          vat
+                          ident
+                          notify_email
+                          addr
+        </programlisting>
+        <section>
+            <title>API info_contact</title>
+            <para>
+                Ve funkci <emphasis>info_contact</emphasis> byly přidány nové atributy pro korespondenční adresu:
+            </para>
+            <programlisting>
+    ret = epp.info_contact("CIDID01")
+    if ret['response'].get('extension'):
+        nskey = ret['response']['extension'].keys()[0]
+        ns, name = nskey.split(":") if ":" in nskey else ("", nskey)
+        pxname = lambda name: "%s:%s" % (ns, name) if ns else name
+        addr = ret['response']['extension'][nskey][pxname("mailing")][pxname("addr")]
+        print addr
+
+        {'extra-addr:cc': {'data': u'CZ'},
+         'extra-addr:city': {'data': u'Praha'},
+         'extra-addr:pc': {'data': u'12300'},
+         'extra-addr:street': {'data': u'Ulice 123'}}
+
+        locname = lambda nsname: nsname.split(":")[1] if ns else nsname
+        print {locname(key): val['data'] for key, val in addr.items()}
+
+        {'cc': u'CZ',
+         'city': u'Praha',
+         'pc': u'12300',
+         'street': u'Ulice 123'}
+            </programlisting>
+        </section>
+    </section>
+
+  </chapter>
 
 </book>

@@ -259,6 +259,24 @@ class ManagerReceiver(ManagerCommand):
             if contact_addr:
                 self.__append_note_from_dct__(contact_addr, ('contact:sp', 'contact:cc',
                     'contact:city', 'contact:street', 'contact:pc',))
+
+            # Mailing address
+            extension = self._dict_answer['response'].get('extension')
+            if extension:
+                for nodename in extension.keys():
+                    ns, name = nodename.split(":") if ":" in nodename else ("", nodename)
+                    pxname = lambda name: "%s:%s" % (ns, name) if ns else name
+                    inf_data = extension[nodename]
+                    mailing_addr = inf_data.get(pxname("mailing"))
+                    if mailing_addr:
+                        columns_names = ("street", "city", "pc", "sp", "cc")
+                        columns = [pxname(name) for name in columns_names]
+                        self.__append_note_from_dct__(mailing_addr[pxname("addr")], columns)
+                        for name in columns_names:
+                            value = self._dct_answer['data'].pop(pxname(name), None)
+                            if value:
+                                self._dct_answer['data']['contact:extensions.mailingAddr.%s' % name] = value
+
             disclosed = list(DISCLOSES) + ['addr']
             not_disclosed = []
             condis = contact_infData.get('contact:disclose', None)

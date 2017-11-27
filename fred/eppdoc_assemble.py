@@ -174,7 +174,7 @@ class Message(MessageBase):
                 _T('Invalid parameter'), local8bit(' / '.join(scopes)),
                 _T('Corrupted value'), str(dct_values),
                 _T('Correct format is'), ', '.join(keys),
-                _T('For example'), ', '.join(vals),
+                _T('For example'), local8bit(', '.join(vals)),
                 ))
             return '\n'.join(message), miss_req
         is_poll = command_name == 'poll' # compile boolean for more faster comparation
@@ -897,6 +897,28 @@ class Message(MessageBase):
         if __has_key__(dct, 'pc'): data.append(('contact:addr', 'contact:pc', dct['pc'][0]))
         data.append(('contact:addr', 'contact:cc', dct['cc'][0])) # required
         # --- END addr ------
+        # --- BEGIN mailing address ------
+        if __has_key_dict__(dct, 'extensions'):
+            addr = dct['extensions'][0]['mailing_addr'][0]
+            extra_addr_ns = "extra-addr"
+            pxname = lambda name: "%s:%s" % (extra_addr_ns, name)
+            extra_addr_ns_version = self.schema_version.get(extra_addr_ns, self.schema_version['epp'])
+            data.extend((
+                ('command', 'extension'),
+                ('extension', 'extra-addr:create', None, (
+                    ('xmlns:%s' % extra_addr_ns, '%s%s-%s' % (SCHEMA_PREFIX, extra_addr_ns,
+                                                              extra_addr_ns_version)),
+                    ('xsi:schemaLocation', '%s%s-%s %s-%s.xsd' % (SCHEMA_PREFIX, extra_addr_ns,
+                                                                  extra_addr_ns_version, extra_addr_ns,
+                                                                  extra_addr_ns_version)),
+                )),
+                (pxname('create'), pxname('mailing')),
+                (pxname('mailing'), pxname('addr')),
+            ))
+            self.__append_values__(data, addr, 'street', pxname('addr'), pxname('street'))
+            for key in ('city', 'sp', 'pc', 'cc'):
+                if __has_key__(addr, key): data.append((pxname('addr'), pxname(key), addr[key][0]))
+        # --- END mailing address ------
         if __has_key__(dct, 'voice'): data.append(('contact:create', 'contact:voice', dct['voice'][0]))
         if __has_key__(dct, 'fax'): data.append(('contact:create', 'contact:fax', dct['fax'][0]))
         data.append(('contact:create', 'contact:email', dct['email'][0])) # required
@@ -1171,6 +1193,49 @@ class Message(MessageBase):
                 type_data = type and (('type', type),) or None
                 data.append(('contact:chg', 'contact:ident', ident['number'][0], type_data))
             if __has_key__(chg, 'notify_email'): data.append(('contact:chg', 'contact:notifyEmail', chg['notify_email'][0]))
+
+        if __has_key_dict__(dct, 'extensions'):
+            actions = dct['extensions'][0]
+            remove_mailing_addr = actions.get('rem', [None])[0] == "mailing_addr"
+            change_mailing_addr = "mailing_addr" in actions.get('chg', [{}])[0]
+            extra_addr_ns = "extra-addr"
+            pxname = lambda name: "%s:%s" % (extra_addr_ns, name)
+            extra_addr_ns_version = self.schema_version.get(extra_addr_ns, self.schema_version['epp'])
+            if change_mailing_addr and remove_mailing_addr:
+                self.errors.append((0, 'mailing_addr', _T(
+                    'It is not possible to change and remove the mailing address in the same command.')))
+            elif change_mailing_addr:
+                addr = actions['chg'][0]['mailing_addr'][0]
+                extra_addr_ns_version = self.schema_version.get(extra_addr_ns, self.schema_version['epp'])
+                data.extend((
+                    ('command', 'extension'),
+                    ('extension', 'extra-addr:update', None, (
+                        ('xmlns:%s' % extra_addr_ns, '%s%s-%s' % (SCHEMA_PREFIX, extra_addr_ns,
+                                                                  extra_addr_ns_version)),
+                        ('xsi:schemaLocation', '%s%s-%s %s-%s.xsd' % (SCHEMA_PREFIX, extra_addr_ns,
+                                                                      extra_addr_ns_version, extra_addr_ns,
+                                                                      extra_addr_ns_version)),
+                    )),
+                    (pxname('update'), pxname('set')),
+                    (pxname('set'), pxname('mailing')),
+                    (pxname('mailing'), pxname('addr')),
+                ))
+                self.__append_values__(data, addr, 'street', pxname('addr'), pxname('street'))
+                for key in ('city', 'sp', 'pc', 'cc'):
+                    if __has_key__(addr, key): data.append((pxname('addr'), pxname(key), addr[key][0]))
+            elif remove_mailing_addr:
+                data.extend((
+                    ('command', 'extension'),
+                    ('extension', 'extra-addr:update', None, (
+                        ('xmlns:%s' % extra_addr_ns, '%s%s-%s' % (SCHEMA_PREFIX, extra_addr_ns,
+                                                                  extra_addr_ns_version)),
+                        ('xsi:schemaLocation', '%s%s-%s %s-%s.xsd' % (SCHEMA_PREFIX, extra_addr_ns,
+                                                                      extra_addr_ns_version, extra_addr_ns,
+                                                                      extra_addr_ns_version)),
+                    )),
+                    (pxname('update'), pxname('rem')),
+                    (pxname('rem'), pxname('mailing')),
+                ))
         self.__append_cltrid__(data, params[0])
         self.__assemble_cmd__(data)
 

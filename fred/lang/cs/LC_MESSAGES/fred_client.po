@@ -1018,6 +1018,9 @@ msgstr "Použitý certifikát není podepsán uznávanou certifikační autorito
 msgid "Certificates missing. Trying to connect without SSL!"
 msgstr "Certifikát chybí. Zkouším spojení bez SSL!"
 
+msgid "Change items"
+msgstr "Změnit položky"
+
 msgid "Change timeout value to the zero in your configuration file."
 msgstr "Nastavte si v konfiguračním souboru hodnotu timeoutu na nulu."
 
@@ -1228,6 +1231,9 @@ msgstr "Příklad"
 msgid "Expiration date"
 msgstr "Datum expirace"
 
+msgid "Extensions"
+msgstr "Rozšíření"
+
 msgid "Extensions URI"
 msgstr "URI rozšíření"
 
@@ -1404,6 +1410,11 @@ msgstr "Neplatný formát verze"
 msgid "Invalid version name %s. It must be one from (%s)."
 msgstr "Neplatné jméno verze %s. Musí být ze seznamu (%s)."
 
+msgid ""
+"It is not possible to change and remove the mailing address in the same "
+"command."
+msgstr "Není možné korespondenční adresu změnit a odebrat v jednom příkaze."
+
 msgid "KEYSET ID"
 msgstr "KEYSET ID"
 
@@ -1455,6 +1466,24 @@ msgstr "Login se nezdařil."
 
 msgid "Logout command sent to server"
 msgstr "Odeslán logout"
+
+msgid "Mailing address"
+msgstr "Korespondenční adresa"
+
+msgid "Mailing address / City"
+msgstr "Korespondenční adresa / Město"
+
+msgid "Mailing address / Country code"
+msgstr "Korespondenční adresa / Kód země"
+
+msgid "Mailing address / Postal code"
+msgstr "Korespondenční adresa / PSČ"
+
+msgid "Mailing address / State or province"
+msgstr "Korespondenční adresa / Stát nebo kraj"
+
+msgid "Mailing address / Street"
+msgstr "Korespondenční adresa / Ulice"
 
 msgid "Message ID"
 msgstr "ID zprávy"
@@ -1647,6 +1676,9 @@ msgstr "ID držitele"
 
 msgid "Remove administrative contact ID"
 msgstr "Odebrat administrativní kontakt ID"
+
+msgid "Remove items"
+msgstr "Odebrat položky"
 
 msgid "Remove temporary contact ID"
 msgstr "Odebrat dočasný kontakt ID"

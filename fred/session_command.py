@@ -407,6 +407,8 @@ When you want not result in your prompt join option 'noprompt'
                 self.append_note(msg)
                 self.append_note(note)
                 self._epp_cmd.help_check_name(self._notes, cmdline)
+        if self._epp_cmd.errors:
+            stop = 1
         return command_name, stop
 
     def is_online(self, command_name):
