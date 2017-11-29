@@ -453,16 +453,16 @@ ulice1
        predposledni parametr se jmenuje notify_email. Krome povinnych
        chcete zadat jiz pouze tuto hodnotu (povinnych je prvnich pet
        parametru: ID, jmeno, email, mesto a kod zeme). Pak zadate:
-create_contact CID:ID jmeno email@email mesto CZ --notify_email = muj@email.net
+create_contact CID-ID jmeno email@email mesto CZ --notify_email = muj@email.net
 
        Na pozici pojmenovaneho parametru nezalezi:
-create_contact --notify_email = muj@email.net CID:ID jmeno email@email mesto CZ
+create_contact --notify_email = muj@email.net CID-ID jmeno email@email mesto CZ
 
      * Tecka. Slozitejsi pripad nastane, kdyz chcete definovat hodnotu,
        ktera se nachazi v nejakem "zanorenem seznamu", tj. seznamu v jinem
        seznamu. Pak se jednotliva jmena seznamu spojuji pomoci tecky.
        Napriklad:
-create_contact CID:ID jmeno email@email mesto CZ --disclose.flag = y
+create_contact CID-ID jmeno email@email mesto CZ --disclose.flag = y
 
      * [] hranate zavorky. V pripade, ze hodnota je polozkou v seznamu, je
        mozne zadat i index seznamu. Ten se zadava pomoci cisla v hranatych
@@ -524,7 +524,7 @@ Zadna hodnota: NULL
 
    Uvedeny prikaz nebude v XML strukture vytvaret tagy pro hodnoty sp,
    mailing_addr, org:
-    <contact:id>CID:ID01</contact:id>
+    <contact:id>CID-ID01</contact:id>
         <contact:postalInfo>
             <contact:name>Jan Novak</contact:name>
             <contact:addr>
@@ -555,7 +555,7 @@ Prazdna hodnota: '', ""
 
    Prikaz vygeneruje XML, ve kterem budou u prazdnych hodnot prazdne tagy
    (Organizace, Stat nebo kraj):
-    <contact:id>CID:ID01</contact:id>
+    <contact:id>CID-ID01</contact:id>
         <contact:postalInfo>
             <contact:name>Jan Novak</contact:name>
             <contact:org/>
@@ -715,7 +715,7 @@ poll_autoack je ON
 
    Napriklad, kdyz chcete vytvorit create_contact, provedte tyto tri
    kroky:
-   1. Nactete hodnoty: info_contact CID:ID
+   1. Nactete hodnoty: info_contact CID-ID
    2. Vytvorte prikaz: fetch_from_info create
    3. Upravte prikaz jak potrebujete a pak jej odeslete na server.
 

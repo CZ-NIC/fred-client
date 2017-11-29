@@ -633,11 +633,11 @@ Například když si vypíšete help pro příkaz
 <emphasis>notify_email</emphasis>. Kromě povinných chcete zadat již pouze tuto hodnotu
 (povinných je prvních pět parametrů: ID, jméno, email, město a kód země). Pak zadáte:
 <programlisting>
-create_contact CID:ID jméno email@email město CZ <emphasis role='bold'>--notify_email = muj@email.net</emphasis>
+create_contact CID-ID jméno email@email město CZ <emphasis role='bold'>--notify_email = muj@email.net</emphasis>
 </programlisting>
 Na pozici pojmenovaného parametru nezáleží:
 <programlisting>
-create_contact <emphasis role='bold'>--notify_email = muj@email.net</emphasis> CID:ID jméno email@email město CZ
+create_contact <emphasis role='bold'>--notify_email = muj@email.net</emphasis> CID-ID jméno email@email město CZ
 </programlisting>
 </para>
     </listitem>
@@ -647,7 +647,7 @@ create_contact <emphasis role='bold'>--notify_email = muj@email.net</emphasis> C
 <quote>zanořeném seznamu</quote>, tj. seznamu v jiném seznamu. Pak se jednotlivá jména seznamů spojují pomocí <emphasis role='bold'>tečky</emphasis>.
 Například:
 <programlisting>
-create_contact CID:ID jméno email@email město CZ <emphasis role='bold'>--disclose.flag</emphasis> = y
+create_contact CID-ID jméno email@email město CZ <emphasis role='bold'>--disclose.flag</emphasis> = y
 </programlisting>
 </para>
     </listitem>
@@ -743,7 +743,7 @@ Uvedený příkaz <emphasis role="bold">nebude</emphasis> v XML struktuře vytv�
 <emphasis>sp, mailing_addr, org</emphasis>:
 
 <programlisting>
-    &lt;contact:id&gt;CID:ID01&lt;/contact:id&gt;
+    &lt;contact:id&gt;CID-ID01&lt;/contact:id&gt;
         &lt;contact:postalInfo&gt;
             &lt;contact:name&gt;Jan Novak&lt;/contact:name&gt;
             &lt;contact:addr&gt;
@@ -787,7 +787,7 @@ dokumentu. Protože je prázdná, tak daný XML tag bude také prázdný.
 Příkaz vygeneruje XML, ve kterém budou u prázdných hodnot prázdné tagy (Organizace, Stát nebo kraj):
 
 <programlisting>
-    &lt;contact:id&gt;CID:ID01&lt;/contact:id&gt;
+    &lt;contact:id&gt;CID-ID01&lt;/contact:id&gt;
         &lt;contact:postalInfo&gt;
             &lt;contact:name&gt;Jan Novak&lt;/contact:name&gt;
             <emphasis role="bold">&lt;contact:org/&gt;</emphasis>
@@ -1002,7 +1002,7 @@ Platné typy příkazů, které můžete pomocí <emphasis>fetch_from_info</emph
 <para>
 Například, když chcete vytvořit <emphasis>create_contact</emphasis>, proveďte tyto tři kroky:
 <simplelist>
-<member>  1. Načtěte hodnoty: <emphasis role='bold'>info_contact CID:ID</emphasis></member>
+<member>  1. Načtěte hodnoty: <emphasis role='bold'>info_contact CID-ID</emphasis></member>
 <member>  2. Vytvořte příkaz: <emphasis role='bold'>fetch_from_info create</emphasis></member>
 <member>  3. Upravte příkaz jak potřebujete a pak jej odešlete na server.</member>
 </simplelist>

@@ -98,7 +98,7 @@ Using parameter 'new_password' you can change password.
 """), ('login john mypass "my new pass!"', 'login john mypass NULL cs')),
         #----------------------------------------------------
         'info_contact': (1, [
-            ('name', (1, 1), (), _T('Contact ID'), 'CID:ID01', '', ()),
+            ('name', (1, 1), (), _T('Contact ID'), 'CID-ID01', '', ()),
         ], _T("""
 The EPP 'info_contact' command is used to retrieve information associated
 with an existing contact. The value 'Password for transfer' is shown only
@@ -124,7 +124,7 @@ with an existing KEYSET. The value 'Password for transfer' is shown only
 for privileged user."""), ('info_keyset keysid:ksid',)),
         #----------------------------------------------------
         'check_contact': (1, [
-            ('name', (1, UNBOUNDED), (), _T('Contact ID'), 'CID:ID01', '', ()),
+            ('name', (1, UNBOUNDED), (), _T('Contact ID'), 'CID-ID01', '', ()),
         ], _T("""
 The EPP 'check_contact' command is used to determine if an contact can be
 provisioned within a repository. It provides a hint that allows a
@@ -170,12 +170,12 @@ See help poll_autoack for client function that sends this commands together.
 """), ('poll req', 'poll ack 4',)),
         #----------------------------------------------------
         'transfer_contact': (2, [
-            ('name', (1, 1), (), _T('Contact ID'), 'CID:ID01', '', ()),
+            ('name', (1, 1), (), _T('Contact ID'), 'CID-ID01', '', ()),
             ('auth_info', (1, 1), (), _T('Password required by server to authorize the transfer'), 'mypassword', '', ()),
         ], _T("""
 The EPP 'transfer_contact' command makes change in contact sponsorship
 of a designated registrar. New password for authorisation
-will be generated automaticly after succefull transfer."""), ('transfer_contact CID:ID01 password',)),
+will be generated automaticly after succefull transfer."""), ('transfer_contact CID-ID01 password',)),
         #----------------------------------------------------
         'transfer_nsset': (2, [
             ('name', (1, 1), (), _T('NSSET ID'), 'NSSET_ID', '', ()),
@@ -246,15 +246,15 @@ Contact can be used for values of the owner, registrant or technical contact."""
         #----------------------------------------------------
         'create_domain': (2, [
             ('name', (1, 1), (), _T('Domain name'), 'mydomain.cz', '', ()),
-            ('registrant', (1, 1), (), _T('Registrant ID'), 'CID:REGID', '', ()),
+            ('registrant', (1, 1), (), _T('Registrant ID'), 'CID-REGID', '', ()),
             ('auth_info', (0, 1), (), _T('Password required by server to authorize the transfer'), 'mypassword', '', ()),
-            ('nsset', (0, 1), (), _T('NSSET ID'), 'NSSID:ID', '', ()),
-            ('keyset', (0, 1), (), _T('KEYSET ID'), 'KEYSID:ID', '', ()),
+            ('nsset', (0, 1), (), _T('NSSET ID'), 'NSSID-ID', '', ()),
+            ('keyset', (0, 1), (), _T('KEYSET ID'), 'KEYSID-ID', '', ()),
             ('period', (0, 1), (), _T('Period'), '', '', (
                 ('num', (1, 1), (), _T('Number of months or years'), '3', '', ()),
                 ('unit', (1, 1), (('y',), ('m',)), _T('Period unit (y year(default), m month)'), '', '', ()),
             )),
-            ('admin', (0, UNBOUNDED), (), _T('Administrative contact ID'), 'CID:ADMIN_ID', '', ()),
+            ('admin', (0, UNBOUNDED), (), _T('Administrative contact ID'), 'CID-ADMIN_ID', '', ()),
             ('val_ex_date', (0, 1), (), _T('Validation expires at date. This value is required for ENUM domains.'), '2008-12-03', '', ()),
             ('publish', (0, 1), (('y',), ('n',)), _T('Include ENUM domain into ENUM dictionary'), 'true', '', ()),
             ], _T("""
@@ -269,12 +269,12 @@ for ENUM domains."""), (
             )),
         #----------------------------------------------------
         'create_nsset': (3, [
-            ('id', (1, 1), (), _T('NSSET ID'), 'NSSID:ID', '', ()),
+            ('id', (1, 1), (), _T('NSSET ID'), 'NSSID-ID', '', ()),
             ('dns', (2, 9), (), _T('LIST of DNS'), '', '', (
                 ('name', (1, 1), (), _T('Name server'), 'my.dns1.cz', '', ()),
                 ('addr', (0, UNBOUNDED), (), _T('Server address'), '217.31.207.130', '', ()),
             )),
-            ('tech', (1, UNBOUNDED), (), _T('Technical contact'), 'CID:ID01', '', ()),
+            ('tech', (1, UNBOUNDED), (), _T('Technical contact'), 'CID-ID01', '', ()),
             ('auth_info', (0, 1), (), _T('Password required by server to authorize the transfer'), 'mypassword', '', ()),
             ('reportlevel', (0, 1), (), _T('Report range level (0 - 10; higher = more detailed)'), '1', '', ()),
             ], _T("""
@@ -290,7 +290,7 @@ lower level number. Valid range is from 0 to 10.
             )),
         #----------------------------------------------------
         'create_keyset': (3, [
-            ('id', (1, 1), (), _T('KEYSET ID'), 'KEYSID:ID', '', ()),
+            ('id', (1, 1), (), _T('KEYSET ID'), 'KEYSID-ID', '', ()),
             ('dnskey', (0, eppdoc_assemble.DNSKEY_LIST_MAX), (), _T('LIST of keys'), '', '', (
                 ('flags', (1, 1), (), _T('Flags'), '257', '', ()),
                 ('protocol', (1, 1), (), _T('Protocol'), '3', '', ()),
@@ -298,17 +298,17 @@ lower level number. Valid range is from 0 to 10.
                 ('pub_key', (1, 1), (), _T('Public key code'), 'AwEAAddt2AkLfYGKgiEZB5SmIF8EvrjxNMH6HtxWEA4RJ9Ao6LCWheg8', '', ()),
             )),
             ('dnskeyref', (0, eppdoc_assemble.DNSKEY_LIST_MAX), (), _T('LIST of filenames with DNS keys'), 'unittest/dnskey.pub', '', ()),
-            ('tech', (1, UNBOUNDED), (), _T('Technical contact'), 'CID:ID01', '', ()),
+            ('tech', (1, UNBOUNDED), (), _T('Technical contact'), 'CID-ID01', '', ()),
             ('auth_info', (0, 1), (), _T('Password required by server to authorize the transfer'), 'mypassword', '', ()),
             ], _T("""
 The EPP 'create_keyset' command is used to create a record of the KEYSET.
 """), (
-                'create_keyset KEYSID:01 ((257 3 5 AwEAAddt2AkLfYGKgiEZB5SmIF8EvrjxNMH6HtxWEA4RJ9Ao6LCWheg8)) () CID:ID01 passw',
-                'create_keyset KEYSID:01 () (unittest/dnskey.pub) CID:ID01 passw',
+                'create_keyset KEYSID-01 ((257 3 5 AwEAAddt2AkLfYGKgiEZB5SmIF8EvrjxNMH6HtxWEA4RJ9Ao6LCWheg8)) () CID-ID01 passw',
+                'create_keyset KEYSID-01 () (unittest/dnskey.pub) CID-ID01 passw',
             )),
         #----------------------------------------------------
         'delete_contact': (1, [
-             ('id', (1, 1), (), _T('Contact ID'), 'CID:ID01', '', ()),
+             ('id', (1, 1), (), _T('Contact ID'), 'CID-ID01', '', ()),
             ], _T("""The EPP 'delete_contact' command is used to remove a record of the contact."""), ('delete_contact cid:id',)),
         #----------------------------------------------------
         'delete_domain': (1, [
@@ -395,20 +395,20 @@ and maximum allowable period is defined in the Communication rules."""), ('renew
         #----------------------------------------------------
         'update_domain': (1, [
             ('name', (1, 1), (), _T('Domain name'), 'mydomain.cz', '', ()),
-            ('add_admin', (0, UNBOUNDED), (), _T('Add administrative contact ID'), 'CID:ID01', '', ()),
-            ('rem_admin', (0, UNBOUNDED), (), _T('Remove administrative contact ID'), 'CID:ID01', '', ()),
-            ('rem_tempc', (0, UNBOUNDED), (), _T('Remove temporary contact ID'), 'CID:ID01', '', ()),
+            ('add_admin', (0, UNBOUNDED), (), _T('Add administrative contact ID'), 'CID-ID01', '', ()),
+            ('rem_admin', (0, UNBOUNDED), (), _T('Remove administrative contact ID'), 'CID-ID01', '', ()),
+            ('rem_tempc', (0, UNBOUNDED), (), _T('Remove temporary contact ID'), 'CID-ID01', '', ()),
             ('chg', (0, 1), (), _T('Change values'), '', '', (
                 ('nsset', (0, 1), (), _T('NSSET ID'), 'NSSET_ID', '', ()),
                 ('keyset', (0, 1), (), _T('KEYSET ID'), 'KEYSET_ID', '', ()),
-                ('registrant', (0, 1), (), _T('Registrant ID'), 'CID:ID01', '', ()),
+                ('registrant', (0, 1), (), _T('Registrant ID'), 'CID-ID01', '', ()),
                 ('auth_info', (0, 1), (), _T('Password required by server to authorize the transfer'), 'mypassword', '', ()),
             )),
             ('val_ex_date', (0, 1), (), _T('Validation expires at'), '2008-12-03', '', ()),
             ('publish', (0, 1), (('y',), ('n',)), _T('Include ENUM domain into ENUM dictionary'), 'true', '', ()),
             ], _T("""The EPP 'update_domain' command is used to update values in the domain."""), (
-                'update_domain mydomain.cz (CID:ID01, CID:ID02) CID:ID03 CID:TMP01 (NSSID:NSSET01 NULL CID:ID04 mypass)',
-                'update_domain 1.1.1.7.4.5.2.2.2.0.2.4.e164.arpa (CID:ID01, CID:ID02) CID:ID03 CID:TMP01 (NSSID:NSSET01 KEYSID:KEYSET01 CID:ID04 mypass) 2008-12-03 y',
+                'update_domain mydomain.cz (CID-ID01, CID-ID02) CID-ID03 CID-TMP01 (NSSID-NSSET01 NULL CID-ID04 mypass)',
+                'update_domain 1.1.1.7.4.5.2.2.2.0.2.4.e164.arpa (CID-ID01, CID-ID02) CID-ID03 CID-TMP01 (NSSID-NSSET01 KEYSID-KEYSET01 CID-ID04 mypass) 2008-12-03 y',
             )),
         #----------------------------------------------------
         'update_nsset': (1, [
@@ -418,11 +418,11 @@ and maximum allowable period is defined in the Communication rules."""), ('renew
                     ('name', (1, 1), (), _T('Name server'), 'my.dns.cz', '', ()),
                     ('addr', (0, UNBOUNDED), (), _T('Server address'), '217.31.207.130', '', ()),
                 )),
-                ('tech', (0, UNBOUNDED), (), _T('Technical contact ID'), 'CID:ID01', '', ()),
+                ('tech', (0, UNBOUNDED), (), _T('Technical contact ID'), 'CID-ID01', '', ()),
             )),
             ('rem', (0, 1), (), _T('Remove values'), '', '', (
                 ('name', (0, 9), (), _T('Name server'), 'my.dns.cz', '', ()),
-                ('tech', (0, UNBOUNDED), (), _T('Technical contact ID'), 'CID:ID01', '', ()),
+                ('tech', (0, UNBOUNDED), (), _T('Technical contact ID'), 'CID-ID01', '', ()),
             )),
             ('auth_info', (0, 1), (), _T('Password required by server to authorize the transfer'), 'new_password', '', ()),
             ('reportlevel', (0, 1), (), _T('Report range level (0 - 10; higher = more detailed)'), '1', '', ()),
@@ -440,7 +440,7 @@ and maximum allowable period is defined in the Communication rules."""), ('renew
                     ('pub_key', (1, 1), (), _T('Public key code'), 'AwEAAddt2AkLfYGKgiEZB5SmIF8EvrjxNMH6HtxWEA4RJ9Ao6LCWheg8', '', ()),
                 )),
                 ('dnskeyref', (0, eppdoc_assemble.DNSKEY_LIST_MAX), (), _T('LIST of filenames with DNS keys'), 'unittest/dnskey.pub', '', ()),
-                ('tech', (0, UNBOUNDED), (), _T('Technical contact ID'), 'CID:ID01', '', ()),
+                ('tech', (0, UNBOUNDED), (), _T('Technical contact ID'), 'CID-ID01', '', ()),
             )),
             ('rem', (0, 1), (), _T('Remove values'), '', '', (
                 ('dnskey', (0, eppdoc_assemble.DNSKEY_LIST_MAX), (), _T('LIST of keys'), '', '', (
@@ -450,17 +450,17 @@ and maximum allowable period is defined in the Communication rules."""), ('renew
                     ('pub_key', (1, 1), (), _T('Public key code'), 'AwEAAddt2AkLfYGKgiEZB5SmIF8EvrjxNMH6HtxWEA4RJ9Ao6LCWheg8', '', ()),
                 )),
                 ('dnskeyref', (0, eppdoc_assemble.DNSKEY_LIST_MAX), (), _T('LIST of filenames with DNS keys'), 'unittest/dnskey.pub', '', ()),
-                ('tech', (0, UNBOUNDED), (), _T('Technical contact ID'), 'CID:ID01', '', ()),
+                ('tech', (0, UNBOUNDED), (), _T('Technical contact ID'), 'CID-ID01', '', ()),
             )),
             ('auth_info', (0, 1), (), _T('Password required by server to authorize the transfer'), 'new_password', '', ()),
             ], _T("""The EPP 'update_keyset' command is used to update values in the KEYSET."""), (
-            'update_keyset KEY01 (((256 3 5 AwEAAddt2AkLfYGKgiEZB5SmIF8EvrjxNMH6HtxWEA4RJ9Ao6LCWheg8))) (() () () (CID:TECH1, CID:TECH2, CID:TECH3)) password',
+            'update_keyset KEY01 (((256 3 5 AwEAAddt2AkLfYGKgiEZB5SmIF8EvrjxNMH6HtxWEA4RJ9Ao6LCWheg8))) (() () () (CID-TECH1, CID-TECH2, CID-TECH3)) password',
             'update_keyset KEY02 (() unittest/dnskey.pub) (() unittest/dnskey.pub)',
             'update_keyset KEY03 () (() unittest/dnskey.pub)',
             )),
         #----------------------------------------------------
         'sendauthinfo_contact': (1, [
-             ('id', (1, 1), (), _T('Contact ID'), 'CID:ID01', '', ()),
+             ('id', (1, 1), (), _T('Contact ID'), 'CID-ID01', '', ()),
             ], _T("""
 The EPP 'sendauthinfo_contact' command transmit request for send password
 to contact email. This command is usefull during transfer
@@ -474,14 +474,14 @@ to registrant email. This command is usefull during transfer
 when owner and new registrar needn't require previous registrar for password."""), ('sendauthinfo_domain domain.cz',)),
         #----------------------------------------------------
         'sendauthinfo_nsset': (1, [
-            ('id', (1, 1), (), _T('NSSET ID'), 'NSSID:MYID', '', ()),
+            ('id', (1, 1), (), _T('NSSET ID'), 'NSSID-MYID', '', ()),
             ], _T("""
 The EPP 'sendauthinfo_nsset' command transmit request for send password
 to technical contact email. This command is usefull during transfer
 when owner and new registrar needn't require previous registrar for password."""), ('sendauthinfo_nsset nssid:id',)),
         #----------------------------------------------------
         'sendauthinfo_keyset': (1, [
-            ('id', (1, 1), (), _T('KEYSET ID'), 'KEYSID:MYID', '', ()),
+            ('id', (1, 1), (), _T('KEYSET ID'), 'KEYSID-MYID', '', ()),
             ], _T("""
 The EPP 'sendauthinfo_keyset' command transmit request for send password
 to technical contact email. This command is usefull during transfer
@@ -490,7 +490,7 @@ when owner and new registrar needn't require previous registrar for password."""
         'credit_info': (0, [], _T("""The EPP 'credit_info' command returns credit information."""), ('credit_info',)),
         #----------------------------------------------------
         'technical_test': (2, [
-            ('id', (1, 1), (), _T('NSSET ID'), 'NSSID:MYID', '', ()),
+            ('id', (1, 1), (), _T('NSSET ID'), 'NSSID-MYID', '', ()),
             ('level', (0, 1), (), _T('Report range level (0 - 10; higher = more detailed)'), '1', '', ()),
             ('name', (0, UNBOUNDED), (), _T('Domain name'), 'mydomain.cz', '', ()),
             ], _T("""
@@ -564,52 +564,52 @@ of get_results commands until whole list of keysets not received.
         #----------------------------------------------------
 
         'prep_domains_by_nsset': (1, [
-            ('id', (1, 1), (), _T('NSSET ID'), 'NSSID:VALID', '', ()),
+            ('id', (1, 1), (), _T('NSSET ID'), 'NSSID-VALID', '', ()),
         ], _T("""
 Prepare domains by NSSET. This command fills server buffer by list
 of domains connected with defined nsset ID. The pointer is set
 at the beginning of the list. The list is taken in sequence
 by calling command 'get_results' repeatedly until any data comming.
-"""), ('prep_domains_by_nsset NSSID:VALID',)),
+"""), ('prep_domains_by_nsset NSSID-VALID',)),
         #----------------------------------------------------
         'prep_domains_by_keyset': (1, [
-            ('id', (1, 1), (), _T('KEYSET ID'), 'KEYSID:VALID', '', ()),
+            ('id', (1, 1), (), _T('KEYSET ID'), 'KEYSID-VALID', '', ()),
         ], _T("""
 Prepare domains by KEYSET. This command fills server buffer by list
 of domains connected with defined keyset ID. The pointer is set
 at the beginning of the list. The list is taken in sequence
 by calling command 'get_results' repeatedly until any data comming.
-"""), ('prep_domains_by_keyset KEYSID:VALID',)),
+"""), ('prep_domains_by_keyset KEYSID-VALID',)),
         #----------------------------------------------------
 
         'prep_domains_by_contact': (1, [
-            ('id', (1, 1), (), _T('Contact ID'), 'CID:TECH', '', ()),
+            ('id', (1, 1), (), _T('Contact ID'), 'CID-TECH', '', ()),
         ], _T("""
 Prepare domains by contact. This command fills server buffer by list
 of domains where occurs defined contact ID. It can be Registrant
 ID or Admin ID or Temporary ID. The pointer is set at the beginning
 of the list. The list is taken in sequence by calling command
 'get_results' repeatedly until any data comming.
-"""), ('prep_domains_by_contact CID:TECH',)),
+"""), ('prep_domains_by_contact CID-TECH',)),
         #----------------------------------------------------
 
         'prep_nssets_by_contact': (1, [
-            ('id', (1, 1), (), _T('Technical contact'), 'CID:ADMIN', '', ()),
+            ('id', (1, 1), (), _T('Technical contact'), 'CID-ADMIN', '', ()),
         ], _T("""
 Prepare NSSETs by contact. This command fills server buffer by list
 of nssets connected with defined technical contact ID. The pointer
 is set at the beginning of the list. The list is taken in sequence
 by calling command 'get_results' repeatedly until any data comming.
-"""), ('prep_nssets_by_contact CID:ADMIN',)),
+"""), ('prep_nssets_by_contact CID-ADMIN',)),
 
         'prep_keysets_by_contact': (1, [
-            ('id', (1, 1), (), _T('Technical contact'), 'CID:ADMIN', '', ()),
+            ('id', (1, 1), (), _T('Technical contact'), 'CID-ADMIN', '', ()),
         ], _T("""
 Prepare KEYSETs by contact. This command fills server buffer by list
 of keysets connected with defined technical contact ID. The pointer
 is set at the beginning of the list. The list is taken in sequence
 by calling command 'get_results' repeatedly until any data comming.
-"""), ('prep_keysets_by_contact CID:ADMIN',)),
+"""), ('prep_keysets_by_contact CID-ADMIN',)),
         #----------------------------------------------------
 
         'prep_nssets_by_ns': (1, [
