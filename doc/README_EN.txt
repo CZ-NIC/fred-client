@@ -421,24 +421,24 @@ Syntax of command parameters
        input this value only (the first five parameters are compulsory: ID,
        name, email, town and country code). Enter:
 
-       create_contact CID:ID name email@email town CZ --notify_email = my@email.net
+       create_contact CID-ID name email@email town CZ --notify_email = my@email.net
 
        The position of the named parameter is arbitrary:
 
-       create_contact --notify_email = my@email.net CID:ID name email@email town CZ
+       create_contact --notify_email = my@email.net CID-ID name email@email town CZ
 
      * . full stop It is more complicated if you want to define a value
        within an """embedded list""", that is a list within another list.
        Individual names in the list are joined by full stops then. Example:
 
-       create_contact CID:ID name email@email town CZ --disclose.flag = y
+       create_contact CID-ID name email@email town CZ --disclose.flag = y
 
      * [] square brackets When a value is an item in a list,
        the input may be replaced by the lists's index. The index is input using a number in square
        brackets:
 
-       create_nsset nssid:nsset1 ((ns1.domain.cz (217.31.207.130 217.31.207.129))) --d
-       ns.addr[1] = this_value_overwrites_second_address_217.31.207.129 cid:regid
+       create_nsset nssid-nsset1 ((ns1.domain.cz (217.31.207.130 217.31.207.129))) --d
+       ns.addr[1] = this_value_overwrites_second_address_217.31.207.129 cid-regid
 
    Overview:
    Always enter parameters in the order specified in help files.
@@ -485,14 +485,14 @@ No value: NULL
    there are four other parameters between the last compulsory parameter (pw) and the required one (voice). These are: org,
    street, sp, cp. Enter "the nill value" for these - NULL, unless you have changed the settings.
    This places the voice parameter at the correct position in the command parameters:
-   create_contact CID:ID01 'Jan Novak' info@mymail.cz Praha CZ mypassword NULL
+   create_contact CID-ID01 'Jan Novak' info@mymail.cz Praha CZ mypassword NULL
 
    NULL NULL NULL +420.222745111
 
    The above command will not create tags for org, street,
    sp and cp in the XML structure:
 
-   <contact:id>CID:ID01</contact:id>
+   <contact:id>CID-ID01</contact:id>
 
         <contact:postalInfo>
           <contact:name>Jan Novak</contact:name>
@@ -516,12 +516,12 @@ Empty value: '', ""
    is used to enter zero length values. The difference between an
   empty and a nill value is that an empty value generates a tag in the XML
    document. Because the value is empty, the corresponding XML tag will also be empty.
-   create_contact CID:ID01 'Jan Novak' info@mymail.cz Praha CZ mypassword '' ''
+   create_contact CID-ID01 'Jan Novak' info@mymail.cz Praha CZ mypassword '' ''
  '' '' +420.222745111
 
    This command generates XML code in which empty values are represented by empty tags:
 
-   <contact:id>CID:ID01</contact:id>
+   <contact:id>CID-ID01</contact:id>
 
         <contact:postalInfo>
           <contact:name>Jan Novak</contact:name>
@@ -565,7 +565,7 @@ Interactive parameter input mode
    REG-LRR@epp-test.ccreg.nic.cz> !update_nsset
    Start the interactive mode. Cancel the mode by pressing Ctrl+C. Complete the command by pressing
    Ctrl+D.
-   NSSET ID [compulsory]: nssid:id01
+   NSSET ID [compulsory]: nssid-id01
    Add values / List DNS[1/9] / Name server [compulsory when this part is entered]: ns1.dns.cz
    Add values / List DNS[1/9] / Server address [1/oo] [non-compulsory]: 217.31.207
    .130
@@ -573,15 +573,15 @@ Interactive parameter input mode
    .131
    Add values / List DNS[1/9] / Server address [3/oo] [non-compulsory]:
    Add values / List DNS[2/9] / Name server [non-compulsory]:
-   Add values / Technical contact ID[1/oo] [non-compulsory]: cid:myid01
+   Add values / Technical contact ID[1/oo] [non-compulsory]: cid-myid01
    Add values / Technical contact ID[2/oo] [non-compulsory]:
    Add values / Status[1/6] [non-compulsory]:
    Interactive mode terminated. [press Enter]
    Send command:
-   update_nsset nssid:id01 (((ns1.dns.cz (217.31.207.130, 217.31.207.131))) cid:my
+   update_nsset nssid-id01 (((ns1.dns.cz (217.31.207.130, 217.31.207.131))) cid-my
    id01)
    Do you really want to send this command to the server? (y/N): y
-   nssid:id01 updated.
+   nssid-id01 updated.
    REG-LRR@epp-test.ccreg.nic.cz>
 
 
@@ -685,7 +685,7 @@ Session commands
    fetch_from_info are: create, update, delete.
 
    For example when you want to create_contact, do the following three steps:
-   1. Read the values: info_contact CID:ID
+   1. Read the values: info_contact CID-ID
    2. Create command: fetch_from_info create
    3. Alter the command as necessary and send it to the server.
 
