@@ -6,6 +6,8 @@
 <bookinfo>
     <![CDATA[
         xsltproc /usr/share/xml/docbook/stylesheet/nwalsh/xhtml/docbook.xsl README_CS.docbook | xmllint --encode utf-8 --format - | sed 's/[[:space:]]\+$//' > README_CS.html
+        lynx -display_charset=utf8 -dump -nolist README_CS.html > README_CS.utf8
+        cat README_CS.utf8 | sed 's/©/(c)/g;s/[„“]/"/g' | python -c 'import unicodedata,sys;print "".join([(chr(int(unicodedata.decomposition(c)[:4], 16)) if unicodedata.decomposition(c) else c) for c in sys.stdin.read().decode("utf8")])' | sed '/^[[:blank:]]*$/{$d;}' > README_CS.txt
     ]]>
     <title>Manuál pro FredClient konzoli a knihovnu fred</title>
     <subtitle>FredClient</subtitle>
@@ -1468,18 +1470,19 @@ Vytvořil:                 REG-FRED_A
 Určený registrátor:       REG-FRED_A
 Změnil:                   REG-FRED_A
 Vytvořeno dne:            2017-11-22T09:49:17+01:00
-Poslední změna dne:       2017-11-22T14:20:30+01:00
+Poslední změna dne:       2017-11-22T16:26:57+01:00
 Jméno:                    Jan Ban
 Název organizace:         Firma s.r.o.
-Ulice:                    Hlavní ulice
-                          Hlavní ulice 2
+Ulice:                    První ulice 1
+                          Druhá ulice 2
+                          Třetí 3
 Město:                    Praha
-Stát nebo kraj:           Vinohrady
-PSČ:                      12000
+Stát nebo kraj:           Praha 3 - Vinohrady
+PSČ:                      12300
 Kód země:                 CZ
 Korespondenční adresa / Ulice: Korespondenční ulice 1234/14
 Korespondenční adresa / Město: Korespondenční Město
-Korespondenční adresa / PSČ: 12001
+Korespondenční adresa / PSČ: 12301
 Korespondenční adresa / Kód země: CZ
 Heslo pro transfer:       mypassword
 Email:                    info@mail.com
@@ -1495,29 +1498,51 @@ Zveřejnit:                voice
         <section>
             <title>API info_contact</title>
             <para>
-                Ve funkci <emphasis>info_contact</emphasis> byly přidány nové atributy pro korespondenční adresu:
+                Ve funkci <emphasis>info_contact</emphasis> byly do slovníku odpovědi přidány nové atributy pro korespondenční adresu:
             </para>
             <programlisting>
-    ret = epp.info_contact("CIDID01")
-    if ret['response'].get('extension'):
-        nskey = ret['response']['extension'].keys()[0]
-        ns, name = nskey.split(":") if ":" in nskey else ("", nskey)
-        pxname = lambda name: "%s:%s" % (ns, name) if ns else name
-        addr = ret['response']['extension'][nskey][pxname("mailing")][pxname("addr")]
-        print addr
+    ret = epp.info_contact("CIDID02")
 
-        {'extra-addr:cc': {'data': u'CZ'},
-         'extra-addr:city': {'data': u'Praha'},
-         'extra-addr:pc': {'data': u'12300'},
-         'extra-addr:street': {'data': u'Ulice 123'}}
-
-        locname = lambda nsname: nsname.split(":")[1] if ns else nsname
-        print {locname(key): val['data'] for key, val in addr.items()}
-
-        {'cc': u'CZ',
-         'city': u'Praha',
-         'pc': u'12300',
-         'street': u'Ulice 123'}
+    {'code': 1000,
+     'command': u'contact:info',
+     'data': {'contact:authInfo': u'mypassword',
+      'contact:cc': u'CZ',
+      'contact:city': u'Praha',
+      'contact:clID': u'REG-FRED_A',
+      'contact:crDate': u'2017-11-22T09:49:17+01:00',
+      'contact:crID': u'REG-FRED_A',
+      'contact:disclose': ['voice',
+       'fax',
+       'email',
+       'vat',
+       'ident',
+       'notify_email',
+       'addr'],
+      'contact:email': u'info@mail.com',<emphasis role="bold">
+      'contact:extension.mailingAddr.cc': u'CZ',
+      'contact:extension.mailingAddr.city': u'Korespondenční Město',
+      'contact:extension.mailingAddr.pc': u'12301',
+      'contact:extension.mailingAddr.street': u'Korespondenční ulice 1234/14',</emphasis>
+      'contact:hide': [],
+      'contact:id': u'CIDID02',
+      'contact:ident': u'',
+      'contact:ident.type': u'',
+      'contact:name': u'Jan Ban',
+      'contact:notifyEmail': u'',
+      'contact:org': u'Firma s.r.o.',
+      'contact:pc': u'12300',
+      'contact:roid': u'C0000000007-CZ',
+      'contact:sp': u'Praha 3 - Vinohrady',
+      'contact:status': u'Objekt je bez omezení',
+      'contact:status.s': u'ok',
+      'contact:street': [u'Prvn\xed ulice 1',
+       u'Druh\xe1 ulice 2',
+       u'T\u0159et\xed 3'],
+      'contact:upDate': u'2017-11-22T16:26:57+01:00',
+      'contact:upID': u'REG-FRED_A',
+      'contact:vat': u''},
+     'errors': [],
+     'reason': u'Command completed successfully'}
             </programlisting>
         </section>
     </section>

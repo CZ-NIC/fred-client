@@ -275,7 +275,7 @@ class ManagerReceiver(ManagerCommand):
                         for name in columns_names:
                             value = self._dct_answer['data'].pop(pxname(name), None)
                             if value:
-                                self._dct_answer['data']['contact:extensions.mailingAddr.%s' % name] = value
+                                self._dct_answer['data']['contact:extension.mailingAddr.%s' % name] = value
 
             disclosed = list(DISCLOSES) + ['addr']
             not_disclosed = []

@@ -3,7 +3,7 @@ Manual pro FredClient konzoli a knihovnu fred
 FredClient
 
    Vzniklo: 11. 7.2006; Revize: 18. 8.2006; 1. 9.2006; 4. 9.2006; 14.
-   9.2006; 27. 9.2006; 1.11.2006; 7.11.2006; 17.1.2007;
+   9.2006; 27. 9.2006; 1.11.2006; 7.11.2006; 17.1.2007; 24.11.2017;
 
    Copyright (c) 2007 CZ.NIC
      __________________________________________________________________
@@ -39,6 +39,20 @@ FredClient
 
         Online dokumentace:
         Priklady prace s knihovnou
+
+   9. Verze klienta 2.9 - Korespondencni adresa v kontaktu
+
+        Prikaz create_contact
+
+              API create_contact
+
+        Prikaz update_contact
+
+              API update_contact
+
+        Prikaz info_contact
+
+              API info_contact
 
 Co je FredClient:
 
@@ -365,12 +379,12 @@ username password
 
    Popis jednotlivych prvku:
      * Uvozovky ' " resi pozadavek na zadani hodnoty, ktera obsahuje
-       mezery nebo carku "," nebo znak = (rovna se). Takova hodnota se uzavre
-       do uvozovek. Je jedno jestli jednoduchych nebo dvojitych. Uvnitr
-       uvozovek se pak mohou nachazet libovolne znaky vcetne zavorek,
-       spojovniku a dalsich uvozovek. Pokud to jsou ale uvozovky shodne s
-       temi, ktere jsou pouzity na uzavreni textu, tak se pred ne musi dat
-       zpetne lomitko \ (backslash):
+       mezery nebo carku "," nebo znak = (rovna se). Takova hodnota se
+       uzavre do uvozovek. Je jedno jestli jednoduchych nebo dvojitych.
+       Uvnitr uvozovek se pak mohou nachazet libovolne znaky vcetne
+       zavorek, spojovniku a dalsich uvozovek. Pokud to jsou ale uvozovky
+       shodne s temi, ktere jsou pouzity na uzavreni textu, tak se pred ne
+       musi dat zpetne lomitko \ (backslash):
 "text \"uvozovky\" text"
        Jinak mohou byt bez nej:
 "text s 'jednoduchymi' uvozovkami"
@@ -405,7 +419,8 @@ ulice1
        obsahuje senzam postal_info, ktery obsahuje hodnoty name, org a
        jeste dalsi seznam addr. Seznam addr obsahuje polozky city, cc,
        street, atd. Takovy seznam se zapise asi takto:
-((name, org, (city, cc, street, sp, pc)) voice, fax, ...)
+((name, org, (street, city, pc, cc, sp) (street, city, pc, cc, sp)) voice, fax,
+...)
 
        Porovnejte s priklady, ktere jsou uvedeny v helpu u kazdeho
        prikazu.
@@ -504,20 +519,22 @@ Zadna hodnota: NULL
    parametry: org, street, sp, cp. Misto nich zadate "zadnou hodnotu" -
    pokud jste nenastavili jinak, tak NULL. Tim jste telefonni cislo
    umistili na spravnou pozici v parametrech prikazu:
-   create_contact CID:ID01 'Jan Novak' info@mymail.cz Praha CZ mypassword NULL N
-ULL NULL NULL +420.222745111
+   create_contact CIDID01 'Jan Novak' info@mymail.cz 'Vinohradska 8' Praha 12000
+ CZ NULL NULL NULL mypassword +420.222745111
 
-   Uvedeny prikaz nebude v XML strukture vytvaret tagy pro hodnoty org,
-   street, sp, cp:
-<contact:id>CID:ID01</contact:id>
+   Uvedeny prikaz nebude v XML strukture vytvaret tagy pro hodnoty sp,
+   mailing_addr, org:
+    <contact:id>CID:ID01</contact:id>
         <contact:postalInfo>
-          <contact:name>Jan Novak</contact:name>
-          <contact:addr>
-            <contact:city>Praha</contact:city>
-            <contact:cc>CZ</contact:cc>
-          </contact:addr>
+            <contact:name>Jan Novak</contact:name>
+            <contact:addr>
+                <contact:street>Vinohradska 8</contact:street>
+                <contact:city>Praha</contact:city>
+                <contact:pc>12000</contact:pc>
+                <contact:cc>CZ</contact:cc>
+            </contact:addr>
         </contact:postalInfo>
-        <contact:voice>+420.222745111</contact:voice>
+    <contact:voice>+420.222745111</contact:voice>
 
    V interaktivnim modu zadavani parametru zadate "zadnou hodnotu" proste
    tak, ze jenom stisknete ENTER.
@@ -533,23 +550,24 @@ Prazdna hodnota: '', ""
    delky. Rozdil mezi praznou hodnotou a zadnou je v tom, ze tato hodnota
    generuje tag v XML dokumentu. Protoze je prazdna, tak dany XML tag bude
    take prazdny.
-   create_contact CID:ID01 'Jan Novak' info@mymail.cz Praha CZ mypassword '' ''
-'' '' +420.222745111
+   create_contact CIDID01 'Jan Novak' info@mymail.cz 'Vinohradska 8' Praha 12000
+ CZ '' NULL '' mypassword +420.222745111
 
-   Prikaz vygeneruje XML, ve kterem budou u prazdnych hodnot prazdne tagy:
-<contact:id>CID:ID01</contact:id>
+   Prikaz vygeneruje XML, ve kterem budou u prazdnych hodnot prazdne tagy
+   (Organizace, Stat nebo kraj):
+    <contact:id>CID:ID01</contact:id>
         <contact:postalInfo>
-          <contact:name>Jan Novak</contact:name>
-          <contact:org/>
-          <contact:addr>
-            <contact:street/>
-            <contact:city>Praha</contact:city>
-           <contact:sp/>
-            <contact:pc/>
-            <contact:cc>CZ</contact:cc>
-          </contact:addr>
+            <contact:name>Jan Novak</contact:name>
+            <contact:org/>
+            <contact:addr>
+                <contact:street>Vinohradska 8</contact:street>
+                <contact:city>Praha</contact:city>
+                <contact:pc>12000</contact:pc>
+                <contact:cc>CZ</contact:cc>
+                <contact:sp/>
+            </contact:addr>
         </contact:postalInfo>
-        <contact:voice>+420.222745111</contact:voice>
+    <contact:voice>+420.222745111</contact:voice>
 
    V interaktivnim modu zadavani parametru zadame "prazdnou hodnotu" tak,
    ze zapiseme prazdne uvozovky '' nebo "".
@@ -953,3 +971,174 @@ Priklady prace s knihovnou
 
    Pokud se vyskytne nejaka chyba pri prenosu nebo jina, ktera zablokuje
    funkcnost, tak se generuje vyjimka FredError.
+
+Kapitola 9. Verze klienta 2.9 - Korespondencni adresa v kontaktu
+
+   Obsah
+
+   Prikaz create_contact
+
+        API create_contact
+
+   Prikaz update_contact
+
+        API update_contact
+
+   Prikaz info_contact
+
+        API info_contact
+
+   Od verze 2.9 je mozne v kontaktu editovat korespondencni adresu. Oproti
+   predchozi verzi se zmenilo zadavani udaju v prikazech create_contact a
+   update_contact. Prikaz info_contact pak umi korespondencni adresu
+   zobrazit.
+
+Prikaz create_contact
+
+   V prikazu create_contact se korespondencni adresa zadava na konci
+   prikazu:
+    create_contact CIDID02 'Jan Ban' info@mail.com 'Hlavni ulice' Praha 12000 CZ
+ NULL NULL NULL NULL NULL () NULL () NULL (('Korespondencni ulice' 'Koresponden
+cni Mesto' 12001 CZ))
+
+   S pojmenovanymi parametry se korespondencni adresa zadava napriklad
+   takto:
+    create_contact CIDID02 'Jan Ban' info@mail.com Street Brno 123000 CZ --exten
+sions.mailing_addr.street='Mailing street' --extensions.mailing_addr.city='Malin
+g City' --extensions.mailing_addr.pc=12300 --extensions.mailing_addr.cc=CZ
+
+API create_contact
+
+   Ve funkci create_contact byl pridan novy atribut extensions. Atribut je
+   nepovinny:
+    def create_contact(self, contact_id, name, email, street, city, pc, cc, sp=N
+one, org=None, auth_info=None,
+                       voice=None, fax=None, disclose=None, vat=None, ident=None
+, notify_email=None,
+                       cltrid=None, extensions=None):
+
+   Korespondencni adresa se zada napriklad takto:
+    ret = epp.create_contact("handle1", "My Name", "email@email.net", "Street",
+"City", "12300", "CZ", extensions={
+        'mailing_addr': {'street': 'M. street', 'city': 'M. City', 'pc': '12301'
+, 'cc': 'CZ'}})
+
+   Jsou li klice v parametru extensions v nespravnem formatu, vyvola se
+   vyjimka ClientUsageException.
+
+Prikaz update_contact
+
+   V prikazu update_contact se korespondencni adresa upravuje nebo odebira
+   na konci prikazu:
+    update_contact CIDID02 () ((('Update mailing street' City 12300 CZ State)))
+
+   Korespondencni adresu z kontaktu smazete zadanim mailing_addr hodnoty
+   do parametru extensions.rem:
+    update_contact CIDID01 () (() mailing_addr)
+
+   nebo
+    update_contact CIDID01 --extensions.rem=mailing_addr
+
+API update_contact
+
+   Ve funkci update_contact byl pridan novy atribut extensions. Atribut je
+   nepovinny:
+    def update_contact(self, contact_id, chg=None, cltrid=None, extensions=None)
+:
+
+   Hodnota extensions obsahuje slovnik s klicem chg nebo s rem. Klic chg
+   aktualizuje korespondencni adresu kontaktu:
+    ret = epp.update_contact("CIDID01", extensions={'chg': {'mailing_addr': {
+            'street': 'M. street', 'city': 'M. City', 'pc': '12301', 'cc': 'CZ'}
+}})
+
+   Klic rem korespondencni adresu z kontaktu odebere:
+    ret = epp.update_contact("CIDID01", extensions={'rem': ['mailing_addr']})
+
+   Jsou li klice v parametru extensions v nespravnem formatu, vyvola se
+   vyjimka ClientUsageException.
+
+Prikaz info_contact
+
+   Prikaz info_contact CIDID02 za hlavni adresou zobrazi take
+   korespondencni adresu (je-li zadana):
+Navratovy kod:            1000
+Duvod:                    Prikaz uspesne proveden
+
+Kontakt ID:               CIDID02
+ID objektu v rep.:        C0000000007-CZ
+Vytvoril:                 REG-FRED_A
+Urceny registrator:       REG-FRED_A
+Zmenil:                   REG-FRED_A
+Vytvoreno dne:            2017-11-22T09:49:17+01:00
+Posledni zmena dne:       2017-11-22T16:26:57+01:00
+Jmeno:                    Jan Ban
+Nazev organizace:         Firma s.r.o.
+Ulice:                    Prvni ulice 1
+                          Druha ulice 2
+                          Treti 3
+Mesto:                    Praha
+Stat nebo kraj:           Praha 3 - Vinohrady
+PSC:                      12300
+Kod zeme:                 CZ
+Korespondencni adresa / Ulice: Korespondencni ulice 1234/14
+Korespondencni adresa / Mesto: Korespondencni Mesto
+Korespondencni adresa / PSC: 12301
+Korespondencni adresa / Kod zeme: CZ
+Heslo pro transfer:       mypassword
+Email:                    info@mail.com
+Stav:                     ok - Objekt je bez omezeni
+Zverejnit:                voice
+                          fax
+                          email
+                          vat
+                          ident
+                          notify_email
+                          addr
+
+API info_contact
+
+   Ve funkci info_contact byly do slovniku odpovedi pridany nove atributy
+   pro korespondencni adresu:
+    ret = epp.info_contact("CIDID02")
+
+    {'code': 1000,
+     'command': u'contact:info',
+     'data': {'contact:authInfo': u'mypassword',
+      'contact:cc': u'CZ',
+      'contact:city': u'Praha',
+      'contact:clID': u'REG-FRED_A',
+      'contact:crDate': u'2017-11-22T09:49:17+01:00',
+      'contact:crID': u'REG-FRED_A',
+      'contact:disclose': ['voice',
+       'fax',
+       'email',
+       'vat',
+       'ident',
+       'notify_email',
+       'addr'],
+      'contact:email': u'info@mail.com',
+      'contact:extension.mailingAddr.cc': u'CZ',
+      'contact:extension.mailingAddr.city': u'Korespondencni Mesto',
+      'contact:extension.mailingAddr.pc': u'12301',
+      'contact:extension.mailingAddr.street': u'Korespondencni ulice 1234/14',
+      'contact:hide': [],
+      'contact:id': u'CIDID02',
+      'contact:ident': u'',
+      'contact:ident.type': u'',
+      'contact:name': u'Jan Ban',
+      'contact:notifyEmail': u'',
+      'contact:org': u'Firma s.r.o.',
+      'contact:pc': u'12300',
+      'contact:roid': u'C0000000007-CZ',
+      'contact:sp': u'Praha 3 - Vinohrady',
+      'contact:status': u'Objekt je bez omezeni',
+      'contact:status.s': u'ok',
+      'contact:street': [u'Prvn\xed ulice 1',
+       u'Druh\xe1 ulice 2',
+       u'T\u0159et\xed 3'],
+      'contact:upDate': u'2017-11-22T16:26:57+01:00',
+      'contact:upID': u'REG-FRED_A',
+      'contact:vat': u''},
+     'errors': [],
+     'reason': u'Command completed successfully'}
