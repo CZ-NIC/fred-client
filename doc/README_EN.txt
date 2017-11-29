@@ -4,7 +4,7 @@ Manual for FredClient console and the Fred library
 FredClient
 
    Written: 11/ 7/2006; Revised: 18/ 8/2006; 1/ 9/2006; 4/ 9/2006; 14/ 9/2006;
-   27/ 9/2006; 1/11/2006; 7/11/2006; 17/1/2007;
+   27/ 9/2006; 1/11/2006; 7/11/2006; 17/1/2007; 29/11/2017
 
    Copyright (c) 2007 CZ.NIC
      ______________________________________________________________
@@ -40,6 +40,8 @@ FredClient
 
         Online documentation:
         Examples of library use
+
+   9. Client version 2.9 - Mailing address in contacts
 
 What is FredClient:
 
@@ -351,7 +353,7 @@ Syntax of command parameters
 
        or
 
-       'text with = "equal" cahracter'
+       'text with = "equal" character'
 
 
      * ( ) brackets are used for parameters which may include a list of
@@ -387,7 +389,7 @@ Syntax of command parameters
        addresses (addr). The addr list contains city, cc, street, etc. Such lists
        are specified as follows:
 
-       ((name, org, (city, cc, street, sp, pc)) voice, fax, ...)
+       ((name, org, (street, city, pc, cc, sp) (street, city, pc, cc, sp)) voice, fax, ...)
 
        Compare to examples listed in command help.
 
@@ -485,23 +487,23 @@ No value: NULL
    there are four other parameters between the last compulsory parameter (pw) and the required one (voice). These are: org,
    street, sp, cp. Enter "the nill value" for these - NULL, unless you have changed the settings.
    This places the voice parameter at the correct position in the command parameters:
-   create_contact CID-ID01 'Jan Novak' info@mymail.cz Praha CZ mypassword NULL
 
-   NULL NULL NULL +420.222745111
+   create_contact CID-ID01 'Jan Novak' info@mymail.cz 'Vinohradská 8' Praha \
+      12000 CZ NULL NULL NULL mypassword +420.222745111
 
-   The above command will not create tags for org, street,
-   sp and cp in the XML structure:
+   The above command will not create tags for sp, mailing_addr, org in the XML structure:
 
-   <contact:id>CID-ID01</contact:id>
-
-        <contact:postalInfo>
-          <contact:name>Jan Novak</contact:name>
-          <contact:addr>
-            <contact:city>Praha</contact:city>
-            <contact:cc>CZ</contact:cc>
-          </contact:addr>
-        </contact:postalInfo>
-        <contact:voice>+420.222745111</contact:voice>
+      <contact:id>CID-ID01</contact:id>
+      <contact:postalInfo>
+         <contact:name>Jan Novak</contact:name>
+         <contact:addr>
+             <contact:street>Vinohradská 8</contact:street>
+             <contact:city>Praha</contact:city>
+             <contact:pc>12000</contact:pc>
+             <contact:cc>CZ</contact:cc>
+         </contact:addr>
+      </contact:postalInfo>
+      <contact:voice>+420.222745111</contact:voice>
 
    In the interactive mode, the """nill value""" is entered by
    simply pressing the ENTER key.
@@ -516,25 +518,25 @@ Empty value: '', ""
    is used to enter zero length values. The difference between an
   empty and a nill value is that an empty value generates a tag in the XML
    document. Because the value is empty, the corresponding XML tag will also be empty.
-   create_contact CID-ID01 'Jan Novak' info@mymail.cz Praha CZ mypassword '' ''
- '' '' +420.222745111
 
-   This command generates XML code in which empty values are represented by empty tags:
+   create_contact CID-ID01 'Jan Novak' info@mymail.cz 'Vinohradská 8' Praha \
+      12000 CZ '' NULL '' mypassword +420.222745111
 
-   <contact:id>CID-ID01</contact:id>
+   This command generates XML code in which empty values are represented by empty tags (org, sp):
 
-        <contact:postalInfo>
-          <contact:name>Jan Novak</contact:name>
-          <contact:org/>
-          <contact:addr>
-            <contact:street/>
-            <contact:city>Praha</contact:city>
-           <contact:sp/>
-            <contact:pc/>
-            <contact:cc>CZ</contact:cc>
-          </contact:addr>
-        </contact:postalInfo>
-        <contact:voice>+420.222745111</contact:voice>
+      <contact:id>CID-ID01</contact:id>
+         <contact:postalInfo>
+            <contact:name>Jan Novak</contact:name>
+            <contact:org/>
+            <contact:addr>
+                <contact:street>Vinohradská 8</contact:street>
+                <contact:city>Praha</contact:city>
+                <contact:pc>12000</contact:pc>
+                <contact:cc>CZ</contact:cc>
+                <contact:sp/>
+            </contact:addr>
+         </contact:postalInfo>
+      <contact:voice>+420.222745111</contact:voice>
 
    In the interactive mode, the """empty value""" is entered by
    empty inverted commas, '', or "".
@@ -929,3 +931,175 @@ Examples of library use
 
    When a transfer error, or another error which blocks functionality occurs,
    the FredError exception is generated.
+
+Chapter 9. Client version 2.9 - Mailing address in contacts
+
+   CONTENTS
+
+   Command: create_contact
+   API: create_contact
+   Command: update_contact
+   API: update_contact
+   Command: info_contact
+   API: info_contact
+
+   From the version 2.9, a mailing address can be managed with contacts. Compared
+   to the previous version, data entry in create_contact and update_contact
+   commands has been updated, and also the info_contact command was modified
+   to be able to display the mailing address.
+
+
+Command: create_contact
+
+   In the create_contact command, a mailing address is entered at the end of the command:
+
+   create_contact CID-ID02 'Jan Ban' info@mail.com 'Hlavní ulice' Praha 12000 CZ \
+      NULL NULL NULL NULL NULL () NULL () NULL \
+      (('Korespondenční ulice' 'Korespondenční Město' 12001 CZ))
+
+   Using named parameters, a mailing address can be entered for example like this:
+
+   create_contact CID-ID02 'Jan Ban' info@mail.com Street Brno 123000 CZ \
+      --extensions.mailing_addr.street='Mailing street' \
+      --extensions.mailing_addr.city='Maling City' \
+      --extensions.mailing_addr.pc=12300 --extensions.mailing_addr.cc=CZ
+
+API: create_contact
+
+   The create_contact function has an additional 'extensions' argument, which is optional:
+
+   def create_contact(self, contact_id, name, email, street, city, pc, cc, sp=None,
+      org=None, auth_info=None, voice=None, fax=None, disclose=None, vat=None,
+      ident=None, notify_email=None, cltrid=None, extensions=None):
+      ...
+
+   A mailing address can be entered for example like this:
+
+   ret = epp.create_contact("handle1", "My Name", "email@email.net", "Street",
+      "City", "12300", "CZ", extensions={
+         'mailing_addr': {'street': 'M. street', 'city': 'M. City',
+            'pc': '12301', 'cc': 'CZ'}})
+
+   If the keys in the 'extensions' argument are in a wrong format, then
+   a ClientUsageException is thrown.
+
+Command: update_contact
+
+   In the update_contact command, a mailing address is modified or removed
+   at the end of the command:
+
+   update_contact CID-ID02 () ((('Update mailing street' City 12300 CZ State)))
+
+   You can also remove a mailing address by assigning the 'mailing_addr' string
+   to the extensions.rem parameter:
+
+   update_contact CID-ID01 () (() mailing_addr)
+
+   or
+
+   update_contact CID-ID01 --extensions.rem=mailing_addr
+
+API: update_contact
+
+   The update_contact function has an additional 'extensions' argument, which is optional:
+
+   def update_contact(self, contact_id, chg=None, cltrid=None, extensions=None):
+      ...
+
+   The value of the 'extension' argument contains a dictionary with a 'chg' or 'rem' key.
+   The 'chg' key changes contact's mailing address:
+
+   ret = epp.update_contact("CID-ID01", extensions={'chg': {'mailing_addr': {
+      'street': 'M. street', 'city': 'M. City', 'pc': '12301', 'cc': 'CZ'}}})
+
+   The 'rem' key removes contact's mailing address:
+
+   ret = epp.update_contact("CID-ID01", extensions={'rem': ['mailing_addr']})
+
+   If the keys in the 'extensions' argument are in a wrong format, then
+   a ClientUsageException is thrown.
+
+Command: info_contact
+
+   The 'info_contact CID-ID02' command displays a mailing address after the main address
+   if the contact contains the mailing address:
+
+   Return code:              1000
+   Reason:                   Command completed successfully
+
+   Contact ID:               CID-ID02
+   Repository object ID:     C0010211715-CZ
+   Created by:               REG-FRED_A
+   Designated registrar:     REG-FRED_A
+   Updated by:               REG-FRED_A
+   Created on:               2017-11-29T17:37:04+01:00
+   Last update on:           2017-11-29T17:38:38+01:00
+   Name:                     Jan Ban
+   Organisation:             ThisOrg Ltd.
+   Street:                   Main street 10
+   City:                     Main City
+   Postal code:              12300
+   Country code:             CZ
+   Mailing address / Street: Mailing street 15
+   Mailing address / City:   City
+   Mailing address / Postal code: 12500
+   Mailing address / Country code: CZ
+   Password for transfer:    tdUUM5kG
+   Phone:                    +420.222745111
+   Email:                    info@mail.com
+   Status:                   ok - Object is without restrictions
+   Disclose:                 voice
+                             fax
+                             email
+                             vat
+                             ident
+                             notify_email
+                             addr
+
+API: info_contact
+
+   In the info_contact function, new attributes were added to the response dictionary
+   to contain the mailing address:
+
+   ret = epp.info_contact("CID-ID02")
+
+    {'code': 1000,
+     'command': u'contact:info',
+     'data': {'contact:authInfo': u'mypassword',
+      'contact:cc': u'CZ',
+      'contact:city': u'Praha',
+      'contact:clID': u'REG-FRED_A',
+      'contact:crDate': u'2017-11-22T09:49:17+01:00',
+      'contact:crID': u'REG-FRED_A',
+      'contact:disclose': ['voice',
+       'fax',
+       'email',
+       'vat',
+       'ident',
+       'notify_email',
+       'addr'],
+      'contact:email': u'info@mail.com',
+      'contact:extension.mailingAddr.cc': u'CZ',
+      'contact:extension.mailingAddr.city': u'Korespondenční Město',
+      'contact:extension.mailingAddr.pc': u'12301',
+      'contact:extension.mailingAddr.street': u'Korespondenční ulice 1234/14',
+      'contact:hide': [],
+      'contact:id': u'CID-ID02',
+      'contact:ident': u'',
+      'contact:ident.type': u'',
+      'contact:name': u'Jan Ban',
+      'contact:notifyEmail': u'',
+      'contact:org': u'Firma s.r.o.',
+      'contact:pc': u'12300',
+      'contact:roid': u'C0000000007-CZ',
+      'contact:sp': u'Praha 3 - Vinohrady',
+      'contact:status': u'Objekt je bez omezení',
+      'contact:status.s': u'ok',
+      'contact:street': [u'Prvn\xed ulice 1',
+       u'Druh\xe1 ulice 2',
+       u'T\u0159et\xed 3'],
+      'contact:upDate': u'2017-11-22T16:26:57+01:00',
+      'contact:upID': u'REG-FRED_A',
+      'contact:vat': u''},
+     'errors': [],
+     'reason': u'Command completed successfully'}
