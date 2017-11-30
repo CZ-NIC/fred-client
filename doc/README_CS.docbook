@@ -1370,16 +1370,22 @@ výjimka FredError.
     <section>
         <title>Příkaz create_contact</title>
         <para>
-            V příkazu <emphasis>create_contact</emphasis> se korespondenční adresa zadává na konci příkazu:
+            V příkazu <emphasis>create_contact</emphasis> se korespondenční adresa zadává na konci příkazu,
+            kromě <emphasis>transaction ID</emphasis>, to je vždy poslední (nepovinná) hodnota:
         </para>
         <programlisting>
-    create_contact CIDID02 'Jan Ban' info@mail.com 'Hlavní ulice' Praha 12000 CZ NULL NULL NULL NULL NULL () NULL () NULL (('Korespondenční ulice' 'Korespondenční Město' 12001 CZ))
+    create_contact CIDID02 'Jan Ban' info@mail.com 'Hlavní ulice' Praha 12000 CZ
+        NULL NULL NULL NULL NULL () NULL () NULL (('Korespondenční ulice'
+        'Korespondenční Město' 12001 CZ))
         </programlisting>
         <para>
             S pojmenovanými parametry se korespondenční adresa zadává například takto:
         </para>
         <programlisting>
-    create_contact CIDID02 'Jan Ban' info@mail.com Street Brno 123000 CZ --extensions.mailing_addr.street='Mailing street' --extensions.mailing_addr.city='Maling City' --extensions.mailing_addr.pc=12300 --extensions.mailing_addr.cc=CZ
+    create_contact CIDID02 'Jan Ban' info@mail.com Street Brno 123000 CZ
+        --extensions.mailing_addr.street='Mailing street'
+        --extensions.mailing_addr.city='Maling City'
+        --extensions.mailing_addr.pc=12300 --extensions.mailing_addr.cc=CZ
         </programlisting>
         <section>
             <title>API create_contact</title>
@@ -1388,16 +1394,18 @@ výjimka FredError.
                 <emphasis role='bold'>extensions</emphasis>. Atribut je nepovinný:
             </para>
             <programlisting>
-    def create_contact(self, contact_id, name, email, street, city, pc, cc, sp=None, org=None, auth_info=None,
-                       voice=None, fax=None, disclose=None, vat=None, ident=None, notify_email=None,
-                       cltrid=None, <emphasis role='bold'>extensions=None</emphasis>):
+    def create_contact(self, contact_id, name, email, street, city, pc, cc,
+        sp=None, org=None, auth_info=None, voice=None, fax=None,
+        disclose=None, vat=None, ident=None, notify_email=None, cltrid=None,
+        <emphasis role='bold'>extensions=None</emphasis>):
             </programlisting>
             <para>
                 Korespondenční adresa se zadá například takto:
             </para>
             <programlisting>
-    ret = epp.create_contact("handle1", "My Name", "email@email.net", "Street", "City", "12300", "CZ", extensions={
-        'mailing_addr': {'street': 'M. street', 'city': 'M. City', 'pc': '12301', 'cc': 'CZ'}})
+    ret = epp.create_contact("handle1", "My Name", "email@email.net",
+        "Street", "City", "12300", "CZ", extensions={'mailing_addr': {
+        'street': 'M. street', 'city': 'M. City', 'pc': '12301', 'cc': 'CZ'}})
             </programlisting>
             <para>
                 Jsou li klíče v parametru <emphasis>extensions</emphasis> v nesprávném formátu, vyvolá se výjimka
@@ -1431,7 +1439,8 @@ výjimka FredError.
                 <emphasis role='bold'>extensions</emphasis>. Atribut je nepovinný:
             </para>
             <programlisting>
-    def update_contact(self, contact_id, chg=None, cltrid=None, <emphasis role='bold'>extensions=None</emphasis>):
+    def update_contact(self, contact_id, chg=None, cltrid=None,
+        <emphasis role='bold'>extensions=None</emphasis>):
             </programlisting>
             <para>
                 Hodnota <emphasis>extensions</emphasis> obsahuje slovník s klíčem <emphasis role='bold'>chg</emphasis>
@@ -1440,7 +1449,8 @@ výjimka FredError.
             </para>
             <programlisting>
     ret = epp.update_contact("CIDID01", extensions={'chg': {'mailing_addr': {
-            'street': 'M. street', 'city': 'M. City', 'pc': '12301', 'cc': 'CZ'}}})
+            'street': 'M. street', 'city': 'M. City', 'pc': '12301', 'cc': 'CZ'
+            }}})
             </programlisting>
             <para>
                 Klíč <emphasis role='bold'>rem</emphasis> korespondenční adresu z kontaktu odebere:

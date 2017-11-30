@@ -995,32 +995,31 @@ Kapitola 9. Verze klienta 2.9 - Korespondencni adresa v kontaktu
 Prikaz create_contact
 
    V prikazu create_contact se korespondencni adresa zadava na konci
-   prikazu:
+   prikazu, krome transaction ID, to je vzdy posledni (nepovinna) hodnota:
     create_contact CIDID02 'Jan Ban' info@mail.com 'Hlavni ulice' Praha 12000 CZ
- NULL NULL NULL NULL NULL () NULL () NULL (('Korespondencni ulice' 'Koresponden
-cni Mesto' 12001 CZ))
+        NULL NULL NULL NULL NULL () NULL () NULL (('Korespondencni ulice'
+        'Korespondencni Mesto' 12001 CZ))
 
    S pojmenovanymi parametry se korespondencni adresa zadava napriklad
    takto:
-    create_contact CIDID02 'Jan Ban' info@mail.com Street Brno 123000 CZ --exten
-sions.mailing_addr.street='Mailing street' --extensions.mailing_addr.city='Malin
-g City' --extensions.mailing_addr.pc=12300 --extensions.mailing_addr.cc=CZ
+    create_contact CIDID02 'Jan Ban' info@mail.com Street Brno 123000 CZ
+        --extensions.mailing_addr.street='Mailing street'
+        --extensions.mailing_addr.city='Maling City'
+        --extensions.mailing_addr.pc=12300 --extensions.mailing_addr.cc=CZ
 
 API create_contact
 
    Ve funkci create_contact byl pridan novy atribut extensions. Atribut je
    nepovinny:
-    def create_contact(self, contact_id, name, email, street, city, pc, cc, sp=N
-one, org=None, auth_info=None,
-                       voice=None, fax=None, disclose=None, vat=None, ident=None
-, notify_email=None,
-                       cltrid=None, extensions=None):
+    def create_contact(self, contact_id, name, email, street, city, pc, cc,
+        sp=None, org=None, auth_info=None, voice=None, fax=None,
+        disclose=None, vat=None, ident=None, notify_email=None, cltrid=None,
+        extensions=None):
 
    Korespondencni adresa se zada napriklad takto:
-    ret = epp.create_contact("handle1", "My Name", "email@email.net", "Street",
-"City", "12300", "CZ", extensions={
-        'mailing_addr': {'street': 'M. street', 'city': 'M. City', 'pc': '12301'
-, 'cc': 'CZ'}})
+    ret = epp.create_contact("handle1", "My Name", "email@email.net",
+        "Street", "City", "12300", "CZ", extensions={'mailing_addr': {
+        'street': 'M. street', 'city': 'M. City', 'pc': '12301', 'cc': 'CZ'}})
 
    Jsou li klice v parametru extensions v nespravnem formatu, vyvola se
    vyjimka ClientUsageException.
@@ -1042,14 +1041,14 @@ API update_contact
 
    Ve funkci update_contact byl pridan novy atribut extensions. Atribut je
    nepovinny:
-    def update_contact(self, contact_id, chg=None, cltrid=None, extensions=None)
-:
+    def update_contact(self, contact_id, chg=None, cltrid=None,
+        extensions=None):
 
    Hodnota extensions obsahuje slovnik s klicem chg nebo s rem. Klic chg
    aktualizuje korespondencni adresu kontaktu:
     ret = epp.update_contact("CIDID01", extensions={'chg': {'mailing_addr': {
-            'street': 'M. street', 'city': 'M. City', 'pc': '12301', 'cc': 'CZ'}
-}})
+            'street': 'M. street', 'city': 'M. City', 'pc': '12301', 'cc': 'CZ'
+            }}})
 
    Klic rem korespondencni adresu z kontaktu odebere:
     ret = epp.update_contact("CIDID01", extensions={'rem': ['mailing_addr']})

@@ -951,7 +951,8 @@ Chapter 9. Client version 2.9 - Mailing address in contacts
 
 Command: create_contact
 
-   In the create_contact command, a mailing address is entered at the end of the command:
+   In the create_contact command, a mailing address is entered at the end of the command,
+   except "transacion ID", it is always the last (optional) parameter:
 
    create_contact CID-ID02 'Jan Ban' info@mail.com 'Hlavní ulice' Praha 12000 CZ \
       NULL NULL NULL NULL NULL () NULL () NULL \
