@@ -419,8 +419,7 @@ ulice1
        obsahuje senzam postal_info, ktery obsahuje hodnoty name, org a
        jeste dalsi seznam addr. Seznam addr obsahuje polozky city, cc,
        street, atd. Takovy seznam se zapise asi takto:
-((name, org, (street, city, pc, cc, sp) (street, city, pc, cc, sp)) voice, fax,
-...)
+((name, org, (street, city, pc, cc, sp)) voice, fax, ...)
 
        Porovnejte s priklady, ktere jsou uvedeny v helpu u kazdeho
        prikazu.

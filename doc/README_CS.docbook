@@ -588,7 +588,7 @@ Seznam <emphasis>addr</emphasis> obsahuje položky <emphasis>city</emphasis>, <e
 Takový seznam se zapíše asi takto:
 
 <programlisting>
-((name, org, (street, city, pc, cc, sp) (street, city, pc, cc, sp)) voice, fax, ...)
+((name, org, (street, city, pc, cc, sp)) voice, fax, ...)
 </programlisting>
 
 Porovnejte s příklady, které jsou uvedeny v helpu u každého příkazu.

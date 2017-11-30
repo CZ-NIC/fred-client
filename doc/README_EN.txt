@@ -389,7 +389,7 @@ Syntax of command parameters
        addresses (addr). The addr list contains city, cc, street, etc. Such lists
        are specified as follows:
 
-       ((name, org, (street, city, pc, cc, sp) (street, city, pc, cc, sp)) voice, fax, ...)
+       ((name, org, (street, city, pc, cc, sp)) voice, fax, ...)
 
        Compare to examples listed in command help.
 
