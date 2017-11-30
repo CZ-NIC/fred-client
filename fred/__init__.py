@@ -1031,7 +1031,7 @@ OPTIONS:
   cltrid                   Client transaction ID
 
 EXAMPLES:
-  prep_domains_by_nsset NSSID:VALID"""
+  prep_domains_by_nsset NSSID-VALID"""
         return self._epp.api_command('prep_domains_by_nsset', {'id':id, 'cltrid':cltrid})
 
     def prep_domains_by_keyset(self, id, cltrid=None):
@@ -1049,7 +1049,7 @@ OPTIONS:
   cltrid                   Client transaction ID
 
 EXAMPLES:
-  prep_domains_by_keyset KEYSID:VALID"""
+  prep_domains_by_keyset KEYSID-VALID"""
         return self._epp.api_command('prep_domains_by_keyset', {'id':id, 'cltrid':cltrid})
 
     def prep_domains_by_contact(self, id, cltrid=None):
@@ -1068,7 +1068,7 @@ OPTIONS:
   cltrid                   Client transaction ID
 
 EXAMPLES:
-  prep_domains_by_contact CID:TECH"""
+  prep_domains_by_contact CID-TECH"""
         return self._epp.api_command('prep_domains_by_contact', {'id':id, 'cltrid':cltrid})
 
     def prep_nssets_by_contact(self, id, cltrid=None):
@@ -1086,7 +1086,7 @@ OPTIONS:
   cltrid                   Client transaction ID
 
 EXAMPLES:
-  prep_nssets_by_contact CID:ADMIN"""
+  prep_nssets_by_contact CID-ADMIN"""
         return self._epp.api_command('prep_nssets_by_contact', {'id':id, 'cltrid':cltrid})
 
     def prep_keysets_by_contact(self, id, cltrid=None):
@@ -1104,7 +1104,7 @@ OPTIONS:
   cltrid                   Client transaction ID
 
 EXAMPLES:
-  prep_keysets_by_contact CID:ADMIN"""
+  prep_keysets_by_contact CID-ADMIN"""
         return self._epp.api_command('prep_keysets_by_contact', {'id':id, 'cltrid':cltrid})
 
     def prep_nssets_by_ns(self, name, cltrid=None):
