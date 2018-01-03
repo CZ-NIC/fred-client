@@ -169,7 +169,7 @@ for key, value in langs.items():
         try:
             langs[key] = gettext.translation(domain, tpath, (key,), codeset=encoding)
         except TypeError, msg:
-            print 'This program requires Python 2.4 or higher.\nYour version is', sys.version
+            print 'This program requires Python 2.7 or higher.\nYour version is', sys.version
             sys.exit(1)
         except IOError, (no, msg):
             langs[key] = gettext.NullTranslations() # no translation

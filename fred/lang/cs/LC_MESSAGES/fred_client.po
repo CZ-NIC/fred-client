@@ -1883,8 +1883,8 @@ msgstr ""
 msgid "The message has been removed from the queue."
 msgstr "Zpráva byla odebrána z fronty zpráv."
 
-msgid "This program requires Python 2.4 or higher. Your version is"
-msgstr "Tento program vyžaduje Python 2.4 nebo vyšší. Vaše verze je"
+msgid "This program requires Python 2.7 or higher. Your version is"
+msgstr "Tento program vyžaduje Python 2.7 nebo vyšší. Vaše verze je"
 
 msgid ""
 "This version of Python doesn't support SSL. Reinstall it with SLL support."

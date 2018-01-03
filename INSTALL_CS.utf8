@@ -9,7 +9,7 @@ OBSAH
 
 POŽADAVKY
 
-FredClient potřebuje ke svému běhu jazyk Python nejméně ve verzi 2.4.
+FredClient potřebuje ke svému běhu jazyk Python nejméně ve verzi 2.7.
 Instalační skript install.sh kontroluje jestli je python v systému
 nainstalován a jestli má požadovanou verzi. Jakou máte verzi můžete
 také zjistit příkazem:

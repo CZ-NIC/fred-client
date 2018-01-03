@@ -9,7 +9,7 @@ OBSAH
 
 POZADAVKY
 
-FredClient potrebuje ke svemu behu jazyk Python nejmene ve verzi 2.4.
+FredClient potrebuje ke svemu behu jazyk Python nejmene ve verzi 2.7.
 Instalacni skript install.sh kontroluje jestli je python v systemu
 nainstalovan a jestli ma pozadovanou verzi. Jakou mate verzi muzete
 take zjistit prikazem:
