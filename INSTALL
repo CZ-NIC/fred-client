@@ -8,7 +8,7 @@ CONTENTS
 
 REQUIREMERNTS
 
-FredClient needs for running Python in version 2.4 or later.
+FredClient needs for running Python in version 2.7 or later.
 The script install.sh controls if python is present in system and
 if version is enought. But if you can check it yourself type:
 

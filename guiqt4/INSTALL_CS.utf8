@@ -61,10 +61,10 @@ http://www.riverbankcomputing.co.uk/sip/download.php
 sip-4.5.2.tar.gz (406 kB) 	for UNIX, Linux, MacOS/X
 
 Než začnete kompilovat, přesvědčte se, že máte nainstalovány zdrojové soubory Pythonu
-(/usr/include/python2.4/Python.h a další)
+(/usr/include/python2.7/Python.h a další)
 Pokud ne, tak si je nainstalujte:
 
-    $ sudo apt-get install python2.4-dev  (asi 1.5 MB)
+    $ sudo apt-get install python2.7-dev  (asi 1.5 MB)
 
 SIP nainstalujete následujícím způsobem (Popis instalace je v doc/sipref.html):
 
