@@ -17,7 +17,7 @@
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 import operator
 import eppdoc
-from eppdoc_assemble import DISCLOSES
+from eppdoc_assemble import DISCLOSES_UPDATE
 from session_base import *
 from session_command import ManagerCommand, COLOR
 from translate import encoding
@@ -32,6 +32,8 @@ what are used in client API.
 """
 SEPARATOR = '-' * 60
 ANSW_RESULT, ANSW_CODE, ANSW_MSG = range(3)
+DISCLOSES_INFO = DISCLOSES_UPDATE
+
 
 class ManagerReceiver(ManagerCommand):
     """EPP client support.
@@ -288,11 +290,11 @@ class ManagerReceiver(ManagerCommand):
             not_disclosed = []
 
             if server_disclose_policy == 0:
-                not_disclosed = list(DISCLOSES) + ['addr',]
+                not_disclosed = DISCLOSES_INFO
                 default_server_policy_flags = not_disclosed
                 exception_to_server_policy_flags = disclosed
             else:
-                disclosed = list(DISCLOSES) + ['addr',]
+                disclosed = DISCLOSES_INFO
                 default_server_policy_flags = disclosed
                 exception_to_server_policy_flags = not_disclosed
 
