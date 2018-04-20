@@ -282,7 +282,8 @@ class ManagerReceiver(ManagerCommand):
             discloses_present = contact_infData.get('contact:disclose', None)
             if discloses_present:
                 # flag attribute must be present
-                server_disclose_policy = int(not [attr_value for attr_name, attr_value in discloses_present['attr'] if attr_name == 'flag'][0])
+                flag_value = int([attr_value for attr_name, attr_value in discloses_present['attr'] if attr_name == 'flag'][0])
+                server_disclose_policy = 0 if flag_value else 1
             else:
                 server_disclose_policy = self._epp_cmd.server_disclose_policy
 
