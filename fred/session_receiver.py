@@ -290,11 +290,11 @@ class ManagerReceiver(ManagerCommand):
             not_disclosed = []
 
             if server_disclose_policy == 0:
-                not_disclosed = DISCLOSES_INFO
+                not_disclosed = list(DISCLOSES_INFO)
                 default_server_policy_flags = not_disclosed
                 exception_to_server_policy_flags = disclosed
             else:
-                disclosed = DISCLOSES_INFO
+                disclosed = list(DISCLOSES_INFO)
                 default_server_policy_flags = disclosed
                 exception_to_server_policy_flags = not_disclosed
 
