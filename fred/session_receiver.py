@@ -17,7 +17,7 @@
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 import operator
 import eppdoc
-from eppdoc_assemble import DISCLOSES
+from eppdoc_assemble import DISCLOSES_UPDATE
 from session_base import *
 from session_command import ManagerCommand, COLOR
 from translate import encoding
@@ -32,6 +32,8 @@ what are used in client API.
 """
 SEPARATOR = '-' * 60
 ANSW_RESULT, ANSW_CODE, ANSW_MSG = range(3)
+DISCLOSES_INFO = DISCLOSES_UPDATE
+
 
 class ManagerReceiver(ManagerCommand):
     """EPP client support.
@@ -277,16 +279,37 @@ class ManagerReceiver(ManagerCommand):
                             if value:
                                 self._dct_answer['data']['contact:extension.mailingAddr.%s' % name] = value
 
-            disclosed = list(DISCLOSES) + ['addr']
+            discloses_present = contact_infData.get('contact:disclose', None)
+            if discloses_present:
+                # flag attribute must be present
+                flag_value = int([attr_value for attr_name, attr_value in discloses_present['attr'] if attr_name == 'flag'][0])
+                server_disclose_policy = 0 if flag_value else 1
+            else:
+                server_disclose_policy = self._epp_cmd.server_disclose_policy
+
+            disclosed = []
             not_disclosed = []
-            condis = contact_infData.get('contact:disclose', None)
-            if condis:
-                for k, v in condis.items():
-                    # decamell: replace notifyEmail -> notify_email
-                    if v == {}: not_disclosed.append(decamell(k[8:]))
-            for name in not_disclosed:
-                if name in disclosed:
-                    disclosed.pop(disclosed.index(name))
+
+            if server_disclose_policy == 0:
+                not_disclosed = list(DISCLOSES_INFO)
+                default_server_policy_flags = not_disclosed
+                exception_to_server_policy_flags = disclosed
+            else:
+                disclosed = list(DISCLOSES_INFO)
+                default_server_policy_flags = disclosed
+                exception_to_server_policy_flags = not_disclosed
+
+            if discloses_present:
+                for k, v in discloses_present.items():
+                    try:
+                        element_prefix, flag_name = k.split(':')
+                        flag_name = decamell(flag_name)
+                    except ValueError:
+                        continue
+                    if flag_name in default_server_policy_flags:
+                        exception_to_server_policy_flags.append(flag_name)
+                        default_server_policy_flags.remove(flag_name)
+
             dct['contact:disclose'] = disclosed
             dct['contact:hide'] = not_disclosed
             dct['contact:authInfo'] = eppdoc.get_dct_value(contact_infData, 'contact:authInfo')
