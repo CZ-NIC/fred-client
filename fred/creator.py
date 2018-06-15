@@ -39,6 +39,8 @@ def run_creation(options):
     if epp is None:
         epp = ClientSession()
         epp.load_config()
+        if epp._conf.has_option("creator", "server_disclose_policy"):
+            epp._epp_cmd.server_disclose_policy = int(epp._conf.get("creator", "server_disclose_policy"))
         epp.set_auto_connect(0) # set OFF auto connection
     command_name, epp_doc, stop = epp.create_eppdoc(options['command'])
     errors = epp.fetch_errors()
