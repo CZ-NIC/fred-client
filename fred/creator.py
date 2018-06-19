@@ -36,12 +36,20 @@ epp = None
 
 def run_creation(options):
     global epp
+    command_name, errors, epp_doc = "", "", None
     if epp is None:
         epp = ClientSession()
         epp.load_config()
+        if epp._conf.has_option("creator", "server_disclose_policy"):
+            server_disclose_policy = epp._conf.get("creator", "server_disclose_policy")
+            if server_disclose_policy not in ("0", "1"):
+                errors = "The variable 'server_disclose_policy' in config section [creator] has an unexpected value.\n"
+            else:
+                epp._epp_cmd.server_disclose_policy = int(server_disclose_policy)
+    if not errors:
         epp.set_auto_connect(0) # set OFF auto connection
-    command_name, epp_doc, stop = epp.create_eppdoc(options['command'])
-    errors = epp.fetch_errors()
+        command_name, epp_doc, stop = epp.create_eppdoc(options['command'])
+        errors = epp.fetch_errors()
     if not epp_doc and not errors:
         errors = '%s %s' % (_T('Unknown command'), command_name.encode(encoding))
     str_error = ''

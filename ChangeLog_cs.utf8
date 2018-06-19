@@ -1,3 +1,8 @@
+FredClient 2.10.1
+
+Zmeny:
+    * Oprava skriptu fred_create.py - konfigurace vychozi politiky serveru
+
 FredClient 2.10
 
 Zmeny:
