@@ -27,12 +27,10 @@ FRED_CLIENT_SCHEMAS_FILEMANE = os.path.join(path, 'schemas/all-1.4.xsd')
 
 # Name of the main console script
 script_name = 'fred-client'
-gui_script_name = 'fred-client-qt4.pyw'
 help_name = 'fred_howto_cs.html'
 
 # BAT file is created to prevent closing the console after the script has been finished.
 bat_file = 'fred-client.bat'
-bat_file_gui = 'fred-client-gui.bat'
 readme_name = 'README_EN.txt'
 
 # Folder with icon
@@ -58,12 +56,10 @@ def update_fred_config():
 # Create paths for join files with desktop
 desktopDir = get_special_folder_path('CSIDL_COMMON_DESKTOPDIRECTORY')
 bat_file_path = os.path.join(distutils.sysconfig.PREFIX, 'Scripts', bat_file)
-bat_file_gui_path = os.path.join(distutils.sysconfig.PREFIX, 'Scripts', bat_file_gui)
 
 
 # Create BAT file
 open(bat_file_path, 'w').write('"%s" -i "%s"\n' % (os.path.join(distutils.sysconfig.PREFIX, 'python.exe'), script_name))
-open(bat_file_gui_path, 'w').write('"%s" "%s"' % (os.path.join(distutils.sysconfig.PREFIX, 'pythonw.exe'), os.path.join(sys.prefix, 'Scripts', gui_script_name)))
 
 
 # convert LF to CR/LF be cause of the MS Windows common end of lines
@@ -81,16 +77,6 @@ create_shortcut(
     '',
     os.path.join(distutils.sysconfig.PREFIX, 'Scripts'),
     os.path.join(distutils.sysconfig.PREFIX, path_fred_doc, 'niccz_console.ico'))
-
-# Shortcut to the GUI EPP client on the desktop
-create_shortcut(
-    #'%s %s'%(os.path.join(distutils.sysconfig.PREFIX,'pythonw.exe'), os.path.join(sys.prefix, 'Scripts', gui_script_name)),
-    bat_file_gui_path,
-    'Fred Client GUI %s' % fred_version,
-    os.path.join(desktopDir, '%s.lnk' % gui_script_name),
-    '',
-    os.path.join(distutils.sysconfig.PREFIX, 'Scripts'),
-    os.path.join(distutils.sysconfig.PREFIX, path_fred_doc, 'niccz_gui.ico'))
 
 ## Shortcut to the HOWTO on the desktop
 #create_shortcut(

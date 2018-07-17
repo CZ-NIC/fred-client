@@ -34,13 +34,12 @@ FredClient
 
    5. Skripty fred_create.py a fred_sender.py
    6. Integrace klienta do PHP kodu
-   7. Graficka nadstavba v Qt4.
-   8. Knihovna fred a popis API
+   7. Knihovna fred a popis API
 
         Online dokumentace:
         Priklady prace s knihovnou
 
-   9. Verze klienta 2.9 - Korespondencni adresa v kontaktu
+   8. Verze klienta 2.9 - Korespondencni adresa v kontaktu
 
         Prikaz create_contact
 
@@ -130,8 +129,6 @@ Parametry pro spojeni:
   -o OUTPUT_TYPE, --output=OUTPUT_TYPE
                    Zobrazit vystup jako text (default), html, xml, php (Pozor! J
 en pro testovani!)
-  -q,  --qt
-                   Spustit klienta v Qt4 GUI (Pozor! Jen pro testovani!)
 
 Specialni parametry, ktere se v helpu nezobrazuji:
    -r, --cltrid    --cltrid=mycID_%04d
@@ -837,11 +834,7 @@ $fred_labels['domain:exDate'] = 'Expiration date';
 $fred_data['domain:exDate'] = '2009-10-31T01:00:00+01:00';
 $fred_labels['domain:renew'] = 'Last renew on';
 
-Kapitola 7. Graficka nadstavba v Qt4.
-
-   Popis graficke nadstavby klienta je v samostatnem souboru README_QT4.
-
-Kapitola 8. Knihovna fred a popis API
+Kapitola 7. Knihovna fred a popis API
 
    Obsah
 
@@ -971,7 +964,7 @@ Priklady prace s knihovnou
    Pokud se vyskytne nejaka chyba pri prenosu nebo jina, ktera zablokuje
    funkcnost, tak se generuje vyjimka FredError.
 
-Kapitola 9. Verze klienta 2.9 - Korespondencni adresa v kontaktu
+Kapitola 8. Verze klienta 2.9 - Korespondencni adresa v kontaktu
 
    Obsah
 

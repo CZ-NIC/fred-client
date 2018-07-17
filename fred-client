@@ -20,8 +20,7 @@ This is main script handling all functions of this client.
 Here it's deside what type of application will be running.
 Default is console. Next choice is running as a batch -
 this is suitable using is in some shell scripts or for manage
-web pages (php, html). It also run it in GUI mode GUI with
-Qt environment.
+web pages (php, html).
 
 Script check version of python at the beginning. This code is
 in module fred. Next it use options from command line parsed
@@ -30,7 +29,6 @@ in module fred.translate during import.
 MODES:
 For console mode is used module fred.console.
 For batch mode is used modules fred.creator and fred.sender.
-For GUI moduel is used module guiqt.
 """
 import sys, os
 
@@ -61,8 +59,6 @@ if __name__ == '__main__':
                    Send command to server and exit
   -o OUTPUT_TYPE, --output=OUTPUT_TYPE
                    Display output as text (default), html, xml, php (Beware! For experimental only!)"""),
-   _T("""  -q,  --qt
-                   Run client in Qt4 GUI  (Beware! For experimental only!)"""),
             _T('See README for more information.'))
         elif options['version']:
             epp = fred.ClientSession()
@@ -70,10 +66,5 @@ if __name__ == '__main__':
         elif option_errors:
             print option_errors
         else:
-            if options['qt']:
-                from guiqt4.main import main
-                # (argv, lang, oldcwd, options)
-                main([], options['lang'], None, options)
-            else:
-                fred.console.main(options)
+            fred.console.main(options)
     os.chdir(old_cwd)

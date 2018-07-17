@@ -3,9 +3,6 @@ global-exclude test_*.*
 
 include doc/README_CS.docbook
 include doc/client_example.php
-include doc/README_QT4_CS.docbook
-include doc/README_QT4_CS.html
-include doc/img/*.gif
 include doc/fred_howto_cs.*
 include doc/*.ico
 
@@ -18,12 +15,6 @@ include uninstall.py
 include setup_postinstall.py
 include ChangeLog_cs.utf8
 include ChangeLog_cs.ascii
-include guiqt4/niccz.ico
-include guiqt4/*.ts
-include guiqt4/*.ui
-include guiqt4/qt_client.project
-include guiqt4/INSTALL_CS.ascii
-include guiqt4/INSTALL_CS.utf8
 
 include MANIFEST.in
 include fred-client.spec
