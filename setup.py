@@ -22,7 +22,6 @@ import sys
 
 from freddist.command.install import install
 from freddist.core import setup
-from freddist.util import find_data_files
 
 from fred.internal_variables import config_name
 
@@ -34,23 +33,6 @@ SCRIPT_FILENAME = PROJECT_NAME
 WIN_SCRIPT_FILENAME = '%s.py' % SCRIPT_FILENAME
 QT4SCRIPT_FILENAME = "%s-qt4.pyw" % PROJECT_NAME
 SCRIPTS = [SCRIPT_FILENAME, QT4SCRIPT_FILENAME]
-
-
-# Find schemas, if not set, try some common directories
-EPP_SCHEMAS_PATH = os.environ.get('EPP_SCHEMAS_PATH')
-if EPP_SCHEMAS_PATH:
-    # Ignore if schemas do not exist
-    if not os.path.exists(EPP_SCHEMAS_PATH):
-        sys.stderr.write("Ignoring missing schemas at '%s'.\n" % os.environ['EPP_SCHEMAS_PATH'])
-        EPP_SCHEMAS_PATH = None
-else:
-    for path in ('fred/schemas', '../mod-eppd/schemas/'):
-        if os.path.exists(path):
-            EPP_SCHEMAS_PATH = os.path.normpath(os.path.abspath(path))
-            break
-    else:
-        EPP_SCHEMAS_PATH = None
-        sys.stderr.write("Schemas not found.\n")
 
 
 class EPPClientInstall(install):
@@ -91,13 +73,6 @@ class EPPClientInstall(install):
         content = pattern.sub('host = %s' % self.host, content)
         pattern = re.compile(r'^port = .*$', re.MULTILINE)
         content = pattern.sub('port = %s' % self.port, content)
-        # Schemas config
-        if EPP_SCHEMAS_PATH:
-            pattern = re.compile(r'^schema=.*$', re.MULTILINE)
-            content = pattern.sub('schema = %s' % self.expand_filename('$purelib/fred/schemas/all.xsd'), content)
-        else:
-            pattern = re.compile(r'^validate =.*$', re.MULTILINE)
-            content = pattern.sub('validate = off', content)
         open(filename, 'w').write(content)
         self.announce("File %s was updated." % filename)
 
@@ -152,10 +127,6 @@ def main():
                   ('share/%s/ssl' % PACKAGE_NAME, ['fred/certificates/test-cert.pem',
                                                    'fred/certificates/test-key.pem']),
                   ('$sysconf/fred', [os.path.join('conf', config_name)])]
-    if EPP_SCHEMAS_PATH:
-        data_files += [(os.path.join('share/%s/schemas' % PACKAGE_NAME, dest), files)
-                       for dest, files in find_data_files('.', EPP_SCHEMAS_PATH)]
-
     setup(name=PROJECT_NAME,
           description='Client FRED (Free Registry for enum and domain)',
           author='Zdenek Bohm, CZ.NIC',
