@@ -917,13 +917,6 @@ msgstr ""
 "                   Zobrazit výstup jako text (default), html, xml, php "
 "(Pozor! Jen pro testování!)"
 
-msgid ""
-"  -q,  --qt\n"
-"                   Run client in Qt4 GUI  (Beware! For experimental only!)"
-msgstr ""
-"  -q,  --qt\n"
-"                   Spusť lkienta v Qt4 GUI (Pozor! Určeno jen pro testování!)"
-
 #, python-format
 msgid ""
 "%s\n"

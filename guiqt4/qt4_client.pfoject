@@ -1,3 +1,0 @@
-FORMS = main.ui dns.ui update_domain.ui create_nsset.ui create_contact.ui sources.ui create_domain.ui update_nsset.ui update_contact.ui
-SOURCES = create_domain.py shared_fnc.py test_share_fnc.py sources.py create_nsset.py create_contact.py dns.py main.py update_contact.py update_nsset.py update_domain.py
-TRANSLATIONS = clientqt_cs.ts

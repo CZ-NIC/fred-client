@@ -31,8 +31,7 @@ PACKAGE_NAME = 'fred-client'
 
 SCRIPT_FILENAME = PROJECT_NAME
 WIN_SCRIPT_FILENAME = '%s.py' % SCRIPT_FILENAME
-QT4SCRIPT_FILENAME = "%s-qt4.pyw" % PROJECT_NAME
-SCRIPTS = [SCRIPT_FILENAME, QT4SCRIPT_FILENAME]
+SCRIPTS = [SCRIPT_FILENAME]
 
 
 class EPPClientInstall(install):
@@ -121,9 +120,9 @@ def main():
         win_script = '%s.py' % SCRIPT_FILENAME
         shutil.copy(os.path.join(srcdir, SCRIPT_FILENAME), os.path.join(srcdir, win_script))
 
-    data_files = [('share/%s' % PACKAGE_NAME, ['doc/fred_howto_cs.html', 'doc/niccz_console.ico', 'doc/niccz_gui.ico',
+    data_files = [('share/%s' % PACKAGE_NAME, ['doc/fred_howto_cs.html', 'doc/niccz_console.ico',
                                                'doc/configure.ico', 'doc/help.ico', 'doc/README_EN.txt',
-                                               'doc/README_CS.txt', 'doc/README_CS.html', 'doc/README_QT4_CS.pdf']),
+                                               'doc/README_CS.txt', 'doc/README_CS.html']),
                   ('share/%s/ssl' % PACKAGE_NAME, ['fred/certificates/test-cert.pem',
                                                    'fred/certificates/test-key.pem']),
                   ('$sysconf/fred', [os.path.join('conf', config_name)])]
@@ -133,9 +132,8 @@ def main():
           author_email='zdenek.bohm@nic.cz',
           url='http://www.nic.cz',
           license='GNU GPL',
-          packages=['fred', 'guiqt4'],
-          package_data={'fred': ['INSTALL', 'LICENSE', 'CREDITS', '*.txt'],
-                        'guiqt4': ['*.png', '*.qm']},
+          packages=['fred'],
+          package_data={'fred': ['INSTALL', 'LICENSE', 'CREDITS', '*.txt']},
           i18n_files=['fred/lang/cs/LC_MESSAGES/fred_client.po'],
           scripts=SCRIPTS,
           data_files=data_files,
@@ -143,7 +141,6 @@ def main():
           modify_files={'$purelib/fred/internal_variables.py': 'update_version',
                         '$purelib/fred/session_config.py': 'update_session_config',
                         '$scripts/%s' % SCRIPT_FILENAME: 'update_script',
-                        '$scripts/%s' % QT4SCRIPT_FILENAME: 'update_script',
                         '$sysconf/fred/%s' % config_name: 'update_config'})
 
     # Remove the copy of a script

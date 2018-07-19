@@ -35,13 +35,12 @@ FredClient
 
    5. Fred_create.py and fred_sender.py scripts
    6. Integration of client into the PHP code
-   7. Graphic interface in Qt4.
-   8. The Fred library and description of API
+   7. The Fred library and description of API
 
         Online documentation:
         Examples of library use
 
-   9. Client version 2.9 - Mailing address in contacts
+   8. Client version 2.9 - Mailing address in contacts
 
 What is FredClient:
 
@@ -120,8 +119,6 @@ Connection parameters:
 
                    For testing only!)
 
-  -q,  --qt
-                   Run the client in Qt4 GUI (Caution! For testing only!)
 
 Special parameters not displayed in help:
    -r, --cltrid    --cltrid=mycID_%04d
@@ -805,12 +802,7 @@ PHP Integration:
    $fred_data['domain:exDate'] = '2009-10-31T01:00:00+01:00';
    $fred_labels['domain:renew'] = 'Last renew on';
 
-Chapter 7. Graphic interface in Qt4.
-
-   The description of the graphic interface is contained in the file. Look for
-   README_QT4...
-
-Chapter 8. The Fred library and description of API
+Chapter 7. The Fred library and description of API
 
    CONTENTS
 
@@ -932,7 +924,7 @@ Examples of library use
    When a transfer error, or another error which blocks functionality occurs,
    the FredError exception is generated.
 
-Chapter 9. Client version 2.9 - Mailing address in contacts
+Chapter 8. Client version 2.9 - Mailing address in contacts
 
    CONTENTS
 

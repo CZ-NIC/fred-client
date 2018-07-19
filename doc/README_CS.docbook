@@ -126,8 +126,6 @@ Parametry pro spojení:
                    Odeslat příkaz na server a skončit
   -o OUTPUT_TYPE, --output=OUTPUT_TYPE
                    Zobrazit výstup jako text (default), html, xml, php (Pozor! Jen pro testování!)
-  -q,  --qt
-                   Spustit klienta v Qt4 GUI (Pozor! Jen pro testování!)
 
 Speciální parametry, které se v helpu nezobrazují:
    -r, --cltrid    --cltrid=mycID_%04d
@@ -1165,12 +1163,6 @@ $fred_labels['domain:renew'] = 'Last renew on';
 </programlisting>
 
 
-</chapter>
-
-<chapter>
-<title>Grafická nadstavba v Qt4.</title>
-<para>Popis grafické nadstavby klienta je v samostatném souboru README_QT4.
-</para>
 </chapter>
 
 <chapter>

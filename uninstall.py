@@ -56,7 +56,7 @@ def main():
     status = 1
 
     print "REMOVE LIBRARY"
-    for name in ('fred', 'guiqt4'):
+    for name in ('fred', ):
         pathname = os.path.join(get_python_lib(), name)
         print pathname
         if not remove_all(pathname):
