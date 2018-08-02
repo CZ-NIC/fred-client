@@ -102,7 +102,8 @@ class Message:
 
     def get_extURI(self):
         'Returns the list of the extURI namesapces.'
-        return ['%senumval-%s' % (SCHEMA_PREFIX, self.schema_version['enum'])]
+        return ['%senumval-%s' % (SCHEMA_PREFIX, self.schema_version['enum']),
+                '%sextra-addr-%s' % (SCHEMA_PREFIX, self.schema_version['extra-addr'])]
 
 
     def reset(self):
