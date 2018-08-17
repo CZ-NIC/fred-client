@@ -1,3 +1,12 @@
+FredClient 2.11
+
+Zmeny:
+    * Oprava kontroly nakonfigurovanych schemat oproti greeting odpovedi serveru
+
+    * Odstraneni neudrzovaneho GUI
+
+    * Odstraneni schemat z instalace
+
 FredClient 2.10.1
 
 Zmeny:
