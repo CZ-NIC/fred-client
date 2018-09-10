@@ -28,7 +28,7 @@ Srcipt waiting for EPP commands one command on the one line.
 """
 import sys, re
 from cgi import escape as escape_html
-from __init__ import ClientSession, check_python_version
+from __init__ import ClientSession
 from session_transfer import php_string
 from translate import options, option_args, encoding
 
@@ -74,52 +74,48 @@ def display(epp_doc, str_error):
         print epp_doc
 
 def main():
-    msg_invalid = check_python_version()
-    if msg_invalid:
-        print msg_invalid
-    else:
-        if len(sys.argv) > 1:
-            command = ' '.join(option_args)
-            if options['range']:
-                epp_doc = str_error = ''
-                m = re.match('([^\[]+)\[(\d+)(?:\s*,\s*(\d+))?\]', options['range'])
-                if m:
-                    min = 0
-                    anchor = m.group(1)
-                    if m.group(3) is None:
-                        max = int(m.group(2))
-                    else:
-                        min = int(m.group(2))
-                        max = int(m.group(3))
-                    for n in range(min, max):
-                        options['command'] = re.sub(anchor, '%s%d' % (anchor, n), command)
-                        epp_doc, str_error = run_creation(options)
-                        display(epp_doc, str_error)
+    if len(sys.argv) > 1:
+        command = ' '.join(option_args)
+        if options['range']:
+            epp_doc = str_error = ''
+            m = re.match('([^\[]+)\[(\d+)(?:\s*,\s*(\d+))?\]', options['range'])
+            if m:
+                min = 0
+                anchor = m.group(1)
+                if m.group(3) is None:
+                    max = int(m.group(2))
                 else:
-                    print "<?xml encoding='%s'?><errors>Invalid range pattern: %s</errors>" % (encoding, options['range'])
+                    min = int(m.group(2))
+                    max = int(m.group(3))
+                for n in range(min, max):
+                    options['command'] = re.sub(anchor, '%s%d' % (anchor, n), command)
+                    epp_doc, str_error = run_creation(options)
+                    display(epp_doc, str_error)
             else:
+                print "<?xml encoding='%s'?><errors>Invalid range pattern: %s</errors>" % (encoding, options['range'])
+        else:
+            options['command'] = command
+            epp_doc, str_error = run_creation(options)
+            display(epp_doc, str_error)
+    elif not sys.stdin.isatty():
+        for cmd in re.split('[\r\n]+', sys.stdin.read()):
+            command = cmd.strip()
+            if command:
                 options['command'] = command
                 epp_doc, str_error = run_creation(options)
                 display(epp_doc, str_error)
-        elif not sys.stdin.isatty():
-            for cmd in re.split('[\r\n]+', sys.stdin.read()):
-                command = cmd.strip()
-                if command:
-                    options['command'] = command
-                    epp_doc, str_error = run_creation(options)
-                    display(epp_doc, str_error)
-        else:
-            print '%s: %s command params\n\n%s\n\n%s%s\n\n  %s\n' % (_T('Usage'), 'fred_create.py',
-                _T('Create EPP XML document from command line parameters.'),
-                _T('EXAMPLES'),
-                """
+    else:
+        print '%s: %s command params\n\n%s\n\n%s%s\n\n  %s\n' % (_T('Usage'), 'fred_create.py',
+            _T('Create EPP XML document from command line parameters.'),
+            _T('EXAMPLES'),
+            """
 ./fred_create.py info_domain nic.cz
 ./fred_create.py info_contact cid:regid
 echo -en "check_domain nic.cz\\ninfo_domain nic.cz" | ./fred_create.py
 cat file-with-commands.txt | ./fred_create.py
 """,
-                _T('See README for more information.')
-                )
+            _T('See README for more information.')
+            )
 
 if __name__ == '__main__':
     main()
