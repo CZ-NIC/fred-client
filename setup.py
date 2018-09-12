@@ -127,6 +127,7 @@ def main():
                                                    'fred/certificates/test-key.pem']),
                   ('$sysconf/fred', [os.path.join('conf', config_name)])]
     setup(name=PROJECT_NAME,
+          version='2.11.0',
           description='Client FRED (Free Registry for enum and domain)',
           author='Zdenek Bohm, CZ.NIC',
           author_email='zdenek.bohm@nic.cz',
