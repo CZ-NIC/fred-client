@@ -53,7 +53,7 @@ if __name__ == '__main__':
     else:
         from fred.console import help_option
         if options['help']:
-            print '%s: %s [OPTIONS...]\n%s%s\n%s\n\n%s\n' % (_T('Usage'), 'fred-client',
+            print '%s: %s [OPTIONS...]\n%s%s\n\n%s\n' % (_T('Usage'), 'fred-client',
             help_option,
    _T("""  -d COMMAND, --command=COMMAND
                    Send command to server and exit
