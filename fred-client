@@ -42,24 +42,8 @@ except OSError:
 sys.path.insert(0, '.')
 
 import fred
-from fred.translate import options, option_errors
 import fred.console
 
 if __name__ == '__main__':
-    from fred.console import help_option
-    if options['help']:
-        print '%s: %s [OPTIONS...]\n%s%s\n\n%s\n' % (_T('Usage'), 'fred-client',
-        help_option,
-_T("""  -d COMMAND, --command=COMMAND
-               Send command to server and exit
--o OUTPUT_TYPE, --output=OUTPUT_TYPE
-               Display output as text (default), html, xml, php (Beware! For experimental only!)"""),
-        _T('See README for more information.'))
-    elif options['version']:
-        epp = fred.ClientSession()
-        print epp.version()
-    elif option_errors:
-        print option_errors
-    else:
-        fred.console.main(options)
+    fred.console.main()
     os.chdir(old_cwd)

@@ -115,15 +115,35 @@ def make_validation(epp, xml_epp_doc, label):
         if v > 2: epp.append_error(xml_epp_doc)
     return (len(error_message) == 0)
 
-def main(options):
+def main(args=None):
     'Main console loop.'
+    if args is None:
+        args = options
+    if args['help']:
+        print '%s: %s [OPTIONS...]\n%s%s\n%s\n' % (_T('Usage'), 'fred-client',
+        help_option,
+_T("""  -d COMMAND, --command=COMMAND
+               Send command to server and exit
+-o OUTPUT_TYPE, --output=OUTPUT_TYPE
+               Display output as text (default), html, xml, php (Beware! For experimental only!)"""),
+        _T('See README for more information.'))
+        sys.exit(0)
+    elif args['version']:
+        epp = fred.ClientSession()
+        print epp.version()
+        sys.exit(0)
+    else:
+        if option_errors:
+            print option_errors
+            sys.exit(1)
+
     if __init__.translate.warning:
         print colored_output.render("${BOLD}${RED}%s${NORMAL}" % __init__.translate.warning)
     epp = __init__.ClientSession()
     if not check_options(epp): return # any option error occurs
 
     readline = None
-    if not options['command']:
+    if not args['command']:
         # import readline if only not command mode
         readline = import_readline()
         # join welcome message only in console mode
@@ -138,9 +158,8 @@ def main(options):
     prompt = '> '
     online = prompt
 
-    # options['command']
     # choke down the login message output in non-interactive (command) mode
-    if not epp.automatic_login(options['command']):
+    if not epp.automatic_login(args['command']):
         epp.join_missing_config_messages()
         epp.display() # display errors or notes
         return
@@ -160,9 +179,9 @@ def main(options):
                 is_online = 1
                 online = '%s@%s> ' % epp.get_username_and_host()
 
-        if options['command']:
+        if args['command']:
             # non-interactive mode (command from command line options)
-            command = options['command']
+            command = args['command']
             # disable confirm mode
             epp.set_confirm('OFF')
         else:
@@ -218,7 +237,7 @@ def main(options):
                 #   and config doesn't disable reconnection
                 #   and answer is not code 2502 (Session limit exceeded; server closing connection)
                 if not epp.is_connected() \
-                    and not options['command'] \
+                    and not args['command'] \
                     and epp.get_session(RECONNECT):
 
                     epp.display() # display errors or notes
@@ -245,7 +264,7 @@ def main(options):
                     #debug_time.append(('Prepare answer for display',time.time())) # PROFILER
                     epp.print_answer()
                     #debug_time.append(('Display answer',time.time())) # PROFILER
-                    #if options['timer']:
+                    #if args['timer']:
                     #    display_profiler('Main LOOP time profiler','',debug_time)
                     #    display_profiler('From Main LOOP only "Parse answer"','\t',debug_time_answer)
 
@@ -255,7 +274,7 @@ def main(options):
 
         epp.display() # display errors or notes
 
-        if options['command']:
+        if args['command']:
             # non-interactive mode (command from command line options)
             # It does only one EPP command and stops.
             epp.send_logout('not-display-output')
@@ -277,15 +296,4 @@ Try '%s --help' for more information.""") % (script_name, script_name)
     return retval
 
 if __name__ == '__main__':
-    if options['help']:
-        print '%s: %s [OPTIONS...]\n%s\n%s\n' % (_T('Usage'), 'fred_console',
-        help_option,
-        _T('See README for more information.'))
-    elif options['version']:
-        epp = fred.ClientSession()
-        print epp.version()
-    else:
-        if option_errors:
-            print option_errors
-        else:
-            main(options)
+    main()
