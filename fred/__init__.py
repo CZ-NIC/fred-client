@@ -1172,16 +1172,6 @@ EXAMPLES:
         'Set data for connection: dc = {host: str, port: str, priv_key: str, cert: str, timeout: str }'
         return self._epp.set_data_connect(dc)
 
-def check_python_version():
-    """Check for needed Python version. Returns "" if OK anf "..." not valid.
-    Alert! This function has no effect, because when translate module is imported
-    it use function incompatible with older python version: gettext.translation()
-    """
-    if sys.version_info[:2] < (2, 4):
-        invalid = _T('This program requires Python 2.7 or higher. Your version is'), '.'.join([str(x) for x in sys.version_info[:3]])
-    else:
-        invalid = ''
-    return invalid
 
 class ClientSession(ManagerReceiver):
     "Use for console or batch applications."

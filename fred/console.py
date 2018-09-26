@@ -22,7 +22,7 @@
 #
 """
 This is module with main loop of the client console.
-At the beginning after check Python version and command line
+At the beginning after command line
 options module creates fred.ClientSession object witch handles
 whole manipulation with environment variables and communication
 with server.
@@ -277,19 +277,15 @@ Try '%s --help' for more information.""") % (script_name, script_name)
     return retval
 
 if __name__ == '__main__':
-    msg_invalid = __init__.check_python_version()
-    if msg_invalid:
-        print msg_invalid
+    if options['help']:
+        print '%s: %s [OPTIONS...]\n%s\n%s\n' % (_T('Usage'), 'fred_console',
+        help_option,
+        _T('See README for more information.'))
+    elif options['version']:
+        epp = fred.ClientSession()
+        print epp.version()
     else:
-        if options['help']:
-            print '%s: %s [OPTIONS...]\n%s\n%s\n' % (_T('Usage'), 'fred_console',
-            help_option,
-            _T('See README for more information.'))
-        elif options['version']:
-            epp = fred.ClientSession()
-            print epp.version()
+        if option_errors:
+            print option_errors
         else:
-            if option_errors:
-                print option_errors
-            else:
-                main(options)
+            main(options)
