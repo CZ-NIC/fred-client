@@ -1,4 +1,9 @@
 *.pyc
 *~
 *.mo
-RELEASE-VERSION
+
+# Distribution
+/build
+/dist
+/*.egg-info
+/fred-client-*
