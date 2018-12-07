@@ -134,7 +134,7 @@ def main():
           author='Zdenek Bohm, CZ.NIC',
           author_email='zdenek.bohm@nic.cz',
           url='http://www.nic.cz',
-          license='GNU GPL',
+          license='GPLv3+',
           packages=['fred'],
           package_data={'fred': ['INSTALL', 'LICENSE', 'CREDITS', '*.txt']},
           i18n_files=['fred/lang/cs/LC_MESSAGES/fred_client.po'],
