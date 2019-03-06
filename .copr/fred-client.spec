@@ -4,7 +4,7 @@ Version:        %{our_version}
 Release:        %{?our_release}%{!?our_release:1}%{?dist}
 Summary:        FRED - EPP client
 Group:          Applications/Utils
-License:        GPL
+License:        GPLv3+
 URL:            http://fred.nic.cz
 Source0:        %{name}-%{version}.tar.gz
 Source1:        distutils-%{distutils_branch}.tar.gz
