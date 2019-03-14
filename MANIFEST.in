@@ -15,6 +15,8 @@ include uninstall.py
 include setup_postinstall.py
 include ChangeLog_cs.utf8
 include ChangeLog_cs.ascii
+include LICENSE
+include COPYING
 
 include MANIFEST.in
 include fred-client.spec
