@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# Copyright (C) 2006-2018  CZ.NIC, z. s. p. o.
+# Copyright (C) 2006-2019  CZ.NIC, z. s. p. o.
 #
 # This file is part of FRED.
 #
@@ -48,10 +48,7 @@ def load_config_from_file(filename, verbose):
 def get_etc_config_name(name=''):
     'Returns shared folder depends on OS type.'
     if os.name == 'posix':
-        # this line will be changed during setup process
-        glob_conf = 'conf/fred-client.conf'
-        if glob_conf == '':
-            glob_conf = os.path.join('/etc/fred', name.strip('.'))
+        glob_conf = '/etc/fred/fred-client.conf'
     else:
         # ALLUSERSPROFILE = C:\Documents and Settings\All Users
         glob_conf = os.path.join(os.path.expandvars('$ALLUSERSPROFILE'), name)
@@ -63,11 +60,6 @@ def load_default_config(config_name, verbose):
     # first try home
     missing = []
 
-    # ugly HACK: part of next code line is changed during ``setup.py bdist_simple'':
-    #   This part -> ``os.path.join(os.path.expanduser('~'),config_name)''
-    # it is important to update regexp in InstallLib.update_session_config method (setup.py)
-    # to proper new value if mentioned part is changed (otherwise bdist simple package
-    # will load wrong (if any) configuration file). See setup.py file for some further information
     error, names, not_found = load_config(config, os.path.join(os.path.expanduser('~'), config_name), verbose)
     if not_found:
         missing.extend(not_found)
