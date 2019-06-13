@@ -37,7 +37,7 @@ class custom_sdist(sdist):
 
 
 setup(name='fred-client',
-      version='2.11.0',
+      version='2.12.2',
       description='Client FRED (Free Registry for enum and domain)',
       author='Zdenek Bohm, CZ.NIC',
       author_email='zdenek.bohm@nic.cz',
