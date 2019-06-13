@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 2.12.2 (2019-06-13)
+ * Fix rpm build
+
 ## 2.12.1 (2019-05-10)
  * Rework README and ChangeLog
 
