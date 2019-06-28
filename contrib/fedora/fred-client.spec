@@ -10,7 +10,7 @@ URL:            http://fred.nic.cz
 Source0:        %{name}-%{version}.tar.gz
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-%(%{__id_u} -n)
 BuildRequires: python-setuptools gettext
-Requires: python
+Requires: python-setuptools
 
 %description
 FRED (Free Registry for Enum and Domain) is free registry system for managing domain registrations. This package contains EPP client
