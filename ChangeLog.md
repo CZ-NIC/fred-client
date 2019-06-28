@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 2.12.3 (2019-06-28)
+ * Fix rpm deps
+
 ## 2.12.2 (2019-06-13)
  * Fix rpm build
 
