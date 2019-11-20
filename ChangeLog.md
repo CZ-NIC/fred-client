@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 2.12.4 (2019-11-20)
+ * Update spec file for F31 and Centos/RHEL 8
+
 ## 2.12.3 (2019-06-28)
  * Fix rpm deps
 
