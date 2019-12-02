@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# Copyright (C) 2006-2018  CZ.NIC, z. s. p. o.
+# Copyright (C) 2006-2019  CZ.NIC, z. s. p. o.
 #
 # This file is part of FRED.
 #
@@ -126,7 +126,7 @@ _T("""  -d COMMAND, --command=COMMAND
         _T('See README for more information.'))
         sys.exit(0)
     elif args['version']:
-        epp = fred.ClientSession()
+        epp = __init__.ClientSession()
         print epp.version()
         sys.exit(0)
     else:

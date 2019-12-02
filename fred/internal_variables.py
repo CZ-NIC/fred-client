@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# Copyright (C) 2006-2018  CZ.NIC, z. s. p. o.
+# Copyright (C) 2006-2019  CZ.NIC, z. s. p. o.
 #
 # This file is part of FRED.
 #
@@ -26,7 +26,7 @@ It is used by client session Manager in session_base.py module.
 #---------------------------------------------------
 # Here is defined FRED VERSION:
 #---------------------------------------------------
-fred_version = '2.11.0'
+fred_version = '2.12.4'
 config_name = 'fred-client.conf'
 
 required_defaults = {'port':700, 'timeout':10.0}
