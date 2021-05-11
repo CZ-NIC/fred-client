@@ -418,7 +418,7 @@ OPTIONS:
         return self._epp.api_command('hello')
 
 
-    def info_contact(self, name, cltrid=None):
+    def info_contact(self, name, auth_info=None, cltrid=None):
         """DESCRIPTION:
   The EPP 'info_contact' command is used to retrieve information associated
   with an existing contact. The value 'Password for transfer' is shown only
@@ -429,8 +429,9 @@ SYNTAX:
 
 OPTIONS:
   name (required)          Contact ID
+  auth_info                Password to gain access to undisclosed contact information
   cltrid                   Client transaction ID"""
-        return self._epp.api_command('info_contact', {'name':name, 'cltrid':cltrid})
+        return self._epp.api_command('info_contact', {'name':name, 'auth_info':auth_info, 'cltrid':cltrid})
 
 
     def info_domain(self, name, cltrid=None):
