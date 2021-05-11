@@ -101,7 +101,7 @@ Using parameter 'new_password' you can change password.
         #----------------------------------------------------
         'info_contact': (1, [
             ('name', (1, 1), (), _T('Contact ID'), 'CID-ID01', '', ()),
-            ('auth_info', (0, 1), (), _T('Password to gain access to undisclosed contact information'), 'mypassword', '', ()),
+            ('auth_info', (0, 1), (), _T('Password for access to undisclosed contact information'), 'mypassword', '', ()),
         ], _T("""
 The EPP 'info_contact' command is used to retrieve information associated
 with an existing contact. The value 'Password for transfer' is shown only

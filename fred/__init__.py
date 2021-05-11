@@ -429,7 +429,7 @@ SYNTAX:
 
 OPTIONS:
   name (required)          Contact ID
-  auth_info                Password to gain access to undisclosed contact information
+  auth_info                Password for access to undisclosed contact information
   cltrid                   Client transaction ID"""
         return self._epp.api_command('info_contact', {'name':name, 'auth_info':auth_info, 'cltrid':cltrid})
 
