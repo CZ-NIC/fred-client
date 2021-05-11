@@ -1,6 +1,13 @@
 ChangeLog
 =========
 
+2.13.0 (2021-05-11)
+-------------------
+
+* Add optional ``auth_info`` parameter to ``info_contact`` command to authorize visibility of undisclosed data
+
+* Rename changelog to CHANGELOG.rst to match all FRED projects
+
 2.12.4 (2019-11-20)
 -------------------
 
