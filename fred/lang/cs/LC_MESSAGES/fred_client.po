@@ -2174,3 +2174,6 @@ msgstr "aktualizováno"
 
 msgid "yes"
 msgstr "ano"
+
+msgid "Password for access to undisclosed contact information"
+msgstr "Heslo pro přístup k neveřejným údajům kontatku"
