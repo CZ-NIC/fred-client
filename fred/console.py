@@ -32,11 +32,16 @@ For testing purpose is possible to display profiller to show
 duration of the particular processes. For enable this part of code
 you have to uncomment corresponding lines with PROFILER.
 """
-import sys, re, time
+from __future__ import absolute_import, print_function, unicode_literals
 
-import __init__
-from session_base import colored_output, VERBOSE, RECONNECT
-from translate import options, option_errors, script_name
+from builtins import input
+import re
+import sys
+import time
+
+from . import __init__
+from .session_base import RECONNECT, VERBOSE, colored_output
+from .translate import option_errors, options, script_name
 
 help_option = _T("""
 General options:
@@ -90,14 +95,14 @@ def display_profiler(label, indent, debug_time):
     # For enable time uncomment all lines with PROFILER (and display_profiler)
     # and in translate module option 'timer'.
     msg, prev_t = debug_time[0]
-    print '=' * 60
-    print indent, label
-    print '=' * 60
+    print('=' * 60)
+    print(indent, label)
+    print('=' * 60)
     for msg, t in debug_time[1:]:
-        print indent, ('%s:' % msg).ljust(30), '%02.4f sec.' % (t - prev_t)
+        print(indent, ('%s:' % msg).ljust(30), '%02.4f sec.' % (t - prev_t))
         prev_t = t
-    print indent, '-' * 43
-    print indent, 'Total:'.ljust(30), '%02.4f sec.' % (t - debug_time[0][1])
+    print(indent, '-' * 43)
+    print(indent, 'Total:'.ljust(30), '%02.4f sec.' % (t - debug_time[0][1]))
 
 def make_validation(epp, xml_epp_doc, label):
     """Make validation and join error message according by verbose mode
@@ -117,25 +122,25 @@ def main(args=None):
     if args is None:
         args = options
     if args['help']:
-        print '%s: %s [OPTIONS...]\n%s%s\n%s\n' % (_T('Usage'), 'fred-client',
+        print('%s: %s [OPTIONS...]\n%s%s\n%s\n' % (_T('Usage'), 'fred-client',
         help_option,
 _T("""  -d COMMAND, --command=COMMAND
                Send command to server and exit
 -o OUTPUT_TYPE, --output=OUTPUT_TYPE
                Display output as text (default), html, xml, php (Beware! For experimental only!)"""),
-        _T('See README for more information.'))
+        _T('See README for more information.')))
         sys.exit(0)
     elif args['version']:
         epp = __init__.ClientSession()
-        print epp.version()
+        print(epp.version())
         sys.exit(0)
     else:
         if option_errors:
-            print option_errors
+            print(option_errors)
             sys.exit(1)
 
     if __init__.translate.warning:
-        print colored_output.render("${BOLD}${RED}%s${NORMAL}" % __init__.translate.warning)
+        print(colored_output.render("${BOLD}${RED}%s${NORMAL}" % __init__.translate.warning))
     epp = __init__.ClientSession()
     if not check_options(epp): return # any option error occurs
 
@@ -184,7 +189,7 @@ _T("""  -d COMMAND, --command=COMMAND
         else:
             # interactive mode
             try:
-                command = raw_input(online).strip()
+                command = input(online).strip()
             except KeyboardInterrupt: # Ctrl+C
                 break
             except EOFError: # Ctrl+D
@@ -214,8 +219,8 @@ _T("""  -d COMMAND, --command=COMMAND
                 epp.display() # display errors or notes
                 if epp.is_confirm_cmd_name(command_name):
                     try:
-                        confirmation = raw_input('%s (y/N): ' % _T('Do you really want to send this command to the server?'))
-                    except (KeyboardInterrupt, EOFError), msg:
+                        confirmation = input('%s (y/N): ' % _T('Do you really want to send this command to the server?'))
+                    except (KeyboardInterrupt, EOFError) as msg:
                         # user breaks sending command
                         epp.append_note(_T('skipped'))
                         epp.display() # display errors or notes
@@ -287,9 +292,9 @@ def check_options(epp):
     if options['verbose']:
         if epp.parse_verbose_value(options['verbose']) is None:
             retval = 0
-            print epp.fetch_errors()
-            print _T("""Usage: %s [OPTIONS...]
-Try '%s --help' for more information.""") % (script_name, script_name)
+            print(epp.fetch_errors())
+            print(_T("""Usage: %s [OPTIONS...]
+Try '%s --help' for more information.""") % (script_name, script_name))
     return retval
 
 if __name__ == '__main__':

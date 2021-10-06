@@ -15,10 +15,19 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with FRED.  If not, see <https://www.gnu.org/licenses/>.
+#
+from __future__ import unicode_literals
 
-import sys, re
+from builtins import object, range, zip
+import re
+import sys
 
-class TerminalController:
+import six
+
+from .translate import encoding
+
+
+class TerminalController(object):
     """
     A class that can be used to portably generate formatted output to
     a terminal.
@@ -133,19 +142,19 @@ class TerminalController:
         # Colors
         set_fg = self._tigetstr('setf')
         if set_fg:
-            for i, color in zip(range(len(self._COLORS)), self._COLORS):
+            for i, color in enumerate(self._COLORS):
                 setattr(self, color, curses.tparm(set_fg, i) or '')
         set_fg_ansi = self._tigetstr('setaf')
         if set_fg_ansi:
-            for i, color in zip(range(len(self._ANSICOLORS)), self._ANSICOLORS):
+            for i, color in enumerate(self._ANSICOLORS):
                 setattr(self, color, curses.tparm(set_fg_ansi, i) or '')
         set_bg = self._tigetstr('setb')
         if set_bg:
-            for i, color in zip(range(len(self._COLORS)), self._COLORS):
+            for i, color in enumerate(self._COLORS):
                 setattr(self, 'BG_' + color, curses.tparm(set_bg, i) or '')
         set_bg_ansi = self._tigetstr('setab')
         if set_bg_ansi:
-            for i, color in zip(range(len(self._ANSICOLORS)), self._ANSICOLORS):
+            for i, color in enumerate(self._ANSICOLORS):
                 setattr(self, 'BG_' + color, curses.tparm(set_bg_ansi, i) or '')
 
     def _tigetstr(self, cap_name):
@@ -153,8 +162,7 @@ class TerminalController:
         # For any modern terminal, we should be able to just ignore
         # these, so strip them out.
         import curses
-        cap = curses.tigetstr(cap_name) or ''
-        return re.sub(r'\$<\d+>[/*]?', '', cap)
+        return curses.tigetstr(cap_name) or ''
 
     def render(self, template):
         """
@@ -162,12 +170,14 @@ class TerminalController:
         the corresponding terminal control string (if it's defined) or
         '' (if it's not).
         """
-        return re.sub(r'\$\$|\${\w+}', ('', self._render_sub)[self._is_mode_color], template)
+        if isinstance(template, six.text_type):
+            template = template.encode(encoding)
+        return re.sub(rb'\$\$|\${\w+}', (b'', self._render_sub)[self._is_mode_color], template)
 
     def _render_sub(self, match):
         s = match.group()
-        if s == '$$': return s
-        else: return getattr(self, s[2:-1])
+        if s == b'$$': return s
+        else: return getattr(self, s[2:-1].decode(encoding))
 
     def set_mode(self, mode):
         "Set color or not: mode=0/1."
@@ -184,7 +194,7 @@ supported_versions = ('1,0;1,1;1,2;1,1;1,2;1,1;1,3;2,4;1,5;1,6;3,4;1,6;2,4;1,7;1
 # Example use case: progress bar
 #######################################################################
 
-class ProgressBar:
+class ProgressBar(object):
     """
     A 3-line progress bar, which looks like::
 

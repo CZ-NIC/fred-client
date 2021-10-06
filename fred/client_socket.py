@@ -16,14 +16,21 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with FRED.  If not, see <https://www.gnu.org/licenses/>.
+#
+from __future__ import absolute_import, print_function, unicode_literals
 
-import os, sys
+from builtins import input
+import os
+import re
 import socket
+import struct
+import sys
 import threading
 import time
-import re
-import struct
-from translate import encoding
+
+import six
+
+from .translate import encoding
 
 try:
     # python 2.6
@@ -39,12 +46,12 @@ RFC3730.txt  (2. Protocol Description).
 Class Lorry is managed by ManagerTransfer in session_transfer.py.
 """
 
-if not getattr(socket, 'ssl', None):
+if not ssl:
     # Protect to missing SSL support
-    print _T("This version of Python doesn't support SSL. Reinstall it with SLL support.")
+    print(_T("This version of Python doesn't support SSL. Reinstall it with SLL support."))
     sys.exit(-1)
 
-class Lorry:
+class Lorry(object):
     "Socket transfer."
     def __init__(self, parent):
         self._conn = None
@@ -81,8 +88,8 @@ class Lorry:
             DATA[3] = None
         try:
             port = int(DATA[1]) # port has been checked in previous code, but for safety...
-        except ValueError, msg:
-            self.append_error('%s: %s' % (_T('Invalid port value'), str(DATA[1])))
+        except ValueError as msg:
+            self.append_error('%s: %s' % (_T('Invalid port value'), six.text_type(DATA[1])))
         else:
             DATA[1] = port
         if self._parent.is_error():
@@ -95,7 +102,7 @@ class Lorry:
         elif verbose > 1:
             self.append_note(_T('Socket type IPv6 (AF_INET6) is not present in socket module.'))
         family_rev = {}
-        for k, v in family.items():
+        for k, v in list(family.items()):
             family_rev[v.lower()] = k
         ok = 0
         self._conn = None
@@ -109,17 +116,17 @@ class Lorry:
             try:
                 tc = socket.getaddrinfo(DATA[0], DATA[1])
                 socket_family = tc[0][0]
-            except socket.error, (no, msg):
-                self.append_error('getaddrinfo() socket.error [%d] %s' % (no, msg))
+            except socket.error as error:
+                self.append_error('getaddrinfo() socket.error %s' % error)
                 socket_family = socket.AF_INET
         if verbose > 1: self.append_note('%s: ${BOLD}%s${NORMAL}.' % (_T('Used socket type'), family[socket_family]))
         try:
             self._conn = socket.socket(socket_family, socket.SOCK_STREAM)
             ok = 1
-        except socket.error, (no, msg):
-            self.append_error('Create socket.error [%d] %s' % (no, msg))
+        except socket.error as error:
+            self.append_error('Create socket.error %s' % error)
             # WinXP IPv6: [10047] Address family not supported
-        except TypeError, msg:
+        except TypeError as msg:
             self.append_error('Create socket.error (socket.getaddrinfo): %s' % msg)
         if self._conn is None:
             return 0
@@ -131,9 +138,9 @@ class Lorry:
         self.append_note('%s %s, port %d ...' % (_T('Connecting to'), DATA[0], DATA[1]))
         try:
             self._conn.connect((DATA[0], DATA[1]))
-        except socket.error, tmsg:
+        except socket.error as tmsg:
             self.append_error('%s %s.\n' % (_T('I cannot connect to the server'), DATA[0]))
-            self.append_error('Connection socket.error: %s (%s:%s)' % (str(tmsg), DATA[0], DATA[1]))
+            self.append_error('Connection socket.error: %s (%s:%s)' % (six.text_type(tmsg), DATA[0], DATA[1]))
         except (KeyboardInterrupt, EOFError):
             self.append_error(_T('Interrupted by user'))
         if not ok:
@@ -159,20 +166,19 @@ class Lorry:
                 self.append_note(_T('Certificates missing. Trying to connect without SSL!'))
                 self._conn_ssl = socket.ssl(self._conn)
             ssl_ok = 1
-        except socket.sslerror, msg:
-            self.append_error('socket.sslerror: %s (%s:%s)' % (str(msg), DATA[0], DATA[1]))
-            if type(msg) not in (str, unicode):
-                err_note = {
-                    1:_T('Certificate not signed by verified certificate authority.'),
-                    2:'%s\n%s' % (_T('Server configuration is not valid. Contact administrator.'),
-                      _T('If this client runs under MS Windows and timeout is not zero, it is probably SLL bug! Set timeout back to zero.')),
-                }
-                try:
-                    text = err_note.get(msg[0], None)
-                    if text: self.append_error(text)
-                except (TypeError, IndexError):
-                    pass
-                self.try_again_with_timeout_zero = msg[0] == 2 # false - no, true - yes
+        except socket.sslerror as msg:
+            self.append_error('socket.sslerror: %s (%s:%s)' % (six.text_type(msg), DATA[0], DATA[1]))
+            err_note = {
+                1:_T('Certificate not signed by verified certificate authority.'),
+                2:'%s\n%s' % (_T('Server configuration is not valid. Contact administrator.'),
+                  _T('If this client runs under MS Windows and timeout is not zero, it is probably SLL bug! Set timeout back to zero.')),
+            }
+            try:
+                text = err_note.get(msg[0], None)
+                if text: self.append_error(text)
+            except (TypeError, IndexError):
+                pass
+            self.try_again_with_timeout_zero = msg[0] == 2 # false - no, true - yes
         except (KeyboardInterrupt, EOFError):
             self.append_error(_T('Interrupted by user'))
         if ssl_ok:
@@ -197,19 +203,19 @@ class Lorry:
         try:
             header = self._conn_ssl.read(4)
             ok = 1
-        except socket.timeout, msg:
+        except socket.timeout as msg:
             self.append_error('READ HEADER socket.timeout: %s' % msg)
-        except socket.sslerror, msg:
-            self.append_error('READ HEADER socket.sslerror: %s' % str(msg))
-        except socket.error, tmsg:
-            self.append_error('READ HEADER socket.error: %s' % str(tmsg))
+        except socket.sslerror as msg:
+            self.append_error('READ HEADER socket.sslerror: %s' % six.text_type(msg))
+        except socket.error as tmsg:
+            self.append_error('READ HEADER socket.error: %s' % six.text_type(tmsg))
         except (KeyboardInterrupt, EOFError):
             self.append_error(_T('Interrupted by user'))
         else:
             # message header
             try:
                 self._body_length = struct.unpack('!i', header)[0] - 4
-            except struct.error, msg:
+            except struct.error as msg:
                 self.append_error('ERROR HEADER: %s' % msg)
                 ok = 0
         if not ok: self.close()
@@ -217,7 +223,7 @@ class Lorry:
 
     def __receive__(self):
         "Body part of receiving process."
-        data = ''
+        data = b''
         ok = 0
         if self._body_length:
             try:
@@ -228,13 +234,13 @@ class Lorry:
                         break
                     data += part
                 ok = len(data) == self._body_length
-            except socket.timeout, msg:
+            except socket.timeout as msg:
                 self.append_error('READ socket.timeout: %s' % msg)
-            except socket.sslerror, msg:
-                self.append_error('READ socket.sslerror: %s' % str(msg))
-            except socket.error, tmsg:
-                self.append_error('READ socket.error: %s' % str(tmsg))
-            except MemoryError, msg:
+            except socket.sslerror as msg:
+                self.append_error('READ socket.sslerror: %s' % six.text_type(msg))
+            except socket.error as tmsg:
+                self.append_error('READ socket.error: %s' % six.text_type(tmsg))
+            except MemoryError as msg:
                 self.append_error('READ socket.receive MemoryError: %s' % msg)
             except (KeyboardInterrupt, EOFError):
                 self.append_error(_T('Interrupted by user'))
@@ -253,21 +259,21 @@ class Lorry:
     def handler_message(self, msg):
         'Handler of incomming message'
         # function for precess message
-        print 'SERVER ANSWER:\n', msg
+        print('SERVER ANSWER:\n', msg)
 
     def send(self, msg):
         "Send message to server."
         # Here can be automatic connection, be casue we need use session Manager
         ok = 0
         try:
-            self._conn_ssl.write('%s%s' % (struct.pack('!i', len(msg) + 4), msg))
+            self._conn_ssl.write(b'%s%s' % (struct.pack('!i', len(msg) + 4), msg))
             ok = 1
-        except socket.timeout, msg:
+        except socket.timeout as msg:
             self.append_error('SEND socket.timeout: %s' % msg)
-        except socket.sslerror, msg:
-            self.append_error('SEND socket.sslerror: %s' % str(msg))
-        except socket.error, tmsg:
-            self.append_error('SEND socket.error: %s' % str(tmsg))
+        except socket.sslerror as msg:
+            self.append_error('SEND socket.sslerror: %s' % six.text_type(msg))
+        except socket.error as tmsg:
+            self.append_error('SEND socket.error: %s' % six.text_type(tmsg))
         except (KeyboardInterrupt, EOFError):
             self.append_error(_T('Interrupted by user'))
         if not ok: self.close()
@@ -290,7 +296,7 @@ if __name__ == '__main__':
     import sys
     if len(sys.argv) > 3:
         DATA = [sys.argv[1], 700, sys.argv[2], sys.argv[3], '10.0', '']
-        class TestParent:
+        class TestParent(object):
             def __init__(self):
                 self.reset()
             def reset(self):
@@ -317,20 +323,20 @@ if __name__ == '__main__':
         manager = TestParent()
         client = Lorry(manager)
         if client.connect(DATA):
-            print client.fetch_notes()
-            print "[START LOOP prompt]"
+            print(client.fetch_notes())
+            print("[START LOOP prompt]")
             while 1:
-                q = raw_input("> q (quit) ")
+                q = input("> q (quit) ")
                 if q.strip() == '': continue
                 if q in ('q', 'quit', 'exit', 'konec'): break
                 if not client.send(q): break
-                print client.receive()
+                print(client.receive())
                 if client.is_error(): break
                 manager.display()
             manager.display()
-            print "[STOP LOOP prompt]"
-        print client.fetch_errors()
-        print client.fetch_notes()
+            print("[STOP LOOP prompt]")
+        print(client.fetch_errors())
+        print(client.fetch_notes())
         client.close()
     else:
-        print "usage:", os.path.basename(__file__), " host client.key client.crt"
+        print("usage:", os.path.basename(__file__), " host client.key client.crt")

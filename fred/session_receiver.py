@@ -16,13 +16,19 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with FRED.  If not, see <https://www.gnu.org/licenses/>.
+#
+from __future__ import absolute_import, print_function, unicode_literals
 
-import operator
-import eppdoc
-from eppdoc_assemble import DISCLOSES_UPDATE
-from session_base import *
-from session_command import ManagerCommand, COLOR
-from translate import encoding
+from builtins import range
+
+import six
+
+from . import eppdoc
+from .eppdoc_assemble import DISCLOSES_UPDATE
+from .session_base import *
+from .session_command import COLOR, ManagerCommand
+from .translate import encoding
+import collections
 """
 This class ManagerReceiver cover all previous ancestors
 base, transfer and command into one session manager object.
@@ -33,7 +39,7 @@ There is function  api_command() and class FredError
 what are used in client API.
 """
 SEPARATOR = '-' * 60
-ANSW_RESULT, ANSW_CODE, ANSW_MSG = range(3)
+ANSW_RESULT, ANSW_CODE, ANSW_MSG = list(range(3))
 DISCLOSES_INFO = DISCLOSES_UPDATE
 
 
@@ -103,7 +109,7 @@ class ManagerReceiver(ManagerCommand):
                         stoptag = tags[3]
                         endtag = ''
                     extra_message.append('%s: %s%s%s%s%s%s' % (_T('Element that caused a server error condition'), get_ltext(tags[0]), get_ltext(key), get_ltext(attribs), stoptag, get_ltext(elvalue), get_ltext(endtag)))
-                if item.has_key('reason'): extra_message.append('%s: %s' % (_T('Reason'), get_ltext(item['reason'].get('data', ''))))
+                if 'reason' in item: extra_message.append('%s: %s' % (_T('Reason'), get_ltext(item['reason'].get('data', ''))))
         if len(extra_message):
             self._dct_answer['errors'].extend(extra_message)
         return 1 # code is NOT 1000
@@ -119,7 +125,7 @@ class ManagerReceiver(ManagerCommand):
             if result:
                 try:
                     code = int(eppdoc.get_dct_attr(result, (), 'code'))
-                except ValueError, msg:
+                except ValueError as msg:
                     self._dct_answer['code'].append('%s: %s' % (_T('Invalid response code'), msg))
                     code = 0
 
@@ -198,10 +204,10 @@ class ManagerReceiver(ManagerCommand):
         for key in ('lang', 'version', 'objURI'):
             dct[key] = eppdoc.get_dct_value(svcMenu, key)
         self.defs[LANGS] = dct['lang'] = dct['lang'].split('\n')
-        if type(self.defs[LANGS]) in (str, unicode):
+        if isinstance(self.defs[LANGS], six.string_types):
             self.defs[LANGS] = (self.defs[LANGS],)
         # list of protocol versions:
-        if dct.has_key('version') and type(dct['version']) in (unicode, str):
+        if 'version' in dct and isinstance(dct['version'], six.string_types):
             dct['version'] = dct['version'].split('\n')
         # check objURI and extURI
         msg_invalid_schema_version = []
@@ -215,7 +221,7 @@ class ManagerReceiver(ManagerCommand):
         adjust_dct_keys(dct, ('lang', 'objURI', 'extURI'))
         # data collection policy, access
         dcp = greeting.get('dcp', {})
-        dcp_access = dcp.get('access', {}).keys() # all, none, null, personal, personalAndOther, other
+        dcp_access = list(dcp.get('access', {}).keys()) # all, none, null, personal, personalAndOther, other
         if 'all' in dcp_access:
             access = 1
             msg = _T('All data are disclosed.')
@@ -250,7 +256,7 @@ class ManagerReceiver(ManagerCommand):
             resData = self._dict_answer['response']['resData']
             contact_infData = resData['contact:infData']
             contact_postalInfo = contact_infData['contact:postalInfo']
-        except KeyError, msg:
+        except KeyError as msg:
             self.append_error('answer_response_contact_info KeyError: %s' % msg)
         else:
             self.__append_note_from_dct__(contact_infData,
@@ -326,7 +332,7 @@ class ManagerReceiver(ManagerCommand):
         try:
             resData = self._dict_answer['response']['resData']
             domain_infData = resData['domain:infData']
-        except KeyError, msg:
+        except KeyError as msg:
             self.append_error('answer_response_domain_info KeyError: %s' % msg)
         else:
             self.__append_note_from_dct__(domain_infData,
@@ -351,15 +357,14 @@ class ManagerReceiver(ManagerCommand):
         try:
             resData = self._dict_answer['response']['resData']
             nsset_infData = resData['%s:infData' % prefix]
-        except KeyError, msg:
+        except KeyError as msg:
             self.append_error('answer_response_%s_info KeyError: %s' % (prefix, msg))
         else:
-            self.__append_note_from_dct__(nsset_infData, map(lambda n: '%s:%s' % (prefix, n),
-                ('id', 'roid',
+            self.__append_note_from_dct__(nsset_infData, ['%s:%s' % (prefix, n) for n in ('id', 'roid',
                 'clID', 'crID', 'trID', 'upID',
                 'crDate', 'trDate', 'upDate', 'authInfo', 'tech',
-                'status s', 'status', 'reportlevel')))
-            if nsset_infData.has_key('%s:ns' % prefix):
+                'status s', 'status', 'reportlevel')])
+            if '%s:ns' % prefix in nsset_infData:
                 nsset_ns = nsset_infData['%s:ns' % prefix]
                 dns = []
                 if not type(nsset_ns) == list: nsset_ns = (nsset_ns,)
@@ -368,7 +373,7 @@ class ManagerReceiver(ManagerCommand):
                     addr = eppdoc.get_dct_value(row, '%s:addr' % prefix).split('\n')
                     dns.append([name, addr])
                 self._dct_answer['data']['%s:ns' % prefix] = dns
-            if nsset_infData.has_key('%s:ds' % prefix):
+            if '%s:ds' % prefix in nsset_infData:
                 nsset_ns = nsset_infData['%s:ds' % prefix]
                 dns = []
                 if not type(nsset_ns) == list: nsset_ns = (nsset_ns,)
@@ -382,7 +387,7 @@ class ManagerReceiver(ManagerCommand):
                         dns.append(items)
                 self._dct_answer['data']['%s:ds' % prefix] = dns
 
-            if nsset_infData.has_key('%s:dnskey' % prefix):
+            if '%s:dnskey' % prefix in nsset_infData:
                 nsset_ns = nsset_infData['%s:dnskey' % prefix]
                 dns = []
                 if not type(nsset_ns) == list: nsset_ns = (nsset_ns,)
@@ -430,12 +435,12 @@ class ManagerReceiver(ManagerCommand):
             resData = self._dict_answer['response']['resData']
             chunk_chkData = resData['%s:chkData' % names[0]]
             chunk_cd = chunk_chkData['%s:cd' % names[0]]
-        except KeyError, msg:
+        except KeyError as msg:
             errmsg = 'answer_response_%s_check KeyError: %s' % (names[0], msg)
             self.append_error(errmsg)
             self._dct_answer['errors'].append(errmsg)
         else:
-            if operator.isSequenceType(chunk_cd):
+            if isinstance(chunk_cd, collections.Sequence):
                 for item in chunk_cd:
                     self.__check_available__(self._dct_answer, item, names, 'avail')
             else:
@@ -447,7 +452,7 @@ class ManagerReceiver(ManagerCommand):
             for k, v in d.items():
                 if type(v) == int:
                     key = '%s:reason' % k
-                    d[key] = '%s. %s' % (status[v], get_ltext(d[key]))
+                    d[key] = '%s. %s' % (status[v], d[key])
 
 
     def answer_response_contact_check(self, data):
@@ -497,7 +502,7 @@ class ManagerReceiver(ManagerCommand):
         if msgQ:
             self.__append_note_from_dct__(response, ('msgQ count id',))
             self.__append_note_from_dct__(msgQ, ('qDate', 'msg'))
-            if not self._dct_answer['data'].has_key('msg'):
+            if 'msg' not in self._dct_answer['data']:
                 # if message is not simple text but XML document:
                 dmsg = msgQ.get('msg')
                 self._dct_answer['data']['msg.nodes'] = self.get_nodes_with_xmlns(dmsg)
@@ -511,7 +516,7 @@ class ManagerReceiver(ManagerCommand):
             if sval:
                 try:
                     self._dct_answer['data']['msgQ.%s' % key] = int(sval)
-                except ValueError, msg:
+                except ValueError as msg:
                     self._dct_answer.append(msg)
 
         if data[ANSW_CODE] == 1301 and self._session[POLL_AUTOACK]:
@@ -519,7 +524,7 @@ class ManagerReceiver(ManagerCommand):
             msg_id = self.get_value_from_dict(('data', 'msgQ.id'))
             if msg_id: # if only ID exists
                 dct = self._dct_answer # keep message from "req"
-                self.api_command('poll', {'op':'ack', 'msg_id':str(msg_id)})
+                self.api_command('poll', {'op':'ack', 'msg_id': six.text_type(msg_id)})
                 # Copy previous "req" answer to new from "ack" command.
                 dct['code'] = self._dct_answer['code']
                 dct['reason'] = 'req: %s\n%sack: %s' % (dct['reason'], ' ' * (self._ljust + 1), self._dct_answer['reason'])
@@ -566,7 +571,7 @@ class ManagerReceiver(ManagerCommand):
         try:
             resData = self._dict_answer['response']['resData']
             listData = resData['%s:listData' % columns[0]] # contact:listData
-        except KeyError, msg:
+        except KeyError as msg:
             self.append_error('answer_response_list:%s KeyError: %s' % (columns[0], msg))
         else:
             self._dct_answer['data']['list'] = eppdoc.get_dct_values(listData, '%s:%s' % columns)
@@ -594,7 +599,7 @@ class ManagerReceiver(ManagerCommand):
         try:
             resData = self._dict_answer['response'].get('resData', {})
             res_credit_info = resData.get('fred:resCreditInfo', {})
-        except KeyError, msg:
+        except KeyError as msg:
             self.append_error('answer_response_fred_creditinfo KeyError: %s' % msg)
         else:
             # if answer returns only one zone, we need simualte list of zones.
@@ -622,7 +627,7 @@ class ManagerReceiver(ManagerCommand):
             self._loop_status = LOOP_INSIDE # inside loop
             try:
                 self.api_command('get_results')
-            except FredError, fe:
+            except FredError as fe:
                 self.append_error('\n'.join(fe.args))
                 self.display() # display errors or notes
                 break
@@ -647,16 +652,16 @@ class ManagerReceiver(ManagerCommand):
 
         try:
             resData = self._dict_answer['response'].get('resData', {})
-        except KeyError, msg:
+        except KeyError as msg:
             self.append_error('__fred_listdomains__ KeyError: %s' % msg)
         else:
             fred_info_response = resData.get('fred:infoResponse', {})
             fred_count = fred_info_response.get('fred:count', None)
-            if type(fred_count) is dict and fred_count.has_key('data'):
+            if type(fred_count) is dict and 'data' in fred_count:
                 self._dct_answer['data']['count'] = fred_count['data']
                 try:
                     count = int(fred_count['data'])
-                except ValueError, msg:
+                except ValueError as msg:
                     self.append_error('__fred_listobjects__ ValueError: %s' % msg)
                     count = 0
                 if count == 0:
@@ -701,7 +706,7 @@ Call get_results command for gain data."""))
         if self.__code_isnot_1000__(data, 'fred:getresults'): return
         try:
             resData = self._dict_answer['response'].get('resData', {})
-        except KeyError, msg:
+        except KeyError as msg:
             self.append_error('__fred_getresults__ KeyError: %s' % msg)
         else:
             fred_results_list = resData.get('fred:resultsList', {})
@@ -806,10 +811,10 @@ Call get_results command for gain data."""))
     #-------------------------------------------------
 
 
-class FredError(StandardError):
+class FredError(Exception):
     'Fred EPP errors.'
     def __init__(self, message):
-        StandardError.__init__(self, message)
+        Exception.__init__(self, message)
         # Encode unicode message into the local encoding. session_base.get_unicode()
         self.args = (get_ltext(message),)
 
@@ -821,7 +826,7 @@ def append_dct(dct, key, value):
     if '\n' in value:
         value = value.split('\n')
 
-    if dct.has_key(key):
+    if key in dct:
         if type(dct[key]) is not list:
             dct[key] = [dct[key]] # keep all data in lists
         getattr(dct[key], type(value) in (list, tuple) and 'extend' or 'append')(value)
@@ -835,8 +840,9 @@ def adjust_dict(dct_data):
     if type(dct_data) == dict:
         for k in dct_data:
             if dct_data[k] is None: continue
-            if type(dct_data[k]) == str: dct_data[k] = unicode(dct_data[k], encoding)
-            if type(dct_data[k]) == unicode:
+            if isinstance(dct_data[k], six.binary_type):
+                dct_data[k] = dct_data[k].decode(encoding)
+            if isinstance(dct_data[k], six.text_type):
                 dct[k] = [dct_data[k]]
             elif type(dct_data[k]) == dict:
                 d = adjust_dict(dct_data[k])
@@ -849,14 +855,15 @@ def adjust_dict(dct_data):
                         if len(d): dct[k].append(d)
                     else:
                         if item != None:
-                            if type(item) == str: item = unicode(item, encoding)
+                            if isinstance(item, six.binary_type):
+                                item = item.decode(encoding)
                             dct[k].append(item)
     return dct
 
 def adjust_dct_keys(dct, names):
     'Keys must exists and values must be list or tuple.'
     for name in names:
-        if dct.has_key(name):
+        if name in dct:
             if type(dct[name]) not in (list, tuple):
                 dct[name] = (dct[name],)
         else:
@@ -870,15 +877,15 @@ def test(name_and_xml):
     #m._session[14] = 'php' # OUTPUT_TYPE
     m.display()
     m.print_answer()
-    print "API OUTPUT:", m._dct_answer
+    print("API OUTPUT:", m._dct_answer)
 #    m.__put_raw_into_note__(m._dict_answer)
 #    m.display()
 
 if __name__ == '__main__':
     try:
-        import test_incomming_messages
+        from . import test_incomming_messages
     except ImportError:
-        print "Testing modul 'test_incomming_messages.py' is not included."
+        print("Testing modul 'test_incomming_messages.py' is not included.")
     else:
         # TEST selected document:
         # Data item has format: ('command:name',"""<?xml ...XML document... >""")

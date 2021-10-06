@@ -27,14 +27,21 @@ and XML server's answers.
 Second class is Data what build XML elements to the python
 discitionary.
 """
-import os, re
+from __future__ import absolute_import, print_function, unicode_literals
+
+from future import standard_library
+standard_library.install_aliases()
+from builtins import range
+from builtins import object
+import os
+import re
 import xml.dom.minidom
 try:
     from xml.dom.ext import PrettyPrint
 except ImportError:
     PrettyPrint = None
 from xml.dom import Node
-import StringIO
+import io
 
 #========================================================
 # Namespaces for  EPP
@@ -56,7 +63,7 @@ xmlns_xsi = "http://www.w3.org/2001/XMLSchema-instance"
 default_encoding = 'utf-8' # default document output encoding
 #========================================================
 
-class Message:
+class Message(object):
     'Struct maintaining DOM object and process errors.'
 
     def __init__(self, manager):
@@ -85,7 +92,7 @@ class Message:
         self.readline = None
 
     def get_schema_names(self):
-        return self.schema_version.keys()
+        return list(self.schema_version.keys())
 
     def set_schema_version(self, key, value):
         'Set schema version'
@@ -129,13 +136,13 @@ class Message:
 
     def get_xml(self):
         'Build XML form DOM.'
-        xml = ''
+        xml = b''
         if self.dom:
             self.dom.normalize()
             #if PrettyPrint:
             # (PrettyPrint is disabled be cause of wrong result: "&lt;value>")
             if 0:
-                f = StringIO.StringIO()
+                f = io.StringIO()
                 PrettyPrint(self.dom, f, self.encoding)
                 f.seek(0, 0)
                 xml = f.read()
@@ -144,7 +151,7 @@ class Message:
                 #xml = self.dom.toprettyxml('', '', self.encoding)
                 xml = self.dom.toxml(self.encoding)
         # hook parametru standalone
-        return re.sub('(<?xml .+?)\?>', '\\1 standalone="no"?>', xml, re.I)
+        return re.sub(b'(<?xml .+?)\?>', b'\\1 standalone="no"?>', xml, re.I)
 
     def join_errors(self, errors):
         self.errors.extend(errors)
@@ -159,7 +166,7 @@ class Message:
 
     def get_errors(self, sep=None):
         if sep == None: sep = self._cr
-        errors = ['[%d] (%s) %s' % (code, str(value), reason) for code, value, reason in self.errors]
+        errors = ['[%d] (%s) %s' % (code, six.text_type(value), reason) for code, value, reason in self.errors]
         return sep.join(errors)
 
     def get_results(self, sep=None):
@@ -178,9 +185,9 @@ class Message:
         'Load XML file. Used for EPP templates.'
         try:
             xml_doc = open(filepath).read()
-        except IOError, (no, msg):
+        except IOError as error:
             # when template missing
-            self.errors.append((2000, filepath, 'IOError: %d, %s' % (no, msg)))
+            self.errors.append((2000, filepath, 'IOError: %s' % error))
             xml_doc = None
         return xml_doc
 
@@ -190,10 +197,10 @@ class Message:
         try:
             self.dom = xml.dom.minidom.parseString(xml_doc)
             self.dom.normalize()
-        except xml.parsers.expat.ExpatError, msg:
+        except xml.parsers.expat.ExpatError as msg:
             # when XML is invalid
             self.errors.append((2001, None, _T('Invalid XML document. ExpatError: %s' % msg)))
-        except LookupError, msg:
+        except LookupError as msg:
             # invalid or unknown encoding
             self.errors.append((2001, None, _T('Document has wrong encoding. LookupError: %s' % msg)))
 
@@ -224,14 +231,13 @@ class Message:
         else:
             # if upper node doesn't exist, sahll we stop it?
             self.errors.append((2001, None, _T("Internal error: Master node '%s' doesn't exist." % master_name)))
-            raise "Internal Error: Master node '%s' doesn't exist." % master_name # TODO ????
-            node = None # TODO ????
+            raise ValueError("Internal Error: Master node '%s' doesn't exist." % master_name)
         return node
 
     def new_node(self, master, name, value=None, attribs=None):
         "Create new node and attach to the master node. attribs=((name,value), (name,value), ....)"
         if not master:
-            raise "ERROR: new_node(%s) Master missing!" % name # TODO ????
+            raise ValueError("ERROR: new_node(%s) Master missing!" % name)
         node = self.dom.createElement(name)
         if type(master) == xml.dom.minicompat.NodeList:
             master[0].appendChild(node)
@@ -242,9 +248,9 @@ class Message:
             value = value.replace(r"\'", "'").replace(r'\"', '"').replace(r'\\ '[:-1], r'\ '[:-1])
             try:
                 node.appendChild(self.dom.createTextNode(value))
-            except TypeError, msg:
-                print "FredClient Internal Error: ", name, type(value), value
-                raise 'TypeError:', msg
+            except TypeError as msg:
+                print("FredClient Internal Error: ", name, type(value), value, msg)
+                raise
         if attribs:
             self.append_attribNS(node, attribs)
         return node
@@ -340,7 +346,7 @@ class Message:
         # next nodes
         #....................................
         # *** 1. ***
-        nodes = [e.nodeName.encode('ascii') for e in el.childNodes if e.nodeType == Node.ELEMENT_NODE]
+        nodes = [e.nodeName for e in el.childNodes if e.nodeType == Node.ELEMENT_NODE]
         # *** 2. ***
         for name, count in [(name, nodes.count(name))for name in set(nodes)]:
             if count > 1:
@@ -357,7 +363,7 @@ class Message:
         # *** 3. ***
         for e in el.childNodes:
             if e.nodeType == Node.ELEMENT_NODE:
-                name = e.nodeName.encode('ascii')
+                name = e.nodeName
                 if is_class:
                     child_obj = current_obj.__dict__[name]
                 else:
@@ -408,7 +414,7 @@ def get_node_attributes(nodes, name):
 #-------------------------------------------------
 
 
-class Data:
+class Data(object):
     """Data class. Have members along to a EPP DOM tree.
     Access to member values write member.data or member.attr.
     For example:
@@ -481,8 +487,8 @@ class Data:
 
 def append_to_dict(d, key, val):
     "Append or extend values along to insert type."
-    if d.has_key(key):
-        if type(d[key]) in (str, unicode):
+    if key in d:
+        if isinstance(d[key], six.string_types):
             d[key] += val
         else:
             d[key].extend(val)
@@ -518,7 +524,7 @@ def get_dct_values(dict_data, names, attr_name=''):
             name = names[i]
             if name in ('data', 'attr'): continue
             if type(dict_data) is not dict:
-                ret.append('%s %s' % (_T('Internal error: Value is not dict type:'), str(dict_data)))
+                ret.append('%s %s' % (_T('Internal error: Value is not dict type:'), six.text_type(dict_data)))
                 continue
             if not dict_data.get(name, None): continue
             inames = names[i + 1:]
@@ -564,7 +570,7 @@ def __pfd__(dict_data, color=0, indent=0):
             rows = __pfd__(d, color, indent)
             if len(rows): body.extend(rows)
     else:
-        if indent and dict_data.has_key('attr'):
+        if indent and 'attr' in dict_data:
             # attributs, but not from root
             attr = []
             for k, v in dict_data['attr']:
@@ -573,7 +579,7 @@ def __pfd__(dict_data, color=0, indent=0):
         # data
         if dict_data is None:
             return body
-        if dict_data.has_key('data'): body.append(dict_data['data'])
+        if 'data' in dict_data: body.append(dict_data['data'])
         # other children nodes
         ind = ' ' * indent
         for key in dict_data.keys():
@@ -695,25 +701,25 @@ def test_display():
             {'contact:id': {'data': u'handle2', 'attr': [(u'avail', u'1')]}},
             {'contact:id': {'data': u'handle1', 'attr': [(u'avail', u'0')]}}]}}}}
 
-    print prepare_for_display(exampe2)
-    print '=' * 60
-    print prepare_display(exampe2)
+    print(prepare_for_display(exampe2))
+    print('=' * 60)
+    print(prepare_display(exampe2))
 
 
 def test_parse(filename):
-    from session_base import ManagerBase
+    from .session_base import ManagerBase
     manager = ManagerBase()
     m = Message(manager)
     xml = m.load_xml_doc(filename)
     errors = m.fetch_errors()
     if errors:
-        print errors
+        print(errors)
         return
     m.parse_xml(xml)
-    print m.fetch_errors()
-    print m.get_xml()
+    print(m.fetch_errors())
+    print(m.get_xml())
     epp_dict = m.create_data()
-    print prepare_display(epp_dict)
+    print(prepare_display(epp_dict))
 
 
 
@@ -724,6 +730,6 @@ if __name__ == '__main__':
     if len(sys.argv) > 1:
         test_parse(sys.argv[1])
     else:
-        print 'Usage: eppdoc.py eppfile.xml'
+        print('Usage: eppdoc.py eppfile.xml')
 ##    ret = {'reason': u'Authentication error; server closing connection', 'code': 2501, 'data': {"h1":"ano"}, 'errors': []}
 ##    print get_value_from_dict(ret, ('data','h1'))

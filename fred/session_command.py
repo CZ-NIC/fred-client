@@ -16,16 +16,21 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with FRED.  If not, see <https://www.gnu.org/licenses/>.
+#
+from __future__ import absolute_import, division, print_function, unicode_literals
 
-import re, random, math
-import dircache # for TEST only, NOT present in release version
-import eppdoc
-import eppdoc_client
-import translate
+from builtins import chr
+from builtins import range
+from past.utils import old_div
+import math
+import os
+import random
+import re
 from xml.sax.saxutils import unescape as unescape_html
 
-from session_base import *
-from session_transfer import ManagerTransfer, human_readable
+from . import eppdoc, eppdoc_client, translate
+from .session_base import *
+from .session_transfer import ManagerTransfer, human_readable
 
 """
 This module with ManagerCommand class take care about creation
@@ -42,7 +47,7 @@ Next descendat is in session_receiver.py
 
 COLOR = 1
 SEPARATOR = '-' * 60
-OPTIONAL, REQUIRED = range(2)
+OPTIONAL, REQUIRED = list(range(2))
 
 def __find_index__(array, key):
     index = -1
@@ -317,7 +322,7 @@ When you want not result in your prompt join option 'noprompt'
                     options[-1] += ']'
                 command_help = '\n'.join(phelp)
                 cmd_options = ' '.join(options)
-                command_lines = map(lambda name: '%s %s' % (name, cmd_options), names)
+                command_lines = ['%s %s' % (name, cmd_options) for name in names]
                 break
         #           SYNTAX,             OPTIONS,          DESCRIPTION
         return command_lines, command_help, notice, examples
@@ -340,7 +345,7 @@ When you want not result in your prompt join option 'noprompt'
         if len(lines):
             if lines[0] == '': lines.pop(0) # remove blank line on the top
             if lines[-1] == '': lines.pop() # remove blank line at the end
-        indentation = map(lambda s: '%s%s' % (space, s), lines)
+        indentation = ['%s%s' % (space, s) for s in lines]
         return '\n'.join(indentation)
 
     def __make_help_details__(self, command_name, type):
@@ -486,12 +491,14 @@ When you want not result in your prompt join option 'noprompt'
         else:
             # 3. EPP commands
             cmd = EPP_command
-            if type(cmd) != unicode:
+            if not isinstance(cmd, six.binary_type):
                 try:
-                    cmd = unicode(cmd, translate.encoding)
-                except UnicodeDecodeError, msg:
+                    cmd = six.text_type(cmd).encode(translate.encoding)
+                except UnicodeDecodeError as msg:
                     self.append_error('UnicodeDecodeError: %s' % msg)
-                    cmd = unicode(repr(cmd), translate.encoding)
+                    cmd = repr(cmd)
+                    if not isinstance(cmd, six.binary_type):
+                        cmd = six.text_type(cmd).encode(translate.encoding)
             command_name, stop = self.epp_command(cmd, command)
             if command_name != 'q': # User press Ctrl+C or Ctrl+D in interactive mode.
                 self._raw_cmd = self._epp_cmd.get_xml()
@@ -516,7 +523,7 @@ When you want not result in your prompt join option 'noprompt'
         error = utext = ''
         try:
             utext = text_utf8.decode('utf-8')
-        except UnicodeDecodeError, msg:
+        except UnicodeDecodeError as msg:
             error = 'UnicodeDecodeError: %s' % msg
         return utext, error
 
@@ -667,10 +674,10 @@ When you want not result in your prompt join option 'noprompt'
             # display folder
             self.append_note('%s: %s' % (_T('Dir list'), param))
             try:
-                stuff = dircache.listdir(param)
-            except OSError, (no, msg):
-                stuff = 'OSError: [%d] %s' % (no, msg)
-            self.append_note(str(stuff))
+                stuff = os.listdir(param)
+            except OSError as error:
+                stuff = 'OSError: %s' % error
+            self.append_note(six.text_type(stuff))
         else:
             command_name, xmldoc = self.load_filename(param)
             if command_name == 'login' and not self.is_connected():
@@ -713,7 +720,7 @@ When you want not result in your prompt join option 'noprompt'
         if param:
             lang, error = translate.get_valid_lang(param, _T('command'))
             if error:
-                self.append_note(_T("Unsupported language code: '%s'.\nAvailable codes are: %s.") % (param, ', '.join(translate.langs.keys())))
+                self.append_note(_T("Unsupported language code: '%s'.\nAvailable codes are: %s.") % (param, ', '.join(list(translate.langs.keys()))))
                 msg = _T('Language is')
             else:
                 if self._session[LANG] == lang:
@@ -777,8 +784,8 @@ When you want not result in your prompt join option 'noprompt'
             self.append_note(_T('You are logged already.'))
         else:
             cmd_params = self._epp_cmd.get_params()
-            if cmd_params.has_key('lang'):
-                self.__session_language__(get_ltext(cmd_params['lang'][0]))
+            if 'lang' in cmd_params:
+                self.__session_language__(cmd_params['lang'][0])
             if self._auto_connect and not self.is_connected():
                 # commection MUST be created BEFOR assembling login because of tags
                 # <objURI> and <extURI>
@@ -788,7 +795,7 @@ When you want not result in your prompt join option 'noprompt'
             self._session[CMD_ID] = 0
             self.defs[PREFIX] = ''.join([chr(random.randint(97, 122)) for n in range(4)])
             self._epp_cmd.assemble_login(self.__next_clTRID__(), (self._epp_cmd.schema_version['epp'], self.defs[objURI], self.defs[extURI], self._session[LANG]))
-            if self._epp_cmd._dct.has_key('username'):
+            if 'username' in self._epp_cmd._dct:
                 self._session[USERNAME] = self._epp_cmd._dct['username'][0] # for prompt info
 
     #==================================================
@@ -842,15 +849,15 @@ def load_file(filename):
     body = error = ''
     try:
         body = open(filename).read()
-    except IOError, (errnum, msg):
-        error = 'IOError: %d. %s (%s)' % (errnum, msg, filename)
+    except IOError as error:
+        error = 'IOError: %s (%s)' % (error, filename)
     return body, error
 
 def __make_help_columns__(names, fcols, left_indent, padding=26):
     'Make columns from list of names. Param cols must be float.'
-    length = int(math.ceil(len(names) / fcols))
+    length = int(math.ceil(old_div(len(names), fcols)))
     sep = '\n%s' % (' ' * left_indent)
-    return '%s%s' % (' ' * left_indent, sep.join([''.join(map(lambda s: s.ljust(padding), names[i::length])) for i in range(length)]))
+    return '%s%s' % (' ' * left_indent, sep.join([''.join([s.ljust(padding) for s in names[i::length]]) for i in range(length)]))
 
 
 if __name__ == '__main__':
@@ -859,8 +866,8 @@ if __name__ == '__main__':
     m._session[0] = 1 # login simulation
     # Test na disclose
     disclose = "(n (org fax email))"
-    print 'disclose:', disclose
+    print('disclose:', disclose)
     command_name, xml, stop = m.create_eppdoc("create_contact CID:ID01 'Jan Novak' info@mymail.cz Praha CZ mypassword 'Firma s.r.o.' 'Narodni trida 1230/12' '' 12000 +420.222745111 +420.222745111 %s" % disclose)
-    print m.is_epp_valid(xml)
-    print xml
+    print(m.is_epp_valid(xml))
+    print(xml)
     m.display()

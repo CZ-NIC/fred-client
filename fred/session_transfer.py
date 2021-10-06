@@ -16,18 +16,22 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with FRED.  If not, see <https://www.gnu.org/licenses/>.
+#
+from __future__ import absolute_import, print_function, unicode_literals
 
-import socket, re
+from builtins import map, range, zip
+import re
+import socket
 from cgi import escape as escape_html
-import eppdoc_client
-import client_socket
-from session_base import *
-from translate import encoding, options
+
+from . import client_socket, eppdoc_client
+from .session_base import *
+from .translate import encoding, options
 
 try:
     # This module mustn't be included in release!
     # It is used for internal test only.
-    import fred_debug
+    from . import fred_debug
 except ImportError:
     pass
 
@@ -44,7 +48,7 @@ d_tag = {
     'html': ('<pre class="fred_messages">', '</pre>'),
     'php': ('<?php ', '?>'),
 }
-BEGIN, END = range(2)
+BEGIN, END = list(range(2))
 
 class ManagerTransfer(ManagerBase):
     """EPP client support.
@@ -135,7 +139,7 @@ class ManagerTransfer(ManagerBase):
                 names = epp_xml.get_check_names(match.group(1))
                 if len(names):
                     # makte struct (key, verbose, description)
-                    self._session[SORT_BY_COLUMNS] = map(lambda s: (s, 1, s), names)
+                    self._session[SORT_BY_COLUMNS] = [(s, 1, s) for s in names]
         return command_name
 
     #==================================================
@@ -160,9 +164,9 @@ class ManagerTransfer(ManagerBase):
         """
         section = self.config_get_section_connect()
         for key in ('host', 'port', 'ssl_key', 'ssl_cert', 'timeout', 'socket'):
-            if dc.has_key(key): self._conf.set(section, key, dc[key])
-        if dc.has_key('username'): self._conf.set(section, 'username', dc['username'])
-        if dc.has_key('password'): self._conf.set(section, 'password', dc['password'])
+            if key in dc: self._conf.set(section, key, dc[key])
+        if 'username' in dc: self._conf.set(section, 'username', dc['username'])
+        if 'password' in dc: self._conf.set(section, 'password', dc['password'])
 
     def get_connect_defaults(self):
         'Get connect defaults from config'
@@ -180,8 +184,8 @@ class ManagerTransfer(ManagerBase):
                 self.get_config_value(self._section_epp_login, 'password', OMIT_ERROR),
                 ]
         # overwrite username+password by command line
-        if self._epp_cmd._dct.has_key('username'): data[6] = self._epp_cmd._dct['username'][0]
-        if self._epp_cmd._dct.has_key('password'): data[7] = self._epp_cmd._dct['password'][0]
+        if 'username' in self._epp_cmd._dct: data[6] = self._epp_cmd._dct['username'][0]
+        if 'password' in self._epp_cmd._dct: data[7] = self._epp_cmd._dct['password'][0]
 
         # add prefix if ssl_key or/and ssl_cert paths are relative
         ssl_key, ssl_cert = data[2], data[3]
@@ -199,7 +203,7 @@ class ManagerTransfer(ManagerBase):
         error = ''
         try:
             port = int(sport)
-        except ValueError, msg:
+        except ValueError as msg:
             error = _T("Invalid port value: '%s'.") % sport
         else:
             if not (port > 0 and port <= 65535):
@@ -229,7 +233,7 @@ class ManagerTransfer(ManagerBase):
             if not os.path.isfile(data[2]): missing.append(_T('SSL private key file not found'))
         if len(missing):
             self.append_error(_T("Can't connect to server"))
-            map(self.append_error, missing)
+            list(map(self.append_error, missing))
             return 0
         return 1
 
@@ -355,7 +359,7 @@ class ManagerTransfer(ManagerBase):
             # In verbose 0: Displays only raw XML server answer.
             # Print in only any command was sent.
             fnc = getattr(self, 'get_answer_%s' % self._session[OUTPUT_TYPE], self.get_answer)
-            print fnc(dct)
+            print(fnc(dct))
 
 
     def get_keys_sort_by_columns(self):
@@ -367,7 +371,7 @@ class ManagerTransfer(ManagerBase):
         if self._session[SORT_BY_COLUMNS]:
             sorted_columns = self._session[SORT_BY_COLUMNS] # sorted output (included in create command part)
         else:
-            sorted_columns = map(lambda n:(n, 1, ''), dct_data.keys()) # default (unsorted)
+            sorted_columns = [(n, 1, '') for n in list(dct_data.keys())] # default (unsorted)
         return sorted_columns
 
     def get_answer_udata(self, sep='\n'):
@@ -394,9 +398,9 @@ class ManagerTransfer(ManagerBase):
             # only for info commands
             key1 = '%s:status.s' % match.group(1)
             key2 = '%s:status' % match.group(1)
-            if dct_data.has_key(key1) and dct_data.has_key(key2):
+            if key1 in dct_data and key2 in dct_data:
                 if type(dct_data[key1]) in (list, tuple):
-                    dct_data[key1] = map(lambda p:'%s - %s' % p, zip(dct_data[key1], dct_data[key2]))
+                    dct_data[key1] = ['%s - %s' % p for p in zip(dct_data[key1], dct_data[key2])]
                 else:
                     dct_data[key1] = '%s - %s' % (dct_data[key1], dct_data[key2])
                 dct_data.pop(key2)
@@ -426,7 +430,7 @@ class ManagerTransfer(ManagerBase):
             if type(value) not in (list, tuple):
                 # split text into lines
                 if type(value) is int:
-                    value = str(value)
+                    value = six.text_type(value)
                 else:
                     lines = re.split('[\r\n]+', value)
                     if len(lines) > 1:
@@ -447,7 +451,7 @@ class ManagerTransfer(ManagerBase):
         if len(data):
             if len(body) and body[-1] != '': body.append('') # empty line
             body.extend(data)
-        if globals().has_key('fred_debug') :
+        if 'fred_debug' in globals() :
             # ONLY FOR INTERNAL USE
             fred_debug.check_missing_names(body, self._session[SORT_BY_COLUMNS], self._session[VERBOSE], is_check, dct_data, used, column_verbose)
 
@@ -495,22 +499,22 @@ class ManagerTransfer(ManagerBase):
                         dct['errors'].insert(0, dct['reason'])
                     elif code not in (1000, 1500) or key in ('update', 'delete', 'transfer', 'sendauthinfo', 'technical_test', 'poll'):
                         # 1000 - success,  1500 - success logout
-                        report(get_ltext(colored_output.render('${%s}%s${NORMAL}' % (code == 1000 and 'GREEN' or 'NORMAL', dct['reason']))))
+                        report(colored_output.render('${%s}%s${NORMAL}' % (code == 1000 and 'GREEN' or 'NORMAL', dct['reason'])))
             else:
                 # full
                 if code:
                     label_code = (u'%s:' % get_unicode(_T('Return code'))).ljust(self._ljust + 1) # +1 space between key and value
-                    report(colored_output.render('${BOLD}%s${NORMAL}%d' % (get_ltext(label_code), code)))
+                    report(colored_output.render('${BOLD}%s${NORMAL}%d' % (label_code), code))
                 if dct.get('reason'):
                     label_reason = (u'%s:' % get_unicode(_T('Reason'))).ljust(self._ljust + 1)
-                    report(colored_output.render('${BOLD}%s${%s}%s${NORMAL}' % (get_ltext(label_reason), code == 1000 and 'GREEN' or 'NORMAL', get_ltext(dct['reason']))))
+                    report(colored_output.render('${BOLD}%s${%s}%s${NORMAL}' % (label_reason, code == 1000 and 'GREEN' or 'NORMAL', dct['reason'])))
             #... errors .............................
             if len(dct['errors']):
                 if len(body) and body[-1] != '': report('') # empty line
                 dct['errors'][-1] += colored_output.render('${NORMAL}')
-                report(get_ltext('%s%s: %s' % (colored_output.render('${BOLD}${RED}'), _T('ERROR'), dct['errors'][0])))
+                report('%s%s: %s' % (colored_output.render('${BOLD}${RED}'), _T('ERROR'), dct['errors'][0]))
                 for error in dct['errors'][1:]:
-                    report(get_ltext(error))
+                    report(error)
             #... data .............................
             self.__append_to_body__(body, dct)
 
@@ -519,10 +523,11 @@ class ManagerTransfer(ManagerBase):
             report(human_readable(self._raw_answer))
         #... third verbose level .............................
         for n in range(len(body)):
-            if type(body[n]) == unicode: body[n] = body[n].encode(encoding)
+            if isinstance(body[n], six.binary_type):
+                body[n] = body[n].decode(encoding)
         if self._session[VERBOSE] == 3 and self._loop_status == LOOP_NONE:
             if len(body) and body[-1] != '': report('') # empty line
-            report(colored_output.render('${BOLD}COMMAND:${NORMAL}${GREEN} %s' % get_ltext(self._command_sent)))
+            report(colored_output.render('${BOLD}COMMAND:${NORMAL}${GREEN} %s' % self._command_sent))
             report(human_readable(self._raw_cmd))
             report(colored_output.render('${NORMAL}${BOLD}ANSWER:${NORMAL}${GREEN}'))
             report(human_readable(self._raw_answer))
@@ -553,14 +558,14 @@ class ManagerTransfer(ManagerBase):
                 tbl_reason = ['<table class="fred_data">']
                 tbl_reason.append('<tr>\n\t<th>%s</th>\n\t<td>%d</td>\n</tr>' % (_T('Return code'), code))
                 #tbl_reason.append('<tr>\n\t<th>command</th>\n\t<td>%s</td>\n</tr>'%get_ltext(dct['command']))
-                tbl_reason.append('<tr>\n\t<th>%s</th>\n\t<td><span class="%s">%s</span></td>\n</tr>' % (_T('Reason'), reason_css_class, get_ltext(dct['reason'])))
+                tbl_reason.append('<tr>\n\t<th>%s</th>\n\t<td><span class="%s">%s</span></td>\n</tr>' % (_T('Reason'), reason_css_class, dct['reason']))
                 tbl_reason.append('</table>')
                 report('\n'.join(tbl_reason))
             #... errors .............................
             if len(dct['errors']):
                 report('<div class="fred_errors">\n<strong>errors:</strong><ul>')
                 for error in dct['errors']:
-                    report('<li>%s</li>' % get_ltext(error))
+                    report('<li>%s</li>' % error)
                 report('</ul></div>')
             #... data .............................
             is_check = re.match('\w+:check', dct['command']) and 1 or 0 # object:check
@@ -592,7 +597,8 @@ class ManagerTransfer(ManagerBase):
 
             # encode to 8bit local
             for n in range(len(body)):
-                if type(body[n]) == unicode: body[n] = body[n].encode(encoding)
+                if isinstance(body[n], six.binary_type):
+                    body[n] = body[n].decode(encoding)
         else:
             # Zero verbose level
             report(escape_html(human_readable(self._raw_answer)))
@@ -692,9 +698,9 @@ $fred_source_answer = '';      // source code (XML) of the answer prepared to di
 
             # some veriables must be always array type
             for key in ('domain:status', 'domain:status.s'):
-                if not dct_data.has_key(key):
+                if key not in dct_data:
                     continue
-                if type(dct_data[key]) is unicode:
+                if isinstance(dct_data[key], six.string_types):
                     dct_data[key] = [dct_data[key]] # make array from string
 
             for key, verbose, explain in self.__get_column_items__(dct['command'], dct_data):
@@ -739,10 +745,10 @@ $fred_source_answer = '';      // source code (XML) of the answer prepared to di
     def print_tag(self, pos):
         'Prints tag for HTML or PHP mode at the position (0-beginig,1-end)'
         tag = d_tag.get(self._session[OUTPUT_TYPE], ('', ''))[pos]
-        if tag: print tag
+        if tag: print(tag)
         if self._session[OUTPUT_TYPE] == 'php' and pos == 0:
             # init variables for notes and errros
-            print self.get_init_php()
+            print(self.get_init_php())
 
     def save_history(self, readline):
         'Save history of command line.'
@@ -787,7 +793,7 @@ $fred_source_answer = '';      // source code (XML) of the answer prepared to di
             words = self._epp_cmd.readline_find_words(command_name, dct, writelog is None and (lambda s: s) or writelog)
         else:
             words = self._available_commands # default offer
-        writelog('\tOFFER WORDS = %s' % str(words))
+        writelog('\tOFFER WORDS = %s' % six.text_type(words))
         return words
 
     def complete_with_params(self, prefix, index):
@@ -857,8 +863,10 @@ def __append_into_report__(body, k, v, explain, ljust, indent='', no_terminal_ta
     )[no_terminal_tags]
     escape = no_terminal_tags == 2 and escape_html or (lambda s: s)
     if explain: k = explain # overwrite key by explain message
-    if type(k) is str: k = k.decode(encoding)
-    if type(v) is str: v = v.decode(encoding)
+    if isinstance(k, six.binary_type):
+        k = k.decode(encoding)
+    if isinstance(v, six.binary_type):
+        v = v.decode(encoding)
     if no_terminal_tags == 2:
         # html
         key = escape(k)
@@ -871,27 +879,26 @@ def __append_into_report__(body, k, v, explain, ljust, indent='', no_terminal_ta
         key = ljustify = ''
         patt[0] = patt[0].replace(' ', '')
 
-    key = get_ltext(key)
     if type(v) in (list, tuple):
 
         if no_terminal_tags == 2:
             # html only
-            value = escape(get_ltext(str_lists(v)))
-            body.append(get_ltext(colored_output.render(patt[0] % (indent, key, value))))
+            value = escape(str_lists(v))
+            body.append(colored_output.render(patt[0] % (indent, key, value)))
         else:
             # other output (text, php)
             if len(v):
                 # more lines: first is prefixed by column name
-                body.append(colored_output.render(patt[0] % (indent, key, escape(get_ltext(str_lists(v[0]))))))
+                body.append(colored_output.render(patt[0] % (indent, key, escape(str_lists(v[0])))))
                 # others are indented only
                 for text in v[1:]:
-                    body.append(patt[2] % (ljustify, escape(get_ltext(str_lists(text)))))
+                    body.append(patt[2] % (ljustify, escape(str_lists(text))))
             else:
                 # one line only
                 body.append(colored_output.render(patt[1] % (indent, key)))
     else:
         # value is not array
-        body.append(colored_output.render(patt[0] % (indent, key, escape(get_ltext(v)))))
+        body.append(colored_output.render(patt[0] % (indent, key, escape(v))))
 
 def str_lists(text):
     """Prepare list or tuples for display. Same as str() but omit u'...' symbols
@@ -934,11 +941,11 @@ def test_init_client():
     debug_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
         debug_sock.connect((DEBUG_HOST, DEBUG_PORT))
-    except socket.error, msg:
+    except socket.error as msg:
         debug_sock = None
 def run_test_server():
     'for test only, debug readline'
-    print "RUN TEST SERVER (for debug readline) AT PORT", DEBUG_PORT
+    print("RUN TEST SERVER (for debug readline) AT PORT", DEBUG_PORT)
     DEBUG_HOST = '' # Symbolic name meaning the local host
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.bind((DEBUG_HOST, DEBUG_PORT))
@@ -946,11 +953,11 @@ def run_test_server():
     conn = None
     try:
         conn, addr = s.accept()
-        print 'Connected by', addr
+        print('Connected by', addr)
         while 1:
             data = conn.recv(1024)
             if not data: break
-            print data
+            print(data)
     except (KeyboardInterrupt, EOFError):
         pass
     if conn: conn.close()

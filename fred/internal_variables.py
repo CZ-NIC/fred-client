@@ -22,6 +22,7 @@
 Internal variables are used as a default in case if configuration file missing.
 It is used by client session Manager in session_base.py module.
 """
+from __future__ import unicode_literals
 
 #---------------------------------------------------
 # Here is defined FRED VERSION:

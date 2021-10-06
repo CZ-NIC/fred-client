@@ -16,19 +16,27 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with FRED.  If not, see <https://www.gnu.org/licenses/>.
-
+#
 """
 This module collect funcktion for access object to the configuration file.
 It is used by session manager in session_base.py.
 """
-import os, sys, re
-import ConfigParser
+from __future__ import absolute_import, print_function, unicode_literals
+
+from future import standard_library
+standard_library.install_aliases()
+import os
 import pdb
-from translate import get_valid_lang
+import re
+import sys
+
+import configparser
+
+from .translate import get_valid_lang
 
 def load_config_from_file(filename, verbose):
     'Load config file from specifiend filename only.'
-    config = ConfigParser.SafeConfigParser()
+    config = configparser.SafeConfigParser()
     error = ''
     names = []
     missing = []
@@ -36,9 +44,9 @@ def load_config_from_file(filename, verbose):
     if os.path.isfile(filename):
         try:
             config.read(filename)
-        except (ConfigParser.MissingSectionHeaderError, ConfigParser.ParsingError), msg:
+        except (configparser.MissingSectionHeaderError, configparser.ParsingError) as msg:
             error = 'ConfigParserError: %s' % _T('File contains parsing errors.') + \
-                (verbose > 1 and ('\n' + str(msg)) or ' %s' % _T('See details in verbose 2 or higher.'))
+                (verbose > 1 and ('\n' + six.text_type(msg)) or ' %s' % _T('See details in verbose 2 or higher.'))
         else:
             names.append(filename)
     else:
@@ -56,7 +64,7 @@ def get_etc_config_name(name=''):
 
 def load_default_config(config_name, verbose):
     'Load default config. First try home than etc.'
-    config = ConfigParser.SafeConfigParser()
+    config = configparser.SafeConfigParser()
     # first try home
     missing = []
 
@@ -88,9 +96,9 @@ def load_config(config, filename, verbose):
             # If you wand use mode config, uncomment next line and comment line after it.
             # names = config.read([modul_conf, glob_conf, os.path.join(os.path.expanduser('~'),config_name)])
             names = config.read(filename)
-        except (ConfigParser.MissingSectionHeaderError, ConfigParser.ParsingError), msg:
+        except (configparser.MissingSectionHeaderError, configparser.ParsingError) as msg:
             error = 'ConfigParserError: %s' % _T('File contains parsing errors.') + \
-                (verbose > 1 and ('\n' + str(msg)) or ' %s' % _T('See details in verbose 2 or higher.'))
+                (verbose > 1 and ('\n' + six.text_type(msg)) or ' %s' % _T('See details in verbose 2 or higher.'))
             config = None
     else:
         missing = ["Configuration file '%s' not found." % filename]
@@ -101,7 +109,7 @@ def get_config_value(config, section, option, omit_errors=0):
     value = error = ''
     try:
         value = config.get(section, option)
-    except (ConfigParser.NoSectionError, ConfigParser.NoOptionError, ConfigParser.InterpolationMissingOptionError), msg:
+    except (configparser.NoSectionError, configparser.NoOptionError, configparser.InterpolationMissingOptionError) as msg:
         if not omit_errors: error = 'ConfigError: %s (%s, %s)' % (msg, section, option)
     return value, error
 
@@ -112,7 +120,7 @@ def get_config_value(config, section, option, omit_errors=0):
 def main(config_name, options, verbose, OMIT_ERROR):
     'Load configuration file'
     errors = []
-    if options.has_key('config') and len(options['config']):
+    if 'config' in options and len(options['config']):
         config, config_error, missing, config_names = load_config_from_file(options['config'], verbose)
         if missing:
             # always display error message when explicit config missing
@@ -138,7 +146,7 @@ if __name__ == '__main__':
         conf_name = ''
     #config, config_names, errors, missing = main(conf_name,{'config':'pokus'}, 3, 0)
     config, config_names, errors, missing = main(conf_name, {}, 3, 0)
-    print "config", config
-    print "config_names", config_names
-    print "errors", errors
-    print 'missing', missing
+    print("config", config)
+    print("config_names", config_names)
+    print("errors", errors)
+    print('missing', missing)

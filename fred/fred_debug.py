@@ -21,6 +21,7 @@
 """This module is used for test and debugging application.
 It is not uncluded in official release.
 """
+from __future__ import unicode_literals
 
 def check_missing_names(body, columns, verbose_level, is_check, dct_data, used, column_verbose):
     'Check if any valus missing in outout. For DEBUGING only.'
