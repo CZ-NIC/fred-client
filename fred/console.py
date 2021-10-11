@@ -41,7 +41,7 @@ import time
 
 from . import __init__
 from .session_base import RECONNECT, VERBOSE, colored_output
-from .translate import option_errors, options, script_name
+from .translate import option_errors, options, script_name, _T
 
 help_option = _T("""
 General options:

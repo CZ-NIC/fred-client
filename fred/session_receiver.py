@@ -27,7 +27,7 @@ from . import eppdoc
 from .eppdoc_assemble import DISCLOSES_UPDATE
 from .session_base import *
 from .session_command import COLOR, ManagerCommand
-from .translate import encoding
+from .translate import encoding, _T
 import collections
 """
 This class ManagerReceiver cover all previous ancestors

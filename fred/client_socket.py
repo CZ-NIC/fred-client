@@ -30,7 +30,7 @@ import time
 
 import six
 
-from .translate import encoding
+from .translate import encoding, _T
 
 try:
     # python 2.6

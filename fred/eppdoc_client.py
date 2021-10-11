@@ -22,7 +22,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 import re
 
 from . import eppdoc_assemble
-from .translate import encoding, options
+from .translate import encoding, options, _T
 """
 This module described all EPP commands with their parameters and
 names of the returned values. Class Message is the top of the Message

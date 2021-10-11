@@ -43,6 +43,8 @@ except ImportError:
 from xml.dom import Node
 import io
 
+from .translate import _T
+
 #========================================================
 # Namespaces for  EPP
 # shared for all templates

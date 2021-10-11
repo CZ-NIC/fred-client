@@ -32,7 +32,7 @@ import sys
 
 import configparser
 
-from .translate import get_valid_lang
+from .translate import get_valid_lang, _T
 
 def load_config_from_file(filename, verbose):
     'Load config file from specifiend filename only.'

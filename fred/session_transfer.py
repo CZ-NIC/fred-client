@@ -26,7 +26,7 @@ from cgi import escape as escape_html
 
 from . import client_socket, eppdoc_client
 from .session_base import *
-from .translate import encoding, options
+from .translate import encoding, options, _T
 
 try:
     # This module mustn't be included in release!

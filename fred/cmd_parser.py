@@ -22,7 +22,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 from builtins import range
 import re
 
-from .translate import encoding
+from .translate import encoding, _T
 """This module provides parsing function parse() thats was written specialy
 for parsing parameters on the EPP console command line. Parser recognize
 tokens as a simple value, string with spaces and list of values.

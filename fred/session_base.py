@@ -38,6 +38,7 @@ import io
 import six
 
 from . import internal_variables, session_config, terminal_controler, translate
+from .translate import _T, _TP
 """
 Class ManagerBase is a part of one Manager object  what provide client session.
 This base class owns basic variables and functions needed for manage EPP XML

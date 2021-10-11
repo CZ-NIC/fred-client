@@ -43,7 +43,7 @@ import six
 from . import cmd_parser, session_base
 from .eppdoc import SCHEMA_PREFIX
 from .eppdoc import Message as MessageBase
-from .translate import encoding
+from .translate import encoding, _T, _TP
 
 
 UNBOUNDED = None

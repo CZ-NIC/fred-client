@@ -36,7 +36,7 @@ from cgi import escape as escape_html
 
 from . import ClientSession
 from .session_transfer import php_string
-from .translate import encoding, option_args, options
+from .translate import encoding, option_args, options, _T
 
 epp = None
 

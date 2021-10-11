@@ -30,7 +30,7 @@ from . import ClientSession, terminal_controler
 from .session_base import colored_output, get_ltext
 from .session_receiver import FredError
 from .session_transfer import BEGIN, END
-from .translate import option_args, option_errors, options
+from .translate import option_args, option_errors, options, _T
 
 def __auto_login__(epp, verbose):
     'Do login'

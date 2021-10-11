@@ -70,8 +70,17 @@ def install_translation(lang):
     'Install language translation'
     gt = langs[lang]
     gt.install()
-    builtins.__dict__['_T'] = gt.gettext
-    builtins.__dict__['_TP'] = gt.ngettext
+
+
+def _T(*args, **kwargs):
+    """Utility to wrap gettext for active language."""
+    return gettext.gettext(*args, **kwargs)
+
+
+def _TP(*args, **kwargs):
+    """Utility to wrap ngettext for active language."""
+    return gettext.ngettext(*args, **kwargs)
+
 
 #---------------------------
 # INIT options:

@@ -31,7 +31,7 @@ from xml.sax.saxutils import unescape as unescape_html
 from . import eppdoc, eppdoc_client, translate
 from .session_base import *
 from .session_transfer import ManagerTransfer, human_readable
-
+from .translate import _T
 """
 This module with ManagerCommand class take care about creation
 of the EPP XML documents. It uses for this purpose class Message
