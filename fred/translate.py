@@ -17,11 +17,18 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with FRED.  If not, see <https://www.gnu.org/licenses/>.
+#
+from __future__ import print_function, unicode_literals
 
-import __builtin__
-import os, sys, re
+from future import standard_library
+standard_library.install_aliases()
 import getopt
 import gettext
+import os
+import re
+import sys
+
+import builtins
 """
 This module provide functions for language versions. This is used by all
 moduels in the fred system.
@@ -39,7 +46,7 @@ def find_valid_encoding():
     for charset in (getattr(sys.stdout, 'encoding', 'utf-8'), 'utf-8', 'cp852'):
         try:
             ltext = u'žščřďťňě'.encode(charset)
-        except (UnicodeEncodeError, TypeError), msg:
+        except (UnicodeEncodeError, TypeError) as msg:
             pass
         else:
             valid_charset = charset
@@ -51,7 +58,7 @@ def find_valid_encoding():
     return valid_charset, warning
 
 def get_valid_lang(code, type_of_value):
-    available_langs = langs.keys()
+    available_langs = list(langs.keys())
     if code in available_langs:
         error = ''
     else:
@@ -63,8 +70,17 @@ def install_translation(lang):
     'Install language translation'
     gt = langs[lang]
     gt.install()
-    __builtin__.__dict__['_T'] = gt.gettext
-    __builtin__.__dict__['_TP'] = gt.ngettext
+
+
+def _T(*args, **kwargs):
+    """Utility to wrap gettext for active language."""
+    return gettext.gettext(*args, **kwargs)
+
+
+def _TP(*args, **kwargs):
+    """Utility to wrap ngettext for active language."""
+    return gettext.ngettext(*args, **kwargs)
+
 
 #---------------------------
 # INIT options:
@@ -115,9 +131,9 @@ warnings = []
 if len(sys.argv) > 1:
     try:
         opts, option_args = getopt.getopt(sys.argv[1:],
-            ''.join(map(lambda s:s[:2].strip(), optcols)),
-            map(lambda s:('%s', '%s=')[s[1] == ':'] % s[2:], optcols))
-    except getopt.GetoptError, msg:
+            ''.join([s[:2].strip() for s in optcols]),
+            [('%s', '%s=')[s[1] == ':'] % s[2:] for s in optcols])
+    except getopt.GetoptError as msg:
         errors.append('%s' % msg)
     else:
         if len(option_args):
@@ -159,15 +175,14 @@ for key, value in langs.items():
     if value:
         try:
             langs[key] = gettext.translation(domain, tpath, (key,), codeset=encoding)
-        except TypeError, msg:
-            print 'This program requires Python 2.7 or higher.\nYour version is', sys.version
+        except TypeError as msg:
+            print('This program requires Python 2.7 or higher.\nYour version is', sys.version)
             sys.exit(1)
-        except IOError, (no, msg):
+        except IOError:
             langs[key] = gettext.NullTranslations() # no translation
             if not re.search('setup.py$', sys.argv[0]):
                 # .mo file is not required to load during setup
-                print "%s translation not available" % lang_labels[key]
-                ##print 'Translate IOError', no, msg, '\nMISSING:', '%s/%s/LC_MESSAGES/%s.mo' % (tpath, key, domain)
+                print("%s translation not available" % lang_labels[key])
     else:
         langs[key] = gettext.NullTranslations() # no translation
 
@@ -192,11 +207,11 @@ else:
 warning = '\n'.join(warnings)
 
 if __name__ == '__main__':
-    print 'option_errors:', option_errors # errors
-    print 'warning:', warning # warnings
-    print '-' * 60
-    print 'option_args:', option_args
-    print 'options:'
+    print('option_errors:', option_errors) # errors
+    print('warning:', warning) # warnings
+    print('-' * 60)
+    print('option_args:', option_args)
+    print('options:')
     for k, v in options.items():
         if not v: continue
-        print k.ljust(20), v
+        print(k.ljust(20), v)

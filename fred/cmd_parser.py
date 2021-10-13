@@ -16,9 +16,13 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with FRED.  If not, see <https://www.gnu.org/licenses/>.
+#
+from __future__ import absolute_import, print_function, unicode_literals
 
+from builtins import range
 import re
-from translate import encoding
+
+from .translate import encoding, _T
 """This module provides parsing function parse() thats was written specialy
 for parsing parameters on the EPP console command line. Parser recognize
 tokens as a simple value, string with spaces and list of values.
@@ -29,10 +33,10 @@ fetch out from command line. All values are put in list for unifique reading of 
 results.
 """
 UNFINITE = None
-MOD_NORMAL, MOD_LIST, MOD_LIST_AGAIN, MOD_CHILD, MOD_CHILD_LIST, MOD_INSIDE_LIST = range(6)
+MOD_NORMAL, MOD_LIST, MOD_LIST_AGAIN, MOD_CHILD, MOD_CHILD_LIST, MOD_INSIDE_LIST = list(range(6))
 
 # STUCT COLUMNS:
-COL_NAME, COL_MINMAX, COL_ALLOWED, COL_HELP, COL_EXAMPLE, COL_PATTERN, COL_CHILDS = range(7)
+COL_NAME, COL_MINMAX, COL_ALLOWED, COL_HELP, COL_EXAMPLE, COL_PATTERN, COL_CHILDS = list(range(7))
 
 _patt_not_slash = re.compile(r'(\\+)$')
 _patt_key = re.compile('-+(.+)')
@@ -54,7 +58,7 @@ def __next_key__(cols, current):
 
 def __add_token__(dct, key, token):
     'Append and returns token.'
-    if dct.has_key(key):
+    if key in dct:
         dct[key].append(token)
     else:
         dct[key] = [token]
@@ -108,7 +112,7 @@ def __get_name_pos__(errors, key, name, cols):
 
 def __insert_on_pos__(dct, name, value, pos, empty_only):
     'Insert value into dict at name and position.'
-    if not dct.has_key(name): dct[name] = ['']
+    if name not in dct: dct[name] = ['']
     while pos >= len(dct[name]):
         dct[name].append('')
     if type(value) is list:
@@ -128,7 +132,7 @@ def __insert_on_pos__(dct, name, value, pos, empty_only):
 
 def __get_on_pos__(dct, name, pos):
     'Get dict on the defined position.'
-    if not dct.has_key(name): dct[name] = [{}]
+    if name not in dct: dct[name] = [{}]
     while pos >= len(dct[name]):
         dct[name].append({})
     return dct[name][-1]
@@ -305,17 +309,17 @@ def parse(dct_root, cols_root, text_line):
 def __debug_dict__(dct, deep=0):
     'For test only.'
     indent = '\t' * deep
-    for key in dct.keys():
-        print '%s%s: [' % (indent, key),
+    for key in dct:
+        print('%s%s: [' % (indent, key), end=' ')
         dct_item = None
         for pos in range(len(dct[key])):
-            if pos: print ',',
+            if pos: print(',', end=' ')
             dct_item = dct[key][pos]
             if type(dct_item) == dict:
                 __debug_dict__(dct_item, deep + 1)
             else:
-                print dct_item,
+                print(dct_item, end=' ')
         if dct_item and type(dct_item) == dict:
-            print '%s]' % indent
+            print('%s]' % indent)
         else:
-            print ']'
+            print(']')

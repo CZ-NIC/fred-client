@@ -17,6 +17,8 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with FRED.  If not, see <https://www.gnu.org/licenses/>.
+#
+from __future__ import absolute_import, print_function, unicode_literals
 
 import sys
 
@@ -897,8 +899,8 @@ eNxOMnitkuM=
     )
 
 if __name__ == '__main__':
-    from __init__ import Client
-    import terminal_controler
+    from .__init__ import Client
+    from . import terminal_controler
 
     term = terminal_controler.TerminalController()
 
@@ -909,24 +911,24 @@ if __name__ == '__main__':
     if len(sys.argv) > 2:
         # OUTPUT_TYPE: 'php', 'html'
         client._epp._session[14] = sys.argv[2]
-    print "Used schema path:", client._epp.__get_actual_schema_path__()
-    print "Data size:", len(data)
+    print("Used schema path:", client._epp.__get_actual_schema_path__())
+    print("Data size:", len(data))
 
     try:
         index = (len(sys.argv) > 1 and [int(sys.argv[1])] or [-1])[0]
         xml_answer = data[index][1]
-    except IndexError, e:
+    except IndexError as e:
         sys.stderr.write('IndexError: %s\n' % e)
-    except ValueError, e:
+    except ValueError as e:
         sys.stderr.write('ValueError: %s\n' % e)
     else:
-        print index, data[index][0], client._epp.grab_command_name_from_xml(xml_answer)
+        print(index, data[index][0], client._epp.grab_command_name_from_xml(xml_answer))
         error = client._epp.is_epp_valid(xml_answer, 'Server answer XML document failed to validate.')
         if error:
-            print term.RED + error + term.NORMAL
+            print(term.RED + error + term.NORMAL)
         else:
-            print term.GREEN + 'OK' + term.NORMAL
-        print # spacer
+            print(term.GREEN + 'OK' + term.NORMAL)
+        print() # spacer
         client._epp.__session_language__('cs')
         client._epp._command_sent = data[index][0]
         client._epp.process_answer(xml_answer) # process answer

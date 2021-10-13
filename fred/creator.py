@@ -27,11 +27,16 @@ parsers.
 
 Srcipt waiting for EPP commands one command on the one line.
 """
-import sys, re
+from __future__ import absolute_import, print_function, unicode_literals
+
+from builtins import range
+import re
+import sys
 from cgi import escape as escape_html
-from __init__ import ClientSession
-from session_transfer import php_string
-from translate import options, option_args, encoding
+
+from . import ClientSession
+from .session_transfer import php_string
+from .translate import encoding, option_args, options, _T
 
 epp = None
 
@@ -52,11 +57,9 @@ def run_creation(options):
         command_name, epp_doc, stop = epp.create_eppdoc(options['command'])
         errors = epp.fetch_errors()
     if not epp_doc and not errors:
-        errors = '%s %s' % (_T('Unknown command'), command_name.encode(encoding))
+        errors = '%s %s' % (_T('Unknown command'), command_name)
     str_error = ''
     if errors:
-        if type(command_name) == unicode: command_name = command_name.encode(encoding)
-        if type(errors) == unicode: errors = errors.encode(encoding)
         if options['output'] == 'html':
             str_error = '<div class="fred_errors">\n<strong>%s errors:</strong>\n<pre>\n%s</pre><div>' % (command_name, escape_html(errors))
         elif options['output'] == 'php':
@@ -70,9 +73,9 @@ def run_creation(options):
 
 def display(epp_doc, str_error):
     if str_error:
-        print str_error
+        print(str_error)
     else:
-        print epp_doc
+        print(epp_doc)
 
 def main():
     if len(sys.argv) > 1:
@@ -93,7 +96,7 @@ def main():
                     epp_doc, str_error = run_creation(options)
                     display(epp_doc, str_error)
             else:
-                print "<?xml encoding='%s'?><errors>Invalid range pattern: %s</errors>" % (encoding, options['range'])
+                print("<?xml encoding='%s'?><errors>Invalid range pattern: %s</errors>" % (encoding, options['range']))
         else:
             options['command'] = command
             epp_doc, str_error = run_creation(options)
@@ -106,7 +109,7 @@ def main():
                 epp_doc, str_error = run_creation(options)
                 display(epp_doc, str_error)
     else:
-        print '%s: %s command params\n\n%s\n\n%s%s\n\n  %s\n' % (_T('Usage'), 'fred_create.py',
+        print('%s: %s command params\n\n%s\n\n%s%s\n\n  %s\n' % (_T('Usage'), 'fred_create.py',
             _T('Create EPP XML document from command line parameters.'),
             _T('EXAMPLES'),
             """
@@ -116,7 +119,7 @@ echo -en "check_domain nic.cz\\ninfo_domain nic.cz" | ./fred_create.py
 cat file-with-commands.txt | ./fred_create.py
 """,
             _T('See README for more information.')
-            )
+            ))
 
 if __name__ == '__main__':
     main()

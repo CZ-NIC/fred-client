@@ -17,16 +17,28 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with FRED.  If not, see <https://www.gnu.org/licenses/>.
+#
+from __future__ import absolute_import, print_function, unicode_literals
 
-import re, time
-import sys, os, StringIO
-import ConfigParser
+from future import standard_library
+standard_library.install_aliases()
+from builtins import map
+from builtins import range
+from builtins import object
+import os
+import re
+import sys
+import time
 from cgi import escape as escape_html
-import terminal_controler
-import translate
-import session_config
-import internal_variables
-from subprocess import Popen, PIPE
+from subprocess import PIPE, Popen
+
+import configparser
+import io
+
+import six
+
+from . import internal_variables, session_config, terminal_controler, translate
+from .translate import _T, _TP
 """
 Class ManagerBase is a part of one Manager object  what provide client session.
 This base class owns basic variables and functions needed for manage EPP XML
@@ -44,17 +56,17 @@ colored_output = terminal_controler.TerminalController()
 ONLINE, CMD_ID, LANG, POLL_AUTOACK, CONFIRM_SEND_COMMAND, \
    USERNAME, SESSION, HOST, COLORS, VALIDATE, VERBOSE, SORT_BY_COLUMNS, \
    NULL_VALUE, SKIP_VALUE, TRANSLATE_ANSWER_COLUMN_NAMES, OUTPUT_TYPE, CLTRID, \
-   RECONNECT, ESCAPED_INPUT = range(19)
+   RECONNECT, ESCAPED_INPUT = list(range(19))
 # The column names for default values
 DEFS_LENGTH = 4
-LANGS, objURI, extURI, PREFIX = range(DEFS_LENGTH)
+LANGS, objURI, extURI, PREFIX = list(range(DEFS_LENGTH))
 OMIT_ERROR = 1
 
 OUTPUT_TYPES = ('text', 'html', 'php', 'xml')
 
-LOOP_NONE, LOOP_FIRST_STEP, LOOP_INSIDE, LOOP_LAST_STEP = range(4)
+LOOP_NONE, LOOP_FIRST_STEP, LOOP_INSIDE, LOOP_LAST_STEP = list(range(4))
 
-class ManagerBase:
+class ManagerBase(object):
     """This class holds buffers with error and note messages.
     Class collects messages and prepares them for output.
     """
@@ -150,7 +162,7 @@ class ManagerBase:
         'Fill missing required values by defaults.'
         for key in ('port', 'timeout'):
             if self.get_config_value(section_connect, key, OMIT_ERROR) is None:
-                self._conf.set(section_connect, key, str(internal_variables.required_defaults[key]))
+                self._conf.set(section_connect, key, six.text_type(internal_variables.required_defaults[key]))
 
     def get_valid_output(self, key):
         'Get valid output type.'
@@ -229,7 +241,7 @@ $fred_client_errors = array(); // errors occuring during communication
     def display(self):
         "Output all messages to stdout or log file."
         msg = self.get_messages()
-        if msg and self._session[VERBOSE]: print msg
+        if msg and self._session[VERBOSE]: print(msg)
 
     def get_messages(self, sep='\n'):
         """Same as display but returns as local string.
@@ -312,13 +324,13 @@ $fred_client_errors = array(); // errors occuring during communication
                 msg.append('<div class="remark">')
 
             if is_php:
-                msg.extend(map(lambda s: '$fred_client_notes[] = %s;' % php_string(s), self._notes_afrer_errors))
+                msg.extend(['$fred_client_notes[] = %s;' % php_string(s) for s in self._notes_afrer_errors])
             elif is_xml:
-                msg.extend(map(lambda s: '\t<remark>%s</remark>' % strip_colors(s), self._notes_afrer_errors))
+                msg.extend(['\t<remark>%s</remark>' % strip_colors(s) for s in self._notes_afrer_errors])
             elif is_html:
-                msg.extend(map(lambda s: escape_html(strip_colors(s)), self._notes_afrer_errors))
+                msg.extend([escape_html(strip_colors(s)) for s in self._notes_afrer_errors])
             else:
-                msg.extend(map(get_ltext, self._notes_afrer_errors))
+                msg.extend(list(map(get_ltext, self._notes_afrer_errors)))
             self._notes_afrer_errors = []
 
             if is_xml:
@@ -396,9 +408,9 @@ $fred_client_errors = array(); // errors occuring during communication
             msg = ''
             if section == selected_section:
                 msg = '${BOLD}${GREEN}*** %s ***${NORMAL}' % _T('Actual connection HERE')
-            print colored_output.render('${BOLD}[%s]${NORMAL} %s' % (section, msg))
+            print(colored_output.render('${BOLD}[%s]${NORMAL} %s' % (section, msg)))
             for option in self._conf.options(section):
-                print_unicode(colored_output.render('\t${BOLD}%s${NORMAL} = %s' % (option, str(self.get_config_value(section, option)))))
+                print_unicode(colored_output.render('\t${BOLD}%s${NORMAL} = %s' % (option, six.text_type(self.get_config_value(section, option)))))
 
     def copy_default_options(self, section, section_default, option):
         'Copy default options where they missing.'
@@ -415,9 +427,9 @@ $fred_client_errors = array(); // errors occuring during communication
         modul_path, fn = os.path.split(__file__)
         root_path = os.path.normpath(os.path.join(modul_path, '..'))
         try:
-            self._conf.readfp(StringIO.StringIO(internal_variables.config))
+            self._conf.readfp(io.StringIO(internal_variables.config))
             ok = 1
-        except ConfigParser.ParsingError, msg:
+        except configparser.ParsingError as msg:
             self.append_error(msg)
         else:
             # schema = all-1.0.xsd
@@ -507,7 +519,7 @@ $fred_client_errors = array(); // errors occuring during communication
         if not self._conf: return value
         try:
             value = self._conf.get(section, option)
-        except (ConfigParser.NoSectionError, ConfigParser.NoOptionError, ConfigParser.InterpolationMissingOptionError), msg:
+        except (configparser.NoSectionError, configparser.NoOptionError, configparser.InterpolationMissingOptionError) as msg:
             if not omit_errors:
                 # disabled text as error type (text ERROR not displayed)
                 #self.append_error('ConfigError: %s (%s, %s)'%(msg,section,option))
@@ -539,7 +551,7 @@ $fred_client_errors = array(); // errors occuring during communication
         # keep options in Manager instance
         if type(options) is dict: self._options = options
 
-        if self._options.has_key('command') and len(self._options['command']):
+        if 'command' in self._options and len(self._options['command']):
             # Disable writting history in one-command-line mode.
             # It is usefull in cases fred_client is called by php page and
             # it is not privileges for write history.
@@ -554,7 +566,7 @@ $fred_client_errors = array(); // errors occuring during communication
         if len(self._options.get('lang', '')):
             language = self._options['lang']
         # overwrite config by option from command line:
-        if self._options.has_key('lang_option'):
+        if 'lang_option' in self._options:
             language = self._options['lang_option']
 
         self.set_language(language) # set translation
@@ -589,7 +601,7 @@ $fred_client_errors = array(); // errors occuring during communication
             return 0 # fatal error
         # session
         section = 'session'
-        self._session[POLL_AUTOACK] = str(self.get_config_value(section, 'poll_autoack', OMIT_ERROR)).lower() == 'on' and 1 or 0
+        self._session[POLL_AUTOACK] = six.text_type(self.get_config_value(section, 'poll_autoack', OMIT_ERROR)).lower() == 'on' and 1 or 0
         self._session[CONFIRM_SEND_COMMAND] = self.get_config_value(section, 'confirm_send_commands').lower() == 'on' and 1 or 0
         self._session[VALIDATE] = self.get_config_value(section, 'validate').lower() == 'on' and 1 or 0
         colors = self.get_config_value(section, 'colors', OMIT_ERROR)
@@ -632,10 +644,10 @@ $fred_client_errors = array(); // errors occuring during communication
         'Init verbose mode.'
         if verbose is None: return self._session[VERBOSE]
         nverb = None
-        if type(verbose) in (str, unicode):
+        if isinstance(verbose, six.string_types):
             try:
                 nverb = int(verbose)
-            except ValueError, msg:
+            except ValueError as msg:
                 self.append_error('%s %s' % (_T('Invalid verbose parametr'), verbose))
                 # self.append_error(_T('Valid verbose level is: 1, 2, 3.'))
                 self._notes_afrer_errors.append(_T("Type 'help verbose' to get more information about verbose levels."))
@@ -677,11 +689,11 @@ $fred_client_errors = array(); // errors occuring during communication
                           stdout=PIPE, stderr=PIPE)
             # pipes: (p.stdin, p.stdout, p.stderr)
             pipes = (procs.stdin, procs.stdout, procs.stderr)
-        except IOError, msg:
-            self.append_note('check_validator: %s' % str(msg), ('RED', 'BOLD'))
+        except IOError as msg:
+            self.append_note('check_validator: %s' % six.text_type(msg), ('RED', 'BOLD'))
         standr = pipes[1].read()
         errors = pipes[2].read()
-        map(lambda f: f.close(), pipes)
+        [f.close() for f in pipes]
         if len(standr) and not len(errors):
             ok = 1 # OK, support is enabled.
         else:
@@ -726,8 +738,8 @@ $fred_client_errors = array(); // errors occuring during communication
             pipes = (procs.stdin, procs.stdout, procs.stderr)
             pipes[0].write(message)
             pipes[0].close()
-        except IOError, msg:
-            self.append_note(str(msg), ('RED', 'BOLD'))
+        except IOError as msg:
+            self.append_note(six.text_type(msg), ('RED', 'BOLD'))
         limit = 5 # maximal allowed steps for reading xmllint error result.
         while limit > 0:
             # wait for finishing validation process
@@ -735,13 +747,13 @@ $fred_client_errors = array(); // errors occuring during communication
             try:
                 errors = pipes[2].read()
                 break
-            except IOError, msg:
+            except IOError as msg:
                 pass
             limit -= 1
         if not limit:
             errors = _T('Reading xmllint errors result failed.')
             if note: errors += self._sep + note
-        map(lambda f: f.close(), pipes)
+        [f.close() for f in pipes]
         if re.search(' validates$', errors):
             errors = '' # it seems be OK...
         else:
@@ -772,12 +784,12 @@ $fred_client_errors = array(); // errors occuring during communication
         while 1:
             try:
                 for c in cont:
-                    print c, '\n[Ctrl+C]'
+                    print(c, '\n[Ctrl+C]')
                     time.sleep(0.2)
-                    print clr,
+                    print(clr, end=' ')
             except KeyboardInterrupt:
                 break
-        print clr,
+        print(clr, end=' ')
 
     def __display_help__(self, cmd):
         if colored_output.CLEAR_EOL and cmd[5:] == colored_output.get_term_vers():
@@ -826,25 +838,25 @@ def join_unicode(u_list, sep='\n'):
     'Convert str objects to unicode and catch errors.'
     out = []
     for row in u_list:
-        if type(row) == str:
+        if isinstance(row, six.binary_type):
             try:
                 row = row.decode(translate.encoding)
-            except UnicodeDecodeError, error:
+            except UnicodeDecodeError as error:
                 row = '(UnicodeDecodeError) ' + repr(row)
         out.append(row)
     return sep.join(out)
 
 def get_ltext(text):
     'Encode unicode to string in the local encoding.'
-    if type(text) is str:
+    if isinstance(text, six.binary_type):
         ltext = colored_output.render(text)
     elif type(text) is int:
-        ltext = str(text)
+        ltext = six.text_type(text).encode(translate.encoding)
     else:
         # unicode
         try:
             ltext = text.encode(translate.encoding)
-        except UnicodeEncodeError, msg:
+        except UnicodeEncodeError as msg:
             ltext = repr(re.sub('\x1b[^m]*m', '', text))
         else:
             ltext = colored_output.render(ltext)
@@ -852,12 +864,12 @@ def get_ltext(text):
 
 def print_unicode(text):
     'Print text and catch encoding problems with unicode.'
-    print get_ltext(text)
+    print(get_ltext(text))
 
 
 def get_unicode(text):
     'Convert to unicode and catch problems with conversion.'
-    if type(text) == str:
+    if isinstance(text, six.binary_type):
         try:
             text = text.decode(translate.encoding)
         except UnicodeDecodeError:
@@ -867,7 +879,7 @@ def get_unicode(text):
 
 def php_string(value):
     'Returns escaped string for place into PHP variable.'
-    if type(value) in (str, unicode):
+    if isinstance(value, six.string_types):
         text = get_ltext(value).strip().replace('\\n', '\n')
         ret = "'%s'" % text.replace(r'\ '[:-1], r'\\ '[:-1]).replace(r"'", r"\'")
     elif type(value) in (list, tuple):
@@ -890,10 +902,10 @@ def decamell(text):
 
 if __name__ == '__main__':
     mb = ManagerBase()
-    mb._conf = ConfigParser.SafeConfigParser()
+    mb._conf = configparser.SafeConfigParser()
     mb.__create_default_conf__()
     mb.display()
     for section in mb._conf.sections():
-        print '[%s]' % section
+        print('[%s]' % section)
         for item in mb._conf.items(section):
-            print '\t%s = %s' % item
+            print('\t%s = %s' % item)

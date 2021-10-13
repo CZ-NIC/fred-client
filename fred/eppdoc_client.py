@@ -16,10 +16,13 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with FRED.  If not, see <https://www.gnu.org/licenses/>.
+#
+from __future__ import absolute_import, print_function, unicode_literals
 
 import re
-import eppdoc_assemble
-from translate import options, encoding
+
+from . import eppdoc_assemble
+from .translate import encoding, options, _T
 """
 This module described all EPP commands with their parameters and
 names of the returned values. Class Message is the top of the Message
@@ -844,13 +847,13 @@ class Message(eppdoc_assemble.Message):
         'Prepare column names for sorted output answer.'
         if re.match('check_', self._dct.get('command', [''])[0]):
             # check commands sort by parameters
-            names = map(lambda s: (s, 1, s), self._dct.get('name', [])) # (key, verbose_level, description)
+            names = [(s, 1, s) for s in self._dct.get('name', [])] # (key, verbose_level, description)
         else:
             # othes commands sort by defined names
             scope = self.sort_by_names.get(command_name, None)
             if scope:
                 if scope[0]:
-                    names = map(lambda i: ('%s:%s' % (scope[0], i[0]), i[1], i[2]), scope[1])
+                    names = [('%s:%s' % (scope[0], i[0]), i[1], i[2]) for i in scope[1]]
                 else:
                     names = scope[1]
             else:
@@ -870,13 +873,13 @@ class Message(eppdoc_assemble.Message):
 
 def test(commands):
     import pprint
-    import session_base
+    from . import session_base
     manager = session_base.ManagerBase()
     epp = Message(manager)
     manager.load_config()
-    print "#"*60
+    print("#"*60)
     for cmd in commands:
-        print "COMMAND:", cmd
+        print("COMMAND:", cmd)
         m = re.match('(\S+)', cmd)
         if not m: continue
         cmd_name = m.group(1)
@@ -884,33 +887,33 @@ def test(commands):
         errors, example, stop = epp.parse_cmd(cmd_name, cmd, manager._conf, 0, 2)
         if stop == 2: break # User press Ctrl+C or Ctrl+D
         if errors:
-            print "Errors:", errors
+            print("Errors:", errors)
         else:
             getattr(epp, 'assemble_%s' % cmd_name)('llcc002#06-06-16at13:21:30', ('1.0', ('objURI',), ('extURI',), 'LANG'))
             errors, xmlepp = epp.get_results()
-            print xmlepp
+            print(xmlepp)
             if errors:
-                print "Errors:", errors
+                print("Errors:", errors)
             if xmlepp:
-                print 'VALID?', manager.is_epp_valid(xmlepp)
-        print "EXAMPLE:", epp.get_command_line(manager._session[session_base.NULL_VALUE])
-        print '=' * 60
+                print('VALID?', manager.is_epp_valid(xmlepp))
+        print("EXAMPLE:", epp.get_command_line(manager._session[session_base.NULL_VALUE]))
+        print('=' * 60)
 
 def test_help(command_names):
-    import terminal_controler
-    import session_base
+    from . import terminal_controler
+    from . import session_base
     manager = session_base.ManagerBase()
     colored_output = terminal_controler.TerminalController()
     colored_output.set_mode(options['color'])
     epp = Message(manager)
     for command_name in command_names:
         command_line, command_help, notice, examples = epp.get_help(command_name)
-        print colored_output.render(command_line)
-        print colored_output.render(command_help)
-        print colored_output.render(notice)
-        print '\nExamples:'
-        print '\n'.join(examples)
-        print '\n\n'
+        print(colored_output.render(command_line))
+        print(colored_output.render(command_help))
+        print(colored_output.render(notice))
+        print('\nExamples:')
+        print('\n'.join(examples))
+        print('\n\n')
 
 if __name__ == '__main__':
     # Test only

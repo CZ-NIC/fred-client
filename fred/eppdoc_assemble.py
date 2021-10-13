@@ -23,15 +23,27 @@ Create example of the command line from the interactive input.
 It contains set of the assemble functions what create XML document. They are not call directly
 but from Message class interface.
 """
-import re, sys, os
-import random
-import time
-import ConfigParser
-import cmd_parser
-import session_base
+from __future__ import absolute_import, print_function, unicode_literals
 
-from translate import encoding
-from eppdoc import Message as MessageBase, SCHEMA_PREFIX
+from future import standard_library
+standard_library.install_aliases()
+from builtins import input
+from builtins import map
+from builtins import range
+import os
+import random
+import re
+import sys
+import time
+
+import configparser
+
+import six
+
+from . import cmd_parser, session_base
+from .eppdoc import SCHEMA_PREFIX
+from .eppdoc import Message as MessageBase
+from .translate import encoding, _T, _TP
 
 
 UNBOUNDED = None
@@ -39,8 +51,8 @@ DNSKEY_LIST_MAX = 10
 # ''contact_disclose'' must be same format as eppdoc_client.update_status.
 DISCLOSES = ('voice', 'fax', 'email', 'vat', 'ident', 'notify_email')
 DISCLOSES_UPDATE = ('addr',) + DISCLOSES
-contact_disclose = map(lambda n: (n,), DISCLOSES)
-contact_disclose_update = map(lambda n: (n,), DISCLOSES_UPDATE)
+contact_disclose = [(n,) for n in DISCLOSES]
+contact_disclose_update = [(n,) for n in DISCLOSES_UPDATE]
 history_filename = os.path.join(os.path.expanduser('~'), '.fred_history') # compatibility s MS Win
 
 TAG_clTRID = 'cltrid' # Definition for --key-name = clTRID value.
@@ -119,7 +131,7 @@ class Message(MessageBase):
         # remove hyphen in the command
         m = re.match('(\S+)(.*)', command_name)
         if m: command_name = '%s%s' % (m.group(1).replace('-', '_'), m.group(2))
-        if self._command_params.has_key(command_name):
+        if command_name in self._command_params:
             # command exists
             required, params, notice, examples = self._command_params[command_name]
             command_line = ['${BOLD}%s${NORMAL}' % command_name]
@@ -173,7 +185,7 @@ class Message(MessageBase):
             if self._verbose > 1:
                 message.append('%s: "%s". (%s: "%s")\n%s: (%s) %s: (%s)' % (
                 _T('Invalid parameter'), local8bit(' / '.join(scopes)),
-                _T('Corrupted value'), str(dct_values),
+                _T('Corrupted value'), six.text_type(dct_values),
                 _T('Correct format is'), ', '.join(keys),
                 _T('For example'), local8bit(', '.join(vals)),
                 ))
@@ -183,7 +195,7 @@ class Message(MessageBase):
             name, min_max, allowed, msg_help, example, pattern, children = row
             scopes.append(name)
             scope_name = local8bit(' / '.join(scopes))
-            if dct_values.has_key(name):
+            if name in dct_values:
                 if is_poll and scope_name == 'msg_id' and dct_values.get('op', [''])[0] == 'req':
                     # exception for command 'poll req' what does't need msg_id value
                     # errors.append(_T("poll req doesn't have msg_id value. Type %s for continue with next parameter.")%null_value)
@@ -201,7 +213,7 @@ class Message(MessageBase):
                     if allowed:
                         # check allowed values
                         allowed_abrev = []
-                        map(allowed_abrev.extend, allowed)
+                        list(map(allowed_abrev.extend, allowed))
                         for value in dct_values[name]:
                             if value not in allowed_abrev:
                                 errors.append('%s: %s: (%s)' % (scope_name, _T('Value "%s" is not allowed. Valid is') % local8bit(value), ', '.join(self.__make_abrev_help__(allowed))))
@@ -230,12 +242,12 @@ class Message(MessageBase):
         stop = 0
         autofill = 0
         allowed_abrev = []
-        map(allowed_abrev.extend, allowed)
+        list(map(allowed_abrev.extend, allowed))
         allowed_help = self.__make_abrev_help__(allowed)
         while 1:
             # param must not be NULL (except min == 0)
             try:
-                param = raw_input(prompt.encode(encoding)).strip()
+                param = input(prompt.encode(encoding)).strip()
             except EOFError:
                 # Ctrl+D - Finish
                 if min_max[0]:
@@ -318,18 +330,18 @@ class Message(MessageBase):
 
         while max is UNBOUNDED or current_pos < max:
             parents[-1][3] = current_pos # name, min, max, counter = current_pos
-            if dct.has_key(name) and len(dct[name]) >= min: min = required_pos = 0 # all needed values has been set
-            prompt = u'%s%s [%s]: ' % (__scope_to_string__(parents), prompt_allowed, unicode(self.param_reqired_type[required_pos], encoding))
+            if name in dct and len(dct[name]) >= min: min = required_pos = 0 # all needed values has been set
+            prompt = u'%s%s [%s]: ' % (__scope_to_string__(parents), prompt_allowed, six.text_type(self.param_reqired_type[required_pos], encoding))
             param, stop = self.__ineractive_input_one_param__(name, (min, max), allowed, example, null_value, prompt)
             if stop: break
             current_pos += 1
             if param != null_value:
-                if dct.has_key(name):
+                if name in dct:
                     dct[name].append(param)
                 else:
                     dct[name] = [param]
             elif min == 0: break
-        return (dct.has_key(name) == False), stop
+        return ((name in dct) == False), stop
 
     def __interactive_mode__(self, command_name, columns, dct, null_value, parents=[], already_done=0):
         'Loop interactive input for all params of command.'
@@ -399,7 +411,7 @@ class Message(MessageBase):
         for key, min_max, required, help, example, pattern, children in columns:
             #fnc_debug_log('\t[%s] KEY: %s EXAMPLE: "%s" HAS-KEY: %s'%(time.strftime("%H:%I:%S"),key,local8bit(example),dct.has_key(key)))
             words = []
-            if not dct.has_key(key):
+            if key not in dct:
                 # case value is not allready in dict
                 if len(children):
                     token = self.__readline_build_children__(children, min_max[0])
@@ -481,7 +493,7 @@ class Message(MessageBase):
                     example = __build_command_example__(columns, dct, null_value)
                     # Note the interactive mode is closed.
                     try:
-                        raw_input(session_base.colored_output.render('\n${BOLD}${YELLOW}%s${NORMAL}' % _T('Interactive input completed. [Press Enter]')))
+                        input(session_base.colored_output.render('\n${BOLD}${YELLOW}%s${NORMAL}' % _T('Interactive input completed. [Press Enter]')))
                     except EOFError:
                         session_base.print_unicode(u'') # EOFError: Ctrl+D - Finish command
                     except KeyboardInterrupt:
@@ -498,7 +510,7 @@ class Message(MessageBase):
         if not stop:
             # check list and allowed values if only 'stop' was not set
             errors, miss_req = self.__check_required__(command_name, columns, dct, null_value)
-            if command_name == 'create_domain' and dct.has_key('name') and re.search(ENUM_DOMAIN_TYPE_PATT, dct['name'][0], re.I) and not dct.get('val_ex_date'):
+            if command_name == 'create_domain' and 'name' in dct and re.search(ENUM_DOMAIN_TYPE_PATT, dct['name'][0], re.I) and not dct.get('val_ex_date'):
                     # Exception for ENUM domain.
                     errors.append(_T('Parameter val_ex_date is required dor ENUM domain.'))
                     miss_req += 1
@@ -516,14 +528,14 @@ class Message(MessageBase):
 
     def __parse_status_abrev__(self, dct, key, allowed):
         'Replace abreviations to the full names'
-        if not dct.has_key(key): return
+        if key not in dct: return
         dabrv = {}
         for n in allowed:
             if len(n) > 1:
                 dabrv[n[1]] = n[0]
         names = []
         for name in dct[key]:
-            if dabrv.has_key(name):
+            if name in dabrv:
                 names.append(dabrv[name])
             else:
                 names.append(name)
@@ -536,7 +548,7 @@ class Message(MessageBase):
     #===========================================
     def __append_attr__(self, data, dct, key, parent_node_name, node_name, attr_name):
         'Support function for assembel_create_... functions.'
-        if dct.has_key(key):
+        if key in dct:
             if type(dct[key]) == list:
                 for item in dct[key]:
                     data.append((parent_node_name, node_name, '', ((attr_name, item),)))
@@ -545,7 +557,7 @@ class Message(MessageBase):
 
     def __append_values__(self, data, dct, key, parent_node_name, node_name):
         'Support function for assemble_create_... functions.'
-        if dct.has_key(key):
+        if key in dct:
             if type(dct[key]) == list:
                 for item in dct[key]:
                     data.append((parent_node_name, node_name, item))
@@ -577,7 +589,7 @@ class Message(MessageBase):
         params must have ('clTRID',('name',['name','name',]))
         """
         VERSION = self.schema_version[cols[1]]
-        self._handle_ID = self._dct.has_key(key) and self._dct[key][0] or '' # keep object handle (ID)
+        self._handle_ID = key in self._dct and self._dct[key][0] or '' # keep object handle (ID)
         if len(cols) > 3:
             col1 = '%s:%s' % (cols[1], cols[3])
         else:
@@ -606,7 +618,7 @@ class Message(MessageBase):
         key = name of key pointed to vlaue in parameters dictionary
         params must have ('clTRID',('name',['name','name',]))
         """
-        self._handle_ID = self._dct.has_key(key) and self._dct[key][0] or '' # keep object handle (ID)
+        self._handle_ID = key in self._dct and self._dct[key][0] or '' # keep object handle (ID)
         NAMESPACE_VERSION = self.schema_version.get(namespace, self.schema_version['epp'])
         if len(cols) < 2:
             # for credit_info ------------------------------------------------
@@ -677,7 +689,7 @@ class Message(MessageBase):
         """
         # protect to missing login values:
         for key in ('username', 'password'):
-            if not (self._dct.has_key(key) and len(self._dct[key])):
+            if not (key in self._dct and len(self._dct[key])):
                 self.errors.append((0, key, 'missing'))
         if len(self.errors): return
         cols = [('epp', 'command'),
@@ -780,8 +792,8 @@ class Message(MessageBase):
         msg_id = self._dct.get('msg_id', [None])[0]
         attr = [('op', op)]
         if msg_id:
-            if type(msg_id) not in (unicode, str):
-                msg_id = str(msg_id) # translate type int
+            if not isinstance(msg_id, six.text_type):
+                msg_id = six.text_type(msg_id) # translate type int
             attr.append(('msgID', msg_id))
         dom = [
             ('epp', 'command'),
@@ -884,7 +896,7 @@ class Message(MessageBase):
             else:
                 disit = (implicit, explicit)[flag]
                 flag = 1 # server default is hidden - send always list of disclosed
-        data.append(('contact:%s' % node_name, 'contact:disclose', '', (('flag', str(flag)),)))
+        data.append(('contact:%s' % node_name, 'contact:disclose', '', (('flag', six.text_type(flag)),)))
         for key in disit:
             data.append(('contact:disclose', 'contact:%s' % key))
 
@@ -937,7 +949,7 @@ class Message(MessageBase):
         if __has_key__(dct, 'voice'): data.append(('contact:create', 'contact:voice', dct['voice'][0]))
         if __has_key__(dct, 'fax'): data.append(('contact:create', 'contact:fax', dct['fax'][0]))
         data.append(('contact:create', 'contact:email', dct['email'][0])) # required
-        if dct.has_key('auth_info'):
+        if 'auth_info' in dct:
             # password required
             data.append(('contact:create', 'contact:authInfo', dct['auth_info'][0]))
         # --- BEGIN disclose ------
@@ -973,7 +985,7 @@ class Message(MessageBase):
         if __has_key__(dct, 'keyset'): data.append(('domain:create', 'domain:keyset', dct['keyset'][0]))
         if __has_key__(dct, 'registrant'): data.append(('domain:create', 'domain:registrant', dct['registrant'][0]))
         self.__append_values__(data, dct, 'admin', 'domain:create', 'domain:admin')
-        if dct.has_key('auth_info'):
+        if 'auth_info' in dct:
             data.append(('domain:create', 'domain:authInfo', dct['auth_info'][0]))
         self.__enum_extensions__('create', data, params)
         self.__append_cltrid__(data, params[0])
@@ -984,7 +996,7 @@ class Message(MessageBase):
         if not __has_key__(dct_ns, 'name'): return
         data.append(('nsset:%s' % tag_name, 'nsset:ns'))
         data.append(('nsset:ns', 'nsset:name', dct_ns['name'][0]))
-        if dct_ns.has_key('addr'):
+        if 'addr' in dct_ns:
             for addr in dct_ns['addr']:
                 data.append(('nsset:ns', 'nsset:addr', addr))
 
@@ -1038,7 +1050,7 @@ class Message(MessageBase):
         # load certificate
         try:
             body = open(filename, 'rb').read()
-        except IOError, e:
+        except IOError as e:
             self.errors.append((0, 'file', 'IOError: %s' % e))
             body = ''
         return body.strip()
@@ -1119,11 +1131,11 @@ class Message(MessageBase):
         # for nsset only
         if __has_key__(dct, 'tech'):
             self.__append_values__(data, dct, 'tech', '%s:create' % prefix, '%s:tech' % prefix)
-        if dct.has_key('auth_info'):
+        if 'auth_info' in dct:
             data.append(('%s:create' % prefix, '%s:authInfo' % prefix, dct['auth_info'][0]))
 
         # for nsset only
-        if dct.has_key('reportlevel'):
+        if 'reportlevel' in dct:
             data.append(('%s:create' % prefix, '%s:reportlevel' % prefix, dct['reportlevel'][0]))
 
         self.__append_cltrid__(data, params[0])
@@ -1369,9 +1381,9 @@ class Message(MessageBase):
 
         if __has_key_dict__(dct, 'auth_info') or __has_key_dict__(dct, 'reportlevel'):
             data.append(('%s:update' % prefix, '%s:chg' % prefix))
-            if dct.has_key('auth_info'):
+            if 'auth_info' in dct:
                 data.append(('%s:chg' % prefix, '%s:authInfo' % prefix, dct['auth_info'][0]))
-            if dct.has_key('reportlevel'):
+            if 'reportlevel' in dct:
                 data.append(('%s:chg' % prefix, '%s:reportlevel' % prefix, dct['reportlevel'][0]))
 
         self.__append_cltrid__(data, params[0])
@@ -1472,7 +1484,7 @@ class Message(MessageBase):
         """This is support of the fetch_from_info().
         Individual modification of the contact."""
         # from exDate value count years
-        if dct.has_key('ex_date'):
+        if 'ex_date' in dct:
             try:
                 year = int(dct['ex_date'][0][:4])
             except (ValueError, TypeError):
@@ -1480,7 +1492,7 @@ class Message(MessageBase):
             else:
                 period_num = year - time.localtime()[0]
                 if period_num > 0:
-                    dct['period'] = [{'unit':['y'], 'num': [str(period_num)]}]
+                    dct['period'] = [{'unit':['y'], 'num': [six.text_type(period_num)]}]
         return dct
 
     def __ffi_update_domain__(self, dct):
@@ -1488,10 +1500,10 @@ class Message(MessageBase):
         Individual modification of the contact."""
         chg = {}
         for key in ('nsset', 'registrant', 'auth_info'):
-            if dct.has_key(key): chg[key] = dct[key]
+            if key in dct: chg[key] = dct[key]
         if len(chg): dct['chg'] = [chg]
-        if dct.has_key('admin'): dct['rem_admin'] = dct['admin']
-        if dct.has_key('tempcontact'): dct['rem_tempc'] = dct['tempcontact']
+        if 'admin' in dct: dct['rem_admin'] = dct['admin']
+        if 'tempcontact' in dct: dct['rem_tempc'] = dct['tempcontact']
         return dct
 
     def __ffi_create_nsset__(self, dct):
@@ -1508,12 +1520,12 @@ class Message(MessageBase):
         Individual modification of the contact."""
         dct = self.__ffi_create_nsset__(dct)
         rem = {}
-        if dct.has_key('dns'):
+        if 'dns' in dct:
             names = []
             for dns in dct['dns']:
                 names.append(dns['name'][0])
             rem['name'] = names
-        if dct.has_key('tech'): rem['tech'] = dct['tech']
+        if 'tech' in dct: rem['tech'] = dct['tech']
         if len(rem): dct['rem'] = [rem]
         return dct
 
@@ -1523,15 +1535,15 @@ class Message(MessageBase):
         dct = self.__ffi_create_contact__(dct)
         chg = {}
         for key in ('voice', 'fax', 'email', 'vat', 'auth_info', 'notify_email'):
-            if dct.has_key(key): chg[key] = dct[key]
-        if dct.has_key('ident'): chg['ident'] = dct['ident']
-        if dct.has_key('disclose'): chg['disclose'] = dct['disclose']
+            if key in dct: chg[key] = dct[key]
+        if 'ident' in dct: chg['ident'] = dct['ident']
+        if 'disclose' in dct: chg['disclose'] = dct['disclose']
         postal_info = {}
         for key in ('name', 'org'):
-            if dct.has_key(key): postal_info[key] = dct[key]
+            if key in dct: postal_info[key] = dct[key]
         addr = {}
         for key in ('city', 'cc', 'street', 'sp', 'pc'):
-            if dct.has_key(key): addr[key] = dct[key]
+            if key in dct: addr[key] = dct[key]
         if len(addr): postal_info['addr'] = [addr]
         if len(postal_info): chg['postal_info'] = [postal_info]
         if len(chg): dct['chg'] = [chg]
@@ -1540,12 +1552,12 @@ class Message(MessageBase):
     def __ffi_create_contact__(self, dct):
         """This is support of the fetch_from_info().
         Individual modification of the contact."""
-        if dct.has_key('disclose'):
+        if 'disclose' in dct:
             flag = self.server_disclose_policy and 'y' or 'n'
             dct['disclose'] = [{'flag': [flag], 'data':dct['disclose']}]
-        if dct.has_key('ident'):
+        if 'ident' in dct:
             dct['ident'] = [{'number':dct['ident']}]
-        if dct.has_key('ident.type'):
+        if 'ident.type' in dct:
             ident_type = dct.pop('ident.type')
             dct['ident'][0]['type'] = ident_type
         dct['contact_id'] = dct.pop('id')
@@ -1579,15 +1591,15 @@ def save_history(readline):
         readline.set_history_length(100)
         try:
             readline.write_history_file(history_filename) # save history
-        except IOError, msg:
-            print 'History IOError:', msg # some problem with history
+        except IOError as msg:
+            print('History IOError:', msg) # some problem with history
 
 def restore_history(readline):
     'Restore history of command line.'
     if readline:
         try:
             readline.read_history_file(history_filename) # restore history (flush interactive params)
-        except IOError, msg:
+        except IOError as msg:
             pass # history doesn't exist, but no problem :-)
 
 def remove_from_history(readline, count=1):
@@ -1604,11 +1616,11 @@ def get_history_length(readline):
 
 def __has_key__(dct, key):
     'Check if key exists and if any value is set. (dct MUST be in format: dct[key] = [{...}, ...])'
-    return dct.has_key(key) and len(dct[key])
+    return key in dct and len(dct[key])
 
 def __has_key_dict__(dct, key):
     'Check if key exists and if any value is set. (dct MUST be in format: dct[key] = [{...}, ...])'
-    return dct.has_key(key) and len(dct[key]) and len(dct[key][0])
+    return key in dct and len(dct[key]) and len(dct[key][0])
 
 def __scope_to_string__(scopes):
     'Assemble names into string. Scopes is in format: ((name, min, max, counter), ...)'
@@ -1618,7 +1630,7 @@ def __scope_to_string__(scopes):
             if max is UNBOUNDED:
                 str_max = 'oo'
             else:
-                str_max = str(max)
+                str_max = six.text_type(max)
             tokens.append('%s[%d/%s]' % (label, counter + 1, str_max))
         else:
             tokens.append(label)
@@ -1654,7 +1666,7 @@ def __build_command_example__(columns, dct_data, null_value):
         min, max = min_max
         if len(children):
             text = ''
-            if dct_data.has_key(name):
+            if name in dct_data:
                 if max is UNBOUNDED or max > 1:
                     scopes = []
                     for dct_item in dct_data[name]:
@@ -1701,7 +1713,7 @@ def __build_command_example__(columns, dct_data, null_value):
 def remove_empty_keys(dct, null_value):
     'Remove empty keys. dct is in format {key: [str, {key: [str, str]} ,str]}'
     retd = {}
-    for key in dct.keys():
+    for key in dct:
         value = dct[key]
         if not (len(value) == 1 and value[0] == null_value):
             scope = []
@@ -1716,12 +1728,12 @@ def remove_empty_keys(dct, null_value):
 
 def text_to_unicode(text):
     error = ''
-    if type(text) != unicode:
+    if not isinstance(text, six.text_type):
         try:
-            text = unicode(text, encoding)
-        except UnicodeDecodeError, msg:
+            text = six.text_type(text, encoding)
+        except UnicodeDecodeError as msg:
             error = 'UnicodeDecodeError: %s' % msg
-            text = unicode(repr(text), encoding)
+            text = six.text_type(repr(text), encoding)
     return text, error
 
 def readline_build_token(key, example, required, min_max):
@@ -1739,10 +1751,10 @@ def readline_build_token(key, example, required, min_max):
 
 def local8bit(text):
     'Encode unicode to string in the local encoding.'
-    if type(text) == unicode:
+    if isinstance(text, six.binary_type):
         try:
             text = text.encode(encoding)
-        except UnicodeEncodeError, msg:
+        except UnicodeEncodeError as msg:
             text = repr(text)
     return text
 
@@ -1762,7 +1774,7 @@ def join_arrays2unicode(data, scope=[]):
         tmp = []
         for key, value in data.items():
             scope.append(key)
-            if len(filter(lambda n:type(n) is dict, value)):
+            if len([n for n in value if type(n) is dict]):
                 # if any of the children is dict type
                 # the key name will be shown with children key together (scope)
                 tmp.append(join_arrays2unicode(value, scope))

@@ -19,13 +19,18 @@
 
 """Send any file (EPP XML) to the EPP server.
 """
-import sys, os, re, time
-import terminal_controler
-from __init__ import ClientSession
-from session_base import get_ltext, colored_output
-from session_receiver import FredError
-from session_transfer import BEGIN, END
-from translate import options, option_errors, option_args
+from __future__ import absolute_import, print_function, unicode_literals
+
+import os
+import re
+import sys
+import time
+
+from . import ClientSession, terminal_controler
+from .session_base import colored_output, get_ltext
+from .session_receiver import FredError
+from .session_transfer import BEGIN, END
+from .translate import option_args, option_errors, options, _T
 
 def __auto_login__(epp, verbose):
     'Do login'
@@ -34,7 +39,7 @@ def __auto_login__(epp, verbose):
         log = epp.get_logins_and_passwords()[0]
         dansw = epp.api_command('login', {'username': log[0], 'password': log[1]})
         ok = 1
-    except FredError, msg:
+    except FredError as msg:
         ok = 0
         dansw = {}
     if dansw.get('code', 0) != 1000:
@@ -128,7 +133,7 @@ def send_docs(display_bar, docs=[]):
             epp.display() # display errors or notes
         else:
             if not display_bar:
-                print epp.get_formated_message(xmldoc, 1) # 0 - note, 1 - ERROR
+                print(epp.get_formated_message(xmldoc, 1)) # 0 - note, 1 - ERROR
         if display_bar:
             if bar is None: bar = terminal_controler.ProgressBar(colored_output, bar_header)
             bar.clear()
@@ -148,7 +153,7 @@ def send_docs(display_bar, docs=[]):
         epp.set_verbose(0) # Very important! If is not set, it can overwrite outputed data.
         try:
             epp.api_command('logout') # automaticly logout
-        except FredError, msg:
+        except FredError as msg:
             pass # print 'ERROR:',msg
         #epp.print_answer()
 
@@ -159,8 +164,8 @@ def main():
         if not options['help'] and len(sys.argv) > 1:
             send_docs(options['bar']) # commands from argv
         else:
-            from console import help_option
-            print '%s: %s [OPTIONS] [filenames]\n\n%s\n%s\n%s\n%s:\n%s\n\n%s\n' % (_T('Usage'), 'fred_sender.py',
+            from .console import help_option
+            print('%s: %s [OPTIONS] [filenames]\n\n%s\n%s\n%s\n%s:\n%s\n\n%s\n' % (_T('Usage'), 'fred_sender.py',
             _T('Module for sending files to the EPP server.'),
             help_option,
             _T("""  -o OUTPUT_TYPE, --output=OUTPUT_TYPE
@@ -173,7 +178,7 @@ def main():
 ./fred_sender.py -s epp_host -l cs cmd1.xml cmd2.xml
 
 echo -en "check_domain nic.cz\\ninfo_domain nic.cz" | ./fred_create.py | ./fred_sender.py""",
-_T('See README for more information.'))
+_T('See README for more information.')))
 
 if __name__ == '__main__':
     main()

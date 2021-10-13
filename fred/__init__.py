@@ -89,17 +89,21 @@ if epp.is_val() == 1000:
     epp.logout()
 
 """
+from __future__ import absolute_import, print_function, unicode_literals
+
 import sys
-from session_receiver import ManagerReceiver
-from session_receiver import FredError
-import translate
+
+import six
+
+from . import translate
+from .session_receiver import FredError, ManagerReceiver
 
 
 class ClientUsageException(Exception):
     "Client usage API excption."
 
 
-class Client:
+class Client(object):
     """EPP client API. Process whole EPP communication with server.
     Defaults values you can save into config file.
 
@@ -264,9 +268,9 @@ OPTIONS:
       sp                    State or province
   """
         if extensions:
-            if extensions.keys() != ["mailing_addr"]:
+            if list(extensions.keys()) != ["mailing_addr"]:
                 raise ClientUsageException("Extensions dict must have only one key 'mailing_addr'.")
-            self.check_address_keys(extensions["mailing_addr"].keys())
+            self.check_address_keys(list(extensions["mailing_addr"].keys()))
         return self._epp.api_command('create_contact', {
             'contact_id':contact_id, 'name':name, 'email':email, 'city':city, 'cc':cc, 'auth_info':auth_info, 'org':org,
             'street':street, 'sp':sp, 'pc':pc, 'voice':voice, 'fax':fax, 'disclose':disclose, 'vat':vat, 'ident':ident,
@@ -544,7 +548,7 @@ OPTIONS:
   msg_id (required)        Index of message (required only with op = 'ack')
   cltrid                   Client transaction ID"""
         if type(msg_id) is int:
-            msg_id = str(msg_id) # allowed strings only
+            msg_id = six.text_type(msg_id) # allowed strings only
         return self._epp.api_command('poll', {'op':op, 'msg_id':msg_id, 'cltrid':cltrid})
 
 
@@ -758,14 +762,14 @@ OPTIONS:
       mailing_addr (required) Mailing address
   """
         if extensions:
-            ext_keys = extensions.keys()
+            ext_keys = list(extensions.keys())
             if not (ext_keys == ["chg"] or ext_keys == ["rem"]):
                 raise ClientUsageException("Extensions dict must have only one key: 'chg' or 'rem'.")
-            names = extensions["rem"] if ext_keys == ["rem"] else extensions["chg"].keys()
+            names = extensions["rem"] if ext_keys == ["rem"] else list(extensions["chg"].keys())
             if names != ["mailing_addr"]:
                 raise ClientUsageException("Item 'chg' or 'rem' accept only key 'mailing_addr'.")
             if ext_keys == ["chg"]:
-                self.check_address_keys(extensions["chg"]["mailing_addr"].keys())
+                self.check_address_keys(list(extensions["chg"]["mailing_addr"].keys()))
         return self._epp.api_command('update_contact', {'contact_id': contact_id, 'chg': chg, 'cltrid': cltrid,
                                                         'extensions': extensions})
 
@@ -1182,5 +1186,5 @@ class ClientSession(ManagerReceiver):
 
 if __name__ == '__main__':
     epp = Client()
-    print epp.login("reg-lrr", "123456789")
-    print "[END]"
+    print(epp.login("reg-lrr", "123456789"))
+    print("[END]")

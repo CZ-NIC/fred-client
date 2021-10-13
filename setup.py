@@ -46,6 +46,8 @@ setup(name='fred-client',
       packages=find_packages(),
       include_package_data=True,
       scripts=['setup_postinstall.py'],
+      python_requires='>=2.7',
       setup_requires=['Babel >=2.3'],
+      install_requires=['future', 'six'],
       cmdclass={'build': custom_build, 'sdist': custom_sdist},
       entry_points={'console_scripts': ['fred-client = fred.console:main']})
