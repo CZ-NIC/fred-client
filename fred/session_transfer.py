@@ -22,7 +22,10 @@ from __future__ import absolute_import, print_function, unicode_literals
 from builtins import map, range, zip
 import re
 import socket
-from cgi import escape as escape_html
+try:
+    from html import escape as escape_html
+except ImportError:
+    from cgi import escape as escape_html
 
 from . import client_socket, eppdoc_client
 from .session_base import *

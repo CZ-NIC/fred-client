@@ -19,7 +19,7 @@
 
 from distutils.command.build import build
 
-from setuptools import find_packages, setup
+from setuptools import setup
 from setuptools.command.sdist import sdist
 
 
@@ -43,7 +43,7 @@ setup(name='fred-client',
       author_email='zdenek.bohm@nic.cz',
       url='http://www.nic.cz',
       license='GNU GPL',
-      packages=find_packages(),
+      packages=('fred', ),  # Ignore speedtest
       include_package_data=True,
       scripts=['setup_postinstall.py'],
       python_requires='>=2.7',

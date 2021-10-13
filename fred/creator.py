@@ -32,7 +32,10 @@ from __future__ import absolute_import, print_function, unicode_literals
 from builtins import range
 import re
 import sys
-from cgi import escape as escape_html
+try:
+    from html import escape as escape_html
+except ImportError:
+    from cgi import escape as escape_html
 
 from . import ClientSession
 from .session_transfer import php_string

@@ -29,8 +29,11 @@ import os
 import re
 import sys
 import time
-from cgi import escape as escape_html
 from subprocess import PIPE, Popen
+try:
+    from html import escape as escape_html
+except ImportError:
+    from cgi import escape as escape_html
 
 import configparser
 import io
