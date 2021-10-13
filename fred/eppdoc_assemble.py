@@ -247,7 +247,7 @@ class Message(MessageBase):
         while 1:
             # param must not be NULL (except min == 0)
             try:
-                param = input(prompt.encode(encoding)).strip()
+                param = input(prompt).strip()
             except EOFError:
                 # Ctrl+D - Finish
                 if min_max[0]:
@@ -331,7 +331,7 @@ class Message(MessageBase):
         while max is UNBOUNDED or current_pos < max:
             parents[-1][3] = current_pos # name, min, max, counter = current_pos
             if name in dct and len(dct[name]) >= min: min = required_pos = 0 # all needed values has been set
-            prompt = u'%s%s [%s]: ' % (__scope_to_string__(parents), prompt_allowed, six.text_type(self.param_reqired_type[required_pos], encoding))
+            prompt = u'%s%s [%s]: ' % (__scope_to_string__(parents), prompt_allowed, six.text_type(self.param_reqired_type[required_pos]))
             param, stop = self.__ineractive_input_one_param__(name, (min, max), allowed, example, null_value, prompt)
             if stop: break
             current_pos += 1
@@ -493,7 +493,7 @@ class Message(MessageBase):
                     example = __build_command_example__(columns, dct, null_value)
                     # Note the interactive mode is closed.
                     try:
-                        input(session_base.colored_output.render('\n${BOLD}${YELLOW}%s${NORMAL}' % _T('Interactive input completed. [Press Enter]')))
+                        input(session_base.colored_output.render('\n${BOLD}${YELLOW}%s${NORMAL}' % _T('Interactive input completed. [Press Enter]')).decode('utf-8'))
                     except EOFError:
                         session_base.print_unicode(u'') # EOFError: Ctrl+D - Finish command
                     except KeyboardInterrupt:

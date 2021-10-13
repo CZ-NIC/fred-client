@@ -254,7 +254,7 @@ When you want not result in your prompt join option 'noprompt'
         if errors:
             self._errors.extend(errors)
             self._notes_afrer_errors.append(_T("Type '%s' for more information.") % 'help %s' % command_name.encode(translate.encoding))
-        if example: self.append_note('${BOLD}%s:${NORMAL}\n%s' % (_T('Command to issue'), example.encode(translate.encoding)))
+        if example: self.append_note('${BOLD}%s:${NORMAL}\n%s' % (_T('Command to issue'), example))
         return (len(errors) == 0), stop
 
 
@@ -491,14 +491,6 @@ When you want not result in your prompt join option 'noprompt'
         else:
             # 3. EPP commands
             cmd = EPP_command
-            if not isinstance(cmd, six.binary_type):
-                try:
-                    cmd = six.text_type(cmd).encode(translate.encoding)
-                except UnicodeDecodeError as msg:
-                    self.append_error('UnicodeDecodeError: %s' % msg)
-                    cmd = repr(cmd)
-                    if not isinstance(cmd, six.binary_type):
-                        cmd = six.text_type(cmd).encode(translate.encoding)
             command_name, stop = self.epp_command(cmd, command)
             if command_name != 'q': # User press Ctrl+C or Ctrl+D in interactive mode.
                 self._raw_cmd = self._epp_cmd.get_xml()

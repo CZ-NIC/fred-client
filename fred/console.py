@@ -39,7 +39,7 @@ import re
 import sys
 import time
 
-from . import __init__
+from . import translate, ClientSession
 from .session_base import RECONNECT, VERBOSE, colored_output
 from .translate import option_errors, options, script_name, _T
 
@@ -131,7 +131,7 @@ _T("""  -d COMMAND, --command=COMMAND
         _T('See README for more information.')))
         sys.exit(0)
     elif args['version']:
-        epp = __init__.ClientSession()
+        epp = ClientSession()
         print(epp.version())
         sys.exit(0)
     else:
@@ -139,9 +139,9 @@ _T("""  -d COMMAND, --command=COMMAND
             print(option_errors)
             sys.exit(1)
 
-    if __init__.translate.warning:
-        print(colored_output.render("${BOLD}${RED}%s${NORMAL}" % __init__.translate.warning))
-    epp = __init__.ClientSession()
+    if translate.warning:
+        print(colored_output.render("${BOLD}${RED}%s${NORMAL}" % translate.warning))
+    epp = ClientSession()
     if not check_options(epp): return # any option error occurs
 
     readline = None

@@ -507,7 +507,7 @@ class ManagerTransfer(ManagerBase):
                 # full
                 if code:
                     label_code = (u'%s:' % get_unicode(_T('Return code'))).ljust(self._ljust + 1) # +1 space between key and value
-                    report(colored_output.render('${BOLD}%s${NORMAL}%d' % (label_code), code))
+                    report(colored_output.render('${BOLD}%s${NORMAL}%d' % (label_code, code)))
                 if dct.get('reason'):
                     label_reason = (u'%s:' % get_unicode(_T('Reason'))).ljust(self._ljust + 1)
                     report(colored_output.render('${BOLD}%s${%s}%s${NORMAL}' % (label_reason, code == 1000 and 'GREEN' or 'NORMAL', dct['reason'])))
@@ -530,11 +530,11 @@ class ManagerTransfer(ManagerBase):
                 body[n] = body[n].decode(encoding)
         if self._session[VERBOSE] == 3 and self._loop_status == LOOP_NONE:
             if len(body) and body[-1] != '': report('') # empty line
-            report(colored_output.render('${BOLD}COMMAND:${NORMAL}${GREEN} %s' % self._command_sent))
+            report(colored_output.render('${BOLD}COMMAND:${NORMAL}${GREEN} %s' % self._command_sent).decode('utf-8'))
             report(human_readable(self._raw_cmd))
-            report(colored_output.render('${NORMAL}${BOLD}ANSWER:${NORMAL}${GREEN}'))
+            report(colored_output.render('${NORMAL}${BOLD}ANSWER:${NORMAL}${GREEN}').decode('utf-8'))
             report(human_readable(self._raw_answer))
-            report(colored_output.render('${NORMAL}'))
+            report(colored_output.render('${NORMAL}').decode('utf-8'))
         return sep.join(body)
 
     def get_answer_html(self, dct=None):
@@ -928,6 +928,7 @@ def str_lists(text):
 
 def human_readable(body):
     'Resample to rows if they missing. This is hook while PrettyPrint missing.'
+    body = body.decode('utf-8')
     if not re.search('</\w+>\n<', body):
         body = re.sub('(</[^>]+>)', '\\1\n', body)
     return body

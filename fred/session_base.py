@@ -278,7 +278,7 @@ $fred_client_errors = array(); // errors occuring during communication
                 elif is_html:
                     msg.append(escape_html(strip_colors(text)))
                 else:
-                    msg.append(get_ltext(colored_output.render(text)))
+                    msg.append(colored_output.render(text).decode('utf-8'))
             if is_xml:
                 msg.append('</notes>')
             elif is_html:
@@ -300,9 +300,9 @@ $fred_client_errors = array(); // errors occuring during communication
                 msg.append(escape_html(strip_colors(self._errors[0])))
             else:
                 if len(msg) and msg[-1] != '': msg.append('')
-                self._errors[-1] += colored_output.render('${NORMAL}')
+                self._errors[-1] += colored_output.render('${NORMAL}').decode('utf-8')
                 label = _T('ERROR')
-                msg.append('%s%s: %s' % (colored_output.render('${RED}${BOLD}'), label, self._errors[0]))
+                msg.append('%s%s: %s' % (colored_output.render('${RED}${BOLD}').decode('utf-8'), label, self._errors[0]))
 
             for text in self._errors[1:]:
                 if is_php:
@@ -312,7 +312,7 @@ $fred_client_errors = array(); // errors occuring during communication
                 elif is_html:
                     msg.append(escape_html(strip_colors(text)))
                 else:
-                    msg.append(get_ltext(text))
+                    msg.append(text)
 
             if is_xml:
                 msg.append('</errors>')
@@ -333,7 +333,7 @@ $fred_client_errors = array(); // errors occuring during communication
             elif is_html:
                 msg.extend([escape_html(strip_colors(s)) for s in self._notes_afrer_errors])
             else:
-                msg.extend(list(map(get_ltext, self._notes_afrer_errors)))
+                msg.extend(list(self._notes_afrer_errors))
             self._notes_afrer_errors = []
 
             if is_xml:
@@ -344,7 +344,7 @@ $fred_client_errors = array(); // errors occuring during communication
         if xml_close_tag:
             msg.append('</FredClient>')
 
-        return sep.join(map(get_ltext, msg))
+        return sep.join(msg)
 
     def welcome(self):
         "Welcome message."
@@ -867,7 +867,7 @@ def get_ltext(text):
 
 def print_unicode(text):
     'Print text and catch encoding problems with unicode.'
-    print(get_ltext(text))
+    print(get_ltext(text).decode('utf-8'))
 
 
 def get_unicode(text):
@@ -883,7 +883,7 @@ def get_unicode(text):
 def php_string(value):
     'Returns escaped string for place into PHP variable.'
     if isinstance(value, six.string_types):
-        text = get_ltext(value).strip().replace('\\n', '\n')
+        text = value.strip().replace('\\n', '\n')
         ret = "'%s'" % text.replace(r'\ '[:-1], r'\\ '[:-1]).replace(r"'", r"\'")
     elif type(value) in (list, tuple):
         items = []
