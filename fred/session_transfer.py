@@ -502,20 +502,20 @@ class ManagerTransfer(ManagerBase):
                         dct['errors'].insert(0, dct['reason'])
                     elif code not in (1000, 1500) or key in ('update', 'delete', 'transfer', 'sendauthinfo', 'technical_test', 'poll'):
                         # 1000 - success,  1500 - success logout
-                        report(colored_output.render('${%s}%s${NORMAL}' % (code == 1000 and 'GREEN' or 'NORMAL', dct['reason'])))
+                        report(colored_output.render('${%s}%s${NORMAL}' % (code == 1000 and 'GREEN' or 'NORMAL', dct['reason'])).decode('utf-8'))
             else:
                 # full
                 if code:
                     label_code = (u'%s:' % get_unicode(_T('Return code'))).ljust(self._ljust + 1) # +1 space between key and value
-                    report(colored_output.render('${BOLD}%s${NORMAL}%d' % (label_code, code)))
+                    report(colored_output.render('${BOLD}%s${NORMAL}%d' % (label_code, code)).decode('utf-8'))
                 if dct.get('reason'):
                     label_reason = (u'%s:' % get_unicode(_T('Reason'))).ljust(self._ljust + 1)
-                    report(colored_output.render('${BOLD}%s${%s}%s${NORMAL}' % (label_reason, code == 1000 and 'GREEN' or 'NORMAL', dct['reason'])))
+                    report(colored_output.render('${BOLD}%s${%s}%s${NORMAL}' % (label_reason, code == 1000 and 'GREEN' or 'NORMAL', dct['reason'])).decode('utf-8'))
             #... errors .............................
             if len(dct['errors']):
                 if len(body) and body[-1] != '': report('') # empty line
-                dct['errors'][-1] += colored_output.render('${NORMAL}')
-                report('%s%s: %s' % (colored_output.render('${BOLD}${RED}'), _T('ERROR'), dct['errors'][0]))
+                dct['errors'][-1] += colored_output.render('${NORMAL}').decode('utf-8')
+                report('%s%s: %s' % (colored_output.render('${BOLD}${RED}').decode('utf-8'), _T('ERROR'), dct['errors'][0]))
                 for error in dct['errors'][1:]:
                     report(error)
             #... data .............................
