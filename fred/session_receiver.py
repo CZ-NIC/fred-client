@@ -108,8 +108,8 @@ class ManagerReceiver(ManagerCommand):
                     else:
                         stoptag = tags[3]
                         endtag = ''
-                    extra_message.append('%s: %s%s%s%s%s%s' % (_T('Element that caused a server error condition'), get_ltext(tags[0]), get_ltext(key), get_ltext(attribs), stoptag, get_ltext(elvalue), get_ltext(endtag)))
-                if 'reason' in item: extra_message.append('%s: %s' % (_T('Reason'), get_ltext(item['reason'].get('data', ''))))
+                    extra_message.append('%s: %s%s%s%s%s%s' % (_T('Element that caused a server error condition'), tags[0], key, attribs, stoptag, elvalue, endtag))
+                if 'reason' in item: extra_message.append('%s: %s' % (_T('Reason'), item['reason'].get('data', '')))
         if len(extra_message):
             self._dct_answer['errors'].extend(extra_message)
         return 1 # code is NOT 1000

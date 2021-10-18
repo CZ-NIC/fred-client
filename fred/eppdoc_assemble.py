@@ -87,7 +87,7 @@ class Message(MessageBase):
                 msg8bit = _T('required')
                 color = deep == 1 and 'GREEN' or 'YELLOW'
                 required = '${%s}${BOLD}(%s)${NORMAL}' % (color, msg8bit)
-                reqlen = len(msg8bit.decode(encoding)) + 2 # add brackets
+                reqlen = len(msg8bit) + 2 # add brackets
                 if min > 1:
                     attrib.append(_TP('minimum %d item', 'minimum %d items', min) % min)
             sep = ''.ljust(self._indent_notes - len(indent) - len(name) - reqlen)
