@@ -466,17 +466,17 @@ class ManagerTransfer(ManagerBase):
         """
         if code == 1000:
             if key == 'update':
-                dct['reason'] = u'%s %s.' % (self._epp_cmd.get_object_handle(), _T('updated').decode(encoding))
+                dct['reason'] = '%s %s.' % (self._epp_cmd.get_object_handle(), _T('updated'))
             elif key == 'delete':
-                dct['reason'] = u'%s %s.' % (self._epp_cmd.get_object_handle(), _T('deleted').decode(encoding))
+                dct['reason'] = '%s %s.' % (self._epp_cmd.get_object_handle(), _T('deleted'))
             elif key == 'transfer':
-                dct['reason'] = u'%s %s.' % (self._epp_cmd.get_object_handle(), _T('successfully transfered').decode(encoding))
+                dct['reason'] = '%s %s.' % (self._epp_cmd.get_object_handle(), _T('successfully transfered'))
             elif key == 'sendauthinfo':
-                dct['reason'] = u'%s %s.' % (self._epp_cmd.get_object_handle(), _T('request for send authorisation info transmited').decode(encoding))
+                dct['reason'] = '%s %s.' % (self._epp_cmd.get_object_handle(), _T('request for send authorisation info transmited'))
             elif key == 'technical_test':
-                dct['reason'] = _T('The Request for technical test was successfully submitted.').decode(encoding)
+                dct['reason'] = _T('The Request for technical test was successfully submitted.')
             elif key == 'poll':
-                dct['reason'] = _T('The message has been removed from the queue.').decode(encoding)
+                dct['reason'] = _T('The message has been removed from the queue.')
 
     def get_answer(self, dct=None, sep='\n'):
         'Show values parsed from the server answer.'
