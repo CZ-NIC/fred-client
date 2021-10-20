@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2006-2018  CZ.NIC, z. s. p. o.
+# Copyright (C) 2006-2021  CZ.NIC, z. s. p. o.
 #
 # This file is part of FRED.
 #
