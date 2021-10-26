@@ -37,7 +37,7 @@ class custom_sdist(sdist):
 
 
 setup(name='fred-client',
-      version='2.13.0',
+      version='2.14.0',
       description='Client FRED (Free Registry for enum and domain)',
       author='Zdenek Bohm, CZ.NIC',
       author_email='zdenek.bohm@nic.cz',
@@ -46,7 +46,7 @@ setup(name='fred-client',
       packages=('fred', ),  # Ignore speedtest
       include_package_data=True,
       scripts=['setup_postinstall.py'],
-      python_requires='>=2.7',
+      python_requires='>=3.6',
       setup_requires=['Babel >=2.3'],
       install_requires=['future', 'six'],
       cmdclass={'build': custom_build, 'sdist': custom_sdist},
