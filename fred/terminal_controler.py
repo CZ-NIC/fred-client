@@ -62,39 +62,39 @@ class TerminalController(object):
     they will be stored in the `COLS` and `LINES` attributes.
     """
     # Cursor movement:
-    BOL = ''             #: Move the cursor to the beginning of the line
-    UP = ''              #: Move the cursor up one line
-    DOWN = ''            #: Move the cursor down one line
-    LEFT = ''            #: Move the cursor left one char
-    RIGHT = ''           #: Move the cursor right one char
+    BOL = b''            #: Move the cursor to the beginning of the line
+    UP = b''             #: Move the cursor up one line
+    DOWN = b''           #: Move the cursor down one line
+    LEFT = b''           #: Move the cursor left one char
+    RIGHT = b''          #: Move the cursor right one char
 
     # Deletion:
-    CLEAR_SCREEN = ''    #: Clear the screen and move to home position
-    CLEAR_EOL = ''       #: Clear to the end of the line.
-    CLEAR_BOL = ''       #: Clear to the beginning of the line.
-    CLEAR_EOS = ''       #: Clear to the end of the screen
+    CLEAR_SCREEN = b''   #: Clear the screen and move to home position
+    CLEAR_EOL = b''      #: Clear to the end of the line.
+    CLEAR_BOL = b''      #: Clear to the beginning of the line.
+    CLEAR_EOS = b''      #: Clear to the end of the screen
 
     # Output modes:
-    BOLD = ''            #: Turn on bold mode
-    BLINK = ''           #: Turn on blink mode
-    DIM = ''             #: Turn on half-bright mode
-    REVERSE = ''         #: Turn on reverse-video mode
-    NORMAL = ''          #: Turn off all modes
+    BOLD = b''           #: Turn on bold mode
+    BLINK = b''          #: Turn on blink mode
+    DIM = b''            #: Turn on half-bright mode
+    REVERSE = b''        #: Turn on reverse-video mode
+    NORMAL = b''         #: Turn off all modes
 
     # Cursor display:
-    HIDE_CURSOR = ''     #: Make the cursor invisible
-    SHOW_CURSOR = ''     #: Make the cursor visible
+    HIDE_CURSOR = b''    #: Make the cursor invisible
+    SHOW_CURSOR = b''    #: Make the cursor visible
 
     # Terminal size:
     COLS = None          #: Width of the terminal (None for unknown)
     LINES = None         #: Height of the terminal (None for unknown)
 
     # Foreground colors:
-    BLACK = BLUE = GREEN = CYAN = RED = MAGENTA = YELLOW = WHITE = ''
+    BLACK = BLUE = GREEN = CYAN = RED = MAGENTA = YELLOW = WHITE = b''
 
     # Background colors:
-    BG_BLACK = BG_BLUE = BG_GREEN = BG_CYAN = ''
-    BG_RED = BG_MAGENTA = BG_YELLOW = BG_WHITE = ''
+    BG_BLACK = BG_BLUE = BG_GREEN = BG_CYAN = b''
+    BG_RED = BG_MAGENTA = BG_YELLOW = BG_WHITE = b''
 
     _STRING_CAPABILITIES = """
     BOL=cr UP=cuu1 DOWN=cud1 LEFT=cub1 RIGHT=cuf1
