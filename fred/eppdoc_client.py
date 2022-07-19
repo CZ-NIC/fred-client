@@ -118,10 +118,10 @@ with an existing domain. In addition for domain ENUM type the private values
 are also 'Registrant ID' and 'Administrative contact'."""), ('info_domain my-domain.cz',)),
         'info_nsset': (1, [
             ('name', (1, 1), (), _T('NSSET ID'), 'NSSET_ID', '', ()),
+            ('auth_info', (0, 1), (), _T('Password to test its correctness and validity'), 'mypassword', '', ()),
         ], _T("""
 The EPP 'info_nsset' command is used to retrieve information associated
-with an existing NSSET. The value 'Password for transfer' is shown only
-for privileged user."""), ('info_nsset nssid:nsid',)),
+with an existing NSSET."""), ('info_nsset nssid:nsid',)),
         'info_keyset': (1, [
             ('name', (1, 1), (), _T('KEYSET ID'), 'KEYSET_ID', '', ()),
         ], _T("""
