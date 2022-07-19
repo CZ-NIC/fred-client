@@ -1,13 +1,15 @@
 stages:
     - analysis
 
-.python2-xenial: &python2-xenial
-    image: $CI_REGISTRY/ginger/base/ubuntu_xenial_python2:latest
-
 licensing:
-    <<: *python2-xenial
+    variables:
+        SRC_DIR: /usr/local/env
+    image: ubuntu:focal
     stage: analysis
     before_script:
+        - install -m 700 -d $HOME/.ssh
+        - install -m 600 $SRC_DIR/{id_rsa,id_rsa.pub,known_hosts} $HOME/.ssh/
+        - apt update -y && apt install -y --no-install-recommends git ssh-client
         - git clone git@gitlab.office.nic.cz:internal-tools/license-check.git --single-branch --depth 1
     script:
         - ./license-check/license-check.sh -v
