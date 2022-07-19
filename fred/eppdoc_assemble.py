@@ -762,21 +762,7 @@ class Message(MessageBase):
         self.__assemble_cmd__(data)
 
     def assemble_info_contact(self, *params):
-        dct = self._dct
-        self._handle_ID = dct['name'][0] # keep object handle (ID)
-        ns = '%s%s-%s' % (SCHEMA_PREFIX, 'contact', self.schema_version['contact'])
-        attr = (('xmlns:%s' % 'contact', ns),
-                ('xsi:schemaLocation', '%s %s-%s.xsd' % (ns, 'contact', self.schema_version['contact'])))
-        data = [
-            ('epp', 'command'),
-            ('command', 'info'),
-            ('info', 'contact:info', '', attr),
-            ('contact:info', 'contact:id', dct['name'][0]),
-        ]
-        if __has_key__(dct, 'auth_info'):
-            data.append(('contact:info', 'contact:authInfo', dct['auth_info'][0]),)
-        self.__append_cltrid__(data, params[0])
-        self.__assemble_cmd__(data)
+        self.__assemble_info__("contact", "id", params)
 
     def assemble_info_domain(self, *params):
         self.__assemble_info__("domain", "name", params)

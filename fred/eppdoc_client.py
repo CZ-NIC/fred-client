@@ -107,8 +107,7 @@ Using parameter 'new_password' you can change password.
             ('auth_info', (0, 1), (), _T('Password for access to undisclosed contact information'), 'mypassword', '', ()),
         ], _T("""
 The EPP 'info_contact' command is used to retrieve information associated
-with an existing contact. The value 'Password for transfer' is shown only
-for privileged user."""), ('info_contact cid:contact',)),
+with an existing contact."""), ('info_contact cid:contact',)),
         'info_domain': (1, [
             ('name', (1, 1), (), _T('Domain name'), 'mydomain.cz', '', ()),
             ('auth_info', (0, 1), (), _T('Password to test its correctness and validity'), 'mypassword', '', ()),
