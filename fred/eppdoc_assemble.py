@@ -785,7 +785,7 @@ class Message(MessageBase):
         self.__assemble_info__("nsset", "id", params)
 
     def assemble_info_keyset(self, *params):
-        self.__asseble_command__(('info', 'keyset', 'id'), 'name', params)
+        self.__assemble_info__("keyset", "id", params)
 
     def assemble_list_contacts(self, *params):
         self.getresults_loop = 1 # run messages loop

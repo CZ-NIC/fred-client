@@ -124,10 +124,10 @@ The EPP 'info_nsset' command is used to retrieve information associated
 with an existing NSSET."""), ('info_nsset nssid:nsid',)),
         'info_keyset': (1, [
             ('name', (1, 1), (), _T('KEYSET ID'), 'KEYSET_ID', '', ()),
+            ('auth_info', (0, 1), (), _T('Password to test its correctness and validity'), 'mypassword', '', ()),
         ], _T("""
 The EPP 'info_keyset' command is used to retrieve information associated
-with an existing KEYSET. The value 'Password for transfer' is shown only
-for privileged user."""), ('info_keyset keysid:ksid',)),
+with an existing KEYSET."""), ('info_keyset keysid:ksid',)),
         #----------------------------------------------------
         'check_contact': (1, [
             ('name', (1, UNBOUNDED), (), _T('Contact ID'), 'CID-ID01', '', ()),
