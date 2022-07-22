@@ -744,31 +744,34 @@ class Message(MessageBase):
     def assemble_check_keyset(self, *params):
         self.__asseble_command__(('check', 'keyset', 'id'), 'name', params)
 
-    def assemble_info_contact(self, *params):
+    def __assemble_info__(self, epp_object_type, epp_object_id_element, params):
         dct = self._dct
         self._handle_ID = dct['name'][0] # keep object handle (ID)
-        ns = '%s%s-%s' % (SCHEMA_PREFIX, 'contact', self.schema_version['contact'])
-        attr = (('xmlns:%s' % 'contact', ns),
-                ('xsi:schemaLocation', '%s %s-%s.xsd' % (ns, 'contact', self.schema_version['contact'])))
+        ns = '%s%s-%s' % (SCHEMA_PREFIX, epp_object_type, self.schema_version[epp_object_type])
+        attr = (('xmlns:%s' % epp_object_type, ns),
+                ('xsi:schemaLocation', '%s %s-%s.xsd' % (ns, epp_object_type, self.schema_version[epp_object_type])))
         data = [
             ('epp', 'command'),
             ('command', 'info'),
-            ('info', 'contact:info', '', attr),
-            ('contact:info', 'contact:id', dct['name'][0]),
+            ('info', '%s:info' % epp_object_type, '', attr),
+            ('%s:info' % epp_object_type, '%s:%s' % (epp_object_type, epp_object_id_element), dct['name'][0]),
         ]
         if __has_key__(dct, 'auth_info'):
-            data.append(('contact:info', 'contact:authInfo', dct['auth_info'][0]),)
+            data.append(('%s:info' % epp_object_type, '%s:authInfo' % epp_object_type, dct['auth_info'][0]),)
         self.__append_cltrid__(data, params[0])
         self.__assemble_cmd__(data)
 
+    def assemble_info_contact(self, *params):
+        self.__assemble_info__("contact", "id", params)
+
     def assemble_info_domain(self, *params):
-        self.__asseble_command__(('info', 'domain', 'name'), 'name', params)
+        self.__assemble_info__("domain", "name", params)
 
     def assemble_info_nsset(self, *params):
-        self.__asseble_command__(('info', 'nsset', 'id'), 'name', params)
+        self.__assemble_info__("nsset", "id", params)
 
     def assemble_info_keyset(self, *params):
-        self.__asseble_command__(('info', 'keyset', 'id'), 'name', params)
+        self.__assemble_info__("keyset", "id", params)
 
     def assemble_list_contacts(self, *params):
         self.getresults_loop = 1 # run messages loop

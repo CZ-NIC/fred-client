@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# Copyright (C) 2006-2021  CZ.NIC, z. s. p. o.
+# Copyright (C) 2006-2022  CZ.NIC, z. s. p. o.
 #
 # This file is part of FRED.
 #
@@ -16,7 +16,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with FRED.  If not, see <https://www.gnu.org/licenses/>.
-#
+
 from __future__ import absolute_import, print_function, unicode_literals
 
 import re
@@ -107,27 +107,26 @@ Using parameter 'new_password' you can change password.
             ('auth_info', (0, 1), (), _T('Password for access to undisclosed contact information'), 'mypassword', '', ()),
         ], _T("""
 The EPP 'info_contact' command is used to retrieve information associated
-with an existing contact. The value 'Password for transfer' is shown only
-for privileged user."""), ('info_contact cid:contact',)),
+with an existing contact."""), ('info_contact cid:contact',)),
         'info_domain': (1, [
             ('name', (1, 1), (), _T('Domain name'), 'mydomain.cz', '', ()),
+            ('auth_info', (0, 1), (), _T('Password to test its correctness and validity'), 'mypassword', '', ()),
         ], _T("""
 The EPP 'info_domain' command is used to retrieve information associated
-with an existing domain. The value 'Password for transfer' is shown only
-for privileged user. In addition for domain ENUM type the private values
+with an existing domain. In addition for domain ENUM type the private values
 are also 'Registrant ID' and 'Administrative contact'."""), ('info_domain my-domain.cz',)),
         'info_nsset': (1, [
             ('name', (1, 1), (), _T('NSSET ID'), 'NSSET_ID', '', ()),
+            ('auth_info', (0, 1), (), _T('Password to test its correctness and validity'), 'mypassword', '', ()),
         ], _T("""
 The EPP 'info_nsset' command is used to retrieve information associated
-with an existing NSSET. The value 'Password for transfer' is shown only
-for privileged user."""), ('info_nsset nssid:nsid',)),
+with an existing NSSET."""), ('info_nsset nssid:nsid',)),
         'info_keyset': (1, [
             ('name', (1, 1), (), _T('KEYSET ID'), 'KEYSET_ID', '', ()),
+            ('auth_info', (0, 1), (), _T('Password to test its correctness and validity'), 'mypassword', '', ()),
         ], _T("""
 The EPP 'info_keyset' command is used to retrieve information associated
-with an existing KEYSET. The value 'Password for transfer' is shown only
-for privileged user."""), ('info_keyset keysid:ksid',)),
+with an existing KEYSET."""), ('info_keyset keysid:ksid',)),
         #----------------------------------------------------
         'check_contact': (1, [
             ('name', (1, UNBOUNDED), (), _T('Contact ID'), 'CID-ID01', '', ()),

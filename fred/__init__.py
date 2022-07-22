@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# Copyright (C) 2006-2021  CZ.NIC, z. s. p. o.
+# Copyright (C) 2006-2022  CZ.NIC, z. s. p. o.
 #
 # This file is part of FRED.
 #
@@ -438,7 +438,7 @@ OPTIONS:
         return self._epp.api_command('info_contact', {'name':name, 'auth_info':auth_info, 'cltrid':cltrid})
 
 
-    def info_domain(self, name, cltrid=None):
+    def info_domain(self, name, auth_info=None, cltrid=None):
         """DESCRIPTION:
   The EPP 'info_domain' command is used to retrieve information associated
   with an existing domain. The value 'Password for transfer' is shown only
@@ -450,8 +450,9 @@ SYNTAX:
 
 OPTIONS:
   name (required)          Domain name
+  auth_info                Test of auth_info validity
   cltrid                   Client transaction ID"""
-        return self._epp.api_command('info_domain', {'name':name, 'cltrid':cltrid})
+        return self._epp.api_command('info_domain', {'name':name, 'auth_info':auth_info, 'cltrid':cltrid})
 
 
     def info_nsset(self, name, cltrid=None):
