@@ -31,6 +31,7 @@ import re
 import sys
 
 import configparser
+import six
 
 from .translate import get_valid_lang, _T
 

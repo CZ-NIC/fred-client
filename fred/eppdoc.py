@@ -42,6 +42,7 @@ except ImportError:
     PrettyPrint = None
 from xml.dom import Node
 import io
+import six
 
 from .translate import _T
 

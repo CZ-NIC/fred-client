@@ -26,6 +26,7 @@ import math
 import os
 import random
 import re
+import six
 from xml.sax.saxutils import unescape as unescape_html
 
 from . import eppdoc, eppdoc_client, translate
