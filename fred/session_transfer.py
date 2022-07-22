@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# Copyright (C) 2006-2021  CZ.NIC, z. s. p. o.
+# Copyright (C) 2006-2022  CZ.NIC, z. s. p. o.
 #
 # This file is part of FRED.
 #
@@ -16,7 +16,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with FRED.  If not, see <https://www.gnu.org/licenses/>.
-#
+
 from __future__ import absolute_import, print_function, unicode_literals
 
 from builtins import map, range, zip
