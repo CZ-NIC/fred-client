@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# Copyright (C) 2006-2021  CZ.NIC, z. s. p. o.
+# Copyright (C) 2006-2022  CZ.NIC, z. s. p. o.
 #
 # This file is part of FRED.
 #
@@ -16,7 +16,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with FRED.  If not, see <https://www.gnu.org/licenses/>.
-#
+
 from __future__ import absolute_import, print_function, unicode_literals
 
 from builtins import input
@@ -166,8 +166,8 @@ class Lorry(object):
                 self.append_note(_T('Certificates missing. Trying to connect without SSL!'))
                 self._conn_ssl = socket.ssl(self._conn)
             ssl_ok = 1
-        except socket.sslerror as msg:
-            self.append_error('socket.sslerror: %s (%s:%s)' % (six.text_type(msg), DATA[0], DATA[1]))
+        except ssl.SSLError as msg:
+            self.append_error('ssl.SSLError: %s (%s:%s)' % (six.text_type(msg), DATA[0], DATA[1]))
             err_note = {
                 1:_T('Certificate not signed by verified certificate authority.'),
                 2:'%s\n%s' % (_T('Server configuration is not valid. Contact administrator.'),
@@ -205,8 +205,8 @@ class Lorry(object):
             ok = 1
         except socket.timeout as msg:
             self.append_error('READ HEADER socket.timeout: %s' % msg)
-        except socket.sslerror as msg:
-            self.append_error('READ HEADER socket.sslerror: %s' % six.text_type(msg))
+        except ssl.SSLError as msg:
+            self.append_error('READ HEADER ssl.SSLError: %s' % six.text_type(msg))
         except socket.error as tmsg:
             self.append_error('READ HEADER socket.error: %s' % six.text_type(tmsg))
         except (KeyboardInterrupt, EOFError):
@@ -236,8 +236,8 @@ class Lorry(object):
                 ok = len(data) == self._body_length
             except socket.timeout as msg:
                 self.append_error('READ socket.timeout: %s' % msg)
-            except socket.sslerror as msg:
-                self.append_error('READ socket.sslerror: %s' % six.text_type(msg))
+            except ssl.SSLError as msg:
+                self.append_error('READ ssl.SSLError: %s' % six.text_type(msg))
             except socket.error as tmsg:
                 self.append_error('READ socket.error: %s' % six.text_type(tmsg))
             except MemoryError as msg:
@@ -270,8 +270,8 @@ class Lorry(object):
             ok = 1
         except socket.timeout as msg:
             self.append_error('SEND socket.timeout: %s' % msg)
-        except socket.sslerror as msg:
-            self.append_error('SEND socket.sslerror: %s' % six.text_type(msg))
+        except ssl.SSLError as msg:
+            self.append_error('SEND ssl.SSLError: %s' % six.text_type(msg))
         except socket.error as tmsg:
             self.append_error('SEND socket.error: %s' % six.text_type(tmsg))
         except (KeyboardInterrupt, EOFError):
