@@ -1568,10 +1568,12 @@ class Message(MessageBase):
     def print_info_listmax(self, min, max):
         if self._verbose < 2: return # no display message in verbose mode 1
         msg = []
-        if max > 1:
-            msg.append(_TP('Value can be a list of max %d value.', 'Value can be a list of max %d values.', max) % max)
-        elif max is UNBOUNDED:
+
+        if max is UNBOUNDED:
             msg.append(_T('Value can be an unbouded list of values.'))
+        elif max > 1:
+            msg.append(_TP('Value can be a list of max %d value.', 'Value can be a list of max %d values.', max) % max)
+
         if len(msg) and min:
             msg.append('%s %d.' % (_T('Minimum is'), min))
         if len(msg): session_base.print_unicode('(%s)' % (' '.join(msg)))
