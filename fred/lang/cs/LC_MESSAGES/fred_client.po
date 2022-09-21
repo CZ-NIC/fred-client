@@ -2177,3 +2177,6 @@ msgstr "ano"
 
 msgid "Password for access to undisclosed contact information"
 msgstr "Heslo pro přístup k neveřejným údajům kontatku"
+
+msgid "Password to test its correctness and validity"
+msgstr "Heslo pro otestování jeho správnosti a platnosti"
