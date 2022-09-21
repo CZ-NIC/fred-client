@@ -1,6 +1,13 @@
 ChangeLog
 =========
 
+2.15.0 (2022-09-21)
+-------------------
+
+* Add optional ``auth_info`` parameter to ``info_domain``, ``info_nsset``, ``info_keyset`` for authinfo (with ttl) checking
+
+* Several python3 compatibility fixes
+
 2.14.0 (2021-10-13)
 -------------------
 
