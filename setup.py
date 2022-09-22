@@ -46,7 +46,7 @@ setup(name='fred-client',
       packages=('fred', ),  # Ignore speedtest
       include_package_data=True,
       scripts=['setup_postinstall.py'],
-      python_requires='>=3.6',
+      python_requires='>=3.6,<3.10',
       setup_requires=['Babel >=2.3'],
       install_requires=['future', 'six'],
       cmdclass={'build': custom_build, 'sdist': custom_sdist},
