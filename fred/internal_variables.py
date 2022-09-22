@@ -27,7 +27,7 @@ from __future__ import unicode_literals
 #---------------------------------------------------
 # Here is defined FRED VERSION:
 #---------------------------------------------------
-fred_version = '2.15.0'
+fred_version = '2.15.1'
 config_name = 'fred-client.conf'
 
 required_defaults = {'port':700, 'timeout':10.0}
